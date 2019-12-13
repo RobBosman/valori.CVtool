@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+  <!-- suppress printing logback status -->
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+
+  <!-- define CONSOLE as console output -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <!-- see https://logback.qos.ch/manual/layouts.html -->
+      <Pattern>%d{HH:mm:ss.SSS} %-41logger{40} [%level] %msg%n%ex</Pattern>
+    </layout>
+  </appender>
+
+  <logger name="nl.valori.cvtool" level="DEBUG" additivity="false">
+    <appender-ref ref="CONSOLE"/>
+  </logger>
+
+  <!-- set default log level and appender -->
+  <root level="ERROR">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+
+</configuration>
