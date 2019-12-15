@@ -24,6 +24,12 @@
   <build>
     <sourceDirectory>src/main/kotlin</sourceDirectory>
     <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+    <resources>
+      <resource>
+        <!-- add /config/* to the classpath -->
+        <directory>config</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -39,6 +45,7 @@
         <version>3.2.0</version>
         <configuration>
           <excludes>
+            <!-- don't add config stuff to the jar file -->
             <exclude>logback.xml</exclude>
           </excludes>
         </configuration>

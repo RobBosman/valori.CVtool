@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory
 
 internal class HttpServer : AbstractVerticle() {
 
+  private val log = LoggerFactory.getLogger(javaClass)
+
   companion object {
     const val HOST_NAME = "localhost"
     const val PORT = 80
   }
-
-  private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
     val router = Router.router(vertx)
