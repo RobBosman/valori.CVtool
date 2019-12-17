@@ -7,14 +7,9 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import org.slf4j.LoggerFactory
 
-internal class HttpServer : AbstractVerticle() {
+internal class HttpServerVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
-
-  companion object {
-    const val HOST_NAME = "localhost"
-    const val PORT = 80
-  }
 
   override fun start(future: Future<Void>) {
     val router = Router.router(vertx)
@@ -25,11 +20,13 @@ internal class HttpServer : AbstractVerticle() {
               .end("Hello there!")
         }
 
+    val port = config().getInteger("http.port")
+    val hostName = config().getString("http.host")
     vertx.createHttpServer()
         .requestHandler(router)
-        .listen(SocketAddress.inetSocketAddress(PORT, HOST_NAME)) { result ->
+        .listen(SocketAddress.inetSocketAddress(port, hostName)) { result ->
           if (result.succeeded())
-            log.info("Listening on http://{}:{}/", HOST_NAME, PORT)
+            log.info("Listening on http://{}:{}/", hostName, port)
           future.handle(result.mapEmpty())
         }
   }

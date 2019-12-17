@@ -12,16 +12,9 @@ class Key {
   fun generateSecretKey(): SecretKey {
     val secureRandom = SecureRandom()
     val keyGenerator = KeyGenerator.getInstance("AES")
-    //generate a key with secure random
     keyGenerator?.init(128, secureRandom)
     return keyGenerator.generateKey()
   }
-
-//  fun saveSecretKey(sharedPref: SharedPreferences, secretKey: SecretKey): String {
-//    val encodedKey = Base64.encodeToString(secretKey.encoded, Base64.NO_WRAP)
-//    sharedPref.edit().putString(AppConstants.secretKeyPref, encodedKey).apply()
-//    return encodedKey
-//  }
 
   fun encrypt(yourKey: SecretKey, plainText: ByteArray): ByteArray {
     val data = yourKey.encoded
@@ -31,23 +24,6 @@ class Key {
     return cipher.doFinal(plainText)
   }
 
-//  fun getSecretKey(sharedPref: SharedPreferences): SecretKey {
-//
-//    val key = sharedPref.getString(AppConstants.secretKeyPref, null)
-//
-//    if (key == null) {
-//      //generate secure random
-//      val secretKey = generateSecretKey()
-//      saveSecretKey(sharedPref, secretKey!!)
-//      return secretKey
-//    }
-//
-//    val decodedKey = Base64.decode(key, Base64.NO_WRAP)
-//    val originalKey = SecretKeySpec(decodedKey, 0, decodedKey.size, "AES")
-//
-//    return originalKey
-//  }
-
   fun decrypt(yourKey: SecretKey, cipherText: ByteArray): ByteArray {
     val plainText: ByteArray
     val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
@@ -55,4 +31,25 @@ class Key {
     plainText = cipher.doFinal(cipherText)
     return plainText
   }
+
+//  private fun saveSecretKey(sharedPref: SharedPreferences, secretKey: SecretKey): String {
+//    val encodedKey = Base64.getEncoder().encode(secretKey.encoded)!!.contentToString()
+//    sharedPref.edit().putString(AppConstants.secretKeyPref, encodedKey).apply()
+//    return encodedKey
+//  }
+//
+//  fun getSecretKey(sharedPref: SharedPreferences): SecretKey {
+//    val key = sharedPref.getString(AppConstants.secretKeyPref, null)
+//
+//    if (key == null) {
+//      val secretKey = generateSecretKey()
+//      saveSecretKey(sharedPref, secretKey)
+//      return secretKey
+//    }
+//
+//    val decodedKey = Base64.getDecoder().decode(key)
+//    val originalKey = SecretKeySpec(decodedKey, 0, decodedKey.size, "AES")
+//
+//    return originalKey
+//  }
 }
