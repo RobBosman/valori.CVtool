@@ -1,0 +1,14 @@
+@font-face {
+    font-family: ValoriFont;
+    src: url(assets/Cabin-Bold-TTF.ttf) format("truetype");
+}
+
+.cerios {
+    color: #e76b24;
+}
+
+.valori {
+    color: #211a58;
+    font-family: ValoriFont;
+    font-weight: bold;
+}
