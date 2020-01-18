@@ -1,7 +1,7 @@
-/.idea/
-/*.iml
-/node/
-/node_modules/
+.idea/
+*.iml
+node/
+node_modules/
 package-lock.json
-/src/main/resources/web/js/
-/target/
+*/src/main/resources/bundle.js
+target/

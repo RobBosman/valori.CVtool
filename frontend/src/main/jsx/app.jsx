@@ -10,7 +10,7 @@ function ErrorPage(props) {
 
 function TitleCerios(props) {
     return (
-        <strike className='cerios'>Cerios</strike>
+        <del className='cerios'>Cerios</del>
     );
 }
 
@@ -33,7 +33,7 @@ class LoginPage extends React.Component {
 
     handleAanmelden = (event) => {
         this.props.onChange('logging-in');
-    }
+    };
 
     render() {
         return (
@@ -89,7 +89,7 @@ class MainApp extends React.Component {
                 },
                 3000);
         }
-    }
+    };
 
     render() {
         switch (this.state.appState) {

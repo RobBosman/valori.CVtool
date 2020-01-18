@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>nl.valori.cvtool</groupId>
+    <artifactId>root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>frontend</artifactId>
+  <packaging>pom</packaging>
+  <description>frontend of cvtool-app to enter and maintain cv's (curricula vitae)</description>
+
+  <properties>
+    <target.environment>production</target.environment>
+    <maven-frontent.version>1.9.1</maven-frontent.version>
+    <nodejs.version>13.6.0</nodejs.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${maven-frontent.version}</version>
+        <executions>
+
+          <execution>
+            <id>install-node-and-npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <nodeVersion>v${nodejs.version}</nodeVersion>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>install --save-dev
+                gulp
+                gulp-babel babel-cli babel-plugin-transform-react-jsx babel-preset-react-app
+                gulp-sourcemaps
+                gulp-concat
+                gulp-if
+                gulp-uglify
+                gulp-util
+              </arguments>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>gulp</id>
+            <goals>
+              <goal>gulp</goal>
+            </goals>
+            <configuration>
+              <arguments>default --targetEnvironment ${target.environment}</arguments>
+            </configuration>
+          </execution>
+
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>development</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <target.environment>development</target.environment>
+      </properties>
+    </profile>
+  </profiles>
+</project>
