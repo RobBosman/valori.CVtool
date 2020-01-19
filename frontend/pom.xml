@@ -15,7 +15,7 @@
   <description>frontend of cvtool-app to enter and maintain cv's (curricula vitae)</description>
 
   <properties>
-    <target.environment>production</target.environment>
+    <target.environment>PROD</target.environment>
     <maven-frontent.version>1.9.1</maven-frontent.version>
     <nodejs.version>13.6.0</nodejs.version>
   </properties>
@@ -40,19 +40,19 @@
           </execution>
 
           <execution>
-            <id>npm install</id>
+            <id>npm-install</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <configuration>
               <arguments>install --save-dev
                 gulp
+                gulp-clean
                 gulp-babel babel-cli babel-plugin-transform-react-jsx babel-preset-react-app
                 gulp-sourcemaps
                 gulp-concat
                 gulp-if
                 gulp-uglify
-                gulp-util
               </arguments>
             </configuration>
           </execution>
@@ -74,12 +74,12 @@
 
   <profiles>
     <profile>
-      <id>development</id>
+      <id>DEV</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <target.environment>development</target.environment>
+        <target.environment>DEV</target.environment>
       </properties>
     </profile>
   </profiles>

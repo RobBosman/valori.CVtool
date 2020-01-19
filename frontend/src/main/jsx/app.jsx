@@ -81,13 +81,13 @@ class MainApp extends React.Component {
                 () => {
                     this.handleAppStateChange('logged-in')
                 },
-                2000);
+                1000);
         } else if (value === 'logged-in') {
             this.timerID = setTimeout(
                 () => {
                     this.handleAppStateChange('logged-out')
                 },
-                3000);
+                1000);
         }
     };
 
