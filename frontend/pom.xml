@@ -46,24 +46,32 @@
             </goals>
             <configuration>
               <arguments>install --save-dev
-                gulp
-                gulp-clean
-                gulp-babel babel-cli babel-plugin-transform-react-jsx babel-preset-react-app
-                gulp-sourcemaps
-                gulp-concat
-                gulp-if
-                gulp-uglify
+                @babel/core
+                @babel/plugin-proposal-class-properties
+                @babel/plugin-syntax-dynamic-import
+                @babel/plugin-transform-react-constant-elements
+                @babel/plugin-transform-react-inline-elements
+                @babel/plugin-transform-runtime
+                @babel/preset-env
+                @babel/preset-react
+                @babel/runtime
+                @svgr/webpack
+                babel-loader
+                babel-plugin-transform-react-remove-prop-types
+                css-loader
+                file-loader
+                html-webpack-plugin
+                mini-css-extract-plugin
+                optimize-css-assets-webpack-plugin
+                react
+                react-dom
+                style-loader
+                terser-webpack-plugin
+                url-loader
+                webpack
+                webpack-cli
+                webpack-dev-server
               </arguments>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>gulp</id>
-            <goals>
-              <goal>gulp</goal>
-            </goals>
-            <configuration>
-              <arguments>default --targetEnvironment ${target.environment}</arguments>
             </configuration>
           </execution>
 

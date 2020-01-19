@@ -1,5 +1,7 @@
 'use strict';
 
+import React from "react";
+
 function ErrorPage(props) {
     return (
         <div>
@@ -59,7 +61,7 @@ class LoginPage extends React.Component {
     }
 }
 
-class MainApp extends React.Component {
+export default class MainApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -104,8 +106,3 @@ class MainApp extends React.Component {
         }
     }
 }
-
-ReactDOM.render(
-    <MainApp/>,
-    document.getElementById('root')
-);
