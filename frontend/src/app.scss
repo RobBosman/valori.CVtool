@@ -1,14 +1,17 @@
-@font-face {
+.MainApp {
+
+  @font-face {
     font-family: ValoriFont;
-    src: url(Cabin-Bold-TTF.ttf) format("truetype");
-}
+    src: url(../static/Cabin-Bold-TTF.ttf) format("truetype");
+  }
 
-.cerios {
+  .cerios {
     color: #e76b24;
-}
+  }
 
-.valori {
+  .valori {
     color: #211a58;
     font-family: ValoriFont, sans-serif;
     font-weight: bold;
+  }
 }

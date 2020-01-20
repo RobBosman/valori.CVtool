@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import './app.scss';
 
 function ErrorPage(props) {
     return (
@@ -39,7 +40,7 @@ class LoginPage extends React.Component {
 
     render() {
         return (
-            <div align="center">
+            <div className='MainApp' align="center">
                 <h1>Welkom bij de <TitleCVtool/>!</h1>
                 <p>
                     Om de CVtool te gebruiken moet je je aanmelden met je <TitleValori/> account.
@@ -50,7 +51,7 @@ class LoginPage extends React.Component {
                     <a href="https://account.activedirectory.windowsazure.com/r/#/applications"
                        target="blank">Hier</a> kun je die toestemming bekijken en eventueel weer intrekken.
                     <br/>Als je de '<em>Cerios (Valori) CVtool</em> app verwijdert blijven je CV-gegevens bewaard.
-                    Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
+                    <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
                 </p>
                 <p>
                     Problemen? <a href="mailto:RobBosman@valori.nl" target="blank">Mail</a> even!

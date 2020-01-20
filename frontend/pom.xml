@@ -27,7 +27,6 @@
         <artifactId>frontend-maven-plugin</artifactId>
         <version>${maven-frontent.version}</version>
         <executions>
-
           <execution>
             <id>install-node-and-npm</id>
             <goals>
@@ -38,43 +37,15 @@
               <nodeVersion>v${nodejs.version}</nodeVersion>
             </configuration>
           </execution>
-
           <execution>
             <id>npm-install</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <configuration>
-              <arguments>install --save-dev
-                @babel/core
-                @babel/plugin-proposal-class-properties
-                @babel/plugin-syntax-dynamic-import
-                @babel/plugin-transform-react-constant-elements
-                @babel/plugin-transform-react-inline-elements
-                @babel/plugin-transform-runtime
-                @babel/preset-env
-                @babel/preset-react
-                @babel/runtime
-                @svgr/webpack
-                babel-loader
-                babel-plugin-transform-react-remove-prop-types
-                css-loader
-                file-loader
-                html-webpack-plugin
-                mini-css-extract-plugin
-                optimize-css-assets-webpack-plugin
-                react
-                react-dom
-                style-loader
-                terser-webpack-plugin
-                url-loader
-                webpack
-                webpack-cli
-                webpack-dev-server
-              </arguments>
+              <arguments>install --save-dev</arguments>
             </configuration>
           </execution>
-
         </executions>
       </plugin>
     </plugins>
