@@ -16,16 +16,28 @@
 
   <properties>
     <target.environment>PROD</target.environment>
-    <maven-frontent.version>1.9.1</maven-frontent.version>
-    <nodejs.version>13.6.0</nodejs.version>
+    <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+    <maven-frontent-plugin.version>1.9.1</maven-frontent-plugin.version>
+    <nodejs.version>v13.6.0</nodejs.version>
   </properties>
 
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean-plugin.version}</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>dist</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>${maven-frontent.version}</version>
+        <version>${maven-frontent-plugin.version}</version>
         <executions>
           <execution>
             <id>install-node-and-npm</id>
@@ -34,7 +46,7 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <nodeVersion>v${nodejs.version}</nodeVersion>
+              <nodeVersion>${nodejs.version}</nodeVersion>
             </configuration>
           </execution>
           <execution>
@@ -42,6 +54,7 @@
             <goals>
               <goal>npm</goal>
             </goals>
+            <phase>generate-resources</phase>
             <configuration>
               <arguments>install --save-dev</arguments>
             </configuration>

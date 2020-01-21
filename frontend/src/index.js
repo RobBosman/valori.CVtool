@@ -2,6 +2,6 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import MainApp from "./app";
+import Main from "./components/Main";
 
-ReactDOM.render(<MainApp/>, document.getElementById('root'));
+ReactDOM.render(<Main className={"Main"}/>, document.getElementById('root'));
