@@ -38,7 +38,7 @@
   "name": "cvtool-frontend",
   "scripts": {
     "release": "webpack --mode production",
-    "start": "webpack-dev-server --mode development"
+    "dev": "webpack-dev-server --mode development"
   },
   "version": "1.0.0"
 }

@@ -1,13 +1,3 @@
-.TitleCerios {
-  color: #e76b24;
-}
-
-.TitleValori {
-  @font-face {
-    font-family: ValoriFont;
-    src: url(/static/Cabin-Bold-TTF.ttf) format("truetype");
-  }
-  color: #211a58;
-  font-family: ValoriFont, sans-serif;
-  font-weight: bold;
+.Title {
+  color: #666666;
 }

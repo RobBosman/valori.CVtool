@@ -1,22 +1,11 @@
-'use strict';
+"use strict";
 
 import React from "react";
-import './Title.scss';
+import "./Title.scss";
 
-export function TitleCerios(props) {
+export default function Title(props) {
     return (
-        <del className='TitleCerios'>Cerios</del>
-    );
-}
-
-export function TitleValori(props) {
-    return (
-        <span className='TitleValori'>VALORI</span>
-    );
-}
-
-export function TitleCVtool(props) {
-    return (
-        <span><TitleCerios/> <TitleValori/> CVtool</span>
+        <span className="Title"><img src="../../static/valori-name.png" alt="Valori"
+                                     height={props.height}/> <b>CVtool</b></span>
     );
 }

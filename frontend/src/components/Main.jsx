@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 import React from "react";
 import LoginPage from "./LoginPage";
 import ErrorPage from "./ErrorPage";
-import './Main.scss';
+import "./Main.scss";
 
 export default class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            appState: 'logged-out'
+            appState: "logged-out"
         };
     }
 
@@ -22,16 +22,16 @@ export default class Main extends React.Component {
             appState: value
         });
 
-        if (value === 'logging-in') {
+        if (value === "logging-in") {
             this.timerID = setTimeout(
                 () => {
-                    this.handleAppStateChange('logged-in')
+                    this.handleAppStateChange("logged-in")
                 },
                 1000);
-        } else if (value === 'logged-in') {
+        } else if (value === "logged-in") {
             this.timerID = setTimeout(
                 () => {
-                    this.handleAppStateChange('logged-out')
+                    this.handleAppStateChange("logged-out")
                 },
                 1000);
         }
@@ -39,14 +39,18 @@ export default class Main extends React.Component {
 
     render() {
         switch (this.state.appState) {
-            case 'logged-out':
-                return <LoginPage onChange={this.handleAppStateChange}/>;
-            case 'logging-in':
-                return <span>logging in...</span>;
-            case 'logged-in':
-                return <span>logged in</span>;
+            case "logged-out":
+                return <div className="Main">
+                    <LoginPage onChange={this.handleAppStateChange}/>
+                </div>;
+            case "logging-in":
+                return <span className="Main">logging in...</span>;
+            case "logged-in":
+                return <span className="Main">logged in</span>;
             default:
-                return <ErrorPage/>;
+                return <div className="Main">
+                    <ErrorPage/>
+                </div>;
         }
     }
 }
