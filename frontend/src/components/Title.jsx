@@ -1,11 +1,9 @@
-"use strict";
+import React from "react"
+import "./Title.scss"
+import valoriName from '../static/valori-name.png';
 
-import React from "react";
-import "./Title.scss";
+const Title = (props) => (
+    <span className="Title"><img src={valoriName} alt="Valori" height={props.height}/> <b>CVtool</b></span>
+);
 
-export default function Title(props) {
-    return (
-        <span className="Title"><img src="../../static/valori-name.png" alt="Valori"
-                                     height={props.height}/> <b>CVtool</b></span>
-    );
-}
+export default Title

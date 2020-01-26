@@ -1,5 +1,6 @@
 .idea/
 *.iml
+.vscode/
 target/
 node/
 node_modules/

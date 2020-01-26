@@ -1,9 +1,10 @@
-"use strict";
+import React from "react"
+import "./ErrorPage.scss"
 
-export default function ErrorPage(props) {
-    return (
-        <div>
-            <h2>Error...</h2>
-        </div>
-    );
-}
+const ErrorPage = () => (
+    <div className="ErrorPage">
+        <h2>Error...</h2>
+    </div>
+);
+
+export default ErrorPage

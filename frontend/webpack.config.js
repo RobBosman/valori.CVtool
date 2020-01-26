@@ -9,15 +9,29 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const FileLoader = require.resolve("file-loader");
 
 module.exports = (_env, argv) => {
-    const isPROD = argv.mode === "production";
+    const isProduction = argv.mode === "production";
     return {
-        devtool: !isPROD && "cheap-module-source-map",
-        entry: "./src/index.js",
+        devtool: !isProduction && "cheap-module-source-map",
+        entry: Path.resolve(__dirname, "src", "app.js"),
         output: {
             path: Path.resolve(__dirname, "dist"),
             filename: "js/[name].[contenthash:8].js",
             publicPath: "/"
         },
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: "css/[name].[contenthash:8].css",
+                chunkFilename: "css/[name].[contenthash:8].chunk.css"
+            }),
+            new HtmlWebpackPlugin({
+                template: Path.resolve(__dirname, "src", "static", "index.html"),
+                inject: true,
+                favicon: Path.resolve(__dirname, "src", "static", "favicon.ico")
+            }),
+            new Webpack.DefinePlugin({
+                "process.env.NODE_ENV": JSON.stringify(isProduction ? "production" : "development")
+            })
+        ],
         module: {
             rules: [
                 {
@@ -28,21 +42,21 @@ module.exports = (_env, argv) => {
                         options: {
                             cacheDirectory: true,
                             cacheCompression: false,
-                            envName: isPROD ? "production" : "development"
+                            envName: isProduction ? "production" : "development"
                         }
                     }
                 },
                 {
                     test: /\.css$/,
                     use: [
-                        isPROD ? MiniCssExtractPlugin.loader : "style-loader",
+                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
                         "css-loader"
                     ]
                 },
                 {
-                    test: /\.module.css$/,
+                    test: /\.module\.css$/,
                     use: [
-                        isPROD ? MiniCssExtractPlugin.loader : "style-loader",
+                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
                         {
                             loader: "css-loader",
                             options: {
@@ -54,11 +68,12 @@ module.exports = (_env, argv) => {
                 {
                     test: /\.(sass|scss)$/,
                     use: [
-                        isPROD ? MiniCssExtractPlugin.loader : "style-loader",
+                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
                         {
                             loader: "css-loader",
                             options: {
-                                importLoaders: 2
+                                sourceMap: true,
+                                importLoaders: 2 // 0 => no loaders (default); 1 => postcss-loader; 2 => postcss-loader, sass-loader
                             }
                         },
                         "resolve-url-loader",
@@ -71,7 +86,7 @@ module.exports = (_env, argv) => {
                     ]
                 },
                 {
-                    test: /\.(svg|png|jpg|gif)$/i,
+                    test: /\.(png|jpg|gif)$/i,
                     use: {
                         loader: "url-loader",
                         options: {
@@ -81,7 +96,7 @@ module.exports = (_env, argv) => {
                     }
                 },
                 {
-                    test: /\.(eot|otf|ttf|woff|woff2)$/,
+                    test: /\.(svg|eot|otf|ttf|woff|woff2)$/,
                     loader: FileLoader,
                     options: {
                         name: "static/[name].[hash:8].[ext]"
@@ -95,22 +110,8 @@ module.exports = (_env, argv) => {
                 ".jsx"
             ]
         },
-        plugins: [
-            isPROD && new MiniCssExtractPlugin({
-                filename: "css/[name].[contenthash:8].css",
-                chunkFilename: "css/[name].[contenthash:8].chunk.css"
-            }),
-            new HtmlWebpackPlugin({
-                template: Path.resolve(__dirname, "static/index.html"),
-                inject: true,
-                favicon: "static/favicon.ico"
-            }),
-            new Webpack.DefinePlugin({
-                "process.env.NODE_ENV": JSON.stringify(isPROD ? "production" : "development")
-            })
-        ].filter(Boolean),
         optimization: {
-            minimize: isPROD,
+            minimize: isProduction,
             minimizer: [
                 new TerserWebpackPlugin({
                     terserOptions: {

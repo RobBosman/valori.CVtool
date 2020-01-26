@@ -56,7 +56,7 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <arguments>install --save-dev</arguments>
+              <arguments>install</arguments>
             </configuration>
           </execution>
         </executions>
