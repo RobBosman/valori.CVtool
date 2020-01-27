@@ -44,6 +44,5 @@
     "release": "webpack --mode production",
     "dev": "webpack-dev-server --mode development"
   },
-  "sideEffects": false,
   "version": "0.0.1"
 }

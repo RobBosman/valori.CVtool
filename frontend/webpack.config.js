@@ -72,8 +72,7 @@ module.exports = (_env, argv) => {
                         {
                             loader: "css-loader",
                             options: {
-                                sourceMap: true,
-                                importLoaders: 2 // 0 => no loaders (default); 1 => postcss-loader; 2 => postcss-loader, sass-loader
+                                importLoaders: 2
                             }
                         },
                         "resolve-url-loader",
@@ -86,7 +85,7 @@ module.exports = (_env, argv) => {
                     ]
                 },
                 {
-                    test: /\.(png|jpg|gif)$/i,
+                    test: /\.(svg|png|jpg|gif)$/i,
                     use: {
                         loader: "url-loader",
                         options: {
@@ -96,7 +95,7 @@ module.exports = (_env, argv) => {
                     }
                 },
                 {
-                    test: /\.(svg|eot|otf|ttf|woff|woff2)$/,
+                    test: /\.(eot|otf|ttf|woff|woff2)$/,
                     loader: FileLoader,
                     options: {
                         name: "static/[name].[hash:8].[ext]"
