@@ -8,21 +8,10 @@ const CONFIRM_LOGIN = "CONFIRM_LOGIN";
 const REQUEST_LOGOUT = "REQUEST_LOGOUT";
 const CONFIRM_LOGOUT = "CONFIRM_LOGOUT";
 
-export function requestLogin(name) {
-    return {type: REQUEST_LOGIN, name}
-}
-
-export function confirmLogin() {
-    return {type: CONFIRM_LOGIN}
-}
-
-export function requestLogout() {
-    return {type: REQUEST_LOGOUT}
-}
-
-export function confirmLogout() {
-    return {type: CONFIRM_LOGOUT}
-}
+export const requestLogin = (name) => ({type: REQUEST_LOGIN, name});
+export const confirmLogin = () => ({type: CONFIRM_LOGIN});
+export const requestLogout = () => ({type: REQUEST_LOGOUT});
+export const confirmLogout = () => ({type: CONFIRM_LOGOUT});
 
 export const AppStates = {
     LOGGED_OUT: "LOGGED_OUT",
@@ -45,26 +34,18 @@ const reducer = (state = AppStates.LOGGED_OUT, action) => {
             return state;
     }
 };
-
 export default reducer
 
 export const loginEpic = (actions$) =>
     actions$.pipe(
         ofType(REQUEST_LOGIN),
-        delay(2000),
+        delay(1000),
         mapTo(confirmLogin())
     );
 
 export const logoutEpic = (actions$) =>
     actions$.pipe(
         ofType(REQUEST_LOGOUT),
-        delay(2000),
+        delay(1000),
         mapTo(confirmLogout())
-    );
-
-export const autoLogoutEpic = (actions$) =>
-    actions$.pipe(
-        ofType(CONFIRM_LOGIN),
-        delay(2000),
-        mapTo(requestLogout())
     );

@@ -1,7 +1,8 @@
 import React from "react"
-import {connect} from "react-redux";
+import {connect} from "react-redux"
 import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
+import AutoLogout from "./AutoLogout"
 import {AppStates} from "../redux/ducks/AppState"
 import "./Main.scss"
 
@@ -12,6 +13,7 @@ const mapStateToProps = (state) => ({
 const Main = (props) => ((
     <div className="Main">
         {renderChildren(props)}
+        <AutoLogout/>
     </div>
 ));
 

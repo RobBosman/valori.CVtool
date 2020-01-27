@@ -1,5 +1,5 @@
 import React from "react"
-import "./Title.css"
+import "./Title.scss"
 import valoriNameImg from '../static/valori-name.png';
 
 const Title = (props) => (

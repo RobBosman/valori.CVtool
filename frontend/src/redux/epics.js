@@ -1,11 +1,10 @@
 "use strict";
 
 import {combineEpics} from 'redux-observable'
-import {autoLogoutEpic, loginEpic, logoutEpic} from "./ducks/AppState";
+import {loginEpic, logoutEpic} from "./ducks/AppState";
 
 const rootEpic = combineEpics(
     loginEpic,
-    autoLogoutEpic,
     logoutEpic
 );
 
