@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {AppStates, requestLogout} from "../redux/ducks/AppState"
 import {connect} from "react-redux";
 
@@ -10,29 +10,23 @@ const mapDispatchToProps = (dispatch) => ({
     requestLogout: () => dispatch(requestLogout())
 });
 
-class AutoLogout extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            timerID: null
-        };
-    }
+const AutoLogout = (props) => {
 
-    componentDidMount() {
-        this.state.timerID = setTimeout(() => alert("And... it's gone!"), 10000);
-    }
+    useEffect(() => {
+        if (props.appState === AppStates.LOGGED_IN
+            && props.delayMillis > 0) {
+            const timeoutID = setTimeout(props.requestLogout, props.delayMillis);
+            console.log(`set logout timeout[${timeoutID}]`);
 
-    componentWillUnmount() {
-        clearTimeout(this.state.timerID)
-    }
-
-    render() {
-        if (this.props.appState === AppStates.LOGGED_IN) {
-            clearTimeout(this.state.timerID);
-            this.state.timerID = setTimeout(this.props.requestLogout, 2000);
+            // clean-up
+            return () => {
+                clearTimeout(timeoutID);
+                console.log(`cleared logout timeout[${timeoutID}]`);
+            }
         }
-        return null; // render nothing
-    }
-}
+    }, []);
+
+    return null; // render nothing
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AutoLogout)
