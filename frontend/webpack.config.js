@@ -1,12 +1,11 @@
 "use strict";
 
-const Path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const FileLoader = require.resolve("file-loader");
+const Path = require("path");
 
 module.exports = (_env, argv) => {
     const isProduction = argv.mode === "production";
@@ -36,29 +35,60 @@ module.exports = (_env, argv) => {
             rules: [
                 {
                     test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
+                    exclude: /(dist|node|node_modules)/,
                     use: {
-                        loader: "babel-loader",
+                        loader: require.resolve("babel-loader"),
                         options: {
+                            presets: [
+                                [
+                                    "@babel/preset-env",
+                                    {
+                                        modules: false
+                                    }
+                                ],
+                                "@babel/preset-react"
+                            ],
+                            plugins: [
+                                "@babel/plugin-transform-runtime",
+                                "@babel/plugin-syntax-dynamic-import",
+                                "@babel/plugin-proposal-class-properties"
+                            ],
+                            envName: isProduction ? "production" : "development",
+                            env: {
+                                production: {
+                                    only: [
+                                        "src"
+                                    ],
+                                    plugins: [
+                                        [
+                                            "transform-react-remove-prop-types",
+                                            {
+                                                removeImport: true
+                                            }
+                                        ],
+                                        "@babel/plugin-transform-react-inline-elements",
+                                        "@babel/plugin-transform-react-constant-elements"
+                                    ]
+                                }
+                            },
                             cacheDirectory: true,
-                            cacheCompression: false,
-                            envName: isProduction ? "production" : "development"
+                            cacheCompression: false
                         }
                     }
                 },
                 {
                     test: /\.css$/,
                     use: [
-                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
-                        "css-loader"
+                        isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
+                        require.resolve("css-loader")
                     ]
                 },
                 {
                     test: /\.module\.css$/,
                     use: [
-                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+                        isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
                         {
-                            loader: "css-loader",
+                            loader: require.resolve("css-loader"),
                             options: {
                                 modules: true
                             }
@@ -68,16 +98,16 @@ module.exports = (_env, argv) => {
                 {
                     test: /\.(sass|scss)$/,
                     use: [
-                        isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+                        isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
                         {
-                            loader: "css-loader",
+                            loader: require.resolve("css-loader"),
                             options: {
                                 importLoaders: 2
                             }
                         },
-                        "resolve-url-loader",
+                        require.resolve("resolve-url-loader"),
                         {
-                            loader: "sass-loader",
+                            loader: require.resolve("sass-loader"),
                             options: {
                                 sourceMap: true
                             }
@@ -87,18 +117,18 @@ module.exports = (_env, argv) => {
                 {
                     test: /\.(svg|png|jpg|gif)$/i,
                     use: {
-                        loader: "url-loader",
+                        loader: require.resolve("url-loader"),
                         options: {
                             limit: 8192,
-                            name: "static/[name].[hash:8].[ext]"
+                            name: "static/[name].[contenthash:8].[ext]"
                         }
                     }
                 },
                 {
                     test: /\.(eot|otf|ttf|woff|woff2)$/,
-                    loader: FileLoader,
+                    loader: require.resolve("file-loader"),
                     options: {
-                        name: "static/[name].[hash:8].[ext]"
+                        name: "static/[name].[contenthash:8].[ext]"
                     }
                 }
             ]
@@ -132,8 +162,9 @@ module.exports = (_env, argv) => {
             splitChunks: {
                 chunks: "all",
                 minSize: 0,
-                maxInitialRequests: 10,
-                maxAsyncRequests: 10,
+                maxInitialRequests: 30,
+                maxAsyncRequests: 30,
+                maxSize: 100000,
                 cacheGroups: {
                     vendors: {
                         test: /[\\/]node_modules[\\/]/,

@@ -27,7 +27,7 @@ const AdminPage = (props) => (
             </PivotItem>
         </Pivot>
 
-        <PrimaryButton text="Logout" onClick={props.requestLogout}/>
+        <PrimaryButton text="Afmelden" onClick={props.requestLogout}/>
     </div>
 );
 

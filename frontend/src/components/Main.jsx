@@ -5,6 +5,20 @@ import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import AdminPage from "./AdminPage"
 import {AppStates} from "../redux/ducks/AppState"
+import {loadTheme} from "office-ui-fabric-react"
+import {dark} from "../themes/dark"
+import {light} from "../themes/light"
+import {custom} from "../themes/custom"
+
+loadTheme(light);
+loadTheme(dark);
+loadTheme(custom);
+
+const Main = (props) => (
+    <div className="Main">
+        {renderChildren(props)}
+    </div>
+);
 
 const renderChildren = (props) => {
     switch (props.appState) {
@@ -39,11 +53,5 @@ const renderChildren = (props) => {
 const mapStateToProps = (state) => ({
     appState: state.appState
 });
-
-const Main = (props) => ((
-    <div className="Main">
-        {renderChildren(props)}
-    </div>
-));
 
 export default connect(mapStateToProps)(Main)
