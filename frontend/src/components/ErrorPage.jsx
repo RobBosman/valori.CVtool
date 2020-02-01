@@ -1,5 +1,5 @@
-import React from "react"
 import "./ErrorPage.scss"
+import React from "react"
 
 const ErrorPage = () => (
     <div className="ErrorPage">

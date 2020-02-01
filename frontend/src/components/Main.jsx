@@ -1,21 +1,10 @@
+import "./Main.scss"
 import React from "react"
 import {connect} from "react-redux"
 import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
-import AdminPage from "./AdminPage";
-import AutoLogout from "./AutoLogout"
+import AdminPage from "./AdminPage"
 import {AppStates} from "../redux/ducks/AppState"
-import "./Main.scss"
-
-const mapStateToProps = (state) => ({
-    appState: state.appState
-});
-
-const Main = (props) => ((
-    <div className="Main">
-        {renderChildren(props)}
-    </div>
-));
 
 const renderChildren = (props) => {
     switch (props.appState) {
@@ -31,7 +20,9 @@ const renderChildren = (props) => {
             return (
                 <div>
                     <AdminPage/>
-                    <AutoLogout delayMillis="3000"/>
+                    {/*
+                    <AutoLogout delayMillis="10000"/>
+                    */}
                 </div>
             );
         case AppStates.LOGGING_OUT:
@@ -44,5 +35,15 @@ const renderChildren = (props) => {
             );
     }
 };
+
+const mapStateToProps = (state) => ({
+    appState: state.appState
+});
+
+const Main = (props) => ((
+    <div className="Main">
+        {renderChildren(props)}
+    </div>
+));
 
 export default connect(mapStateToProps)(Main)

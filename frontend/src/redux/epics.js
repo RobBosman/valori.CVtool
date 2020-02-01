@@ -5,7 +5,8 @@ import {loginEpic, logoutEpic} from "./ducks/AppState";
 
 const rootEpic = combineEpics(
     loginEpic,
-    logoutEpic
+    logoutEpic,
+    // autoLogoutEpic
 );
 
 export default rootEpic

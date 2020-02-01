@@ -1,14 +1,10 @@
+import "./LoginPage.scss"
 import React from "react"
 import Title from "./Title"
-import {connect} from "react-redux";
+import {connect} from "react-redux"
 import {requestLogin} from "../redux/ducks/AppState"
-import "./LoginPage.scss"
 
-const mapDispatchToProps = (dispatch) => ({
-    requestLogin: () => dispatch(requestLogin({name: "Rob"}))
-});
-
-const LoginPage = (props) => ((
+const LoginPage = (props) => (
     <div className="LoginPage">
         <h1>Welkom bij de <Title height="27em"/></h1>
         <p>
@@ -27,6 +23,10 @@ const LoginPage = (props) => ((
         </p>
         <button onClick={props.requestLogin}>Aanmelden</button>
     </div>
-));
+);
+
+const mapDispatchToProps = (dispatch) => ({
+    requestLogin: () => dispatch(requestLogin({name: "Rob"}))
+});
 
 export default connect(null, mapDispatchToProps)(LoginPage)
