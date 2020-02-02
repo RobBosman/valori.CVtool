@@ -5,14 +5,6 @@ import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import AdminPage from "./AdminPage"
 import {AppStates} from "../redux/ducks/AppState"
-import {loadTheme} from "office-ui-fabric-react"
-import {dark} from "../themes/dark"
-import {light} from "../themes/light"
-import {custom} from "../themes/custom"
-
-loadTheme(light);
-loadTheme(dark);
-loadTheme(custom);
 
 const Main = (props) => (
     <div className="Main">
@@ -34,7 +26,7 @@ const renderChildren = (props) => {
             return (
                 <div>
                     <AdminPage/>
-                    {/*
+                    {/* TODO
                     <AutoLogout delayMillis="10000"/>
                     */}
                 </div>

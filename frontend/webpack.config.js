@@ -166,7 +166,7 @@ module.exports = (_env, argv) => {
                 maxAsyncRequests: 30,
                 maxSize: 100000,
                 cacheGroups: {
-                    vendors: {
+                    defaultVendors: {
                         test: /[\\/]node_modules[\\/]/,
                         name(module, chunks, cacheGroupKey) {
                             const packageName = module.context.match(
