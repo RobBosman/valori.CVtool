@@ -1,14 +1,12 @@
 import "./AdminPage.scss"
 import React from "react"
-import {initializeIcons, Label, Pivot, PivotItem, PivotLinkSize, PrimaryButton} from "office-ui-fabric-react"
+import {Label, Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
 
-initializeIcons();
-
 const AdminPage = (props) => (
     <div className="AdminPage">
-        <h2>Welkom admin</h2>
+        <Text variant="xxLarge">Welkom admin</Text>
 
         <Pivot
             aria-label="OnChange Pivot Example"

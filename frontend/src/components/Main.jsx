@@ -5,6 +5,7 @@ import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import AdminPage from "./AdminPage"
 import {AppStates} from "../redux/ducks/AppState"
+import {Text} from "office-ui-fabric-react"
 
 const Main = (props) => (
     <div className="Main">
@@ -20,7 +21,7 @@ const renderChildren = (props) => {
             );
         case AppStates.LOGGING_IN:
             return (
-                <span>logging in...</span>
+                <Text>logging in...</Text>
             );
         case AppStates.LOGGED_IN:
             return (
@@ -33,7 +34,7 @@ const renderChildren = (props) => {
             );
         case AppStates.LOGGING_OUT:
             return (
-                <span>logging out...</span>
+                <Text>logging out...</Text>
             );
         default:
             return (

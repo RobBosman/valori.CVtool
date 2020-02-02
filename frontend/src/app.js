@@ -4,33 +4,18 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {Provider} from 'react-redux'
 import store from './redux/store'
+import {Fabric, initializeIcons} from "office-ui-fabric-react"
 import Main from "./components/Main"
-import {Customizer, Fabric} from "office-ui-fabric-react"
-import {AzureCustomizationsDark} from "@uifabric/azure-themes"
+import {applyTheme, ValoriLight} from "./themes/valori-themes"
 
-
-// import {loadTheme} from "office-ui-fabric-react"
-// import {dark} from "./themes/dark"
-// import {light} from "./themes/light"
-// import {custom} from "./themes/custom"
-//
-// // loadTheme(light);
-// loadTheme(dark);
-// // loadTheme(custom);
-// ReactDOM.render(
-//     <Provider store={store}>
-//         <Main/>
-//     </Provider>,
-//     document.getElementById("app")
-// );
+initializeIcons();
+applyTheme(ValoriLight);
 
 ReactDOM.render(
     <Provider store={store}>
-        <Customizer {...AzureCustomizationsDark}>
-            <Fabric>
-                <Main/>
-            </Fabric>
-        </Customizer>
+        <Fabric>
+            <Main/>
+        </Fabric>
     </Provider>,
     document.getElementById("app")
 );
