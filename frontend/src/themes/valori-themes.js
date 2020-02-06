@@ -1,12 +1,5 @@
 "use strict";
 
-import {loadTheme} from "office-ui-fabric-react"
-
-export const applyTheme = (theme) => {
-    loadTheme(theme);
-    document.documentElement.style.background = theme.palette.white;
-};
-
 // see https://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/theming-designer/index.html
 
 // primary color: #f39900

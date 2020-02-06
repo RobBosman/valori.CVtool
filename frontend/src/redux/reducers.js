@@ -2,9 +2,11 @@
 
 import {combineReducers} from "redux";
 import appState from './ducks/AppState'
+import cvContent from './ducks/CvContent'
 
 const rootReducer = combineReducers({
-    appState
+    appState,
+    cvContent
 });
 
 export default rootReducer

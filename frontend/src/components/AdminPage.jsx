@@ -3,6 +3,7 @@ import React from "react"
 import {Label, Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
+import ReactRTE from "./ReactRTE"
 
 const AdminPage = (props) => (
     <div className="AdminPage">
@@ -12,10 +13,10 @@ const AdminPage = (props) => (
             aria-label="OnChange Pivot Example"
             linkSize={PivotLinkSize.large}>
             <PivotItem itemIcon="Emoji" headerText="Foo" itemCount={42}>
-                <Label>Pivot #1</Label>
+                <ReactRTE/>
             </PivotItem>
             <PivotItem itemIcon="Emoji2" headerText="Bar">
-                <Label>Pivot #2</Label>
+                <ReactRTE/>
             </PivotItem>
             <PivotItem headerText="Bas">
                 <Label>Pivot #3</Label>

@@ -27,7 +27,7 @@ const LoginPage = (props) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-    requestLogin: () => dispatch(requestLogin({name: "Rob"}))
+    requestLogin: () => dispatch(requestLogin("Rob"))
 });
 
 export default connect(null, mapDispatchToProps)(LoginPage)

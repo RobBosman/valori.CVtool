@@ -8,7 +8,7 @@ const CONFIRM_LOGIN = "CONFIRM_LOGIN";
 const REQUEST_LOGOUT = "REQUEST_LOGOUT";
 const CONFIRM_LOGOUT = "CONFIRM_LOGOUT";
 
-export const requestLogin = (name) => ({type: REQUEST_LOGIN, name});
+export const requestLogin = (name) => ({type: REQUEST_LOGIN, payload: name});
 export const confirmLogin = () => ({type: CONFIRM_LOGIN});
 export const requestLogout = () => ({type: REQUEST_LOGOUT});
 export const confirmLogout = () => ({type: CONFIRM_LOGOUT});
