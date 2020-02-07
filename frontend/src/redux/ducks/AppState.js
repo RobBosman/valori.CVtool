@@ -1,14 +1,14 @@
 "use strict";
 
-import {ofType} from "redux-observable";
-import {delay, mapTo} from "rxjs/operators";
+import {ofType} from "redux-observable"
+import {delay, mapTo} from "rxjs/operators"
 
 const REQUEST_LOGIN = "REQUEST_LOGIN";
 const CONFIRM_LOGIN = "CONFIRM_LOGIN";
 const REQUEST_LOGOUT = "REQUEST_LOGOUT";
 const CONFIRM_LOGOUT = "CONFIRM_LOGOUT";
 
-export const requestLogin = (name) => ({type: REQUEST_LOGIN, payload: name});
+export const requestLogin = (name) => ({type: REQUEST_LOGIN, name});
 export const confirmLogin = () => ({type: CONFIRM_LOGIN});
 export const requestLogout = () => ({type: REQUEST_LOGOUT});
 export const confirmLogout = () => ({type: CONFIRM_LOGOUT});
@@ -20,7 +20,7 @@ export const AppStates = {
     LOGGING_OUT: "LOGGING_OUT"
 };
 
-const reducer = (state = AppStates.LOGGED_OUT, action) => {
+const reducer = (subState = AppStates.LOGGED_OUT, action) => {
     switch (action.type) {
         case REQUEST_LOGIN:
             return AppStates.LOGGING_IN;
@@ -31,7 +31,7 @@ const reducer = (state = AppStates.LOGGED_OUT, action) => {
         case CONFIRM_LOGOUT:
             return AppStates.LOGGED_OUT;
         default:
-            return state;
+            return subState;
     }
 };
 export default reducer

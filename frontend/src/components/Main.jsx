@@ -5,10 +5,42 @@ import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import AdminPage from "./AdminPage"
 import {AppStates} from "../redux/ducks/AppState"
-import {Text} from "office-ui-fabric-react"
+import {CommandBar, initializeIcons, loadTheme, Text} from "office-ui-fabric-react"
+import {ValoriDark, ValoriLight} from "../themes/valori-themes"
+
+initializeIcons();
+
+const applyTheme = (theme) => {
+    loadTheme(theme);
+    document.documentElement.style.background = theme.palette.white;
+};
+applyTheme(ValoriLight);
+
+const farItems = [
+    {
+        key: 'themeItem',
+        text: 'Theme',
+        iconProps: {iconName: 'CompassNW'},
+        subMenuProps: {
+            items: [
+                {
+                    key: 'lightTheme',
+                    text: 'Light',
+                    onClick: () => applyTheme(ValoriLight)
+                },
+                {
+                    key: 'darkTheme',
+                    text: 'Dark',
+                    onClick: () => applyTheme(ValoriDark)
+                }
+            ]
+        }
+    }
+];
 
 const Main = (props) => (
     <div className="Main">
+        <CommandBar farItems={farItems}/>
         {renderChildren(props)}
     </div>
 );

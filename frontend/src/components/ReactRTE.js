@@ -1,7 +1,20 @@
 import React from 'react'
 import RichTextEditor from 'react-rte'
-import {setCvContent} from "../redux/ducks/CvContent"
+import {setCvContentRTE} from "../redux/ducks/CvContent"
 import {connect} from "react-redux"
+
+// TODO: npx react-codemod rename-unsafe-lifecycles
+
+/*
+Plus:
+klein, onChange, undo, focus/selectie blijven behouden, autoGrow/Shrink
+
+combi van Redux en React state om content en focus/selectie apart bij te houden(?)
+
+Min:
+style werkt niet(?), geen html view, geen html output, minder mooie buttons,
+unsafe lifecycles, specifieke initial state
+*/
 
 const toolbarConfig = {
     // Optionally specify the groups to display (displayed in the order listed).
@@ -17,19 +30,28 @@ const toolbarConfig = {
     ]
 };
 
-const ReactRTE = (props) => (
-    <RichTextEditor
-        toolbarConfig={toolbarConfig}
-        value={props.value}
-        onChange={props.onChange}/>
-);
+const ReactRTE = (props) => {
+    // const [editorValue, setEditorValue] = useState(RichTextEditor.createEmptyValue());
+    // const onChangeCB = useCallback((value) => {
+    //     props.onChange(value)
+    // }, [editorValue.toString()]);
+    return (
+        <RichTextEditor
+            value={props.value}
+            onChange={props.onChange}
+            toolbarConfig={toolbarConfig}
+            readOnly={props.readOnly}
+            placeholder={props.placeholder}
+            autoFocus={true}/>
+    )
+};
 
 const mapStateToProps = (state) => ({
-    value: state.cvContent
+    value: state.cvContent.asRTE
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onChange: (value) => dispatch(setCvContent(value))
+    onChange: (value) => dispatch(setCvContentRTE(value))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReactRTE)

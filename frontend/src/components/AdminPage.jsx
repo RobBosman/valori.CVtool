@@ -1,9 +1,10 @@
 import "./AdminPage.scss"
 import React from "react"
-import {Label, Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text} from "office-ui-fabric-react"
+import {Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
 import ReactRTE from "./ReactRTE"
+import TrumbowygRTE from "./TrumbowygRTE"
 
 const AdminPage = (props) => (
     <div className="AdminPage">
@@ -12,17 +13,17 @@ const AdminPage = (props) => (
         <Pivot
             aria-label="OnChange Pivot Example"
             linkSize={PivotLinkSize.large}>
-            <PivotItem itemIcon="Emoji" headerText="Foo" itemCount={42}>
-                <ReactRTE/>
+            <PivotItem itemIcon="Emoji" headerText="Trumbowyg" itemCount={42}>
+                <TrumbowygRTE placeholder="just type something"/>
             </PivotItem>
-            <PivotItem itemIcon="Emoji2" headerText="Bar">
-                <ReactRTE/>
+            <PivotItem itemIcon="Emoji2" headerText="Trumbowyg">
+                <TrumbowygRTE placeholder="typen maar"/>
             </PivotItem>
-            <PivotItem headerText="Bas">
-                <Label>Pivot #3</Label>
+            <PivotItem headerText="RTE">
+                <ReactRTE placeholder="blabla" readOnly={false}/>
             </PivotItem>
-            <PivotItem headerText="Biz">
-                <Label>Pivot #4</Label>
+            <PivotItem headerText="RTE">
+                <ReactRTE placeholder="hiep hiep hoera!" readOnly={true}/>
             </PivotItem>
         </Pivot>
 

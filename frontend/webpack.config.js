@@ -1,6 +1,6 @@
 "use strict";
 
-const Webpack = require("webpack");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
@@ -27,8 +27,12 @@ module.exports = (_env, argv) => {
                 inject: true,
                 favicon: Path.resolve(__dirname, "src", "static", "favicon.ico")
             }),
-            new Webpack.DefinePlugin({
+            new webpack.DefinePlugin({
                 "process.env.NODE_ENV": JSON.stringify(isProduction ? "production" : "development")
+            }),
+            new webpack.ProvidePlugin({
+                $: "jquery",
+                jQuery: "jquery"
             })
         ],
         module: {
@@ -51,7 +55,8 @@ module.exports = (_env, argv) => {
                             plugins: [
                                 "@babel/plugin-transform-runtime",
                                 "@babel/plugin-syntax-dynamic-import",
-                                "@babel/plugin-proposal-class-properties"
+                                "@babel/plugin-proposal-class-properties",
+                                "@babel/plugin-proposal-object-rest-spread"
                             ],
                             envName: isProduction ? "production" : "development",
                             env: {
