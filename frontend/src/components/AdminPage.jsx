@@ -1,10 +1,9 @@
 import "./AdminPage.scss"
 import React from "react"
-import {Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text} from "office-ui-fabric-react"
+import {Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text, TextField} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
-import ReactRTE from "./ReactRTE"
-import TrumbowygRTE from "./TrumbowygRTE"
+import {setCvContent} from "../redux/ducks/CvContent";
 
 const AdminPage = (props) => (
     <div className="AdminPage">
@@ -13,17 +12,19 @@ const AdminPage = (props) => (
         <Pivot
             aria-label="OnChange Pivot Example"
             linkSize={PivotLinkSize.large}>
-            <PivotItem itemIcon="Emoji" headerText="Trumbowyg" itemCount={42}>
-                <TrumbowygRTE placeholder="just type something"/>
+            <PivotItem itemIcon="Emoji" headerText="TextField" itemCount={42}>
+                <TextField label="Standard"
+                           multiline
+                           autoAdjustHeight
+                           value={props.value}
+                           onChange={props.onChange}/>
             </PivotItem>
-            <PivotItem itemIcon="Emoji2" headerText="Trumbowyg">
-                <TrumbowygRTE placeholder="typen maar"/>
-            </PivotItem>
-            <PivotItem headerText="RTE">
-                <ReactRTE placeholder="blabla" readOnly={false}/>
-            </PivotItem>
-            <PivotItem headerText="RTE">
-                <ReactRTE placeholder="hiep hiep hoera!" readOnly={true}/>
+            <PivotItem itemIcon="Emoji2" headerText="TextField">
+                <TextField label="Standard"
+                           multiline
+                           autoAdjustHeight
+                           value={props.value}
+                           onChange={props.onChange}/>
             </PivotItem>
         </Pivot>
 
@@ -31,8 +32,13 @@ const AdminPage = (props) => (
     </div>
 );
 
+const mapStateToProps = (state) => ({
+    value: state.cvContent
+});
+
 const mapDispatchToProps = (dispatch) => ({
+    onChange: (event) => dispatch(setCvContent(event.target.value)),
     requestLogout: () => dispatch(requestLogout())
 });
 
-export default connect(null, mapDispatchToProps)(AdminPage)
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPage)
