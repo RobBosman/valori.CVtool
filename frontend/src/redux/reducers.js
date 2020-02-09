@@ -5,8 +5,8 @@ import appState from './ducks/AppState'
 import cvContent from './ducks/CvContent'
 
 const rootReducer = combineReducers({
-    appState,
-    cvContent
+    appState: appState,
+    cvContent: cvContent
 });
 
 export default rootReducer

@@ -3,7 +3,8 @@ import React from "react"
 import {Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text, TextField} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
-import {setCvContent} from "../redux/ducks/CvContent";
+import {setCvInteresses, setCvPersoonlijkeEigenschappen, setCvProfielschets} from "../redux/ducks/CvContent"
+import Personalia from "./Personalia"
 
 const AdminPage = (props) => (
     <div className="AdminPage">
@@ -12,19 +13,25 @@ const AdminPage = (props) => (
         <Pivot
             aria-label="OnChange Pivot Example"
             linkSize={PivotLinkSize.large}>
-            <PivotItem itemIcon="Emoji" headerText="TextField" itemCount={42}>
-                <TextField label="Standard"
-                           multiline
-                           autoAdjustHeight
-                           value={props.value}
-                           onChange={props.onChange}/>
+            <PivotItem itemIcon="Emoji" headerText="Personalia" itemCount={42}>
+                <Personalia/>
             </PivotItem>
-            <PivotItem itemIcon="Emoji2" headerText="TextField">
-                <TextField label="Standard"
+            <PivotItem itemIcon="Emoji2" headerText="Profiel">
+                <TextField label="Profielschets"
                            multiline
                            autoAdjustHeight
-                           value={props.value}
-                           onChange={props.onChange}/>
+                           value={props.profielschets}
+                           onChange={props.onChangeProfielschets}/>
+                <TextField label="Persoonlijke eigenschappen"
+                           multiline
+                           autoAdjustHeight
+                           value={props.persoonlijkeEigenschappen}
+                           onChange={props.onChangePersoonlijkeEigenschappen}/>
+                <TextField label="Interesses"
+                           multiline
+                           autoAdjustHeight
+                           value={props.interesses}
+                           onChange={props.onChangeInteresses}/>
             </PivotItem>
         </Pivot>
 
@@ -33,11 +40,15 @@ const AdminPage = (props) => (
 );
 
 const mapStateToProps = (state) => ({
-    value: state.cvContent
+    profielschets: state.cvContent.profielschets,
+    persoonlijkeEigenschappen: state.cvContent.persoonlijkeEigenschappen,
+    interesses: state.cvContent.interesses
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onChange: (event) => dispatch(setCvContent(event.target.value)),
+    onChangeProfielschets: (event) => dispatch(setCvProfielschets(event.target.value)),
+    onChangePersoonlijkeEigenschappen: (event) => dispatch(setCvPersoonlijkeEigenschappen(event.target.value)),
+    onChangeInteresses: (event) => dispatch(setCvInteresses(event.target.value)),
     requestLogout: () => dispatch(requestLogout())
 });
 
