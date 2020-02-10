@@ -1,18 +1,14 @@
-import "./AdminPage.scss"
 import React from "react"
-import {Pivot, PivotItem, PivotLinkSize, PrimaryButton, Text, TextField} from "office-ui-fabric-react"
+import {Pivot, PivotItem, PivotLinkSize, PrimaryButton, Stack, Text, TextField} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
 import {setCvInteresses, setCvPersoonlijkeEigenschappen, setCvProfielschets} from "../redux/ducks/CvContent"
 import Personalia from "./Personalia"
 
 const AdminPage = (props) => (
-    <div className="AdminPage">
+    <Stack>
         <Text variant="xxLarge">Welkom admin</Text>
-
-        <Pivot
-            aria-label="OnChange Pivot Example"
-            linkSize={PivotLinkSize.large}>
+        <Pivot linkSize={PivotLinkSize.large}>
             <PivotItem itemIcon="Emoji" headerText="Personalia" itemCount={42}>
                 <Personalia/>
             </PivotItem>
@@ -34,9 +30,10 @@ const AdminPage = (props) => (
                            onChange={props.onChangeInteresses}/>
             </PivotItem>
         </Pivot>
-
-        <PrimaryButton text="Afmelden" onClick={props.requestLogout}/>
-    </div>
+        <Stack.Item align="center">
+            <PrimaryButton text="Afmelden" onClick={props.requestLogout}/>
+        </Stack.Item>
+    </Stack>
 );
 
 const mapStateToProps = (state) => ({

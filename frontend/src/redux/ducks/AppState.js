@@ -39,14 +39,14 @@ export default reducer
 export const loginEpic = (actions$) =>
     actions$.pipe(
         ofType(REQUEST_LOGIN),
-        delay(500),
+        delay(100),
         mapTo(confirmLogin())
     );
 
 export const logoutEpic = (actions$) =>
     actions$.pipe(
         ofType(REQUEST_LOGOUT),
-        delay(500),
+        delay(100),
         mapTo(confirmLogout())
     );
 
