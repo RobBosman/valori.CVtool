@@ -1,4 +1,11 @@
 {
-  "http.host": "localhost",
-  "http.port": 80
+  "httpServer": {
+    "http.host": "localhost",
+    "http.port": 80
+  },
+  "mongoClient": {
+    "host": "localhost",
+    "port": 27017,
+    "db_name": "cvtool"
+  }
 }

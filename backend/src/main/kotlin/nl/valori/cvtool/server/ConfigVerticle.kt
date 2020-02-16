@@ -24,6 +24,7 @@ internal class ConfigVerticle : AbstractVerticle() {
           val options = DeploymentOptions()
               .setConfig(json.result())
 
+          deployVerticle(vertx, StorageVerticle::class.java.name, options)
           deployVerticle(vertx, HttpServerVerticle::class.java.name, options)
         }
   }

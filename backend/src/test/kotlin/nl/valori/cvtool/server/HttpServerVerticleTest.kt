@@ -36,11 +36,11 @@ internal object HttpServerVerticleTest {
 
   @Test
   fun testServer(vertx: Vertx, testContext: VertxTestContext) {
-    WebClient.create(vertx)[port, HOST_NAME, "/"]
+    WebClient.create(vertx)[port, HOST_NAME, "/hi"]
         .`as`(BodyCodec.string())
         .send(testContext.succeeding { response ->
           testContext.verify {
-            assertEquals("Hello there!", response.body())
+            assertEquals("Hi there!", response.body())
             testContext.completeNow()
           }
         })

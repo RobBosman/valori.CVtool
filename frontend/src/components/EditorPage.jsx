@@ -4,10 +4,11 @@ import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
 import {setCvInteresses, setCvPersoonlijkeEigenschappen, setCvProfielschets} from "../redux/ducks/CvContent"
 import Personalia from "./Personalia"
+import Title from "./Title";
 
-const AdminPage = (props) => (
+const EditorPage = (props) => (
     <Stack>
-        <Text variant="xxLarge">Welkom admin</Text>
+        <Text variant="xxLarge">Welkom bij de <Title height="24em"/></Text>
         <Pivot linkSize={PivotLinkSize.large}>
             <PivotItem itemIcon="Emoji" headerText="Personalia" itemCount={42}>
                 <Personalia/>
@@ -49,4 +50,4 @@ const mapDispatchToProps = (dispatch) => ({
     requestLogout: () => dispatch(requestLogout())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPage)
+export default connect(mapStateToProps, mapDispatchToProps)(EditorPage)

@@ -3,7 +3,7 @@ import {getId, Label, TextField} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {setCvAchternaam, setCvVoornaam} from "../redux/ducks/CvContent"
 
-const AdminPage = (props) => {
+const Personalia = (props) => {
     const voornaamId = getId('voornaam');
     const achternaamId = getId('achternaam');
 
@@ -45,4 +45,4 @@ const mapDispatchToProps = (dispatch) => ({
     onChangeAchternaam: (event) => dispatch(setCvAchternaam(event.target.value))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPage)
+export default connect(mapStateToProps, mapDispatchToProps)(Personalia)
