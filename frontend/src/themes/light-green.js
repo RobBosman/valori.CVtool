@@ -1,10 +1,12 @@
 "use strict";
 
+import {createTheme} from "office-ui-fabric-react"
+
 // see https://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/theming-designer/index.html
 // primary color: #008000
 // text color: #323130
-// backgroundColor: #ffffff
-export const LightGreen = {
+// backgroundColor: #fcfcfc
+export const LightGreen = createTheme({
     palette: {
         themePrimary: '#008000',
         themeLighterAlt: '#f0faf0',
@@ -15,18 +17,18 @@ export const LightGreen = {
         themeDarkAlt: '#007300',
         themeDark: '#006100',
         themeDarker: '#004700',
-        neutralLighterAlt: '#faf9f8',
-        neutralLighter: '#f3f2f1',
-        neutralLight: '#edebe9',
-        neutralQuaternaryAlt: '#e1dfdd',
-        neutralQuaternary: '#d0d0d0',
-        neutralTertiaryAlt: '#c8c6c4',
+        neutralLighterAlt: '#f6f6f6',
+        neutralLighter: '#f2f2f2',
+        neutralLight: '#e8e8e8',
+        neutralQuaternaryAlt: '#d8d8d8',
+        neutralQuaternary: '#cecece',
+        neutralTertiaryAlt: '#c6c6c6',
         neutralTertiary: '#a19f9d',
         neutralSecondary: '#605e5c',
         neutralPrimaryAlt: '#3b3a39',
         neutralPrimary: '#323130',
         neutralDark: '#201f1e',
         black: '#000000',
-        white: '#ffffff',
+        white: '#fcfcfc',
     }
-};
+});

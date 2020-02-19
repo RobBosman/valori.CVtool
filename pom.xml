@@ -6,7 +6,7 @@
 
   <groupId>nl.valori.cvtool</groupId>
   <artifactId>root</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>app to enter and maintain cv's (curricula vitae)</description>
 

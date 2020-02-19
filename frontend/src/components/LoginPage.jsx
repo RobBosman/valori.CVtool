@@ -32,7 +32,7 @@ const LoginPage = (props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    requestLogin: () => dispatch(requestLogin("Rob"))
+    requestLogin: () => dispatch(requestLogin())
 });
 
 export default connect(null, mapDispatchToProps)(LoginPage)

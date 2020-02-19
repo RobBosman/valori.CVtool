@@ -7,7 +7,7 @@
   <parent>
     <groupId>nl.valori.cvtool</groupId>
     <artifactId>root</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>frontend</artifactId>
@@ -18,7 +18,7 @@
     <target.environment>PROD</target.environment>
     <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
     <maven-frontent-plugin.version>1.9.1</maven-frontent-plugin.version>
-    <nodejs.version>v13.6.0</nodejs.version>
+    <nodejs.version>v13.9.0</nodejs.version>
   </properties>
 
   <build>

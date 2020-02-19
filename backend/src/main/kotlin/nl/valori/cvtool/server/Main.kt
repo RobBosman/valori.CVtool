@@ -34,9 +34,10 @@ object Main {
 
 
     vertx.setTimer(1_000 * 5) {
-      log.info("Here we go...")
+      log.info("Insert a test message into MongoDB...")
       val dataJson = JsonObject()
-          .put("let op", "HA HA!")
+          .put("dummy", JsonObject()
+              .put("content", "gibberish"))
       vertx.eventBus()
           .request<JsonObject>(ADDRESS_CV_DATA_SET, dataJson) { response ->
             if (response.failed())
@@ -47,7 +48,7 @@ object Main {
                 .request<JsonObject>(ADDRESS_CV_DATA_GET, idJson) { response2 ->
                   if (response2.failed())
                     throw response2.cause()
-                  log.info("Got something: {}", response2.result().body())
+                  log.info("Got something from MongoDB: {}", response2.result().body())
                 }
           }
     }

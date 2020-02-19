@@ -4,13 +4,16 @@ import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import EditorPage from "./EditorPage"
 import {AppStates} from "../redux/ducks/AppState"
-import {initializeIcons, Text} from "office-ui-fabric-react"
-import MenuBar from "./MenuBar";
+import {initializeIcons, registerOnThemeChangeCallback, Text} from "office-ui-fabric-react"
+import MenuBar from "./MenuBar"
 
 initializeIcons();
 
-const Main = (props) => {
+registerOnThemeChangeCallback((theme) => {
+    document.documentElement.style.background = theme.semanticColors.bodyBackground
+});
 
+const Main = (props) => {
     const renderChildren = (props) => {
         switch (props.appState) {
             case AppStates.LOGGED_OUT:
@@ -49,7 +52,8 @@ const Main = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-    appState: state.appState
+    appState: state.appState,
+    theme: state.theme
 });
 
 export default connect(mapStateToProps)(Main)

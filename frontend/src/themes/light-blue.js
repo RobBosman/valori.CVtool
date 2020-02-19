@@ -1,10 +1,12 @@
 "use strict";
 
+import {createTheme} from "office-ui-fabric-react"
+
 // see https://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/theming-designer/index.html
 // primary color: #008000
 // text color: #323130
 // backgroundColor: #ffffff
-export const LightBlue = {
+export const LightBlue = createTheme({
     palette: {
         themePrimary: '#0078d4',
         themeLighterAlt: '#eff6fc',
@@ -29,4 +31,4 @@ export const LightBlue = {
         black: '#000000',
         white: '#ffffff'
     }
-};
+});
