@@ -4,7 +4,8 @@ import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
 import {setCvInteresses, setCvPersoonlijkeEigenschappen, setCvProfielschets} from "../redux/ducks/CvContent"
 import Personalia from "./Personalia"
-import Title from "./Title";
+import Title from "./Title"
+import TrumbowygRTE from "./TrumbowygRTE"
 
 const EditorPage = (props) => (
     <Stack>
@@ -29,6 +30,9 @@ const EditorPage = (props) => (
                            autoAdjustHeight
                            value={props.interesses}
                            onChange={props.onChangeInteresses}/>
+            </PivotItem>
+            <PivotItem headerText="Trumbowyg">
+                <TrumbowygRTE placeholder="typen maar!"/>
             </PivotItem>
         </Pivot>
         <Stack.Item align="center">
