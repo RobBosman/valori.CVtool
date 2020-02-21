@@ -10,8 +10,11 @@ import {
 } from "../redux/ducks/CvContent"
 import Personalia from "./Personalia"
 import Title from "./Title"
+import ReactRTE from "./ReactRTE"
+import SunEditorRTE from "./SunEditorRTE"
+import ReactPageRTE from "./ReactPageRTE"
+import JoditRTE from "./JoditRTE"
 import TrumbowygRTE from "./TrumbowygRTE"
-import ReactRTE from "./ReactRTE";
 
 const EditorPage = (props) => (
     <Stack>
@@ -21,29 +24,51 @@ const EditorPage = (props) => (
                 <Personalia/>
             </PivotItem>
             <PivotItem itemIcon="Emoji2" headerText="Profiel">
-                <TextField label="Profielschets"
-                           multiline
-                           autoAdjustHeight
-                           value={props.profielschets}
-                           onChange={props.onChangeProfielschets}/>
-                <TextField label="Persoonlijke eigenschappen"
-                           multiline
-                           autoAdjustHeight
-                           value={props.persoonlijkeEigenschappen}
-                           onChange={props.onChangePersoonlijkeEigenschappen}/>
-                <TextField label="Interesses"
-                           multiline
-                           autoAdjustHeight
-                           value={props.interesses}
-                           onChange={props.onChangeInteresses}/>
+                <TextField
+                    label="Profielschets"
+                    multiline
+                    autoAdjustHeight
+                    value={props.profielschets}
+                    onChange={props.onChangeProfielschets}/>
+                <TextField
+                    label="Persoonlijke eigenschappen"
+                    multiline
+                    autoAdjustHeight
+                    value={props.persoonlijkeEigenschappen}
+                    onChange={props.onChangePersoonlijkeEigenschappen}/>
+                <TextField
+                    label="Interesses"
+                    multiline
+                    autoAdjustHeight
+                    value={props.interesses}
+                    onChange={props.onChangeInteresses}/>
             </PivotItem>
             <PivotItem headerText="Trumbowyg">
-                <TrumbowygRTE placeholder="typen maar!"/>
+                <TrumbowygRTE
+                    data={props.interesses}
+                    onBlur={props.onChangeTrumbowyRTE}
+                    placeholder="typen maar!"/>
             </PivotItem>
             <PivotItem headerText="ReactRTE">
-                <ReactRTE value={props.reactRTE}
-                          onChange={props.onChangeReactRTE}
-                          placeholder="go type something!"/>
+                <ReactRTE
+                    value={props.reactRTE}
+                    onChange={props.onChangeReactRTE}
+                    placeholder="go type something!"/>
+            </PivotItem>
+            <PivotItem headerText="SunEditorRTE">
+                <SunEditorRTE
+                    value={props.interesses}
+                    onChange={props.onChangeSunEditorRTE}/>
+            </PivotItem>
+            <PivotItem headerText="ReactPageRTE">
+                <ReactPageRTE
+                    value={props.interesses}
+                    onChange={props.onChangeReactPageRTE}/>
+            </PivotItem>
+            <PivotItem headerText="JoditRTE">
+                <JoditRTE
+                    value={props.interesses}
+                    onChange={props.onChangeJoditRTE}/>
             </PivotItem>
         </Pivot>
         <Stack.Item align="center">
@@ -63,7 +88,11 @@ const mapDispatchToProps = (dispatch) => ({
     onChangeProfielschets: (event) => dispatch(setCvProfielschets(event.target.value)),
     onChangePersoonlijkeEigenschappen: (event) => dispatch(setCvPersoonlijkeEigenschappen(event.target.value)),
     onChangeInteresses: (event) => dispatch(setCvInteresses(event.target.value)),
+    onChangeTrumbowyRTE: (event) => dispatch(setCvInteresses(event.target.innerHTML)),
     onChangeReactRTE: (value) => dispatch(setCvReactRTE(value)),
+    onChangeSunEditorRTE: (value) => dispatch(setCvInteresses(value)),
+    onChangeReactPageRTE: (value) => dispatch(setCvInteresses(value)),
+    onChangeJoditRTE: (value) => dispatch(setCvInteresses(value)),
     requestLogout: () => dispatch(requestLogout())
 });
 

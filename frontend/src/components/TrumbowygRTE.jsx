@@ -1,7 +1,5 @@
 import React from 'react'
 import Trumbowyg from "react-trumbowyg"
-import {setCvInteresses} from "../redux/ducks/CvContent"
-import {connect} from "react-redux"
 import 'react-trumbowyg/dist/trumbowyg.min.css'
 
 // TODO: npx react-codemod rename-unsafe-lifecycles
@@ -38,12 +36,4 @@ const TrumbowygRTE = (props) => {
     )
 };
 
-const mapStateToProps = (state) => ({
-    data: state.cvContent.interesses
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    onBlur: (data) => dispatch(setCvInteresses(data))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrumbowygRTE)
+export default TrumbowygRTE
