@@ -1,12 +1,12 @@
 {
   "author": "Rob Bosman",
   "dependencies": {
-    "@uifabric/variants": "^7.1.13",
     "jquery": "^3.4.1",
     "office-ui-fabric-react": "^7.94.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.2.0",
+    "react-rte": "^0.16.1",
     "react-trumbowyg": "^1.1.0",
     "redux": "^4.0.5",
     "redux-observable": "^1.2.0",

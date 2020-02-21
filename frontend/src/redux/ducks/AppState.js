@@ -39,7 +39,7 @@ export default reducer
 export const loginEpic = (actions$) =>
     actions$.pipe(
         ofType(REQUEST_LOGIN),
-        delay(1000),
+        delay(500),
         mapTo(confirmLogin())
     );
 

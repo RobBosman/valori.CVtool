@@ -2,10 +2,16 @@ import React from "react"
 import {Pivot, PivotItem, PivotLinkSize, PrimaryButton, Stack, Text, TextField} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {requestLogout} from "../redux/ducks/AppState"
-import {setCvInteresses, setCvPersoonlijkeEigenschappen, setCvProfielschets} from "../redux/ducks/CvContent"
+import {
+    setCvInteresses,
+    setCvPersoonlijkeEigenschappen,
+    setCvProfielschets,
+    setCvReactRTE
+} from "../redux/ducks/CvContent"
 import Personalia from "./Personalia"
 import Title from "./Title"
 import TrumbowygRTE from "./TrumbowygRTE"
+import ReactRTE from "./ReactRTE";
 
 const EditorPage = (props) => (
     <Stack>
@@ -34,6 +40,11 @@ const EditorPage = (props) => (
             <PivotItem headerText="Trumbowyg">
                 <TrumbowygRTE placeholder="typen maar!"/>
             </PivotItem>
+            <PivotItem headerText="ReactRTE">
+                <ReactRTE value={props.reactRTE}
+                          onChange={props.onChangeReactRTE}
+                          placeholder="go type something!"/>
+            </PivotItem>
         </Pivot>
         <Stack.Item align="center">
             <PrimaryButton text="Afmelden" onClick={props.requestLogout}/>
@@ -41,17 +52,19 @@ const EditorPage = (props) => (
     </Stack>
 );
 
-const mapStateToProps = (state) => ({
+const select = (state) => ({
     profielschets: state.cvContent.profielschets,
     persoonlijkeEigenschappen: state.cvContent.persoonlijkeEigenschappen,
-    interesses: state.cvContent.interesses
+    interesses: state.cvContent.interesses,
+    reactRTE: state.cvContent.reactRTE
 });
 
 const mapDispatchToProps = (dispatch) => ({
     onChangeProfielschets: (event) => dispatch(setCvProfielschets(event.target.value)),
     onChangePersoonlijkeEigenschappen: (event) => dispatch(setCvPersoonlijkeEigenschappen(event.target.value)),
     onChangeInteresses: (event) => dispatch(setCvInteresses(event.target.value)),
+    onChangeReactRTE: (value) => dispatch(setCvReactRTE(value)),
     requestLogout: () => dispatch(requestLogout())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditorPage)
+export default connect(select, mapDispatchToProps)(EditorPage)

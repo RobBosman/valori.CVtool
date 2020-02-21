@@ -63,12 +63,6 @@ const MenuBar = (props) => {
         }
     ].filter(Boolean);
 
-    // return (
-    //     <Customizer settings={{theme: getNeutralVariant(theme)}}>
-    //         <CommandBar farItems={farItems}/>
-    //     </Customizer>
-    // );
-
     return (
         <CommandBar farItems={farItems}/>
     );

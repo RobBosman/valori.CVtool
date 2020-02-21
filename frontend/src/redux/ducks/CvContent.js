@@ -1,23 +1,28 @@
 "use strict";
 
+import RichTextEditor from 'react-rte'
+
 const SET_CV_VOORNAAM = "SET_CV_VOORNAAM";
 const SET_CV_ACHTERNAAM = "SET_CV_ACHTERNAAM";
 const SET_CV_PROFIELSCHETS = "SET_CV_PROFIELSCHETS";
 const SET_CV_PERSOONLIJKE_EIGENSCHAPPEN = "SET_CV_PERSOONLIJKE_EIGENSCHAPPEN";
 const SET_CV_INTERESSES = "SET_CV_INTERESSES";
+const SET_CV_REACT_RTE = "SET_CV_REACT_RTE";
 
 export const setCvVoornaam = (value) => ({type: SET_CV_VOORNAAM, payload: value});
 export const setCvAchternaam = (value) => ({type: SET_CV_ACHTERNAAM, payload: value});
 export const setCvProfielschets = (value) => ({type: SET_CV_PROFIELSCHETS, payload: value});
 export const setCvPersoonlijkeEigenschappen = (value) => ({type: SET_CV_PERSOONLIJKE_EIGENSCHAPPEN, payload: value});
 export const setCvInteresses = (value) => ({type: SET_CV_INTERESSES, payload: value});
+export const setCvReactRTE = (value) => ({type: SET_CV_REACT_RTE, payload: value});
 
 const initialSubState = {
     voornaam: "",
     achternaam: "",
     profielschets: "",
     persoonlijkeEigenschappen: "",
-    interesses: ""
+    interesses: "",
+    reactRTE: RichTextEditor.createEmptyValue()
 };
 
 const reducer = (subState = initialSubState, action) => {
@@ -46,6 +51,11 @@ const reducer = (subState = initialSubState, action) => {
             return {
                 ...subState,
                 interesses: action.payload
+            };
+        case SET_CV_REACT_RTE:
+            return {
+                ...subState,
+                reactRTE: action.payload
             };
         default:
             return subState

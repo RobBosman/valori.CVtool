@@ -6,7 +6,6 @@ import EditorPage from "./EditorPage"
 import {AppStates} from "../redux/ducks/AppState"
 import {initializeIcons, registerOnThemeChangeCallback, Text} from "office-ui-fabric-react"
 import MenuBar from "./MenuBar"
-import {EventBridge} from "./EventBridge"
 
 initializeIcons();
 
@@ -48,7 +47,9 @@ const Main = (props) => {
             <MenuBar/>
             <hr/>
             {renderChildren(props)}
+            {/*
             <EventBridge/>
+            */}
         </div>
     );
 };
