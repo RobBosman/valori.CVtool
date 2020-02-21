@@ -30,7 +30,7 @@ const TrumbowygRTE = (props) => {
             autogrowOnEnter={true}
             placeholder={props.placeholder}
             data={props.data}
-            onBlur={(event) => props.onBlur(event.target.innerHTML)}
+            onBlur={(event) => props.onChange(event.target.innerHTML)}
             tagsToRemove={['script', 'link']}
         />
     )

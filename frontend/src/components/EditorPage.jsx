@@ -46,7 +46,7 @@ const EditorPage = (props) => (
             <PivotItem headerText="Trumbowyg">
                 <TrumbowygRTE
                     data={props.interesses}
-                    onBlur={props.onChangeTrumbowyRTE}
+                    onChange={props.onChangeInteressesRTE}
                     placeholder="typen maar!"/>
             </PivotItem>
             <PivotItem headerText="ReactRTE">
@@ -58,17 +58,18 @@ const EditorPage = (props) => (
             <PivotItem headerText="SunEditorRTE">
                 <SunEditorRTE
                     value={props.interesses}
-                    onChange={props.onChangeSunEditorRTE}/>
+                    onChange={props.onChangeInteressesRTE}/>
             </PivotItem>
             <PivotItem headerText="ReactPageRTE">
                 <ReactPageRTE
                     value={props.interesses}
-                    onChange={props.onChangeReactPageRTE}/>
+                    onChange={props.onChangeInteressesRTE}/>
             </PivotItem>
             <PivotItem headerText="JoditRTE">
                 <JoditRTE
                     value={props.interesses}
-                    onChange={props.onChangeJoditRTE}/>
+                    onChange={props.onChangeInteressesRTE}
+                    placeholder="go type something!"/>
             </PivotItem>
         </Pivot>
         <Stack.Item align="center">
@@ -88,11 +89,8 @@ const mapDispatchToProps = (dispatch) => ({
     onChangeProfielschets: (event) => dispatch(setCvProfielschets(event.target.value)),
     onChangePersoonlijkeEigenschappen: (event) => dispatch(setCvPersoonlijkeEigenschappen(event.target.value)),
     onChangeInteresses: (event) => dispatch(setCvInteresses(event.target.value)),
-    onChangeTrumbowyRTE: (event) => dispatch(setCvInteresses(event.target.innerHTML)),
+    onChangeInteressesRTE: (value) => dispatch(setCvInteresses(value)),
     onChangeReactRTE: (value) => dispatch(setCvReactRTE(value)),
-    onChangeSunEditorRTE: (value) => dispatch(setCvInteresses(value)),
-    onChangeReactPageRTE: (value) => dispatch(setCvInteresses(value)),
-    onChangeJoditRTE: (value) => dispatch(setCvInteresses(value)),
     requestLogout: () => dispatch(requestLogout())
 });
 

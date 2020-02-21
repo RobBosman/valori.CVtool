@@ -64,7 +64,7 @@ const MenuBar = (props) => {
     ].filter(Boolean);
 
     return (
-        <CommandBar farItems={farItems}/>
+        <CommandBar items="" farItems={farItems}/>
     );
 };
 

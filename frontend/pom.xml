@@ -59,6 +59,16 @@
               <arguments>install</arguments>
             </configuration>
           </execution>
+          <execution>
+            <id>npm-rebuild-sass</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <arguments>rebuild node-sass</arguments>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>

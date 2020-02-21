@@ -1,5 +1,6 @@
 import React from "react"
 import {connect} from "react-redux"
+import ErrorBoundary from "./ErrorBoundary"
 import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import EditorPage from "./EditorPage"
@@ -43,14 +44,14 @@ const Main = (props) => {
     };
 
     return (
-        <div>
+        <ErrorBoundary>
             <MenuBar/>
             <hr/>
             {renderChildren(props)}
             {/*
             <EventBridge/>
             */}
-        </div>
+        </ErrorBoundary>
     );
 };
 
