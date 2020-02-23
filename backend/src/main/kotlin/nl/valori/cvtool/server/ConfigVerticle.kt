@@ -26,6 +26,7 @@ internal class ConfigVerticle : AbstractVerticle() {
 
           deployVerticle(vertx, StorageVerticle::class.java.name, options)
           deployVerticle(vertx, HttpServerVerticle::class.java.name, options)
+          deployVerticle(vertx, HeartbeatVerticle::class.java.name, options)
         }
   }
 

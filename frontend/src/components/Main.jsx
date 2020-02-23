@@ -7,6 +7,8 @@ import EditorPage from "./EditorPage"
 import {AppStates} from "../redux/ducks/AppState"
 import {initializeIcons, registerOnThemeChangeCallback, Text} from "office-ui-fabric-react"
 import MenuBar from "./MenuBar"
+import {EventBridge} from "./EventBridge";
+import Heartbeat from "./Heartbeat";
 
 initializeIcons();
 
@@ -30,6 +32,7 @@ const Main = (props) => {
                     <div>
                         <EditorPage/>
                         {/* <AutoLogout delayMillis={10000}/> */}
+                        <EventBridge/>
                     </div>
                 );
             case AppStates.LOGGING_OUT:
@@ -48,9 +51,7 @@ const Main = (props) => {
             <MenuBar/>
             <hr/>
             {renderChildren(props)}
-            {/*
-            <EventBridge/>
-            */}
+            <Heartbeat period={30000}/>
         </ErrorBoundary>
     );
 };

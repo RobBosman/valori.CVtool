@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory
 
 const val ADDRESS_CV_DATA_GET = "cv.data.get"
 const val ADDRESS_CV_DATA_SET = "cv.data.set"
-const val ADDRESS_CV_DATA_NOTIFY = "cv.data.notify"
 
 internal class StorageVerticle : AbstractVerticle() {
 

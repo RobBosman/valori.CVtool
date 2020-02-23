@@ -1,7 +1,6 @@
 package nl.valori.cvtool.server
 
 import io.vertx.core.VertxOptions
-import io.vertx.core.json.JsonObject
 import io.vertx.rxjava.core.Vertx
 import org.slf4j.LoggerFactory
 
@@ -33,24 +32,24 @@ object Main {
       }
 
 
-    vertx.setTimer(1_000 * 5) {
-      log.info("Insert a test message into MongoDB...")
-      val dataJson = JsonObject()
-          .put("dummy", JsonObject()
-              .put("content", "gibberish"))
-      vertx.eventBus()
-          .request<JsonObject>(ADDRESS_CV_DATA_SET, dataJson) { response ->
-            if (response.failed())
-              throw response.cause()
-
-            val idJson = response.result().body()
-            vertx.eventBus()
-                .request<JsonObject>(ADDRESS_CV_DATA_GET, idJson) { response2 ->
-                  if (response2.failed())
-                    throw response2.cause()
-                  log.info("Got something from MongoDB: {}", response2.result().body())
-                }
-          }
-    }
+//    vertx.setTimer(1_000 * 5) {
+//      log.info("Insert a test message into MongoDB...")
+//      val dataJson = JsonObject()
+//          .put("dummy", JsonObject()
+//              .put("content", "gibberish"))
+//      vertx.eventBus()
+//          .request<JsonObject>(ADDRESS_CV_DATA_SET, dataJson) { response ->
+//            if (response.failed())
+//              throw response.cause()
+//
+//            val idJson = response.result().body()
+//            vertx.eventBus()
+//                .request<JsonObject>(ADDRESS_CV_DATA_GET, idJson) { response2 ->
+//                  if (response2.failed())
+//                    throw response2.cause()
+//                  log.info("Got something from MongoDB: {}", response2.result().body())
+//                }
+//          }
+//    }
   }
 }

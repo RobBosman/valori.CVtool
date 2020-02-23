@@ -11,26 +11,25 @@ not responding to theme (unless 'inline')
 inline: scrollbar?, offset?, no border?
 */
 
-const overrideJoditTheme = (theme) => {
-    document
-        .querySelectorAll(".jodit_default_theme")
+const replaceJoditThemeByFabric = (theme) => {
+    document.querySelectorAll(".jodit_default_theme")
         .forEach(element => element.style.background = theme.semanticColors.bodyBackground);
-    document
-        .querySelectorAll(".jodit_default_theme .jodit_toolbar svg")
+    document.querySelectorAll(".jodit_default_theme .jodit_toolbar svg")
         .forEach(element => element.style.fill = theme.semanticColors.buttonText);
 };
 
-registerOnThemeChangeCallback(overrideJoditTheme);
+registerOnThemeChangeCallback(replaceJoditThemeByFabric);
 
 const JoditRTE = (props) => {
 
     React.useEffect(() => {
-        overrideJoditTheme(getTheme());
+        replaceJoditThemeByFabric(getTheme());
     });
 
     const config = {
         // all options from https://xdsoft.net/jodit/doc/
         readonly: false,
+        inline: false,
         toolbar: true,
         buttons: [
             'bold', 'strikethrough', 'underline', 'italic', 'eraser',
@@ -40,6 +39,7 @@ const JoditRTE = (props) => {
             '|', 'undo', 'redo',
             '|', 'source'
         ],
+        sticky: true,
         enableDragAndDropFileToEditor: false,
         useSearch: false,
         showCharsCounter: false,
