@@ -6,9 +6,20 @@ import {DarkOrange} from "../themes/dark-orange"
 import {LightBlue} from "../themes/light-blue"
 import {LightGreen} from "../themes/light-green"
 import {DarkYellow} from "../themes/dark-yellow"
+import {save} from "../redux/ducks/Storage";
 
 const MenuBar = (props) => {
     const [theme, setTheme] = React.useState(getTheme());
+
+    const items = [
+        {
+            key: 'save',
+            text: 'Opslaan',
+            iconProps: {iconName: 'Save'},
+            iconOnly: false,
+            onClick: props.save
+        }
+    ];
 
     const farItems = [
         {
@@ -23,28 +34,28 @@ const MenuBar = (props) => {
                         text: 'Donker - Oranje',
                         onMouseOver: () => loadTheme(DarkOrange),
                         onMouseOut: () => loadTheme(theme),
-                        onMenuClick: () => setTheme(DarkOrange)
+                        onClick: () => setTheme(DarkOrange)
                     },
                     {
                         key: 'darkYellowTheme',
                         text: 'Donker - Geel',
                         onMouseOver: () => loadTheme(DarkYellow),
                         onMouseOut: () => loadTheme(theme),
-                        onMenuClick: () => setTheme(DarkYellow)
+                        onClick: () => setTheme(DarkYellow)
                     },
                     {
                         key: 'lightBlueTheme',
                         text: 'Licht - Blauw',
                         onMouseOver: () => loadTheme(LightBlue),
                         onMouseOut: () => loadTheme(theme),
-                        onMenuClick: () => setTheme(LightBlue)
+                        onClick: () => setTheme(LightBlue)
                     },
                     {
                         key: 'lightGreenTheme',
                         text: 'Licht - Groen',
                         onMouseOver: () => loadTheme(LightGreen),
                         onMouseOut: () => loadTheme(theme),
-                        onMenuClick: () => setTheme(LightGreen)
+                        onClick: () => setTheme(LightGreen)
                     }
                 ]
             }
@@ -64,7 +75,7 @@ const MenuBar = (props) => {
     ].filter(Boolean);
 
     return (
-        <CommandBar items="" farItems={farItems}/>
+        <CommandBar items={items} farItems={farItems}/>
     );
 };
 
@@ -74,7 +85,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     requestLogin: () => dispatch(requestLogin()),
-    requestLogout: () => dispatch(requestLogout())
+    requestLogout: () => dispatch(requestLogout()),
+    save: () => dispatch(save())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuBar)

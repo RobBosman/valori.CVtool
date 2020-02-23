@@ -23,6 +23,8 @@ const unregisterHandlers = (eventBus) => {
     }
 };
 
+export let TheEventBus;
+
 export const EventBridge = (props) => {
 
     useEffect(() => {
@@ -46,26 +48,32 @@ export const EventBridge = (props) => {
         };
 
         eventBus.onopen = () => {
+            TheEventBus = eventBus;
             console.log(`The vert.x EventBus is now open.`);
 
-            // receive stuff
             registerHandlers(eventBus);
 
-            // send a message
-            eventBus.send('cv.data.set', {name: 'dummy', age: "gibberish"}, (error, message) => {
-                if (error) {
-                    console.error("received error response: ", error)
-                } else {
-                    eventBus.send('cv.data.get', message.body, getCvDataHandler);
-                }
-            });
+            // // send a message
+            // eventBus.send('cv.data.set', {name: 'dummy', age: "gibberish"}, (error, message) => {
+            //     if (error) {
+            //         console.error("received error response: ", error)
+            //     } else {
+            //         eventBus.send('cv.data.get', message.body, getCvDataHandler);
+            //     }
+            // });
+        };
+
+        eventBus.onclose = () => {
+            TheEventBus = undefined
         };
 
         // at the close:
         return () => {
             unregisterHandlers(eventBus);
-            eventBus.close();
-            console.log(`The vert.x EventBus has been closed`)
+            if (eventBus.state !== EventBus.CLOSED) {
+                eventBus.close();
+                console.log(`The vert.x EventBus has been closed`)
+            }
         }
     }, []);
 

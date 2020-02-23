@@ -3,7 +3,7 @@ import React from "react"
 const Heartbeat = (props) => {
 
     React.useEffect(() => {
-        const intervalID = setInterval(() => console.log("tik-tak"), props.period);
+        const intervalID = setInterval(() => console.log("ping"), props.period || 1000);
         return () => clearInterval(intervalID)
     }, []);
 
