@@ -12,6 +12,7 @@ export const addEventHandler = (handler) => {
     if (!handlers.has(handler)) {
         console.log('Adding handler "' + handler.address + '"');
         if (eventBus?.state === EventBus.OPEN) {
+            // TODO - delay this call
             eventBus.registerHandler(handler.address, handler.headers, handler.callback)
         } else {
             handlersToBeRegistered.add(handler)
@@ -55,9 +56,14 @@ const EventBroker = (props) => {
 
         eventBus.onopen = () => {
             console.log('The vert.x EventBus is now open.');
-            for (const handler of handlersToBeRegistered) {
+            for (const handler of handlersToBeUnregistered) {
+                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback)
+            }
+            handlersToBeUnregistered.clear();
+            for (const handler of handlers) {
                 eventBus.registerHandler(handler.address, handler.headers, handler.callback)
             }
+            handlersToBeRegistered.clear()
         };
 
         eventBus.onclose = () => {
@@ -66,12 +72,6 @@ const EventBroker = (props) => {
 
         eventBus.onreconnect = () => {
             console.log('The vert.x EventBus has reconnected.');
-            for (const handler of handlersToBeUnregistered) {
-                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback)
-            }
-            for (const handler of handlersToBeRegistered) {
-                eventBus.registerHandler(handler.address, handler.headers, handler.callback)
-            }
         }
     };
 
@@ -80,9 +80,12 @@ const EventBroker = (props) => {
             return
         }
         if (eventBus.state === EventBus.OPEN) {
-            for (const handler of handlersToBeUnregistered) {
-                eventBus.registerHandler(handler.address, handler.headers, handler.callback)
+            handlersToBeRegistered.clear();
+            for (const handler of handlers) {
+                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+                handlersToBeRegistered.add(handler)
             }
+            handlersToBeUnregistered.clear()
         }
         eventBus.close();
         eventBus = null;
@@ -105,6 +108,7 @@ const select = (state) => ({
 export default connect(select)(EventBroker)
 
 
+// TODO - put this somewhere else
 const getHeartbeatHandler = (error, message) => {
     console.log('received a Heartbeat: ' + message.body);
 };
