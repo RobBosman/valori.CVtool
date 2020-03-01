@@ -35,7 +35,7 @@ const Personalia = (props) => {
     )
 };
 
-const mapStateToProps = (state) => ({
+const select = (state) => ({
     voornaam: state.cvContent.voornaam,
     achternaam: state.cvContent.achternaam
 });
@@ -45,4 +45,4 @@ const mapDispatchToProps = (dispatch) => ({
     onChangeAchternaam: (event) => dispatch(setCvAchternaam(event.target.value))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Personalia)
+export default connect(select, mapDispatchToProps)(Personalia)

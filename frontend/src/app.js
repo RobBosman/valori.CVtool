@@ -4,14 +4,14 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {Provider} from 'react-redux'
 import store from './redux/store'
-import {Fabric} from "office-ui-fabric-react"
 import Main from "./components/Main"
+import EventBroker from "./components/EventBroker";
 
 ReactDOM.render(
     <Provider store={store}>
-        <Fabric>
+        <EventBroker>
             <Main/>
-        </Fabric>
+        </EventBroker>
     </Provider>,
     document.getElementById("app")
 );

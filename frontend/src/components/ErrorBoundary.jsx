@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component {
         if (this.state.theError !== undefined) {
             return (
                 <div>
-                    <h1 style={{backgroundColor: "lightblue"}}>OOPS</h1>
+                    <h1 style={{backgroundColor: "#ffaa00"}}>OOPS</h1>
                     <p>Something went terribly wrong: <strong>{this.state.theError.message}</strong></p>
                     <p>
                         <pre>{this.state.theError.stack.replace("\n", <br/>)}</pre>
@@ -27,7 +27,7 @@ class ErrorBoundary extends React.Component {
                 </div>
             );
         } else {
-            return this.props.children;
+            return this.props.children
         }
     }
 }

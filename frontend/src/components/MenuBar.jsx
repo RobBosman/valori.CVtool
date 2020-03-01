@@ -79,7 +79,7 @@ const MenuBar = (props) => {
     );
 };
 
-const mapStateToProps = (state) => ({
+const select = (state) => ({
     appState: state.appState
 });
 
@@ -89,4 +89,4 @@ const mapDispatchToProps = (dispatch) => ({
     save: () => dispatch(save())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MenuBar)
+export default connect(select, mapDispatchToProps)(MenuBar)

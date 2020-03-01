@@ -1,15 +1,15 @@
 "use strict";
 
-import {ofType} from "redux-observable";
-import {TheEventBus} from "../../components/EventBridge"
-import {filter} from "rxjs/operators";
+import {ofType} from "redux-observable"
+import {filter} from "rxjs/operators"
+import EventBroker from "../../components/EventBroker";
 
 const SAVE = "SAVE";
 
 export const save = () => ({type: SAVE});
 
 const saveData = () => {
-    TheEventBus && TheEventBus.send('cv.data.set', {name: 'dummy', age: "gibberish"}, (error, message) => {
+    EventBroker.send('cv.data.set', {name: 'dummy', age: "gibberish"}, (error, message) => {
         if (error) {
             console.error("error saving data: ", error)
         } else {
