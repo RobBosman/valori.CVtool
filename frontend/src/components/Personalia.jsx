@@ -2,30 +2,57 @@ import React from "react"
 import {getId, Label, TextField} from "office-ui-fabric-react"
 import {connect} from "react-redux"
 import {setCvAchternaam, setCvVoornaam} from "../redux/ducks/CvContent"
+import {addEventHandler, removeEventHandler} from "./EventBroker"
+
+
+const getHeartbeatHandler = (error, message) => {
+    console.log('received a Heartbeat: ' + message.body);
+};
+const getCvDataHandler = (error, message) => {
+    console.log('received a message: ' + JSON.stringify(message), error, message);
+};
+
 
 const Personalia = (props) => {
-    const voornaamId = getId('voornaam');
-    const achternaamId = getId('achternaam');
+
+    React.useEffect(() => {
+        const handler1 = {address: 'cv.heartbeat', header: {}, callback: getHeartbeatHandler};
+        const handler2 = {address: 'cv.data.get', header: {}, callback: getCvDataHandler};
+
+        addEventHandler(handler1);
+        addEventHandler(handler2);
+        console.log('Added event handlers');
+
+        // at the close:
+        return () => {
+            removeEventHandler(handler1);
+            removeEventHandler(handler2);
+            console.log('Removed event handlers');
+        }
+    }, []);
+
+    const voornaamFieldId = getId('voornaam');
+    const achternaamFieldId = getId('achternaam');
 
     return (
         <table className="ms-Table">
             <tbody>
             <tr className="ms-Table-row">
                 <td className="ms-Table-cell">
-                    <Label htmlFor={voornaamId}>Voornaam</Label>
+                    <Label htmlFor={voornaamFieldId}>Voornaam</Label>
                 </td>
                 <td className="ms-Table-cell">
-                    <TextField id={voornaamId}
+                    <TextField id={voornaamFieldId}
                                value={props.voornaam}
                                onChange={props.onChangeVoornaam}/>
                 </td>
             </tr>
             <tr className="ms-Table-row">
                 <td className="ms-Table-cell">
-                    <Label htmlFor={achternaamId}>Achternaam</Label>
+                    <Label htmlFor={achternaamFieldId}>Achternaam</Label>
                 </td>
                 <td className="ms-Table-cell">
-                    <TextField id={achternaamId}
+                    <TextField id={achternaamFieldId}
                                value={props.achternaam}
                                onChange={props.onChangeAchternaam}/>
                 </td>

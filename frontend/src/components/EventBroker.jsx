@@ -3,11 +3,9 @@ import EventBus from "vertx3-eventbus-client"
 import {connect} from "react-redux"
 import {AppStates} from "../redux/ducks/AppState"
 
-
 const handlers = new Set();
 const handlersToBeUnregistered = new Set();
 let eventBus = null;
-
 
 export const addEventHandler = (handler) => {
     if (!handlers.has(handler)) {
@@ -29,6 +27,13 @@ export const removeEventHandler = (handler) => {
     }
 };
 
+export const sendEvent = (address, requestData, headerData, responseHandler) => {
+    if (eventBus?.state === EventBus.OPEN) {
+        eventBus.send(address, requestData, headerData, responseHandler)
+    } else {
+        responseHandler("The EventBridge is not connected")
+    }
+};
 
 const EventBroker = (props) => {
 
@@ -56,7 +61,7 @@ const EventBroker = (props) => {
         eventBus.enableReconnect(true);
 
         eventBus.onerror = (error) => {
-            console.log('An error occurred on the vert.x EventBus', error)
+            console.error('An error occurred on the vert.x EventBus', error)
         };
 
         eventBus.onopen = () => {
@@ -66,7 +71,7 @@ const EventBroker = (props) => {
 
         eventBus.onclose = () => {
             if (eventBus !== null) {
-                console.log('The vert.x EventBus closed unexpectedly.')
+                console.warn('The vert.x EventBus closed unexpectedly.')
             } else {
                 console.log('The vert.x EventBus has been closed.')
             }
@@ -116,19 +121,3 @@ const select = (state) => ({
 });
 
 export default connect(select)(EventBroker)
-
-
-// TODO - put this somewhere else
-const getHeartbeatHandler = (error, message) => {
-    console.log('received a Heartbeat: ' + message.body);
-};
-const getCvDataHandler = (error, message) => {
-    console.log('received a message: ' + JSON.stringify(message), error, message);
-};
-
-
-const handler1 = {address: 'cv.heartbeat', header: {}, callback: getHeartbeatHandler};
-const handler2 = {address: 'cv.data.get', header: {}, callback: getCvDataHandler};
-addEventHandler(handler1);
-addEventHandler(handler2);
-console.log('Added event handlers');
