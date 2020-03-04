@@ -3,38 +3,43 @@ import EventBus from "vertx3-eventbus-client"
 import {connect} from "react-redux"
 import {AppStates} from "../redux/ducks/AppState"
 
+
 const handlers = new Set();
-const handlersToBeRegistered = new Set();
 const handlersToBeUnregistered = new Set();
 let eventBus = null;
 
+
 export const addEventHandler = (handler) => {
     if (!handlers.has(handler)) {
-        console.log('Adding handler "' + handler.address + '"');
+        handlers.add(handler);
         if (eventBus?.state === EventBus.OPEN) {
-            // TODO - delay this call
             eventBus.registerHandler(handler.address, handler.headers, handler.callback)
-        } else {
-            handlersToBeRegistered.add(handler)
         }
-        handlers.add(handler)
     }
 };
 
 export const removeEventHandler = (handler) => {
     if (handlers.has(handler)) {
-        console.log('Removing handler "' + handler.address + '"');
+        handlers.delete(handler);
         if (eventBus?.state === EventBus.OPEN) {
             eventBus.unregisterHandler(handler.address, handler.headers, handler.callback)
         } else {
             handlersToBeUnregistered.add(handler)
         }
-        handlers.delete(handler)
     }
 };
 
 
 const EventBroker = (props) => {
+
+    React.useEffect(() => {
+        if (props.isLoggedIn) {
+            connectEventBridge()
+        } else {
+            disconnectEventBridge()
+        }
+    });
+
     const connectEventBridge = () => {
         if (eventBus !== null) {
             return
@@ -51,23 +56,20 @@ const EventBroker = (props) => {
         eventBus.enableReconnect(true);
 
         eventBus.onerror = (error) => {
-            console.log('An error occurred on the vert.x EventBus', error);
+            console.log('An error occurred on the vert.x EventBus', error)
         };
 
         eventBus.onopen = () => {
             console.log('The vert.x EventBus is now open.');
-            for (const handler of handlersToBeUnregistered) {
-                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback)
-            }
-            handlersToBeUnregistered.clear();
-            for (const handler of handlers) {
-                eventBus.registerHandler(handler.address, handler.headers, handler.callback)
-            }
-            handlersToBeRegistered.clear()
+            updateHandlerRegistrations()
         };
 
         eventBus.onclose = () => {
-            console.log('The vert.x EventBus closed unexpectedly.');
+            if (eventBus !== null) {
+                console.log('The vert.x EventBus closed unexpectedly.')
+            } else {
+                console.log('The vert.x EventBus has been closed.')
+            }
         };
 
         eventBus.onreconnect = () => {
@@ -79,25 +81,33 @@ const EventBroker = (props) => {
         if (eventBus === null) {
             return
         }
-        if (eventBus.state === EventBus.OPEN) {
-            handlersToBeRegistered.clear();
-            for (const handler of handlers) {
-                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
-                handlersToBeRegistered.add(handler)
-            }
-            handlersToBeUnregistered.clear()
+
+        if (eventBus.state === EventBus.CONNECTING || eventBus.state === EventBus.OPEN) {
+            eventBus.close();
+            console.log('The vert.x EventBus is closing.')
         }
-        eventBus.close();
+        handlersToBeUnregistered.clear();
         eventBus = null;
-        console.log('The vert.x EventBus has been closed.')
     };
 
+    const updateHandlerRegistrations = () => {
+        const unregisteredHandlers = new Set();
+        handlersToBeUnregistered.forEach(handler => {
+            if (eventBus?.state === EventBus.OPEN) {
+                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+                unregisteredHandlers.add(handler)
+            }
+        });
+        unregisteredHandlers.forEach(handler => handlersToBeUnregistered.delete(handler));
 
-    if (props.isLoggedIn) {
-        connectEventBridge()
-    } else {
-        disconnectEventBridge()
-    }
+        handlers.forEach(handler => {
+            if (eventBus?.state === EventBus.OPEN) {
+                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+                eventBus.registerHandler(handler.address, handler.headers, handler.callback)
+            }
+        });
+    };
+
     return props.children
 };
 
