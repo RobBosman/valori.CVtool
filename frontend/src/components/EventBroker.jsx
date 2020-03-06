@@ -3,9 +3,109 @@ import EventBus from "vertx3-eventbus-client"
 import {connect} from "react-redux"
 import {AppStates} from "../redux/ducks/AppState"
 
+export const ConnectionStates = {
+    DISABLED: 'DISABLED',
+    CONNECTING: 'CONNECTING',
+    OPEN: 'OPEN',
+    CLOSING: 'CLOSING',
+    CLOSED: 'CLOSED'
+};
+
 const handlers = new Set();
 const handlersToBeUnregistered = new Set();
 let eventBus = null;
+
+const EventBroker = (props) => {
+
+    const [connectionState, setConnectionState] = React.useState(ConnectionStates.DISABLED);
+
+    const setState = (newState) => setConnectionState((currentState) => {
+        if (currentState === ConnectionStates.CONNECTING && newState === ConnectionStates.CLOSED) {
+            // this is a failed connection attempt
+            return currentState
+        }
+        if (currentState === ConnectionStates.CLOSING && newState === ConnectionStates.CLOSED) {
+            // this is the last time that onClose() was called
+            return ConnectionStates.DISABLED
+        }
+        return newState
+    });
+
+    React.useEffect(() => {
+        if (props.isEnabled && connectionState === ConnectionStates.DISABLED) {
+            connectEventBus();
+            setState(ConnectionStates.CONNECTING)
+        } else if (props.isEnabled && connectionState === ConnectionStates.OPEN) {
+            refreshHandlerRegistrations()
+        } else if (!props.isEnabled && connectionState !== ConnectionStates.DISABLED && connectionState !== ConnectionStates.CLOSING) {
+            disconnectEventBus();
+            setState(ConnectionStates.CLOSING)
+        }
+    }, [props.isEnabled, connectionState]);
+
+    const connectEventBus = () => {
+        console.debug('Creating the vert.x EventBus.');
+        const options = {
+            vertxbus_reconnect_attempts_max: Infinity, // Max reconnect attempts
+            vertxbus_reconnect_delay_min: 500, // Initial delay (in ms) before first reconnect attempt
+            vertxbus_reconnect_delay_max: 5000, // Max delay (in ms) between reconnect attempts
+            vertxbus_reconnect_exponent: 2, // Exponential backoff factor
+            vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
+        };
+        eventBus = new EventBus('http://localhost:80/eventbus', options);
+        eventBus.enableReconnect(true);
+
+        eventBus.onerror = (error) => {
+            console.error('An error occurred on the vert.x EventBus.', error)
+        };
+
+        eventBus.onopen = () => {
+            console.log('The vert.x EventBus is open.');
+            setState(ConnectionStates.OPEN);
+        };
+
+        eventBus.onclose = () => {
+            console.log(`The vert.x EventBus is closed.`);
+            setState(ConnectionStates.CLOSED);
+        }
+    };
+
+    const disconnectEventBus = () => {
+        console.debug('Closing the vert.x EventBus.');
+        handlersToBeUnregistered.clear();
+        if (eventBus.state === EventBus.OPEN) {
+            eventBus.close();
+        } else {
+            eventBus.enableReconnect(false)
+        }
+    };
+
+    const refreshHandlerRegistrations = () => {
+        console.debug(`Refreshing handler registration`);
+        for (let i = handlersToBeUnregistered.size - 1; i >= 0; i--) { // loop reversed, so we can 'shrink' the list
+            const handler = handlersToBeUnregistered[i];
+            if (handler && eventBus?.state === EventBus.OPEN) {
+                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+                handlersToBeUnregistered.delete(handler)
+            }
+        }
+        handlers.forEach(handler => {
+            if (eventBus?.state === EventBus.OPEN) {
+                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+                eventBus.registerHandler(handler.address, handler.headers, handler.callback)
+            }
+        });
+    };
+
+    return props.children
+};
+
+const select = (state) => ({
+    isEnabled: state.appState === AppStates.LOGGED_IN
+});
+
+export default connect(select)(EventBroker)
+
 
 export const addEventHandler = (handler) => {
     if (!handlers.has(handler)) {
@@ -30,94 +130,9 @@ export const removeEventHandler = (handler) => {
 export const sendEvent = (address, requestData, headerData, responseHandler) => {
     if (eventBus?.state === EventBus.OPEN) {
         eventBus.send(address, requestData, headerData, responseHandler)
+    } else if (responseHandler) {
+        responseHandler("The EventBus is not connected.")
     } else {
-        responseHandler("The EventBridge is not connected")
+        console.error(`Error sending event to '${address}'; the EventBus is not connected.`)
     }
 };
-
-const EventBroker = (props) => {
-
-    React.useEffect(() => {
-        if (props.isLoggedIn) {
-            connectEventBridge()
-        } else {
-            disconnectEventBridge()
-        }
-    });
-
-    const connectEventBridge = () => {
-        if (eventBus !== null) {
-            return
-        }
-
-        const options = {
-            vertxbus_reconnect_attempts_max: Infinity, // Max reconnect attempts
-            vertxbus_reconnect_delay_min: 1000, // Initial delay (in ms) before first reconnect attempt
-            vertxbus_reconnect_delay_max: 5000, // Max delay (in ms) between reconnect attempts
-            vertxbus_reconnect_exponent: 2, // Exponential backoff factor
-            vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
-        };
-        eventBus = new EventBus('http://localhost:80/eventbus', options);
-        eventBus.enableReconnect(true);
-
-        eventBus.onerror = (error) => {
-            console.error('An error occurred on the vert.x EventBus', error)
-        };
-
-        eventBus.onopen = () => {
-            console.log('The vert.x EventBus is now open.');
-            updateHandlerRegistrations()
-        };
-
-        eventBus.onclose = () => {
-            if (eventBus !== null) {
-                console.warn('The vert.x EventBus closed unexpectedly.')
-            } else {
-                console.log('The vert.x EventBus has been closed.')
-            }
-        };
-
-        eventBus.onreconnect = () => {
-            console.log('The vert.x EventBus has reconnected.');
-        }
-    };
-
-    const disconnectEventBridge = () => {
-        if (eventBus === null) {
-            return
-        }
-
-        if (eventBus.state === EventBus.CONNECTING || eventBus.state === EventBus.OPEN) {
-            eventBus.close();
-            console.log('The vert.x EventBus is closing.')
-        }
-        handlersToBeUnregistered.clear();
-        eventBus = null;
-    };
-
-    const updateHandlerRegistrations = () => {
-        const unregisteredHandlers = new Set();
-        handlersToBeUnregistered.forEach(handler => {
-            if (eventBus?.state === EventBus.OPEN) {
-                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
-                unregisteredHandlers.add(handler)
-            }
-        });
-        unregisteredHandlers.forEach(handler => handlersToBeUnregistered.delete(handler));
-
-        handlers.forEach(handler => {
-            if (eventBus?.state === EventBus.OPEN) {
-                eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
-                eventBus.registerHandler(handler.address, handler.headers, handler.callback)
-            }
-        });
-    };
-
-    return props.children
-};
-
-const select = (state) => ({
-    isLoggedIn: state.appState === AppStates.LOGGED_IN
-});
-
-export default connect(select)(EventBroker)

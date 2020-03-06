@@ -14,8 +14,8 @@ internal class HeartbeatVerticle : AbstractVerticle() {
 
   override fun start(future: Future<Void>) {
     Observable
-        .interval(2000, TimeUnit.MILLISECONDS)
-        .map { if (it % 2 == 0L) "bim " else "bam" }
+        .interval(1000, TimeUnit.MILLISECONDS)
+        .map { if (it % 2 == 0L) "tik" else "tik" }
         .subscribe(
             { vertx.eventBus().publish(ADDRESS_CV_HEARTBEAT, it) },
             { log.error("Error: {}", it.message, it) })

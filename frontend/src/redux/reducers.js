@@ -1,6 +1,6 @@
 "use strict";
 
-import {combineReducers} from "redux";
+import {combineReducers} from "redux"
 import appState from './ducks/AppState'
 import cvContent from './ducks/CvContent'
 

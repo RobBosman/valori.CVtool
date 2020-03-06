@@ -21,38 +21,35 @@ const Personalia = (props) => {
 
         addEventHandler(handler1);
         addEventHandler(handler2);
-        console.log('Added event handlers');
+        console.debug('Added event handlers');
 
         // at the close:
         return () => {
             removeEventHandler(handler1);
             removeEventHandler(handler2);
-            console.log('Removed event handlers');
+            console.debug('Removed event handlers');
         }
     }, []);
-
-    const voornaamFieldId = getId('voornaam');
-    const achternaamFieldId = getId('achternaam');
 
     return (
         <table className="ms-Table">
             <tbody>
             <tr className="ms-Table-row">
                 <td className="ms-Table-cell">
-                    <Label htmlFor={voornaamFieldId}>Voornaam</Label>
+                    <Label htmlFor={getId('voornaam')}>Voornaam</Label>
                 </td>
                 <td className="ms-Table-cell">
-                    <TextField id={voornaamFieldId}
+                    <TextField id={getId('voornaam')}
                                value={props.voornaam}
                                onChange={props.onChangeVoornaam}/>
                 </td>
             </tr>
             <tr className="ms-Table-row">
                 <td className="ms-Table-cell">
-                    <Label htmlFor={achternaamFieldId}>Achternaam</Label>
+                    <Label htmlFor={getId('achternaam')}>Achternaam</Label>
                 </td>
                 <td className="ms-Table-cell">
-                    <TextField id={achternaamFieldId}
+                    <TextField id={getId('achternaam')}
                                value={props.achternaam}
                                onChange={props.onChangeAchternaam}/>
                 </td>
