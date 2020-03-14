@@ -1,6 +1,6 @@
 "use strict";
 
-import {ofType} from "redux-observable"
+import {combineEpics, ofType} from "redux-observable"
 import {delay, mapTo} from "rxjs/operators"
 
 const REQUEST_LOGIN = "REQUEST_LOGIN";
@@ -36,23 +36,23 @@ const reducer = (subState = AppStates.LOGGED_OUT, action) => {
 };
 export default reducer
 
-export const loginEpic = (actions$) =>
-    actions$.pipe(
-        ofType(REQUEST_LOGIN),
-        delay(1),
-        mapTo(confirmLogin())
-    );
-
-export const logoutEpic = (actions$) =>
-    actions$.pipe(
-        ofType(REQUEST_LOGOUT),
-        delay(1),
-        mapTo(confirmLogout())
-    );
-
-export const autoLogoutEpic = (actions$) =>
-    actions$.pipe(
-        ofType(CONFIRM_LOGIN),
-        delay(10000),
-        mapTo(requestLogout())
-    );
+export const appStateEpics = combineEpics(
+    (actions$) =>
+        actions$.pipe(
+            ofType(REQUEST_LOGIN),
+            delay(1),
+            mapTo(confirmLogin())
+        ),
+    (actions$) =>
+        actions$.pipe(
+            ofType(REQUEST_LOGOUT),
+            delay(1),
+            mapTo(confirmLogout())
+        ),
+    // (actions$) =>
+    //     actions$.pipe(
+    //         ofType(CONFIRM_LOGIN),
+    //         delay(10000),
+    //         mapTo(requestLogout())
+    //     )
+);
