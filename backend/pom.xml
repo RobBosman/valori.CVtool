@@ -113,12 +113,14 @@
       <artifactId>vertx-web-client</artifactId>
       <version>${vertx.version}</version>
     </dependency>
+    <!-- database -->
+    <!--
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-mongo-client</artifactId>
       <version>${vertx.version}</version>
     </dependency>
-    <!-- database -->
+    -->
     <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-reactivestreams</artifactId>

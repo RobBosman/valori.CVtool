@@ -14,6 +14,7 @@ Visual Studio Code with plugins
 * Babel JavaScript
 
 ## TODO:
+* replace deprecated(?) vert.x libs with MongoDB Reactive Streams driver
 * setup data model (hierarchy, Json data structure)
 * map to 'normalized Json' (list of entities and instances)
 * deal with lists of model elements in UI
@@ -40,3 +41,4 @@ Visual Studio Code with plugins
 * explore Fabric theming (css via javascript)
 * switch to React functions and hooks (instead of components)
 * connect vert.x EventBus in React (plus fine tuning for resilience)
+* connect MongoDB and vert.x using vert.x libs

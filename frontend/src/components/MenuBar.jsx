@@ -6,12 +6,19 @@ import {DarkOrange} from "../themes/dark-orange"
 import {LightBlue} from "../themes/light-blue"
 import {LightGreen} from "../themes/light-green"
 import {DarkYellow} from "../themes/dark-yellow"
-import {save} from "../redux/ducks/Storage";
+import {load, save} from "../redux/ducks/Storage"
 
 const MenuBar = (props) => {
     const [theme, setTheme] = React.useState(getTheme());
 
     const items = [
+        {
+            key: 'load',
+            text: 'Ophalen',
+            iconProps: {iconName: 'DownloadDocument'},
+            iconOnly: false,
+            onClick: props.load
+        },
         {
             key: 'save',
             text: 'Opslaan',
@@ -86,6 +93,7 @@ const select = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     requestLogin: () => dispatch(requestLogin()),
     requestLogout: () => dispatch(requestLogout()),
+    load: () => dispatch(load()),
     save: () => dispatch(save())
 });
 

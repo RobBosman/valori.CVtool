@@ -8,25 +8,19 @@ import {addEventHandler, removeEventHandler} from "./EventBroker"
 const getHeartbeatHandler = (error, message) => {
     console.log('received a Heartbeat: ' + message.body);
 };
-const getCvDataHandler = (error, message) => {
-    console.log('received a message: ' + JSON.stringify(message), error, message);
-};
 
 
 const Personalia = (props) => {
 
     React.useEffect(() => {
-        const handler1 = {address: 'cv.heartbeat', header: {}, callback: getHeartbeatHandler};
-        const handler2 = {address: 'cv.data.get', header: {}, callback: getCvDataHandler};
+        const handler = {address: 'cv.heartbeat', header: {}, callback: getHeartbeatHandler};
 
-        addEventHandler(handler1);
-        addEventHandler(handler2);
+        addEventHandler(handler);
         console.debug('Added event handlers');
 
         // at the close:
         return () => {
-            removeEventHandler(handler1);
-            removeEventHandler(handler2);
+            removeEventHandler(handler);
             console.debug('Removed event handlers');
         }
     }, []);
