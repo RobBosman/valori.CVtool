@@ -42,8 +42,15 @@ internal class StorageVerticle : AbstractVerticle() {
           val mongoRequestDoc = Document.parse(message.body().encode())
           val objectId = getOrAssignObjectId(mongoRequestDoc)
           log.debug("Vertx saving data with _id: $objectId...")
-          mongoCollection
-              .insertOne(mongoRequestDoc)
+
+          val publisher = if (mongoRequestDoc["_id"] !== null)
+            mongoCollection
+                .findOneAndReplace(Filters.eq("_id", mongoRequestDoc["_id"]), mongoRequestDoc)
+          else
+            mongoCollection
+                .insertOne(mongoRequestDoc)
+
+          publisher
               .subscribe(ReactiveStreamsSubscriber(
                   {},
                   {

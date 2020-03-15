@@ -1,11 +1,13 @@
 "use strict";
 
+const SET_CV_CONTENT = "SET_CV_CONTENT";
 const SET_CV_VOORNAAM = "SET_CV_VOORNAAM";
 const SET_CV_ACHTERNAAM = "SET_CV_ACHTERNAAM";
 const SET_CV_PROFIELSCHETS = "SET_CV_PROFIELSCHETS";
 const SET_CV_PERSOONLIJKE_EIGENSCHAPPEN = "SET_CV_PERSOONLIJKE_EIGENSCHAPPEN";
 const SET_CV_INTERESSES = "SET_CV_INTERESSES";
 
+export const setCvContent = (value) => ({type: SET_CV_CONTENT, payload: value});
 export const setCvVoornaam = (value) => ({type: SET_CV_VOORNAAM, payload: value});
 export const setCvAchternaam = (value) => ({type: SET_CV_ACHTERNAAM, payload: value});
 export const setCvProfielschets = (value) => ({type: SET_CV_PROFIELSCHETS, payload: value});
@@ -22,6 +24,8 @@ const initialSubState = {
 
 const reducer = (subState = initialSubState, action) => {
     switch (action.type) {
+        case SET_CV_CONTENT:
+            return action.payload;
         case SET_CV_VOORNAAM:
             return {
                 ...subState,

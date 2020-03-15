@@ -19,7 +19,7 @@ const EventBroker = (props) => {
 
     const [connectionState, setConnectionState] = React.useState(ConnectionStates.DISABLED);
 
-    const setState = (newState) => setConnectionState((currentState) => {
+    const updateConnectionState = (newState) => setConnectionState((currentState) => {
         if (currentState === ConnectionStates.CONNECTING && newState === ConnectionStates.CLOSED) {
             // this is a failed connection attempt
             return currentState
@@ -34,12 +34,12 @@ const EventBroker = (props) => {
     React.useEffect(() => {
         if (props.isEnabled && connectionState === ConnectionStates.DISABLED) {
             connectEventBus();
-            setState(ConnectionStates.CONNECTING)
+            updateConnectionState(ConnectionStates.CONNECTING)
         } else if (props.isEnabled && connectionState === ConnectionStates.OPEN) {
             refreshHandlerRegistrations()
         } else if (!props.isEnabled && connectionState !== ConnectionStates.DISABLED && connectionState !== ConnectionStates.CLOSING) {
             disconnectEventBus();
-            setState(ConnectionStates.CLOSING)
+            updateConnectionState(ConnectionStates.CLOSING)
         }
     }, [props.isEnabled, connectionState]);
 
@@ -61,12 +61,12 @@ const EventBroker = (props) => {
 
         eventBus.onopen = () => {
             console.log('The vert.x EventBus is open.');
-            setState(ConnectionStates.OPEN);
+            updateConnectionState(ConnectionStates.OPEN);
         };
 
         eventBus.onclose = () => {
             console.log(`The vert.x EventBus is closed.`);
-            setState(ConnectionStates.CLOSED);
+            updateConnectionState(ConnectionStates.CLOSED);
         }
     };
 

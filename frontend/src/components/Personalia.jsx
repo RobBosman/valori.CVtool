@@ -5,17 +5,17 @@ import {setCvAchternaam, setCvVoornaam} from "../redux/ducks/CvContent"
 import {addEventHandler, removeEventHandler} from "./EventBroker"
 
 
-const getHeartbeatHandler = (error, message) => {
-    console.log('received a Heartbeat: ' + message.body);
+const getServerHeartbeatHandler = (error, message) => {
+    console.log(`received a Server Heartbeat: ${message.body}`);
 };
 
 
 const Personalia = (props) => {
 
     React.useEffect(() => {
-        const handler = {address: 'cv.heartbeat', header: {}, callback: getHeartbeatHandler};
+        const handler = {address: 'server.heartbeat', header: {}, callback: getServerHeartbeatHandler};
 
-        addEventHandler(handler);
+        addEventHandler(handler, 'add handlers');
         console.debug('Added event handlers');
 
         // at the close:

@@ -37,22 +37,19 @@ const reducer = (subState = AppStates.LOGGED_OUT, action) => {
 export default reducer
 
 export const appStateEpics = combineEpics(
-    (actions$) =>
-        actions$.pipe(
-            ofType(REQUEST_LOGIN),
-            delay(1),
-            mapTo(confirmLogin())
-        ),
-    (actions$) =>
-        actions$.pipe(
-            ofType(REQUEST_LOGOUT),
-            delay(1),
-            mapTo(confirmLogout())
-        ),
-    // (actions$) =>
-    //     actions$.pipe(
-    //         ofType(CONFIRM_LOGIN),
-    //         delay(10000),
-    //         mapTo(requestLogout())
-    //     )
+    (actions$) => actions$.pipe(
+        ofType(REQUEST_LOGIN),
+        delay(1),
+        mapTo(confirmLogin())
+    ),
+    (actions$) => actions$.pipe(
+        ofType(REQUEST_LOGOUT),
+        delay(1),
+        mapTo(confirmLogout())
+    ),
+    // (actions$) => actions$.pipe(
+    //     ofType(CONFIRM_LOGIN),
+    //     delay(10000),
+    //     mapTo(requestLogout())
+    // )
 );

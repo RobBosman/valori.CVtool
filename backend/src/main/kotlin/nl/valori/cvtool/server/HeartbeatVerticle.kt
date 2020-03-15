@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import rx.Observable
 import java.util.concurrent.TimeUnit
 
-const val ADDRESS_CV_HEARTBEAT = "cv.heartbeat"
+const val ADDRESS_SERVER_HEARTBEAT = "server.heartbeat"
 
 internal class HeartbeatVerticle : AbstractVerticle() {
 
@@ -17,7 +17,7 @@ internal class HeartbeatVerticle : AbstractVerticle() {
         .interval(1000, TimeUnit.MILLISECONDS)
         .map { if (it % 2 == 0L) "tik" else "tik" }
         .subscribe(
-            { vertx.eventBus().publish(ADDRESS_CV_HEARTBEAT, it) },
+            { vertx.eventBus().publish(ADDRESS_SERVER_HEARTBEAT, it) },
             { log.error("Error: {}", it.message, it) })
   }
 }
