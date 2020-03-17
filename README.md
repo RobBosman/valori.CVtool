@@ -14,7 +14,8 @@ Visual Studio Code with plugins
 * Babel JavaScript
 
 ## TODO:
-* apply vert.x ReactiveRead/WriteStream
+* explore Web Workers
+* apply vert.x ReactiveRead/WriteStream?
 * setup data model (hierarchy, Json data structure)
 * map to 'normalized Json' (list of entities and instances)
 * deal with lists of model elements in UI

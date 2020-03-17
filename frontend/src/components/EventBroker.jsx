@@ -2,14 +2,7 @@ import React from "react"
 import EventBus from "vertx3-eventbus-client"
 import {connect} from "react-redux"
 import {AppStates} from "../redux/ducks/AppState"
-
-export const ConnectionStates = {
-    DISABLED: 'DISABLED',
-    CONNECTING: 'CONNECTING',
-    OPEN: 'OPEN',
-    CLOSING: 'CLOSING',
-    CLOSED: 'CLOSED'
-};
+import {EventBusStates, updateEventBusState} from "../redux/ducks/EventBusState"
 
 const handlers = new Set();
 const handlersToBeUnregistered = new Set();
@@ -17,31 +10,17 @@ let eventBus = null;
 
 const EventBroker = (props) => {
 
-    const [connectionState, setConnectionState] = React.useState(ConnectionStates.DISABLED);
-
-    const updateConnectionState = (newState) => setConnectionState((currentState) => {
-        if (currentState === ConnectionStates.CONNECTING && newState === ConnectionStates.CLOSED) {
-            // this is a failed connection attempt
-            return currentState
-        }
-        if (currentState === ConnectionStates.CLOSING && newState === ConnectionStates.CLOSED) {
-            // this is the last time that onClose() was called
-            return ConnectionStates.DISABLED
-        }
-        return newState
-    });
-
     React.useEffect(() => {
-        if (props.isEnabled && connectionState === ConnectionStates.DISABLED) {
+        if (props.isEnabled && props.eventBusState === EventBusStates.DISABLED) {
             connectEventBus();
-            updateConnectionState(ConnectionStates.CONNECTING)
-        } else if (props.isEnabled && connectionState === ConnectionStates.OPEN) {
+            props.updateEventBusState(EventBusStates.CONNECTING)
+        } else if (props.isEnabled && props.eventBusState === EventBusStates.CONNECTED) {
             refreshHandlerRegistrations()
-        } else if (!props.isEnabled && connectionState !== ConnectionStates.DISABLED && connectionState !== ConnectionStates.CLOSING) {
+        } else if (!props.isEnabled && props.eventBusState !== EventBusStates.DISABLED && props.eventBusState !== EventBusStates.CLOSING) {
             disconnectEventBus();
-            updateConnectionState(ConnectionStates.CLOSING)
+            props.updateEventBusState(EventBusStates.CLOSING)
         }
-    }, [props.isEnabled, connectionState]);
+    }, [props.isEnabled, props.eventBusState]);
 
     const connectEventBus = () => {
         console.debug('Creating the vert.x EventBus.');
@@ -61,22 +40,22 @@ const EventBroker = (props) => {
 
         eventBus.onopen = () => {
             console.log('The vert.x EventBus is open.');
-            updateConnectionState(ConnectionStates.OPEN);
+            props.updateEventBusState(EventBusStates.CONNECTED);
         };
 
         eventBus.onclose = () => {
             console.log(`The vert.x EventBus is closed.`);
-            updateConnectionState(ConnectionStates.CLOSED);
+            props.updateEventBusState(EventBusStates.CLOSED);
         }
     };
 
     const disconnectEventBus = () => {
         console.debug('Closing the vert.x EventBus.');
         handlersToBeUnregistered.clear();
-        if (eventBus.state === EventBus.OPEN) {
+        if (eventBus?.state === EventBus.OPEN) {
             eventBus.close();
         } else {
-            eventBus.enableReconnect(false)
+            eventBus?.enableReconnect(false)
         }
     };
 
@@ -101,10 +80,15 @@ const EventBroker = (props) => {
 };
 
 const select = (state) => ({
-    isEnabled: state.appState === AppStates.LOGGED_IN
+    isEnabled: state.appState === AppStates.LOGGED_IN,
+    eventBusState: state.eventBusState
 });
 
-export default connect(select)(EventBroker)
+const mapDispatchToProps = (dispatch) => ({
+    updateEventBusState: (state) => dispatch(updateEventBusState(state))
+});
+
+export default connect(select, mapDispatchToProps)(EventBroker)
 
 
 export const addEventHandler = (handler) => {

@@ -86,7 +86,7 @@ internal class StorageVerticle : AbstractVerticle() {
                   },
                   {
                     log.error("MongoDB error: ${it.message}", it)
-                    message.reply(JsonObject().put("error", it.message))
+                    message.fail(RECIPIENT_FAILURE.toInt(), "MongoDB error: ${it.message}")
                   },
                   {
                     log.debug("MongoDB fetched ${reply.size()} documents")
