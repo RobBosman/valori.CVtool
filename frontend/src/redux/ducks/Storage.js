@@ -44,7 +44,7 @@ export const storageEpics = combineEpics(
     (actions$) => actions$.pipe(
         filter((action) => {
             // console.log("action", action);
-            heavyWait('any action', 500);
+            heavyWait('any action', 0);
             return false
         })
     ),
