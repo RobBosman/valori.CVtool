@@ -7,6 +7,7 @@ import EditorPage from "./EditorPage"
 import {AppStates} from "../redux/ducks/AppState"
 import {Fabric, initializeIcons, registerOnThemeChangeCallback, Text} from "office-ui-fabric-react"
 import MenuBar from "./MenuBar"
+import HeartPulse from "./HeartPulse";
 
 initializeIcons();
 
@@ -52,6 +53,7 @@ const Main = (props) => {
                 {/*}
                 <Heartbeat period={2000}/>
                 */}
+                <HeartPulse/>
             </ErrorBoundary>
         </Fabric>
     );
