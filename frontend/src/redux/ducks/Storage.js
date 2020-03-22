@@ -5,6 +5,7 @@ import {filter} from "rxjs/operators"
 import {sendEvent} from "../../components/EventBroker"
 import store from "../store";
 import {setCvContent} from "./CvContent";
+import {heavyWait} from "../utils";
 
 const LOAD = "LOAD";
 const SAVE = "SAVE";
@@ -17,7 +18,7 @@ const loadData = () => {
         if (error) {
             console.error("Error loading data:", error)
         } else {
-            console.log("Data received successfully:", message);
+            console.debug("Data received successfully:", message);
             store.dispatch(setCvContent(message.body[0]));
         }
     });
@@ -28,12 +29,12 @@ const saveData = () => {
 
     const data = store.getState().cvContent;
 
-    console.log("Saving data: ", data);
+    console.debug("Saving data: ", data);
     sendEvent('cv.data.set', data, {}, (error, message) => {
         if (error) {
             console.error("Error saving data:", error)
         } else {
-            console.log("Data saved successfully:", message)
+            console.debug("Data saved successfully:", message)
         }
     });
     return false
@@ -41,9 +42,9 @@ const saveData = () => {
 
 export const storageEpics = combineEpics(
     (actions$) => actions$.pipe(
-        filter(action => {
-            console.log("action", action);
-            // heavyWait('any action', 1000);
+        filter((action) => {
+            // console.log("action", action);
+            heavyWait('any action', 500);
             return false
         })
     ),

@@ -39,12 +39,12 @@ const EventBroker = (props) => {
         };
 
         eventBus.onopen = () => {
-            console.log('The vert.x EventBus is open.');
+            console.debug('The vert.x EventBus is open.');
             props.updateEventBusState(EventBusStates.CONNECTED);
         };
 
         eventBus.onclose = () => {
-            console.log(`The vert.x EventBus is closed.`);
+            console.debug(`The vert.x EventBus is closed.`);
             props.updateEventBusState(EventBusStates.CLOSED);
         }
     };

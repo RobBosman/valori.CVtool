@@ -1,0 +1,14 @@
+@keyframes fade_opacity {
+    0% {
+        opacity: 1.0;
+    }
+    100% {
+        opacity: 0.0;
+    }
+}
+
+#pulse {
+    opacity: 0.0;
+    animation-name: fade_opacity;
+    animation-duration: 1s;
+}
