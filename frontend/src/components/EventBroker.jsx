@@ -4,6 +4,15 @@ import {connect} from "react-redux"
 import {AppStates} from "../redux/ducks/AppState"
 import {EventBusStates, updateEventBusState} from "../redux/ducks/EventBusState"
 
+const CONNECT_URL = "http://localhost:80/eventbus";
+const CONNECT_OPTIONS = {
+    vertxbus_reconnect_attempts_max: Infinity, // Max reconnect attempts
+    vertxbus_reconnect_delay_min: 500, // Initial delay (in ms) before first reconnect attempt
+    vertxbus_reconnect_delay_max: 5000, // Max delay (in ms) between reconnect attempts
+    vertxbus_reconnect_exponent: 2, // Exponential backoff factor
+    vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
+};
+
 const handlers = new Set();
 const handlersToBeUnregistered = new Set();
 let eventBus = null;
@@ -24,14 +33,7 @@ const EventBroker = (props) => {
 
     const connectEventBus = () => {
         console.debug('Creating the vert.x EventBus.');
-        const options = {
-            vertxbus_reconnect_attempts_max: Infinity, // Max reconnect attempts
-            vertxbus_reconnect_delay_min: 500, // Initial delay (in ms) before first reconnect attempt
-            vertxbus_reconnect_delay_max: 5000, // Max delay (in ms) between reconnect attempts
-            vertxbus_reconnect_exponent: 2, // Exponential backoff factor
-            vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
-        };
-        eventBus = new EventBus('http://localhost:80/eventbus', options);
+        eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
         eventBus.enableReconnect(true);
 
         eventBus.onerror = (error) => {

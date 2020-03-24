@@ -38,7 +38,7 @@ const PulseMonitor = (props) => {
              style={{position: "fixed", width: 200, height: 200, bottom: 0, right: 0}}>
             <circle cx="100" cy="100" r="80" fill="none" stroke={getTheme().semanticColors.primaryButtonBackground}
                     strokeWidth="10" strokeDasharray="400,500" transform={"rotate(" + angle + ",100,100)"}/>
-            {props.shouldBeConnected !== props.isConnected
+            {(props.shouldBeConnected !== props.isConnected || !props.shouldBeConnected !== props.isDisconnected)
                 ? <circle cx="100" cy="100" r="50" fill="none" strokeWidth="25"
                           stroke={getTheme().semanticColors.warningHighlight}/>
                 : undefined}
@@ -49,7 +49,8 @@ const PulseMonitor = (props) => {
 
 const select = (state) => ({
     shouldBeConnected: state.appState === AppStates.LOGGED_IN,
-    isConnected: state.eventBusState === EventBusStates.CONNECTED
+    isConnected: state.eventBusState === EventBusStates.CONNECTED,
+    isDisconnected: (state.eventBusState === EventBusStates.CLOSED || state.eventBusState === EventBusStates.DISABLED)
 });
 
 export default connect(select)(PulseMonitor)
