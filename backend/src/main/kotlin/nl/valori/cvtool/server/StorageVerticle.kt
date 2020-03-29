@@ -17,6 +17,8 @@ import java.util.UUID
 const val ADDRESS_CV_DATA_GET = "cv.data.get"
 const val ADDRESS_CV_DATA_SET = "cv.data.set"
 
+internal const val DB_COLLECTION = "cvContent"
+
 internal class StorageVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
@@ -33,7 +35,7 @@ internal class StorageVerticle : AbstractVerticle() {
   }
 
   private fun handleSaveRequests(mongoDatabase: MongoDatabase) {
-    val mongoCollection = mongoDatabase.getCollection("spike")
+    val mongoCollection = mongoDatabase.getCollection(DB_COLLECTION)
 
     vertx.eventBus()
         .consumer<JsonObject>(ADDRESS_CV_DATA_SET)
@@ -69,7 +71,7 @@ internal class StorageVerticle : AbstractVerticle() {
   }
 
   private fun handleFetchRequests(mongoDatabase: MongoDatabase) {
-    val mongoCollection = mongoDatabase.getCollection("spike")
+    val mongoCollection = mongoDatabase.getCollection(DB_COLLECTION)
 
     vertx.eventBus()
         .consumer<JsonObject>(ADDRESS_CV_DATA_GET)

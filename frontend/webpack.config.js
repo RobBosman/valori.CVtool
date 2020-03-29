@@ -188,7 +188,11 @@ module.exports = (_env, argv) => {
             compress: true,
             historyApiFallback: true,
             open: true,
-            overlay: true
+            overlay: true,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*'
+            }
         }
     };
 };

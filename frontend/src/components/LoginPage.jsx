@@ -1,8 +1,6 @@
 import React from "react"
 import Title from "./Title"
-import {connect} from "react-redux"
-import {requestLogin} from "../redux/ducks/AppState"
-import {Link, PrimaryButton, Stack, Text} from "office-ui-fabric-react"
+import {Link, Stack, Text} from "office-ui-fabric-react"
 
 const LoginPage = (props) => {
 
@@ -24,15 +22,8 @@ const LoginPage = (props) => {
                 <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
                 <br/>
                 <br/>Problemen? <Link href="mailto:RobBosman@valori.nl" target="blank">Mail</Link> even!</Text>
-            <Stack.Item align="center">
-                <PrimaryButton onClick={props.requestLogin}>Aanmelden</PrimaryButton>
-            </Stack.Item>
         </Stack>
     )
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    requestLogin: () => dispatch(requestLogin())
-});
-
-export default connect(null, mapDispatchToProps)(LoginPage)
+export default LoginPage

@@ -1,0 +1,187 @@
+{
+  "account": {
+    "id": {
+      "id": "",
+      "name": "",
+      "profileIds": [],
+      "cvIds": []
+    }
+  },
+  "profile": {
+    "id": {
+      "id": "",
+      "dateOfBirth": "1970-01-01",
+      "residence": ""
+    }
+  },
+  "cv": {
+    "id": {
+      "id": "",
+      "function": {
+        "locale": ""
+      },
+      "personality": {
+        "locale": ""
+      },
+      "workingExperienceSince": 0,
+      "itExperienceSince": 0,
+      "interests": {
+        "locale": ""
+      },
+      "educationIds": [],
+      "publicationIds": [],
+      "referenceIds": [],
+      "skillIds": [],
+      "workingExperienceIds": []
+    }
+  },
+  "education": {
+    "id": {
+      "id": "",
+      "educationType": 0,
+      "educationName": {
+        "locale": ""
+      },
+      "institution": "",
+      "course": {
+        "locale": ""
+      },
+      "yearDiploma": 0,
+      "diploma": false
+    }
+  },
+  "publication": {
+    "id": {
+      "id": "",
+      "year": 0,
+      "media": "",
+      "title": {
+        "locale": ""
+      },
+      "description": {
+        "locale": ""
+      }
+    }
+  },
+  "reference": {
+    "id": {
+      "id": "",
+      "referentName": "",
+      "referentFunction": {
+        "locale": ""
+      },
+      "description": {
+        "locale": ""
+      },
+      "includeInCv": true
+    }
+  },
+  "skill": {
+    "id": {
+      "id": "",
+      "category": 0,
+      "description": {
+        "locale": ""
+      },
+      "skillLevel": 0
+    }
+  },
+  "workingExperience": {
+    "id": {
+      "id": "",
+      "employer": "",
+      "client": "",
+      "title": {
+        "locale": ""
+      },
+      "function": {
+        "locale": ""
+      },
+      "periodBegin": "1970-01-01",
+      "periodEnd": "1970-01-01",
+      "sortIndex": 0,
+      "includeInCv": true,
+      "assignment": {
+        "locale": ""
+      },
+      "activities": {
+        "locale": ""
+      },
+      "keyWords": {
+        "locale": ""
+      },
+      "results": {
+        "locale": ""
+      }
+    }
+  },
+  "role": {
+    "id": {
+      "id": "",
+      "name": ""
+    }
+  },
+  "businessUnit": {
+    "id": {
+      "id": "",
+      "name": "",
+      "contactName": "",
+      "contactEmail": "",
+      "contactPhone": ""
+    }
+  },
+  "linkAccountBusinessUnit": {
+    "accountId": "",
+    "businessUnitId": ""
+  },
+  "linkAccountRole": {
+    "accountId": "",
+    "roleId": ""
+  },
+  "refEducationType": [
+    {
+      "nl_NL": "opleiding",
+      "uk_UK": "education"
+    },
+    {
+      "nl_NL": "training",
+      "uk_UK": "training"
+    }
+  ],
+  "refSkillLevel": [
+    {
+      "nl_NL": "*",
+      "uk_UK": "*"
+    },
+    {
+      "nl_NL": "**",
+      "uk_UK": "**"
+    },
+    {
+      "nl_NL": "***",
+      "uk_UK": "***"
+    }
+  ],
+  "refSkillCategory": [
+    {
+      "nl_NL": "Branchkennis",
+      "uk_UK": "Branch knowledge"
+    },
+    {
+      "nl_NL": "Taalvaardigheid",
+      "uk_UK": "Languages"
+    },
+    {
+      "nl_NL": "Databases",
+      "uk_UK": "Databases"
+    },
+    {
+      "nl_NL": "Programmeertalen",
+      "uk_UK": "Programming languages"
+    },
+    {
+      "nl_NL": "Software tools",
+      "uk_UK": "Software tools"
+    }
+  ]
+}
