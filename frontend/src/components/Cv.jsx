@@ -1,16 +1,18 @@
 import React from "react"
 import {TextField} from "office-ui-fabric-react"
 import {connect} from "react-redux"
-import {setCvFunction, setCvInterests, setCvPersonality} from "../redux/ducks/Cv"
-
-const locale = 'nl_NL';
-const id = 'uuid-cv-1';
+import {setFunction, setInterests, setPersonality} from "../redux/ducks/Cv"
 
 const Cv = (props) => {
+
+    const [locale, setLocale] = React.useState('nl_NL');
+    const [id, setId] = React.useState('uuid-cv-1');
+    const wrap = (func) => (event) => func(id, locale, event);
+
     const cv = props.cv[id];
-    const _function = (cv) ? cv.function : "";
-    const personality = (cv) ? cv.personality[locale] : "";
-    const interests = (cv) ? cv.interests[locale] : "";
+    const _function = (cv && cv.function) ? cv.function[locale] : "";
+    const personality = (cv && cv.personality) ? cv.personality[locale] : "";
+    const interests = (cv && cv.interests) ? cv.interests[locale] : "";
     return (
         <div>
             <TextField
@@ -19,21 +21,31 @@ const Cv = (props) => {
                 autoAdjustHeight
                 value={_function}
                 disabled={!cv}
-                onChange={props.onChangeFunction}/>
+                onChange={wrap(props.onChangeFunction)}/>
             <TextField
                 label="Profielschets"
                 multiline
                 autoAdjustHeight
                 value={personality}
                 disabled={!cv}
-                onChange={props.onChangePersonality}/>
+                onChange={wrap(props.onChangePersonality)}/>
             <TextField
                 label="Interesses"
                 multiline
                 autoAdjustHeight
                 value={interests}
                 disabled={!cv}
-                onChange={props.onChangeInterests}/>
+                onChange={wrap(props.onChangeInterests)}/>
+            <TextField
+                label="Werkervaring sinds"
+                placeholder='yyyy'
+                disabled={!cv}
+                styles={{fieldGroup: {width: 100}}}/>
+            <TextField
+                label="IT ervaring sinds"
+                placeholder='yyyy'
+                disabled={!cv}
+                styles={{fieldGroup: {width: 100}}}/>
         </div>
     )
 };
@@ -43,9 +55,9 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onChangeFunction: (event) => dispatch(setCvFunction(id, event.target.value)),
-    onChangePersonality: (event) => dispatch(setCvPersonality(id, locale, event.target.value)),
-    onChangeInterests: (event) => dispatch(setCvInterests(id, locale, event.target.value))
+    onChangeFunction: (id, locale, event) => dispatch(setFunction(id, locale, event.target.value)),
+    onChangePersonality: (id, locale, event) => dispatch(setPersonality(id, locale, event.target.value)),
+    onChangeInterests: (id, locale, event) => dispatch(setInterests(id, locale, event.target.value))
 });
 
 export default connect(select, mapDispatchToProps)(Cv)

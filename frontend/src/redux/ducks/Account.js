@@ -1,29 +1,17 @@
 "use strict";
 
-const SET_ACCOUNT_NAME = "SET_ACCOUNT_NAME";
+import {createAction, createReducer} from "@reduxjs/toolkit"
 
-export const setAccountName = (id, value) => ({type: SET_ACCOUNT_NAME, id, value});
+export const setAccountName = createAction("SET_ACCOUNT_NAME", (id, value) => ({payload: {id, value}}));
 
 const initialSubState = {
     account: {}
 };
 
-const reducer = (subState = initialSubState, action) => {
-    switch (action.type) {
-        case SET_ACCOUNT_NAME:
-            return {
-                ...subState,
-                account: {
-                    ...subState.account,
-                    [action.id]: {
-                        ...subState.account[action.id],
-                        name: action.value
-                    }
-                }
-            };
-        default:
-            return subState
+const reducer = createReducer(initialSubState, {
+    [setAccountName.type]: (state, action) => {
+        state.account[action.payload.id].name = action.payload.value
     }
-};
+});
 
 export default reducer

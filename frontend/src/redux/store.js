@@ -1,18 +1,16 @@
 "use strict";
 
-import {applyMiddleware, createStore} from 'redux'
 import {createEpicMiddleware} from 'redux-observable'
 import rootReducer from './reducers'
 import rootEpic from './epics'
+import {configureStore} from "@reduxjs/toolkit"
 
 const epicMiddleware = createEpicMiddleware();
 
-const store = createStore(
-    rootReducer,
-    {},
-    applyMiddleware(
-        epicMiddleware
-    ));
+const store = configureStore({
+    reducer: rootReducer,
+    middleware: [epicMiddleware]
+});
 
 epicMiddleware.run(rootEpic);
 

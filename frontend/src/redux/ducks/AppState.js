@@ -1,17 +1,13 @@
 "use strict";
 
+import {createAction, createReducer} from "@reduxjs/toolkit"
 import {combineEpics, ofType} from "redux-observable"
 import {delay, mapTo} from "rxjs/operators"
 
-const REQUEST_LOGIN = "REQUEST_LOGIN";
-const CONFIRM_LOGIN = "CONFIRM_LOGIN";
-const REQUEST_LOGOUT = "REQUEST_LOGOUT";
-const CONFIRM_LOGOUT = "CONFIRM_LOGOUT";
-
-export const requestLogin = (name) => ({type: REQUEST_LOGIN, payload: name});
-export const confirmLogin = () => ({type: CONFIRM_LOGIN});
-export const requestLogout = () => ({type: REQUEST_LOGOUT});
-export const confirmLogout = () => ({type: CONFIRM_LOGOUT});
+export const requestLogin = createAction("REQUEST_LOGIN", (name) => ({payload: name}));
+export const confirmLogin = createAction("CONFIRM_LOGIN");
+export const requestLogout = createAction("REQUEST_LOGOUT");
+export const confirmLogout = createAction("CONFIRM_LOGOUT");
 
 export const AppStates = {
     LOGGED_OUT: "LOGGED_OUT",
@@ -20,35 +16,28 @@ export const AppStates = {
     LOGGING_OUT: "LOGGING_OUT"
 };
 
-const reducer = (subState = AppStates.LOGGED_OUT, action) => {
-    switch (action.type) {
-        case REQUEST_LOGIN:
-            return AppStates.LOGGING_IN;
-        case CONFIRM_LOGIN:
-            return AppStates.LOGGED_IN;
-        case REQUEST_LOGOUT:
-            return AppStates.LOGGING_OUT;
-        case CONFIRM_LOGOUT:
-            return AppStates.LOGGED_OUT;
-        default:
-            return subState;
-    }
-};
+const reducer = createReducer(AppStates.LOGGED_OUT, {
+    [requestLogin.type]: (state, action) => AppStates.LOGGING_IN,
+    [confirmLogin.type]: (state, action) => AppStates.LOGGED_IN,
+    [requestLogout.type]: (state, action) => AppStates.LOGGING_OUT,
+    [confirmLogout.type]: (state, action) => AppStates.LOGGED_OUT
+});
+
 export default reducer
 
 export const appStateEpics = combineEpics(
     (actions$) => actions$.pipe(
-        ofType(REQUEST_LOGIN),
+        ofType(requestLogin.type),
         delay(1),
         mapTo(confirmLogin())
     ),
     (actions$) => actions$.pipe(
-        ofType(REQUEST_LOGOUT),
+        ofType(requestLogout.type),
         delay(1),
         mapTo(confirmLogout())
     ),
     // (actions$) => actions$.pipe(
-    //     ofType(CONFIRM_LOGIN),
+    //     ofType(confirmLogin.type),
     //     delay(10000),
     //     mapTo(requestLogout())
     // )

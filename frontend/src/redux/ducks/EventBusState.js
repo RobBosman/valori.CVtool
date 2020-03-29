@@ -1,8 +1,8 @@
 "use strict";
 
-const UPDATE_EVENT_BUS_STATE = "UPDATE_EVENT_BUS_STATE";
+import {createAction, createReducer} from "@reduxjs/toolkit";
 
-export const updateEventBusState = (state) => ({type: UPDATE_EVENT_BUS_STATE, payload: state});
+export const updateEventBusState = createAction("UPDATE_EVENT_BUS_STATE", (newState) => ({payload: newState}));
 
 export const EventBusStates = {
     DISABLED: 'DISABLED',
@@ -12,8 +12,8 @@ export const EventBusStates = {
     CLOSED: 'CLOSED'
 };
 
-const reducer = (currentState = EventBusStates.DISABLED, action) => {
-    if (action.type === UPDATE_EVENT_BUS_STATE) {
+const reducer = createReducer(EventBusStates.DISABLED, {
+    [updateEventBusState.type]: (currentState, action) => {
         const newState = action.payload;
         if (currentState === EventBusStates.CONNECTING && newState === EventBusStates.CLOSED) {
             // this is a failed connection attempt
@@ -24,7 +24,7 @@ const reducer = (currentState = EventBusStates.DISABLED, action) => {
             return EventBusStates.DISABLED
         }
         return newState;
-    } else
-        return currentState;
-};
+    }
+});
+
 export default reducer
