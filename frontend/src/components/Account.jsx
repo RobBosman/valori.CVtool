@@ -22,7 +22,7 @@ const Account = (props) => {
 };
 
 const select = (state) => ({
-    account: state.persistent.account
+    account: state.safe.account
 });
 
 const mapDispatchToProps = (dispatch) => ({

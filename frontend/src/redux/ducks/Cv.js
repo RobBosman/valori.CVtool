@@ -11,13 +11,13 @@ const initialSubState = {
 };
 
 const reducer = createReducer(initialSubState, {
-    [setFunction.type]: (state, action) => {
+    [setFunction]: (state, action) => {
         state.cv[action.payload.id].function[action.payload.locale] = action.payload.value
     },
-    [setPersonality.type]: (state, action) => {
+    [setPersonality]: (state, action) => {
         state.cv[action.payload.id].personality[action.payload.locale] = action.payload.value
     },
-    [setInterests.type]: (state, action) => {
+    [setInterests]: (state, action) => {
         state.cv[action.payload.id].interests[action.payload.locale] = action.payload.value
     }
 });

@@ -6,22 +6,22 @@ import eventBusState from './ducks/EventBusState'
 import reduceReducers from "reduce-reducers"
 import account from "./ducks/Account"
 import cv from "./ducks/Cv"
-import storage from "./ducks/Storage"
+import safe from "./ducks/Safe"
 
-const persistentReducer = reduceReducers(
+const safeReducer = reduceReducers(
     {
         account: {},
         cv: {}
     },
     account,
     cv,
-    storage
+    safe
 );
 
 const rootReducer = combineReducers({
     appState,
     eventBusState,
-    persistent: persistentReducer
+    safe: safeReducer
 });
 
 export default rootReducer

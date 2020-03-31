@@ -6,27 +6,27 @@ import {DarkOrange} from "../themes/dark-orange"
 import {LightBlue} from "../themes/light-blue"
 import {LightGreen} from "../themes/light-green"
 import {DarkYellow} from "../themes/dark-yellow"
-import {load, save} from "../redux/ducks/Storage"
+import {fetch, save} from "../redux/ducks/Safe"
 
 const MenuBar = (props) => {
     const [theme, setTheme] = React.useState(getTheme());
 
     const items = [
-        {
-            key: 'load',
+        props.appState === AppStates.LOGGED_IN && {
+            key: 'fetch',
             text: 'Ophalen',
             iconProps: {iconName: 'DownloadDocument'},
             iconOnly: false,
-            onClick: props.load
+            onClick: props.fetch
         },
-        {
+        props.appState === AppStates.LOGGED_IN && {
             key: 'save',
             text: 'Opslaan',
             iconProps: {iconName: 'Save'},
             iconOnly: false,
             onClick: props.save
         }
-    ];
+    ].filter(Boolean);
 
     const farItems = [
         {
@@ -93,7 +93,7 @@ const select = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     requestLogin: () => dispatch(requestLogin()),
     requestLogout: () => dispatch(requestLogout()),
-    load: () => dispatch(load()),
+    fetch: () => dispatch(fetch()),
     save: () => dispatch(save())
 });
 

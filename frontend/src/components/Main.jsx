@@ -50,7 +50,9 @@ const Main = (props) => {
                 <MenuBar/>
                 <hr/>
                 {renderChildren(props)}
-                {/* <Heartbeat period={2000}/> */}
+                {/*
+                <Heartbeat period={2000}/>
+                */}
                 <PulseMonitor/>
             </ErrorBoundary>
         </Fabric>

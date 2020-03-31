@@ -2,11 +2,11 @@
 
 import {combineEpics} from 'redux-observable'
 import {appStateEpics} from "./ducks/AppState"
-import {storageEpics} from "./ducks/Storage"
+import {safeEpics} from "./ducks/Safe"
 
 const rootEpic = combineEpics(
     appStateEpics,
-    storageEpics
+    safeEpics
 );
 
 export default rootEpic

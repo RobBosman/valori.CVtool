@@ -51,7 +51,7 @@ const Cv = (props) => {
 };
 
 const select = (state) => ({
-    cv: state.persistent.cv
+    cv: state.safe.cv
 });
 
 const mapDispatchToProps = (dispatch) => ({

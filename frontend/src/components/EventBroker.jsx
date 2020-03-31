@@ -62,7 +62,6 @@ const EventBroker = (props) => {
     };
 
     const refreshHandlerRegistrations = () => {
-        console.debug(`Refreshing handler registration`);
         for (let i = handlersToBeUnregistered.size - 1; i >= 0; i--) { // loop reversed, so we can 'shrink' the list
             const handler = handlersToBeUnregistered[i];
             if (handler && eventBus?.state === EventBus.OPEN) {

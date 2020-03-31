@@ -9,7 +9,7 @@ const initialSubState = {
 };
 
 const reducer = createReducer(initialSubState, {
-    [setAccountName.type]: (state, action) => {
+    [setAccountName]: (state, action) => {
         state.account[action.payload.id].name = action.payload.value
     }
 });

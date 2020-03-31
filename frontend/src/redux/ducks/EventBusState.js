@@ -13,7 +13,7 @@ export const EventBusStates = {
 };
 
 const reducer = createReducer(EventBusStates.DISABLED, {
-    [updateEventBusState.type]: (currentState, action) => {
+    [updateEventBusState]: (currentState, action) => {
         const newState = action.payload;
         if (currentState === EventBusStates.CONNECTING && newState === EventBusStates.CLOSED) {
             // this is a failed connection attempt
