@@ -58,7 +58,7 @@
         "description": {
           "locale": ""
         },
-        "skillLevel": 0
+        "skillLevel": "ENUM"
       },
       "workingExperience": {
         "id": "",
@@ -108,41 +108,24 @@
     "accountId": "",
     "roleId": ""
   },
-  "refEducationType": {
-    "EDUCATION": {
-      "nl_NL": "Opleiding",
-      "uk_UK": "Education"
-    },
-    "TRAINING": {
-      "nl_NL": "Training",
-      "uk_UK": "Training"
-    }
-  },
-  "refSkillLevel": {
-    "BEGINNER": "*",
-    "ADVANCED": "**",
-    "EXPERT": "***"
-  },
-  "refSkillCategory": {
-    "BRANCHES": {
-      "nl_NL": "Branchkennis",
-      "uk_UK": "Branch knowledge"
-    },
-    "LANGUAGES": {
-      "nl_NL": "Taalvaardigheid",
-      "uk_UK": "Languages"
-    },
-    "DATABASES": {
-      "nl_NL": "Databases",
-      "uk_UK": "Databases"
-    },
-    "PROGRAMMING_LANGUAGES": {
-      "nl_NL": "Programmeertalen",
-      "uk_UK": "Programming languages"
-    },
-    "SOFTWARE_TOOLS": {
-      "nl_NL": "Software tools",
-      "uk_UK": "Software tools"
-    }
-  }
+  "refEducationType": [
+    "EDUCATION",
+    "TRAINING"
+  ],
+  "refDiploma": [
+    "true",
+    "false",
+    "n/a"
+  ],
+  "refSkillLevel": [
+    "*",
+    "**",
+    "***"
+  ],
+  "refSkillCategory": [
+    "BRANCHES",
+    "LANGUAGES",
+    "DATABASES",
+    "PROGRAMMING_LANGUAGES"
+  ]
 }

@@ -25,11 +25,11 @@ object Main {
     }
 
     // run server for max 10 minutes
-    if (log.isDebugEnabled)
-      vertx.setTimer(1_000 * 60 * 10) {
-        vertx.close()
-        log.info("And... it's gone!")
-      }
+//    if (log.isDebugEnabled)
+//      vertx.setTimer(1_000 * 60 * 10) {
+//        vertx.close()
+//        log.info("And... it's gone!")
+//      }
 
 
 //    vertx.setTimer(1_000 * 5) {

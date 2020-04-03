@@ -53,7 +53,7 @@
   "education": {
     "uuid-education-1": {
       "id": "uuid-education-1",
-      "educationType": 0,
+      "educationType": "EDUCATION",
       "institution": "Bataafse Kamp",
       "educationName": {
         "nl_NL": "Atheneum"
@@ -98,7 +98,7 @@
   "skill": {
     "uuid-skill-1": {
       "id": "uuid-skill-1",
-      "category": 3,
+      "category": "PROGRAMMING_LANGUAGES",
       "description": {
         "nl_NL": "Java",
         "uk_UK": "Java"
@@ -107,7 +107,7 @@
     },
     "uuid-skill-2": {
       "id": "uuid-skill-2",
-      "category": 3,
+      "category": "PROGRAMMING_LANGUAGES",
       "description": {
         "nl_NL": "Javascript",
         "uk_UK": "Javascript"
@@ -116,7 +116,7 @@
     },
     "uuid-skill-3": {
       "id": "uuid-skill-3",
-      "category": 0,
+      "category": "BRANCHES",
       "description": {
         "nl_NL": "Bankwezen",
         "uk_UK": "Banking"
@@ -125,7 +125,7 @@
     },
     "uuid-skill-4": {
       "id": "uuid-skill-4",
-      "category": "Taalvaardigheid",
+      "category": "LANGUAGES",
       "description": {
         "nl_NL": "Nederlands",
         "uk_UK": "Dutch"
@@ -189,49 +189,23 @@
     "roleId": "uuid-role-1"
   },
   "refEducationType": [
-    {
-      "nl_NL": "opleiding",
-      "uk_UK": "education"
-    },
-    {
-      "nl_NL": "training",
-      "uk_UK": "training"
-    }
+    "EDUCATION",
+    "TRAINING"
+  ],
+  "refDiploma": [
+    "true",
+    "false",
+    "n/a"
   ],
   "refSkillLevel": [
-    {
-      "nl_NL": "*",
-      "uk_UK": "*"
-    },
-    {
-      "nl_NL": "**",
-      "uk_UK": "**"
-    },
-    {
-      "nl_NL": "***",
-      "uk_UK": "***"
-    }
+    "*",
+    "**",
+    "***"
   ],
   "refSkillCategory": [
-    {
-      "nl_NL": "Branchkennis",
-      "uk_UK": "Branch knowledge"
-    },
-    {
-      "nl_NL": "Taalvaardigheid",
-      "uk_UK": "Languages"
-    },
-    {
-      "nl_NL": "Databases",
-      "uk_UK": "Databases"
-    },
-    {
-      "nl_NL": "Programmeertalen",
-      "uk_UK": "Programming languages"
-    },
-    {
-      "nl_NL": "Software tools",
-      "uk_UK": "Software tools"
-    }
+    "BRANCHES",
+    "LANGUAGES",
+    "DATABASES",
+    "PROGRAMMING_LANGUAGES"
   ]
 }

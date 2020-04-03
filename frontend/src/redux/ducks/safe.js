@@ -1,38 +1,25 @@
 "use strict";
 
 import {createAction, createReducer} from "@reduxjs/toolkit";
-import reduceReducers from "reduce-reducers";
 import {combineEpics, ofType} from "redux-observable";
 import {flatMap} from "rxjs/operators";
 import store from "../store";
-import accountReducer from "./accountDuck";
-import profileReducer from "./profileDuck";
-import educationReducer from "./educationDuck";
 import {sendEvent} from "../../components/EventBroker";
 import {fromArray} from "rxjs/internal/observable/fromArray";
 
 export const fetch = createAction("FETCH", () => ({payload: null}));
 export const save = createAction("SAVE", () => ({payload: null}));
 export const setSafeContent = createAction("SET_SAFE_CONTENT");
+export const setEntity = createAction("SET_ENTITY", (entity, id, value) => ({payload: {entity, id, value}}));
 
-const initialState = {
-    account: {},
-    cv: {}
-};
-
-const safeReducer = createReducer({}, {
-    [setSafeContent]: (state, action) => (action.payload ? action.payload : initialState)
+const combinedSafeReducer = createReducer({}, {
+    [setSafeContent]: (state, action) => action.payload ? action.payload : {},
+    [setEntity]: (state, action) => {
+        state[action.payload.entity][action.payload.id] = action.payload.value
+    }
 });
 
-export const combinedSafeReducer = reduceReducers(initialState,
-    accountReducer,
-    profileReducer,
-    educationReducer,
-    safeReducer
-);
-
 export default combinedSafeReducer
-
 
 export const safeEpics = combineEpics(
     (actions$) => actions$.pipe(

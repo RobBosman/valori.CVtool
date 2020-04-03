@@ -1,33 +1,30 @@
-import React from "react"
-import {getId, TextField} from "office-ui-fabric-react"
-import {connect} from "react-redux"
-import {setAccountName} from "../redux/ducks/accountDuck"
+import React from "react";
+import {getId, TextField} from "office-ui-fabric-react";
+import {connect} from "react-redux";
+import {mapHelpers} from "../redux/utils";
+import {setEntity} from "../redux/ducks/safe";
 
 const Account = (props) => {
 
-    const account = props.account[props.id];
-    const name = (account) ? account.name : "";
-
-    const wrapId = (func) => (event) => func(event, props.id);
+    const {instance, getValue, onChange} = mapHelpers(props.entities, props.entityId, props.onChange);
 
     return (
         <TextField
             id={getId('name')}
             label='Naam'
-            value={name}
-            disabled={!account}
-            onChange={wrapId(props.onChangeName)}
+            value={getValue('name')}
+            disabled={!instance}
+            onChange={onChange('name')}
             styles={{fieldGroup: {width: 400}}}/>
     )
 };
 
 const select = (state) => ({
-    account: state.safe.account,
-    id: state.ui.accountId
+    entities: state.safe.account
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onChangeName: (event, id) => dispatch(setAccountName(event.target.value, id))
+    onChange: (instance, id) => dispatch(setEntity('account', id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Account)
