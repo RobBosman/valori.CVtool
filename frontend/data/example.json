@@ -54,11 +54,11 @@
     "uuid-education-1": {
       "id": "uuid-education-1",
       "educationType": 0,
+      "institution": "Bataafse Kamp",
       "educationName": {
         "nl_NL": "Atheneum"
       },
-      "institution": "Bataafse Kamp",
-      "course": {
+      "syllabus": {
         "nl_NL": "Beta"
       },
       "yearDiploma": 1988,

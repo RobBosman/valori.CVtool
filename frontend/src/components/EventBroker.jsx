@@ -1,8 +1,8 @@
 import React from "react"
 import EventBus from "vertx3-eventbus-client"
 import {connect} from "react-redux"
-import {AppStates} from "../redux/ducks/AppState"
-import {EventBusStates, updateEventBusState} from "../redux/ducks/EventBusState"
+import {AuthenticationStates} from "../redux/ducks/authentication"
+import {EventBusStates, updateEventBusState} from "../redux/ducks/eventBus"
 
 const CONNECT_URL = "http://localhost:80/eventbus";
 const CONNECT_OPTIONS = {
@@ -20,16 +20,16 @@ let eventBus = null;
 const EventBroker = (props) => {
 
     React.useEffect(() => {
-        if (props.isEnabled && props.eventBusState === EventBusStates.DISABLED) {
+        if (props.isEnabled && props.eventBus === EventBusStates.DISABLED) {
             connectEventBus();
             props.updateEventBusState(EventBusStates.CONNECTING)
-        } else if (props.isEnabled && props.eventBusState === EventBusStates.CONNECTED) {
+        } else if (props.isEnabled && props.eventBus === EventBusStates.CONNECTED) {
             refreshHandlerRegistrations()
-        } else if (!props.isEnabled && props.eventBusState !== EventBusStates.DISABLED && props.eventBusState !== EventBusStates.CLOSING) {
+        } else if (!props.isEnabled && props.eventBus !== EventBusStates.DISABLED && props.eventBus !== EventBusStates.CLOSING) {
             disconnectEventBus();
             props.updateEventBusState(EventBusStates.CLOSING)
         }
-    }, [props.isEnabled, props.eventBusState]);
+    }, [props.isEnabled, props.eventBus]);
 
     const connectEventBus = () => {
         console.debug('Creating the vert.x EventBus.');
@@ -81,8 +81,8 @@ const EventBroker = (props) => {
 };
 
 const select = (state) => ({
-    isEnabled: state.appState === AppStates.LOGGED_IN,
-    eventBusState: state.eventBusState
+    isEnabled: state.authentication === AuthenticationStates.LOGGED_IN,
+    eventBus: state.eventBus
 });
 
 const mapDispatchToProps = (dispatch) => ({

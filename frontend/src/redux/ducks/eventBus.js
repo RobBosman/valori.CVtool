@@ -2,7 +2,7 @@
 
 import {createAction, createReducer} from "@reduxjs/toolkit";
 
-export const updateEventBusState = createAction("UPDATE_EVENT_BUS_STATE", (newState) => ({payload: newState}));
+export const updateEventBusState = createAction("UPDATE_EVENT_BUS_STATE");
 
 export const EventBusStates = {
     DISABLED: 'DISABLED',
@@ -12,7 +12,7 @@ export const EventBusStates = {
     CLOSED: 'CLOSED'
 };
 
-const reducer = createReducer(EventBusStates.DISABLED, {
+const eventBusReducer = createReducer(EventBusStates.DISABLED, {
     [updateEventBusState]: (currentState, action) => {
         const newState = action.payload;
         if (currentState === EventBusStates.CONNECTING && newState === EventBusStates.CLOSED) {
@@ -27,4 +27,4 @@ const reducer = createReducer(EventBusStates.DISABLED, {
     }
 });
 
-export default reducer
+export default eventBusReducer

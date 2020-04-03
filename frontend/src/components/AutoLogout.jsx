@@ -1,10 +1,10 @@
 import React from "react"
-import {AppStates, requestLogout} from "../redux/ducks/AppState"
+import {AuthenticationStates, requestLogout} from "../redux/ducks/authentication"
 import {connect} from "react-redux";
 
 const AutoLogout = (props) => {
     React.useEffect(() => {
-        if (props.appState === AppStates.LOGGED_IN && props.delayMillis > 0) {
+        if (props.authentication === AuthenticationStates.LOGGED_IN && props.delayMillis > 0) {
             const timeoutID = setTimeout(props.requestLogout, props.delayMillis);
             console.log(`set logout timeout[${timeoutID}]`);
 
@@ -14,13 +14,13 @@ const AutoLogout = (props) => {
                 console.log(`cleared logout timeout[${timeoutID}]`);
             }
         }
-    }, [props.appState, props.delayMillis]);
+    }, [props.authentication, props.delayMillis]);
 
     return null // render nothing
 };
 
 const select = (state) => ({
-    appState: state.appState
+    authentication: state.authentication
 });
 
 const mapDispatchToProps = (dispatch) => ({

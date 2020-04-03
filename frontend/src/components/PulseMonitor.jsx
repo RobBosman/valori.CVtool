@@ -2,9 +2,9 @@ import React from "react"
 import {getTheme} from "office-ui-fabric-react"
 import {addEventHandler, removeEventHandler} from "./EventBroker"
 import "./KeyFrames.css"
-import {AppStates} from "../redux/ducks/AppState"
+import {AuthenticationStates} from "../redux/ducks/authentication"
 import {connect} from "react-redux"
-import {EventBusStates} from "../redux/ducks/EventBusState"
+import {EventBusStates} from "../redux/ducks/eventBus"
 
 const PulseMonitor = (props) => {
 
@@ -25,7 +25,7 @@ const PulseMonitor = (props) => {
 
     const [pulse, setPulse] = React.useState(undefined);
 
-    const serverHeartbeatHandler = (error, message) => {
+    const serverHeartbeatHandler = () => {
         setPulse(<circle cx="100" cy="100" r="25" fill={getTheme().semanticColors.bodySubtext}
                          style={{opacity: 0.0, animationName: "fadeOutOpacity", animationDuration: "1s"}}/>);
         const timeoutID = setTimeout(() => setPulse(undefined), 900);
@@ -48,9 +48,9 @@ const PulseMonitor = (props) => {
 };
 
 const select = (state) => ({
-    shouldBeConnected: state.appState === AppStates.LOGGED_IN,
-    isConnected: state.eventBusState === EventBusStates.CONNECTED,
-    isDisconnected: (state.eventBusState === EventBusStates.CLOSED || state.eventBusState === EventBusStates.DISABLED)
+    shouldBeConnected: state.authentication === AuthenticationStates.LOGGED_IN,
+    isConnected: state.eventBus === EventBusStates.CONNECTED,
+    isDisconnected: (state.eventBus === EventBusStates.CLOSED || state.eventBus === EventBusStates.DISABLED)
 });
 
 export default connect(select)(PulseMonitor)

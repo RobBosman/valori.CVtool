@@ -21,12 +21,12 @@
         "locale": ""
       },
       "education": {
-        "educationType": 0,
+        "educationType": "ENUM",
+        "institution": "",
         "educationName": {
           "locale": ""
         },
-        "institution": "",
-        "course": {
+        "syllabus": {
           "locale": ""
         },
         "yearDiploma": 0,
@@ -54,7 +54,7 @@
       },
       "skill": {
         "id": "",
-        "category": 0,
+        "category": "ENUM",
         "description": {
           "locale": ""
         },
@@ -108,50 +108,41 @@
     "accountId": "",
     "roleId": ""
   },
-  "refEducationType": [
-    {
-      "nl_NL": "opleiding",
-      "uk_UK": "education"
+  "refEducationType": {
+    "EDUCATION": {
+      "nl_NL": "Opleiding",
+      "uk_UK": "Education"
     },
-    {
-      "nl_NL": "training",
-      "uk_UK": "training"
+    "TRAINING": {
+      "nl_NL": "Training",
+      "uk_UK": "Training"
     }
-  ],
-  "refSkillLevel": [
-    {
-      "nl_NL": "*",
-      "uk_UK": "*"
-    },
-    {
-      "nl_NL": "**",
-      "uk_UK": "**"
-    },
-    {
-      "nl_NL": "***",
-      "uk_UK": "***"
-    }
-  ],
-  "refSkillCategory": [
-    {
+  },
+  "refSkillLevel": {
+    "BEGINNER": "*",
+    "ADVANCED": "**",
+    "EXPERT": "***"
+  },
+  "refSkillCategory": {
+    "BRANCHES": {
       "nl_NL": "Branchkennis",
       "uk_UK": "Branch knowledge"
     },
-    {
+    "LANGUAGES": {
       "nl_NL": "Taalvaardigheid",
       "uk_UK": "Languages"
     },
-    {
+    "DATABASES": {
       "nl_NL": "Databases",
       "uk_UK": "Databases"
     },
-    {
+    "PROGRAMMING_LANGUAGES": {
       "nl_NL": "Programmeertalen",
       "uk_UK": "Programming languages"
     },
-    {
+    "SOFTWARE_TOOLS": {
       "nl_NL": "Software tools",
       "uk_UK": "Software tools"
     }
-  ]
+  }
 }

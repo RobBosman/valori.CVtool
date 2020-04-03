@@ -2,7 +2,7 @@ import React from "react"
 import Title from "./Title"
 import {Link, Stack, Text} from "office-ui-fabric-react"
 
-const LoginPage = (props) => {
+const LoginPage = () => {
 
     const themedLargeStackTokens = {
         childrenGap: 'l1',

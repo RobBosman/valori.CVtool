@@ -39,11 +39,11 @@
     "id": {
       "id": "",
       "educationType": 0,
+      "institution": "",
       "educationName": {
         "locale": ""
       },
-      "institution": "",
-      "course": {
+      "syllabus": {
         "locale": ""
       },
       "yearDiploma": 0,

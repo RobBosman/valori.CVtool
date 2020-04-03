@@ -1,28 +1,28 @@
 import React from "react"
 import {connect} from "react-redux"
-import {AppStates, requestLogin, requestLogout} from "../redux/ducks/AppState"
+import {AuthenticationStates, requestLogin, requestLogout} from "../redux/ducks/authentication"
 import {CommandBar, getTheme, loadTheme} from "office-ui-fabric-react"
 import {DarkOrange} from "../themes/dark-orange"
 import {LightBlue} from "../themes/light-blue"
 import {LightGreen} from "../themes/light-green"
 import {DarkYellow} from "../themes/dark-yellow"
-import {fetch, save} from "../redux/ducks/Safe"
+import {fetch, save} from "../redux/ducks/safe"
 
 const MenuBar = (props) => {
     const [theme, setTheme] = React.useState(getTheme());
 
     const items = [
-        props.appState === AppStates.LOGGED_IN && {
+        props.authentication === AuthenticationStates.LOGGED_IN && {
             key: 'fetch',
             text: 'Ophalen',
-            iconProps: {iconName: 'DownloadDocument'},
+            iconProps: {iconName: 'CloudDownload'},
             iconOnly: false,
             onClick: props.fetch
         },
-        props.appState === AppStates.LOGGED_IN && {
+        props.authentication === AuthenticationStates.LOGGED_IN && {
             key: 'save',
             text: 'Opslaan',
-            iconProps: {iconName: 'Save'},
+            iconProps: {iconName: 'CloudUpload'},
             iconOnly: false,
             onClick: props.save
         }
@@ -67,17 +67,17 @@ const MenuBar = (props) => {
                 ]
             }
         },
-        (props.appState === AppStates.LOGGED_OUT || props.appState === AppStates.LOGGING_IN) && {
+        (props.authentication === AuthenticationStates.LOGGED_OUT || props.authentication === AuthenticationStates.LOGGING_IN) && {
             key: 'login',
             text: 'Aanmelden',
             onClick: props.requestLogin,
-            disabled: props.appState !== AppStates.LOGGED_OUT
+            disabled: props.authentication !== AuthenticationStates.LOGGED_OUT
         },
-        (props.appState === AppStates.LOGGED_IN || props.appState === AppStates.LOGGING_OUT) && {
+        (props.authentication === AuthenticationStates.LOGGED_IN || props.authentication === AuthenticationStates.LOGGING_OUT) && {
             key: 'logout',
             text: 'Afmelden',
             onClick: props.requestLogout,
-            disabled: props.appState !== AppStates.LOGGED_IN
+            disabled: props.authentication !== AuthenticationStates.LOGGED_IN
         }
     ].filter(Boolean);
 
@@ -87,7 +87,7 @@ const MenuBar = (props) => {
 };
 
 const select = (state) => ({
-    appState: state.appState
+    authentication: state.authentication
 });
 
 const mapDispatchToProps = (dispatch) => ({
