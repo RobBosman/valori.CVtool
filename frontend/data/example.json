@@ -1,40 +1,51 @@
 {
+  "_id": "uuid-safe-1",
+  "businessUnit": {
+    "uuid-businessUnit-1": {
+      "id": "uuid-businessUnit-1",
+      "name": "Quality & Architecture",
+      "contactName": "Bob van Zeist",
+      "contactEmail": "BobVanZeist@valori.nl",
+      "contactPhone": "+31612345678"
+    }
+  },
   "account": {
     "uuid-account-1": {
       "id": "uuid-account-1",
       "name": "Rob Bosman",
-      "profileIds": [
-        "uuid-profile-1"
+      "dateOfBirth": "1965-09-06",
+      "residence": "Leusden",
+      "privileges": [
+        "ADMIN"
+      ],
+      "businessUnitIds": [
+        "uuid-businessUnit-1"
       ],
       "cvIds": [
         "uuid-cv-1"
       ]
     }
   },
-  "profile": {
-    "uuid-profile-1": {
-      "id": "uuid-profile-1",
-      "dateOfBirth": "1965-09-06",
-      "residence": "Leusden"
-    }
-  },
   "cv": {
     "uuid-cv-1": {
       "id": "uuid-cv-1",
-      "function": "senior software developer",
-      "personality": {
+      "accountId": "uuid-account-1",
+      "role": {
+        "nl_NL": "senior software developer"
+      },
+      "profile": {
         "nl_NL": "Blabla fantastisch bla"
       },
-      "workingExperienceSince": 1990,
-      "itExperienceSince": 1990,
       "interests": {
         "nl_NL": "best divers"
       },
+      "workingSince": 1990,
+      "inItSince": 1990,
       "educationIds": [
         "uuid-education-1"
       ],
       "publicationIds": [
-        "uuid-on-1"
+        "uuid-publication-1"
       ],
       "referenceIds": [
         "uuid-reference-1"
@@ -53,23 +64,20 @@
   "education": {
     "uuid-education-1": {
       "id": "uuid-education-1",
-      "educationType": "EDUCATION",
+      "type": "EDUCATION",
+      "name": {
+        "nl_NL": "Atheneum-B"
+      },
       "institution": "Bataafse Kamp",
-      "educationName": {
-        "nl_NL": "Atheneum"
-      },
-      "syllabus": {
-        "nl_NL": "Beta"
-      },
       "yearDiploma": 1988,
-      "diploma": true
+      "diploma": "PASSED"
     }
   },
   "publication": {
     "uuid-publication-1": {
       "id": "uuid-publication-1",
-      "year": 0,
-      "media": "schoolkrant",
+      "year": 1972,
+      "media": "Schoolkrant",
       "title": {
         "nl_NL": "Mijn tekening",
         "uk_UK": "My drawing"
@@ -98,55 +106,55 @@
   "skill": {
     "uuid-skill-1": {
       "id": "uuid-skill-1",
-      "category": "PROGRAMMING_LANGUAGES",
+      "category": "PROGRAMMING",
       "description": {
         "nl_NL": "Java",
         "uk_UK": "Java"
       },
-      "skillLevel": 2
+      "skillLevel": "EXPERT"
     },
     "uuid-skill-2": {
       "id": "uuid-skill-2",
-      "category": "PROGRAMMING_LANGUAGES",
+      "cvId": "uuid-cv-1",
+      "category": "PROGRAMMING",
       "description": {
         "nl_NL": "Javascript",
         "uk_UK": "Javascript"
       },
-      "skillLevel": 2
+      "skillLevel": "EXPERT"
     },
     "uuid-skill-3": {
       "id": "uuid-skill-3",
+      "cvId": "uuid-cv-1",
       "category": "BRANCHES",
       "description": {
         "nl_NL": "Bankwezen",
         "uk_UK": "Banking"
       },
-      "skillLevel": 1
+      "skillLevel": "ADVANCED"
     },
     "uuid-skill-4": {
       "id": "uuid-skill-4",
+      "cvId": "uuid-cv-1",
       "category": "LANGUAGES",
       "description": {
         "nl_NL": "Nederlands",
         "uk_UK": "Dutch"
       },
-      "skillLevel": 1
+      "skillLevel": "EXPERT"
     }
   },
   "workingExperience": {
     "uuid-workingExperience-1": {
       "id": "uuid-workingExperience-1",
-      "employer": "Valori",
-      "client": "Bank Mendes Gans",
-      "title": {
-        "nl_NL": "Software ontwikkeling",
-        "uk_UK": "Software development"
-      },
-      "function": "software developer",
       "periodBegin": "2020-01-01",
       "periodEnd": "2099-12-31",
-      "sortIndex": 0,
-      "includeInCv": true,
+      "employer": "Valori",
+      "client": "Bank Mendes Gans",
+      "role": {
+        "nl_NL": "Senior developer",
+        "uk_UK": "Senior developer"
+      },
       "assignment": {
         "nl_NL": "beheren en ombouwen van applicaties",
         "uk_UK": "maintain and rebuild applications"
@@ -155,57 +163,44 @@
         "nl_NL": "DevOps werk",
         "uk_UK": "DevOps work"
       },
+      "results": {
+        "nl_NL": "nog bezig",
+        "uk_UK": "ongoing"
+      },
       "keyWords": {
         "nl_NL": "java, Spring",
         "uk_UK": "java, Spring"
       },
-      "results": {
-        "nl_NL": "nog bezig",
-        "uk_UK": "ongoing"
-      }
+      "sortIndex": 0,
+      "includeInCv": true
     }
   },
-  "role": {
-    "uuid-rol-1": {
-      "id": "uuid-role-1",
-      "name": "beheerder"
-    }
-  },
-  "businessUnit": {
-    "uuid-businessUnit-1": {
-      "id": "uuid-businessUnit-1",
-      "name": "Quality & Architecture",
-      "contactName": "Bob van Zeist",
-      "contactEmail": "BobVanZeist@valori.nl",
-      "contactPhone": "+31612345678"
-    }
-  },
-  "linkAccountBusinessUnit": {
-    "accountId": "uuid-account-1",
-    "businessUnitId": "uuid-businessUnit-1"
-  },
-  "linkAccountRole": {
-    "accountId": "uuid-account-1",
-    "roleId": "uuid-role-1"
-  },
-  "refEducationType": [
+  "ENUM_ROLE": [
+    "ADMIN"
+  ],
+  "ENUM_EDUCATION_TYPE": [
     "EDUCATION",
     "TRAINING"
   ],
-  "refDiploma": [
-    "true",
-    "false",
-    "n/a"
+  "ENUM_DIPLOMA": [
+    "PASSED",
+    "FAILED",
+    "NOT_APPLICABLE"
   ],
-  "refSkillLevel": [
-    "*",
-    "**",
-    "***"
-  ],
-  "refSkillCategory": [
-    "BRANCHES",
+  "ENUM_SKILL_CATEGORY": [
     "LANGUAGES",
+    "BRANCHES",
     "DATABASES",
-    "PROGRAMMING_LANGUAGES"
+    "PROGRAMMING",
+    "APPLICATIONS",
+    "METHODS",
+    "EXPERTISE",
+    "TOOLS",
+    "OS_NETWORKS"
+  ],
+  "ENUM_SKILL_LEVEL": [
+    "FOUNDATION",
+    "ADVANCED",
+    "EXPERT"
   ]
 }

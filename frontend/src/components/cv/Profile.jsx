@@ -1,29 +1,28 @@
 import React from "react";
 import {TextField} from "office-ui-fabric-react";
 import {connect} from "react-redux";
-import {mapHelpers} from "../../redux/utils";
-import {setEntity} from "../../redux/ducks/safe";
+import {mapHelpers, setSafeInstance} from "../../redux/ducks/safe";
 
 const Profile = (props) => {
 
-    const {instance, getValue, getValueLocale, onChange, onChangeLocale} = mapHelpers(props.entities, props.entityId, props.onChange, props.locale);
+    const {instance, getValue, getValueLocale, onChange, onChangeLocale} = mapHelpers(props.entity, props.entityId, props.onChange, props.locale);
 
     return (
         <div>
             <TextField
-                label="Functie"
+                label="Rol"
                 multiline
                 autoAdjustHeight
-                value={getValueLocale('function')}
+                value={getValueLocale('role')}
                 disabled={!instance}
-                onChange={onChangeLocale('function')}/>
+                onChange={onChangeLocale('role')}/>
             <TextField
                 label="Profielschets"
                 multiline
                 autoAdjustHeight
-                value={getValueLocale('personality')}
+                value={getValueLocale('profile')}
                 disabled={!instance}
-                onChange={onChangeLocale('personality')}/>
+                onChange={onChangeLocale('profile')}/>
             <TextField
                 label="Interesses"
                 multiline
@@ -35,27 +34,27 @@ const Profile = (props) => {
                 label="Werkervaring sinds"
                 placeholder='yyyy'
                 styles={{fieldGroup: {width: 100}}}
-                value={getValue('workingExperienceSince')}
+                value={getValue('workingSince')}
                 disabled={!instance}
-                onChange={onChange('workingExperienceSince')}/>
+                onChange={onChange('workingSince')}/>
             <TextField
                 label="IT ervaring sinds"
                 styles={{fieldGroup: {width: 100}}}
                 placeholder='yyyy'
-                value={getValue('itExperienceSince')}
+                value={getValue('inItSince')}
                 disabled={!instance}
-                onChange={onChange('itExperienceSince')}/>
+                onChange={onChange('inItSince')}/>
         </div>
     )
 };
 
 const select = (state) => ({
     locale: state.ui.locale,
-    entities: state.safe.cv
+    entity: state.safe.cv
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onChange: (instance, id) => dispatch(setEntity('cv', id, instance))
+    onChange: (instance, id) => dispatch(setSafeInstance('cv', id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Profile)

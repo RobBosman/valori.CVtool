@@ -56,7 +56,7 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <arguments>install</arguments>
+              <arguments>install --no-optional</arguments>
             </configuration>
           </execution>
           <execution>

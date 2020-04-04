@@ -10,12 +10,13 @@ import {fromArray} from "rxjs/internal/observable/fromArray";
 export const fetch = createAction("FETCH", () => ({payload: null}));
 export const save = createAction("SAVE", () => ({payload: null}));
 export const setSafeContent = createAction("SET_SAFE_CONTENT");
-export const setEntity = createAction("SET_ENTITY", (entity, id, value) => ({payload: {entity, id, value}}));
+export const setSafeInstance = createAction("SET_SAFE_INSTANCE",
+    (entity, id, instance) => ({payload: {entity, id, instance}}));
 
 const combinedSafeReducer = createReducer({}, {
     [setSafeContent]: (state, action) => action.payload ? action.payload : {},
-    [setEntity]: (state, action) => {
-        state[action.payload.entity][action.payload.id] = action.payload.value
+    [setSafeInstance]: (state, action) => {
+        state[action.payload.entity][action.payload.id] = action.payload.instance
     }
 });
 
@@ -55,4 +56,54 @@ const saveActions = () => {
         }
     });
     return fromArray([])
+};
+
+/**
+ * This function provides a set of helper functions to easily navigate the normalised Redux {@code store.safe} data.
+ * @param entity
+ * @param entityId
+ * @param onChangeEntity
+ * @param locale
+ * @returns {{
+ *   instance: *,
+ *   getValue: (function(*, *=): *|string),
+ *   getValueLocale: (function(*, *=): *|string),
+ *   onChange: (function(*, *=): function(*=, *=): *),
+ *   onChangeLocale: (function(*, *=): function(*=, *=): *)
+ * }}
+ */
+export const mapHelpers = (entity, entityId, onChangeEntity, locale) => {
+
+    const instance = entity && entity[entityId];
+
+    const getValue = (propertyName, defaultValue = '') =>
+        instance && instance[propertyName] && instance[propertyName] || defaultValue;
+
+    const getValueLocale = (propertyName, defaultValue = '') =>
+        instance && instance[propertyName] && instance[propertyName][locale] || defaultValue;
+
+    const defaultConvertEvent = (event) => event.target.value;
+
+    const onChange = (propertyName, convert = defaultConvertEvent) => (event, option) => onChangeEntity({
+            ...instance,
+            [propertyName]: convert(event, option)
+        },
+        entityId);
+
+    const onChangeLocale = (propertyName, convert = defaultConvertEvent) => (event, option) => onChangeEntity({
+            ...instance,
+            [propertyName]: {
+                ...instance[propertyName],
+                [locale]: convert(event, option)
+            }
+        },
+        entityId);
+
+    return {
+        instance,
+        getValue,
+        getValueLocale,
+        onChange,
+        onChangeLocale
+    };
 };

@@ -8,9 +8,9 @@ import Education from "./cv/Education";
 
 const EditorPage = (props) => {
 
-    const account = props.accountEntities && props.accountEntities[props.accountId];
+    const account = props.accountEntity && props.accountEntity[props.accountId];
     const cvId = account && account.cvIds && account.cvIds[0];
-    const cv = props.cvEntities && props.cvEntities[cvId];
+    const cv = props.cvEntity && props.cvEntity[cvId];
     const educationId = cv && cv.educationIds && cv.educationIds[0];
 
     return (
@@ -33,8 +33,8 @@ const EditorPage = (props) => {
 
 const select = (state) => ({
     accountId: state.ui.accountId,
-    accountEntities: state.safe.account,
-    cvEntities: state.safe.cv
+    accountEntity: state.safe.account,
+    cvEntity: state.safe.cv
 });
 
 export default connect(select)(EditorPage)

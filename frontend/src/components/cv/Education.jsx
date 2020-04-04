@@ -1,41 +1,35 @@
 import React from "react"
 import {ChoiceGroup, TextField, Toggle} from "office-ui-fabric-react"
 import {connect} from "react-redux"
-import {mapHelpers} from "../../redux/utils";
-import {setEntity} from "../../redux/ducks/safe";
+import {mapHelpers, setSafeInstance} from "../../redux/ducks/safe";
 
 const educationTypes = [
-    {key: "EDUCATION", text: 'Education', iconProps: {iconName: 'PublishCourse'}},
+    {key: "EDUCATION", text: 'Opleiding', iconProps: {iconName: 'PublishCourse'}},
     {key: "TRAINING", text: 'Training', iconProps: {iconName: 'UserEvent'}}
 ];
 
 const Education = (props) => {
 
-    const {instance, getValue, getValueLocale, onChange, onChangeLocale} = mapHelpers(props.entities, props.entityId, props.onChange, props.locale);
+    const {instance, getValue, getValueLocale, onChange, onChangeLocale} = mapHelpers(props.entity, props.entityId, props.onChange, props.locale);
 
     return (
         <div>
             <ChoiceGroup
                 label="Soort opleiding"
                 options={educationTypes}
-                selectedKey={getValue('educationType', "EDUCATION")}
+                selectedKey={getValue('type', "EDUCATION")}
                 disabled={!instance}
-                onChange={onChange('educationType', (event, option) => option.key)}/>
+                onChange={onChange('type', (event, option) => option.key)}/>
+            <TextField
+                label="Opleiding"
+                value={getValueLocale('name')}
+                disabled={!instance}
+                onChange={onChangeLocale('name')}/>
             <TextField
                 label="Opleidingsinstituut"
                 value={getValue('institution')}
                 disabled={!instance}
                 onChange={onChange('institution')}/>
-            <TextField
-                label="Opleiding"
-                value={getValueLocale('educationName')}
-                disabled={!instance}
-                onChange={onChangeLocale('educationName')}/>
-            <TextField
-                label="Syllabus"
-                value={getValueLocale('syllabus')}
-                disabled={!instance}
-                onChange={onChangeLocale('syllabus')}/>
             <TextField
                 label="Jaar diploma"
                 styles={{fieldGroup: {width: 100}}}
@@ -54,11 +48,11 @@ const Education = (props) => {
 
 const select = (state) => ({
     locale: state.ui.locale,
-    entities: state.safe.education
+    entity: state.safe.education
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onChange: (instance, id) => dispatch(setEntity('education', id, instance))
+    onChange: (instance, id) => dispatch(setSafeInstance('education', id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Education)

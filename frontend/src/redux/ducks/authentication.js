@@ -7,10 +7,10 @@ import {setAccountId} from "./ui";
 import {fromArray} from "rxjs/internal/observable/fromArray";
 import {setSafeContent} from "./safe";
 
-export const requestLogin = createAction("REQUEST_LOGIN", () => ({payload: null}));
-export const confirmLogin = createAction("CONFIRM_LOGIN", () => ({payload: null}));
-export const requestLogout = createAction("REQUEST_LOGOUT", () => ({payload: null}));
-export const confirmLogout = createAction("CONFIRM_LOGOUT", () => ({payload: null}));
+export const requestLogin = createAction("AUTHENTICATION_REQUEST_LOGIN", () => ({}));
+export const confirmLogin = createAction("AUTHENTICATION_CONFIRM_LOGIN", () => ({}));
+export const requestLogout = createAction("AUTHENTICATION_REQUEST_LOGOUT", () => ({}));
+export const confirmLogout = createAction("AUTHENTICATION_CONFIRM_LOGOUT", () => ({}));
 
 export const AuthenticationStates = {
     LOGGED_OUT: "LOGGED_OUT",
@@ -31,12 +31,12 @@ export default authenticationReducer
 export const authenticationEpics = combineEpics(
     (actions$) => actions$.pipe(
         ofType(requestLogin.type),
-        delay(100),
+        delay(0),
         flatMap(loginActions)
     ),
     (actions$) => actions$.pipe(
         ofType(requestLogout.type),
-        delay(100),
+        delay(0),
         flatMap(logOutActions)
     )
     // (actions$) => actions$.pipe(

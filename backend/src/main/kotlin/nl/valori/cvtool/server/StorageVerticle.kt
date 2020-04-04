@@ -17,7 +17,7 @@ import java.util.UUID
 const val ADDRESS_CV_DATA_GET = "cv.data.get"
 const val ADDRESS_CV_DATA_SET = "cv.data.set"
 
-internal const val DB_COLLECTION = "cvContent"
+internal const val DB_COLLECTION = "safe"
 
 internal class StorageVerticle : AbstractVerticle() {
 

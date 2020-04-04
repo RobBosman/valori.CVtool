@@ -2,7 +2,7 @@
 
 import {createAction, createReducer} from "@reduxjs/toolkit";
 
-export const updateEventBusState = createAction("UPDATE_EVENT_BUS_STATE");
+export const updateEventBusState = createAction("EVENT_BUS_UPDATE_STATE");
 
 export const EventBusStates = {
     DISABLED: 'DISABLED',

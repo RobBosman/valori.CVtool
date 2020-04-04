@@ -1,131 +1,131 @@
 {
+  "businessUnit": {
+    "id": "ID",
+    "name": "STRING",
+    "contactName": "STRING",
+    "contactEmail": "STRING",
+    "contactPhone": "STRING"
+  },
   "account": {
-    "id": "",
-    "name": "",
-    "profile": {
-      "id": "",
-      "dateOfBirth": "1970-01-01",
-      "residence": ""
+    "id": "ID",
+    "name": "STRING",
+    "dateOfBirth": "DATE",
+    "residence": "STRING",
+    "privileges": [
+      "ENUM_PRIVILEGE"
+    ],
+    "businessUnitIds": [],
+    "cvIds": []
+  },
+  "cv": {
+    "id": "ID",
+    "role": {
+      "locale": "STRING"
     },
-    "cv": {
-      "id": "",
-      "function": {
-        "locale": ""
-      },
-      "personality": {
-        "locale": ""
-      },
-      "workingExperienceSince": 0,
-      "itExperienceSince": 0,
-      "interests": {
-        "locale": ""
-      },
-      "education": {
-        "educationType": "ENUM",
-        "institution": "",
-        "educationName": {
-          "locale": ""
-        },
-        "syllabus": {
-          "locale": ""
-        },
-        "yearDiploma": 0,
-        "diploma": false
-      },
-      "publication": {
-        "year": 0,
-        "media": "",
-        "title": {
-          "locale": ""
-        },
-        "description": {
-          "locale": ""
-        }
-      },
-      "reference": {
-        "referentName": "",
-        "referentFunction": {
-          "locale": ""
-        },
-        "description": {
-          "locale": ""
-        },
-        "includeInCv": true
-      },
-      "skill": {
-        "id": "",
-        "category": "ENUM",
-        "description": {
-          "locale": ""
-        },
-        "skillLevel": "ENUM"
-      },
-      "workingExperience": {
-        "id": "",
-        "employer": "",
-        "client": "",
-        "title": {
-          "locale": ""
-        },
-        "function": {
-          "locale": ""
-        },
-        "periodBegin": "1970-01-01",
-        "periodEnd": "1970-01-01",
-        "sortIndex": 0,
-        "includeInCv": true,
-        "assignment": {
-          "locale": ""
-        },
-        "activities": {
-          "locale": ""
-        },
-        "keyWords": {
-          "locale": ""
-        },
-        "results": {
-          "locale": ""
-        }
-      }
+    "profile": {
+      "locale": "STRING"
+    },
+    "interests": {
+      "locale": "STRING"
+    },
+    "workingSince": "YEAR",
+    "inItSince": "YEAR",
+    "educationIds": [],
+    "publicationIds": [],
+    "referenceIds": [],
+    "skillIds": [],
+    "workingExperienceIds": []
+  },
+  "education": {
+    "id": "ID",
+    "type": "ENUM_EDUCATION_TYPE",
+    "name": {
+      "locale": "STRING"
+    },
+    "institution": "STRING",
+    "yearDiploma": "YEAR",
+    "diploma": "ENUM_DIPLOMA"
+  },
+  "publication": {
+    "id": "ID",
+    "year": "YEAR",
+    "media": "STRING",
+    "title": {
+      "locale": "STRING"
+    },
+    "description": {
+      "locale": "STRING"
     }
   },
-  "role": {
-    "id": "",
-    "name": ""
+  "reference": {
+    "id": "ID",
+    "referentName": "STRING",
+    "referentFunction": {
+      "locale": "STRING"
+    },
+    "description": {
+      "locale": "STRING"
+    },
+    "includeInCv": "BOOLEAN"
   },
-  "businessUnit": {
-    "id": "",
-    "name": "",
-    "contactName": "",
-    "contactEmail": "",
-    "contactPhone": ""
+  "skill": {
+    "id": "ID",
+    "category": "ENUM_SKILL_CATEGORY",
+    "description": {
+      "locale": "STRING"
+    },
+    "skillLevel": "ENUM_SKILL_LEVEL"
   },
-  "linkAccountBusinessUnit": {
-    "accountId": "",
-    "businessUnitId": ""
+  "workingExperience": {
+    "id": "ID",
+    "periodBegin": "DATE",
+    "periodEnd": "DATE",
+    "employer": "STRING",
+    "client": "STRING",
+    "role": {
+      "locale": "STRING"
+    },
+    "assignment": {
+      "locale": "STRING"
+    },
+    "activities": {
+      "locale": "STRING"
+    },
+    "results": {
+      "locale": "STRING"
+    },
+    "keyWords": {
+      "locale": "STRING"
+    },
+    "sortIndex": "NUMBER",
+    "includeInCv": "BOOLEAN"
   },
-  "linkAccountRole": {
-    "accountId": "",
-    "roleId": ""
-  },
-  "refEducationType": [
+  "ENUM_PRIVILEGE": [
+    "ADMIN"
+  ],
+  "ENUM_EDUCATION_TYPE": [
     "EDUCATION",
     "TRAINING"
   ],
-  "refDiploma": [
-    "true",
-    "false",
-    "n/a"
+  "ENUM_DIPLOMA": [
+    "PASSED",
+    "FAILED",
+    "NOT_APPLICABLE"
   ],
-  "refSkillLevel": [
-    "*",
-    "**",
-    "***"
-  ],
-  "refSkillCategory": [
-    "BRANCHES",
+  "ENUM_SKILL_CATEGORY": [
     "LANGUAGES",
+    "BRANCHES",
     "DATABASES",
-    "PROGRAMMING_LANGUAGES"
+    "PROGRAMMING",
+    "APPLICATIONS",
+    "METHODS",
+    "EXPERTISE",
+    "TOOLS",
+    "OS_NETWORKS"
+  ],
+  "ENUM_SKILL_LEVEL": [
+    "FOUNDATION",
+    "ADVANCED",
+    "EXPERT"
   ]
 }

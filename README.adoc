@@ -29,7 +29,7 @@ Visual Studio Code with plugins
 - [x] connect MongoDB and vert.x using vert.x libs
 - [x] replace deprecated(?) vert.x libs with MongoDB Reactive Streams driver
 - [ ] setup data model (hierarchy, Json data structure)
-- [ ] map to 'normalized Json' (list of entities and instances)
+- [x] map to 'normalized Json' (list of entities and instances)
 - [ ] deal with lists of model elements in UI
 - [ ] extend UI with all required pivots and fields for maintaining cv
 - [ ] store model in MongoDB
