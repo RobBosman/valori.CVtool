@@ -2,14 +2,17 @@ import React from "react"
 import {connect} from "react-redux"
 import {AuthenticationStates, requestLogin, requestLogout} from "../redux/ducks/authentication"
 import {CommandBar, getTheme, loadTheme} from "office-ui-fabric-react"
-import {DarkOrange} from "../themes/dark-orange"
-import {LightBlue} from "../themes/light-blue"
-import {LightGreen} from "../themes/light-green"
-import {DarkYellow} from "../themes/dark-yellow"
-import {fetch, save} from "../redux/ducks/safe"
+import darkOrange from "../themes/darkOrange"
+import lightBlue from "../themes/lightBlue"
+import lightGreen from "../themes/lightGreen"
+import darkYellow from "../themes/darkYellow"
+import {fetchAll, saveAll} from "../redux/ducks/safe"
+import {setThemeName} from "../redux/ducks/ui";
+import {EventBusStates} from "../redux/ducks/eventBus";
 
 const MenuBar = (props) => {
-    const [theme, setTheme] = React.useState(getTheme());
+
+    const currentTheme = getTheme();
 
     const items = [
         props.authentication === AuthenticationStates.LOGGED_IN && {
@@ -17,6 +20,7 @@ const MenuBar = (props) => {
             text: 'Ophalen',
             iconProps: {iconName: 'CloudDownload'},
             iconOnly: false,
+            disabled: !props.isConnected,
             onClick: props.fetch
         },
         props.authentication === AuthenticationStates.LOGGED_IN && {
@@ -24,6 +28,7 @@ const MenuBar = (props) => {
             text: 'Opslaan',
             iconProps: {iconName: 'CloudUpload'},
             iconOnly: false,
+            disabled: !props.isConnected,
             onClick: props.save
         }
     ].filter(Boolean);
@@ -37,47 +42,47 @@ const MenuBar = (props) => {
             subMenuProps: {
                 items: [
                     {
-                        key: 'darkOrangeTheme',
+                        key: 'darkOrange',
                         text: 'Donker - Oranje',
-                        onMouseOver: () => loadTheme(DarkOrange),
-                        onMouseOut: () => loadTheme(theme),
-                        onClick: () => setTheme(DarkOrange)
+                        onMouseOver: () => loadTheme(darkOrange),
+                        onMouseOut: () => loadTheme(currentTheme),
+                        onClick: () => props.setThemeName('darkOrange')
                     },
                     {
-                        key: 'darkYellowTheme',
+                        key: 'darkYellow',
                         text: 'Donker - Geel',
-                        onMouseOver: () => loadTheme(DarkYellow),
-                        onMouseOut: () => loadTheme(theme),
-                        onClick: () => setTheme(DarkYellow)
+                        onMouseOver: () => loadTheme(darkYellow),
+                        onMouseOut: () => loadTheme(currentTheme),
+                        onClick: () => props.setThemeName('darkYellow')
                     },
                     {
-                        key: 'lightBlueTheme',
+                        key: 'lightBlue',
                         text: 'Licht - Blauw',
-                        onMouseOver: () => loadTheme(LightBlue),
-                        onMouseOut: () => loadTheme(theme),
-                        onClick: () => setTheme(LightBlue)
+                        onMouseOver: () => loadTheme(lightBlue),
+                        onMouseOut: () => loadTheme(currentTheme),
+                        onClick: () => props.setThemeName('lightBlue')
                     },
                     {
-                        key: 'lightGreenTheme',
+                        key: 'lightGreen',
                         text: 'Licht - Groen',
-                        onMouseOver: () => loadTheme(LightGreen),
-                        onMouseOut: () => loadTheme(theme),
-                        onClick: () => setTheme(LightGreen)
+                        onMouseOver: () => loadTheme(lightGreen),
+                        onMouseOut: () => loadTheme(currentTheme),
+                        onClick: () => props.setThemeName('lightGreen')
                     }
                 ]
             }
         },
-        (props.authentication === AuthenticationStates.LOGGED_OUT || props.authentication === AuthenticationStates.LOGGING_IN) && {
+        (props.authentication === AuthenticationStates.LOGGED_OUT || props.authentication === AuthenticationStates.LOGGING_OUT) && {
             key: 'login',
             text: 'Aanmelden',
-            onClick: props.requestLogin,
-            disabled: props.authentication !== AuthenticationStates.LOGGED_OUT
+            disabled: props.authentication !== AuthenticationStates.LOGGED_OUT,
+            onClick: props.requestLogin
         },
-        (props.authentication === AuthenticationStates.LOGGED_IN || props.authentication === AuthenticationStates.LOGGING_OUT) && {
+        (props.authentication === AuthenticationStates.LOGGED_IN || props.authentication === AuthenticationStates.LOGGING_IN) && {
             key: 'logout',
             text: 'Afmelden',
-            onClick: props.requestLogout,
-            disabled: props.authentication !== AuthenticationStates.LOGGED_IN
+            disabled: props.authentication !== AuthenticationStates.LOGGED_IN,
+            onClick: props.requestLogout
         }
     ].filter(Boolean);
 
@@ -87,14 +92,16 @@ const MenuBar = (props) => {
 };
 
 const select = (state) => ({
-    authentication: state.authentication
+    authentication: state.authentication,
+    isConnected: state.eventBus === EventBusStates.CONNECTED
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    setThemeName: (themeName) => dispatch(setThemeName(themeName)),
     requestLogin: () => dispatch(requestLogin()),
     requestLogout: () => dispatch(requestLogout()),
-    fetch: () => dispatch(fetch()),
-    save: () => dispatch(save())
+    fetch: () => dispatch(fetchAll()),
+    save: () => dispatch(saveAll())
 });
 
 export default connect(select, mapDispatchToProps)(MenuBar)

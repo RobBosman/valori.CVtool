@@ -6,7 +6,7 @@ import {createTheme} from "office-ui-fabric-react"
 // primary color: #f0d000
 // text color: #ffffff
 // backgroundColor: #323130
-export const DarkYellow = createTheme({
+const theme = createTheme({
     palette: {
         themePrimary: '#f0d000',
         themeLighterAlt: '#0a0800',
@@ -32,3 +32,5 @@ export const DarkYellow = createTheme({
         white: '#323130',
     }
 });
+
+export default theme

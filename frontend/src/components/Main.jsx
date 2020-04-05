@@ -1,19 +1,13 @@
 import React from "react"
 import {connect} from "react-redux"
 import {AuthenticationStates} from "../redux/ducks/authentication"
-import {Fabric, initializeIcons, registerOnThemeChangeCallback, Text} from "office-ui-fabric-react"
+import {Fabric, Text} from "office-ui-fabric-react"
 import ErrorBoundary from "./ErrorBoundary"
 import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import EditorPage from "./EditorPage"
 import MenuBar from "./MenuBar"
 import PulseMonitor from "./PulseMonitor"
-
-initializeIcons();
-
-registerOnThemeChangeCallback((theme) => {
-    document.documentElement.style.background = theme.semanticColors.bodyBackground
-});
 
 const Main = (props) => {
     const renderChildren = () => {
@@ -48,8 +42,7 @@ const Main = (props) => {
 };
 
 const select = (state) => ({
-    authentication: state.authentication,
-    theme: state.theme
+    authentication: state.authentication
 });
 
 export default connect(select)(Main)

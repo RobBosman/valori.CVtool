@@ -6,7 +6,7 @@ import {createTheme} from "office-ui-fabric-react"
 // primary color: #008000
 // text color: #323130
 // backgroundColor: #ffffff
-export const LightBlue = createTheme({
+const theme = createTheme({
     palette: {
         themePrimary: '#0078d4',
         themeLighterAlt: '#eff6fc',
@@ -32,3 +32,5 @@ export const LightBlue = createTheme({
         white: '#ffffff'
     }
 });
+
+export default theme

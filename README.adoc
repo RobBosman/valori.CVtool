@@ -17,9 +17,9 @@ Visual Studio Code with plugins
 == TODO:
 
 - [x] explore web components and React
-- [x] explore npm, node, gulp and webpack
+- [x] explore npm, node, gulp, yarn and webpack
 - [x] combine npm, node with maven
-- [x] apply Redux (with epics)
+- [x] apply Redux (with epics, RxJS)
 - [x] apply Fabric UI
 - [x] explore Fabric theming
 - [x] explore Fabric styling (css via javascript)
@@ -28,22 +28,26 @@ Visual Studio Code with plugins
 - [x] use heartbeat (server) and PulseMonitor (client)
 - [x] connect MongoDB and vert.x using vert.x libs
 - [x] replace deprecated(?) vert.x libs with MongoDB Reactive Streams driver
-- [ ] setup data model (hierarchy, Json data structure)
-- [x] map to 'normalized Json' (list of entities and instances)
+- [x] setup data model (hierarchy, Json data structure)
+- [x] find out how to _efficiently_ bind web components to the data in the Redux store
+- [x] map to 'normalized Json' (list of entities and instances
+- [ ] store normalized data model in MongoDB
 - [ ] deal with lists of model elements in UI
 - [ ] extend UI with all required pivots and fields for maintaining cv
-- [ ] store model in MongoDB
+- [ ] add inline editable tables?
+- [ ] secure vert.x event bus
+- [ ] handle sessions, login/out
+- [ ] store model in relational database
 - [ ] explore Web Workers?
 - [ ] apply vert.x ReactiveRead/WriteStream?
+- [ ] store model in relational database
 - [ ] request Valori server (docker) and database
-- [ ] store model in other database
 - [ ] convert data from old database (directly connect to old database?)
-- [ ] add OpenID Connect authentication flow
-- [ ] (client obtains code; server obtains token)
-- [ ] add auto-refresh of tokens (how? hidden iframe?)
-- [ ] secure vert.x event bus
+- [ ] add OpenID Connect authentication flow +
+(client obtains code; server obtains token)
+- [ ] add auto-refresh of tokens (how exactly?)
 - [ ] add Word export
 - [ ] add storing in SharePoint
 - [ ] add auto-save
 - [ ] add admin role and functionality
-
+- [ ] add unit (integration) tests

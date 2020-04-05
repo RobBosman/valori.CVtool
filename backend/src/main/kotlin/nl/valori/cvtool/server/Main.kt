@@ -38,13 +38,13 @@ object Main {
 //          .put("dummy", JsonObject()
 //              .put("content", "gibberish"))
 //      vertx.eventBus()
-//          .request<JsonObject>(ADDRESS_CV_DATA_SET, dataJson) { response ->
+//          .request<JsonObject>(ADDRESS_SAFE_SET, dataJson) { response ->
 //            if (response.failed())
 //              throw response.cause()
 //
 //            val idJson = response.result().body()
 //            vertx.eventBus()
-//                .request<JsonObject>(ADDRESS_CV_DATA_GET, idJson) { response2 ->
+//                .request<JsonObject>(ADDRESS_SAFE_GET, idJson) { response2 ->
 //                  if (response2.failed())
 //                    throw response2.cause()
 //                  log.info("Got something from MongoDB: {}", response2.result().body())

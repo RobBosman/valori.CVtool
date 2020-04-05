@@ -1,4 +1,4 @@
-package nl.valori.cvtool.reactive
+package nl.valori.reactive
 
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription

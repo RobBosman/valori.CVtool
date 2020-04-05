@@ -8,7 +8,7 @@ import eventBusReducer from "./ducks/eventBus";
 import uiReducer from "./ducks/ui";
 import safeReducer, {safeEpics} from "./ducks/safe";
 import {filter} from "rxjs/operators";
-import {heavyWait} from "./utils";
+import {heavyWait} from "./../app";
 
 const rootReducer = combineReducers({
     authentication: authenticationReducer,
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
     safe: safeReducer
 });
 
-export const devEpics = combineEpics(
+export const debugEpics = combineEpics(
     (actions$) => actions$.pipe(
         filter((action) => {
             // console.debug("dispatched: ", action);
@@ -30,7 +30,7 @@ export const devEpics = combineEpics(
 const rootEpic = combineEpics(
     authenticationEpics,
     safeEpics,
-    devEpics
+    debugEpics
 );
 
 const epicMiddleware = createEpicMiddleware();

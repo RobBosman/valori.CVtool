@@ -2,7 +2,7 @@
   "_id": "uuid-safe-1",
   "businessUnit": {
     "uuid-businessUnit-1": {
-      "id": "uuid-businessUnit-1",
+      "_id": "uuid-businessUnit-1",
       "name": "Quality & Architecture",
       "contactName": "Bob van Zeist",
       "contactEmail": "BobVanZeist@valori.nl",
@@ -11,7 +11,7 @@
   },
   "account": {
     "uuid-account-1": {
-      "id": "uuid-account-1",
+      "_id": "uuid-account-1",
       "name": "Rob Bosman",
       "dateOfBirth": "1965-09-06",
       "residence": "Leusden",
@@ -28,7 +28,7 @@
   },
   "cv": {
     "uuid-cv-1": {
-      "id": "uuid-cv-1",
+      "_id": "uuid-cv-1",
       "accountId": "uuid-account-1",
       "role": {
         "nl_NL": "senior software developer"
@@ -63,7 +63,7 @@
   },
   "education": {
     "uuid-education-1": {
-      "id": "uuid-education-1",
+      "_id": "uuid-education-1",
       "type": "EDUCATION",
       "name": {
         "nl_NL": "Atheneum-B"
@@ -75,7 +75,7 @@
   },
   "publication": {
     "uuid-publication-1": {
-      "id": "uuid-publication-1",
+      "_id": "uuid-publication-1",
       "year": 1972,
       "media": "Schoolkrant",
       "title": {
@@ -90,7 +90,7 @@
   },
   "reference": {
     "uuid-reference-1": {
-      "id": "uuid-reference-1",
+      "_id": "uuid-reference-1",
       "referentName": "Jeroen Sanders",
       "referentFunction": {
         "nl_NL": "Manager",
@@ -105,7 +105,7 @@
   },
   "skill": {
     "uuid-skill-1": {
-      "id": "uuid-skill-1",
+      "_id": "uuid-skill-1",
       "category": "PROGRAMMING",
       "description": {
         "nl_NL": "Java",
@@ -114,7 +114,7 @@
       "skillLevel": "EXPERT"
     },
     "uuid-skill-2": {
-      "id": "uuid-skill-2",
+      "_id": "uuid-skill-2",
       "cvId": "uuid-cv-1",
       "category": "PROGRAMMING",
       "description": {
@@ -124,7 +124,7 @@
       "skillLevel": "EXPERT"
     },
     "uuid-skill-3": {
-      "id": "uuid-skill-3",
+      "_id": "uuid-skill-3",
       "cvId": "uuid-cv-1",
       "category": "BRANCHES",
       "description": {
@@ -134,7 +134,7 @@
       "skillLevel": "ADVANCED"
     },
     "uuid-skill-4": {
-      "id": "uuid-skill-4",
+      "_id": "uuid-skill-4",
       "cvId": "uuid-cv-1",
       "category": "LANGUAGES",
       "description": {
@@ -146,7 +146,7 @@
   },
   "workingExperience": {
     "uuid-workingExperience-1": {
-      "id": "uuid-workingExperience-1",
+      "_id": "uuid-workingExperience-1",
       "periodBegin": "2020-01-01",
       "periodEnd": "2099-12-31",
       "employer": "Valori",
