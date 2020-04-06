@@ -70,6 +70,7 @@
   },
   "skill": {
     "id": "ID",
+    "cvId": "ID",
     "category": "ENUM_SKILL_CATEGORY",
     "description": {
       "locale": "STRING"

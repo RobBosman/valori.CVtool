@@ -106,6 +106,7 @@
   "skill": {
     "uuid-skill-1": {
       "_id": "uuid-skill-1",
+      "cvId": "uuid-cv-1",
       "category": "PROGRAMMING",
       "description": {
         "nl_NL": "Java",

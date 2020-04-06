@@ -35,9 +35,18 @@ export const safeEpics = combineEpics(
     )
 );
 
+/**
+ * Request message body must be JSON, listing _ids per entity:
+ * <pre>
+ *   {
+ *     "entity_1": [ "XXX", "YYY" ],
+ *     "entity_2": [ "ZZZ" ]
+ *   }
+ * </pre>
+ * @returns {boolean} - always false
+ */
 const fetchAllFromRemote = () => {
     [
-        // 'safe',
         'account',
         'cv',
         'education'
@@ -48,14 +57,7 @@ const fetchAllFromRemote = () => {
                 console.error(`Error fetching safe.${entity}`, error)
             } else {
                 console.debug(`Successfully received safe.${entity}`, message);
-                message.body
-                    .map(instance => {
-                        if (entity === 'safe') {
-                            store.dispatch(setSafeContent(instance))
-                        } else {
-                            store.dispatch(setSafeInstance(entity, instance._id, instance))
-                        }
-                    })
+                message.body.map(instance => store.dispatch(setSafeInstance(entity, instance._id, instance)))
             }
         });
     });
@@ -63,17 +65,13 @@ const fetchAllFromRemote = () => {
 };
 
 const saveAllToRemote = () => {
-    const safeContent = store.getState().safe;
-    Object.keys(safeContent)
-        .map((entity) => {
-            sendEvent('save', safeContent[entity], {entity}, (error, message) => {
-                if (error) {
-                    console.error(`Error saving safe.${entity}`, error)
-                } else {
-                    console.debug(`Successfully saved safe.${entity}`, message)
-                }
-            });
-        });
+    sendEvent('save', store.getState().safe, {}, (error, message) => {
+        if (error) {
+            console.error(`Error saving safe`, error)
+        } else {
+            console.debug(`Successfully saved safe`, message)
+        }
+    });
     return false
 };
 
