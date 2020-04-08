@@ -3,7 +3,7 @@ package nl.valori.reactive
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 
-open class ReactiveStreamsSubscriber<T>(
+open class RSSubscriber<T>(
     private val onNext: (T) -> Unit,
     private val onError: (Throwable) -> Unit,
     private val onComplete: () -> Unit

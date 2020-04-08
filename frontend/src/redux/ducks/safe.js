@@ -1,38 +1,39 @@
 "use strict";
 
-import {createAction, createReducer} from "@reduxjs/toolkit";
-import {combineEpics, ofType} from "redux-observable";
-import {filter} from "rxjs/operators";
+import { createAction, createReducer } from "@reduxjs/toolkit";
+import { combineEpics, ofType } from "redux-observable";
+import { filter } from "rxjs/operators";
 import store from "../store";
-import {sendEvent} from "../../components/EventBroker";
+import { sendEvent } from "../../components/EventBroker";
 
-export const fetchAll = createAction("FETCH_ALL", () => ({payload: null}));
-export const saveAll = createAction("SAVE_ALL", () => ({payload: null}));
-export const setSafeContent = createAction("SAFE_SET_CONTENT");
-export const setSafeInstance = createAction("SAFE_SET_INSTANCE",
-    (entity, id, instance) => ({payload: {entity, id, instance}}));
+export const fetchAll = createAction("FETCH_ALL", () => ({ payload: null }));
+export const saveAll = createAction("SAVE_ALL", () => ({ payload: null }));
+export const replaceSafeContent = createAction("SAFE_REPLACE_CONTENT");
+export const replaceSafeEntity = createAction("SAFE_REPLACE_ENTITY");
+export const replaceSafeInstance = createAction("SAFE_REPLACE_INSTANCE",
+  (entity, id, instance) => ({ payload: { entity, id, instance } }));
 
 const safeReducer = createReducer({}, {
-    [setSafeContent]: (state, action) => action.payload ? action.payload : {},
-    [setSafeInstance]: (state, action) => {
-        if (!state[action.payload.entity]) {
-            state[action.payload.entity] = {}
-        }
-        state[action.payload.entity][action.payload.id] = action.payload.instance
+  [replaceSafeContent]: (state, action) => action.payload ? action.payload : {},
+  [replaceSafeInstance]: (state, action) => {
+    if (!state[action.payload.entity]) {
+      state[action.payload.entity] = {}
     }
+    state[action.payload.entity][action.payload.id] = action.payload.instance
+  }
 });
 
 export default safeReducer
 
 export const safeEpics = combineEpics(
-    (actions$) => actions$.pipe(
-        ofType(fetchAll.type),
-        filter(fetchAllFromRemote)
-    ),
-    (actions$) => actions$.pipe(
-        ofType(saveAll.type),
-        filter(saveAllToRemote)
-    )
+  (actions$) => actions$.pipe(
+    ofType(fetchAll.type),
+    filter(fetchAllFromRemote)
+  ),
+  (actions$) => actions$.pipe(
+    ofType(saveAll.type),
+    filter(saveAllToRemote)
+  )
 );
 
 /**
@@ -46,40 +47,41 @@ export const safeEpics = combineEpics(
  * @returns {boolean} - always false
  */
 const fetchAllFromRemote = () => {
-    [
-        'account',
-        'cv',
-        'education'
-    ].map(entity => {
-        // const _id = 'uuid-account-1';
-        sendEvent('fetch', {}, {entity}, (error, message) => {
-            if (error) {
-                console.error(`Error fetching safe.${entity}`, error)
-            } else {
-                console.debug(`Successfully received safe.${entity}`, message);
-                message.body.map(instance => store.dispatch(setSafeInstance(entity, instance._id, instance)))
-            }
-        });
+  sendEvent(
+    'fetch',
+    {
+      "account": ["uuid-account-1", "uuid-account-3"],
+      "cv": ["uuid-cv-1"],
+      "education": ["uuid-education-1"]
+    },
+    {},
+    (error, message) => {
+      if (error) {
+        console.error(`Error fetching *`, error)
+      } else {
+        console.debug(`Successfully received *`, message);
+        store.dispatch(replaceSafeContent(message.body))
+      }
     });
-    return false
+  return false
 };
 
 const saveAllToRemote = () => {
-    sendEvent('save', store.getState().safe, {}, (error, message) => {
-        if (error) {
-            console.error(`Error saving safe`, error)
-        } else {
-            console.debug(`Successfully saved safe`, message)
-        }
-    });
-    return false
+  sendEvent('save', store.getState().safe, {}, (error, message) => {
+    if (error) {
+      console.error(`Error saving safe`, error)
+    } else {
+      console.debug(`Successfully saved safe`, message)
+    }
+  });
+  return false
 };
 
 /**
  * This function provides a set of helper functions to easily navigate the normalised Redux {@code store.safe} data.
  * @param entity - name of the entity
  * @param entityId
- * @param onChangeEntity - function to store the instance, e.g. (instance, id) => dispatch(setSafeInstance(entity, instance, id))
+ * @param replaceInstance - function to store the instance, e.g. (id, instance) => dispatch(replaceSafeInstance(entity, id, instance))
  * @param locale - optional
  * @returns {{
  *   instance: *,
@@ -89,38 +91,40 @@ const saveAllToRemote = () => {
  *   onChangeLocale: (function(*, *=): function(*=, *=): *)
  * }}
  */
-export const mapHelpers = (entity, entityId, onChangeEntity, locale) => {
+export const mapHelpers = (entity, entityId, replaceInstance, locale) => {
 
-    const instance = entity && entity[entityId];
+  const instance = entity && entity[entityId];
 
-    const getValue = (propertyName, defaultValue = '') =>
-        instance && instance[propertyName] && instance[propertyName] || defaultValue;
+  const getValue = (propertyName, defaultValue = '') =>
+    instance && instance[propertyName] && instance[propertyName] || defaultValue;
 
-    const getValueLocale = (propertyName, defaultValue = '') =>
-        instance && instance[propertyName] && instance[propertyName][locale] || defaultValue;
+  const getValueLocale = (propertyName, defaultValue = '') =>
+    instance && instance[propertyName] && instance[propertyName][locale] || defaultValue;
 
-    const defaultConvertEvent = (event) => event.target.value;
+  const defaultConvertEvent = (event) => event.target.value;
 
-    const onChange = (propertyName, convert = defaultConvertEvent) => (event, option) => onChangeEntity({
-            ...instance,
-            [propertyName]: convert(event, option)
-        },
-        entityId);
+  const onChange = (propertyName, convert = defaultConvertEvent) => (event, option) => replaceInstance(
+    entityId,
+    {
+    ...instance,
+    [propertyName]: convert(event, option)
+  });
 
-    const onChangeLocale = (propertyName, convert = defaultConvertEvent) => (event, option) => onChangeEntity({
-            ...instance,
-            [propertyName]: {
-                ...instance[propertyName],
-                [locale]: convert(event, option)
-            }
-        },
-        entityId);
+  const onChangeLocale = (propertyName, convert = defaultConvertEvent) => (event, option) => replaceInstance(
+    entityId,
+    {
+    ...instance,
+    [propertyName]: {
+      ...instance[propertyName],
+      [locale]: convert(event, option)
+    }
+  });
 
-    return {
-        instance,
-        getValue,
-        getValueLocale,
-        onChange,
-        onChangeLocale
-    };
+  return {
+    instance,
+    getValue,
+    getValueLocale,
+    onChange,
+    onChangeLocale
+  };
 };

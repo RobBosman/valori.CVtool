@@ -4,8 +4,8 @@ import org.reactivestreams.Subscriber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
-class ReactiveStreamsSubscriberGroup<T>(
-    private val onNext: (T) -> Unit,
+class RSSubscriberGroup<T>(
+    private val onNext: (String, T) -> Unit,
     private val onError: (Map<String, Throwable>) -> Unit,
     private val onComplete: () -> Unit
 ) {
@@ -15,8 +15,10 @@ class ReactiveStreamsSubscriberGroup<T>(
 
   fun newSubscriber(correlationId: String): Subscriber<T> {
     numSubscribers.incrementAndGet()
-    return ReactiveStreamsSubscriber(
-        onNext,
+    return RSSubscriber(
+        {
+          onNext(correlationId, it)
+        },
         {
           errorMap[correlationId] = it
           subscriberTerminated()
