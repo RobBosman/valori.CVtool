@@ -30,9 +30,9 @@ internal class StorageVerticle : AbstractVerticle() {
 
   override fun start(future: Future<Void>) {
     val dbConfig = config().getJsonObject("mongoClient")
-    val connectionString = "mongodb://${dbConfig.getString("host")}:${dbConfig.getLong("port")}"
-    val mongoClient = MongoClients.create(connectionString)
-    val mongoDatabase = mongoClient.getDatabase(dbConfig.getString("db_name"))
+    val mongoDatabase = MongoClients
+        .create("mongodb://${dbConfig.getString("host")}:${dbConfig.getLong("port")}")
+        .getDatabase(dbConfig.getString("db_name"))
 
     handleSaveRequests(mongoDatabase)
     handleFetchRequests(mongoDatabase)
@@ -169,7 +169,7 @@ internal class StorageVerticle : AbstractVerticle() {
         .toObservable()
         .map { message ->
           val fetchedInstances = ConcurrentHashMap<String, Deque<Document>>()
-          val reactiveStreamsSubscriberGroup = RSSubscriberGroup<Document>(
+          val subscriberGroup = RSSubscriberGroup<Document>(
               { entity, instance ->
                 fetchedInstances.computeIfAbsent(entity) { ConcurrentLinkedDeque() }
                     .add(instance)
@@ -187,7 +187,7 @@ internal class StorageVerticle : AbstractVerticle() {
                 mongoDatabase
                     .getCollection(entity)
                     .find(Filters.`in`("_id", ids as JsonArray))
-                    .subscribe(reactiveStreamsSubscriberGroup.newSubscriber(entity))
+                    .subscribe(subscriberGroup.newSubscriber(entity))
               }
         }
         .subscribe(

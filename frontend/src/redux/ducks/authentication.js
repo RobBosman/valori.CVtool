@@ -48,7 +48,7 @@ export const authenticationEpics = combineEpics(
 
 const loginActions = () =>
   fromArray([
-    setAccountId('uuid-account-1'),
+    setAccountId('uuid-account-1'), // TODO login, really
     confirmLogin()
   ]);
 

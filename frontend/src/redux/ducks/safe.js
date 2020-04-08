@@ -6,10 +6,9 @@ import { filter } from "rxjs/operators";
 import store from "../store";
 import { sendEvent } from "../../components/EventBroker";
 
-export const fetchAll = createAction("FETCH_ALL", () => ({ payload: null }));
-export const saveAll = createAction("SAVE_ALL", () => ({ payload: null }));
+export const fetchAll = createAction("SAFE_FETCH_ALL", () => ({ payload: null }));
+export const saveAll = createAction("SAFE_SAVE_ALL", () => ({ payload: null }));
 export const replaceSafeContent = createAction("SAFE_REPLACE_CONTENT");
-export const replaceSafeEntity = createAction("SAFE_REPLACE_ENTITY");
 export const replaceSafeInstance = createAction("SAFE_REPLACE_INSTANCE",
   (entity, id, instance) => ({ payload: { entity, id, instance } }));
 
@@ -37,44 +36,56 @@ export const safeEpics = combineEpics(
 );
 
 /**
- * Request message body must be JSON, listing _ids per entity:
+ * @returns {boolean} - always false
+ */
+const fetchAllFromRemote = () => {
+  fetchFromRemote(
+    {
+      "account": ["uuid-account-1", "uuid-account-3"],
+      "cv": ["uuid-cv-1"],
+      "education": ["uuid-education-1"]
+    },
+    (message) => {
+      console.debug(`Successfully received data`, message);
+      store.dispatch(replaceSafeContent(message.body))
+    });
+  return false
+};
+
+const saveAllToRemote = () => {
+  saveToRemote(
+    store.getState().safe,
+    (message) => console.debug(`Successfully saved safe`, message));
+  return false
+};
+
+/**
+ * {@code criteria} must be JSON, listing _ids per entity:
  * <pre>
  *   {
  *     "entity_1": [ "XXX", "YYY" ],
  *     "entity_2": [ "ZZZ" ]
  *   }
  * </pre>
- * @returns {boolean} - always false
  */
-const fetchAllFromRemote = () => {
-  sendEvent(
-    'fetch',
-    {
-      "account": ["uuid-account-1", "uuid-account-3"],
-      "cv": ["uuid-cv-1"],
-      "education": ["uuid-education-1"]
-    },
-    {},
-    (error, message) => {
-      if (error) {
-        console.error(`Error fetching *`, error)
-      } else {
-        console.debug(`Successfully received *`, message);
-        store.dispatch(replaceSafeContent(message.body))
-      }
-    });
-  return false
+export const fetchFromRemote = (criteria, onSuccess, onError = console.error) => {
+  sendEvent('fetch', criteria, {}, (error, message) => {
+    if (error) {
+      onError(error)
+    } else if (onSuccess) {
+      onSuccess(message)
+    }
+  })
 };
 
-const saveAllToRemote = () => {
-  sendEvent('save', store.getState().safe, {}, (error, message) => {
+export const saveToRemote = (data, onSuccess, onError = console.error) => {
+  sendEvent('save', data, {}, (error, message) => {
     if (error) {
-      console.error(`Error saving safe`, error)
-    } else {
-      console.debug(`Successfully saved safe`, message)
+      onError(error)
+    } else if (onSuccess) {
+      onSuccess(message)
     }
-  });
-  return false
+  })
 };
 
 /**
@@ -106,19 +117,19 @@ export const mapHelpers = (entity, entityId, replaceInstance, locale) => {
   const onChange = (propertyName, convert = defaultConvertEvent) => (event, option) => replaceInstance(
     entityId,
     {
-    ...instance,
-    [propertyName]: convert(event, option)
-  });
+      ...instance,
+      [propertyName]: convert(event, option)
+    });
 
   const onChangeLocale = (propertyName, convert = defaultConvertEvent) => (event, option) => replaceInstance(
     entityId,
     {
-    ...instance,
-    [propertyName]: {
-      ...instance[propertyName],
-      [locale]: convert(event, option)
-    }
-  });
+      ...instance,
+      [propertyName]: {
+        ...instance[propertyName],
+        [locale]: convert(event, option)
+      }
+    });
 
   return {
     instance,
