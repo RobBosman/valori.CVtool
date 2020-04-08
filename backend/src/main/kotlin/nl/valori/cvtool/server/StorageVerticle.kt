@@ -178,7 +178,10 @@ internal class StorageVerticle : AbstractVerticle() {
                 replyError(message, it)
               },
               {
-                log.debug("MongoDB fetched ${fetchedInstances.size} documents")
+                val numInstances = fetchedInstances.values.stream()
+                    .mapToInt { it.size }
+                    .sum()
+                log.debug("MongoDB fetched $numInstances instances of ${fetchedInstances.size} entities")
                 message.reply(composeReplyJson(fetchedInstances))
               })
           message.body().map.entries.stream()

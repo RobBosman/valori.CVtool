@@ -2,10 +2,13 @@
 
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { combineEpics, ofType } from "redux-observable";
-import { delay, flatMap } from "rxjs/operators";
-import { setAccountId } from "./ui";
+import { filter, flatMap, map, tap } from "rxjs/operators";
 import { fromArray } from "rxjs/internal/observable/fromArray";
-import { replaceSafeContent } from "./safe";
+import store from "../store";
+import { setAccountId } from "./ui";
+import { replaceSafeContent, replaceSafeInstance } from "./safe";
+import { EventBusStates, updateEventBusState } from "./eventBus";
+import { sendEvent } from "../../components/EventBroker";
 
 export const requestLogin = createAction("AUTHENTICATION_REQUEST_LOGIN", () => ({}));
 export const confirmLogin = createAction("AUTHENTICATION_CONFIRM_LOGIN", () => ({}));
@@ -31,13 +34,24 @@ export default authenticationReducer
 export const authenticationEpics = combineEpics(
   (actions$) => actions$.pipe(
     ofType(requestLogin.type),
-    delay(0),
-    flatMap(loginActions)
+    tap(loginToRemote),
+    filter(() => false)
+  ),
+  (actions$) => actions$.pipe(
+    ofType(updateEventBusState.type),
+    tap(loginToRemote),
+    filter(() => false)
   ),
   (actions$) => actions$.pipe(
     ofType(requestLogout.type),
-    delay(0),
-    flatMap(logOutActions)
+    flatMap(() => fromArray([
+      replaceSafeContent(undefined),
+      setAccountId(undefined)
+    ]))
+  ),
+  (actions$) => actions$.pipe(
+    ofType(setAccountId.type),
+    map((action) => action.payload ? confirmLogin() : confirmLogout())
   )
   // (actions$) => actions$.pipe(
   //     ofType(confirmLogin.type),
@@ -46,15 +60,25 @@ export const authenticationEpics = combineEpics(
   // )
 );
 
-const loginActions = () =>
-  fromArray([
-    setAccountId('uuid-account-1'), // TODO login, really
-    confirmLogin()
-  ]);
-
-const logOutActions = () =>
-  fromArray([
-    replaceSafeContent(undefined),
-    setAccountId(undefined),
-    confirmLogout()
-  ]);
+const loginToRemote = () => {
+  if (!store.getState().ui.accountId
+    && store.getState().eventBus === EventBusStates.CONNECTED) {
+    sendEvent(
+      'login',
+      { authorizationCode: "My AuthCode" }, // TODO obtain authorization code
+      {},
+      (message) => {
+        console.log("You successfully logged in", message);
+        Object.keys(message.body)
+          .forEach((entity) => {
+            const instances = message.body[entity];
+            Object.keys(instances)
+              .forEach((id) => {
+                store.dispatch(replaceSafeInstance(entity, id, instances[id]));
+                store.dispatch(setAccountId(id))
+              })
+          })
+      },
+      console.error);
+  }
+};

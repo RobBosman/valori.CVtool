@@ -23,9 +23,10 @@ internal class HttpServerVerticle : AbstractVerticle() {
               .end("Hi there!")
         }
     val bridgeOptions = BridgeOptions()
-        .addOutboundPermitted(PermittedOptions().setAddress(ADDRESS_SERVER_HEARTBEAT))
+        .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_LOGIN))
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_FETCH))
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_SAVE))
+        .addOutboundPermitted(PermittedOptions().setAddress(ADDRESS_SERVER_HEARTBEAT))
     router.mountSubRouter("/eventbus",
         SockJSHandler.create(vertx)
             .bridge(bridgeOptions))

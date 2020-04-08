@@ -13,6 +13,11 @@ import org.slf4j.LoggerFactory
 internal class ConfigVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
+  private val verticles = listOf(
+      HttpServerVerticle::class,
+      AuthVerticle::class,
+      StorageVerticle::class,
+      HeartbeatVerticle::class)
 
   override fun start(future: Future<Void>) {
     ConfigRetriever.create(vertx,
@@ -21,18 +26,16 @@ internal class ConfigVerticle : AbstractVerticle() {
                 .setType("file")
                 .setConfig(JsonObject().put("path", "config.json"))))
         .getConfig { json ->
-          val options = DeploymentOptions()
+          val deploymentOptions = DeploymentOptions()
               .setConfig(json.result())
-
-          deployVerticle(vertx, StorageVerticle::class.java.name, options)
-          deployVerticle(vertx, HttpServerVerticle::class.java.name, options)
-          deployVerticle(vertx, HeartbeatVerticle::class.java.name, options)
+          verticles
+              .forEach { deployVerticle(vertx, it.java.name, deploymentOptions) }
         }
   }
 
-  private fun deployVerticle(vertx: Vertx, verticleClassName: String, options: DeploymentOptions) =
-      vertx.deployVerticle(verticleClassName, options) { deployResult ->
-        if (deployResult.failed())
-          log.error("Error deploying {}", verticleClassName, deployResult.cause())
+  private fun deployVerticle(vertx: Vertx, verticleClassName: String, deploymentOptions: DeploymentOptions) =
+      vertx.deployVerticle(verticleClassName, deploymentOptions) { deploymentResult ->
+        if (deploymentResult.failed())
+          log.error("Error deploying {}", verticleClassName, deploymentResult.cause())
       }
 }

@@ -21,7 +21,7 @@ Visual Studio Code with plugins
 - [x] combine npm, node with maven
 - [x] apply Redux (with epics, RxJS)
 - [x] apply Fabric UI
-- [x] explore Fabric theming
+- [x] explore Fabric themes
 - [x] explore Fabric styling (css via javascript)
 - [x] switch to React functions and hooks (instead of components)
 - [x] connect vert.x EventBus in React (plus fine tuning for resilience)
@@ -31,7 +31,8 @@ Visual Studio Code with plugins
 - [x] setup data model (hierarchy, Json data structure)
 - [x] find out how to _efficiently_ bind web components to the data in the Redux store
 - [x] map to 'normalized Json' (list of entities and instances
-- [ ] store normalized data model in MongoDB
+- [x] store normalized data model in MongoDB
+- [ ] fetch a selection of data from MongoDB
 - [ ] deal with lists of model elements in UI
 - [ ] extend UI with all required pivots and fields for maintaining cv
 - [ ] add inline editable tables?

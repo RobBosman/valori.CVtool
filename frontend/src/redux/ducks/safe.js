@@ -2,7 +2,7 @@
 
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { combineEpics, ofType } from "redux-observable";
-import { filter } from "rxjs/operators";
+import { filter, tap } from "rxjs/operators";
 import store from "../store";
 import { sendEvent } from "../../components/EventBroker";
 
@@ -27,37 +27,15 @@ export default safeReducer
 export const safeEpics = combineEpics(
   (actions$) => actions$.pipe(
     ofType(fetchAll.type),
-    filter(fetchAllFromRemote)
+    tap(fetchAllFromRemote),
+    filter(() => false)
   ),
   (actions$) => actions$.pipe(
     ofType(saveAll.type),
-    filter(saveAllToRemote)
+    tap(saveAllToRemote),
+    filter(() => false)
   )
 );
-
-/**
- * @returns {boolean} - always false
- */
-const fetchAllFromRemote = () => {
-  fetchFromRemote(
-    {
-      "account": ["uuid-account-1", "uuid-account-3"],
-      "cv": ["uuid-cv-1"],
-      "education": ["uuid-education-1"]
-    },
-    (message) => {
-      console.debug(`Successfully received data`, message);
-      store.dispatch(replaceSafeContent(message.body))
-    });
-  return false
-};
-
-const saveAllToRemote = () => {
-  saveToRemote(
-    store.getState().safe,
-    (message) => console.debug(`Successfully saved safe`, message));
-  return false
-};
 
 /**
  * {@code criteria} must be JSON, listing _ids per entity:
@@ -67,26 +45,28 @@ const saveAllToRemote = () => {
  *     "entity_2": [ "ZZZ" ]
  *   }
  * </pre>
+ * 
+ * TODO: determine instances tp fetch
  */
-export const fetchFromRemote = (criteria, onSuccess, onError = console.error) => {
-  sendEvent('fetch', criteria, {}, (error, message) => {
-    if (error) {
-      onError(error)
-    } else if (onSuccess) {
-      onSuccess(message)
-    }
-  })
-};
+const fetchAllFromRemote = () => sendEvent(
+  'fetch',
+  {
+    "account": ["uuid-account-1", "uuid-account-3"],
+    "cv": ["uuid-cv-1"],
+    "education": ["uuid-education-1"]
+  },
+  {},
+  (message) => {
+    console.debug(`Successfully received data`, message);
+    store.dispatch(replaceSafeContent(message.body))
+  },
+  console.error);
 
-export const saveToRemote = (data, onSuccess, onError = console.error) => {
-  sendEvent('save', data, {}, (error, message) => {
-    if (error) {
-      onError(error)
-    } else if (onSuccess) {
-      onSuccess(message)
-    }
-  })
-};
+const saveAllToRemote = () => sendEvent(
+  'save',
+  store.getState().safe,
+  (message) => console.debug(`Successfully saved safe`, message),
+  console.error);
 
 /**
  * This function provides a set of helper functions to easily navigate the normalised Redux {@code store.safe} data.
