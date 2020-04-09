@@ -3,7 +3,6 @@ import {connect} from "react-redux"
 import {AuthenticationStates} from "../redux/ducks/authentication"
 import {Fabric, Text} from "office-ui-fabric-react"
 import ErrorBoundary from "./ErrorBoundary"
-import ErrorPage from "./ErrorPage"
 import LoginPage from "./LoginPage"
 import EditorPage from "./EditorPage"
 import MenuBar from "./MenuBar"
@@ -11,7 +10,7 @@ import PulseMonitor from "./PulseMonitor"
 
 const Main = (props) => {
     const renderChildren = () => {
-        switch (props.authentication) {
+      switch (props.loginState) {
             case AuthenticationStates.LOGGED_OUT:
                 return (<LoginPage/>);
             case AuthenticationStates.LOGGING_IN:
@@ -21,7 +20,7 @@ const Main = (props) => {
             case AuthenticationStates.LOGGING_OUT:
                 return (<Text>logging out...</Text>);
             default:
-                return (<ErrorPage/>);
+              throw Error("Unknown authentication", props.authentication)
         }
     };
 
@@ -42,7 +41,7 @@ const Main = (props) => {
 };
 
 const select = (state) => ({
-    authentication: state.authentication
+  loginState: state.authentication.loginState
 });
 
 export default connect(select)(Main)

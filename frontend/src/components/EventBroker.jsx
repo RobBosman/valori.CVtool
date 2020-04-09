@@ -81,8 +81,8 @@ const EventBroker = (props) => {
 };
 
 const select = (state) => ({
-  isEnabled: (state.authentication === AuthenticationStates.LOGGING_IN
-    || state.authentication === AuthenticationStates.LOGGED_IN),
+  isEnabled: (state.authentication.loginState === AuthenticationStates.LOGGING_IN
+    || state.authentication.loginState === AuthenticationStates.LOGGED_IN),
   eventBus: state.eventBus
 });
 

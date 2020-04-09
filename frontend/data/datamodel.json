@@ -9,20 +9,23 @@
   "account": {
     "id": "ID",
     "name": "STRING",
-    "dateOfBirth": "DATE",
-    "residence": "STRING",
     "privileges": [
       "ENUM_PRIVILEGE"
     ],
     "businessUnitIds": [],
     "cvIds": []
   },
+  "profile": {
+    "id": "ID",
+    "dateOfBirth": "DATE",
+    "residence": "STRING"
+  },
   "cv": {
     "id": "ID",
     "role": {
       "locale": "STRING"
     },
-    "profile": {
+    "personalProfile": {
       "locale": "STRING"
     },
     "interests": {

@@ -13,14 +13,15 @@ import org.slf4j.LoggerFactory
 internal class ConfigVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
-  private val verticles = listOf(
+  private val verticlesToDeploy = listOf(
       HttpServerVerticle::class,
       AuthVerticle::class,
       StorageVerticle::class,
       HeartbeatVerticle::class)
 
   override fun start(future: Future<Void>) {
-    ConfigRetriever.create(vertx,
+    ConfigRetriever.create(
+        vertx,
         ConfigRetrieverOptions()
             .addStore(ConfigStoreOptions()
                 .setType("file")
@@ -28,7 +29,7 @@ internal class ConfigVerticle : AbstractVerticle() {
         .getConfig { json ->
           val deploymentOptions = DeploymentOptions()
               .setConfig(json.result())
-          verticles
+          verticlesToDeploy
               .forEach { deployVerticle(vertx, it.java.name, deploymentOptions) }
         }
   }

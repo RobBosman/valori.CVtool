@@ -8,8 +8,7 @@ import Education from "./cv/Education";
 
 const EditorPage = (props) => {
 
-    const account = props.accountEntity && props.accountEntity[props.accountId];
-    const cvId = account && account.cvIds && account.cvIds[0];
+    const cvId = props.account && props.account.cvIds && props.account.cvIds[0];
     const cv = props.cvEntity && props.cvEntity[cvId];
     const educationId = cv && cv.educationIds && cv.educationIds[0];
 
@@ -18,7 +17,7 @@ const EditorPage = (props) => {
             <Text variant="xxLarge">Welkom bij de <Title height="24em"/></Text>
             <Pivot linkSize={PivotLinkSize.large}>
                 <PivotItem itemIcon="Emoji" headerText="Account" itemCount={42}>
-                    <Account entityId={props.accountId}/>
+                    <Account/>
                 </PivotItem>
                 <PivotItem itemIcon="Emoji2" headerText="Profiel">
                     <Profile entityId={cvId}/>
@@ -32,8 +31,7 @@ const EditorPage = (props) => {
 };
 
 const select = (state) => ({
-    accountId: state.ui.accountId,
-    accountEntity: state.safe.account,
+    account: state.authentication.account,
     cvEntity: state.safe.cv
 });
 

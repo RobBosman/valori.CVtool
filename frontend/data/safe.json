@@ -13,8 +13,6 @@
     "uuid-account-1": {
       "_id": "uuid-account-1",
       "name": "Rob Bosman",
-      "dateOfBirth": "1965-09-06",
-      "residence": "Leusden",
       "privileges": [
         "ADMIN"
       ],
@@ -26,6 +24,13 @@
       ]
     }
   },
+  "profile": {
+    "uuid-profile-1": {
+      "_id": "uuid-profile-1",
+      "dateOfBirth": "1965-09-06",
+      "residence": "Leusden"
+    }
+  },
   "cv": {
     "uuid-cv-1": {
       "_id": "uuid-cv-1",
@@ -33,7 +38,7 @@
       "role": {
         "nl_NL": "senior software developer"
       },
-      "profile": {
+      "personalProfile": {
         "nl_NL": "Blabla fantastisch bla"
       },
       "interests": {

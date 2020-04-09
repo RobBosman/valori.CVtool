@@ -88,7 +88,7 @@ internal class StorageVerticle : AbstractVerticle() {
         }
         .subscribe(
             {},
-            { log.error("Vertx error: ${it.message}", it) })
+            { log.error("Vertx error", it) })
   }
 
   /**
@@ -167,7 +167,7 @@ internal class StorageVerticle : AbstractVerticle() {
     vertx.eventBus()
         .consumer<JsonObject>(ADDRESS_FETCH)
         .toObservable()
-        .map { message ->
+        .doOnNext { message ->
           val fetchedInstances = ConcurrentHashMap<String, Deque<Document>>()
           val subscriberGroup = RSSubscriberGroup<Document>(
               { entity, instance ->
@@ -195,7 +195,7 @@ internal class StorageVerticle : AbstractVerticle() {
         }
         .subscribe(
             {},
-            { log.error("Vertx error: ${it.message}", it) })
+            { log.error("Vertx error", it) })
   }
 
   private fun replyError(message: Message<JsonObject>, errors: Map<String, Throwable>) {
@@ -203,7 +203,7 @@ internal class StorageVerticle : AbstractVerticle() {
         errors.values.stream()
             .map(Throwable::message)
             .collect(joining("\n"))
-    log.error(errorMsg)
+    log.warn(errorMsg)
     message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
   }
 

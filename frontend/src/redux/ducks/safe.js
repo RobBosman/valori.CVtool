@@ -51,7 +51,6 @@ export const safeEpics = combineEpics(
 const fetchAllFromRemote = () => sendEvent(
   'fetch',
   {
-    "account": ["uuid-account-1", "uuid-account-3"],
     "cv": ["uuid-cv-1"],
     "education": ["uuid-education-1"]
   },

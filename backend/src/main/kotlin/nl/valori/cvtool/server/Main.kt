@@ -19,9 +19,9 @@ object Main {
     val vertx = Vertx.vertx(options)
 
     val verticleClassName = ConfigVerticle::class.java.name
-    vertx.deployVerticle(verticleClassName) { deployResult ->
-      if (deployResult.failed())
-        log.error("Error deploying {}", verticleClassName, deployResult.cause())
+    vertx.deployVerticle(verticleClassName) { deploymentResult ->
+      if (deploymentResult.failed())
+        log.error("Error deploying $verticleClassName", deploymentResult.cause())
     }
 
     // run server for max 10 minutes

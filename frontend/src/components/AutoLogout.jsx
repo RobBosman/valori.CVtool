@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 
 const AutoLogout = (props) => {
     React.useEffect(() => {
-        if (props.authentication === AuthenticationStates.LOGGED_IN && props.delayMillis > 0) {
+      if (props.loginState === AuthenticationStates.LOGGED_IN && props.delayMillis > 0) {
             const timeoutID = setTimeout(props.requestLogout, props.delayMillis);
             console.log(`set logout timeout[${timeoutID}]`);
 
@@ -14,13 +14,13 @@ const AutoLogout = (props) => {
                 console.log(`cleared logout timeout[${timeoutID}]`);
             }
         }
-    }, [props.authentication, props.delayMillis]);
+    }, [props.loginState, props.delayMillis]);
 
     return null // render nothing
 };
 
 const select = (state) => ({
-    authentication: state.authentication
+  loginState: state.authentication.loginState
 });
 
 const mapDispatchToProps = (dispatch) => ({
