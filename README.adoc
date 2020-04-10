@@ -32,7 +32,7 @@ Visual Studio Code with plugins
 - [x] find out how to _efficiently_ bind web components to the data in the Redux store
 - [x] map to 'normalized Json' (list of entities and instances
 - [x] store normalized data model in MongoDB
-- [ ] fetch a specific selection of data from MongoDB
+- [x] fetch a specific selection of data from MongoDB
 - [ ] deal with lists of model elements in UI
 - [ ] extend UI with all required pivots and fields for maintaining cv
 - [ ] add inline editable tables?

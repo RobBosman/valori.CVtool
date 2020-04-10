@@ -1,6 +1,6 @@
 import React from "react"
 import {connect} from "react-redux"
-import {AuthenticationStates} from "../redux/ducks/authentication"
+import {AuthenticationStates} from "../redux/authentication"
 import {Fabric, Text} from "office-ui-fabric-react"
 import ErrorBoundary from "./ErrorBoundary"
 import LoginPage from "./LoginPage"

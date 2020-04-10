@@ -1,5 +1,5 @@
 import React from "react"
-import {AuthenticationStates, requestLogout} from "../redux/ducks/authentication"
+import {AuthenticationStates, requestLogout} from "../redux/authentication"
 import {connect} from "react-redux";
 
 const AutoLogout = (props) => {

@@ -2,8 +2,7 @@ package nl.valori.cvtool.server
 
 import io.vertx.core.Future
 import io.vertx.core.eventbus.DeliveryOptions
-import io.vertx.core.eventbus.ReplyFailure
-import io.vertx.core.json.JsonArray
+import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.rxjava.core.AbstractVerticle
 import io.vertx.rxjava.core.eventbus.Message
@@ -21,7 +20,7 @@ internal class AuthVerticle : AbstractVerticle() {
         .toObservable()
         .doOnNext { loginMessage ->
           val authCode = loginMessage.body().getString("authenticationCode")
-          log.info("Someone is logging in with authCode '$authCode'")
+          log.info("Someone logs in with authCode '$authCode'")
           val accountId = "uuid-account-1" // TODO: determine accountId
           fetchAccount(accountId, loginMessage)
         }
@@ -34,7 +33,7 @@ internal class AuthVerticle : AbstractVerticle() {
     vertx.eventBus()
         .rxRequest<JsonObject>(
             ADDRESS_FETCH,
-            JsonObject().put("account", JsonArray().add(accountId)),
+            JsonObject("""{ "account": [{ "_id": "$accountId" }] }"""),
             DeliveryOptions().setSendTimeout(2000))
         .subscribe(
             { fetchResponse ->
@@ -43,7 +42,7 @@ internal class AuthVerticle : AbstractVerticle() {
             },
             {
               log.warn("Error fetching account", it)
-              loginMessage.fail(ReplyFailure.RECIPIENT_FAILURE.toInt(), it.message)
+              loginMessage.fail(RECIPIENT_FAILURE.toInt(), it.message)
             })
   }
 }

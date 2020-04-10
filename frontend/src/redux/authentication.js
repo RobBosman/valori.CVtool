@@ -4,10 +4,10 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { combineEpics, ofType } from "redux-observable";
 import { filter, flatMap, map, tap } from "rxjs/operators";
 import { fromArray } from "rxjs/internal/observable/fromArray";
-import store from "../store";
+import store from "./store";
 import { replaceSafeContent, replaceSafeInstance } from "./safe";
 import { EventBusStates, updateEventBusState } from "./eventBus";
-import { sendEvent } from "../../components/EventBroker";
+import { sendEvent } from "../components/EventBroker";
 
 export const requestLogin = createAction("AUTHENTICATION_REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("AUTHENTICATION_REQUEST_LOGOUT", () => ({}));
@@ -63,11 +63,6 @@ export const authenticationEpics = combineEpics(
     ofType(setAccount.type),
     map((action) => action.payload ? confirmLogin() : confirmLogout())
   )
-  // (actions$) => actions$.pipe(
-  //     ofType(confirmLogin.type),
-  //     delay(10000),
-  //     mapTo(requestLogout())
-  // )
 );
 
 const loginToRemote = () => {

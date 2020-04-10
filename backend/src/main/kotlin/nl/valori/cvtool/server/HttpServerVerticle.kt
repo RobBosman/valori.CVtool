@@ -25,6 +25,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
     val bridgeOptions = BridgeOptions()
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_LOGIN))
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_FETCH))
+        .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_FETCH_CV))
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_SAVE))
         .addOutboundPermitted(PermittedOptions().setAddress(ADDRESS_SERVER_HEARTBEAT))
     router.mountSubRouter("/eventbus",

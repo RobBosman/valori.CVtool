@@ -3,8 +3,8 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { combineEpics, ofType } from "redux-observable";
 import { filter, tap } from "rxjs/operators";
-import store from "../store";
-import { sendEvent } from "../../components/EventBroker";
+import store from "./store";
+import { sendEvent } from "../components/EventBroker";
 
 export const fetchAll = createAction("SAFE_FETCH_ALL", () => ({ payload: null }));
 export const saveAll = createAction("SAFE_SAVE_ALL", () => ({ payload: null }));
@@ -27,7 +27,7 @@ export default safeReducer
 export const safeEpics = combineEpics(
   (actions$) => actions$.pipe(
     ofType(fetchAll.type),
-    tap(fetchAllFromRemote),
+    tap(fetchCvFromRemote),
     filter(() => false)
   ),
   (actions$) => actions$.pipe(
@@ -38,33 +38,31 @@ export const safeEpics = combineEpics(
 );
 
 /**
- * {@code criteria} must be JSON, listing _ids per entity:
+ * {@code criteria} must be JSON, listing the search criteria per entity:
  * <pre>
  *   {
- *     "entity_1": [ "XXX", "YYY" ],
- *     "entity_2": [ "ZZZ" ]
+ *     entity_1: [{ _id: "XXX" }, { _id: "YYY" }],
+ *     entity_2: [{ _id: "ZZZ" }]
  *   }
  * </pre>
- * 
- * TODO: determine instances tp fetch
  */
-const fetchAllFromRemote = () => sendEvent(
-  'fetch',
-  {
-    "cv": ["uuid-cv-1"],
-    "education": ["uuid-education-1"]
-  },
-  {},
-  (message) => {
-    console.debug(`Successfully received data`, message);
-    store.dispatch(replaceSafeContent(message.body))
-  },
-  console.error);
+const fetchCvFromRemote = () => {
+  const account = store.getState().authentication.account;
+  return sendEvent(
+    'fetch.cv',
+    { accountId: account && account._id },
+    {},
+    (message) => {
+      console.debug(`Successfully received cv data`, message);
+      store.dispatch(replaceSafeContent(message.body))
+    },
+    console.error)
+};
 
 const saveAllToRemote = () => sendEvent(
   'save',
   store.getState().safe,
-  (message) => console.debug(`Successfully saved safe`, message),
+  (message) => console.debug(`Successfully saved all safe`, message),
   console.error);
 
 /**

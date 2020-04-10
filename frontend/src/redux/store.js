@@ -3,10 +3,10 @@
 import {combineReducers} from "redux";
 import {combineEpics, createEpicMiddleware} from 'redux-observable';
 import {configureStore} from "@reduxjs/toolkit";
-import authenticationReducer, {authenticationEpics} from "./ducks/authentication";
-import eventBusReducer from "./ducks/eventBus";
-import uiReducer from "./ducks/ui";
-import safeReducer, {safeEpics} from "./ducks/safe";
+import authenticationReducer, {authenticationEpics} from "./authentication";
+import eventBusReducer from "./eventBus";
+import uiReducer from "./ui";
+import safeReducer, {safeEpics} from "./safe";
 import {filter} from "rxjs/operators";
 import {heavyWait} from "./../app";
 

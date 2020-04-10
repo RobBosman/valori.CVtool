@@ -18,15 +18,13 @@
       ],
       "businessUnitIds": [
         "uuid-businessUnit-1"
-      ],
-      "cvIds": [
-        "uuid-cv-1"
       ]
     }
   },
   "profile": {
     "uuid-profile-1": {
       "_id": "uuid-profile-1",
+      "accountId": "uuid-account-1",
       "dateOfBirth": "1965-09-06",
       "residence": "Leusden"
     }
@@ -45,30 +43,13 @@
         "nl_NL": "best divers"
       },
       "workingSince": 1990,
-      "inItSince": 1990,
-      "educationIds": [
-        "uuid-education-1"
-      ],
-      "publicationIds": [
-        "uuid-publication-1"
-      ],
-      "referenceIds": [
-        "uuid-reference-1"
-      ],
-      "skillIds": [
-        "uuid-skill-1",
-        "uuid-skill-2",
-        "uuid-skill-3",
-        "uuid-skill-4"
-      ],
-      "workingExperienceIds": [
-        "uuid-workingExperience-1"
-      ]
+      "inItSince": 1990
     }
   },
   "education": {
     "uuid-education-1": {
       "_id": "uuid-education-1",
+      "cvId": "uuid-cv-1",
       "type": "EDUCATION",
       "name": {
         "nl_NL": "Atheneum-B"
@@ -81,6 +62,7 @@
   "publication": {
     "uuid-publication-1": {
       "_id": "uuid-publication-1",
+      "cvId": "uuid-cv-1",
       "year": 1972,
       "media": "Schoolkrant",
       "title": {
@@ -96,6 +78,7 @@
   "reference": {
     "uuid-reference-1": {
       "_id": "uuid-reference-1",
+      "cvId": "uuid-cv-1",
       "referentName": "Jeroen Sanders",
       "referentFunction": {
         "nl_NL": "Manager",
@@ -153,6 +136,7 @@
   "workingExperience": {
     "uuid-workingExperience-1": {
       "_id": "uuid-workingExperience-1",
+      "cvId": "uuid-cv-1",
       "periodBegin": "2020-01-01",
       "periodEnd": "2099-12-31",
       "employer": "Valori",

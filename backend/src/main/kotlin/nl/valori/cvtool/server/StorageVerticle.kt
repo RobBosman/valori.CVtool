@@ -13,6 +13,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.rxjava.core.AbstractVerticle
 import io.vertx.rxjava.core.eventbus.Message
 import nl.valori.reactive.RSSubscriberGroup
+import org.bson.BsonDocument
 import org.bson.Document
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -74,8 +75,8 @@ internal class StorageVerticle : AbstractVerticle() {
               {
                 log.debug("MongoDB saved documents")
                 message.reply("Successfully saved documents")
-              }
-          )
+              },
+              message.body().map.size)
           message.body().map.entries.stream()
               .filter { it.value is JsonObject }
               .forEach { (entity, instance) ->
@@ -133,31 +134,31 @@ internal class StorageVerticle : AbstractVerticle() {
   }
 
   /**
-   * Request message body must be JSON, listing {@code _id} per entity:
+   * Request message body must be JSON, listing search criteria per entity:
    * <pre>
    *   {
-   *     "entity_1": [ "XXX", "YYY" ],
-   *     "entity_2": [ "ZZZ" ]
+   *     entity_1: [{ _id: "XXX" }, { _id: "YYY" }],
+   *     entity_2: [{ _id: "ZZZ" }]
    *   }
    * </pre>
    *
-   * Response will be JSON normalized per entity:
+   * Response will be JSON, normalized per entity:
    * <pre>
    *   {
-   *     "entity_1": {
-   *       "XXX": {
-   *         "_id": "XXX",
-   *         "property": "value"
+   *     entity_1: {
+   *       XXX: {
+   *         _id: "XXX",
+   *         property: "value"
    *       },
-   *       "YYY": {
-   *         "_id": "YYY",
-   *         "property": "value"
+   *       YYY: {
+   *         _id: "YYY",
+   *         property: "value"
    *       }
    *     },
-   *     "entity_2": {
-   *       "ZZZ": {
-   *         "_id": "ZZZ",
-   *         "property": "value"
+   *     entity_2: {
+   *       ZZZ: {
+   *         _id: "ZZZ",
+   *         property: "value"
    *       }
    *     }
    *   }
@@ -168,7 +169,7 @@ internal class StorageVerticle : AbstractVerticle() {
         .consumer<JsonObject>(ADDRESS_FETCH)
         .toObservable()
         .doOnNext { message ->
-          val fetchedInstances = ConcurrentHashMap<String, Deque<Document>>()
+          val fetchedInstances = ConcurrentHashMap<String, Queue<Document>>()
           val subscriberGroup = RSSubscriberGroup<Document>(
               { entity, instance ->
                 fetchedInstances.computeIfAbsent(entity) { ConcurrentLinkedDeque() }
@@ -185,13 +186,20 @@ internal class StorageVerticle : AbstractVerticle() {
                 message.reply(composeReplyJson(fetchedInstances))
               })
           message.body().map.entries.stream()
-              .forEach { (entity, ids) ->
-                log.debug("Vertx fetching documents of '$entity'...")
+              .map { (entity, criteriaArray) ->
+                if (criteriaArray !is JsonArray)
+                  throw IllegalArgumentException("Search criteria must be of type JsonArray")
+                entity to criteriaArray
+              }
+              .forEach { (entity, criteriaArray) ->
+                val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
+                log.debug("Vertx fetching '$entity' documents using criteria [$criteria]")
                 mongoDatabase
                     .getCollection(entity)
-                    .find(Filters.`in`("_id", ids as JsonArray))
+                    .find(BsonDocument.parse(criteria))
                     .subscribe(subscriberGroup.newSubscriber(entity))
               }
+          subscriberGroup.enable()
         }
         .subscribe(
             {},
@@ -199,15 +207,17 @@ internal class StorageVerticle : AbstractVerticle() {
   }
 
   private fun replyError(message: Message<JsonObject>, errors: Map<String, Throwable>) {
-    val errorMsg = "${errors.size} MongoDB error(s): " +
-        errors.values.stream()
-            .map(Throwable::message)
-            .collect(joining("\n"))
+    val errorMsg = when (errors.size) {
+      1 -> "MongoDB error: "
+      else -> "${errors.size} MongoDB errors:\n\t"
+    } + errors.values.stream()
+        .map(Throwable::message)
+        .collect(joining("\n\t"))
     log.warn(errorMsg)
     message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
   }
 
-  private fun composeReplyJson(fetchedInstances: ConcurrentHashMap<String, Deque<Document>>): JsonObject {
+  private fun composeReplyJson(fetchedInstances: Map<String, Collection<Document>>): JsonObject {
     val resultJson = JsonObject()
     fetchedInstances.entries.stream()
         .forEach { (entity, instances) ->

@@ -7,7 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger
 class RSSubscriberGroup<T>(
     private val onNext: (String, T) -> Unit,
     private val onError: (Map<String, Throwable>) -> Unit,
-    private val onComplete: () -> Unit
+    private val onComplete: () -> Unit,
+    private var numExpectedSubscribers: Int = 0
 ) {
   private val numSubscribers = AtomicInteger()
   private val errorMap = ConcurrentHashMap<String, Throwable>()
@@ -21,22 +22,27 @@ class RSSubscriberGroup<T>(
         },
         {
           errorMap[correlationId] = it
-          subscriberTerminated()
+          terminateIfDone()
         },
         {
           numCompleted.incrementAndGet()
-          subscriberTerminated()
-        }
-    )
+          terminateIfDone()
+        })
   }
 
-  private fun subscriberTerminated() {
-    if (numCompleted.get() + errorMap.size == numSubscribers.get()) {
+  private fun terminateIfDone() {
+    if (numSubscribers.get() == numExpectedSubscribers
+        && numCompleted.get() + errorMap.size == numExpectedSubscribers) {
       if (errorMap.isEmpty()) {
         onComplete()
       } else {
         onError(errorMap)
       }
     }
+  }
+
+  fun enable() {
+    numExpectedSubscribers = numSubscribers.get()
+    terminateIfDone()
   }
 }

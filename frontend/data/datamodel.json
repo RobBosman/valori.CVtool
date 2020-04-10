@@ -12,16 +12,17 @@
     "privileges": [
       "ENUM_PRIVILEGE"
     ],
-    "businessUnitIds": [],
-    "cvIds": []
+    "businessUnitIds": []
   },
   "profile": {
     "id": "ID",
+    "accountId": "ID",
     "dateOfBirth": "DATE",
     "residence": "STRING"
   },
   "cv": {
     "id": "ID",
+    "accountId": "ID",
     "role": {
       "locale": "STRING"
     },
@@ -32,15 +33,11 @@
       "locale": "STRING"
     },
     "workingSince": "YEAR",
-    "inItSince": "YEAR",
-    "educationIds": [],
-    "publicationIds": [],
-    "referenceIds": [],
-    "skillIds": [],
-    "workingExperienceIds": []
+    "inItSince": "YEAR"
   },
   "education": {
     "id": "ID",
+    "cvId": "ID",
     "type": "ENUM_EDUCATION_TYPE",
     "name": {
       "locale": "STRING"
@@ -51,6 +48,7 @@
   },
   "publication": {
     "id": "ID",
+    "cvId": "ID",
     "year": "YEAR",
     "media": "STRING",
     "title": {
@@ -62,6 +60,7 @@
   },
   "reference": {
     "id": "ID",
+    "cvId": "ID",
     "referentName": "STRING",
     "referentFunction": {
       "locale": "STRING"
@@ -82,6 +81,7 @@
   },
   "workingExperience": {
     "id": "ID",
+    "cvId": "ID",
     "periodBegin": "DATE",
     "periodEnd": "DATE",
     "employer": "STRING",

@@ -1,7 +1,7 @@
 import React from "react"
 import { ChoiceGroup, TextField, Toggle } from "office-ui-fabric-react"
 import { connect } from "react-redux"
-import { mapHelpers, replaceSafeInstance } from "../../redux/ducks/safe";
+import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
 
 const educationTypes = [
   { key: "EDUCATION", text: 'Opleiding', iconProps: { iconName: 'PublishCourse' } },
@@ -10,7 +10,7 @@ const educationTypes = [
 
 const Education = (props) => {
 
-  const { instance, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.entity, props.entityId, props.onChange, props.locale);
+  const { instance: education, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.educationEntity, props.educationId, props.onChange, props.locale);
 
   return (
     <div>
@@ -18,29 +18,29 @@ const Education = (props) => {
         label="Soort opleiding"
         options={educationTypes}
         selectedKey={getValue('type', "EDUCATION")}
-        disabled={!instance}
+        disabled={!education}
         onChange={onChange('type', (event, option) => option.key)} />
       <TextField
         label="Opleiding"
         value={getValueLocale('name')}
-        disabled={!instance}
+        disabled={!education}
         onChange={onChangeLocale('name')} />
       <TextField
         label="Opleidingsinstituut"
         value={getValue('institution')}
-        disabled={!instance}
+        disabled={!education}
         onChange={onChange('institution')} />
       <TextField
         label="Jaar diploma"
         styles={{ fieldGroup: { width: 100 } }}
         placeholder='yyyy'
         value={getValue('yearDiploma')}
-        disabled={!instance}
+        disabled={!education}
         onChange={onChange('yearDiploma')} />
       <Toggle
         label="Diploma"
         checked={getValue('diploma', false)}
-        disabled={!instance}
+        disabled={!education}
         onChange={onChange('diploma', (event, checked) => checked)} />
     </div>
   )
@@ -48,7 +48,7 @@ const Education = (props) => {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  entity: state.safe.education
+  educationEntity: state.safe.education
 });
 
 const mapDispatchToProps = (dispatch) => ({

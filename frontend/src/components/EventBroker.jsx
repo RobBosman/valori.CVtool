@@ -1,8 +1,8 @@
 import React from "react"
 import EventBus from "vertx3-eventbus-client"
 import { connect } from "react-redux"
-import { AuthenticationStates } from "../redux/ducks/authentication"
-import { EventBusStates, updateEventBusState } from "../redux/ducks/eventBus"
+import { AuthenticationStates } from "../redux/authentication"
+import { EventBusStates, updateEventBusState } from "../redux/eventBus"
 
 const CONNECT_URL = "http://localhost:80/eventbus";
 const CONNECT_OPTIONS = {

@@ -17,6 +17,7 @@ internal class ConfigVerticle : AbstractVerticle() {
       HttpServerVerticle::class,
       AuthVerticle::class,
       StorageVerticle::class,
+      CvVerticle::class,
       HeartbeatVerticle::class)
 
   override fun start(future: Future<Void>) {

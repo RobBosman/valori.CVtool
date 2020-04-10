@@ -1,11 +1,11 @@
 import React from "react";
 import { TextField } from "office-ui-fabric-react";
 import { connect } from "react-redux";
-import { mapHelpers, replaceSafeInstance } from "../../redux/ducks/safe";
+import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
 
 const Profile = (props) => {
 
-  const { instance, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.entity, props.entityId, props.onChange, props.locale);
+  const { instance: cv, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.cvEntity, props.cvId, props.onChange, props.locale);
 
   return (
     <div>
@@ -14,35 +14,35 @@ const Profile = (props) => {
         multiline
         autoAdjustHeight
         value={getValueLocale('role')}
-        disabled={!instance}
+        disabled={!cv}
         onChange={onChangeLocale('role')} />
       <TextField
         label="Profielschets"
         multiline
         autoAdjustHeight
         value={getValueLocale('profile')}
-        disabled={!instance}
+        disabled={!cv}
         onChange={onChangeLocale('profile')} />
       <TextField
         label="Interesses"
         multiline
         autoAdjustHeight
         value={getValueLocale('interests')}
-        disabled={!instance}
+        disabled={!cv}
         onChange={onChangeLocale('interests')} />
       <TextField
         label="Werkervaring sinds"
         placeholder='yyyy'
         styles={{ fieldGroup: { width: 100 } }}
         value={getValue('workingSince')}
-        disabled={!instance}
+        disabled={!cv}
         onChange={onChange('workingSince')} />
       <TextField
         label="IT ervaring sinds"
         styles={{ fieldGroup: { width: 100 } }}
         placeholder='yyyy'
         value={getValue('inItSince')}
-        disabled={!instance}
+        disabled={!cv}
         onChange={onChange('inItSince')} />
     </div>
   )
@@ -50,7 +50,7 @@ const Profile = (props) => {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  entity: state.safe.cv
+  cvEntity: state.safe.cv
 });
 
 const mapDispatchToProps = (dispatch) => ({

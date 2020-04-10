@@ -1,14 +1,14 @@
 import React from "react"
 import { connect } from "react-redux"
-import { AuthenticationStates, requestLogin, requestLogout } from "../redux/ducks/authentication"
+import { AuthenticationStates, requestLogin, requestLogout } from "../redux/authentication"
 import { CommandBar, getTheme, loadTheme } from "office-ui-fabric-react"
 import darkOrange from "../themes/darkOrange"
 import lightBlue from "../themes/lightBlue"
 import lightGreen from "../themes/lightGreen"
 import darkYellow from "../themes/darkYellow"
-import { fetchAll, saveAll } from "../redux/ducks/safe"
-import { setThemeName } from "../redux/ducks/ui";
-import { EventBusStates } from "../redux/ducks/eventBus";
+import { fetchAll, saveAll } from "../redux/safe"
+import { setThemeName } from "../redux/ui";
+import { EventBusStates } from "../redux/eventBus";
 
 const MenuBar = (props) => {
 

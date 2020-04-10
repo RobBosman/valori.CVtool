@@ -2,9 +2,9 @@ import React from "react"
 import { getTheme } from "office-ui-fabric-react"
 import { addEventHandler, removeEventHandler } from "./EventBroker"
 import "./KeyFrames.css"
-import { AuthenticationStates } from "../redux/ducks/authentication"
+import { AuthenticationStates } from "../redux/authentication"
 import { connect } from "react-redux"
-import { EventBusStates } from "../redux/ducks/eventBus"
+import { EventBusStates } from "../redux/eventBus"
 
 const PulseMonitor = (props) => {
 
