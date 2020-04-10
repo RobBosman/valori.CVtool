@@ -48,15 +48,16 @@ export const safeEpics = combineEpics(
  */
 const fetchCvFromRemote = () => {
   const account = store.getState().authentication.account;
-  return sendEvent(
-    'fetch.cv',
-    { accountId: account && account._id },
-    {},
-    (message) => {
-      console.debug(`Successfully received cv data`, message);
-      store.dispatch(replaceSafeContent(message.body))
-    },
-    console.error)
+  if (account)
+    sendEvent(
+      'fetch.cv',
+      { accountId: account._id },
+      {},
+      (message) => {
+        store.dispatch(replaceSafeContent(message.body))
+        console.debug(`Successfully received cv data`, message);
+      },
+      console.error)
 };
 
 const saveAllToRemote = () => sendEvent(

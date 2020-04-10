@@ -24,7 +24,7 @@ Visual Studio Code with plugins
 - [x] explore Fabric themes
 - [x] explore Fabric styling (css via javascript)
 - [x] switch to React functions and hooks (instead of components)
-- [x] connect vert.x EventBus in React (plus fine tuning for resilience)
+- [x] connect vert.x EventBus in React (plus fine-tuning for resilience)
 - [x] use heartbeat (server) and PulseMonitor (client)
 - [x] connect MongoDB and vert.x using vert.x libs
 - [x] replace deprecated(?) vert.x libs with MongoDB Reactive Streams driver

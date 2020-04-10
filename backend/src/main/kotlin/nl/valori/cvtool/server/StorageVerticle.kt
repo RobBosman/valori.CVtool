@@ -168,42 +168,43 @@ internal class StorageVerticle : AbstractVerticle() {
     vertx.eventBus()
         .consumer<JsonObject>(ADDRESS_FETCH)
         .toObservable()
-        .doOnNext { message ->
-          val fetchedInstances = ConcurrentHashMap<String, Queue<Document>>()
-          val subscriberGroup = RSSubscriberGroup<Document>(
-              { entity, instance ->
-                fetchedInstances.computeIfAbsent(entity) { ConcurrentLinkedDeque() }
-                    .add(instance)
-              },
-              {
-                replyError(message, it)
-              },
-              {
-                val numInstances = fetchedInstances.values.stream()
-                    .mapToInt { it.size }
-                    .sum()
-                log.debug("MongoDB fetched $numInstances instances of ${fetchedInstances.size} entities")
-                message.reply(composeReplyJson(fetchedInstances))
-              })
-          message.body().map.entries.stream()
-              .map { (entity, criteriaArray) ->
-                if (criteriaArray !is JsonArray)
-                  throw IllegalArgumentException("Search criteria must be of type JsonArray")
-                entity to criteriaArray
-              }
-              .forEach { (entity, criteriaArray) ->
-                val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
-                log.debug("Vertx fetching '$entity' documents using criteria [$criteria]")
-                mongoDatabase
-                    .getCollection(entity)
-                    .find(BsonDocument.parse(criteria))
-                    .subscribe(subscriberGroup.newSubscriber(entity))
-              }
-          subscriberGroup.enable()
-        }
         .subscribe(
-            {},
-            { log.error("Vertx error", it) })
+            { message ->
+              val fetchedInstances = ConcurrentHashMap<String, Queue<Document>>()
+              val subscriberGroup = RSSubscriberGroup<Document>(
+                  { entity, instance ->
+                    fetchedInstances.computeIfAbsent(entity) { ConcurrentLinkedDeque() }
+                        .add(instance)
+                  },
+                  {
+                    replyError(message, it)
+                  },
+                  {
+                    val numInstances = fetchedInstances.values.stream()
+                        .mapToInt { it.size }
+                        .sum()
+                    log.debug("MongoDB fetched $numInstances instances of ${fetchedInstances.size} entities")
+                    message.reply(composeReplyJson(fetchedInstances))
+                  })
+              message.body().map.entries.stream()
+                  .map { (entity, criteriaArray) ->
+                    if (criteriaArray !is JsonArray)
+                      throw IllegalArgumentException("Search criteria must be of type JsonArray")
+                    entity to criteriaArray
+                  }
+                  .forEach { (entity, criteriaArray) ->
+                    val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
+                    log.debug("Vertx fetching '$entity' documents using criteria [$criteria]")
+                    mongoDatabase
+                        .getCollection(entity)
+                        .find(BsonDocument.parse(criteria))
+                        .subscribe(subscriberGroup.newSubscriber(entity))
+                  }
+              subscriberGroup.enable()
+            },
+            {
+              log.error("Vertx error", it)
+            })
   }
 
   private fun replyError(message: Message<JsonObject>, errors: Map<String, Throwable>) {
