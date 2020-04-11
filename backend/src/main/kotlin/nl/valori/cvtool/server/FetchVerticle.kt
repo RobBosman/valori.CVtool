@@ -12,9 +12,6 @@ import nl.valori.reactive.RSSubscriberCollector
 import org.bson.BsonDocument
 import org.bson.Document
 import org.slf4j.LoggerFactory
-import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.stream.Collectors.joining
 
 const val ADDRESS_FETCH = "fetch"
@@ -73,14 +70,10 @@ internal class FetchVerticle : AbstractVerticle() {
    * </pre>
    */
   private fun handleFetchRequests(message: Message<JsonObject>, mongoDatabase: MongoDatabase) {
-    val fetchedInstances = ConcurrentHashMap<String, Queue<Document>>()
     message.body().map.entries.stream()
         .map { (entity, criteriaArray) ->
-          if (criteriaArray !is JsonArray)
-            throw IllegalArgumentException("Search criteria must be of type JsonArray")
-          entity to criteriaArray
-        }
-        .map { (entity, criteriaArray) ->
+          if (criteriaArray !is JsonArray) throw IllegalArgumentException("Search criteria must be of type JsonArray")
+
           val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
           log.debug("Vertx fetching '$entity' documents using criteria [$criteria]")
           entity to mongoDatabase
@@ -88,12 +81,8 @@ internal class FetchVerticle : AbstractVerticle() {
               .find(BsonDocument.parse(criteria))
         }
         .collect(RSSubscriberCollector())
-        .subscribe(
-            { entity, instance ->
-              fetchedInstances.computeIfAbsent(entity) { ConcurrentLinkedDeque() }
-                  .add(instance)
-            },
-            {
+        .subscribeAndCollect(
+            { fetchedInstances ->
               log.debug("Successfully fetched instances of ${fetchedInstances.size} entities")
               message.reply(composeReplyJson(fetchedInstances))
             },

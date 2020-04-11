@@ -67,11 +67,8 @@ internal class SaveVerticle : AbstractVerticle() {
   private fun handleSaveRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) {
     message.body().map.entries.stream()
         .map { (entity, instances) ->
-          if (instances !is JsonObject)
-            throw IllegalArgumentException("Expected JsonObject here")
-          entity to instances
-        }
-        .map { (entity, instances) ->
+          if (instances !is JsonObject) throw IllegalArgumentException("Expected JsonObject here")
+
           log.debug("Vertx saving instances of '$entity'...")
           entity to mongoDatabase
               .getCollection(entity)
@@ -79,13 +76,14 @@ internal class SaveVerticle : AbstractVerticle() {
         }
         .collect(RSSubscriberCollector())
         .subscribe(
-            { _, _ -> },
             {
               log.debug("MongoDB saved documents")
               message.reply("Successfully saved documents")
             },
             {
-              replyError(message, it)
+              val errorMsg = composeErrorMessage(it)
+              log.warn(errorMsg)
+              message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
             })
   }
 
@@ -122,14 +120,13 @@ internal class SaveVerticle : AbstractVerticle() {
         .collect(toList())
   }
 
-  private fun replyError(message: Message<JsonObject>, errors: Map<String, Throwable>) {
-    val errorMsg = when (errors.size) {
-      1 -> "MongoDB error: "
-      else -> "${errors.size} MongoDB errors:\n\t"
-    } + errors.values.stream()
+  private fun composeErrorMessage(errors: Map<String, Throwable>): String {
+    val errorMessages = errors.values.stream()
         .map(Throwable::message)
         .collect(joining("\n\t"))
-    log.warn(errorMsg)
-    message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+    return when (errors.size) {
+      1 -> "MongoDB error: $errorMessages"
+      else -> "${errors.size} MongoDB errors:\n\t$errorMessages"
+    }
   }
 }

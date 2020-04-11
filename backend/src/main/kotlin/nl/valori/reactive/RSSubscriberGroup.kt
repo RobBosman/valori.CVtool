@@ -1,7 +1,9 @@
 package nl.valori.reactive
 
 import org.reactivestreams.Publisher
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedDeque
 import java.util.concurrent.atomic.AtomicInteger
 
 class RSSubscriberGroup<K, T>(
@@ -14,6 +16,25 @@ class RSSubscriberGroup<K, T>(
   private lateinit var onComplete: () -> Unit
 
   fun subscribe(
+      onComplete: () -> Unit,
+      onError: (Map<K, Throwable>) -> Unit
+  ) = subscribe({ _, _ -> }, onComplete, onError)
+
+  fun subscribeAndCollect(
+      onComplete: (Map<K, Collection<T>>) -> Unit,
+      onError: (Map<K, Throwable>) -> Unit
+  ) {
+    val collectedEvents = ConcurrentHashMap<K, Queue<T>>()
+    subscribe(
+        { correlationId, event ->
+          collectedEvents.computeIfAbsent(correlationId) { ConcurrentLinkedDeque() }
+              .add(event)
+        },
+        { onComplete(collectedEvents) },
+        onError)
+  }
+
+  private fun subscribe(
       onNext: (K, T) -> Unit,
       onComplete: () -> Unit,
       onError: (Map<K, Throwable>) -> Unit
@@ -28,11 +49,11 @@ class RSSubscriberGroup<K, T>(
             onNext(correlationId, it)
           },
           {
-            errorMap[correlationId] = it
+            numCompleted.incrementAndGet()
             terminateWhenDone()
           },
           {
-            numCompleted.incrementAndGet()
+            errorMap[correlationId] = it
             terminateWhenDone()
           }))
     }

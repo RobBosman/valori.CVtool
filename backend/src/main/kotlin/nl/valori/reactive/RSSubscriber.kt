@@ -3,10 +3,10 @@ package nl.valori.reactive
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 
-open class RSSubscriber<T>(
+class RSSubscriber<T>(
     private val onNext: (T) -> Unit,
-    private val onError: (Throwable) -> Unit,
-    private val onComplete: () -> Unit
+    private val onComplete: () -> Unit,
+    private val onError: (Throwable) -> Unit
 ) : Subscriber<T> {
 
   private lateinit var subscription: Subscription
@@ -16,14 +16,14 @@ open class RSSubscriber<T>(
     requestNextEvents()
   }
 
+  private fun requestNextEvents() = subscription.request(1)
+
   override fun onNext(result: T) {
     onNext.invoke(result)
     requestNextEvents()
   }
 
-  override fun onError(error: Throwable) = onError.invoke(error)
-
   override fun onComplete() = onComplete.invoke()
 
-  private fun requestNextEvents() = subscription.request(1)
+  override fun onError(error: Throwable) = onError.invoke(error)
 }
