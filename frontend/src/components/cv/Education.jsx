@@ -4,8 +4,16 @@ import { connect } from "react-redux"
 import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
 
 const educationTypes = [
-  { key: "EDUCATION", text: 'Opleiding', iconProps: { iconName: 'PublishCourse' } },
-  { key: "TRAINING", text: 'Training', iconProps: { iconName: 'UserEvent' } }
+  {
+    key: "EDUCATION",
+    text: 'Opleiding',
+    iconProps: { iconName: 'PublishCourse' }
+  },
+  {
+    key: "TRAINING",
+    text: 'Training',
+    iconProps: { iconName: 'UserEvent' }
+  }
 ];
 
 const Education = (props) => {

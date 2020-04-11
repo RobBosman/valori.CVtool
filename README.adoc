@@ -18,7 +18,7 @@ Visual Studio Code with plugins
 
 - [x] explore web components and React
 - [x] explore npm, node, gulp, yarn and webpack
-- [x] combine npm, node with maven
+- [x] combine npm, node with Maven
 - [x] apply Redux (with epics, RxJS)
 - [x] apply Fabric UI
 - [x] explore Fabric themes

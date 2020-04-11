@@ -16,7 +16,8 @@ internal class ConfigVerticle : AbstractVerticle() {
   private val verticlesToDeploy = listOf(
       HttpServerVerticle::class,
       AuthVerticle::class,
-      StorageVerticle::class,
+      FetchVerticle::class,
+      SaveVerticle::class,
       CvVerticle::class,
       HeartbeatVerticle::class)
 

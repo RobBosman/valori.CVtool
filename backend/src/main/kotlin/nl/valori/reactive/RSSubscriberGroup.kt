@@ -1,48 +1,50 @@
 package nl.valori.reactive
 
-import org.reactivestreams.Subscriber
+import org.reactivestreams.Publisher
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
-class RSSubscriberGroup<T>(
-    private val onNext: (String, T) -> Unit,
-    private val onError: (Map<String, Throwable>) -> Unit,
-    private val onComplete: () -> Unit,
-    private var numExpectedSubscribers: Int = 0
+class RSSubscriberGroup<K, T>(
+    private val publisherMap: Map<K, Publisher<T>>
 ) {
-  private val numSubscribers = AtomicInteger()
-  private val errorMap = ConcurrentHashMap<String, Throwable>()
+  private val errorMap = ConcurrentHashMap<K, Throwable>()
   private val numCompleted = AtomicInteger()
+  private lateinit var onNext: (K, T) -> Unit
+  private lateinit var onError: (Map<K, Throwable>) -> Unit
+  private lateinit var onComplete: () -> Unit
 
-  fun newSubscriber(correlationId: String): Subscriber<T> {
-    numSubscribers.incrementAndGet()
-    return RSSubscriber(
-        {
-          onNext(correlationId, it)
-        },
-        {
-          errorMap[correlationId] = it
-          terminateIfDone()
-        },
-        {
-          numCompleted.incrementAndGet()
-          terminateIfDone()
-        })
+  fun subscribe(
+      onNext: (K, T) -> Unit,
+      onComplete: () -> Unit,
+      onError: (Map<K, Throwable>) -> Unit
+  ) {
+    this.onNext = onNext
+    this.onComplete = onComplete
+    this.onError = onError
+
+    publisherMap.forEach { (correlationId, publisher) ->
+      publisher.subscribe(RSSubscriber(
+          {
+            onNext(correlationId, it)
+          },
+          {
+            errorMap[correlationId] = it
+            terminateWhenDone()
+          },
+          {
+            numCompleted.incrementAndGet()
+            terminateWhenDone()
+          }))
+    }
   }
 
-  private fun terminateIfDone() {
-    if (numSubscribers.get() == numExpectedSubscribers
-        && numCompleted.get() + errorMap.size == numExpectedSubscribers) {
+  private fun terminateWhenDone() {
+    if (numCompleted.get() + errorMap.size == publisherMap.size) {
       if (errorMap.isEmpty()) {
         onComplete()
       } else {
         onError(errorMap)
       }
     }
-  }
-
-  fun enable() {
-    numExpectedSubscribers = numSubscribers.get()
-    terminateIfDone()
   }
 }
