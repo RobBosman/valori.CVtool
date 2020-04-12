@@ -3,11 +3,7 @@
     "http.host": "localhost",
     "http.port": 80
   },
-  "dataSource": {
-    "database": "mongodb",
-    "fetchAddress": "mongo.fetch",
-    "saveAddress": "mongo.save"
-  },
+  "dataSource": "mongodb",
   "mongodb": {
     "host": "localhost",
     "port": 27017,

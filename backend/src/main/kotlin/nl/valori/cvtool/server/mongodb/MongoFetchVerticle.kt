@@ -14,8 +14,6 @@ import org.bson.Document
 import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.joining
 
-const val ADDRESS_MONGO_FETCH = "mongo.fetch"
-
 internal class MongoFetchVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
@@ -25,9 +23,10 @@ internal class MongoFetchVerticle : AbstractVerticle() {
     val mongoDatabase = MongoClients
         .create("mongodb://${mongoConfig.getString("host")}:${mongoConfig.getLong("port")}")
         .getDatabase(mongoConfig.getString("db_name"))
+    val fetchAddress = mongoConfig.getString("fetchAddress")
 
     vertx.eventBus()
-        .consumer<JsonObject>(ADDRESS_MONGO_FETCH)
+        .consumer<JsonObject>(fetchAddress)
         .toObservable()
         .subscribe(
             {

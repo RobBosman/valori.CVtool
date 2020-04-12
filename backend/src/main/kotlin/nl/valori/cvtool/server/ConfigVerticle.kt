@@ -10,16 +10,19 @@ import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.mongodb.MongoFetchVerticle
 import nl.valori.cvtool.server.mongodb.MongoSaveVerticle
 
+const val ADDRESS_FETCH = "fetch"
+const val ADDRESS_SAVE = "save"
+
 internal class ConfigVerticle : AbstractVerticle() {
 
   private val verticlesToDeploy = listOf(
       HttpServerVerticle::class,
       AuthVerticle::class,
-      StorageVerticle::class,
-      MongoFetchVerticle::class,
-      MongoSaveVerticle::class,
       CvVerticle::class,
       HeartbeatVerticle::class)
+
+  private val storageVerticles = mapOf(
+      "mongodb" to listOf(MongoFetchVerticle::class, MongoSaveVerticle::class))
 
   override fun start(future: Future<Void>) {
     ConfigRetriever.create(
@@ -28,11 +31,32 @@ internal class ConfigVerticle : AbstractVerticle() {
             .addStore(ConfigStoreOptions()
                 .setType("file")
                 .setConfig(JsonObject().put("path", "config.json"))))
-        .getConfig { configJson ->
+        .getConfig { config ->
+          val configJson = config.result()
+
           val deploymentOptions = DeploymentOptions()
-              .setConfig(configJson.result())
+              .setConfig(configJson)
           verticlesToDeploy
               .forEach { Main.deployVerticle(vertx, it.java.name, deploymentOptions) }
+
+          deployStorageVerticles(configJson)
         }
+  }
+
+  private fun deployStorageVerticles(configJson: JsonObject) {
+    val dataSource = configJson.getString("dataSource")
+
+    val verticlesToDeploy = storageVerticles[dataSource]
+    if (verticlesToDeploy === null)
+      throw UnsupportedOperationException("Unknown database configured '$dataSource'")
+
+    configJson
+        .getJsonObject(dataSource)
+        .put("fetchAddress", ADDRESS_FETCH)
+        .put("saveAddress", ADDRESS_SAVE)
+    val deploymentOptions = DeploymentOptions().setConfig(configJson)
+
+    verticlesToDeploy
+        .forEach { Main.deployVerticle(vertx, it.java.name, deploymentOptions) }
   }
 }

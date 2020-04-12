@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.joining
 import java.util.stream.Collectors.toList
 
-const val ADDRESS_MONGO_SAVE = "mongo.save"
-
 internal class MongoSaveVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
@@ -28,9 +26,10 @@ internal class MongoSaveVerticle : AbstractVerticle() {
     val mongoDatabase = MongoClients
         .create("mongodb://${mongoConfig.getString("host")}:${mongoConfig.getLong("port")}")
         .getDatabase(mongoConfig.getString("db_name"))
+    val saveAddress = mongoConfig.getString("saveAddress")
 
     vertx.eventBus()
-        .consumer<JsonObject>(ADDRESS_MONGO_SAVE)
+        .consumer<JsonObject>(saveAddress)
         .toObservable()
         .subscribe(
             {
