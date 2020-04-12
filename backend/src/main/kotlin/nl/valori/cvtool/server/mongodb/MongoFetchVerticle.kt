@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server
+package nl.valori.cvtool.server.mongodb
 
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
@@ -14,20 +14,20 @@ import org.bson.Document
 import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.joining
 
-const val ADDRESS_FETCH = "fetch"
+const val ADDRESS_MONGO_FETCH = "mongo.fetch"
 
-internal class FetchVerticle : AbstractVerticle() {
+internal class MongoFetchVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
-    val dbConfig = config().getJsonObject("mongoClient")
+    val mongoConfig = config().getJsonObject("mongodb")
     val mongoDatabase = MongoClients
-        .create("mongodb://${dbConfig.getString("host")}:${dbConfig.getLong("port")}")
-        .getDatabase(dbConfig.getString("db_name"))
+        .create("mongodb://${mongoConfig.getString("host")}:${mongoConfig.getLong("port")}")
+        .getDatabase(mongoConfig.getString("db_name"))
 
     vertx.eventBus()
-        .consumer<JsonObject>(ADDRESS_FETCH)
+        .consumer<JsonObject>(ADDRESS_MONGO_FETCH)
         .toObservable()
         .subscribe(
             {

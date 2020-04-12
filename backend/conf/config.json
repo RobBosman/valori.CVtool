@@ -3,7 +3,12 @@
     "http.host": "localhost",
     "http.port": 80
   },
-  "mongoClient": {
+  "dataSource": {
+    "database": "mongodb",
+    "fetchAddress": "mongo.fetch",
+    "saveAddress": "mongo.save"
+  },
+  "mongodb": {
     "host": "localhost",
     "port": 27017,
     "db_name": "cvtool"

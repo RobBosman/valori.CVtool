@@ -8,6 +8,8 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.StaticHandler
 import io.vertx.ext.web.handler.sockjs.BridgeOptions
 import io.vertx.ext.web.handler.sockjs.SockJSHandler
+import nl.valori.cvtool.server.mongodb.ADDRESS_MONGO_FETCH
+import nl.valori.cvtool.server.mongodb.ADDRESS_MONGO_SAVE
 import org.slf4j.LoggerFactory
 
 internal class HttpServerVerticle : AbstractVerticle() {
@@ -24,9 +26,9 @@ internal class HttpServerVerticle : AbstractVerticle() {
         }
     val bridgeOptions = BridgeOptions()
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_LOGIN))
-        .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_FETCH))
+        .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_MONGO_FETCH))
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_FETCH_CV))
-        .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_SAVE))
+        .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_MONGO_SAVE))
         .addOutboundPermitted(PermittedOptions().setAddress(ADDRESS_SERVER_HEARTBEAT))
     router.mountSubRouter("/eventbus",
         SockJSHandler.create(vertx)

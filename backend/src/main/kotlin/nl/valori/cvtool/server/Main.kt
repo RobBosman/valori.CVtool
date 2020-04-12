@@ -1,7 +1,8 @@
 package nl.valori.cvtool.server
 
+import io.vertx.core.DeploymentOptions
+import io.vertx.core.Vertx
 import io.vertx.core.VertxOptions
-import io.vertx.rxjava.core.Vertx
 import org.slf4j.LoggerFactory
 
 fun main() = Main.run()
@@ -16,13 +17,7 @@ object Main {
     if (log.isDebugEnabled)
       options.blockedThreadCheckInterval = 1_000 * 60 * 10
 
-    val vertx = Vertx.vertx(options)
-
-    val verticleClassName = ConfigVerticle::class.java.name
-    vertx.deployVerticle(verticleClassName) { deploymentResult ->
-      if (deploymentResult.failed())
-        log.error("Error deploying $verticleClassName", deploymentResult.cause())
-    }
+    deployVerticle(Vertx.vertx(options), ConfigVerticle::class.java.name, DeploymentOptions())
 
     // run server for max 10 minutes
 //    if (log.isDebugEnabled)
@@ -52,4 +47,10 @@ object Main {
 //          }
 //    }
   }
+
+  fun deployVerticle(vertx: Vertx, verticleClassName: String, deploymentOptions: DeploymentOptions) =
+      vertx.deployVerticle(verticleClassName, deploymentOptions) { deploymentResult ->
+        if (deploymentResult.failed())
+          log.error("Error deploying $verticleClassName", deploymentResult.cause())
+      }
 }

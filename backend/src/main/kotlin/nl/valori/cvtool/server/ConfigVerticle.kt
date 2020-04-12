@@ -6,18 +6,18 @@ import io.vertx.config.ConfigStoreOptions
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.DeploymentOptions
 import io.vertx.core.Future
-import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
-import org.slf4j.LoggerFactory
+import nl.valori.cvtool.server.mongodb.MongoFetchVerticle
+import nl.valori.cvtool.server.mongodb.MongoSaveVerticle
 
 internal class ConfigVerticle : AbstractVerticle() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
   private val verticlesToDeploy = listOf(
       HttpServerVerticle::class,
       AuthVerticle::class,
-      FetchVerticle::class,
-      SaveVerticle::class,
+      StorageVerticle::class,
+      MongoFetchVerticle::class,
+      MongoSaveVerticle::class,
       CvVerticle::class,
       HeartbeatVerticle::class)
 
@@ -28,17 +28,11 @@ internal class ConfigVerticle : AbstractVerticle() {
             .addStore(ConfigStoreOptions()
                 .setType("file")
                 .setConfig(JsonObject().put("path", "config.json"))))
-        .getConfig { json ->
+        .getConfig { configJson ->
           val deploymentOptions = DeploymentOptions()
-              .setConfig(json.result())
+              .setConfig(configJson.result())
           verticlesToDeploy
-              .forEach { deployVerticle(vertx, it.java.name, deploymentOptions) }
+              .forEach { Main.deployVerticle(vertx, it.java.name, deploymentOptions) }
         }
   }
-
-  private fun deployVerticle(vertx: Vertx, verticleClassName: String, deploymentOptions: DeploymentOptions) =
-      vertx.deployVerticle(verticleClassName, deploymentOptions) { deploymentResult ->
-        if (deploymentResult.failed())
-          log.error("Error deploying {}", verticleClassName, deploymentResult.cause())
-      }
 }

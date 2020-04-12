@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server
+package nl.valori.cvtool.server.mongodb
 
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.ReplaceOneModel
@@ -17,20 +17,20 @@ import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.joining
 import java.util.stream.Collectors.toList
 
-const val ADDRESS_SAVE = "save"
+const val ADDRESS_MONGO_SAVE = "mongo.save"
 
-internal class SaveVerticle : AbstractVerticle() {
+internal class MongoSaveVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
-    val dbConfig = config().getJsonObject("mongoClient")
+    val mongoConfig = config().getJsonObject("mongodb")
     val mongoDatabase = MongoClients
-        .create("mongodb://${dbConfig.getString("host")}:${dbConfig.getLong("port")}")
-        .getDatabase(dbConfig.getString("db_name"))
+        .create("mongodb://${mongoConfig.getString("host")}:${mongoConfig.getLong("port")}")
+        .getDatabase(mongoConfig.getString("db_name"))
 
     vertx.eventBus()
-        .consumer<JsonObject>(ADDRESS_SAVE)
+        .consumer<JsonObject>(ADDRESS_MONGO_SAVE)
         .toObservable()
         .subscribe(
             {
