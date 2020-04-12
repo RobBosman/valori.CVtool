@@ -37,15 +37,6 @@ export const safeEpics = combineEpics(
   )
 );
 
-/**
- * {@code criteria} must be JSON, listing the search criteria per entity:
- * <pre>
- *   {
- *     entity_1: [{ _id: "XXX" }, { _id: "YYY" }],
- *     entity_2: [{ _id: "ZZZ" }]
- *   }
- * </pre>
- */
 const fetchCvFromRemote = () => {
   const account = store.getState().authentication.account;
   if (account)

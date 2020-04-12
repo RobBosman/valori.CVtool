@@ -1,7 +1,7 @@
 "use strict";
 
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { initializeIcons, registerOnThemeChangeCallback } from "office-ui-fabric-react"
+import { initializeIcons, registerOnThemeChangeCallback } from "@fluentui/react"
 
 export const setLocale = createAction("UI_SET_LOCALE");
 export const setThemeName = createAction("UI_SET_THEME_NAME");

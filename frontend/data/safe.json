@@ -55,8 +55,8 @@
         "nl_NL": "Atheneum-B"
       },
       "institution": "Bataafse Kamp",
-      "yearDiploma": 1988,
-      "diploma": "PASSED"
+      "result": "DIPLOMA",
+      "year": 1988
     }
   },
   "publication": {
@@ -172,9 +172,11 @@
     "EDUCATION",
     "TRAINING"
   ],
-  "ENUM_DIPLOMA": [
-    "PASSED",
-    "FAILED",
+  "ENUM_EDUCATION_RESULT": [
+    "DIPLOMA",
+    "CERTIFICATE",
+    "ONGOING",
+    "CANCELED",
     "NOT_APPLICABLE"
   ],
   "ENUM_SKILL_CATEGORY": [

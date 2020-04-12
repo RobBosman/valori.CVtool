@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { AuthenticationStates, requestLogin, requestLogout } from "../redux/authentication"
-import { CommandBar, getTheme, loadTheme } from "office-ui-fabric-react"
+import { CommandBar, getTheme, loadTheme } from "@fluentui/react"
 import darkOrange from "../themes/darkOrange"
 import lightBlue from "../themes/lightBlue"
 import lightGreen from "../themes/lightGreen"

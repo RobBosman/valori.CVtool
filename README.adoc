@@ -33,6 +33,7 @@ Visual Studio Code with plugins
 - [x] map to 'normalized Json' (list of entities and instances
 - [x] store normalized data model in MongoDB
 - [x] fetch a specific selection of data from MongoDB
+- [x] migrate from office-ui-fabric-react to @fluentui/react
 - [ ] insert/update/delete data in MongoDB
 - [ ] deal with lists of model elements in UI
 - [ ] extend UI with all required pivots and fields for maintaining cv

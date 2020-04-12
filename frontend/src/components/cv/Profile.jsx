@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField } from "office-ui-fabric-react";
+import { TextField } from "@fluentui/react";
 import { connect } from "react-redux";
 import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
 

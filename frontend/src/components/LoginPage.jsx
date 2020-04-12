@@ -1,6 +1,6 @@
 import React from "react"
 import Title from "./Title"
-import {Link, Stack, Text} from "office-ui-fabric-react"
+import {Link, Stack, Text} from "@fluentui/react"
 
 const LoginPage = () => {
 

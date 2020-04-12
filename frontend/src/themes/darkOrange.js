@@ -1,6 +1,6 @@
 "use strict";
 
-import {createTheme} from "office-ui-fabric-react"
+import {createTheme} from "@fluentui/react"
 
 // see https://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/theming-designer/index.html
 // primary color: #f39900

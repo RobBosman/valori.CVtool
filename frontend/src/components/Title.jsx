@@ -1,6 +1,6 @@
 import React from "react"
 import valoriNameImg from '../static/valori-name.png'
-import {Text} from "office-ui-fabric-react"
+import {Text} from "@fluentui/react"
 
 const Title = (props) => (
     <Text variant="xxLarge" style={{color: "#999999", whiteSpace: "nowrap"}}>

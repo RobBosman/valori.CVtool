@@ -1,5 +1,5 @@
 import React from "react"
-import { getTheme } from "office-ui-fabric-react"
+import { getTheme } from "@fluentui/react"
 import { addEventHandler, removeEventHandler } from "./EventBroker"
 import "./KeyFrames.css"
 import { AuthenticationStates } from "../redux/authentication"

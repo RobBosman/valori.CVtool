@@ -79,7 +79,7 @@ const loginToRemote = () => {
             Object.keys(instances)
               .forEach((id) => {
                 store.dispatch(setAccount(instances[id]))
-                console.log("You successfully logged in", message);
+                console.debug("You successfully logged in", message);
               })
           })
       },

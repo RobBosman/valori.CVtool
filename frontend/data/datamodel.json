@@ -43,8 +43,8 @@
       "locale": "STRING"
     },
     "institution": "STRING",
-    "yearDiploma": "YEAR",
-    "diploma": "ENUM_DIPLOMA"
+    "result": "ENUM_EDUCATION_RESULT",
+    "year": "YEAR"
   },
   "publication": {
     "id": "ID",
@@ -111,9 +111,11 @@
     "EDUCATION",
     "TRAINING"
   ],
-  "ENUM_DIPLOMA": [
-    "PASSED",
-    "FAILED",
+  "ENUM_EDUCATION_RESULT": [
+    "DIPLOMA",
+    "CERTIFICATE",
+    "ONGOING",
+    "CANCELED",
     "NOT_APPLICABLE"
   ],
   "ENUM_SKILL_CATEGORY": [

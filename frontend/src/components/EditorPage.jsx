@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Pivot, PivotItem, PivotLinkSize, Stack, Text } from "office-ui-fabric-react";
+import { Pivot, PivotItem, PivotLinkSize, Stack, Text } from "@fluentui/react";
 import Title from "./Title";
 import Account from "./Account";
 import Profile from "./cv/Profile";
