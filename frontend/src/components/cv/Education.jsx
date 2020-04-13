@@ -1,5 +1,5 @@
 import React from "react";
-import { ChoiceGroup, Dropdown, Link, TextField } from "@fluentui/react";
+import { ChoiceGroup, Dropdown, TextField, Stack } from "@fluentui/react";
 import { DetailsList, DetailsListLayoutMode } from '@fluentui/react/lib/DetailsList';
 import { connect } from "react-redux"
 import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
@@ -109,57 +109,13 @@ const columns = [
 
 const Education = (props) => {
 
-  const { instance: education, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.educationEntity, props.educationId, props.onChange, props.locale);
+  const educations = props.educationEntity && props.cvId && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.cvId) || [];
+  const educationId = educations && educations[0] && educations[0]._id;
 
-  const educations = props.educationEntity ? Object.values(props.educationEntity) : [];
-
-  const rows = educations.map((education) =>
-    <tr key={education._id}>
-      <td>
-        <Dropdown
-          options={educationTypes}
-          disabled={!education}
-          selectedKey={getValue('type', "EDUCATION")}
-          onChange={onChange('type', (event, option) => option.key)} />
-      </td>
-      <td>
-        <TextField
-          disabled={!education}
-          value={getValueLocale('name')}
-          onChange={onChangeLocale('name')} />
-      </td>
-      <td>
-        <TextField
-          disabled={!education}
-          value={getValue('institution')}
-          onChange={onChange('institution')} />
-      </td>
-      <td>
-        <Dropdown
-          styles={{ dropdown: { width: 100 } }}
-          options={resultTypes}
-          disabled={!education}
-          selectedKey={getValue('result')}
-          onChange={onChange('result', (event, option) => option.key)} />
-      </td>
-      <td>
-        <TextField
-          styles={{ fieldGroup: { width: 100 } }}
-          placeholder='yyyy'
-          disabled={!education}
-          value={getValue('year')}
-          onChange={onChange('year')} />
-      </td>
-    </tr>
-  );
+  const { instance: education, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.educationEntity, educationId, props.onChange, props.locale);
 
   return (
-    <div>
-
-      <hr />
-      <br />
-      <hr />
-
+    <Stack>
       <DetailsList
         items={educations}
         columns={columns}
@@ -170,53 +126,38 @@ const Education = (props) => {
         isHeaderVisible={true}
       // onItemInvoked={this._onItemInvoked}
       />
-
-      <hr />
-      <br />
-      <hr />
-
-      <div>
-        <ChoiceGroup
-          label="Soort opleiding"
-          options={educationTypes}
-          disabled={!education}
-          selectedKey={getValue('type', "EDUCATION")}
-          onChange={onChange('type', (event, option) => option.key)} />
-        <TextField
-          label="Opleiding"
-          disabled={!education}
-          value={getValueLocale('name')}
-          onChange={onChangeLocale('name')} />
-        <TextField
-          label="Opleidingsinstituut"
-          disabled={!education}
-          value={getValue('institution')}
-          onChange={onChange('institution')} />
-        <Dropdown
-          label='Resultaat:'
-          styles={{ dropdown: { width: 100 } }}
-          options={resultTypes}
-          disabled={!education}
-          selectedKey={getValue('result')}
-          onChange={onChange('result', (event, option) => option.key)} />
-        <TextField
-          label="Jaar"
-          styles={{ fieldGroup: { width: 100 } }}
-          placeholder='yyyy'
-          disabled={!education}
-          value={getValue('year')}
-          onChange={onChange('year')} />
-      </div>
-
-      <hr />
-      <br />
-      <hr />
-
-      <table>
-        <thead><tr><th>Soort opleiding</th><th>Opleiding</th><th>Opleidingsinstituut</th><th>Resultaat</th><th>Jaar</th></tr></thead>
-        <tbody>{rows}</tbody>
-      </table>
-    </div >
+      
+      <ChoiceGroup
+        label="Soort opleiding"
+        options={educationTypes}
+        disabled={!education}
+        selectedKey={getValue('type', "EDUCATION")}
+        onChange={onChange('type', (event, option) => option.key)} />
+      <TextField
+        label="Opleiding"
+        disabled={!education}
+        value={getValueLocale('name')}
+        onChange={onChangeLocale('name')} />
+      <TextField
+        label="Opleidingsinstituut"
+        disabled={!education}
+        value={getValue('institution')}
+        onChange={onChange('institution')} />
+      <Dropdown
+        label='Resultaat:'
+        styles={{ dropdown: { width: 100 } }}
+        options={resultTypes}
+        disabled={!education}
+        selectedKey={getValue('result')}
+        onChange={onChange('result', (event, option) => option.key)} />
+      <TextField
+        label="Jaar"
+        styles={{ fieldGroup: { width: 100 } }}
+        placeholder='yyyy'
+        disabled={!education}
+        value={getValue('year')}
+        onChange={onChange('year')} />
+    </Stack >
   )
 };
 
