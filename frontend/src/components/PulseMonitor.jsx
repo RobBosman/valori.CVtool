@@ -2,7 +2,7 @@ import React from "react"
 import { getTheme } from "@fluentui/react"
 import { addEventHandler, removeEventHandler } from "./EventBroker"
 import "./KeyFrames.css"
-import { AuthenticationStates } from "../redux/authentication"
+import { LoginStates } from "../redux/authentication"
 import { connect } from "react-redux"
 import { EventBusStates } from "../redux/eventBus"
 
@@ -52,7 +52,7 @@ const PulseMonitor = (props) => {
 };
 
 const select = (state) => ({
-  shouldBeConnected: state.authentication.loginState === AuthenticationStates.LOGGED_IN,
+  shouldBeConnected: state.authentication.loginState === LoginStates.LOGGED_IN,
   isConnected: state.eventBus === EventBusStates.CONNECTED,
   isDisconnected: (state.eventBus === EventBusStates.CLOSED || state.eventBus === EventBusStates.DISABLED)
 });

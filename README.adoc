@@ -36,9 +36,9 @@ Visual Studio Code with plugins
 - [x] migrate from office-ui-fabric-react to @fluentui/react
 - [x] add routing
 - [ ] insert/update/delete data in MongoDB
+- [x] add inline editable tables?
 - [ ] deal with lists of model elements in UI
 - [ ] extend UI with all required pivots and fields for maintaining cv
-- [x] add inline editable tables?
 - [ ] secure vert.x event bus
 - [ ] handle sessions, login/out
 - [ ] store model in relational database

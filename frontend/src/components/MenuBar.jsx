@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { AuthenticationStates, requestLogin, requestLogout } from "../redux/authentication"
+import { LoginStates, requestLogin, requestLogout } from "../redux/authentication"
 import { CommandBar, getTheme, loadTheme } from "@fluentui/react"
 import darkOrange from "../themes/darkOrange"
 import lightBlue from "../themes/lightBlue"
@@ -15,7 +15,7 @@ const MenuBar = (props) => {
   const currentTheme = getTheme();
 
   const items = [
-    props.loginState === AuthenticationStates.LOGGED_IN && {
+    props.loginState === LoginStates.LOGGED_IN && {
       key: 'fetch',
       text: 'Ophalen',
       iconProps: { iconName: 'CloudDownload' },
@@ -23,7 +23,7 @@ const MenuBar = (props) => {
       disabled: !props.isConnected,
       onClick: props.fetch
     },
-    props.loginState === AuthenticationStates.LOGGED_IN && {
+    props.loginState === LoginStates.LOGGED_IN && {
       key: 'save',
       text: 'Opslaan',
       iconProps: { iconName: 'CloudUpload' },
@@ -72,16 +72,16 @@ const MenuBar = (props) => {
         ]
       }
     },
-    (props.loginState === AuthenticationStates.LOGGED_OUT || props.loginState === AuthenticationStates.LOGGING_OUT) && {
+    (props.loginState === LoginStates.LOGGED_OUT || props.loginState === LoginStates.LOGGING_OUT) && {
       key: 'login',
       text: 'Aanmelden',
-      disabled: props.authentication === AuthenticationStates.LOGGING_OUT,
+      disabled: props.authentication === LoginStates.LOGGING_OUT,
       onClick: props.requestLogin
     },
-    (props.loginState === AuthenticationStates.LOGGED_IN || props.loginState === AuthenticationStates.LOGGING_IN) && {
+    (props.loginState === LoginStates.LOGGED_IN || props.loginState === LoginStates.LOGGING_IN) && {
       key: 'logout',
       text: 'Afmelden',
-      disabled: props.loginState === AuthenticationStates.LOGGING_IN,
+      disabled: props.loginState === LoginStates.LOGGING_IN,
       onClick: props.requestLogout
     }
   ].filter(Boolean);

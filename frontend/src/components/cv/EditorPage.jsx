@@ -19,13 +19,13 @@ const navGroups = [
       },
       {
         name: 'Profiel',
-        key: '#/profile',
-        url: '#/profile'
+        key: '#profile',
+        url: '#profile'
       },
       {
         name: 'Opleiding',
-        key: '#/education',
-        url: '#/education'
+        key: '#education',
+        url: '#education'
       }
     ]
   }
@@ -33,25 +33,39 @@ const navGroups = [
 
 const EditorPage = (props) => {
 
+  const [locationHash, setLocationHash] = React.useState(document.location.hash || '#');
+
+  React.useEffect(() => {
+    const listener = (event) => {
+      if (event.newURL.endsWith('#/')) {
+        document.location.hash = '#'
+      }
+      setLocationHash(document.location.hash || '#')
+    };
+    window.addEventListener('hashchange', listener);
+    return () => window.removeEventListener('hashchange', listener);
+  }, []);
+
   const accountId = props.account && props.account._id;
   const cv = accountId && props.cvEntity && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
   const cvId = cv && cv._id;
 
-  const renderMap = {
+  const renderContent = {
     '#': <Account />,
-    '#/profile': <Profile cvId={cvId} />,
-    '#/education': <Education cvId={cvId} />
-  };
+    '#profile': <Profile cvId={cvId} />,
+    '#education': <Education cvId={cvId} />
+  }[locationHash]
+    || <ErrorPage message={`Unknown location hash '${locationHash}'`} />;
 
   return (
     <Stack horizontal>
       <Nav
         styles={{ root: { width: 200 } }}
         groups={navGroups}
-        selectedKey={props.locationHash} />
+        selectedKey={locationHash} />
       <Stack>
         <Text variant="xxLarge">Welkom bij de <Title height="24em" /></Text>
-        {renderMap[props.locationHash] || <ErrorPage />}
+        {renderContent}
       </Stack>
     </Stack>
   )
@@ -59,7 +73,6 @@ const EditorPage = (props) => {
 
 const select = (state) => ({
   account: state.authentication.account,
-  locationHash: state.ui.locationHash,
   cvEntity: state.safe.cv
 });
 

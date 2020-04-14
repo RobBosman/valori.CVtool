@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Fabric, Text } from "@fluentui/react"
-import { AuthenticationStates } from "../redux/authentication"
+import { LoginStates } from "../redux/authentication"
 import ErrorBoundary from "./ErrorBoundary"
 import LoginPage from "./LoginPage"
 import EditorPage from "./cv/EditorPage"
@@ -9,27 +9,20 @@ import MenuBar from "./MenuBar"
 import PulseMonitor from "./PulseMonitor"
 
 const Main = (props) => {
-  
-  const renderChildren = () => {
-    switch (props.loginState) {
-      case AuthenticationStates.LOGGED_OUT:
-        return (<LoginPage />);
-      case AuthenticationStates.LOGGING_IN:
-        return (<Text>logging in...</Text>);
-      case AuthenticationStates.LOGGED_IN:
-        return (<EditorPage />);
-      case AuthenticationStates.LOGGING_OUT:
-        return (<Text>logging out...</Text>);
-      default:
-        throw Error("Unknown authentication", props.loginState)
-    }
-  };
+
+  const renderContent = {
+    [LoginStates.LOGGED_OUT]: <LoginPage />,
+    [LoginStates.LOGGING_IN]: <Text>logging in...</Text>,
+    [LoginStates.LOGGED_IN]: <EditorPage />,
+    [LoginStates.LOGGING_OUT]: <Text>logging out...</Text>
+  }[props.loginState]
+    || <ErrorPage message={`Unknown AuthenticationState '${props.loginState}'`} />;
 
   return (
     <Fabric>
       <ErrorBoundary>
         <MenuBar />
-        {renderChildren()}
+        {renderContent}
         {/* <AutoLogout delayMillis={10000}/> */}
         <PulseMonitor />
       </ErrorBoundary>

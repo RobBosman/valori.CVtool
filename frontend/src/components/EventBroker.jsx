@@ -1,7 +1,7 @@
 import React from "react"
 import EventBus from "vertx3-eventbus-client"
 import { connect } from "react-redux"
-import { AuthenticationStates } from "../redux/authentication"
+import { LoginStates } from "../redux/authentication"
 import { EventBusStates, updateEventBusState } from "../redux/eventBus"
 
 const CONNECT_URL = "http://localhost:80/eventbus";
@@ -81,8 +81,8 @@ const EventBroker = (props) => {
 };
 
 const select = (state) => ({
-  isEnabled: (state.authentication.loginState === AuthenticationStates.LOGGING_IN
-    || state.authentication.loginState === AuthenticationStates.LOGGED_IN),
+  isEnabled: (state.authentication.loginState === LoginStates.LOGGING_IN
+    || state.authentication.loginState === LoginStates.LOGGED_IN),
   eventBus: state.eventBus
 });
 

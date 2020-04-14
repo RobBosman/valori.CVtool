@@ -15,7 +15,7 @@ const confirmLogin = createAction("AUTHENTICATION_CONFIRM_LOGIN", () => ({}));
 const confirmLogout = createAction("AUTHENTICATION_CONFIRM_LOGOUT", () => ({}));
 const setAccount = createAction("AUTHENTICATION_SET_ACCOUNT");
 
-export const AuthenticationStates = {
+export const LoginStates = {
   LOGGED_OUT: "LOGGED_OUT",
   LOGGING_IN: "LOGGING_IN",
   LOGGED_IN: "LOGGED_IN",
@@ -24,20 +24,20 @@ export const AuthenticationStates = {
 
 const authenticationReducer = createReducer(
   {
-    loginState: AuthenticationStates.LOGGED_OUT
+    loginState: LoginStates.LOGGED_OUT
   },
   {
     [requestLogin]: (state) => {
-      state.loginState = AuthenticationStates.LOGGING_IN
+      state.loginState = LoginStates.LOGGING_IN
     },
     [requestLogout]: (state) => {
-      state.loginState = AuthenticationStates.LOGGING_OUT
+      state.loginState = LoginStates.LOGGING_OUT
     },
     [confirmLogin]: (state) => {
-      state.loginState = AuthenticationStates.LOGGED_IN
+      state.loginState = LoginStates.LOGGED_IN
     },
     [confirmLogout]: (state) => {
-      state.loginState = AuthenticationStates.LOGGED_OUT
+      state.loginState = LoginStates.LOGGED_OUT
     },
     [setAccount]: (state, action) => {
       state.account = action.payload

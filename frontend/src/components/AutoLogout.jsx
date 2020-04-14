@@ -1,10 +1,10 @@
 import React from "react"
-import {AuthenticationStates, requestLogout} from "../redux/authentication"
+import {LoginStates, requestLogout} from "../redux/authentication"
 import {connect} from "react-redux";
 
 const AutoLogout = (props) => {
     React.useEffect(() => {
-      if (props.loginState === AuthenticationStates.LOGGED_IN && props.delayMillis > 0) {
+      if (props.loginState === LoginStates.LOGGED_IN && props.delayMillis > 0) {
             const timeoutID = setTimeout(props.requestLogout, props.delayMillis);
             console.log(`set logout timeout[${timeoutID}]`);
 

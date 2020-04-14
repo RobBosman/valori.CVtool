@@ -1,8 +1,8 @@
 import React from "react"
-import {Text} from "@fluentui/react"
+import { Text } from "@fluentui/react"
 
-const ErrorPage = () => (
-    <Text variant="xxLarge" style={{color: "#ff0000"}}>Error...</Text>
+const ErrorPage = (props) => (
+  <Text variant="xxLarge" style={{ color: "#ff0000" }}>Error: {props.message}</Text>
 );
 
 export default ErrorPage
