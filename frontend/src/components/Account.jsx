@@ -1,16 +1,18 @@
 import React from "react";
-import { TextField } from "@fluentui/react";
+import { Stack, Text, TextField } from "@fluentui/react";
 import { connect } from "react-redux";
 
 const Account = (props) => {
 
   return (
-    <TextField
-      label='Naam'
-      value={props.account && props.account.name}
-      readOnly={true}
-      disabled={!props.account}
-      styles={{ fieldGroup: { width: 400 } }} />
+    <Stack>
+      <Text variant="xxLarge">Account</Text>
+      <TextField
+        label='Naam'
+        value={props.account && props.account.name}
+        readOnly={true}
+        disabled={!props.account} />
+    </Stack>
   )
 };
 

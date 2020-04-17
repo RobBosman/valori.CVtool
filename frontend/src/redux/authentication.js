@@ -2,7 +2,7 @@
 
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { combineEpics, ofType } from "redux-observable";
-import { filter, flatMap, map, tap } from "rxjs/operators";
+import { filter, flatMap, map, tap, delay } from "rxjs/operators";
 import { fromArray } from "rxjs/internal/observable/fromArray";
 import store from "./store";
 import { replaceSafeContent, replaceSafeInstance } from "./safe";
@@ -49,11 +49,13 @@ export default authenticationReducer
 export const authenticationEpics = combineEpics(
   (actions$) => actions$.pipe(
     ofType(requestLogin.type, updateEventBusState.type),
+    delay(1000), // TODO - remove delay
     tap(loginToRemote),
     filter(() => false)
   ),
   (actions$) => actions$.pipe(
     ofType(requestLogout.type),
+    delay(1000), // TODO - remove delay
     flatMap(() => fromArray([
       replaceSafeContent(undefined),
       setAccount(undefined)

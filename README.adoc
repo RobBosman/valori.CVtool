@@ -37,7 +37,7 @@ Visual Studio Code with plugins
 - [x] add routing
 - [ ] insert/update/delete data in MongoDB
 - [x] add inline editable tables?
-- [ ] deal with lists of model elements in UI
+- [x] deal with lists of model elements in UI
 - [ ] extend UI with all required pivots and fields for maintaining cv
 - [ ] secure vert.x event bus
 - [ ] handle sessions, login/out

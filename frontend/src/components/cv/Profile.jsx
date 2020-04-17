@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField } from "@fluentui/react";
+import { Stack, Text, TextField } from "@fluentui/react";
 import { connect } from "react-redux";
 import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
 
@@ -8,11 +8,10 @@ const Profile = (props) => {
   const { instance: cv, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.cvEntity, props.cvId, props.onChange, props.locale);
 
   return (
-    <div>
+    <Stack>
+      <Text variant="xxLarge">Profiel</Text>
       <TextField
         label="Rol"
-        multiline
-        autoAdjustHeight
         value={getValueLocale('role')}
         disabled={!cv}
         onChange={onChangeLocale('role')} />
@@ -44,7 +43,7 @@ const Profile = (props) => {
         value={getValue('inItSince')}
         disabled={!cv}
         onChange={onChange('inItSince')} />
-    </div>
+    </Stack>
   )
 };
 
