@@ -5,6 +5,7 @@ import Account from "./Account";
 import ErrorPage from "./ErrorPage";
 import Profile from "./cv/Profile";
 import Education from "./cv/Education";
+import { selectCvId } from "../redux/ui";
 
 const navGroups = [
   {
@@ -37,12 +38,12 @@ const ContentPage = (props) => {
 
   const accountId = props.account && props.account._id;
   const cv = accountId && props.cvEntity && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
-  const cvId = cv && cv._id;
+  props.selectCvId(cv && cv._id);
 
   const renderMap = {
     '#': <Account />,
-    '#profile': <Profile cvId={cvId} />,
-    '#education': <Education cvId={cvId} />
+    '#profile': <Profile />,
+    '#education': <Education />
   };
 
   const renderContent = renderMap[props.locationHash] || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
@@ -67,4 +68,8 @@ const select = (state) => ({
   cvEntity: state.safe.cv
 });
 
-export default connect(select)(ContentPage)
+const mapDispatchToProps = (dispatch) => ({
+  selectCvId: (cvId) => dispatch(selectCvId(cvId))
+});
+
+export default connect(select, mapDispatchToProps)(ContentPage)

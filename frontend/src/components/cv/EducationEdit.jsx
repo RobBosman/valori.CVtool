@@ -46,6 +46,7 @@ const EducationEdit = (props) => {
 
 const select = (state) => ({
   locale: state.ui.locale,
+  educationId: state.ui.selected.educationId,
   educationEntity: state.safe.education
 });
 

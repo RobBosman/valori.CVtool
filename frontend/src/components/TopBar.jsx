@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { LoginStates, requestLogin, requestLogout } from "../redux/authentication"
-import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react"
+import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack, Link } from "@fluentui/react"
 import darkOrange from "../themes/darkOrange"
 import lightBlue from "../themes/lightBlue"
 import lightGreen from "../themes/lightGreen"
@@ -117,7 +117,7 @@ const TopBar = (props) => {
   return (
     <Stack horizontal verticalAlign="center">
       <img src={valoriNameImg} alt="Valori" height="20em" />
-      <Stack.Item grow={true}>
+      <Stack.Item grow>
         <CommandBar items={items} farItems={farItems} />
       </Stack.Item>
     </Stack>

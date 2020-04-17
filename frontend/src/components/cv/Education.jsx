@@ -1,29 +1,47 @@
 import React from "react";
-import { Stack, Text } from "@fluentui/react";
+import { Stack, Text, registerOnThemeChangeCallback, removeOnThemeChangeCallback, getTheme } from "@fluentui/react";
 import EducationList from "./EducationList";
 import EducationEdit from "./EducationEdit";
 
 const Education = (props) => {
 
-  const [educationId, setEducationId] = React.useState('');
+  const [key, setKey] = React.useState(Math.random());
 
-  const onActiveItemChanged = (item) => {
-    setEducationId(item && item._id || '');
+  React.useEffect(() => {
+    const themeChangeCallback = (theme) => setKey(Math.random());
+    registerOnThemeChangeCallback(themeChangeCallback);
+    return () => removeOnThemeChangeCallback(themeChangeCallback);
+  }, []);
+
+  const listStyles = {
+    root: [
+      {
+        background: getTheme().palette.neutralQuaternaryAlt,
+        padding: 20,
+        width: '40%'
+      }
+    ]
+  };
+  const editStyles = {
+    root: [
+      {
+        background: getTheme().palette.neutralTertiaryAlt,
+        padding: 20
+      }
+    ]
   };
 
   return (
-    <Stack horizontal>
-      <Stack.Item grow={2}
-        styles={{ root: { width: '40%' } }}>
+    <Stack horizontal key={key}>
+      <Stack.Item grow={2} styles={listStyles}>
         <Text variant="xxLarge">Opleiding</Text>
-        <EducationList cvId={props.cvId}
-          onActiveItemChanged={onActiveItemChanged} />
+        <EducationList />
       </Stack.Item>
-      <Stack.Item grow={1}>
+      <Stack.Item grow={1} styles={editStyles}>
         <Text variant="xxLarge">Edit</Text>
-        <EducationEdit educationId={educationId} />
+        <EducationEdit />
       </Stack.Item>
-    </Stack >
+    </Stack>
   )
 };
 

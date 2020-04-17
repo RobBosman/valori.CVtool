@@ -49,6 +49,7 @@ const Profile = (props) => {
 
 const select = (state) => ({
   locale: state.ui.locale,
+  cvId: state.ui.selected.cvId,
   cvEntity: state.safe.cv
 });
 

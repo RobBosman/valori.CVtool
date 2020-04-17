@@ -7,6 +7,8 @@ import store from "./store";
 const setLocationHash = createAction("UI_SET_LOCATION_HASH");
 export const setLocale = createAction("UI_SET_LOCALE");
 export const setThemeName = createAction("UI_SET_THEME_NAME");
+export const selectCvId = createAction("UI_SELECT_CV_ID");
+export const selectEducationId = createAction("UI_SELECT_EDUCATION_ID");
 
 initializeIcons();
 
@@ -25,7 +27,8 @@ const uiReducer = createReducer(
   {
     locationHash: document.location.hash || '#',
     locale: 'nl_NL',
-    themeName: 'lightBlue'
+    themeName: 'lightBlue',
+    selected: {}
   },
   {
     [setLocationHash]: (state, action) => {
@@ -36,6 +39,12 @@ const uiReducer = createReducer(
     },
     [setThemeName]: (state, action) => {
       state.themeName = action.payload
+    },
+    [selectEducationId]: (state, action) => {
+      state.selected.educationId = action.payload
+    },
+    [selectCvId]: (state, action) => {
+      state.selected.cvId = action.payload
     }
   });
 
