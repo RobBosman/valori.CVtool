@@ -16,11 +16,11 @@
   <properties>
     <java-target.version>13</java-target.version>
     <java.version>13</java.version>
-    <kotlin.version>1.3.71</kotlin.version>
+    <kotlin.version>1.3.72</kotlin.version>
     <logback.version>1.2.3</logback.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <mongodb-driver-reactivestreams.version>1.13.0</mongodb-driver-reactivestreams.version>
-    <vertx.version>3.8.5</vertx.version>
+    <mongodb-driver-reactivestreams.version>4.0.2</mongodb-driver-reactivestreams.version>
+    <vertx.version>3.9.0</vertx.version>
   </properties>
 
   <build>
