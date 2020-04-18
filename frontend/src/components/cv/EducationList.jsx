@@ -1,5 +1,5 @@
 import React from "react";
-import { DetailsList, DetailsListLayoutMode, ChoiceGroupOption } from "@fluentui/react";
+import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
 import { connect } from "react-redux"
 import { selectEducationId } from "../../redux/ui";
 
@@ -16,8 +16,8 @@ const EducationList = (props) => {
       isIconOnly: true,
       isResizable: false,
       // isCollapsible: true,
-      minWidth: 20,
-      maxWidth: 20,
+      minWidth: 40,
+      maxWidth: 40,
       // onColumnClick: this._onColumnClick,
       data: 'string'
     },
@@ -28,10 +28,8 @@ const EducationList = (props) => {
       isResizable: true,
       // isCollapsible: false,
       minWidth: 150,
-      // isSorted: true,
-      // isSortedDescending: false,
-      // sortAscendingAriaLabel: 'Sorted A to Z',
-      // sortDescendingAriaLabel: 'Sorted Z to A',
+      isSorted: false,
+      isSortedDescending: false,
       // onColumnClick: this._onColumnClick,
       data: 'string',
       onRender: (education) => education.name['nl_NL']
@@ -73,21 +71,26 @@ const EducationList = (props) => {
     return item._id
   };
 
-  const onActiveItemChanged = (item) => {
-    props.selectEducationId(item && item._id);
-  };
+  const selection = new Selection({
+    getKey: getKey,
+    onSelectionChanged: () => {
+      props.selectEducationId(selection.getSelection()[0] && selection.getSelection()[0]._id)
+    }
+  });
+
+  React.useEffect(() => selection.setKeySelected(props.educationId, true, false));
 
   return (
     <DetailsList
+      setKey="educations"
       items={educations}
+      getKey={getKey}
       columns={columns}
       isHeaderVisible={true}
       layoutMode={DetailsListLayoutMode.justified}
+      selection={selection}
       selectionMode={1}
       selectionPreservedOnEmptyClick={true}
-      // getKey={getKey}
-      // setKey={props.cvId}
-      onActiveItemChanged={onActiveItemChanged}
     />
   )
 };
