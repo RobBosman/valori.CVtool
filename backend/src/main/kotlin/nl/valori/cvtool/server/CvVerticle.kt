@@ -42,7 +42,7 @@ internal class CvVerticle : AbstractVerticle() {
     vertx.eventBus()
         .rxRequest<JsonObject>(ADDRESS_FETCH, accountCriteria, deliveryOptions)
         .map(::obtainCvId)
-        .map(::composeCvCriteria)
+        .map { composeCvCriteria(accountId, it) }
         .flatMap { cvCriteria ->
           vertx.eventBus()
               .rxRequest<JsonObject>(ADDRESS_FETCH, cvCriteria, deliveryOptions)
@@ -57,10 +57,10 @@ internal class CvVerticle : AbstractVerticle() {
           .fieldNames()
           .first()
 
-  private fun composeCvCriteria(cvId: String?) =
+  private fun composeCvCriteria(accountId: String, cvId: String?) =
       JsonObject("""{
           |  "cv": [{ "_id": "$cvId" }],
-          |  "profile": [{ "cvId": "$cvId" }],
+          |  "profile": [{ "accountId": "$accountId" }],
           |  "education": [{ "cvId": "$cvId" }],
           |  "skill": [{ "cvId": "$cvId" }],
           |  "publication": [{ "cvId": "$cvId" }],

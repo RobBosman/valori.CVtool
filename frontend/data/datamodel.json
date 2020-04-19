@@ -23,6 +23,7 @@
   "cv": {
     "id": "ID",
     "accountId": "ID",
+    "name": "STRING",
     "role": {
       "locale": "STRING"
     },

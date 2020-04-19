@@ -71,8 +71,8 @@ export const createId = () => {
  * This function provides a set of helper functions to easily navigate the normalised Redux {@code store.safe} data.
  * @param entity - name of the entity
  * @param entityId
- * @param replaceInstance - function to store the instance, e.g. (id, instance) => dispatch(replaceSafeInstance(entity, id, instance))
  * @param locale - optional
+ * @param replaceInstance - function to store the instance, e.g. (id, instance) => dispatch(replaceSafeInstance(entity, id, instance))
  * @returns {{
  *   instance: *,
  *   getValue: (function(*, *=): *|string),
@@ -81,12 +81,12 @@ export const createId = () => {
  *   onChangeLocale: (function(*, *=): function(*=, *=): *)
  * }}
  */
-export const mapHelpers = (entity, entityId, replaceInstance, locale) => {
+export const mapHelpers = (entity, entityId, locale, replaceInstance = () => {}) => {
 
   const instance = entity && entity[entityId];
 
   const getValue = (propertyName, defaultValue = '') =>
-    instance && instance[propertyName] && instance[propertyName] || defaultValue;
+    instance && instance[propertyName] || defaultValue;
 
   const getValueLocale = (propertyName, defaultValue = '') =>
     instance && instance[propertyName] && instance[propertyName][locale] || defaultValue;

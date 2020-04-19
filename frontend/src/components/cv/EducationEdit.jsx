@@ -6,7 +6,7 @@ import { EducationTypes, EducationResultTypes } from "./Enums";
 
 const EducationEdit = (props) => {
 
-  const { instance: education, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.educationEntity, props.educationId, props.onChange, props.locale);
+  const { instance: education, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.educationEntity, props.educationId, props.locale, props.onChange);
 
   return (
     <Stack >
