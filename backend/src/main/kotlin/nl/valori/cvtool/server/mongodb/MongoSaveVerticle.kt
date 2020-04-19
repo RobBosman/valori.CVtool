@@ -1,5 +1,6 @@
 package nl.valori.cvtool.server.mongodb
 
+import com.mongodb.client.model.DeleteOneModel
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.ReplaceOneModel
 import com.mongodb.client.model.ReplaceOptions
@@ -71,7 +72,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
           log.debug("Vertx saving instances of '$entity'...")
           entity to mongoDatabase
               .getCollection(entity)
-              .bulkWrite(composeSaveRequests(instances.map.values))
+              .bulkWrite(composeWriteRequests(instances.map))
         }
         .collect(RSSubscriberCollector())
         .subscribe(
@@ -96,27 +97,34 @@ internal class MongoSaveVerticle : AbstractVerticle() {
    * CRUD-states C and U are combined to a replace-with-upsert action
    *
    * <pre>
-   *   [
-   *     {
+   *   {
+   *     "XXX": {
    *       "_id": "XXX",
    *       "property": "value"
    *     },
-   *     {
+   *     "YYY": {
    *       "_id": "YYY",
    *       "property": "value"
-   *     }
-   *   ]
+   *     },
+   *     "ZZZ": {}
+   *   }
    * </pre>
    */
-  private fun composeSaveRequests(
-      instances: Collection<Any>
+  private fun composeWriteRequests(
+      instanceMap: Map<String, Any>
   ): List<WriteModel<Document>> {
-    val replaceOptions = ReplaceOptions().upsert(true)
-    return instances.stream()
-        .filter { it is JsonObject }
-        .map { Document.parse((it as JsonObject).encode()) }
-        .map { ReplaceOneModel(Filters.eq("_id", it["_id"]), it, replaceOptions) }
+    return instanceMap.entries.stream()
+        .map { (id, instance) -> toWriteModel(id, instance) }
         .collect(toList())
+  }
+
+  private fun toWriteModel(id: String, instance: Any): WriteModel<Document> {
+    return if (instance is JsonObject && instance.getString("_id") == id) {
+      val instanceDoc = Document.parse(instance.encode())
+      ReplaceOneModel(Filters.eq("_id", id), instanceDoc, ReplaceOptions().upsert(true))
+    } else {
+      DeleteOneModel(Filters.eq("_id", id))
+    }
   }
 
   private fun composeErrorMessage(errors: Map<String, Throwable>): String {

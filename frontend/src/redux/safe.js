@@ -58,6 +58,16 @@ const saveAllToRemote = () => sendEvent(
   console.error);
 
 /**
+ * Use this function to create a unique object id.
+ */
+export const createId = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+/**
  * This function provides a set of helper functions to easily navigate the normalised Redux {@code store.safe} data.
  * @param entity - name of the entity
  * @param entityId

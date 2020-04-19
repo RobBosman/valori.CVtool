@@ -1,10 +1,11 @@
 import React from "react";
 import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import { selectEducationId } from "../../redux/ui";
 
 const EducationList = (props) => {
 
+  // Find all {educations} of the selected {cv}.
   const educations = props.educationEntity && props.cvId && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.cvId) || [];
 
   const columns = [
@@ -23,6 +24,8 @@ const EducationList = (props) => {
     },
     {
       key: 'name',
+      fieldName: 'name',
+      onRender: (education) => education.name['nl_NL'],
       name: 'Opleiding',
       // isRowHeader: true,
       isResizable: true,
@@ -31,8 +34,7 @@ const EducationList = (props) => {
       isSorted: false,
       isSortedDescending: false,
       // onColumnClick: this._onColumnClick,
-      data: 'string',
-      onRender: (education) => education.name['nl_NL']
+      data: 'string'
     },
     {
       key: 'institution',
@@ -63,7 +65,7 @@ const EducationList = (props) => {
       minWidth: 40,
       maxWidth: 40,
       // onColumnClick: this._onColumnClick,
-      data: 'string'
+      data: 'number'
     }
   ];
 
@@ -71,14 +73,19 @@ const EducationList = (props) => {
     return item._id
   };
 
-  const selection = new Selection({
+  // Keep track of {selection} so we can use it outside the context of the DetailsList.
+  const [selection, setSelection] = React.useState(new Selection({
+    items: educations,
     getKey: getKey,
     onSelectionChanged: () => {
       props.selectEducationId(selection.getSelection()[0] && selection.getSelection()[0]._id)
     }
-  });
+  }));
 
-  React.useEffect(() => selection.setKeySelected(props.educationId, true, false));
+  // Re-select current item when navigating back to this page.
+  React.useEffect(() => selection.setKeySelected(props.educationId, true, false), []);
+
+  props.provideSelection(() => { return selection });
 
   return (
     <DetailsList
@@ -90,8 +97,7 @@ const EducationList = (props) => {
       layoutMode={DetailsListLayoutMode.justified}
       selection={selection}
       selectionMode={1}
-      selectionPreservedOnEmptyClick={true}
-    />
+      selectionPreservedOnEmptyClick={true} />
   )
 };
 

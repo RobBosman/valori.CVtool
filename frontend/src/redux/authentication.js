@@ -5,7 +5,7 @@ import { combineEpics, ofType } from "redux-observable";
 import { filter, flatMap, map, tap, delay } from "rxjs/operators";
 import { fromArray } from "rxjs/internal/observable/fromArray";
 import store from "./store";
-import { replaceSafeContent, replaceSafeInstance } from "./safe";
+import { replaceSafeContent, fetchAll } from "./safe";
 import { EventBusStates, updateEventBusState } from "./eventBus";
 import { sendEvent } from "../components/EventBroker";
 
@@ -54,6 +54,14 @@ export const authenticationEpics = combineEpics(
     filter(() => false)
   ),
   (actions$) => actions$.pipe(
+    ofType(setAccount.type),
+    filter((action) => action.payload),
+    flatMap(() => fromArray([
+      confirmLogin(),
+      fetchAll()
+    ]))
+  ),
+  (actions$) => actions$.pipe(
     ofType(requestLogout.type),
     delay(1000), // TODO - remove delay
     flatMap(() => fromArray([
@@ -63,7 +71,8 @@ export const authenticationEpics = combineEpics(
   ),
   (actions$) => actions$.pipe(
     ofType(setAccount.type),
-    map((action) => action.payload ? confirmLogin() : confirmLogout())
+    filter((action) => !action.payload),
+    map((action) => confirmLogout())
   )
 );
 

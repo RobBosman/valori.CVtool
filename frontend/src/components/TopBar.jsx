@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { LoginStates, requestLogin, requestLogout } from "../redux/authentication"
-import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack, Link } from "@fluentui/react"
+import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react"
 import darkOrange from "../themes/darkOrange"
 import lightBlue from "../themes/lightBlue"
 import lightGreen from "../themes/lightGreen"
@@ -19,19 +19,36 @@ const TopBar = (props) => {
     {
       key: 'cvDatabank',
       text: 'CV Databank',
-      // onClick: props.fetch
+      // onClick: link
     },
     {
       key: 'appPermissions',
       text: 'Apps',
-      // onClick: props.save
+      // onClick: link
     },
     {
-      key: 'support',
-      text: 'Support',
-      // onClick: props.save
+      key: 'help',
+      text: 'Help',
+      subMenuProps: {
+        items: [
+          {
+            key: 'emailMe',
+            text: 'Problemen? Mail even!',
+            iconProps: { iconName: 'NewMail' },
+            // onClick: mail-link
+          }
+        ]
+      }
     }
   ];
+
+  const createThemeItem = (themeName, theme, label) => ({
+    key: themeName,
+    text: label,
+    onMouseOver: () => loadTheme(theme),
+    onMouseOut: () => loadTheme(currentTheme),
+    onClick: () => props.setThemeName(themeName)
+  });
 
   const farItems = [
     props.loginState === LoginStates.LOGGED_OUT && {
@@ -54,34 +71,10 @@ const TopBar = (props) => {
             iconProps: { iconName: 'Brightness' },
             subMenuProps: {
               items: [
-                {
-                  key: 'darkOrange',
-                  text: 'Donker - Oranje',
-                  onMouseOver: () => loadTheme(darkOrange),
-                  onMouseOut: () => loadTheme(currentTheme),
-                  onClick: () => props.setThemeName('darkOrange')
-                },
-                {
-                  key: 'darkYellow',
-                  text: 'Donker - Geel',
-                  onMouseOver: () => loadTheme(darkYellow),
-                  onMouseOut: () => loadTheme(currentTheme),
-                  onClick: () => props.setThemeName('darkYellow')
-                },
-                {
-                  key: 'lightBlue',
-                  text: 'Licht - Blauw',
-                  onMouseOver: () => loadTheme(lightBlue),
-                  onMouseOut: () => loadTheme(currentTheme),
-                  onClick: () => props.setThemeName('lightBlue')
-                },
-                {
-                  key: 'lightGreen',
-                  text: 'Licht - Groen',
-                  onMouseOver: () => loadTheme(lightGreen),
-                  onMouseOut: () => loadTheme(currentTheme),
-                  onClick: () => props.setThemeName('lightGreen')
-                }
+                createThemeItem('lightBlue', lightBlue, 'Licht - Blauw'),
+                createThemeItem('lightGreen', lightGreen, 'Licht - Groen'),
+                createThemeItem('darkOrange', darkOrange, 'Donker - Oranje'),
+                createThemeItem('darkYellow', darkYellow, 'Donker - Geel')
               ]
             }
           },

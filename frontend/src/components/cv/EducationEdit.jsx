@@ -1,6 +1,6 @@
 import React from "react";
 import { ChoiceGroup, Dropdown, TextField, Stack } from "@fluentui/react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
 import { EducationTypes, EducationResultTypes } from "./Enums";
 
@@ -14,7 +14,7 @@ const EducationEdit = (props) => {
         label="Soort opleiding"
         options={EducationTypes}
         disabled={!education}
-        selectedKey={getValue('type', "EDUCATION")}
+        selectedKey={getValue('type')}
         onChange={onChange('type', (event, option) => option.key)} />
       <TextField
         label="Opleiding"
