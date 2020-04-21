@@ -35,16 +35,16 @@ Visual Studio Code with plugins
 - [x] fetch a specific selection of data from MongoDB
 - [x] migrate from office-ui-fabric-react to @fluentui/react
 - [x] add routing
-- [x] add inline editable tables?
+- [x] add inline editable tables? - no
 - [x] deal with lists of model elements in UI
 - [x] insert/update/delete data in MongoDB
-- [ ] extend UI with all required pivots and fields for maintaining cv
+- [ ] extend UI with all required fields for maintaining cv
+- [ ] add auto-save
 - [ ] secure vert.x event bus
 - [ ] handle sessions, login/out
 - [ ] store model in relational database
 - [ ] explore Web Workers?
 - [ ] apply vert.x ReactiveRead/WriteStream?
-- [ ] store model in relational database
 - [ ] request Valori server (docker) and database
 - [ ] convert data from old database (directly connect to old database?)
 - [ ] add OpenID Connect authentication flow +
@@ -52,6 +52,5 @@ Visual Studio Code with plugins
 - [ ] add auto-refresh of tokens (how exactly?)
 - [ ] add Word export
 - [ ] add storing in SharePoint
-- [ ] add auto-save
 - [ ] add admin role and functionality
 - [ ] add unit (integration) tests

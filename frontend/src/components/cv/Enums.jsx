@@ -7,7 +7,7 @@ export const EducationTypes = [
   },
   {
     key: "TRAINING",
-    text: 'Training',
+    text: 'Cursus',
     iconProps: { iconName: 'UserEvent' }
   }
 ];

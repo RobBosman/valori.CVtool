@@ -14,9 +14,9 @@ initializeIcons();
 
 window.addEventListener('hashchange', (event) => {
   if (event.newURL.endsWith('#/')) {
-    document.location.hash = '#'
+    document.location.hash = ''
   }
-  store.dispatch(setLocationHash(document.location.hash || '#'))
+  store.dispatch(setLocationHash(document.location.hash || ''))
 });
 
 registerOnThemeChangeCallback((theme) => {
@@ -25,7 +25,7 @@ registerOnThemeChangeCallback((theme) => {
 
 const uiReducer = createReducer(
   {
-    locationHash: document.location.hash || '#',
+    locationHash: document.location.hash || '',
     locale: 'nl_NL',
     themeName: 'lightBlue',
     selected: {}
