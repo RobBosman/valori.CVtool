@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   onChange: (id, instance) => dispatch(replaceSafeInstance('education', id, instance))
 });
 
-const render = (props) => {
+const EducationEdit = (props) => {
   const educationContext = {
     entity: props.educationEntity,
     entityId: props.educationId,
@@ -56,4 +56,4 @@ const render = (props) => {
   )
 };
 
-export default connect(select, mapDispatchToProps)(render)
+export default connect(select, mapDispatchToProps)(EducationEdit)

@@ -5,8 +5,10 @@ import ErrorPage from "./ErrorPage";
 import Profile from "./cv/Profile";
 import Education from "./cv/Education";
 import { selectCvId } from "../redux/ui";
+import CvTitle from "./widgets/CvTitle";
+import CvLogo from "./widgets/CvLogo";
 
-const adminLinks = [
+const ADMIN_LINKS = [
   {
     key: '#tribes',
     url: '#tribes',
@@ -30,7 +32,7 @@ const adminLinks = [
   }
 ];
 
-const cvLinks = [
+const CV_LINKS = [
   {
     key: '#profile',
     url: '#profile',
@@ -85,15 +87,15 @@ const mapDispatchToProps = (dispatch) => ({
   selectCvId: (cvId) => dispatch(selectCvId(cvId))
 });
 
-const render = (props) => {
+const ContentPage = (props) => {
   const [isNavExpanded, setNavExpanded] = React.useState(true);
 
   React.useEffect(() => {
     const accountId = props.account && props.account._id;
-    const cv = accountId
+    const cvInstance = accountId
       && props.cvEntity
       && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
-    props.selectCvId(cv && cv._id)
+    props.selectCvId(cvInstance && cvInstance._id)
   });
 
   const isAdmin = props.account
@@ -102,11 +104,11 @@ const render = (props) => {
   const navGroups = [
     isAdmin && {
       name: 'Admin',
-      links: adminLinks
+      links: ADMIN_LINKS
     },
     {
       name: 'Eigen CV',
-      links: cvLinks
+      links: CV_LINKS
     }
   ].filter(Boolean);
 
@@ -114,24 +116,33 @@ const render = (props) => {
   if (props.locationHash === '' || props.locationHash === '#') {
     renderContent = <ErrorPage message={'TODO - home'} />;
   } else {
-    const allLinks = isAdmin ? adminLinks.concat(cvLinks) : cvLinks;
+    const allLinks = isAdmin ? ADMIN_LINKS.concat(CV_LINKS) : CV_LINKS;
     const item = allLinks.find((item) => item.url === props.locationHash);
-    renderContent = item && item.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
+    renderContent = item && item.content
+      || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
 
   return (
     <Stack horizontal>
-      <Nav
-        styles={{ root: { width: isNavExpanded ? 150 : 20 } }}
-        groups={navGroups}
-        selectedKey={props.navKey}
-        onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
+      <Stack>
+        <div style={{ height: 50 }}>
+          <CvLogo />
+        </div>
+        <Nav
+          styles={{ root: { width: isNavExpanded ? 180 : 20 } }}
+          groups={navGroups}
+          selectedKey={props.navKey}
+          onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
+      </Stack>
       <Separator vertical />
       <Stack.Item grow>
+        <div style={{ paddingLeft: 140, height: 100 }}>
+          <CvTitle />
+        </div>
         {renderContent}
       </Stack.Item>
     </Stack>
   )
 };
 
-export default connect(select, mapDispatchToProps)(render)
+export default connect(select, mapDispatchToProps)(ContentPage)

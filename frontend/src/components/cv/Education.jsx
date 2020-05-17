@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteInstance: (id, instance) => dispatch(replaceSafeInstance('education', id, {}))
 });
 
-const render = (props) => {
+const Education = (props) => {
   const [theme, setTheme] = React.useState(getTheme());
 
   React.useEffect(() => {
@@ -98,4 +98,4 @@ const render = (props) => {
   )
 };
 
-export default connect(select, mapDispatchToProps)(render)
+export default connect(select, mapDispatchToProps)(Education)

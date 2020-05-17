@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
   onProfileChange: (id, instance) => dispatch(replaceSafeInstance('profile', id, instance))
 });
 
-const render = (props) => {
+const Profile = (props) => {
   // Find the {profile} of the selected {account}.
   const accountId = props.account && props.account._id;
   const profile = accountId
@@ -45,6 +45,10 @@ const render = (props) => {
         label="Naam"
         field="name"
         instanceContext={profileContext} />
+      <CvTextField
+        label="Rol"
+        localeField='role'
+        instanceContext={cvContext} />
       <CvDatePicker
         label="Geboortedatum"
         field="dateOfBirth"
@@ -54,10 +58,6 @@ const render = (props) => {
         label="Woonplaats"
         field="residence"
         instanceContext={profileContext} />
-      <CvTextField
-        label="Rol"
-        localeField='role'
-        instanceContext={cvContext} />
       <CvTextField
         label="Profielschets"
         localeField='profile'
@@ -86,4 +86,4 @@ const render = (props) => {
   )
 };
 
-export default connect(select, mapDispatchToProps)(render)
+export default connect(select, mapDispatchToProps)(Profile)

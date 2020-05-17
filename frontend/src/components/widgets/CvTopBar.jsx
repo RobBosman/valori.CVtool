@@ -36,7 +36,7 @@ const CvTopBar = (props) => {
     onMouseOut: () => loadTheme(currentTheme),
     onClick: () => props.setThemeName(themeName)
   });
-  
+
   const items = [
     {
       key: 'cvDatabank',
@@ -121,7 +121,9 @@ const CvTopBar = (props) => {
   ].filter(Boolean);
 
   return (
-    <Stack horizontal verticalAlign="center">
+    <Stack horizontal
+      verticalAlign="center"
+      tokens={{ childrenGap: 50 }}>
       <img src={valoriNameImg} alt="Valori" height="20em" />
       <Stack.Item grow>
         <CommandBar items={items} farItems={farItems} />
@@ -129,6 +131,5 @@ const CvTopBar = (props) => {
     </Stack>
   );
 };
-
 
 export default connect(select, mapDispatchToProps)(CvTopBar)

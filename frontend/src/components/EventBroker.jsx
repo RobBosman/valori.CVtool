@@ -13,6 +13,16 @@ const CONNECT_OPTIONS = {
   vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
 };
 
+const select = (state) => ({
+  isEnabled: (state.authentication.loginState === LoginStates.LOGGING_IN
+    || state.authentication.loginState === LoginStates.LOGGED_IN),
+  eventBus: state.eventBus
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateEventBusState: (state) => dispatch(updateEventBusState(state))
+});
+
 const handlers = new Set();
 const handlersToBeUnregistered = new Set();
 let eventBus = null;
@@ -79,16 +89,6 @@ const EventBroker = (props) => {
 
   return props.children
 };
-
-const select = (state) => ({
-  isEnabled: (state.authentication.loginState === LoginStates.LOGGING_IN
-    || state.authentication.loginState === LoginStates.LOGGED_IN),
-  eventBus: state.eventBus
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  updateEventBusState: (state) => dispatch(updateEventBusState(state))
-});
 
 export default connect(select, mapDispatchToProps)(EventBroker)
 
