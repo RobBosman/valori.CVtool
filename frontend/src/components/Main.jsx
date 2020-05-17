@@ -5,8 +5,8 @@ import { LoginStates } from "../redux/authentication";
 import ErrorBoundary from "./ErrorBoundary";
 import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
-import TopBar from "./TopBar";
-import TitleBar from "./TitleBar";
+import CvTopBar from "./widgets/CvTopBar";
+import CvTitleBar from "./widgets/CvTitleBar";
 import PulseMonitor from "./PulseMonitor";
 
 const renderMap = {
@@ -20,20 +20,21 @@ const select = (state) => ({
   loginState: state.authentication.loginState
 });
 
-export default connect(select)(
-  (props) => {
+const Main = (props) => {
+  const renderContent = renderMap[props.loginState]
+    || <ErrorPage message={`Unknown LoginState '${props.loginState}'`} />;
 
-    const renderContent = renderMap[props.loginState] || <ErrorPage message={`Unknown LoginState '${props.loginState}'`} />;
+  return (
+    <Fabric>
+      <ErrorBoundary>
+        <CvTopBar />
+        <CvTitleBar />
+        {renderContent}
+        {/* <AutoLogout delayMillis={10000}/> */}
+        <PulseMonitor />
+      </ErrorBoundary>
+    </Fabric>
+  );
+};
 
-    return (
-      <Fabric>
-        <ErrorBoundary>
-          <TopBar />
-          <TitleBar />
-          {renderContent}
-          {/* <AutoLogout delayMillis={10000}/> */}
-          <PulseMonitor />
-        </ErrorBoundary>
-      </Fabric>
-    );
-  })
+export default connect(select)(Main)

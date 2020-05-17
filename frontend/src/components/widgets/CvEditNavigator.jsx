@@ -6,7 +6,7 @@ import { CommandBar } from "@fluentui/react";
  * It uses a {selection} that is obtained via a provider function {props.selectionProvider}.
  * @param {*} props 
  */
-const EditNavigator = (props) => {
+const CvEditNavigator = (props) => {
 
   const items = [
     {
@@ -47,4 +47,4 @@ const EditNavigator = (props) => {
   )
 };
 
-export default EditNavigator
+export default CvEditNavigator

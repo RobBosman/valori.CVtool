@@ -6,6 +6,30 @@ import Profile from "./cv/Profile";
 import Education from "./cv/Education";
 import { selectCvId } from "../redux/ui";
 
+const adminLinks = [
+  {
+    key: '#tribes',
+    url: '#tribes',
+    name: 'Tribes',
+    icon: 'HomeGroup',
+    content: <ErrorPage message="TODO" />
+  },
+  {
+    key: '#accounts',
+    url: '#accounts',
+    name: 'Accounts',
+    icon: 'People',
+    content: <ErrorPage message="TODO" />
+  },
+  {
+    key: '#search',
+    url: '#search',
+    name: 'Zoeken',
+    icon: 'Search',
+    content: <ErrorPage message="TODO" />
+  }
+];
+
 const cvLinks = [
   {
     key: '#profile',
@@ -51,30 +75,6 @@ const cvLinks = [
   }
 ];
 
-const adminLinks = [
-  {
-    key: '#tribes',
-    url: '#tribes',
-    name: 'Tribes',
-    // icon: 'ContactInfo',
-    content: <ErrorPage message="TODO" />
-  },
-  {
-    key: '#accounts',
-    url: '#accounts',
-    name: 'Accounts',
-    // icon: 'PublishCourse',
-    content: <ErrorPage message="TODO" />
-  },
-  {
-    key: '#search',
-    url: '#search',
-    name: 'Zoeken',
-    // icon: 'PublishCourse',
-    content: <ErrorPage message="TODO" />
-  }
-];
-
 const select = (state) => ({
   account: state.authentication.account,
   cvEntity: state.safe.cv,
@@ -85,49 +85,53 @@ const mapDispatchToProps = (dispatch) => ({
   selectCvId: (cvId) => dispatch(selectCvId(cvId))
 });
 
-export default connect(select, mapDispatchToProps)(
-  (props) => {
+const render = (props) => {
+  const [isNavExpanded, setNavExpanded] = React.useState(true);
 
-    const [isNavExpanded, setNavExpanded] = React.useState(true);
+  React.useEffect(() => {
+    const accountId = props.account && props.account._id;
+    const cv = accountId
+      && props.cvEntity
+      && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
+    props.selectCvId(cv && cv._id)
+  });
 
-    React.useEffect(() => {
-      const accountId = props.account && props.account._id;
-      const cv = accountId && props.cvEntity && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
-      props.selectCvId(cv && cv._id)
-    });
-
-    const isAdmin = props.account && props.account.privileges && props.account.privileges.find((privilege) => privilege === 'ADMIN');
-    const navGroups = [
-      isAdmin && {
-        name: 'Admin',
-        links: adminLinks
-      },
-      {
-        name: 'Eigen CV',
-        links: cvLinks
-      }
-    ].filter(Boolean);
-
-    let renderContent = null;
-    if (props.locationHash === '' || props.locationHash === '#') {
-      renderContent = <ErrorPage message={'TODO - home'} />;
-    } else {
-      const allLinks = isAdmin ? adminLinks.concat(cvLinks) : cvLinks;
-      const item = allLinks.find((item) => item.url === props.locationHash);
-      renderContent = item && item.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
+  const isAdmin = props.account
+    && props.account.privileges
+    && props.account.privileges.find((privilege) => privilege === 'ADMIN');
+  const navGroups = [
+    isAdmin && {
+      name: 'Admin',
+      links: adminLinks
+    },
+    {
+      name: 'Eigen CV',
+      links: cvLinks
     }
+  ].filter(Boolean);
 
-    return (
-      <Stack horizontal>
-        <Nav
-          styles={{ root: { width: isNavExpanded ? 150 : 20 } }}
-          groups={navGroups}
-          selectedKey={props.navKey}
-          onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
-        <Separator vertical />
-        <Stack.Item grow>
-          {renderContent}
-        </Stack.Item>
-      </Stack>
-    )
-  })
+  let renderContent = null;
+  if (props.locationHash === '' || props.locationHash === '#') {
+    renderContent = <ErrorPage message={'TODO - home'} />;
+  } else {
+    const allLinks = isAdmin ? adminLinks.concat(cvLinks) : cvLinks;
+    const item = allLinks.find((item) => item.url === props.locationHash);
+    renderContent = item && item.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
+  }
+
+  return (
+    <Stack horizontal>
+      <Nav
+        styles={{ root: { width: isNavExpanded ? 150 : 20 } }}
+        groups={navGroups}
+        selectedKey={props.navKey}
+        onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
+      <Separator vertical />
+      <Stack.Item grow>
+        {renderContent}
+      </Stack.Item>
+    </Stack>
+  )
+};
+
+export default connect(select, mapDispatchToProps)(render)

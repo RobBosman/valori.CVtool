@@ -35,9 +35,11 @@ Visual Studio Code with plugins
 - [x] fetch a specific selection of data from MongoDB
 - [x] migrate from office-ui-fabric-react to @fluentui/react
 - [x] add routing
+- [x] explore possibilities for inline editing
 - [x] add inline editable tables? - no
 - [x] deal with lists of model elements in UI
 - [x] insert/update/delete data in MongoDB
+- [x] create widgets to easily connect FluentUI to Redux
 - [ ] extend UI with all required fields for maintaining cv
 - [ ] add auto-save
 - [ ] secure vert.x event bus

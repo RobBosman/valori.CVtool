@@ -1,7 +1,9 @@
 import React from "react";
-import { Stack, Text, TextField, DatePicker } from "@fluentui/react";
+import { Stack, Text } from "@fluentui/react";
 import { connect } from "react-redux";
-import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
+import { replaceSafeInstance } from "../../redux/safe";
+import CvDatePicker from "../widgets/CvDatePicker";
+import CvTextField from "../widgets/CvTextField";
 
 const select = (state) => ({
   account: state.authentication.account,
@@ -16,70 +18,72 @@ const mapDispatchToProps = (dispatch) => ({
   onProfileChange: (id, instance) => dispatch(replaceSafeInstance('profile', id, instance))
 });
 
-export default connect(select, mapDispatchToProps)(
-  (props) => {
+const render = (props) => {
+  // Find the {profile} of the selected {account}.
+  const accountId = props.account && props.account._id;
+  const profile = accountId
+    && props.profileEntity
+    && Object.values(props.profileEntity).find((instance) => instance.accountId === accountId);
 
-    const { instance: cv, getValue: getCvValue, getValueLocale: getCvValueLocale, onChange: onCvChange, onChangeLocale: onCvChangeLocale }
-      = mapHelpers(props.cvEntity, props.cvId, props.locale, props.onCvChange);
-    // Find the {profile} of the selected {account}.
-    const accountId = props.account && props.account._id;
-    const profile = accountId && props.profileEntity && Object.values(props.profileEntity).find((instance) => instance.accountId === accountId);
-    const profileId = profile && profile._id;
-    const { getValue: getProfileValue, onChange: onProfileChange } = mapHelpers(props.profileEntity, profileId, props.locale, props.onProfileChange);
+  const cvContext = {
+    entity: props.cvEntity,
+    entityId: props.cvId,
+    locale: props.locale,
+    replaceInstance: props.onCvChange
+  };
+  const profileContext = {
+    entity: props.profileEntity,
+    entityId: profile && profile._id,
+    locale: props.locale,
+    replaceInstance: props.onProfileChange
+  };
 
-    return (
-      <Stack>
-        <Text variant="xxLarge">Profiel</Text>
-        <TextField
-          label="Naam"
-          value={getProfileValue('name')}
-          disabled={!profile}
-          onChange={onProfileChange('name')} />
-        <DatePicker
-          label="Geboortedatum"
-          // value={getProfileValue('dateOfBirth')}
-          value={new Date()}
-          allowTextInput={true}
-          disabled={!profile}
-          onSelectDate={onProfileChange('dateOfBirth')} />
-        <TextField
-          label="Woonplaats"
-          value={getProfileValue('residence')}
-          disabled={!profile}
-          onChange={onProfileChange('recidence')} />
-        <TextField
-          label="Rol"
-          value={getCvValueLocale('role')}
-          disabled={!cv}
-          onChange={onCvChangeLocale('role')} />
-        <TextField
-          label="Profielschets"
-          multiline
-          autoAdjustHeight
-          value={getCvValueLocale('profile')}
-          disabled={!cv}
-          onChange={onCvChangeLocale('profile')} />
-        <TextField
-          label="Interesses"
-          multiline
-          autoAdjustHeight
-          value={getCvValueLocale('interests')}
-          disabled={!cv}
-          onChange={onCvChangeLocale('interests')} />
-        <TextField
-          label="Werkervaring sinds"
-          placeholder='yyyy'
-          styles={{ fieldGroup: { width: 100 } }}
-          value={getCvValue('workingSince')}
-          disabled={!cv}
-          onChange={onCvChange('workingSince')} />
-        <TextField
-          label="IT ervaring sinds"
-          styles={{ fieldGroup: { width: 100 } }}
-          placeholder='yyyy'
-          value={getCvValue('inItSince')}
-          disabled={!cv}
-          onChange={onCvChange('inItSince')} />
-      </Stack>
-    )
-  })
+  return (
+    <Stack>
+      <Text variant="xxLarge">Profiel</Text>
+      <CvTextField
+        label="Naam"
+        field="name"
+        instanceContext={profileContext} />
+      <CvDatePicker
+        label="Geboortedatum"
+        field="dateOfBirth"
+        instanceContext={profileContext}
+        styles={{ root: { width: 140 } }} />
+      <CvTextField
+        label="Woonplaats"
+        field="residence"
+        instanceContext={profileContext} />
+      <CvTextField
+        label="Rol"
+        localeField='role'
+        instanceContext={cvContext} />
+      <CvTextField
+        label="Profielschets"
+        localeField='profile'
+        instanceContext={cvContext}
+        multiline
+        autoAdjustHeight />
+      <CvTextField
+        label="Interesses"
+        localeField='interests'
+        instanceContext={cvContext}
+        multiline
+        autoAdjustHeight />
+      <CvTextField
+        label="Werkervaring sinds"
+        field="workingSince"
+        instanceContext={cvContext}
+        placeholder='yyyy'
+        styles={{ fieldGroup: { width: 80 } }} />
+      <CvTextField
+        label="IT ervaring sinds"
+        field="inItSince"
+        instanceContext={cvContext}
+        styles={{ fieldGroup: { width: 80 } }}
+        placeholder='yyyy' />
+    </Stack>
+  )
+};
+
+export default connect(select, mapDispatchToProps)(render)

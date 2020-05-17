@@ -13,7 +13,7 @@ export const replaceSafeInstance = createAction("SAFE_REPLACE_INSTANCE",
   (entity, id, instance) => ({ payload: { entity, id, instance } }));
 
 const safeReducer = createReducer({}, {
-  [replaceSafeContent]: (state, action) => action.payload ? action.payload : {},
+  [replaceSafeContent]: (_state, action) => action.payload ? action.payload : {},
   [replaceSafeInstance]: (state, action) => {
     if (!state[action.payload.entity]) {
       state[action.payload.entity] = {}
@@ -66,55 +66,3 @@ export const createId = () => {
     return v.toString(16);
   });
 }
-
-/**
- * This function provides a set of helper functions to easily navigate the normalised Redux {@code store.safe} data.
- * @param entity - name of the entity
- * @param entityId
- * @param locale - optional
- * @param replaceInstance - function to store the instance, e.g. (id, instance) => dispatch(replaceSafeInstance(entity, id, instance))
- * @returns {{
- *   instance: *,
- *   getValue: (function(*, *=): *|string),
- *   getValueLocale: (function(*, *=): *|string),
- *   onChange: (function(*, *=): function(*=, *=): *),
- *   onChangeLocale: (function(*, *=): function(*=, *=): *)
- * }}
- */
-export const mapHelpers = (entity, entityId, locale, replaceInstance = () => {}) => {
-
-  const instance = entity && entity[entityId];
-
-  const getValue = (propertyName, defaultValue = '') =>
-    instance && instance[propertyName] || defaultValue;
-
-  const getValueLocale = (propertyName, defaultValue = '') =>
-    instance && instance[propertyName] && instance[propertyName][locale] || defaultValue;
-
-  const defaultConvertEvent = (event) => event.target.value;
-
-  const onChange = (propertyName, convert = defaultConvertEvent) => (event, option) => replaceInstance(
-    entityId,
-    {
-      ...instance,
-      [propertyName]: convert(event, option)
-    });
-
-  const onChangeLocale = (propertyName, convert = defaultConvertEvent) => (event, option) => replaceInstance(
-    entityId,
-    {
-      ...instance,
-      [propertyName]: {
-        ...instance[propertyName],
-        [locale]: convert(event, option)
-      }
-    });
-
-  return {
-    instance,
-    getValue,
-    getValueLocale,
-    onChange,
-    onChangeLocale
-  };
-};

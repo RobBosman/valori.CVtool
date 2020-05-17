@@ -1,8 +1,11 @@
 import React from "react";
-import { ChoiceGroup, Dropdown, TextField, Stack } from "@fluentui/react";
+import { Stack } from "@fluentui/react";
 import { connect } from "react-redux";
-import { mapHelpers, replaceSafeInstance } from "../../redux/safe";
+import { replaceSafeInstance } from "../../redux/safe";
 import { EducationTypes, EducationResultTypes } from "./Enums";
+import CvTextField from "../widgets/CvTextField";
+import CvChoiceGroup from "../widgets/CvChoiceGroup";
+import CvDropdown from "../widgets/CvDropdown";
 
 const select = (state) => ({
   locale: state.ui.locale,
@@ -14,43 +17,43 @@ const mapDispatchToProps = (dispatch) => ({
   onChange: (id, instance) => dispatch(replaceSafeInstance('education', id, instance))
 });
 
-export default connect(select, mapDispatchToProps)(
-  (props) => {
+const render = (props) => {
+  const educationContext = {
+    entity: props.educationEntity,
+    entityId: props.educationId,
+    locale: props.locale,
+    replaceInstance: props.onChange
+  };
 
-    const { instance: education, getValue, getValueLocale, onChange, onChangeLocale } = mapHelpers(props.educationEntity, props.educationId, props.locale, props.onChange);
+  return (
+    <Stack >
+      <CvChoiceGroup
+        label="Soort opleiding"
+        field="type"
+        instanceContext={educationContext}
+        options={EducationTypes} />
+      <CvTextField
+        label="Opleiding"
+        localeField="name"
+        instanceContext={educationContext} />
+      <CvTextField
+        label="Opleidingsinstituut"
+        field="institution"
+        instanceContext={educationContext} />
+      <CvDropdown
+        label='Resultaat'
+        field="result"
+        instanceContext={educationContext}
+        options={EducationResultTypes}
+        styles={{ dropdown: { width: 100 } }} />
+      <CvTextField
+        label="Jaar"
+        field="year"
+        instanceContext={educationContext}
+        placeholder='yyyy'
+        styles={{ fieldGroup: { width: 100 } }} />
+    </Stack>
+  )
+};
 
-    return (
-      <Stack >
-        <ChoiceGroup
-          label="Soort opleiding"
-          options={EducationTypes}
-          disabled={!education}
-          selectedKey={getValue('type')}
-          onChange={onChange('type', (event, option) => option.key)} />
-        <TextField
-          label="Opleiding"
-          disabled={!education}
-          value={getValueLocale('name')}
-          onChange={onChangeLocale('name')} />
-        <TextField
-          label="Opleidingsinstituut"
-          disabled={!education}
-          value={getValue('institution')}
-          onChange={onChange('institution')} />
-        <Dropdown
-          label='Resultaat:'
-          styles={{ dropdown: { width: 100 } }}
-          options={EducationResultTypes}
-          disabled={!education}
-          selectedKey={getValue('result')}
-          onChange={onChange('result', (event, option) => option.key)} />
-        <TextField
-          label="Jaar"
-          styles={{ fieldGroup: { width: 100 } }}
-          placeholder='yyyy'
-          disabled={!education}
-          value={getValue('year')}
-          onChange={onChange('year')} />
-      </Stack>
-    )
-  })
+export default connect(select, mapDispatchToProps)(render)
