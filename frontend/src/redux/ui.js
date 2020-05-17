@@ -9,6 +9,7 @@ export const setLocale = createAction("UI_SET_LOCALE");
 export const setThemeName = createAction("UI_SET_THEME_NAME");
 export const selectCvId = createAction("UI_SELECT_CV_ID");
 export const selectEducationId = createAction("UI_SELECT_EDUCATION_ID");
+export const selectSkillId = createAction("UI_SELECT_SKILL_ID");
 
 initializeIcons();
 
@@ -42,6 +43,9 @@ const uiReducer = createReducer(
     },
     [selectEducationId]: (state, action) => {
       state.selected.educationId = action.payload
+    },
+    [selectSkillId]: (state, action) => {
+      state.selected.skillId = action.payload
     },
     [selectCvId]: (state, action) => {
       state.selected.cvId = action.payload

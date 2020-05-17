@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Fabric, Text, Separator } from "@fluentui/react";
 import { LoginStates } from "../redux/authentication";
-import ErrorBoundary from "./ErrorBoundary";
+import ErrorBoundary from "../utils/ErrorBoundary";
 import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import CvTopBar from "./widgets/CvTopBar";
-import PulseMonitor from "./PulseMonitor";
+import PulseMonitor from "../utils/PulseMonitor";
 
 const RENDER_MAP = {
   [LoginStates.LOGGED_OUT]: <LoginPage />,

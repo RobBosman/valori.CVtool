@@ -1,32 +1,27 @@
 import React from "react";
-import { Stack, Text, registerOnThemeChangeCallback, removeOnThemeChangeCallback, getTheme } from "@fluentui/react";
+import { Stack, Text } from "@fluentui/react";
 import EducationList from "./EducationList";
 import EducationEdit from "./EducationEdit";
 import CvEditNavigator from "../widgets/CvEditNavigator";
 import { connect } from "react-redux";
 import { createId, replaceSafeInstance } from "../../redux/safe";
+import { useTheme } from "../../utils/CvTheme";
 
 const select = (state) => ({
   cvId: state.ui.selected.cvId
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  createInstance: (id, instance) => dispatch(replaceSafeInstance('education', id, instance)),
-  deleteInstance: (id, instance) => dispatch(replaceSafeInstance('education', id, {}))
+  createEducation: (id, instance) => dispatch(replaceSafeInstance('education', id, instance)),
+  deleteEducatione: (id) => dispatch(replaceSafeInstance('education', id, {}))
 });
 
 const Education = (props) => {
-  const [theme, setTheme] = React.useState(getTheme());
-
-  React.useEffect(() => {
-    registerOnThemeChangeCallback(setTheme);
-    return () => removeOnThemeChangeCallback(setTheme);
-  }, []);
-
-  const listStyles = {
+  const { viewPaneColor, editPaneColor } = useTheme();
+  const viewStyles = {
     root: [
       {
-        background: theme.palette.neutralQuaternaryAlt,
+        background: viewPaneColor,
         padding: 20,
         width: '40%'
       }
@@ -35,7 +30,7 @@ const Education = (props) => {
   const editStyles = {
     root: [
       {
-        background: theme.palette.neutralTertiaryAlt,
+        background: editPaneColor,
         padding: 20
       }
     ]
@@ -62,7 +57,7 @@ const Education = (props) => {
 
   const addEducation = () => {
     const id = createId();
-    props.createInstance(id, {
+    props.createEducation(id, {
       "_id": id,
       "cvId": props.cvId,
       "name": {}
@@ -74,25 +69,25 @@ const Education = (props) => {
     const selection = getSelection();
     const selectedItem = selection && selection.getSelection()[0];
     if (selectedItem) {
-      props.deleteInstance(selectedItem._id)
+      props.deleteEducatione(selectedItem._id)
     }
   };
 
   return (
-    <Stack horizontal theme={theme}>
-      <Stack.Item grow={2} styles={listStyles}>
+    <Stack horizontal>
+      <Stack.Item grow={2} styles={viewStyles}>
         <Text variant="xxLarge">Opleiding</Text>
         <EducationList
           provideSelection={provideSelection} />
       </Stack.Item>
       <Stack.Item grow={1} styles={editStyles}>
+        <Text variant="xxLarge">Edit</Text>
+        <EducationEdit />
         <CvEditNavigator
           onPrevious={() => selectNext(-1)}
           onNext={() => selectNext(1)}
           onAdd={addEducation}
           onDelete={deleteEducation} />
-        <Text variant="xxLarge">Edit</Text>
-        <EducationEdit />
       </Stack.Item>
     </Stack>
   )

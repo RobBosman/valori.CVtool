@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { replaceSafeInstance } from "../../redux/safe";
 import CvDatePicker from "../widgets/CvDatePicker";
 import CvTextField from "../widgets/CvTextField";
+import { useTheme } from "../../utils/CvTheme";
 
 const select = (state) => ({
   account: state.authentication.account,
@@ -37,9 +38,18 @@ const Profile = (props) => {
     locale: props.locale,
     replaceInstance: props.onProfileChange
   };
+  const { editPaneColor } = useTheme();
+  const editStyles = {
+    root: [
+      {
+        background: editPaneColor,
+        padding: 20
+      }
+    ]
+  };
 
   return (
-    <Stack>
+    <Stack styles={editStyles}>
       <Text variant="xxLarge">Profiel</Text>
       <CvTextField
         label="Naam"

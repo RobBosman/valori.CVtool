@@ -126,7 +126,9 @@ const CvTopBar = (props) => {
       tokens={{ childrenGap: 50 }}>
       <img src={valoriNameImg} alt="Valori" height="20em" />
       <Stack.Item grow>
-        <CommandBar items={items} farItems={farItems} />
+        <CommandBar
+          items={items}
+          farItems={farItems} />
       </Stack.Item>
     </Stack>
   );

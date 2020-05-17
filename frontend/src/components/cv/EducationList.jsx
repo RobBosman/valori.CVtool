@@ -1,70 +1,10 @@
 import React from "react";
-import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
 import { connect } from "react-redux";
 import { selectEducationId } from "../../redux/ui";
-
-const COLUMNS = [
-  {
-    key: 'type',
-    fieldName: 'type',
-    name: 'Soort opleiding',
-    iconName: 'PublishCourse',
-    isIconOnly: true,
-    isResizable: false,
-    // isCollapsible: true,
-    minWidth: 40,
-    maxWidth: 40,
-    // onColumnClick: this._onColumnClick,
-    data: 'string'
-  },
-  {
-    key: 'name',
-    fieldName: 'name',
-    onRender: (education) => education.name['nl_NL'],
-    name: 'Opleiding',
-    // isRowHeader: true,
-    isResizable: true,
-    // isCollapsible: false,
-    minWidth: 150,
-    isSorted: false,
-    isSortedDescending: false,
-    // onColumnClick: this._onColumnClick,
-    data: 'string'
-  },
-  {
-    key: 'institution',
-    fieldName: 'institution',
-    name: 'Opleidingsinstituut',
-    isResizable: true,
-    // isCollapsible: true,
-    minWidth: 150,
-    // maxWidth: 120,
-    // onColumnClick: this._onColumnClick,
-    data: 'string'
-  },
-  {
-    key: 'result',
-    fieldName: 'result',
-    name: 'Resultaat',
-    isResizable: true,
-    // isCollapsible: true,
-    // maxWidth: 80,
-    data: 'string'
-  },
-  {
-    key: 'year',
-    fieldName: 'year',
-    name: 'Jaar',
-    isResizable: true,
-    // isCollapsible: true,
-    minWidth: 40,
-    maxWidth: 40,
-    // onColumnClick: this._onColumnClick,
-    data: 'number'
-  }
-];
+import CvDetailsList from "../widgets/CvDetailsList";
 
 const select = (state) => ({
+  locale: state.ui.locale,
   cvId: state.ui.selected.cvId,
   educationId: state.ui.selected.educationId,
   educationEntity: state.safe.education
@@ -75,41 +15,75 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const EducationList = (props) => {
+  const columns = [
+    {
+      key: 'type',
+      fieldName: 'type',
+      name: 'Soort opleiding',
+      iconName: 'PublishCourse',
+      isIconOnly: true,
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40,
+      data: 'string'
+    },
+    {
+      key: 'name',
+      fieldName: 'name',
+      onRender: (education) => education.name[props.locale],
+      name: 'Opleiding',
+      isResizable: true,
+      minWidth: 150,
+      isSorted: false,
+      isSortedDescending: false,
+      data: 'string'
+    },
+    {
+      key: 'institution',
+      fieldName: 'institution',
+      name: 'Opleidingsinstituut',
+      isResizable: true,
+      minWidth: 150,
+      data: 'string'
+    },
+    {
+      key: 'result',
+      fieldName: 'result',
+      name: 'Resultaat',
+      isResizable: true,
+      data: 'string'
+    },
+    {
+      key: 'year',
+      fieldName: 'year',
+      name: 'Jaar',
+      isResizable: true,
+      minWidth: 40,
+      maxWidth: 40,
+      data: 'number'
+    }
+  ];
+
   // Find all {educations} of the selected {cv}.
   const educations = props.educationEntity
     && props.cvId
     && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.cvId)
     || [];
 
-  const getKey = (item) => {
-    return item._id
+  props.provideSelection(() => selection);
+
+  const instanceContext = {
+    entity: props.educationEntity,
+    entityId: props.educationId,
+    selectInstance: props.selectEducationId
   };
 
-  // Keep track of {selection} so we can use it outside the context of the DetailsList.
-  const [selection, setSelection] = React.useState(new Selection({
-    items: educations,
-    getKey: getKey,
-    onSelectionChanged: () => {
-      props.selectEducationId(selection.getSelection()[0] && selection.getSelection()[0]._id)
-    }
-  }));
-
-  // Re-select current item when navigating back to this page.
-  React.useEffect(() => selection.setKeySelected(props.educationId, true, false), []);
-
-  props.provideSelection(() => { return selection });
-
   return (
-    <DetailsList
-      setKey="educations"
+    <CvDetailsList
+      columns={columns}
       items={educations}
-      getKey={getKey}
-      columns={COLUMNS}
-      isHeaderVisible={true}
-      layoutMode={DetailsListLayoutMode.justified}
-      selection={selection}
-      selectionMode={1}
-      selectionPreservedOnEmptyClick={true} />
+      instanceContext={instanceContext}
+      setKey="educations" />
   )
 };
 

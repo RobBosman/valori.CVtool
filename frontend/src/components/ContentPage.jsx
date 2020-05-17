@@ -7,6 +7,7 @@ import Education from "./cv/Education";
 import { selectCvId } from "../redux/ui";
 import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
+import SkillsList from "./cv/SkillsList";
 
 const ADMIN_LINKS = [
   {
@@ -48,11 +49,11 @@ const CV_LINKS = [
     content: <Education />
   },
   {
-    key: '#skill',
-    url: '#skill',
+    key: '#skills',
+    url: '#skills',
     name: 'Vaardigheden',
     icon: 'SortLines',
-    content: <ErrorPage message="TODO" />
+    content: <SkillsList />
   },
   {
     key: '#publications',

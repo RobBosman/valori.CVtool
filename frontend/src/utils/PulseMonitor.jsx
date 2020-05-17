@@ -1,10 +1,10 @@
 import React from "react";
 import { getTheme } from "@fluentui/react";
-import { addEventHandler, removeEventHandler } from "./EventBroker";
-import "./KeyFrames.css";
+import { addEventHandler, removeEventHandler } from "../components/EventBroker";
 import { LoginStates } from "../redux/authentication";
 import { connect } from "react-redux";
 import { EventBusStates } from "../redux/eventBus";
+import "./KeyFrames.css";
 
 const select = (state) => ({
   shouldBeConnected: state.authentication.loginState === LoginStates.LOGGED_IN,
