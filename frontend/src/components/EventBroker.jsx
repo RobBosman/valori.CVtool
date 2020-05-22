@@ -1,32 +1,32 @@
 import React from "react"
 import { connect } from "react-redux"
 import { LoginStates } from "../services/authentication/authentication-actions"
-import { EventBusStates, updateEventBusState } from "../services/eventBus/eventBus-actions"
-import { connectEventBus, disconnectEventBus, refreshHandlerRegistrations } from "../services/eventBus/eventBus-services"
+import { EventBusConnectionStates, updateEventBusConnectionState } from "../services/eventBus/eventBus-actions"
+import { eventBusClient } from "../services/eventBus/eventBus-services"
 
 const select = (state) => ({
   isEnabled: (state.authentication.loginState === LoginStates.LOGGING_IN
     || state.authentication.loginState === LoginStates.LOGGED_IN),
-  eventBus: state.eventBus
+  connectionState: state.eventBus.connectionState
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateEventBusState: (state) => dispatch(updateEventBusState(state))
+  setConnectionState: (state) => dispatch(updateEventBusConnectionState(state))
 });
 
 const EventBroker = (props) => {
 
   React.useEffect(() => {
-    if (props.isEnabled && props.eventBus === EventBusStates.DISABLED) {
-      connectEventBus();
-      props.updateEventBusState(EventBusStates.CONNECTING)
-    } else if (props.isEnabled && props.eventBus === EventBusStates.CONNECTED) {
-      refreshHandlerRegistrations()
-    } else if (!props.isEnabled && props.eventBus !== EventBusStates.DISABLED && props.eventBus !== EventBusStates.CLOSING) {
-      disconnectEventBus();
-      props.updateEventBusState(EventBusStates.CLOSING)
+    if (props.isEnabled && props.connectionState === EventBusConnectionStates.DISABLED) {
+      eventBusClient.connectEventBus();
+      props.setConnectionState(EventBusConnectionStates.CONNECTING)
+    } else if (props.isEnabled && props.connectionState === EventBusConnectionStates.CONNECTED) {
+      eventBusClient.refreshHandlerRegistrations()
+    } else if (!props.isEnabled && props.connectionState !== EventBusConnectionStates.DISABLED && props.connectionState !== EventBusConnectionStates.CLOSING) {
+      eventBusClient.disconnectEventBus();
+      props.setConnectionState(EventBusConnectionStates.CLOSING)
     }
-  }, [props.isEnabled, props.eventBus]);
+  }, [props.isEnabled, props.connectionState]);
 
   return props.children
 };

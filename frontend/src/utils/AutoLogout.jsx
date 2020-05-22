@@ -11,6 +11,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const AutoLogout = (props) => {
+  
   React.useEffect(() => {
     if (props.loginState === LoginStates.LOGGED_IN && props.delayMillis > 0) {
       const timeoutID = setTimeout(props.requestLogout, props.delayMillis);

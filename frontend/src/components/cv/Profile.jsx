@@ -4,7 +4,7 @@ import { Stack, Text } from "@fluentui/react";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import CvDatePicker from "../widgets/CvDatePicker";
 import CvTextField from "../widgets/CvTextField";
-import { useTheme } from "../../utils/CvTheme";
+import { useTheme } from "../../services/ui/ui-services";
 
 const select = (state) => ({
   account: state.authentication.account,

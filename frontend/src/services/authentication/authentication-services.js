@@ -1,14 +1,14 @@
 "use strict";
 
 import store from "../../redux/store";
-import { EventBusStates } from "../eventBus/eventBus-actions";
-import { sendEvent } from "../../services/eventBus/eventBus-services";
+import { EventBusConnectionStates } from "../eventBus/eventBus-actions";
+import { eventBusClient } from "../../services/eventBus/eventBus-services";
 import { setAccount } from "./authentication-actions";
 
-export const loginToRemote = () => {
-  if (!store.getState().ui.account
-    && store.getState().eventBus === EventBusStates.CONNECTED) {
-    sendEvent(
+export const loginToRemote = (state) => {
+  if (!state.ui.account
+    && state.eventBus.connectionState === EventBusConnectionStates.CONNECTED) {
+    eventBusClient.sendEvent(
       'login',
       { authenticationCode: "My AuthCode" }, // TODO obtain authentication code
       {},

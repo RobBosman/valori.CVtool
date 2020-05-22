@@ -2,23 +2,23 @@ import React from "react";
 import { connect } from "react-redux";
 import { getTheme } from "@fluentui/react";
 import { LoginStates } from "../services/authentication/authentication-actions";
-import { EventBusStates } from "../services/eventBus/eventBus-actions";
-import { addEventHandler, removeEventHandler } from "../services/eventBus/eventBus-services";
+import { EventBusConnectionStates } from "../services/eventBus/eventBus-actions";
+import { eventBusClient } from "../services/eventBus/eventBus-services";
 import "./KeyFrames.css";
 
 const select = (state) => ({
   shouldBeConnected: state.authentication.loginState === LoginStates.LOGGED_IN,
-  isConnected: state.eventBus === EventBusStates.CONNECTED,
-  isDisconnected: (state.eventBus === EventBusStates.CLOSED || state.eventBus === EventBusStates.DISABLED)
+  isConnected: state.eventBus.connectionState === EventBusConnectionStates.CONNECTED,
+  isDisconnected: (state.eventBus.connectionState === EventBusConnectionStates.CLOSED || state.eventBus.connectionState === EventBusConnectionStates.DISABLED)
 });
 
 const PulseMonitor = (props) => {
 
   React.useEffect(() => {
     const handler = { address: 'server.heartbeat', header: {}, callback: serverHeartbeatHandler };
-    addEventHandler(handler, 'add handlers');
+    eventBusClient.addEventHandler(handler, 'add handlers');
     // at the close:
-    return () => removeEventHandler(handler)
+    return () => eventBusClient.removeEventHandler(handler)
   }, []);
 
   const [angle, setAngle] = React.useState(0);

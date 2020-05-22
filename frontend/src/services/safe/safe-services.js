@@ -1,13 +1,13 @@
 "use strict";
 
 import store from "../../redux/store";
-import { sendEvent } from "../../services/eventBus/eventBus-services";
+import { eventBusClient } from "../../services/eventBus/eventBus-services";
 import { replaceSafeContent } from "./safe-actions";
 
 export const fetchCvFromRemote = (state) => {
   const account = state.authentication.account;
   if (account)
-    sendEvent(
+    eventBusClient.sendEvent(
       'fetch.cv',
       { accountId: account._id },
       {},
@@ -18,7 +18,7 @@ export const fetchCvFromRemote = (state) => {
       console.error)
 };
 
-export const saveAllToRemote = (state) => sendEvent(
+export const saveAllToRemote = (state) => eventBusClient.sendEvent(
   'save',
   state.safe,
   (message) => console.debug(`Successfully saved all safe`, message),

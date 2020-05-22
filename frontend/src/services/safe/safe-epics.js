@@ -11,7 +11,7 @@ export const safeEpics = [
     tap(() => fetchCvFromRemote(state$.value)),
     filter(() => false)
   ),
-  (actions$) => actions$.pipe(
+  (actions$, state$) => actions$.pipe(
     ofType(saveAll.type),
     tap(() => saveAllToRemote(state$.value)),
     filter(() => false)

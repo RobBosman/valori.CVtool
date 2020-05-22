@@ -4,15 +4,15 @@ import { ofType } from "redux-observable";
 import { filter, flatMap, map, tap, delay } from "rxjs/operators";
 import { fromArray } from "rxjs/internal/observable/fromArray";
 import { replaceSafeContent, fetchAll } from "../safe/safe-actions";
-import { updateEventBusState } from "../eventBus/eventBus-actions";
+import { updateEventBusConnectionState } from "../eventBus/eventBus-actions";
 import { confirmLogin, confirmLogout, requestLogin, requestLogout, setAccount } from "./authentication-actions";
 import { loginToRemote } from "./authentication-services";
 
 export const authenticationEpics = [
-  (actions$) => actions$.pipe(
-    ofType(requestLogin.type, updateEventBusState.type),
+  (actions$, state$) => actions$.pipe(
+    ofType(requestLogin.type, updateEventBusConnectionState.type),
     delay(1000), // TODO - remove delay
-    tap(loginToRemote),
+    tap(() => loginToRemote(state$.value)),
     filter(() => false)
   ),
   (actions$) => actions$.pipe(

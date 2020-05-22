@@ -6,7 +6,7 @@ import EducationEdit from "./EducationEdit";
 import CvEditNavigator from "../widgets/CvEditNavigator";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
-import { useTheme } from "../../utils/CvTheme";
+import { useTheme } from "../../services/ui/ui-services";
 
 const select = (state) => ({
   cvId: state.ui.selected.cvId
