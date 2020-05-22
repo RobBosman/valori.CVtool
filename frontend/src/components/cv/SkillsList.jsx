@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { selectSkillId } from "../../redux/ui";
+import { selectSkillId } from "../../services/ui/ui-actions";
 import CvDetailsList from "../widgets/CvDetailsList";
 
 const select = (state) => ({

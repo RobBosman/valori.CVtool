@@ -4,10 +4,10 @@ import { Nav, Separator, Stack } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import Profile from "./cv/Profile";
 import Education from "./cv/Education";
-import { selectCvId } from "../redux/ui";
 import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
 import SkillsList from "./cv/SkillsList";
+import { selectCvId } from "../services/ui/ui-actions";
 
 const ADMIN_LINKS = [
   {

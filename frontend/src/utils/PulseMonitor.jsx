@@ -1,9 +1,9 @@
 import React from "react";
-import { getTheme } from "@fluentui/react";
-import { addEventHandler, removeEventHandler } from "../components/EventBroker";
-import { LoginStates } from "../redux/authentication";
 import { connect } from "react-redux";
-import { EventBusStates } from "../redux/eventBus";
+import { getTheme } from "@fluentui/react";
+import { LoginStates } from "../services/authentication/authentication-actions";
+import { EventBusStates } from "../services/eventBus/eventBus-actions";
+import { addEventHandler, removeEventHandler } from "../services/eventBus/eventBus-services";
 import "./KeyFrames.css";
 
 const select = (state) => ({

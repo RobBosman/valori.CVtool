@@ -1,10 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
 import EducationList from "./EducationList";
 import EducationEdit from "./EducationEdit";
 import CvEditNavigator from "../widgets/CvEditNavigator";
-import { connect } from "react-redux";
-import { createId, replaceSafeInstance } from "../../redux/safe";
+import { replaceSafeInstance } from "../../services/safe/safe-actions";
+import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../utils/CvTheme";
 
 const select = (state) => ({

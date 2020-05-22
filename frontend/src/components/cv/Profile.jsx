@@ -1,7 +1,7 @@
 import React from "react";
-import { Stack, Text } from "@fluentui/react";
 import { connect } from "react-redux";
-import { replaceSafeInstance } from "../../redux/safe";
+import { Stack, Text } from "@fluentui/react";
+import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import CvDatePicker from "../widgets/CvDatePicker";
 import CvTextField from "../widgets/CvTextField";
 import { useTheme } from "../../utils/CvTheme";

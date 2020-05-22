@@ -1,6 +1,7 @@
 "use strict";
 
 import { createAction, createReducer } from "@reduxjs/toolkit";
+import reducerRegistry from "../../redux/reducerRegistry";
 
 export const updateEventBusState = createAction("EVENT_BUS_UPDATE_STATE");
 
@@ -12,7 +13,7 @@ export const EventBusStates = {
   CLOSED: 'CLOSED'
 };
 
-const eventBusReducer = createReducer(EventBusStates.DISABLED, {
+const reducer = createReducer(EventBusStates.DISABLED, {
   [updateEventBusState]: (currentState, action) => {
     const newState = action.payload;
     if (currentState === EventBusStates.CONNECTING && newState === EventBusStates.CLOSED) {
@@ -27,4 +28,5 @@ const eventBusReducer = createReducer(EventBusStates.DISABLED, {
   }
 });
 
-export default eventBusReducer
+
+reducerRegistry.register('eventBus', reducer);

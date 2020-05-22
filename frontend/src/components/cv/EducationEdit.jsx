@@ -1,7 +1,7 @@
 import React from "react";
-import { Stack } from "@fluentui/react";
 import { connect } from "react-redux";
-import { replaceSafeInstance } from "../../redux/safe";
+import { Stack } from "@fluentui/react";
+import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { EducationTypes, EducationResultTypes } from "./Enums";
 import CvTextField from "../widgets/CvTextField";
 import CvChoiceGroup from "../widgets/CvChoiceGroup";

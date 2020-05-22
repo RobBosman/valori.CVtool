@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchAll, saveAll } from "../../redux/safe";
+import { fetchAll, saveAll } from "../../services/safe/safe-actions";
 import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react";
-import { LoginStates, requestLogin, requestLogout } from "../../redux/authentication";
-import { setThemeName } from "../../redux/ui";
-import { EventBusStates } from "../../redux/eventBus";
+import { LoginStates, requestLogin, requestLogout } from "../../services/authentication/authentication-actions";
+import { setThemeName } from "../../services/ui/ui-actions";
+import { EventBusStates } from "../../services/eventBus/eventBus-actions";
 import valoriNameImg from '../../static/valori-name.png';
 import darkOrange from "../../themes/darkOrange";
 import lightBlue from "../../themes/lightBlue";

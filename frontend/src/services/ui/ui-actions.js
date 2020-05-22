@@ -1,30 +1,16 @@
 "use strict";
 
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { initializeIcons, registerOnThemeChangeCallback } from "@fluentui/react"
-import store from "./store";
+import reducerRegistry from "../../redux/reducerRegistry";
 
-const setLocationHash = createAction("UI_SET_LOCATION_HASH");
+export const setLocationHash = createAction("UI_SET_LOCATION_HASH");
 export const setLocale = createAction("UI_SET_LOCALE");
 export const setThemeName = createAction("UI_SET_THEME_NAME");
 export const selectCvId = createAction("UI_SELECT_CV_ID");
 export const selectEducationId = createAction("UI_SELECT_EDUCATION_ID");
 export const selectSkillId = createAction("UI_SELECT_SKILL_ID");
 
-initializeIcons();
-
-window.addEventListener('hashchange', (event) => {
-  if (event.newURL.endsWith('#/')) {
-    document.location.hash = ''
-  }
-  store.dispatch(setLocationHash(document.location.hash || ''))
-});
-
-registerOnThemeChangeCallback((theme) => {
-  document.documentElement.style.background = theme.semanticColors.bodyBackground
-});
-
-const uiReducer = createReducer(
+const reducer = createReducer(
   {
     locationHash: document.location.hash || '',
     locale: 'nl_NL',
@@ -52,4 +38,4 @@ const uiReducer = createReducer(
     }
   });
 
-export default uiReducer
+reducerRegistry.register('ui', reducer);
