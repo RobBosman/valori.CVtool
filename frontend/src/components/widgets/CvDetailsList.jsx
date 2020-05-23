@@ -2,6 +2,7 @@ import React from "react";
 import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
 
 const CvDetailsList = (props) => {
+
   const { entityId, selectInstance } = props.instanceContext;
   const getKey = (item) => item._id;
 
@@ -14,6 +15,8 @@ const CvDetailsList = (props) => {
 
   // Re-select current item when navigating back to this page.
   React.useEffect(() => selection.setKeySelected(entityId, true, false), []);
+
+  props.onPassSelectionRef && props.onPassSelectionRef(selection);
 
   return (
     <DetailsList

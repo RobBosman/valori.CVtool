@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const EducationList = (props) => {
+
   const columns = [
     {
       key: 'type',
@@ -70,7 +71,7 @@ const EducationList = (props) => {
     && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.cvId)
     || [];
 
-  props.provideSelection(() => selection);
+  const passSelectionRef = (selectionRef) => props.onPassSelectionRef && props.onPassSelectionRef(selectionRef);
 
   const instanceContext = {
     entity: props.educationEntity,
@@ -83,7 +84,8 @@ const EducationList = (props) => {
       columns={columns}
       items={educations}
       instanceContext={instanceContext}
-      setKey="educations" />
+      setKey="educations"
+      onPassSelectionRef={passSelectionRef}/>
   )
 };
 

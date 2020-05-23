@@ -18,6 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const Education = (props) => {
+
   const { viewPaneColor, editPaneColor } = useTheme();
   const viewStyles = {
     root: [
@@ -37,15 +38,13 @@ const Education = (props) => {
     ]
   };
 
-  // Place holder (like a Future/Promise) for a function to obain the {selection}.
-  let selectionFuture = null;
-  const provideSelection = (selectionProvider) => { selectionFuture = selectionProvider };
-  const getSelection = () => {
-    return selectionFuture && selectionFuture()
+  // The {selection} object of the DetailsList will be obtained when available.
+  let selection = null;
+  const passSelectionRef = (selectionRef) => {
+    selection = selectionRef
   };
 
   const selectNext = (step) => {
-    const selection = getSelection();
     const selectedIndex = selection && selection.getSelectedIndices()[0];
     if (selectedIndex !== false) {
       const nextIndex = Math.min(Math.max(0, selectedIndex + step), selection.getItems().length - 1);
@@ -67,7 +66,6 @@ const Education = (props) => {
   };
 
   const deleteEducation = () => {
-    const selection = getSelection();
     const selectedItem = selection && selection.getSelection()[0];
     if (selectedItem) {
       props.deleteEducatione(selectedItem._id)
@@ -79,7 +77,7 @@ const Education = (props) => {
       <Stack.Item grow={2} styles={viewStyles}>
         <Text variant="xxLarge">Opleiding</Text>
         <EducationList
-          provideSelection={provideSelection} />
+          onPassSelectionRef={passSelectionRef} />
       </Stack.Item>
       <Stack.Item grow={1} styles={editStyles}>
         <Text variant="xxLarge">Edit</Text>
