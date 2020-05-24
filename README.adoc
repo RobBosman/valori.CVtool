@@ -40,6 +40,7 @@ Visual Studio Code with plugins
 - [x] deal with lists of model elements in UI
 - [x] insert/update/delete data in MongoDB
 - [x] create widgets to easily connect FluentUI to Redux
+- [ ] design combined(?) overview, detail and edit screen layouts
 - [ ] extend UI with all required fields for maintaining cv
 - [ ] add auto-save
 - [ ] secure vert.x event bus

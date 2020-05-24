@@ -5,26 +5,28 @@ import { setAccount, LoginStates, confirmLoggingIn, confirmLoggedIn } from "./au
 import { EventBusConnectionStates } from "../eventBus/eventBus-actions";
 import { eventBusClient } from "../../services/eventBus/eventBus-services";
 
-export const loginToRemoteObservable = (state) =>
+export const loginToRemote = (state) =>
   new Observable((subscriber) => {
     if (state.authentication.loginState === LoginStates.REQUESTED_LOGIN
       && state.eventBus.connectionState === EventBusConnectionStates.CONNECTED) {
+      subscriber.next(confirmLoggingIn());
       eventBusClient.sendEvent('login', { authenticationCode: "My AuthCode" }) // TODO obtain authentication code
-        .then((message) => loggedInResponseHandler(message, subscriber), subscriber.error)
+        .then((message) => mapLoggedInResponse(message))
+        .then((action) => subscriber.next(action))
         .then(() => subscriber.next(confirmLoggedIn()))
         .then(() => subscriber.complete())
-        .catch(console.error);
-      subscriber.next(confirmLoggingIn());
+        .catch((e) => subscriber.error(e))
+    } else {
+      subscriber.complete()
     }
   });
 
-const loggedInResponseHandler = (message, subscriber) =>
-  Object.keys(message.body)
-    .forEach((entity) => {
-      const instances = message.body[entity];
-      Object.keys(instances)
-        .forEach((id) => {
-          console.debug("You successfully logged in", message);
-          subscriber.next(setAccount(instances[id]));
-        })
-    });
+const mapLoggedInResponse = (message) => {
+  const accountInstances = Object.values(message.body.account || {});
+  const account = accountInstances && accountInstances[0];
+  if (!account) {
+    throw new Error('message.body.account is not present');
+  }
+  console.debug("You successfully logged in", message);
+  return setAccount(account);
+}

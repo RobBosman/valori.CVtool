@@ -6,7 +6,7 @@ export class EpicRegistry {
 
   constructor() {
     const noOpEpic = (actions$) => actions$.pipe(
-      tap((action) => console.debug("dispatched action: ", action)),
+      // tap((action) => console.debug("dispatched action: ", action)),
       tap((action) => heavyWait(action.type, 0)),
       filter(() => false)
     );

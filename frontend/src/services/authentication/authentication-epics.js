@@ -6,13 +6,13 @@ import { fromArray } from "rxjs/internal/observable/fromArray";
 import { replaceSafeContent, fetchAll } from "../safe/safe-actions";
 import { updateEventBusConnectionState } from "../eventBus/eventBus-actions";
 import { confirmLoggedIn, confirmLoggedOut, requestLogin, requestLogout, setAccount } from "./authentication-actions";
-import { loginToRemoteObservable } from "./authentication-services";
+import { loginToRemote } from "./authentication-services";
 
 export const authenticationEpics = [
   (actions$, state$) => actions$.pipe(
     ofType(requestLogin.type, updateEventBusConnectionState.type),
     delay(1000), // TODO - remove delay
-    flatMap(() => loginToRemoteObservable(state$.value))
+    flatMap(() => loginToRemote(state$.value))
   ),
   (actions$) => actions$.pipe(
     ofType(setAccount.type),

@@ -5,11 +5,11 @@ import { initializeIcons, registerOnThemeChangeCallback, removeOnThemeChangeCall
 import { setLocationHash } from "./ui-actions";
 
 export const initializeUI = (dispatch) => {
-
-  initializeIcons();
-
+  window.addEventListener('unhandledrejection', (event) => console.error('Uncaught error in Promise', event));
   window.addEventListener('hashchange', () => dispatch(setLocationHash(document.location.hash || '')));
 
+  initializeIcons();
+  
   registerOnThemeChangeCallback((theme) => document.documentElement.style.background = theme.semanticColors.bodyBackground);
 };
 

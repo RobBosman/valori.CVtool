@@ -1,21 +1,33 @@
 "use strict";
 
+import { Observable } from "rxjs";
 import { eventBusClient } from "../../services/eventBus/eventBus-services";
 import { replaceSafeContent } from "./safe-actions";
 
-export const fetchCvFromRemote = (state, dispatch) => {
-  const account = state.authentication.account;
-  if (account)
-    eventBusClient.sendEvent('fetch.cv', { accountId: account._id })
-      .then((message) => dispatch(replaceSafeContent(message.body)))
-      .then((message) => console.debug('Successfully received cv data', message))
-      .catch(console.error);
-};
+export const fetchCvFromRemote = (state) =>
+  new Observable((subscriber) => {
+    const account = state.authentication.account;
+    if (account) {
+      eventBusClient.sendEvent('fetch.cv', { accountId: account._id })
+        .then((message) => {
+          console.debug('Successfully received cv data', message);
+          return message
+        })
+        .then((message) => subscriber.next(replaceSafeContent(message.body)))
+        .then(() => subscriber.complete())
+        .catch((e) => subscriber.error(e))
+    } else {
+      subscriber.error('authentication.account is not present')
+    }
+  });
 
 export const saveAllToRemote = (state) =>
-  eventBusClient.sendEvent('save', state.safe)
-    .then((message) => console.debug('Successfully saved safe content', message))
-    .catch(console.error);
+  new Observable((subscriber) =>
+    eventBusClient.sendEvent('save', state.safe)
+      .then(() => console.debug('Successfully saved safe content'))
+      .then(() => subscriber.complete())
+      .catch((e) => subscriber.error(e))
+  );
 
 /** Use this function to create a unique object id. */
 export const createId = () => {
