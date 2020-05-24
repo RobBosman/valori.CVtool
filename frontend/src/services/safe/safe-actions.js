@@ -5,6 +5,7 @@ import reducerRegistry from "../../redux/reducerRegistry";
 
 export const fetchAll = createAction("SAFE_FETCH_ALL", () => ({ payload: null }));
 export const saveAll = createAction("SAFE_SAVE_ALL", () => ({ payload: null }));
+
 export const replaceSafeContent = createAction("SAFE_REPLACE_CONTENT");
 export const replaceSafeInstance = createAction("SAFE_REPLACE_INSTANCE",
   (entity, id, instance) => ({ payload: { entity, id, instance } }));

@@ -11,7 +11,7 @@ import { authenticationEpics } from "./services/authentication/authentication-ep
 import { safeEpics } from "./services/safe/safe-epics";
 import { initializeUI } from "./services/ui/ui-services";
 
-initializeUI();
+initializeUI(store.dispatch);
 
 epicRegistry.register(authenticationEpics);
 epicRegistry.register(safeEpics);

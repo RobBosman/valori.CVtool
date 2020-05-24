@@ -10,8 +10,10 @@ import PulseMonitor from "../utils/PulseMonitor";
 
 const RENDER_MAP = {
   [LoginStates.LOGGED_OUT]: <LoginPage />,
+  [LoginStates.REQUESTED_LOGIN]: <Text>requested login...</Text>,
   [LoginStates.LOGGING_IN]: <Text>logging in...</Text>,
   [LoginStates.LOGGED_IN]: <ContentPage />,
+  [LoginStates.REQUESTED_LOGOUT]: <Text>requested logout...</Text>,
   [LoginStates.LOGGING_OUT]: <Text>logging out...</Text>
 };
 

@@ -5,26 +5,25 @@ import { EventBusConnectionStates, updateEventBusConnectionState } from "../serv
 import { eventBusClient } from "../services/eventBus/eventBus-services"
 
 const select = (state) => ({
-  isEnabled: (state.authentication.loginState === LoginStates.LOGGING_IN
+  isEnabled: (state.authentication.loginState === LoginStates.REQUESTED_LOGIN
+    || state.authentication.loginState === LoginStates.LOGGING_IN
     || state.authentication.loginState === LoginStates.LOGGED_IN),
   connectionState: state.eventBus.connectionState
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setConnectionState: (state) => dispatch(updateEventBusConnectionState(state))
+  updateConnectionState: (connectionState) => dispatch(updateEventBusConnectionState(connectionState))
 });
 
 const EventBroker = (props) => {
 
   React.useEffect(() => {
     if (props.isEnabled && props.connectionState === EventBusConnectionStates.DISABLED) {
-      eventBusClient.connectEventBus();
-      props.setConnectionState(EventBusConnectionStates.CONNECTING)
+      eventBusClient.connectEventBus(props.updateConnectionState)
     } else if (props.isEnabled && props.connectionState === EventBusConnectionStates.CONNECTED) {
       eventBusClient.refreshHandlerRegistrations()
     } else if (!props.isEnabled && props.connectionState !== EventBusConnectionStates.DISABLED && props.connectionState !== EventBusConnectionStates.CLOSING) {
-      eventBusClient.disconnectEventBus();
-      props.setConnectionState(EventBusConnectionStates.CLOSING)
+      eventBusClient.disconnectEventBus(props.updateConnectionState)
     }
   }, [props.isEnabled, props.connectionState]);
 

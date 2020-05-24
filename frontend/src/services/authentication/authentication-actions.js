@@ -4,16 +4,20 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import reducerRegistry from "../../redux/reducerRegistry";
 
 export const requestLogin = createAction("AUTHENTICATION_REQUEST_LOGIN", () => ({}));
+export const confirmLoggingIn = createAction("AUTHENTICATION_CONFIRM_LOGGING_IN", () => ({}));
+export const confirmLoggedIn = createAction("AUTHENTICATION_CONFIRM_LOGGED_IN", () => ({}));
 export const requestLogout = createAction("AUTHENTICATION_REQUEST_LOGOUT", () => ({}));
-export const confirmLogin = createAction("AUTHENTICATION_CONFIRM_LOGIN", () => ({}));
-export const confirmLogout = createAction("AUTHENTICATION_CONFIRM_LOGOUT", () => ({}));
+export const confirmLoggingOut = createAction("AUTHENTICATION_CONFIRM_LOGGING_OUT", () => ({}));
+export const confirmLoggedOut = createAction("AUTHENTICATION_CONFIRM_LOGGED_OUT", () => ({}));
 export const setAccount = createAction("AUTHENTICATION_SET_ACCOUNT");
 
 export const LoginStates = {
-  LOGGED_OUT: "LOGGED_OUT",
+  REQUESTED_LOGIN: "REQUESTED_LOGIN",
   LOGGING_IN: "LOGGING_IN",
   LOGGED_IN: "LOGGED_IN",
-  LOGGING_OUT: "LOGGING_OUT"
+  REQUESTED_LOGOUT: "REQUESTED_LOGOUT",
+  LOGGING_OUT: "LOGGING_OUT",
+  LOGGED_OUT: "LOGGED_OUT"
 };
 
 const reducer = createReducer(
@@ -22,15 +26,21 @@ const reducer = createReducer(
   },
   {
     [requestLogin]: (state) => {
+      state.loginState = LoginStates.REQUESTED_LOGIN
+    },
+    [confirmLoggingIn]: (state) => {
       state.loginState = LoginStates.LOGGING_IN
     },
-    [requestLogout]: (state) => {
-      state.loginState = LoginStates.LOGGING_OUT
-    },
-    [confirmLogin]: (state) => {
+    [confirmLoggedIn]: (state) => {
       state.loginState = LoginStates.LOGGED_IN
     },
-    [confirmLogout]: (state) => {
+    [requestLogout]: (state) => {
+      state.loginState = LoginStates.REQUESTED_LOGOUT
+    },
+    [confirmLoggingOut]: (state) => {
+      state.loginState = LoginStates.LOGGING_OUT
+    },
+    [confirmLoggedOut]: (state) => {
       state.loginState = LoginStates.LOGGED_OUT
     },
     [setAccount]: (state, action) => {

@@ -1,6 +1,5 @@
 "use strict";
 
-import store from "../../redux/store"
 import EventBus from "vertx3-eventbus-client"
 import { EventBusConnectionStates, updateEventBusConnectionState } from "./eventBus-actions"
 
@@ -21,8 +20,9 @@ export class EventBusClient {
     this._eventBus = null;
   }
 
-  connectEventBus = () => {
+  connectEventBus = (updateConnectionState) => {
     console.debug('Creating the vert.x EventBus.');
+    updateConnectionState(EventBusConnectionStates.CONNECTING);
     this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
     this._eventBus.enableReconnect(true);
 
@@ -32,17 +32,18 @@ export class EventBusClient {
 
     this._eventBus.onopen = () => {
       console.debug('The vert.x EventBus is open.');
-      store.dispatch(updateEventBusConnectionState(EventBusConnectionStates.CONNECTED))
+      updateConnectionState(EventBusConnectionStates.CONNECTED)
     };
 
     this._eventBus.onclose = () => {
       console.debug(`The vert.x EventBus is closed.`);
-      store.dispatch(updateEventBusConnectionState(EventBusConnectionStates.CLOSED))
+      updateConnectionState(EventBusConnectionStates.CLOSED)
     }
   };
 
-  disconnectEventBus = () => {
+  disconnectEventBus = (updateConnectionState) => {
     console.debug('Closing the vert.x EventBus.');
+    updateConnectionState(EventBusConnectionStates.CLOSING);
     this._handlersToBeUnregistered.clear();
     if (this._eventBus?.state === EventBus.OPEN) {
       this._eventBus.close();
@@ -51,17 +52,18 @@ export class EventBusClient {
     }
   };
 
-  sendEvent = (address, requestData, headerData, onSuccess, onError) => {
-    if (this._eventBus?.state === EventBus.OPEN) {
-      this._eventBus.send(
-        address,
-        requestData,
-        headerData,
-        (error, message) => error ? onError(error) : onSuccess(message)
-      )
-    } else {
-      onError(`Error sending '${address}' event; the EventBus is not connected.`)
-    }
+  sendEvent = (address, requestData, headerData = {}) => {
+    return new Promise((resolve, reject) => {
+      if (this._eventBus?.state === EventBus.OPEN) {
+        console.debug(`sending event ${address}`);
+        this._eventBus.send(
+          address, requestData, headerData,
+          (error, message) => error ? reject(error) : resolve(message)
+        )
+      } else {
+        reject(`Error sending '${address}' event; the EventBus is not connected.`)
+      }
+    })
   };
 
   addEventHandler = (handler) => {
@@ -79,7 +81,7 @@ export class EventBusClient {
       if (this._eventBus?.state === EventBus.OPEN) {
         this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback)
       } else {
-        handlersToBeUnregistered.add(handler)
+        this._handlersToBeUnregistered.add(handler)
       }
     }
   };
