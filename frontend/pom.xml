@@ -80,7 +80,7 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <arguments>install --no-optional</arguments>
+              <arguments>install --no-optional --no-audit</arguments>
             </configuration>
           </execution>
           <execution>
@@ -91,6 +91,56 @@
             <phase>process-resources</phase>
             <configuration>
               <arguments>rebuild node-sass</arguments>
+            </configuration>
+          </execution>
+          <!-- TODO
+          <execution>
+            <id>npm lint</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run-script lint</arguments>
+            </configuration>
+          </execution>
+          -->
+          <execution>
+            <id>npm test</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>test</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm build</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run-script build</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm outdated</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run-script npm-outdated</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm audit</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run-script npm-audit</arguments>
             </configuration>
           </execution>
         </executions>

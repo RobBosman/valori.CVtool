@@ -1,5 +1,3 @@
-"use strict";
-
 import React from "react";
 import { initializeIcons, registerOnThemeChangeCallback, removeOnThemeChangeCallback, getTheme } from "@fluentui/react";
 import { setLocationHash } from "./ui-actions";
