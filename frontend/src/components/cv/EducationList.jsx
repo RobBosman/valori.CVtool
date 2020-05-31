@@ -1,67 +1,57 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { selectEducationId } from "../../services/ui/ui-actions";
 import CvDetailsList from "../widgets/CvDetailsList";
 
-const select = (state) => ({
-  locale: state.ui.locale,
-  cvId: state.ui.selected.cvId,
-  educationId: state.ui.selected.educationId,
-  educationEntity: state.safe.education
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  selectEducationId: (educationId) => dispatch(selectEducationId(educationId))
-});
-
 const EducationList = (props) => {
 
   const columns = [
     {
-      key: 'type',
-      fieldName: 'type',
-      name: 'Soort opleiding',
-      iconName: 'PublishCourse',
+      key: "type",
+      fieldName: "type",
+      name: "Soort opleiding",
+      iconName: "PublishCourse",
       isIconOnly: true,
       isResizable: false,
       minWidth: 40,
       maxWidth: 40,
-      data: 'string'
+      data: "string"
     },
     {
-      key: 'name',
-      fieldName: 'name',
+      key: "name",
+      fieldName: "name",
       onRender: (education) => education.name[props.locale],
-      name: 'Opleiding',
+      name: "Opleiding",
       isResizable: true,
       minWidth: 150,
       isSorted: false,
       isSortedDescending: false,
-      data: 'string'
+      data: "string"
     },
     {
-      key: 'institution',
-      fieldName: 'institution',
-      name: 'Opleidingsinstituut',
+      key: "institution",
+      fieldName: "institution",
+      name: "Opleidingsinstituut",
       isResizable: true,
       minWidth: 150,
-      data: 'string'
+      data: "string"
     },
     {
-      key: 'result',
-      fieldName: 'result',
-      name: 'Resultaat',
+      key: "result",
+      fieldName: "result",
+      name: "Resultaat",
       isResizable: true,
-      data: 'string'
+      data: "string"
     },
     {
-      key: 'year',
-      fieldName: 'year',
-      name: 'Jaar',
+      key: "year",
+      fieldName: "year",
+      name: "Jaar",
       isResizable: true,
       minWidth: 40,
       maxWidth: 40,
-      data: 'number'
+      data: "number"
     }
   ];
 
@@ -71,7 +61,7 @@ const EducationList = (props) => {
     && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.cvId)
     || [];
 
-  const passSelectionRef = (selectionRef) => props.onPassSelectionRef && props.onPassSelectionRef(selectionRef);
+  const exposeSelectionRef = (selectionRef) => props.onExposeSelectionRef && props.onExposeSelectionRef(selectionRef);
 
   const instanceContext = {
     entity: props.educationEntity,
@@ -85,8 +75,28 @@ const EducationList = (props) => {
       items={educations}
       instanceContext={instanceContext}
       setKey="educations"
-      onPassSelectionRef={passSelectionRef}/>
-  )
+      onExposeSelectionRef={exposeSelectionRef}/>
+  );
 };
 
-export default connect(select, mapDispatchToProps)(EducationList)
+EducationList.propTypes = {
+  cvId: PropTypes.string,
+  educationEntity: PropTypes.object,
+  educationId: PropTypes.string,
+  locale: PropTypes.string,
+  onExposeSelectionRef: PropTypes.func.isRequired,
+  selectEducationId: PropTypes.func.isRequired
+};
+
+const select = (state) => ({
+  locale: state.ui.locale,
+  cvId: state.ui.selected.cvId,
+  educationId: state.ui.selected.educationId,
+  educationEntity: state.safe.education
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  selectEducationId: (educationId) => dispatch(selectEducationId(educationId))
+});
+
+export default connect(select, mapDispatchToProps)(EducationList);

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
@@ -5,19 +6,6 @@ import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import CvDatePicker from "../widgets/CvDatePicker";
 import CvTextField from "../widgets/CvTextField";
 import { useTheme } from "../../services/ui/ui-services";
-
-const select = (state) => ({
-  account: state.authentication.account,
-  profileEntity: state.safe.profile,
-  cvEntity: state.safe.cv,
-  cvId: state.ui.selected.cvId,
-  locale: state.ui.locale
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onCvChange: (id, instance) => dispatch(replaceSafeInstance('cv', id, instance)),
-  onProfileChange: (id, instance) => dispatch(replaceSafeInstance('profile', id, instance))
-});
 
 const Profile = (props) => {
   // Find the {profile} of the selected {account}.
@@ -93,7 +81,30 @@ const Profile = (props) => {
         styles={{ fieldGroup: { width: 80 } }}
         placeholder='yyyy' />
     </Stack>
-  )
+  );
 };
 
-export default connect(select, mapDispatchToProps)(Profile)
+Profile.propTypes = {
+  account: PropTypes.object,
+  profileEntity: PropTypes.object,
+  cvEntity: PropTypes.object,
+  cvId: PropTypes.string,
+  locale: PropTypes.string,
+  onCvChange: PropTypes.func.isRequired,
+  onProfileChange: PropTypes.func.isRequired
+};
+
+const select = (state) => ({
+  account: state.authentication.account,
+  profileEntity: state.safe.profile,
+  cvEntity: state.safe.cv,
+  cvId: state.ui.selected.cvId,
+  locale: state.ui.locale
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onCvChange: (id, instance) => dispatch(replaceSafeInstance("cv", id, instance)),
+  onProfileChange: (id, instance) => dispatch(replaceSafeInstance("profile", id, instance))
+});
+
+export default connect(select, mapDispatchToProps)(Profile);

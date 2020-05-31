@@ -1,18 +1,19 @@
-import React from "react"
-import { TextField } from "@fluentui/react"
+import PropTypes from "prop-types";
+import React from "react";
+import { TextField } from "@fluentui/react";
 
 const CvTextField = (props) => {
   const { entity, entityId, locale, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
 
-  let value = '';
+  let value = "";
   if (instance) {
     if (props.localeField) {
       value = instance[props.localeField] && instance[props.localeField][locale];
     } else {
       value = instance[props.field];
     }
-    value = value || props.defaultValue || '';
+    value = value || props.defaultValue || "";
   }
 
   const onChange = (event) => replaceInstance
@@ -43,4 +44,16 @@ const CvTextField = (props) => {
   );
 };
 
-export default CvTextField
+CvTextField.propTypes = {
+  instanceContext: PropTypes.object.isRequired,
+  field: PropTypes.string,
+  localeField: PropTypes.string,
+  defaultValue: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  multiline: PropTypes.bool,
+  autoAdjustHeight: PropTypes.bool,
+  styles: PropTypes.object
+};
+
+export default CvTextField;

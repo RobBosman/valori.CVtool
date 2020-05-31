@@ -14,10 +14,10 @@ const reducer = createReducer({}, {
   [replaceSafeContent]: (_state, action) => action.payload ? action.payload : {},
   [replaceSafeInstance]: (state, action) => {
     if (!state[action.payload.entity]) {
-      state[action.payload.entity] = {}
+      state[action.payload.entity] = {};
     }
-    state[action.payload.entity][action.payload.id] = action.payload.instance
+    state[action.payload.entity][action.payload.id] = action.payload.instance;
   }
 });
 
-reducerRegistry.register('safe', reducer);
+reducerRegistry.register("safe", reducer);

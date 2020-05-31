@@ -6,11 +6,11 @@ import reducerRegistry from "../../redux/reducerRegistry";
 export const updateEventBusConnectionState = createAction("EVENT_BUS_UPDATE_CONNECTION_STATE");
 
 export const EventBusConnectionStates = {
-  DISABLED: 'DISABLED',
-  CONNECTING: 'CONNECTING',
-  CONNECTED: 'CONNECTED',
-  CLOSING: 'CLOSING',
-  CLOSED: 'CLOSED'
+  DISABLED: "DISABLED",
+  CONNECTING: "CONNECTING",
+  CONNECTED: "CONNECTED",
+  CLOSING: "CLOSING",
+  CLOSED: "CLOSED"
 };
 
 const reducer = createReducer(
@@ -23,15 +23,15 @@ const reducer = createReducer(
       const newState = action.payload;
       if (currentState === EventBusConnectionStates.CONNECTING && newState === EventBusConnectionStates.CLOSED) {
         // this is a failed connection attempt
-        return
+        return;
       }
       if (currentState === EventBusConnectionStates.CLOSING && newState === EventBusConnectionStates.CLOSED) {
         // this is the last time that onClose() was called
-        state.connectionState = EventBusConnectionStates.DISABLED
+        state.connectionState = EventBusConnectionStates.DISABLED;
       } else {
         state.connectionState = newState;
       }
     }
   });
 
-reducerRegistry.register('eventBus', reducer);
+reducerRegistry.register("eventBus", reducer);

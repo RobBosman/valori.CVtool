@@ -1,10 +1,11 @@
-import React from "react"
-import { ChoiceGroup } from "@fluentui/react"
+import PropTypes from "prop-types";
+import React from "react";
+import { ChoiceGroup } from "@fluentui/react";
 
 const CvChoiceGroup = (props) => {
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
-  const value = instance && instance[props.field] || props.defaultValue || '';
+  const value = instance && instance[props.field] || props.defaultValue || "";
 
   const onChange = (_event, option) => replaceInstance
     && replaceInstance(entityId,
@@ -24,4 +25,13 @@ const CvChoiceGroup = (props) => {
   );
 };
 
-export default CvChoiceGroup
+CvChoiceGroup.propTypes = {
+  instanceContext: PropTypes.object.isRequired,
+  field: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
+  label: PropTypes.string,
+  options: PropTypes.array,
+  styles: PropTypes.object
+};
+
+export default CvChoiceGroup;

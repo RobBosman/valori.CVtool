@@ -1,5 +1,5 @@
-import React from "react"
-import { LoginStates, requestLogout } from "../redux/authentication"
+import React from "react";
+import { LoginStates, requestLogout } from "../redux/authentication";
 import { connect } from "react-redux";
 
 const select = (state) => ({
@@ -21,11 +21,11 @@ const AutoLogout = (props) => {
       return () => {
         clearTimeout(timeoutID);
         console.log(`cleared logout timeout[${timeoutID}]`);
-      }
+      };
     }
   }, [props.loginState, props.delayMillis]);
 
-  return null // render nothing
+  return null; // render nothing
 };
 
-export default connect(select, mapDispatchToProps)(AutoLogout)
+export default connect(select, mapDispatchToProps)(AutoLogout);

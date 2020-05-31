@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es2020": true,
+    "node": true
   },
   "extends": [
     "eslint:recommended",
@@ -11,6 +12,7 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -19,23 +21,24 @@
     "sourceType": "module"
   },
   "plugins": [
+    "html",
     "react"
   ],
   "rules": {
     "indent": [
       "error",
-      4
+      2
     ],
     "linebreak-style": [
-      "warn",
-      "windows"
+      "error",
+      "unix"
     ],
     "quotes": [
-      "warn",
+      "error",
       "double"
     ],
     "semi": [
-      "warn",
+      "error",
       "always"
     ],
     "react/jsx-uses-react": "error",
@@ -67,7 +70,19 @@
     ]
   },
   "ignorePatterns": [
+    "coverage/**",
+    "dist/**",
     "node/**",
     "node_modules/**"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.test.jsx"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
   ]
 }

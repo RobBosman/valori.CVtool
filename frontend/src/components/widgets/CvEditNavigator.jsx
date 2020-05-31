@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { CommandBar } from "@fluentui/react";
 
@@ -10,16 +11,16 @@ const CvEditNavigator = (props) => {
 
   const items = [
     {
-      key: 'selectPrevious',
-      text: 'Vorige',
-      iconProps: { iconName: 'Previous' },
+      key: "selectPrevious",
+      text: "Vorige",
+      iconProps: { iconName: "Previous" },
       iconOnly: true,
       onClick: props.onPrevious
     },
     {
-      key: 'add',
-      text: 'Nieuw',
-      iconProps: { iconName: 'Add' },
+      key: "add",
+      text: "Nieuw",
+      iconProps: { iconName: "Add" },
       iconOnly: true,
       onClick: props.onAdd
     }
@@ -27,16 +28,16 @@ const CvEditNavigator = (props) => {
 
   const farItems = [
     {
-      key: 'delete',
-      text: 'Verwijderen',
-      iconProps: { iconName: 'Delete' },
+      key: "delete",
+      text: "Verwijderen",
+      iconProps: { iconName: "Delete" },
       iconOnly: true,
       onClick: props.onDelete
     },
     {
-      key: 'selectNext',
-      text: 'Volgende',
-      iconProps: { iconName: 'Next' },
+      key: "selectNext",
+      text: "Volgende",
+      iconProps: { iconName: "Next" },
       iconOnly: true,
       onClick: props.onNext
     }
@@ -44,7 +45,14 @@ const CvEditNavigator = (props) => {
 
   return (
     <CommandBar items={items} farItems={farItems} />
-  )
+  );
 };
 
-export default CvEditNavigator
+CvEditNavigator.propTypes = {
+  onPrevious: PropTypes.func.isRequired,
+  onAdd: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired
+};
+
+export default CvEditNavigator;

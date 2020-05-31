@@ -1,6 +1,6 @@
 "use strict";
 
-import { createEpicMiddleware } from 'redux-observable';
+import { createEpicMiddleware } from "redux-observable";
 import { configureStore } from "@reduxjs/toolkit";
 import reducerRegistry from "./reducerRegistry";
 import epicRegistry from "./epicRegistry";
@@ -16,4 +16,4 @@ reducerRegistry.setChangeListener((rootReducer) => store.replaceReducer(rootRedu
 
 epicMiddleware.run(epicRegistry.rootEpic);
 
-export default store
+export default store;

@@ -2,35 +2,35 @@
 export const EducationTypes = [
   {
     key: "EDUCATION",
-    text: 'Opleiding',
-    iconProps: { iconName: 'PublishCourse' }
+    text: "Opleiding",
+    iconProps: { iconName: "PublishCourse" }
   },
   {
     key: "TRAINING",
-    text: 'Cursus',
-    iconProps: { iconName: 'UserEvent' }
+    text: "Cursus",
+    iconProps: { iconName: "UserEvent" }
   }
 ];
 
 export const EducationResultTypes = [
   {
     key: "DIPLOMA",
-    text: 'diploma'
+    text: "diploma"
   },
   {
     key: "CERTIFICATE",
-    text: 'certificaat'
+    text: "certificaat"
   },
   {
     key: "ONGOING",
-    text: 'nog bezig'
+    text: "nog bezig"
   },
   {
     key: "CANCELED",
-    text: 'afgebroken'
+    text: "afgebroken"
   },
   {
     key: "NOT_APPLICABLE",
-    text: 'n.v.t.'
+    text: "n.v.t."
   }
 ];

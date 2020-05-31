@@ -93,7 +93,6 @@
               <arguments>rebuild node-sass</arguments>
             </configuration>
           </execution>
-          <!-- TODO
           <execution>
             <id>npm lint</id>
             <phase>prepare-package</phase>
@@ -104,7 +103,6 @@
               <arguments>run-script lint</arguments>
             </configuration>
           </execution>
-          -->
           <execution>
             <id>npm test</id>
             <phase>prepare-package</phase>

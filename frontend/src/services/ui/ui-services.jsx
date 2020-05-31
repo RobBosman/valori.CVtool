@@ -3,8 +3,8 @@ import { initializeIcons, registerOnThemeChangeCallback, removeOnThemeChangeCall
 import { setLocationHash } from "./ui-actions";
 
 export const initializeUI = (dispatch) => {
-  window.addEventListener('unhandledrejection', (event) => console.error('Uncaught error in Promise', event));
-  window.addEventListener('hashchange', () => dispatch(setLocationHash(document.location.hash || '')));
+  window.addEventListener("unhandledrejection", (event) => console.error("Uncaught error in Promise", event));
+  window.addEventListener("hashchange", () => dispatch(setLocationHash(document.location.hash || "")));
 
   initializeIcons();
   
@@ -24,5 +24,5 @@ export const useTheme = () => {
     theme,
     viewPaneColor: theme.palette.neutralQuaternaryAlt,
     editPaneColor: theme.palette.neutralTertiaryAlt
-  }
+  };
 };

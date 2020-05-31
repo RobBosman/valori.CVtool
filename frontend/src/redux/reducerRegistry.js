@@ -9,7 +9,7 @@ export class ReducerRegistry {
 
   getRootReducer() {
     return Object.keys(this._reducers).length === 0
-      ? (state = {}, action) => state
+      ? (state = {}) => state
       : combineReducers(this._reducers);
   }
 

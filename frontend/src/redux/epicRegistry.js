@@ -1,5 +1,5 @@
-import { BehaviorSubject } from 'rxjs';
-import { filter, mergeMap, tap } from 'rxjs/operators';
+import { BehaviorSubject } from "rxjs";
+import { filter, mergeMap, tap } from "rxjs/operators";
 import { heavyWait } from "./../app";
 
 export class EpicRegistry {

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
@@ -8,15 +9,6 @@ import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 
-const select = (state) => ({
-  cvId: state.ui.selected.cvId
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  createEducation: (id, instance) => dispatch(replaceSafeInstance('education', id, instance)),
-  deleteEducatione: (id) => dispatch(replaceSafeInstance('education', id, {}))
-});
-
 const Education = (props) => {
 
   const { viewPaneColor, editPaneColor } = useTheme();
@@ -25,7 +17,7 @@ const Education = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
-        width: '40%'
+        width: "40%"
       }
     ]
   };
@@ -40,8 +32,8 @@ const Education = (props) => {
 
   // The {selection} object of the DetailsList will be obtained when available.
   let selection = null;
-  const passSelectionRef = (selectionRef) => {
-    selection = selectionRef
+  const exposeSelectionRef = (selectionRef) => {
+    selection = selectionRef;
   };
 
   const selectNext = (step) => {
@@ -68,7 +60,7 @@ const Education = (props) => {
   const deleteEducation = () => {
     const selectedItem = selection && selection.getSelection()[0];
     if (selectedItem) {
-      props.deleteEducatione(selectedItem._id)
+      props.deleteEducatione(selectedItem._id);
     }
   };
 
@@ -77,7 +69,7 @@ const Education = (props) => {
       <Stack.Item grow={2} styles={viewStyles}>
         <Text variant="xxLarge">Opleiding</Text>
         <EducationList
-          onPassSelectionRef={passSelectionRef} />
+          onExposeSelectionRef={exposeSelectionRef} />
       </Stack.Item>
       <Stack.Item grow={1} styles={editStyles}>
         <Text variant="xxLarge">Edit</Text>
@@ -89,7 +81,22 @@ const Education = (props) => {
           onDelete={deleteEducation} />
       </Stack.Item>
     </Stack>
-  )
+  );
 };
 
-export default connect(select, mapDispatchToProps)(Education)
+Education.propTypes = {
+  cvId: PropTypes.string,
+  createEducation: PropTypes.func.isRequired,
+  deleteEducatione: PropTypes.func.isRequired
+};
+
+const select = (state) => ({
+  cvId: state.ui.selected.cvId
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  createEducation: (id, instance) => dispatch(replaceSafeInstance("education", id, instance)),
+  deleteEducatione: (id) => dispatch(replaceSafeInstance("education", id, {}))
+});
+
+export default connect(select, mapDispatchToProps)(Education);

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Fabric, Text, Separator } from "@fluentui/react";
@@ -7,6 +8,7 @@ import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import CvTopBar from "./widgets/CvTopBar";
 import PulseMonitor from "../utils/PulseMonitor";
+import ErrorPage from "./ErrorPage";
 
 const RENDER_MAP = {
   [LoginStates.LOGGED_OUT]: <LoginPage />,
@@ -16,10 +18,6 @@ const RENDER_MAP = {
   [LoginStates.REQUESTED_LOGOUT]: <Text>requested logout...</Text>,
   [LoginStates.LOGGING_OUT]: <Text>logging out...</Text>
 };
-
-const select = (state) => ({
-  loginState: state.authentication.loginState
-});
 
 const Main = (props) => {
   const renderContent = RENDER_MAP[props.loginState]
@@ -38,4 +36,12 @@ const Main = (props) => {
   );
 };
 
-export default connect(select)(Main)
+Main.propTypes = {
+  loginState: PropTypes.string.isRequired
+};
+
+const select = (state) => ({
+  loginState: state.authentication.loginState
+});
+
+export default connect(select)(Main);

@@ -2,16 +2,16 @@
 
 module.exports = (api) => {
 
-  const isTest = api.env('test');
+  const isTest = api.env("test");
 
   return {
     presets: [
       [
-        '@babel/preset-env',
+        "@babel/preset-env",
         {
-          modules: isTest ? 'auto' : false,
+          modules: isTest ? "auto" : false,
           targets: {
-            node: 'current'
+            node: "current"
           }
         }
       ],
@@ -23,5 +23,5 @@ module.exports = (api) => {
       "@babel/plugin-proposal-class-properties",
       "@babel/plugin-proposal-object-rest-spread"
     ]
-  }
-}
+  };
+};

@@ -5,8 +5,8 @@ import { Link, Stack, Text } from "@fluentui/react";
 const LoginPage = () => {
 
   const themedLargeStackTokens = {
-    childrenGap: 'l1',
-    padding: 'l1'
+    childrenGap: "l1",
+    padding: "l1"
   };
 
   return (
@@ -22,7 +22,7 @@ const LoginPage = () => {
         <br />
         <br />Problemen? <Link href="mailto:RobBosman@valori.nl" target="blank">Mail</Link> even!</Text>
     </Stack>
-  )
+  );
 };
 
-export default LoginPage
+export default LoginPage;

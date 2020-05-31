@@ -26,26 +26,26 @@ const reducer = createReducer(
   },
   {
     [requestLogin]: (state) => {
-      state.loginState = LoginStates.REQUESTED_LOGIN
+      state.loginState = LoginStates.REQUESTED_LOGIN;
     },
     [confirmLoggingIn]: (state) => {
-      state.loginState = LoginStates.LOGGING_IN
+      state.loginState = LoginStates.LOGGING_IN;
     },
     [confirmLoggedIn]: (state) => {
-      state.loginState = LoginStates.LOGGED_IN
+      state.loginState = LoginStates.LOGGED_IN;
     },
     [requestLogout]: (state) => {
-      state.loginState = LoginStates.REQUESTED_LOGOUT
+      state.loginState = LoginStates.REQUESTED_LOGOUT;
     },
     [confirmLoggingOut]: (state) => {
-      state.loginState = LoginStates.LOGGING_OUT
+      state.loginState = LoginStates.LOGGING_OUT;
     },
     [confirmLoggedOut]: (state) => {
-      state.loginState = LoginStates.LOGGED_OUT
+      state.loginState = LoginStates.LOGGED_OUT;
     },
     [setAccount]: (state, action) => {
-      state.account = action.payload
+      state.account = action.payload;
     }
   });
 
-reducerRegistry.register('authentication', reducer);
+reducerRegistry.register("authentication", reducer);

@@ -20,27 +20,27 @@ const CvTitle = (props) => {
     && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
 
   if (profile && cv) {
-    const title = profile.name || 'NAAM';
-    const role = cv.role && cv.role[props.locale] || 'ROL';
-    const dateOfBirth = profile.dateOfBirth || 'GEBOORTEDATUM';
-    const residence = profile.residence || 'WOONPLAATS';
+    const title = profile.name || "NAAM";
+    const role = cv.role && cv.role[props.locale] || "ROL";
+    const dateOfBirth = profile.dateOfBirth || "GEBOORTEDATUM";
+    const residence = profile.residence || "WOONPLAATS";
 
     return (
-      <Stack styles={{ root: { textTransform: 'uppercase', color: '#999999' } }}>
+      <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
         <Text variant="xxLarge">{title}</Text>
         <Stack horizontal
           tokens={{ childrenGap: 10 }}>
           <Text variant="large">{role}</Text>
-          <Text variant="large" style={{ color: '#f39900' }}>{'//'}</Text>
+          <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
           <Text variant="large">{dateOfBirth}</Text>
-          <Text variant="large" style={{ color: '#f39900' }}>{'//'}</Text>
+          <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
           <Text variant="large">{residence}</Text>
         </Stack>
       </Stack>
-    )
+    );
   } else {
     return null;
   }
 };
 
-export default connect(select)(CvTitle)
+export default connect(select)(CvTitle);

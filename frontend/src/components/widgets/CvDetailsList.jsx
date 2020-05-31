@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
 
@@ -16,7 +17,7 @@ const CvDetailsList = (props) => {
   // Re-select current item when navigating back to this page.
   React.useEffect(() => selection.setKeySelected(entityId, true, false), []);
 
-  props.onPassSelectionRef && props.onPassSelectionRef(selection);
+  props.onExposeSelectionRef && props.onExposeSelectionRef(selection);
 
   return (
     <DetailsList
@@ -32,4 +33,12 @@ const CvDetailsList = (props) => {
   );
 };
 
-export default CvDetailsList
+CvDetailsList.propTypes = {
+  instanceContext: PropTypes.object.isRequired,
+  columns: PropTypes.array.isRequired,
+  items: PropTypes.array.isRequired,
+  setKey: PropTypes.string,
+  onExposeSelectionRef: PropTypes.func
+};
+
+export default CvDetailsList;

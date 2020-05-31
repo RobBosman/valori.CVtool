@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Stack } from "@fluentui/react";
@@ -6,16 +7,6 @@ import { EducationTypes, EducationResultTypes } from "./Enums";
 import CvTextField from "../widgets/CvTextField";
 import CvChoiceGroup from "../widgets/CvChoiceGroup";
 import CvDropdown from "../widgets/CvDropdown";
-
-const select = (state) => ({
-  locale: state.ui.locale,
-  educationId: state.ui.selected.educationId,
-  educationEntity: state.safe.education
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onChange: (id, instance) => dispatch(replaceSafeInstance('education', id, instance))
-});
 
 const EducationEdit = (props) => {
   const educationContext = {
@@ -53,7 +44,24 @@ const EducationEdit = (props) => {
         placeholder='yyyy'
         styles={{ fieldGroup: { width: 100 } }} />
     </Stack>
-  )
+  );
 };
 
-export default connect(select, mapDispatchToProps)(EducationEdit)
+EducationEdit.propTypes = {
+  educationEntity: PropTypes.object,
+  educationId: PropTypes.string,
+  locale: PropTypes.string,
+  onChange: PropTypes.func.isRequired
+};
+
+const select = (state) => ({
+  locale: state.ui.locale,
+  educationId: state.ui.selected.educationId,
+  educationEntity: state.safe.education
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onChange: (id, instance) => dispatch(replaceSafeInstance("education", id, instance))
+});
+
+export default connect(select, mapDispatchToProps)(EducationEdit);

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { getTheme } from "@fluentui/react";
@@ -6,19 +7,13 @@ import { EventBusConnectionStates } from "../services/eventBus/eventBus-actions"
 import { eventBusClient } from "../services/eventBus/eventBus-services";
 import "./KeyFrames.css";
 
-const select = (state) => ({
-  shouldBeConnected: state.authentication.loginState === LoginStates.LOGGED_IN,
-  isConnected: state.eventBus.connectionState === EventBusConnectionStates.CONNECTED,
-  isDisconnected: (state.eventBus.connectionState === EventBusConnectionStates.CLOSED || state.eventBus.connectionState === EventBusConnectionStates.DISABLED)
-});
-
 const PulseMonitor = (props) => {
 
   React.useEffect(() => {
-    const handler = { address: 'server.heartbeat', header: {}, callback: serverHeartbeatHandler };
-    eventBusClient.addEventHandler(handler, 'add handlers');
+    const handler = { address: "server.heartbeat", header: {}, callback: serverHeartbeatHandler };
+    eventBusClient.addEventHandler(handler, "add handlers");
     // at the close:
-    return () => eventBusClient.removeEventHandler(handler)
+    return () => eventBusClient.removeEventHandler(handler);
   }, []);
 
   const [angle, setAngle] = React.useState(0);
@@ -26,7 +21,7 @@ const PulseMonitor = (props) => {
   React.useEffect(() => {
     const timeoutID = setTimeout(() => setAngle((angle + 9) % 360), 25);
     // at the close:
-    return () => clearTimeout(timeoutID)
+    return () => clearTimeout(timeoutID);
   });
 
   const [pulse, setPulse] = React.useState(undefined);
@@ -36,7 +31,7 @@ const PulseMonitor = (props) => {
       style={{ opacity: 0.0, animationName: "fadeOutOpacity", animationDuration: "1s" }} />);
     const timeoutID = setTimeout(() => setPulse(undefined), 900);
     // at the close:
-    return () => clearTimeout(timeoutID)
+    return () => clearTimeout(timeoutID);
   };
 
   return (
@@ -54,7 +49,19 @@ const PulseMonitor = (props) => {
         : undefined}
       {pulse}
     </svg>
-  )
+  );
 };
 
-export default connect(select)(PulseMonitor)
+PulseMonitor.propTypes = {
+  shouldBeConnected: PropTypes.bool.isRequired,
+  isConnected: PropTypes.bool.isRequired,
+  isDisconnected: PropTypes.bool.isRequired
+};
+
+const select = (state) => ({
+  shouldBeConnected: state.authentication.loginState === LoginStates.LOGGED_IN,
+  isConnected: state.eventBus.connectionState === EventBusConnectionStates.CONNECTED,
+  isDisconnected: (state.eventBus.connectionState === EventBusConnectionStates.CLOSED || state.eventBus.connectionState === EventBusConnectionStates.DISABLED)
+});
+
+export default connect(select)(PulseMonitor);

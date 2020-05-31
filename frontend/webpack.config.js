@@ -175,8 +175,8 @@ module.exports = (_env, argv) => {
       open: true,
       overlay: true,
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*'
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*"
       }
     }
   };

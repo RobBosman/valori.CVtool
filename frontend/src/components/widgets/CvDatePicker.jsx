@@ -1,19 +1,20 @@
-import React from "react"
-import { DatePicker, DayOfWeek } from "@fluentui/react"
+import PropTypes from "prop-types";
+import React from "react";
+import { DatePicker, DayOfWeek } from "@fluentui/react";
 
 const datePickerStrings = {
-  months: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
-  shortMonths: ['jan', 'feb', 'maa', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
-  days: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
-  shortDays: ['z', 'm', 'd', 'w', 'd', 'v', 'z'],
-  goToToday: 'Ga naar vandaag',
-  prevMonthAriaLabel: 'Ga naar vorige maand',
-  nextMonthAriaLabel: 'Ga naar volgende maand',
-  prevYearAriaLabel: 'Ga naar vorig jaar',
-  nextYearAriaLabel: 'Ga naar volgend jaar',
-  closeButtonAriaLabel: 'Sluit datumpicker',
-  isRequiredErrorMessage: 'Een datum is verplicht.',
-  invalidInputErrorMessage: 'Ongeldig datumformaat.'
+  months: ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"],
+  shortMonths: ["jan", "feb", "maa", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"],
+  days: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
+  shortDays: ["z", "m", "d", "w", "d", "v", "z"],
+  goToToday: "Ga naar vandaag",
+  prevMonthAriaLabel: "Ga naar vorige maand",
+  nextMonthAriaLabel: "Ga naar volgende maand",
+  prevYearAriaLabel: "Ga naar vorig jaar",
+  nextYearAriaLabel: "Ga naar volgend jaar",
+  closeButtonAriaLabel: "Sluit datumpicker",
+  isRequiredErrorMessage: "Een datum is verplicht.",
+  invalidInputErrorMessage: "Ongeldig datumformaat."
 };
 
 const parseDateFromString = (value) => {
@@ -26,14 +27,15 @@ const formatDate = (date) => {
     correctedDate.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // prevent timezone offset errors
     return correctedDate.toISOString().substring(0, 10);
   } else {
-    return '';
+    return "";
   }
 };
 
 const CvDatePicker = (props) => {
+
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
-  const value = parseDateFromString(instance && instance[props.field] || props.defaultValue || '');
+  const value = parseDateFromString(instance && instance[props.field] || props.defaultValue || "");
 
   const onChange = (newDate) => replaceInstance
     && replaceInstance(entityId,
@@ -57,4 +59,12 @@ const CvDatePicker = (props) => {
   );
 };
 
-export default CvDatePicker
+CvDatePicker.propTypes = {
+  instanceContext: PropTypes.object.isRequired,
+  field: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
+  label: PropTypes.string,
+  styles: PropTypes.object
+};
+
+export default CvDatePicker;

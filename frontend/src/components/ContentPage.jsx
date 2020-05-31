@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Nav, Separator, Stack } from "@fluentui/react";
@@ -11,111 +12,101 @@ import { selectCvId } from "../services/ui/ui-actions";
 
 const ADMIN_LINKS = [
   {
-    key: '#tribes',
-    url: '#tribes',
-    name: 'Tribes',
-    icon: 'HomeGroup',
+    key: "#tribes",
+    url: "#tribes",
+    name: "Tribes",
+    icon: "HomeGroup",
     content: <ErrorPage message="TODO" />
   },
   {
-    key: '#accounts',
-    url: '#accounts',
-    name: 'Accounts',
-    icon: 'People',
+    key: "#accounts",
+    url: "#accounts",
+    name: "Accounts",
+    icon: "People",
     content: <ErrorPage message="TODO" />
   },
   {
-    key: '#search',
-    url: '#search',
-    name: 'Zoeken',
-    icon: 'Search',
+    key: "#search",
+    url: "#search",
+    name: "Zoeken",
+    icon: "Search",
     content: <ErrorPage message="TODO" />
   }
 ];
 
 const CV_LINKS = [
   {
-    key: '#profile',
-    url: '#profile',
-    name: 'Profiel',
-    icon: 'ContactInfo',
+    key: "#profile",
+    url: "#profile",
+    name: "Profiel",
+    icon: "ContactInfo",
     content: <Profile />
   },
   {
-    key: '#education',
-    url: '#education',
-    name: 'Opleiding',
-    icon: 'PublishCourse',
+    key: "#education",
+    url: "#education",
+    name: "Opleiding",
+    icon: "PublishCourse",
     content: <Education />
   },
   {
-    key: '#skills',
-    url: '#skills',
-    name: 'Vaardigheden',
-    icon: 'SortLines',
+    key: "#skills",
+    url: "#skills",
+    name: "Vaardigheden",
+    icon: "SortLines",
     content: <SkillsList />
   },
   {
-    key: '#publications',
-    url: '#publications',
-    name: 'Publicaties',
-    icon: 'ReadingMode',
+    key: "#publications",
+    url: "#publications",
+    name: "Publicaties",
+    icon: "ReadingMode",
     content: <ErrorPage message="TODO" />
   },
   {
-    key: '#references',
-    url: '#references',
-    name: 'Referenties',
-    icon: 'ReminderGroup',
+    key: "#references",
+    url: "#references",
+    name: "Referenties",
+    icon: "ReminderGroup",
     content: <ErrorPage message="TODO" />
   },
   {
-    key: '#experience',
-    url: '#experience',
-    name: 'Ervaring',
-    icon: 'CheckboxComposite',
+    key: "#experience",
+    url: "#experience",
+    name: "Ervaring",
+    icon: "CheckboxComposite",
     content: <ErrorPage message="TODO" />
   }
 ];
 
-const select = (state) => ({
-  account: state.authentication.account,
-  cvEntity: state.safe.cv,
-  locationHash: state.ui.locationHash
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  selectCvId: (cvId) => dispatch(selectCvId(cvId))
-});
-
 const ContentPage = (props) => {
-  const [isNavExpanded, setNavExpanded] = React.useState(true);
+  const [isNavExpanded] = React.useState(true);
 
   React.useEffect(() => {
     const accountId = props.account && props.account._id;
     const cvInstance = accountId
       && props.cvEntity
       && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
-    props.selectCvId(cvInstance && cvInstance._id)
+    props.selectCvId(cvInstance && cvInstance._id);
   });
 
   const isAdmin = props.account
     && props.account.privileges
-    && props.account.privileges.find((privilege) => privilege === 'ADMIN');
+    && props.account.privileges.find((privilege) => privilege === "ADMIN");
   const navGroups = [
     isAdmin && {
-      name: 'Admin',
+      name: "Admin",
       links: ADMIN_LINKS
     },
     {
-      name: 'Eigen CV',
+      name: "Eigen CV",
       links: CV_LINKS
     }
   ].filter(Boolean);
 
   let renderContent = null;
-  if (props.locationHash === '' || props.locationHash === '#') {
-    renderContent = <ErrorPage message={'TODO - home'} />;
+  if (props.locationHash === "" || props.locationHash === "#") {
+    renderContent = <ErrorPage message={"TODO - home"} />;
   } else {
     const allLinks = isAdmin ? ADMIN_LINKS.concat(CV_LINKS) : CV_LINKS;
     const item = allLinks.find((item) => item.url === props.locationHash);
@@ -143,7 +134,25 @@ const ContentPage = (props) => {
         {renderContent}
       </Stack.Item>
     </Stack>
-  )
+  );
 };
 
-export default connect(select, mapDispatchToProps)(ContentPage)
+ContentPage.propTypes = {
+  navKey: PropTypes.string,
+  account: PropTypes.object,
+  cvEntity: PropTypes.object,
+  locationHash: PropTypes.string,
+  selectCvId: PropTypes.func.isRequired
+};
+
+const select = (state) => ({
+  account: state.authentication.account,
+  cvEntity: state.safe.cv,
+  locationHash: state.ui.locationHash
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  selectCvId: (cvId) => dispatch(selectCvId(cvId))
+});
+
+export default connect(select, mapDispatchToProps)(ContentPage);
