@@ -83,16 +83,14 @@ const ContentPage = (props) => {
   const [isNavExpanded] = React.useState(true);
 
   React.useEffect(() => {
-    const accountId = props.account && props.account._id;
+    const accountId = props.account?._id;
     const cvInstance = accountId
       && props.cvEntity
       && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
-    props.selectCvId(cvInstance && cvInstance._id);
+    props.selectCvId(cvInstance?._id);
   });
 
-  const isAdmin = props.account
-    && props.account.privileges
-    && props.account.privileges.find((privilege) => privilege === "ADMIN");
+  const isAdmin = props.account?.privileges?.find((privilege) => privilege === "ADMIN");
   const navGroups = [
     isAdmin && {
       name: "Admin",
@@ -110,7 +108,7 @@ const ContentPage = (props) => {
   } else {
     const allLinks = isAdmin ? ADMIN_LINKS.concat(CV_LINKS) : CV_LINKS;
     const item = allLinks.find((item) => item.url === props.locationHash);
-    renderContent = item && item.content
+    renderContent = item?.content
       || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
 

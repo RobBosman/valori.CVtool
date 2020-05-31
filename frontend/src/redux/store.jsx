@@ -1,5 +1,3 @@
-"use strict";
-
 import { createEpicMiddleware } from "redux-observable";
 import { configureStore } from "@reduxjs/toolkit";
 import reducerRegistry from "./reducerRegistry";

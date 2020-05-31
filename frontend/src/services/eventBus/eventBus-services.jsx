@@ -1,5 +1,3 @@
-"use strict";
-
 import EventBus from "vertx3-eventbus-client";
 import { EventBusConnectionStates } from "./eventBus-actions";
 

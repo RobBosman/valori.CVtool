@@ -25,8 +25,9 @@ describe("ui", () => {
 
   it("should reduce", () => {
     const reducer = reducerRegistry.getRootReducer();
+    let state = undefined;
 
-    let state = reducer(undefined, setLocationHash("#xyz"));
+    state = reducer(undefined, setLocationHash("#xyz"));
     expect(state.ui.locationHash).toBe("#xyz");
 
     state = reducer(undefined, setLocale("de_DE"));

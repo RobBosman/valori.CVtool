@@ -1,5 +1,3 @@
-"use strict";
-
 import { ofType } from "redux-observable";
 import { flatMap } from "rxjs/operators";
 import { fetchAll, saveAll } from "./safe-actions";

@@ -58,7 +58,7 @@ const CvTopBar = (props) => {
     },
     props.loginState !== LoginStates.LOGGED_OUT && {
       key: "globalNav",
-      text: props.account && props.account.name || "",
+      text: props.account?.name || "",
       iconProps: { iconName: "GlobalNavButton" },
       iconOnly: false,
       disabled: props.loginState !== LoginStates.LOGGED_IN,

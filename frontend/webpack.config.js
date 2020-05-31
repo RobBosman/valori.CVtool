@@ -11,7 +11,7 @@ module.exports = (_env, argv) => {
   const isProduction = argv.mode === "production";
   return {
     devtool: !isProduction && "cheap-module-source-map",
-    entry: Path.resolve(__dirname, "src", "app.js"),
+    entry: Path.resolve(__dirname, "src", "app.jsx"),
     output: {
       path: Path.resolve(__dirname, "dist"),
       filename: "js/[name].[contenthash:8].js",
@@ -67,37 +67,6 @@ module.exports = (_env, argv) => {
           use: [
             isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
             require.resolve("css-loader")
-          ]
-        },
-        {
-          test: /\.module\.css$/,
-          use: [
-            isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
-            {
-              loader: require.resolve("css-loader"),
-              options: {
-                modules: true
-              }
-            }
-          ]
-        },
-        {
-          test: /\.(sass|scss)$/,
-          use: [
-            isProduction ? MiniCssExtractPlugin.loader : require.resolve("style-loader"),
-            {
-              loader: require.resolve("css-loader"),
-              options: {
-                importLoaders: 2
-              }
-            },
-            require.resolve("resolve-url-loader"),
-            {
-              loader: require.resolve("sass-loader"),
-              options: {
-                sourceMap: true
-              }
-            }
           ]
         },
         {

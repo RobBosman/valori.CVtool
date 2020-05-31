@@ -3,7 +3,7 @@
 import { Observable } from "rxjs";
 import { setAccount, LoginStates, confirmLoggingIn, confirmLoggedIn } from "./authentication-actions";
 import { EventBusConnectionStates } from "../eventBus/eventBus-actions";
-import { eventBusClient } from "../../services/eventBus/eventBus-services";
+import { eventBusClient } from "../eventBus/eventBus-services";
 
 export const loginToRemote = (state) =>
   new Observable((subscriber) => {

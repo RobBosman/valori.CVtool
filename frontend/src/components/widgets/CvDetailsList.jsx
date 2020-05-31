@@ -11,7 +11,7 @@ const CvDetailsList = (props) => {
   const [selection] = React.useState(new Selection({
     items: props.items,
     getKey: getKey,
-    onSelectionChanged: () => selectInstance(selection.getSelection()[0] && selection.getSelection()[0]._id)
+    onSelectionChanged: () => selectInstance(selection.getSelection()[0]?._id)
   }));
 
   // Re-select current item when navigating back to this page.

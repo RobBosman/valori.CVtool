@@ -11,7 +11,7 @@ const select = (state) => ({
 
 const CvTitle = (props) => {
   // Find the {profile} of the selected {account}.
-  const accountId = props.account && props.account._id;
+  const accountId = props.account?._id;
   const profile = accountId
     && props.profileEntity
     && Object.values(props.profileEntity).find((instance) => instance.accountId === accountId);

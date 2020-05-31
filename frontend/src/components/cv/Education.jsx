@@ -37,7 +37,7 @@ const Education = (props) => {
   };
 
   const selectNext = (step) => {
-    const selectedIndex = selection && selection.getSelectedIndices()[0];
+    const selectedIndex = selection?.getSelectedIndices()[0];
     if (selectedIndex !== false) {
       const nextIndex = Math.min(Math.max(0, selectedIndex + step), selection.getItems().length - 1);
       if (nextIndex !== selectedIndex) {
@@ -58,7 +58,7 @@ const Education = (props) => {
   };
 
   const deleteEducation = () => {
-    const selectedItem = selection && selection.getSelection()[0];
+    const selectedItem = selection?.getSelection()[0];
     if (selectedItem) {
       props.deleteEducatione(selectedItem._id);
     }

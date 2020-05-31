@@ -1,5 +1,3 @@
-"use strict";
-
 import {createTheme} from "@fluentui/react";
 
 // see https://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/theming-designer/index.html

@@ -1,7 +1,5 @@
-"use strict";
-
 import { Observable } from "rxjs";
-import { eventBusClient } from "../../services/eventBus/eventBus-services";
+import { eventBusClient } from "../eventBus/eventBus-services";
 import { replaceSafeContent } from "./safe-actions";
 
 export const fetchCvFromRemote = (state) =>

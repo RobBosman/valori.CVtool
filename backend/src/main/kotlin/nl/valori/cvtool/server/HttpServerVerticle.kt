@@ -6,7 +6,7 @@ import io.vertx.core.net.SocketAddress
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.StaticHandler
-import io.vertx.ext.web.handler.sockjs.BridgeOptions
+import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.ext.web.handler.sockjs.SockJSHandler
 import org.slf4j.LoggerFactory
 
@@ -22,7 +22,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
               .putHeader("content-type", "text/html")
               .end("Hi there!")
         }
-    val bridgeOptions = BridgeOptions()
+    val bridgeOptions = SockJSBridgeOptions()
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_LOGIN))
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_FETCH))
         .addInboundPermitted(PermittedOptions().setAddress(ADDRESS_FETCH_CV))

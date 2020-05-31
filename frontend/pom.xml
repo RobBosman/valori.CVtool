@@ -19,7 +19,7 @@
     <dependency-check-maven.version>5.3.2</dependency-check-maven.version>
     <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
     <maven-frontent-plugin.version>1.9.1</maven-frontent-plugin.version>
-    <nodejs.version>v13.9.0</nodejs.version>
+    <nodejs.version>v14.3.0</nodejs.version>
   </properties>
 
   <build>
@@ -74,23 +74,13 @@
             </configuration>
           </execution>
           <execution>
-            <id>npm-install</id>
+            <id>npm install</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
               <arguments>install --no-optional --no-audit</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>npm-rebuild-sass</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <phase>process-resources</phase>
-            <configuration>
-              <arguments>rebuild node-sass</arguments>
             </configuration>
           </execution>
           <execution>
@@ -110,7 +100,7 @@
               <goal>npm</goal>
             </goals>
             <configuration>
-              <arguments>test</arguments>
+              <arguments>run-script test</arguments>
             </configuration>
           </execution>
           <execution>

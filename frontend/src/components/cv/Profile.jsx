@@ -22,7 +22,7 @@ const Profile = (props) => {
   };
   const profileContext = {
     entity: props.profileEntity,
-    entityId: profile && profile._id,
+    entityId: profile?._id,
     locale: props.locale,
     replaceInstance: props.onProfileChange
   };
