@@ -4,7 +4,7 @@ import { act } from "react-dom/test-utils";
 import reducerRegistry from "../../../redux/reducerRegistry";
 import { setLocationHash, setThemeName, setLocale, selectSkillId, selectEducationId, selectCvId } from "../ui-actions";
 import darkOrange from "../../../themes/darkOrange";
-import { useTheme } from "../ui-services";
+import { useTheme, initializeUI } from "../ui-services";
 import { loadTheme } from "@fluentui/react";
 
 describe("ui", () => {
@@ -46,8 +46,19 @@ describe("ui", () => {
     expect(state.ui.selected.skillId).toBe(676);
   });
 
-  it("should useTheme", async () => {
+  it("should initialize UI", () => {
+    expect.assertions(1);
+    return new Promise((resolveTest) => {
+      initializeUI((action) => {
+        expect(action).toStrictEqual(setLocationHash(""));
+        resolveTest();
+      });
+      window.dispatchEvent(new CustomEvent("unhandledrejection", { detail: "real thing" }));
+      window.dispatchEvent(new CustomEvent("hashchange", {}));
+    });
+  });
 
+  it("should useTheme", () => {
     const TestComp = () => {
       const { viewPaneColor } = useTheme();
       return (

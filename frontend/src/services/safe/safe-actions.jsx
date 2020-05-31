@@ -14,7 +14,11 @@ const reducer = createReducer({}, {
     if (!state[action.payload.entity]) {
       state[action.payload.entity] = {};
     }
-    state[action.payload.entity][action.payload.id] = action.payload.instance;
+    if (action.payload.instance) {
+      state[action.payload.entity][action.payload.id] = action.payload.instance;
+    } else {
+      delete(state[action.payload.entity][action.payload.id]);
+    }
   }
 });
 

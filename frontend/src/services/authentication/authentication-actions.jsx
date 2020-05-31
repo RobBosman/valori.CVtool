@@ -1,5 +1,3 @@
-"use strict";
-
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import reducerRegistry from "../../redux/reducerRegistry";
 

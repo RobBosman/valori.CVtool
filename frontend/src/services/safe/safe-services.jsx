@@ -1,12 +1,11 @@
 import { Observable } from "rxjs";
-import { eventBusClient } from "../eventBus/eventBus-services";
 import { replaceSafeContent } from "./safe-actions";
 
-export const fetchCvFromRemote = (state) =>
+export const fetchCvFromRemote = (state, sendEvent) =>
   new Observable((subscriber) => {
-    const account = state.authentication.account;
+    const account = state.authentication?.account;
     if (account) {
-      eventBusClient.sendEvent("fetch.cv", { accountId: account._id })
+      sendEvent("fetch.cv", { accountId: account._id })
         .then((message) => {
           console.debug("Successfully received cv data", message);
           return message;
@@ -19,9 +18,9 @@ export const fetchCvFromRemote = (state) =>
     }
   });
 
-export const saveAllToRemote = (state) =>
+export const saveAllToRemote = (state, sendEvent) =>
   new Observable((subscriber) =>
-    eventBusClient.sendEvent("save", state.safe)
+    sendEvent("save", state.safe)
       .then(() => console.debug("Successfully saved safe content"))
       .then(() => subscriber.complete())
       .catch((e) => subscriber.error(e))

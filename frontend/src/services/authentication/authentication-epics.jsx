@@ -1,5 +1,3 @@
-"use strict";
-
 import { ofType } from "redux-observable";
 import { filter, flatMap, map, delay } from "rxjs/operators";
 import { fromArray } from "rxjs/internal/observable/fromArray";

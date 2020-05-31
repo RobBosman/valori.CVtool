@@ -51,7 +51,8 @@
   "name": "cvtool-frontend",
   "scripts": {
     "dev-server": "webpack-dev-server --mode development",
-    "test": "jest --coverage",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "lint": "eslint --ext .js,.jsx,.html .",
     "lint:fix": "eslint --ext .js,.jsx,.html . --fix",
     "build": "webpack --mode production",
