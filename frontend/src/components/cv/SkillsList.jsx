@@ -1,10 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { Text } from "@fluentui/react";
 import { connect } from "react-redux";
 import { selectSkillId } from "../../services/ui/ui-actions";
 import CvDetailsList from "../widgets/CvDetailsList";
+import SkillEdit from "./SkillEdit";
 
 const SkillList = (props) => {
+
+  const [isEditing, setEditing] = React.useState(false);
 
   const columns = [
     {
@@ -36,40 +40,50 @@ const SkillList = (props) => {
       data: "string"
     }
   ];
+
   // Find all {skills} of the selected {cv}.
   const skills = props.skillEntity
-    && props.cvId
-    && Object.values(props.skillEntity).filter((instance) => instance.cvId === props.cvId)
+    && props.selectedCvId
+    && Object.values(props.skillEntity).filter((instance) => instance.cvId === props.selectedCvId)
     || [];
 
-  const instanceContext = {
+  const skillContext = {
+    locale: props.locale,
     entity: props.skillEntity,
-    entityId: props.skillId,
+    entityId: props.selectedSkillId,
     selectInstance: props.selectSkillId
   };
 
   return (
-    <CvDetailsList
-      columns={columns}
-      items={skills}
-      instanceContext={instanceContext}
-      setKey="skill" />
+    <div>
+      <Text variant="xxLarge">Vaardigheden</Text>
+      <CvDetailsList
+        columns={columns}
+        items={skills}
+        instanceContext={skillContext}
+        setKey="skill"
+        onItemInvoked={() => setEditing(true)} />
+      <SkillEdit
+        instanceContext={skillContext}
+        isOpen={isEditing}
+        dismiss={() => setEditing(false)}/>
+    </div>
   );
 };
 
 SkillList.propTypes = {
   locale: PropTypes.string.isRequired,
-  cvId: PropTypes.string,
+  selectedCvId: PropTypes.string,
   skillEntity: PropTypes.object,
-  skillId: PropTypes.string,
+  selectedSkillId: PropTypes.string,
   selectSkillId: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   locale: state.ui.locale,
-  cvId: state.ui.selected.cvId,
+  selectedCvId: state.ui.selected.cvId,
   skillEntity: state.safe.skill,
-  skillId: state.ui.selected.skillId
+  selectedSkillId: state.ui.selected.skillId
 });
 
 const mapDispatchToProps = (dispatch) => ({

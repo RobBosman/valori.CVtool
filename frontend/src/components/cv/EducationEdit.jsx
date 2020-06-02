@@ -9,10 +9,11 @@ import CvChoiceGroup from "../widgets/CvChoiceGroup";
 import CvDropdown from "../widgets/CvDropdown";
 
 const EducationEdit = (props) => {
+
   const educationContext = {
-    entity: props.educationEntity,
-    entityId: props.educationId,
     locale: props.locale,
+    entity: props.educationEntity,
+    entityId: props.selectedEducationId,
     replaceInstance: props.onChange
   };
 
@@ -49,14 +50,14 @@ const EducationEdit = (props) => {
 
 EducationEdit.propTypes = {
   educationEntity: PropTypes.object,
-  educationId: PropTypes.string,
+  selectedEducationId: PropTypes.string,
   locale: PropTypes.string,
   onChange: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   locale: state.ui.locale,
-  educationId: state.ui.selected.educationId,
+  selectedEducationId: state.ui.selected.educationId,
   educationEntity: state.safe.education
 });
 

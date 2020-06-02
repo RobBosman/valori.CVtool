@@ -29,7 +29,8 @@ const CvDetailsList = (props) => {
       isHeaderVisible={true}
       layoutMode={DetailsListLayoutMode.justified}
       selectionMode={1}
-      selectionPreservedOnEmptyClick={true} />
+      selectionPreservedOnEmptyClick={true}
+      onItemInvoked={props.onItemInvoked}/>
   );
 };
 
@@ -38,7 +39,8 @@ CvDetailsList.propTypes = {
   columns: PropTypes.array.isRequired,
   items: PropTypes.array.isRequired,
   setKey: PropTypes.string,
-  onExposeSelectionRef: PropTypes.func
+  onExposeSelectionRef: PropTypes.func,
+  onItemInvoked: PropTypes.func
 };
 
 export default CvDetailsList;

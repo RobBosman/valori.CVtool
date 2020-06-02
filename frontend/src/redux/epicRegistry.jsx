@@ -13,7 +13,7 @@ export class EpicRegistry {
     this._epic$ = new BehaviorSubject(noOpEpic);
   }
 
-  rootEpic(action$, state$) {
+  rootEpic = (action$, state$) => {
     return this._epic$.pipe(
       mergeMap((epic) => epic(action$, state$))
     );

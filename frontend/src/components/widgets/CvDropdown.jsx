@@ -30,7 +30,7 @@ CvDropdown.propTypes = {
   field: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,
   label: PropTypes.string,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.any.isRequired,
   styles: PropTypes.object
 };
 

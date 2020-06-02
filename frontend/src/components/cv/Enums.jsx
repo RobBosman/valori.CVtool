@@ -34,3 +34,35 @@ export const EducationResultTypes = [
     text: "n.v.t."
   }
 ];
+
+export const SkillCategories = {
+  nl_NL: [
+    {
+      key: "BRANCHES",
+      text: "BRANCHES"
+    },
+    {
+      key: "LANGUAGES",
+      text: "LANGUAGES"
+    },
+    {
+      key: "PROGRAMMING",
+      text: "PROGRAMMING"
+    }
+  ]
+};
+
+export const SkillLevels = [
+  {
+    key: "FOUDATION",
+    text: "*"
+  },
+  {
+    key: "ADVANCED",
+    text: "* *"
+  },
+  {
+    key: "EXPERT",
+    text: "* * *"
+  }
+];
