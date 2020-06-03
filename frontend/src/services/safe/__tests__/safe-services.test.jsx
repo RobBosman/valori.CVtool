@@ -1,55 +1,10 @@
-import reducerRegistry from "../../../redux/reducerRegistry";
-import { replaceSafeContent, replaceSafeInstance } from "../safe-actions";
+import { replaceSafeContent } from "../safe-actions";
 import { createId, fetchCvFromRemote, saveAllToRemote } from "../safe-services";
 
 describe("safe", () => {
 
   const sendEventSuccess = (eventName) => new Promise((resolve) => resolve({ body: `${eventName}_resolved` }));
   const sendEventError = (eventName) => new Promise((_resolve, reject) => reject({ body: `${eventName}_rejected` }));
-
-  it("should reduce", () => {
-    const reducer = reducerRegistry.getRootReducer();
-    let state = undefined;
-
-    const dummySafe0 = {
-      DUMMY: {}
-    };
-    state = reducer(state, replaceSafeContent(dummySafe0));
-    expect(state.safe.DUMMY).toStrictEqual({});
-
-    state = reducer(state, replaceSafeContent());
-    expect(state.safe).toStrictEqual({});
-
-    const dummyInstanceV1 = {
-      _id: 313,
-      value: 767
-    };
-    const dummySafeV1 = {
-      DUMMY: {
-        313: dummyInstanceV1
-      }
-    };
-    state = reducer(state, replaceSafeInstance("DUMMY", 313, dummyInstanceV1));
-    expect(state.safe).toStrictEqual(dummySafeV1);
-
-    const dummyInstanceV2 = {
-      _id: 313,
-      value: 676
-    };
-    const dummySafeV2 = {
-      DUMMY: {
-        313: dummyInstanceV2
-      }
-    };
-    state = reducer(state, replaceSafeInstance("DUMMY", 313, dummyInstanceV2));
-    expect(state.safe).toStrictEqual(dummySafeV2);
-
-    const dummySafeV3 = {
-      DUMMY: {}
-    };
-    state = reducer(state, replaceSafeInstance("DUMMY", 313));
-    expect(state.safe).toStrictEqual(dummySafeV3);
-  });
 
   it("should fetchCvFromRemote success", () => {
     expect.assertions(2);

@@ -3,11 +3,10 @@ import { EventBusConnectionStates, updateEventBusConnectionState } from "../even
 
 describe("eventBus", () => {
 
-  it("should reduce", () => {
-    const reducer = reducerRegistry.getRootReducer();
-    let state = undefined;
+  const reducer = reducerRegistry.getRootReducer();
 
-    state = reducer(state, updateEventBusConnectionState(EventBusConnectionStates.CONNECTING));
+  it("should reduce", () => {
+    let state = reducer(undefined, updateEventBusConnectionState(EventBusConnectionStates.CONNECTING));
     expect(state.eventBus.connectionState).toBe(EventBusConnectionStates.CONNECTING);
 
     state = reducer(state, updateEventBusConnectionState(EventBusConnectionStates.CLOSED));

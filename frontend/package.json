@@ -52,6 +52,7 @@
   "scripts": {
     "dev-server": "webpack-dev-server --mode development",
     "test": "jest",
+    "test:watch": "jest --watch *.test.jsx",
     "test:coverage": "jest --coverage",
     "lint": "eslint --ext .js,.jsx,.html .",
     "lint:fix": "eslint --ext .js,.jsx,.html . --fix",

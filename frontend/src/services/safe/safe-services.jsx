@@ -6,10 +6,6 @@ export const fetchCvFromRemote = (state, sendEvent) =>
     const account = state.authentication?.account;
     if (account) {
       sendEvent("fetch.cv", { accountId: account._id })
-        .then((message) => {
-          console.debug("Successfully received cv data", message);
-          return message;
-        })
         .then((message) => subscriber.next(replaceSafeContent(message.body)))
         .then(() => subscriber.complete())
         .catch((e) => subscriber.error(e));
@@ -21,7 +17,6 @@ export const fetchCvFromRemote = (state, sendEvent) =>
 export const saveAllToRemote = (state, sendEvent) =>
   new Observable((subscriber) =>
     sendEvent("save", state.safe)
-      .then(() => console.debug("Successfully saved safe content"))
       .then(() => subscriber.complete())
       .catch((e) => subscriber.error(e))
   );

@@ -3,6 +3,8 @@ import reducerRegistry from "../reducerRegistry";
 
 describe("redux", () => {
 
+  const dummyAction = createAction("DUMMY_ACTION");
+
   it("should register reducers", () => {
     const store = configureStore({
       reducer: reducerRegistry.getRootReducer()
@@ -10,7 +12,6 @@ describe("redux", () => {
     reducerRegistry.setChangeListener((rootReducer) => store.replaceReducer(rootReducer));
     expect(store.getState()).toStrictEqual({});
 
-    const dummyAction = createAction("DUMMY_ACTION");
     const dummyReducer = createReducer(
       {
         value: 313

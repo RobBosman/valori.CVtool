@@ -3,30 +3,41 @@ import { LoginStates, requestLogin, confirmLoggingIn, confirmLoggedIn, requestLo
 
 describe("authentication", () => {
 
-  it("should reduce", () => {
-    const reducer = reducerRegistry.getRootReducer();
-    let state = undefined;
+  const reducer = reducerRegistry.getRootReducer();
 
-    state = reducer(state, requestLogin());
+  it("should reduce requestLogin", () => {
+    const state = reducer(undefined, requestLogin());
     expect(state.authentication.loginState).toBe(LoginStates.REQUESTED_LOGIN);
+  });
 
-    state = reducer(state, confirmLoggingIn());
+  it("should reduce confirmLoggingIn", () => {
+    const state = reducer(undefined, confirmLoggingIn());
     expect(state.authentication.loginState).toBe(LoginStates.LOGGING_IN);
+  });
 
-    state = reducer(state, confirmLoggedIn());
+  it("should reduce confirmLoggedIn", () => {
+    const state = reducer(undefined, confirmLoggedIn());
     expect(state.authentication.loginState).toBe(LoginStates.LOGGED_IN);
+  });
 
-    state = reducer(state, requestLogout());
+  it("should reduce requestLogout", () => {
+    const state = reducer(undefined, requestLogout());
     expect(state.authentication.loginState).toBe(LoginStates.REQUESTED_LOGOUT);
+  });
 
-    state = reducer(state, confirmLoggingOut());
+  it("should reduce confirmLoggingOut", () => {
+    const state = reducer(undefined, confirmLoggingOut());
     expect(state.authentication.loginState).toBe(LoginStates.LOGGING_OUT);
+  });
 
-    state = reducer(state, confirmLoggedOut());
+  it("should reduce confirmLoggedOut", () => {
+    const state = reducer(undefined, confirmLoggedOut());
     expect(state.authentication.loginState).toBe(LoginStates.LOGGED_OUT);
+  });
 
+  it("should reduce setAccount", () => {
     const dummyAccount = { _id: 313, name: "Duck" };
-    state = reducer(state, setAccount(dummyAccount));
+    const state = reducer(undefined, setAccount(dummyAccount));
     expect(state.authentication.account).toStrictEqual(dummyAccount);
   });
 });

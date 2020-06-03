@@ -1,9 +1,11 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import reducerRegistry from "../../../redux/reducerRegistry";
-import { setLocationHash, setThemeName, setLocale, selectSkillId, selectEducationId, selectCvId } from "../ui-actions";
+import { setLocationHash } from "../ui-actions";
 import darkOrange from "../../../themes/darkOrange";
+import darkYellow from "../../../themes/darkYellow";
+import lightBlue from "../../../themes/lightBlue";
+import lightGreen from "../../../themes/lightGreen";
 import { useTheme, initializeUI } from "../ui-services";
 import { loadTheme } from "@fluentui/react";
 
@@ -21,29 +23,6 @@ describe("ui", () => {
     unmountComponentAtNode(container);
     container.remove();
     container = null;
-  });
-
-  it("should reduce", () => {
-    const reducer = reducerRegistry.getRootReducer();
-    let state = undefined;
-
-    state = reducer(undefined, setLocationHash("#xyz"));
-    expect(state.ui.locationHash).toBe("#xyz");
-
-    state = reducer(undefined, setLocale("de_DE"));
-    expect(state.ui.locale).toBe("de_DE");
-
-    state = reducer(undefined, setThemeName("darkOrange"));
-    expect(state.ui.themeName).toBe("darkOrange");
-
-    state = reducer(undefined, selectCvId(313));
-    expect(state.ui.selected.cvId).toBe(313);
-
-    state = reducer(undefined, selectEducationId(767));
-    expect(state.ui.selected.educationId).toBe(767);
-
-    state = reducer(undefined, selectSkillId(676));
-    expect(state.ui.selected.skillId).toBe(676);
   });
 
   it("should initialize UI", () => {
@@ -70,12 +49,34 @@ describe("ui", () => {
       render(<TestComp />, container);
     });
     expect(document.getElementById("testTarget").style.background)
-      .toBe("rgb(225, 223, 221)"); // lightBlue.palette.neutralQuaternaryAlt
+      .toBe(colorToRgb(lightBlue.palette.neutralQuaternaryAlt));
 
     act(() => {
       loadTheme(darkOrange);
     });
     expect(document.getElementById("testTarget").style.background)
-      .toBe("rgb(70, 68, 66)"); // darkOrange.palette.neutralQuaternaryAlt
+      .toBe(colorToRgb(darkOrange.palette.neutralQuaternaryAlt));
+
+    act(() => {
+      loadTheme(darkYellow);
+    });
+    expect(document.getElementById("testTarget").style.background)
+      .toBe(colorToRgb(darkYellow.palette.neutralQuaternaryAlt));
+
+    act(() => {
+      loadTheme(lightGreen);
+    });
+    expect(document.getElementById("testTarget").style.background)
+      .toBe(colorToRgb(lightGreen.palette.neutralQuaternaryAlt));
   });
 });
+
+const colorToRgb = (color) => {
+  if (color.startsWith("rgb(")) {
+    return color;
+  }
+  const r = parseInt(color.substr(1, 2), 16);
+  const g = parseInt(color.substr(3, 2), 16);
+  const b = parseInt(color.substr(5, 2), 16);
+  return `rgb(${r}, ${g}, ${b})`;
+};

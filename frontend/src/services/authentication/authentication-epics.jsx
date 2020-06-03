@@ -3,6 +3,7 @@ import { filter, flatMap, map, delay } from "rxjs/operators";
 import { fromArray } from "rxjs/internal/observable/fromArray";
 import { replaceSafeContent, fetchAll } from "../safe/safe-actions";
 import { updateEventBusConnectionState } from "../eventBus/eventBus-actions";
+import { eventBusClient } from "../eventBus/eventBus-services";
 import { confirmLoggedIn, confirmLoggedOut, requestLogin, requestLogout, setAccount } from "./authentication-actions";
 import { loginToRemote } from "./authentication-services";
 
@@ -10,7 +11,7 @@ export const authenticationEpics = [
   (actions$, state$) => actions$.pipe(
     ofType(requestLogin.type, updateEventBusConnectionState.type),
     delay(1000), // TODO - remove delay
-    flatMap(() => loginToRemote(state$.value))
+    flatMap(() => loginToRemote(state$.value, eventBusClient.sendEvent))
   ),
   (actions$) => actions$.pipe(
     ofType(setAccount.type),

@@ -1,6 +1,6 @@
-import { BehaviorSubject } from "rxjs";
-import { filter, mergeMap, tap } from "rxjs/operators";
-import { heavyWait } from "../app";
+import { BehaviorSubject, EMPTY } from "rxjs";
+import { mergeMap, tap, switchMap } from "rxjs/operators";
+import { heavyWait } from "../utils/Utils";
 
 export class EpicRegistry {
 
@@ -8,7 +8,7 @@ export class EpicRegistry {
     const noOpEpic = (actions$) => actions$.pipe(
       // tap((action) => console.debug("dispatched action: ", action)),
       tap((action) => heavyWait(action.type, 0)),
-      filter(() => false)
+      switchMap(() => EMPTY)
     );
     this._epic$ = new BehaviorSubject(noOpEpic);
   }
