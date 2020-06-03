@@ -2,13 +2,11 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text } from "@fluentui/react";
 import { connect } from "react-redux";
-import { selectSkillId } from "../../services/ui/ui-actions";
+import { selectSkillId, setDialogConfig } from "../../services/ui/ui-actions";
 import CvDetailsList from "../widgets/CvDetailsList";
 import SkillEdit from "./SkillEdit";
 
 const SkillList = (props) => {
-
-  const [isEditing, setEditing] = React.useState(false);
 
   const columns = [
     {
@@ -62,11 +60,9 @@ const SkillList = (props) => {
         items={skills}
         instanceContext={skillContext}
         setKey="skill"
-        onItemInvoked={() => setEditing(true)} />
+        onItemInvoked={() => props.setDialogConfig(true)} />
       <SkillEdit
-        instanceContext={skillContext}
-        isOpen={isEditing}
-        dismiss={() => setEditing(false)}/>
+        instanceContext={skillContext}/>
     </div>
   );
 };
@@ -76,18 +72,20 @@ SkillList.propTypes = {
   selectedCvId: PropTypes.string,
   skillEntity: PropTypes.object,
   selectedSkillId: PropTypes.string,
-  selectSkillId: PropTypes.func.isRequired
+  selectSkillId: PropTypes.func.isRequired,
+  setDialogConfig: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   locale: state.ui.locale,
-  selectedCvId: state.ui.selected.cvId,
+  selectedCvId: state.ui.selectedCvId,
   skillEntity: state.safe.skill,
-  selectedSkillId: state.ui.selected.skillId
+  selectedSkillId: state.ui.selectedSkillId
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  selectSkillId: (skillId) => dispatch(selectSkillId(skillId))
+  selectSkillId: (skillId) => dispatch(selectSkillId(skillId)),
+  setDialogConfig: (isOpen) => dispatch(setDialogConfig("skill", {isOpen}))
 });
 
 export default connect(select, mapDispatchToProps)(SkillList);

@@ -9,14 +9,14 @@ import { useTheme } from "../../services/ui/ui-services";
 
 const Profile = (props) => {
   // Find the {profile} of the selected {account}.
-  const accountId = props.account && props.account._id;
+  const accountId = props.account?._id;
   const profile = accountId
     && props.profileEntity
     && Object.values(props.profileEntity).find((instance) => instance.accountId === accountId);
 
   const cvContext = {
     entity: props.cvEntity,
-    entityId: props.cvId,
+    entityId: props.selectedCvId,
     locale: props.locale,
     replaceInstance: props.onCvChange
   };
@@ -88,7 +88,7 @@ Profile.propTypes = {
   account: PropTypes.object,
   profileEntity: PropTypes.object,
   cvEntity: PropTypes.object,
-  cvId: PropTypes.string,
+  selectedCvId: PropTypes.string,
   locale: PropTypes.string,
   onCvChange: PropTypes.func.isRequired,
   onProfileChange: PropTypes.func.isRequired
@@ -98,7 +98,7 @@ const select = (state) => ({
   account: state.authentication.account,
   profileEntity: state.safe.profile,
   cvEntity: state.safe.cv,
-  cvId: state.ui.selected.cvId,
+  selectedCvId: state.ui.selectedCvId,
   locale: state.ui.locale
 });
 

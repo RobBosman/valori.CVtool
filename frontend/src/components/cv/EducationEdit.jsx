@@ -57,7 +57,7 @@ EducationEdit.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  selectedEducationId: state.ui.selected.educationId,
+  selectedEducationId: state.ui.selectedEducationId,
   educationEntity: state.safe.education
 });
 

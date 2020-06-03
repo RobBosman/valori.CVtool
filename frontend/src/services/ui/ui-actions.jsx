@@ -7,13 +7,14 @@ export const setThemeName = createAction("UI_SET_THEME_NAME");
 export const selectCvId = createAction("UI_SELECT_CV_ID");
 export const selectEducationId = createAction("UI_SELECT_EDUCATION_ID");
 export const selectSkillId = createAction("UI_SELECT_SKILL_ID");
+export const setDialogConfig = createAction("UI_SET_DIALOG_CONFIG", (dialog, config) => ({ payload: { dialog, config } }));
 
 const reducer = createReducer(
   {
     locationHash: document.location.hash || "",
     locale: "nl_NL",
     themeName: "lightBlue",
-    selected: {}
+    dialogConfig: {}
   },
   {
     [setLocationHash]: (state, action) => {
@@ -25,14 +26,17 @@ const reducer = createReducer(
     [setThemeName]: (state, action) => {
       state.themeName = action.payload;
     },
+    [selectCvId]: (state, action) => {
+      state.selectedCvId = action.payload;
+    },
     [selectEducationId]: (state, action) => {
-      state.selected.educationId = action.payload;
+      state.selectedEducationId = action.payload;
     },
     [selectSkillId]: (state, action) => {
-      state.selected.skillId = action.payload;
+      state.selectedSkillId = action.payload;
     },
-    [selectCvId]: (state, action) => {
-      state.selected.cvId = action.payload;
+    [setDialogConfig]: (state, action) => {
+      state.dialogConfig[action.payload.dialog] = action.payload.config;
     }
   });
 

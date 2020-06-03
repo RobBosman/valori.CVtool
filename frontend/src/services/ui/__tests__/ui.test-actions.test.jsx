@@ -1,5 +1,5 @@
 import reducerRegistry from "../../../redux/reducerRegistry";
-import { setLocationHash, setThemeName, setLocale, selectSkillId, selectEducationId, selectCvId } from "../ui-actions";
+import { setLocationHash, setThemeName, setLocale, selectSkillId, selectEducationId, selectCvId, setDialogConfig } from "../ui-actions";
 
 describe("ui", () => {
 
@@ -22,16 +22,21 @@ describe("ui", () => {
 
   it("should reduce selectCvId", () => {
     const state = reducer(undefined, selectCvId(313));
-    expect(state.ui.selected.cvId).toBe(313);
+    expect(state.ui.selectedCvId).toBe(313);
   });
 
   it("should reduce selectEducationId", () => {
     const state = reducer(undefined, selectEducationId(767));
-    expect(state.ui.selected.educationId).toBe(767);
+    expect(state.ui.selectedEducationId).toBe(767);
   });
 
   it("should reduce selectSkillId", () => {
     const state = reducer(undefined, selectSkillId(676));
-    expect(state.ui.selected.skillId).toBe(676);
+    expect(state.ui.selectedSkillId).toBe(676);
+  });
+
+  it("should reduce setDialogConfig", () => {
+    const state = reducer(undefined, setDialogConfig("skill", { open: false, x: 767, y: 676 }));
+    expect(state.ui.dialogConfig).toStrictEqual({ skill: { open: false, x: 767, y: 676 } });
   });
 });

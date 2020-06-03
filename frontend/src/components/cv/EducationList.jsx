@@ -57,8 +57,8 @@ const EducationList = (props) => {
 
   // Find all {educations} of the selected {cv}.
   const educations = props.educationEntity
-    && props.cvId
-    && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.cvId)
+    && props.selectedCvId
+    && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.selectedCvId)
     || [];
 
   const exposeSelectionRef = (selectionRef) => props.onExposeSelectionRef && props.onExposeSelectionRef(selectionRef);
@@ -80,7 +80,7 @@ const EducationList = (props) => {
 };
 
 EducationList.propTypes = {
-  cvId: PropTypes.string,
+  selectedCvId: PropTypes.string,
   educationEntity: PropTypes.object,
   educationId: PropTypes.string,
   locale: PropTypes.string,
@@ -90,8 +90,8 @@ EducationList.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  cvId: state.ui.selected.cvId,
-  educationId: state.ui.selected.educationId,
+  selectedCvId: state.ui.selectedCvId,
+  educationId: state.ui.selectedEducationId,
   educationEntity: state.safe.education
 });
 

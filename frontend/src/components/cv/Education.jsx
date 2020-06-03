@@ -50,9 +50,9 @@ const Education = (props) => {
   const addEducation = () => {
     const id = createId();
     props.createEducation(id, {
-      "_id": id,
-      "cvId": props.cvId,
-      "name": {}
+      _id: id,
+      cvId: props.selectedCvId,
+      name: {}
     });
     setTimeout(() => selectNext(1000000), 100); // TODO - fix this
   };
@@ -85,13 +85,13 @@ const Education = (props) => {
 };
 
 Education.propTypes = {
-  cvId: PropTypes.string,
+  selectedCvId: PropTypes.string,
   createEducation: PropTypes.func.isRequired,
   deleteEducatione: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
-  cvId: state.ui.selected.cvId
+  selectedCvId: state.ui.selectedCvId
 });
 
 const mapDispatchToProps = (dispatch) => ({

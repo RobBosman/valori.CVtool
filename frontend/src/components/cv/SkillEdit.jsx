@@ -6,6 +6,7 @@ import CvTextField from "../widgets/CvTextField";
 import { SkillCategories, SkillLevels } from "./Enums";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import CvModal from "../widgets/CvModal";
+import { setDialogConfig } from "../../services/ui/ui-actions";
 
 const SkillEdit = (props) => {
 
@@ -16,8 +17,8 @@ const SkillEdit = (props) => {
 
   return (
     <CvModal
-      isOpen={props.isOpen}
-      dismiss={props.dismiss}>
+      isOpen={props.dialogConfig.isOpen || false}
+      dismiss={() => props.setDialogConfig(false)}>
       <CvDropdown
         label='Categorie'
         field="category"
@@ -41,12 +42,17 @@ const SkillEdit = (props) => {
 SkillEdit.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  dismiss: PropTypes.func.isRequired
+  dialogConfig: PropTypes.object.isRequired,
+  setDialogConfig: PropTypes.func.isRequired
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onChange: (id, instance) => dispatch(replaceSafeInstance("skill", id, instance))
+const select = (state) => ({
+  dialogConfig: state.ui.dialogConfig.skill || {}
 });
 
-export default connect(null, mapDispatchToProps)(SkillEdit);
+const mapDispatchToProps = (dispatch) => ({
+  onChange: (id, instance) => dispatch(replaceSafeInstance("skill", id, instance)),
+  setDialogConfig: (isOpen) => dispatch(setDialogConfig("skill", {isOpen}))
+});
+
+export default connect(select, mapDispatchToProps)(SkillEdit);
