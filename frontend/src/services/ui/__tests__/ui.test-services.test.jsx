@@ -10,32 +10,27 @@ import { useTheme, initializeUI } from "../ui-services";
 import { loadTheme } from "@fluentui/react";
 
 describe("ui", () => {
-
   let container = null;
+
   beforeEach(() => {
-    // setup a DOM element as a render target
     container = document.createElement("div");
     document.body.appendChild(container);
   });
 
   afterEach(() => {
-    // cleanup on exiting
     unmountComponentAtNode(container);
     container.remove();
     container = null;
   });
 
-  it("should initialize UI", () => {
-    expect.assertions(1);
-    return new Promise((resolveTest) => {
-      initializeUI((action) => {
-        expect(action).toStrictEqual(setLocationHash(""));
-        resolveTest();
-      });
-      window.dispatchEvent(new CustomEvent("unhandledrejection", { detail: "real thing" }));
-      window.dispatchEvent(new CustomEvent("hashchange", {}));
+  it("should initialize UI", () => new Promise((_resolve) => {
+    initializeUI((action) => {
+      expect(action).toStrictEqual(setLocationHash(""));
+      _resolve();
     });
-  });
+    window.dispatchEvent(new CustomEvent("unhandledrejection", { detail: "real thing" }));
+    window.dispatchEvent(new CustomEvent("hashchange", {}));
+  }));
 
   it("should useTheme", () => {
     const TestComp = () => {
@@ -48,25 +43,26 @@ describe("ui", () => {
     act(() => {
       render(<TestComp />, container);
     });
-    expect(document.getElementById("testTarget").style.background)
+    const testTarget = document.getElementById("testTarget");
+    expect(testTarget.style.background)
       .toBe(colorToRgb(lightBlue.palette.neutralQuaternaryAlt));
 
     act(() => {
       loadTheme(darkOrange);
     });
-    expect(document.getElementById("testTarget").style.background)
+    expect(testTarget.style.background)
       .toBe(colorToRgb(darkOrange.palette.neutralQuaternaryAlt));
 
     act(() => {
       loadTheme(darkYellow);
     });
-    expect(document.getElementById("testTarget").style.background)
+    expect(testTarget.style.background)
       .toBe(colorToRgb(darkYellow.palette.neutralQuaternaryAlt));
 
     act(() => {
       loadTheme(lightGreen);
     });
-    expect(document.getElementById("testTarget").style.background)
+    expect(testTarget.style.background)
       .toBe(colorToRgb(lightGreen.palette.neutralQuaternaryAlt));
   });
 });

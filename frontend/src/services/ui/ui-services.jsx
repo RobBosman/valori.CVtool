@@ -3,7 +3,7 @@ import { initializeIcons, registerOnThemeChangeCallback, removeOnThemeChangeCall
 import { setLocationHash } from "./ui-actions";
 
 export const initializeUI = (dispatch) => {
-  window.addEventListener("unhandledrejection", (event) => console.error("Uncaught error in Promise", event));
+  // TODO window.addEventListener("unhandledrejection", (event) =>  console.error(`Uncaught error in Promise - ${JSON.stringify(event)}`));
   window.addEventListener("hashchange", () => dispatch(setLocationHash(document.location.hash || "")));
 
   initializeIcons();

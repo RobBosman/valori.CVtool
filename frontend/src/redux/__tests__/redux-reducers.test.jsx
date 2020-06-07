@@ -4,27 +4,31 @@ import reducerRegistry from "../reducerRegistry";
 describe("redux", () => {
 
   const dummyAction = createAction("DUMMY_ACTION");
-
-  it("should register reducers", () => {
-    const store = configureStore({
-      reducer: reducerRegistry.getRootReducer()
+  const dummyReducer = createReducer(
+    {
+      value: 313
+    },
+    {
+      [dummyAction]: (state, action) => {
+        state.value = action.payload;
+      },
     });
+  const store = configureStore({
+    reducer: reducerRegistry.getRootReducer()
+  });
+
+  it("should have empty state with no registered reducers", () => {
     reducerRegistry.setChangeListener((rootReducer) => store.replaceReducer(rootReducer));
     expect(store.getState()).toStrictEqual({});
+  });
 
-    const dummyReducer = createReducer(
-      {
-        value: 313
-      },
-      {
-        [dummyAction]: (state, action) => {
-          state.value = action.payload;
-        },
-      });
+  it("should have default state with registered reducers", () => {
     reducerRegistry.register("dummy", dummyReducer);
-    expect(store.getState().dummy.value).toBe(313);
+    expect(store.getState()).toStrictEqual({dummy: {value: 313}});
+  });
 
-    store.dispatch(dummyAction(767));
-    expect(store.getState().dummy.value).toBe(767);
+  it("should apply registered reducers", () => {
+    store.dispatch(dummyAction("176-761"));
+    expect(store.getState()).toStrictEqual({dummy: {value: "176-761"}});
   });
 });

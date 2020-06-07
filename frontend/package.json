@@ -51,11 +51,10 @@
   "name": "cvtool-frontend",
   "scripts": {
     "dev-server": "webpack-dev-server --mode development",
-    "test": "jest",
-    "test:watch": "jest --watch *.test.jsx",
-    "test:coverage": "jest --coverage",
-    "lint": "eslint --ext .js,.jsx,.html .",
+    "test:watch": "jest --watch",
     "lint:fix": "eslint --ext .js,.jsx,.html . --fix",
+    "test": "jest --coverage",
+    "lint": "eslint --ext .js,.jsx,.html .",
     "build": "webpack --mode production",
     "npm-outdated": "npm outdated > npm-outdated.txt || exit 0",
     "npm-audit": "npm audit > npm-audit.txt || exit 0"

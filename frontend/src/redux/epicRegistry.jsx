@@ -1,26 +1,18 @@
 import { BehaviorSubject, EMPTY } from "rxjs";
-import { mergeMap, tap, switchMap } from "rxjs/operators";
-import { heavyWait } from "../utils/Utils";
+import { mergeMap } from "rxjs/operators";
+import { combineEpics } from "redux-observable";
 
 export class EpicRegistry {
-
+  
   constructor() {
-    const noOpEpic = (actions$) => actions$.pipe(
-      // tap((action) => console.debug("dispatched action: ", action)),
-      tap((action) => heavyWait(action.type, 0)),
-      switchMap(() => EMPTY)
-    );
-    this._epic$ = new BehaviorSubject(noOpEpic);
+    this._epic$ = new BehaviorSubject(() => EMPTY);
   }
 
-  rootEpic = (action$, state$) => {
-    return this._epic$.pipe(
-      mergeMap((epic) => epic(action$, state$))
-    );
-  }
+  register = (epics) => this._epic$.next(combineEpics(this._epic$.value, ...epics));
 
-  register = (epics) =>
-    epics.map((epic) => this._epic$.next(epic));
+  rootEpic = (...args$) => this._epic$.pipe(
+    mergeMap((epic) => epic(...args$))
+  );
 }
 
 const epicRegistry = new EpicRegistry();

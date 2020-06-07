@@ -50,53 +50,50 @@ export class EventBusClient {
     }
   };
 
-  sendEvent = (address, requestData, headerData = {}) =>
-    new Promise((resolve, reject) => {
+  sendEvent = (address, requestData, headerData = {}) => new Promise((_resolve, _reject) => {
+    if (this._eventBus?.state === EventBus.OPEN) {
+      console.debug(`Sending event '${address}'`);
+      this._eventBus.send(
+        address, requestData, headerData,
+        (error, message) => error ? _reject(error) : _resolve(message)
+      );
+    } else {
+      _reject(`Error sending '${address}' event; the EventBus is not connected.`);
+    }
+  });
+
+  addEventHandler = (handler) => new Promise((_resolve, _reject) => {
+    if (this._handlers.has(handler)) {
+      _resolve();
+    } else {
+      this._handlers.add(handler);
       if (this._eventBus?.state === EventBus.OPEN) {
-        console.debug(`Sending event '${address}'`);
-        this._eventBus.send(
-          address, requestData, headerData,
-          (error, message) => error ? reject(error) : resolve(message)
+        this._eventBus.registerHandler(
+          handler.address, handler.headers, handler.callback,
+          (error, message) => error ? _reject(error) : _resolve(message)
         );
       } else {
-        reject(`Error sending '${address}' event; the EventBus is not connected.`);
+        _resolve();
       }
-    });
+    }
+  });
 
-  addEventHandler = (handler) =>
-    new Promise((resolve, reject) => {
-      if (this._handlers.has(handler)) {
-        resolve();
+  removeEventHandler = (handler) => new Promise((_resolve, _reject) => {
+    if (!this._handlers.has(handler)) {
+      _resolve();
+    } else {
+      this._handlers.delete(handler);
+      if (this._eventBus?.state === EventBus.OPEN) {
+        this._eventBus.unregisterHandler(
+          handler.address, handler.headers, handler.callback,
+          (error, message) => error ? _reject(error) : _resolve(message)
+        );
       } else {
-        this._handlers.add(handler);
-        if (this._eventBus?.state === EventBus.OPEN) {
-          this._eventBus.registerHandler(
-            handler.address, handler.headers, handler.callback,
-            (error, message) => error ? reject(error) : resolve(message)
-          );
-        } else {
-          resolve();
-        }
+        this._handlersToBeUnregistered.add(handler);
+        _resolve();
       }
-    });
-
-  removeEventHandler = (handler) =>
-    new Promise((resolve, reject) => {
-      if (!this._handlers.has(handler)) {
-        resolve();
-      } else {
-        this._handlers.delete(handler);
-        if (this._eventBus?.state === EventBus.OPEN) {
-          this._eventBus.unregisterHandler(
-            handler.address, handler.headers, handler.callback,
-            (error, message) => error ? reject(error) : resolve(message)
-          );
-        } else {
-          this._handlersToBeUnregistered.add(handler);
-          resolve();
-        }
-      }
-    });
+    }
+  });
 
   refreshHandlerRegistrations = () => {
     for (let i = this._handlersToBeUnregistered.size - 1; i >= 0; i--) { // loop reversed, so we can 'shrink' the list

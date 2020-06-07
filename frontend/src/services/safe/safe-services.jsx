@@ -8,7 +8,7 @@ export const fetchCvFromRemote = (state, sendEvent) =>
       sendEvent("fetch.cv", { accountId: account._id })
         .then((message) => subscriber.next(replaceSafeContent(message.body)))
         .then(() => subscriber.complete())
-        .catch((e) => subscriber.error(e));
+        .catch((error) => subscriber.error(error));
     } else {
       subscriber.error("authentication.account is not present");
     }
@@ -18,7 +18,7 @@ export const saveAllToRemote = (state, sendEvent) =>
   new Observable((subscriber) =>
     sendEvent("save", state.safe)
       .then(() => subscriber.complete())
-      .catch((e) => subscriber.error(e))
+      .catch((error) => subscriber.error(error))
   );
 
 /** Use this function to create a unique object id. */

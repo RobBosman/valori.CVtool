@@ -3,95 +3,85 @@ import { createId, fetchCvFromRemote, saveAllToRemote } from "../safe-services";
 
 describe("safe", () => {
 
-  const sendEventSuccess = (eventName) => new Promise((resolve) => resolve({ body: `${eventName}_resolved` }));
-  const sendEventError = (eventName) => new Promise((_resolve, reject) => reject({ body: `${eventName}_rejected` }));
+  const sendEventSuccess = (eventName) => new Promise((_resolve) => _resolve({ body: `${eventName}_resolved` }));
+  const sendEventError = (eventName) => new Promise((_resolve, _reject) => _reject({ body: `${eventName}_rejected` }));
 
-  it("should fetchCvFromRemote success", () => {
+  it("should fetchCvFromRemote success", () => new Promise((_resolve, _reject) => {
     expect.assertions(2);
     const state = { authentication: { account: {} } };
-    return new Promise((resolveTest, rejectTest) => {
-      const actions = [];
-      fetchCvFromRemote(state, sendEventSuccess)
-        .subscribe(
-          (action) => actions.push(action),
-          (error) => rejectTest(error),
-          () => {
-            expect(actions.length).toBe(1);
-            expect(actions[0]).toStrictEqual(replaceSafeContent("fetch.cv_resolved"));
-            resolveTest();
-          }
-        );
-    });
-  });
+    const actions = [];
+    fetchCvFromRemote(state, sendEventSuccess)
+      .subscribe(
+        (action) => actions.push(action),
+        (error) => _reject(error),
+        () => {
+          expect(actions.length).toBe(1);
+          expect(actions[0]).toStrictEqual(replaceSafeContent("fetch.cv_resolved"));
+          _resolve();
+        }
+      );
+  }));
 
-  it("should fetchCvFromRemote error state", () => {
+  it("should fetchCvFromRemote error state", () => new Promise((_resolve, _reject) => {
     expect.assertions(2);
-    return new Promise((resolveTest, rejectTest) => {
-      const actions = [];
-      fetchCvFromRemote({}, sendEventSuccess)
-        .subscribe(
-          (action) => actions.push(action),
-          (error) => {
-            expect(actions.length).toBe(0);
-            expect(error).toStrictEqual("authentication.account is not present");
-            resolveTest();
-          },
-          () => rejectTest()
-        );
-    });
-  });
+    const actions = [];
+    fetchCvFromRemote({}, sendEventSuccess)
+      .subscribe(
+        (action) => actions.push(action),
+        (error) => {
+          expect(actions.length).toBe(0);
+          expect(error).toStrictEqual("authentication.account is not present");
+          _resolve();
+        },
+        () => _reject(new Error("Unexpected complete()"))
+      );
+  }));
 
-  it("should fetchCvFromRemote error response", () => {
+  it("should fetchCvFromRemote error response", () => new Promise((_resolve, _reject) => {
     expect.assertions(2);
     const state = { authentication: { account: {} } };
-    return new Promise((resolveTest, rejectTest) => {
-      const actions = [];
-      fetchCvFromRemote(state, sendEventError)
-        .subscribe(
-          (action) => actions.push(action),
-          (error) => {
-            expect(actions.length).toBe(0);
-            expect(error).toStrictEqual({ body: "fetch.cv_rejected" });
-            resolveTest();
-          },
-          () => rejectTest()
-        );
-    });
-  });
+    const actions = [];
+    fetchCvFromRemote(state, sendEventError)
+      .subscribe(
+        (action) => actions.push(action),
+        (error) => {
+          expect(actions.length).toBe(0);
+          expect(error).toStrictEqual({ body: "fetch.cv_rejected" });
+          _resolve();
+        },
+        () => _reject(new Error("Unexpected complete()"))
+      );
+  }));
 
-  it("should saveAllToRemote success", () => {
+  it("should saveAllToRemote success", () => new Promise((_resolve, _reject) => {
     expect.assertions(1);
-    return new Promise((resolveTest, rejectTest) => {
-      const actions = [];
-      saveAllToRemote({}, sendEventSuccess)
-        .subscribe(
-          (action) => actions.push(action),
-          (error) => rejectTest(error),
-          () => {
-            expect(actions.length).toBe(0);
-            resolveTest();
-          }
-        );
-    });
-  });
+    const actions = [];
+    saveAllToRemote({}, sendEventSuccess)
+      .subscribe(
+        (action) => actions.push(action),
+        (error) => _reject(error),
+        () => {
+          expect(actions.length).toBe(0);
+          _resolve(new Error("Unexpected complete()"));
+        }
+      );
+  }));
 
-  it("should saveAllToRemote error", () => {
+  it("should saveAllToRemote error", () => new Promise((_resolve, _reject) => {
     expect.assertions(1);
-    return new Promise((resolveTest, rejectTest) => {
-      const actions = [];
-      saveAllToRemote({}, sendEventError)
-        .subscribe(
-          (action) => actions.push(action),
-          (error) => {
-            expect(actions.length).toBe(0);
-            resolveTest(error);
-          },
-          () => rejectTest()
-        );
-    });
-  });
+    const actions = [];
+    saveAllToRemote({}, sendEventError)
+      .subscribe(
+        (action) => actions.push(action),
+        (error) => {
+          expect(actions.length).toBe(0);
+          _resolve(error);
+        },
+        () => _reject(new Error("Unexpected complete()"))
+      );
+  }));
 
-  it("should create unique id", () => {
+  it("should create unique ids", () => {
     const id0 = createId();
     expect(id0.length).toBe(36);
     expect(id0.replace(/-/g, "").length).toBe(32);

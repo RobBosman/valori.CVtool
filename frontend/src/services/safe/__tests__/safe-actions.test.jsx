@@ -18,7 +18,7 @@ describe("safe", () => {
 
     const dummyInstanceV1 = {
       _id: 313,
-      value: 767
+      value: "176-761"
     };
     const dummySafeV1 = {
       DUMMY: {
@@ -30,7 +30,7 @@ describe("safe", () => {
 
     const dummyInstanceV2 = {
       _id: 313,
-      value: 676
+      value: "176-617"
     };
     const dummySafeV2 = {
       DUMMY: {
