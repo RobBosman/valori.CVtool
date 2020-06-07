@@ -8,7 +8,7 @@ export class EpicRegistry {
     this._epic$ = new BehaviorSubject(() => EMPTY);
   }
 
-  register = (epics) => this._epic$.next(combineEpics(this._epic$.value, ...epics));
+  register = (epics) => this._epic$.next(combineEpics(...epics));
 
   rootEpic = (...args$) => this._epic$.pipe(
     mergeMap((epic) => epic(...args$))
