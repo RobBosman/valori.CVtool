@@ -1,6 +1,5 @@
 import { BehaviorSubject, EMPTY } from "rxjs";
 import { mergeMap } from "rxjs/operators";
-import { combineEpics } from "redux-observable";
 
 export class EpicRegistry {
   
@@ -8,7 +7,7 @@ export class EpicRegistry {
     this._epic$ = new BehaviorSubject(() => EMPTY);
   }
 
-  register = (epics) => this._epic$.next(combineEpics(...epics));
+  register = (epics) => epics.map((epic) => this._epic$.next(epic));
 
   rootEpic = (...args$) => this._epic$.pipe(
     mergeMap((epic) => epic(...args$))

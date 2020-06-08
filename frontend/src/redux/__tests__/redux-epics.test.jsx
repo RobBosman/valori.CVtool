@@ -1,210 +1,178 @@
-import { createAction } from "@reduxjs/toolkit";
-import { ofType } from "redux-observable";
-import { timer, merge, Subject } from "rxjs";
-import { map } from "rxjs/operators";
+import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
 import { EpicRegistry } from "../epicRegistry";
-
-const testEpics = (epics$, dispatch, testActions, expectedMessages, timeout = 10) => new Promise((_resolve, _reject) => {
-  const numExpected = expectedMessages.length;
-  merge(
-    epics$,
-    timer(timeout) // emit '0' after timeout
-  ).subscribe(
-    (message) => {
-      if (expectedMessages.length > 0) {
-        try {
-          expect(message).toStrictEqual(expectedMessages.shift());
-        }
-        catch(failure) {
-          _reject(new Error(`${failure}. Expected message[${numExpected - 1 - expectedMessages.length}]`)); 
-        }
-      } else if (message === 0) {
-        _resolve();
-      } else {
-        _reject(new Error(`Unexpected next(): ${JSON.stringify(message)}`));
-      }
-    },
-    (error) => _reject(error), 
-    () => _reject(new Error("Unexpected complete()"))
-  );
-
-  testActions.map((action) => dispatch(action));
-});
+import { createEpicMiddleware, ofType, combineEpics } from "redux-observable";
+import { EMPTY } from "rxjs";
+import { map, switchMap, tap } from "rxjs/operators";
 
 describe("redux", () => {
-
-  let _epicRegistry;
-  let action$;
-
-  beforeEach(() => {
-    action$ = new Subject();
-    _epicRegistry = new EpicRegistry();
-  });
-
-  afterEach(() => {
-    _epicRegistry = null;
-  });
 
   const dummyAction1 = createAction("DUMMY_ACTION_1");
   const dummyAction2 = createAction("DUMMY_ACTION_2");
   const dummyAction3 = createAction("DUMMY_ACTION_3");
+  const dummyReducer = createReducer(
+    {
+      value1: "176-176",
+      value2: "176-176",
+      value3: "176-176"
+    },
+    {
+      [dummyAction1]: (state, action) => {
+        state.value1 = action.payload;
+      },
+      [dummyAction2]: (state, action) => {
+        state.value2 = action.payload;
+      },
+      [dummyAction3]: (state, action) => {
+        state.value3 = action.payload;
+      }
+    });
   const testActions = [
-    dummyAction1("176-167"), 
-    dummyAction2("176-671"), 
-    dummyAction3("176-761"), 
-    dummyAction2("176-671"), 
-    dummyAction3("176-716")
+    dummyAction1("176-167"),
+    dummyAction2("176-617"),
+    dummyAction3("176-716"),
+    dummyAction2("176-671"),
+    dummyAction3("176-761")
   ];
   const dummyEpics0 = [
     (actions$) => actions$.pipe(
-      ofType(dummyAction2.type),
-      map(() => dummyAction1("176-176"))
+      ofType(dummyAction3.type),
+      map(() => dummyAction1(313))
     )
   ];
   const dummyEpics1 = [
     (actions$) => actions$.pipe(
-      ofType(dummyAction2.type),
-      map(() => dummyAction3(313))
+      ofType(dummyAction3.type),
+      map(() => dummyAction2(671))
     ),
     (actions$) => actions$.pipe(
       ofType(dummyAction1.type),
-      map(() => dummyAction2("176-176"))
+      map(() => dummyAction2(617))
     )
   ];
 
-  const runEpics = () => _epicRegistry.rootEpic(action$);
-  const dispatch = (action) => action$.next(action);
+  let _store;
+  let _dispatchedActions;
+  let _epicRegistry;
+
+  beforeEach(() => {
+    const epicMiddleware = createEpicMiddleware();
+    _store = configureStore({
+      reducer: dummyReducer,
+      middleware: [epicMiddleware]
+    });
+
+    _dispatchedActions = [];
+    const actionRecorder = (action$) => action$.pipe(
+      tap((action) => _dispatchedActions.push(action)),
+      switchMap(() => EMPTY)
+    );
+
+    _epicRegistry = new EpicRegistry();
+    epicMiddleware.run(combineEpics(actionRecorder, _epicRegistry.rootEpic));
+  });
 
   it("should do nothing with no registered epics", () => {
-    const epics$ = runEpics();
-    const expectedActions = [];
-    return testEpics(epics$, dispatch, testActions, expectedActions);
+    testActions.map(_store.dispatch);
+    expect(_dispatchedActions).toStrictEqual([
+      dummyAction1("176-167"),
+      dummyAction2("176-617"),
+      dummyAction3("176-716"),
+      dummyAction2("176-671"),
+      dummyAction3("176-761")
+    ]);
+    expect(_store.getState()).toStrictEqual({
+      value1: "176-167",
+      value2: "176-671",
+      value3: "176-761"
+    });
   });
 
-  it("should work with early registered epics [0]", () => {
+  it("should work with registered epics [0]", () => {
     _epicRegistry.register(dummyEpics0);
-    const epics$ = runEpics();
-    const expectedActions = [
-      dummyAction1("176-176"),
-      dummyAction1("176-176")
-    ];
-    return testEpics(epics$, dispatch, testActions, expectedActions);
+    testActions.map(_store.dispatch);
+    expect(_dispatchedActions).toStrictEqual([
+      dummyAction1("176-167"),
+      dummyAction2("176-617"),
+      dummyAction3("176-716"),
+      dummyAction1(313),
+      dummyAction2("176-671"),
+      dummyAction3("176-761"),
+      dummyAction1(313)
+    ]);
+    expect(_store.getState()).toStrictEqual({
+      value1: 313,
+      value2: "176-671",
+      value3: "176-761"
+    });
   });
 
-  it("should work with late registered epics [0]", () => {
-    const epics$ = runEpics();
+  it("should work with registered epics [1]", () => {
+    _epicRegistry.register(dummyEpics1);
+    testActions.map(_store.dispatch);
+    expect(_dispatchedActions).toStrictEqual([
+      dummyAction1("176-167"),
+      dummyAction2(617),
+      dummyAction2("176-617"),
+      dummyAction3("176-716"),
+      dummyAction2(671),
+      dummyAction2("176-671"),
+      dummyAction3("176-761"),
+      dummyAction2(671)
+    ]);
+    expect(_store.getState()).toStrictEqual({
+      value1: "176-167",
+      value2: 671,
+      value3: "176-761"
+    });
+  });
+
+  it("should work with registered epics [0, 1]", () => {
     _epicRegistry.register(dummyEpics0);
-    const expectedActions = [
-      dummyAction1("176-176"),
-      dummyAction1("176-176")
-    ];
-    return testEpics(epics$, dispatch, testActions, expectedActions);
-  });
-
-  it("should work with early registered epics [1]", () => {
     _epicRegistry.register(dummyEpics1);
-    const epics$ = runEpics();
-    const expectedActions = [
-      dummyAction2("176-176"),
-      dummyAction3(313),
-      dummyAction3(313)
-    ];
-    return testEpics(epics$, dispatch, testActions, expectedActions);
+    testActions.map(_store.dispatch);
+    expect(_dispatchedActions).toStrictEqual([
+      dummyAction1("176-167"),
+      dummyAction2(617),
+      dummyAction2("176-617"),
+      dummyAction3("176-716"),
+      dummyAction1(313),
+      dummyAction2(617),
+      dummyAction2(671),
+      dummyAction2("176-671"),
+      dummyAction3("176-761"),
+      dummyAction1(313),
+      dummyAction2(617),
+      dummyAction2(671)
+    ]);
+    expect(_store.getState()).toStrictEqual({
+      value1: 313,
+      value2: 671,
+      value3: "176-761"
+    });
   });
 
-  it("should work with late registered epics [1]", () => {
-    const epics$ = runEpics();
+  it("should work with registered epics [1, 0]", () => {
     _epicRegistry.register(dummyEpics1);
-    const expectedActions = [
-      dummyAction2("176-176"),
-      dummyAction3(313),
-      dummyAction3(313)
-    ];
-    return testEpics(epics$, dispatch, testActions, expectedActions);
+    _epicRegistry.register(dummyEpics0);
+    testActions.map(_store.dispatch);
+    expect(_dispatchedActions).toStrictEqual([
+      dummyAction1("176-167"),
+      dummyAction2(617),
+      dummyAction2("176-617"),
+      dummyAction3("176-716"),
+      dummyAction2(671),
+      dummyAction1(313),
+      dummyAction2(617),
+      dummyAction2("176-671"),
+      dummyAction3("176-761"),
+      dummyAction2(671),
+      dummyAction1(313),
+      dummyAction2(617)
+    ]);
+    expect(_store.getState()).toStrictEqual({
+      value1: 313,
+      value2: 617,
+      value3: "176-761"
+    });
   });
-
-  // TODO - fix these tests
-  // it("should work with early registered epics [0, 1]", () => {
-  //   _epicRegistry.register(dummyEpics0);
-  //   _epicRegistry.register(dummyEpics1);
-  //   const epics$ = runEpics();
-  //   const expectedActions = [
-  //     dummyAction2("176-176"),
-  //     dummyAction3(313),
-  //     dummyAction3(313),
-  //     dummyAction1("176-176"),
-  //     dummyAction1("176-176")
-  //   ];
-  //   return testEpics(epics$, dispatch, testActions, expectedActions);
-  // });
-
-  // it("should work with early and late registered epics [0, 1]", () => {
-  //   _epicRegistry.register(dummyEpics0);
-  //   const epics$ = runEpics();
-  //   _epicRegistry.register(dummyEpics1);
-  //   const expectedActions = [
-  //     dummyAction2("176-176"),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313)
-  //   ];
-  //   return testEpics(epics$, dispatch, testActions, expectedActions);
-  // });
-
-  // it("should work with late registered epics [0, 1]", () => {
-  //   const epics$ = runEpics();
-  //   _epicRegistry.register(dummyEpics0);
-  //   _epicRegistry.register(dummyEpics1);
-  //   const expectedActions = [
-  //     dummyAction2("176-176"),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313)
-  //   ];
-  //   return testEpics(epics$, dispatch, testActions, expectedActions);
-  // });
-
-  // it("should work with early registered epics [1, 0]", () => {
-  //   _epicRegistry.register(dummyEpics1);
-  //   _epicRegistry.register(dummyEpics0);
-  //   const epics$ = runEpics();
-  //   const expectedActions = [
-  //     dummyAction2("176-176"),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313)
-  //   ];
-  //   return testEpics(epics$, dispatch, testActions, expectedActions);
-  // });
-
-  // it("should work with early and late registered epics [1, 0]", () => {
-  //   _epicRegistry.register(dummyEpics1);
-  //   const epics$ = runEpics();
-  //   _epicRegistry.register(dummyEpics0);
-  //   const expectedActions = [
-  //     dummyAction2("176-176"),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313)
-  //   ];
-  //   return testEpics(epics$, dispatch, testActions, expectedActions);
-  // });
-
-  // it("should work with late registered epics [1, 0]", () => {
-  //   const epics$ = runEpics();
-  //   _epicRegistry.register(dummyEpics1);
-  //   _epicRegistry.register(dummyEpics0);
-  //   const expectedActions = [
-  //     dummyAction2("176-176"),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313),
-  //     dummyAction1("176-176"),
-  //     dummyAction3(313)
-  //   ];
-  //   return testEpics(epics$, dispatch, testActions, expectedActions);
-  // });
 });
