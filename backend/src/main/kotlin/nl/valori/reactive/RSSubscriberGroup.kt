@@ -18,7 +18,7 @@ class RSSubscriberGroup<K, T>(
   fun subscribe(
       onComplete: () -> Unit,
       onError: (Map<K, Throwable>) -> Unit
-  ) = subscribe({ _, _ -> }, onComplete, onError)
+  ) = subscribe({ _, _ -> }, onError, onComplete)
 
   fun subscribeAndCollect(
       onComplete: (Map<K, Collection<T>>) -> Unit,
@@ -30,18 +30,18 @@ class RSSubscriberGroup<K, T>(
           collectedEvents.computeIfAbsent(correlationId) { ConcurrentLinkedDeque() }
               .add(event)
         },
-        { onComplete(collectedEvents) },
-        onError)
+        onError,
+        { onComplete(collectedEvents) })
   }
 
   private fun subscribe(
       onNext: (K, T) -> Unit,
-      onComplete: () -> Unit,
-      onError: (Map<K, Throwable>) -> Unit
+      onError: (Map<K, Throwable>) -> Unit,
+      onComplete: () -> Unit
   ) {
     this.onNext = onNext
-    this.onComplete = onComplete
     this.onError = onError
+    this.onComplete = onComplete
 
     publisherMap.forEach { (correlationId, publisher) ->
       publisher.subscribe(RSSubscriber(
@@ -49,11 +49,11 @@ class RSSubscriberGroup<K, T>(
             onNext(correlationId, it)
           },
           {
-            numCompleted.incrementAndGet()
+            errorMap[correlationId] = it
             terminateWhenDone()
           },
           {
-            errorMap[correlationId] = it
+            numCompleted.incrementAndGet()
             terminateWhenDone()
           }))
     }

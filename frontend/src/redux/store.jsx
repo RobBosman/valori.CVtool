@@ -1,12 +1,12 @@
 import { createEpicMiddleware } from "redux-observable";
-import { configureStore, compose } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { reducerRegistry } from "./reducerRegistry";
+import { composeWithDevTools } from "redux-devtools-extension";
 import { epicRegistry } from "./epicRegistry";
 
 const epicMiddleware = createEpicMiddleware();
-const composeEnhancers = process.env.NODE_ENV !== "production" && window?.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ name: "CVtool", actionsBlacklist: ["REDUX_STORAGE_SAVE"] })
-  : compose;
+
+const composeEnhancers = composeWithDevTools(); // see EnhancerOptions
 
 export const store = configureStore({
   reducer: reducerRegistry.getRootReducer(),

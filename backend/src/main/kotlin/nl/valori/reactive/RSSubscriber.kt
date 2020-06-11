@@ -5,8 +5,8 @@ import org.reactivestreams.Subscription
 
 class RSSubscriber<T>(
     private val onNext: (T) -> Unit,
-    private val onComplete: () -> Unit,
-    private val onError: (Throwable) -> Unit
+    private val onError: (Throwable) -> Unit,
+    private val onComplete: () -> Unit
 ) : Subscriber<T> {
 
   private lateinit var subscription: Subscription
@@ -23,7 +23,7 @@ class RSSubscriber<T>(
     requestNextEvents()
   }
 
-  override fun onComplete() = onComplete.invoke()
-
   override fun onError(error: Throwable) = onError.invoke(error)
+
+  override fun onComplete() = onComplete.invoke()
 }
