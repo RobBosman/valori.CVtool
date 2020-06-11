@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import reducerRegistry from "../../redux/reducerRegistry";
+import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const fetchAll = createAction("SAFE_FETCH_ALL", () => ({ payload: null }));
 export const saveAll = createAction("SAFE_SAVE_ALL", () => ({ payload: null }));

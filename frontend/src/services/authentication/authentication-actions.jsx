@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import reducerRegistry from "../../redux/reducerRegistry";
+import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const requestLogin = createAction("AUTHENTICATION_REQUEST_LOGIN", () => ({}));
 export const confirmLoggingIn = createAction("AUTHENTICATION_CONFIRM_LOGGING_IN", () => ({}));

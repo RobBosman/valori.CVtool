@@ -1,4 +1,4 @@
-import reducerRegistry from "../../../redux/reducerRegistry";
+import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { LoginStates, requestLogin, confirmLoggingIn, confirmLoggedIn, requestLogout, confirmLoggingOut, confirmLoggedOut, setAccount } from "../authentication-actions";
 
 describe("authentication", () => {

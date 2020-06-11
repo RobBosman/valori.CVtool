@@ -1,4 +1,4 @@
-import reducerRegistry from "../../../redux/reducerRegistry";
+import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { replaceSafeContent, replaceSafeInstance } from "../safe-actions";
 
 describe("safe", () => {

@@ -1,4 +1,4 @@
-import reducerRegistry from "../../../redux/reducerRegistry";
+import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { setLocationHash, setThemeName, setLocale, selectSkillId, selectEducationId, selectCvId, setDialogConfig } from "../ui-actions";
 
 describe("ui", () => {

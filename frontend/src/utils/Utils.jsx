@@ -1,4 +1,4 @@
-import epicRegistry from "../redux/epicRegistry";
+import { epicRegistry } from "../redux/epicRegistry";
 import { tap, switchMap } from "rxjs/operators";
 import { EMPTY } from "rxjs";
 

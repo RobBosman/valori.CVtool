@@ -1,5 +1,5 @@
 import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
-import reducerRegistry from "../reducerRegistry";
+import { reducerRegistry } from "../reducerRegistry";
 
 describe("redux", () => {
 

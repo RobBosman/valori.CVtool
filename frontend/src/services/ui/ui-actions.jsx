@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import reducerRegistry from "../../redux/reducerRegistry";
+import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const setLocationHash = createAction("UI_SET_LOCATION_HASH");
 export const setLocale = createAction("UI_SET_LOCALE");

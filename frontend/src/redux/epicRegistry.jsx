@@ -14,5 +14,4 @@ export class EpicRegistry {
   );
 }
 
-const epicRegistry = new EpicRegistry();
-export default epicRegistry;
+export const epicRegistry = new EpicRegistry();

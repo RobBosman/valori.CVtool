@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import reducerRegistry from "../../redux/reducerRegistry";
+import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const updateEventBusConnectionState = createAction("EVENT_BUS_UPDATE_CONNECTION_STATE");
 

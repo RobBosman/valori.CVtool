@@ -1,4 +1,4 @@
-import reducerRegistry from "../../../redux/reducerRegistry";
+import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { EventBusConnectionStates, updateEventBusConnectionState } from "../eventBus-actions";
 
 describe("eventBus", () => {

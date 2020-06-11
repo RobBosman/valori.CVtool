@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
-import epicRegistry from "./redux/epicRegistry";
-import store from "./redux/store";
+import { epicRegistry } from "./redux/epicRegistry";
+import { store } from "./redux/store";
 import Main from "./components/Main";
 import EventBroker from "./components/EventBroker";
 import { authenticationEpics } from "./services/authentication/authentication-epics";
