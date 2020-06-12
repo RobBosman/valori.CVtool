@@ -1,7 +1,12 @@
 = CVtool 2.0
 
 == React + Redux + vert.x application
+Configure via environment variables:
 
+- httpConnectionString=http://localhost:80/
+- mongodbConnectionString=mongodb://localhost:27017/cvtool
+
+== Dev env setup
 see also
 
 - https://reactjs.org/docs/getting-started.html
