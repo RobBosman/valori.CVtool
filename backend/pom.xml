@@ -26,12 +26,6 @@
   <build>
     <sourceDirectory>src/main/kotlin</sourceDirectory>
     <testSourceDirectory>src/test/kotlin</testSourceDirectory>
-    <resources>
-      <resource>
-        <!-- add /conf/* to the classpath -->
-        <directory>conf</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

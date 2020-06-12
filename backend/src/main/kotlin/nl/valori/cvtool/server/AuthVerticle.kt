@@ -5,6 +5,7 @@ import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.rxjava.core.AbstractVerticle
+import nl.valori.cvtool.server.mongodb.ADDRESS_FETCH
 import org.slf4j.LoggerFactory
 
 const val ADDRESS_LOGIN = "login"

@@ -14,27 +14,25 @@ import org.bson.Document
 import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.joining
 
+const val ADDRESS_FETCH = "fetch"
+
 internal class MongoFetchVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
-    val mongoConfig = config().getJsonObject("mongodb")
+    val connectionString = config().getString("mongodbConnectionString")
+    val databaseName = connectionString.substringAfterLast("/").substringBefore("?")
     val mongoDatabase = MongoClients
-        .create("mongodb://${mongoConfig.getString("host")}:${mongoConfig.getLong("port")}")
-        .getDatabase(mongoConfig.getString("db_name"))
-    val fetchAddress = mongoConfig.getString("fetchAddress")
+        .create(connectionString)
+        .getDatabase(databaseName)
 
     vertx.eventBus()
-        .consumer<JsonObject>(fetchAddress)
+        .consumer<JsonObject>(ADDRESS_FETCH)
         .toObservable()
         .subscribe(
-            {
-              handleFetchRequests(it, mongoDatabase)
-            },
-            {
-              log.error("Vertx error", it)
-            })
+            { handleFetchRequests(it, mongoDatabase) },
+            { log.error("Vertx error", it) })
   }
 
   /**
@@ -68,7 +66,7 @@ internal class MongoFetchVerticle : AbstractVerticle() {
    *   }
    * </pre>
    */
-  private fun handleFetchRequests(message: Message<JsonObject>, mongoDatabase: MongoDatabase) {
+  private fun handleFetchRequests(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
     message.body().map.entries.stream()
         .map { (entity, criteriaArray) ->
           if (criteriaArray !is JsonArray) throw IllegalArgumentException("Search criteria must be of type JsonArray")
@@ -90,7 +88,6 @@ internal class MongoFetchVerticle : AbstractVerticle() {
               log.warn(errorMsg)
               message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
             })
-  }
 
   private fun composeReplyJson(fetchedInstances: Map<String, Collection<Document>>): JsonObject {
     val resultJson = JsonObject()

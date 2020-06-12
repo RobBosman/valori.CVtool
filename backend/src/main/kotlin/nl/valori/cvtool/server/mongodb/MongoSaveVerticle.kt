@@ -18,27 +18,25 @@ import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.joining
 import java.util.stream.Collectors.toList
 
+const val ADDRESS_SAVE = "save"
+
 internal class MongoSaveVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
-    val mongoConfig = config().getJsonObject("mongodb")
+    val connectionString = config().getString("mongodbConnectionString")
+    val databaseName = connectionString.substringAfterLast("/").substringBefore("?")
     val mongoDatabase = MongoClients
-        .create("mongodb://${mongoConfig.getString("host")}:${mongoConfig.getLong("port")}")
-        .getDatabase(mongoConfig.getString("db_name"))
-    val saveAddress = mongoConfig.getString("saveAddress")
+        .create(connectionString)
+        .getDatabase(databaseName)
 
     vertx.eventBus()
-        .consumer<JsonObject>(saveAddress)
+        .consumer<JsonObject>(ADDRESS_SAVE)
         .toObservable()
         .subscribe(
-            {
-              handleSaveRequest(it, mongoDatabase)
-            },
-            {
-              log.error("Vertx error", it)
-            })
+            { handleSaveRequest(it, mongoDatabase) },
+            { log.error("Vertx error", it) })
   }
 
   /**

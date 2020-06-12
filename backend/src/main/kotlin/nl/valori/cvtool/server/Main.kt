@@ -1,8 +1,14 @@
 package nl.valori.cvtool.server
 
+import io.vertx.config.ConfigRetriever
+import io.vertx.config.ConfigRetrieverOptions
+import io.vertx.config.ConfigStoreOptions
 import io.vertx.core.DeploymentOptions
 import io.vertx.core.Vertx
 import io.vertx.core.VertxOptions
+import io.vertx.core.json.JsonObject
+import nl.valori.cvtool.server.mongodb.MongoFetchVerticle
+import nl.valori.cvtool.server.mongodb.MongoSaveVerticle
 import org.slf4j.LoggerFactory
 
 fun main() = Main.run()
@@ -10,6 +16,13 @@ fun main() = Main.run()
 object Main {
 
   private val log = LoggerFactory.getLogger(javaClass)
+  private val verticlesToDeploy = listOf(
+      HttpServerVerticle::class,
+      AuthVerticle::class,
+      CvVerticle::class,
+      HeartbeatVerticle::class,
+      MongoFetchVerticle::class,
+      MongoSaveVerticle::class)
 
   fun run() {
     val options = VertxOptions()
@@ -17,7 +30,18 @@ object Main {
     if (log.isDebugEnabled)
       options.blockedThreadCheckInterval = 1_000 * 60 * 10
 
-    deployVerticle(Vertx.vertx(options), ConfigVerticle::class.java.name, DeploymentOptions())
+    val vertx = Vertx.vertx(options)
+    ConfigRetriever.create(
+        vertx,
+        ConfigRetrieverOptions()
+            .addStore(ConfigStoreOptions()
+                .setType("env")
+                .setConfig(JsonObject())))
+        .getConfig { config ->
+          val deploymentOptions = DeploymentOptions().setConfig(config.result())
+          verticlesToDeploy
+              .forEach { deployVerticle(vertx, it.java.name, deploymentOptions) }
+        }
 
     // run server for max 10 minutes
 //    if (log.isDebugEnabled)
@@ -25,30 +49,9 @@ object Main {
 //        vertx.close()
 //        log.info("And... it's gone!")
 //      }
-
-
-//    vertx.setTimer(1_000 * 5) {
-//      log.info("Insert a test message into MongoDB...")
-//      val dataJson = JsonObject()
-//          .put("dummy", JsonObject()
-//              .put("content", "gibberish"))
-//      vertx.eventBus()
-//          .request<JsonObject>(ADDRESS_SAFE_SET, dataJson) { response ->
-//            if (response.failed())
-//              throw response.cause()
-//
-//            val idJson = response.result().body()
-//            vertx.eventBus()
-//                .request<JsonObject>(ADDRESS_SAFE_GET, idJson) { response2 ->
-//                  if (response2.failed())
-//                    throw response2.cause()
-//                  log.info("Got something from MongoDB: {}", response2.result().body())
-//                }
-//          }
-//    }
   }
 
-  fun deployVerticle(vertx: Vertx, verticleClassName: String, deploymentOptions: DeploymentOptions) =
+  private fun deployVerticle(vertx: Vertx, verticleClassName: String, deploymentOptions: DeploymentOptions) =
       vertx.deployVerticle(verticleClassName, deploymentOptions) { deploymentResult ->
         if (deploymentResult.failed())
           log.error("Error deploying $verticleClassName", deploymentResult.cause())
