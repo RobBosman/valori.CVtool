@@ -88,7 +88,7 @@ describe("redux", () => {
   });
 
   it("should work with registered epics [0]", () => {
-    _epicRegistry.register(dummyEpics0);
+    _epicRegistry.register(...dummyEpics0);
     testActions.map(_store.dispatch);
     expect(_dispatchedActions).toStrictEqual([
       dummyAction1("176-167"),
@@ -107,7 +107,7 @@ describe("redux", () => {
   });
 
   it("should work with registered epics [1]", () => {
-    _epicRegistry.register(dummyEpics1);
+    _epicRegistry.register(...dummyEpics1);
     testActions.map(_store.dispatch);
     expect(_dispatchedActions).toStrictEqual([
       dummyAction1("176-167"),
@@ -127,8 +127,8 @@ describe("redux", () => {
   });
 
   it("should work with registered epics [0, 1]", () => {
-    _epicRegistry.register(dummyEpics0);
-    _epicRegistry.register(dummyEpics1);
+    _epicRegistry.register(...dummyEpics0);
+    _epicRegistry.register(...dummyEpics1);
     testActions.map(_store.dispatch);
     expect(_dispatchedActions).toStrictEqual([
       dummyAction1("176-167"),
@@ -152,8 +152,8 @@ describe("redux", () => {
   });
 
   it("should work with registered epics [1, 0]", () => {
-    _epicRegistry.register(dummyEpics1);
-    _epicRegistry.register(dummyEpics0);
+    _epicRegistry.register(...dummyEpics1);
+    _epicRegistry.register(...dummyEpics0);
     testActions.map(_store.dispatch);
     expect(_dispatchedActions).toStrictEqual([
       dummyAction1("176-167"),

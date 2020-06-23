@@ -7,11 +7,13 @@ export class EpicRegistry {
     this._epic$ = new BehaviorSubject(() => EMPTY);
   }
 
-  register = (epics) => epics.map((epic) => this._epic$.next(epic));
+  register = (...epics) =>
+    epics.map((epic) => this._epic$.next(epic));
 
-  rootEpic = (...args$) => this._epic$.pipe(
-    mergeMap((epic) => epic(...args$))
-  );
+  rootEpic = (...args$) =>
+    this._epic$.pipe(
+      mergeMap((epic) => epic(...args$))
+    );
 }
 
 export const epicRegistry = new EpicRegistry();
