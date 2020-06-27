@@ -9,11 +9,12 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
+    console.log("getDerivedStateFromError()", error);
     return { theError: error };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo.componentStack);
+    console.log("componentDidCatch()", error, errorInfo.componentStack);
   }
 
   render() {
@@ -22,9 +23,7 @@ class ErrorBoundary extends React.Component {
         <div>
           <h1 style={{ backgroundColor: "#ffaa00" }}>OOPS</h1>
           <p>Something went terribly wrong: <strong>{this.state.theError.message}</strong></p>
-          <p>
-            <pre>{this.state.theError.stack.replace("\n", <br />)}</pre>
-          </p>
+          <p><pre>{this.state.theError.stack.replace("\n", <br />)}</pre></p>
         </div>
       );
     } else {

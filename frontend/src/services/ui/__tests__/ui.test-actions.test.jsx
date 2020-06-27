@@ -1,5 +1,5 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
-import { setLocationHash, setThemeName, setLocale, selectSkillId, selectEducationId, selectCvId, setDialogConfig } from "../ui-actions";
+import { setLocationHash, setThemeName, setLocale, selectSkillId, selectEducationId, setSelectedCvId, setDialogConfig } from "../ui-actions";
 
 describe("ui", () => {
 
@@ -20,8 +20,8 @@ describe("ui", () => {
     expect(state.ui.themeName).toBe("darkOrange");
   });
 
-  it("should reduce selectCvId", () => {
-    const state = reducer(undefined, selectCvId(313));
+  it("should reduce setSelectedCvId", () => {
+    const state = reducer(undefined, setSelectedCvId(313));
     expect(state.ui.selectedCvId).toBe(313);
   });
 

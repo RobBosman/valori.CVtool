@@ -3,9 +3,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
+import { useTheme } from "../../services/ui/ui-services";
 import CvDatePicker from "../widgets/CvDatePicker";
 import CvTextField from "../widgets/CvTextField";
-import { useTheme } from "../../services/ui/ui-services";
 
 const Profile = (props) => {
   // Find the {profile} of the selected {account}.
@@ -68,18 +68,20 @@ const Profile = (props) => {
         instanceContext={cvContext}
         multiline
         autoAdjustHeight />
-      <CvTextField
-        label="Werkervaring sinds"
-        field="workingSince"
-        instanceContext={cvContext}
-        placeholder='yyyy'
-        styles={{ fieldGroup: { width: 80 } }} />
-      <CvTextField
-        label="IT ervaring sinds"
-        field="inItSince"
-        instanceContext={cvContext}
-        styles={{ fieldGroup: { width: 80 } }}
-        placeholder='yyyy' />
+      <Stack horizontal>
+        <CvTextField
+          label="Werkervaring sinds"
+          field="workingSince"
+          instanceContext={cvContext}
+          placeholder='yyyy'
+          styles={{ fieldGroup: { width: 80 } }} />
+        <CvTextField
+          label="IT ervaring sinds"
+          field="inItSince"
+          instanceContext={cvContext}
+          styles={{ fieldGroup: { width: 80 } }}
+          placeholder='yyyy' />
+      </Stack>
     </Stack>
   );
 };

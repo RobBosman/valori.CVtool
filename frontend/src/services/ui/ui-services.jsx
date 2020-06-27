@@ -1,13 +1,10 @@
 import React from "react";
-import { initializeIcons, registerOnThemeChangeCallback, removeOnThemeChangeCallback, getTheme } from "@fluentui/react";
+import { registerOnThemeChangeCallback, removeOnThemeChangeCallback, getTheme, initializeIcons } from "@fluentui/react";
 import { setLocationHash } from "./ui-actions";
 
 export const initializeUI = (dispatch) => {
-  // TODO window.addEventListener("unhandledrejection", (event) =>  console.error(`Uncaught error in Promise - ${JSON.stringify(event)}`));
   window.addEventListener("hashchange", () => dispatch(setLocationHash(document.location.hash || "")));
-
   initializeIcons();
-  
   registerOnThemeChangeCallback((theme) => document.documentElement.style.background = theme.semanticColors.bodyBackground);
 };
 

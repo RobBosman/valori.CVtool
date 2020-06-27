@@ -15,11 +15,7 @@ export const fetchCvFromRemote = (state, sendEvent) =>
   });
 
 export const saveAllToRemote = (state, sendEvent) =>
-  new Observable((subscriber) =>
-    sendEvent("save", state.safe)
-      .then(() => subscriber.complete())
-      .catch((error) => subscriber.error(error))
-  );
+  sendEvent("save", state.safe);
 
 /** Use this function to create a unique object id. */
 export const createId = () => {

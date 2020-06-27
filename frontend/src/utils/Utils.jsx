@@ -1,6 +1,5 @@
 import { epicRegistry } from "../redux/epicRegistry";
-import { tap, switchMap } from "rxjs/operators";
-import { EMPTY } from "rxjs";
+import { tap, ignoreElements } from "rxjs/operators";
 
 /**
  * A utility function to deliberately 'inject' a delay of (by default) 1000 milliseconds.
@@ -23,6 +22,6 @@ epicRegistry.register([
   (actions$) => actions$.pipe(
     // tap((action) => console.debug("dispatched action: ", action)),
     tap((action) => heavyWait(action.type, 0)),
-    switchMap(() => EMPTY)
+    ignoreElements()
   )
 ]);

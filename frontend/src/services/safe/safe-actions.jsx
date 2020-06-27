@@ -28,7 +28,9 @@ reducerRegistry.register(
           delete(state[action.payload.entity][action.payload.id]);
         }
       }
-    }));
+    }
+  )
+);
 
 epicRegistry.register(
 

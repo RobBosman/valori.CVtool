@@ -30,6 +30,7 @@ const reducer = createReducer(
         state.connectionState = newState;
       }
     }
-  });
+  }
+);
 
 reducerRegistry.register("eventBus", reducer);

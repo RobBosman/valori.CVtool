@@ -58,7 +58,7 @@ const CvModal = (props) => {
       dragOptions={dragOptions}
       containerClassName={contentStyles.container}>
       <div className={contentStyles.header}>
-        <Text variant="xxLarge">Edit</Text>
+        <Text variant="xxLarge">{props.title}</Text>
         <IconButton
           styles={iconButtonStyles}
           iconProps={{ iconName: "Cancel" }}
@@ -73,6 +73,7 @@ const CvModal = (props) => {
 };
 
 CvModal.propTypes = {
+  title: PropTypes.string,
   children: PropTypes.node.isRequired,
   isOpen: PropTypes.bool.isRequired,
   dismiss: PropTypes.func.isRequired,

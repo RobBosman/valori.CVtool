@@ -4,10 +4,11 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 export const setLocationHash = createAction("UI_SET_LOCATION_HASH");
 export const setLocale = createAction("UI_SET_LOCALE");
 export const setThemeName = createAction("UI_SET_THEME_NAME");
-export const selectCvId = createAction("UI_SELECT_CV_ID");
-export const selectEducationId = createAction("UI_SELECT_EDUCATION_ID");
-export const selectSkillId = createAction("UI_SELECT_SKILL_ID");
-export const setDialogConfig = createAction("UI_SET_DIALOG_CONFIG", (dialog, config) => ({ payload: { dialog, config } }));
+export const setSelectedCvId = createAction("UI_SET_SELECTED_CV_ID");
+export const setSelectedEducationId = createAction("UI_SET_SELECTED_EDUCATION_ID");
+export const setSelectedSkillId = createAction("UI_SET_SELECTED_SKILL_ID");
+export const setDialogConfig = createAction("UI_SET_DIALOG_CONFIG",
+  (dialog, config) => ({ payload: { dialog, config } }));
 
 const reducer = createReducer(
   {
@@ -26,18 +27,19 @@ const reducer = createReducer(
     [setThemeName]: (state, action) => {
       state.themeName = action.payload;
     },
-    [selectCvId]: (state, action) => {
+    [setSelectedCvId]: (state, action) => {
       state.selectedCvId = action.payload;
     },
-    [selectEducationId]: (state, action) => {
+    [setSelectedEducationId]: (state, action) => {
       state.selectedEducationId = action.payload;
     },
-    [selectSkillId]: (state, action) => {
+    [setSelectedSkillId]: (state, action) => {
       state.selectedSkillId = action.payload;
     },
     [setDialogConfig]: (state, action) => {
       state.dialogConfig[action.payload.dialog] = action.payload.config;
     }
-  });
+  }
+);
 
 reducerRegistry.register("ui", reducer);

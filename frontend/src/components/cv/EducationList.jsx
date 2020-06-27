@@ -1,8 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { selectEducationId } from "../../services/ui/ui-actions";
+import { Stack, Text, IconButton } from "@fluentui/react";
+import { setSelectedEducationId, setDialogConfig } from "../../services/ui/ui-actions";
+import { useTheme } from "../../services/ui/ui-services";
+import { replaceSafeInstance } from "../../services/safe/safe-actions";
+import { createId } from "../../services/safe/safe-services";
 import CvDetailsList from "../widgets/CvDetailsList";
+import EducationEdit from "./EducationEdit";
+
+const entityName = "education";
 
 const EducationList = (props) => {
 
@@ -61,42 +68,102 @@ const EducationList = (props) => {
     && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.selectedCvId)
     || [];
 
-  const exposeSelectionRef = (selectionRef) => props.onExposeSelectionRef && props.onExposeSelectionRef(selectionRef);
-
-  const instanceContext = {
+  const educationContext = {
     entity: props.educationEntity,
-    entityId: props.educationId,
-    selectInstance: props.selectEducationId
+    entityId: props.selectedEducationId,
+    setSelectedInstance: props.setSelectedEducationId
+  };
+
+  const { viewPaneColor } = useTheme();
+  const viewStyles = {
+    root: [
+      {
+        background: viewPaneColor,
+        padding: 20
+      }
+    ]
+  };
+
+  let selection;
+  const onExposeSelectionRef = (selectionRef) => {
+    selection = selectionRef;
+  };
+
+  const onAddItem = () => {
+    const id = createId();
+    props.replaceEducation(id, {
+      _id: id,
+      cvId: props.selectedCvId,
+      name: {}
+    });
+    props.setSelectedEducationId(id);
+    props.setDialogConfig(true);
+
+    setTimeout(() => { // TODO: fix this
+      selection.setAllSelected(false);
+      selection.setKeySelected(id, true, false);
+    }, 10);
+  };
+
+  const onEditItem = () => props.setDialogConfig(true);
+
+  const onDeleteItem = () => {
+    if (props.selectedEducationId) {
+      props.replaceEducation(props.selectedEducationId, {});
+      props.setSelectedEducationId(undefined);
+    }
   };
 
   return (
-    <CvDetailsList
-      columns={columns}
-      items={educations}
-      instanceContext={instanceContext}
-      setKey="educations"
-      onExposeSelectionRef={exposeSelectionRef}/>
+    <Stack styles={viewStyles}>
+      <Stack horizontal>
+        <Text variant="xxLarge">Opleiding</Text>
+        <IconButton
+          iconProps={{ iconName: "Add" }}
+          onClick={onAddItem} />
+        <IconButton
+          iconProps={{ iconName: "Edit" }}
+          disabled={!props.selectedEducationId}
+          onClick={onEditItem} />
+        <IconButton
+          iconProps={{ iconName: "Delete" }}
+          disabled={!props.selectedEducationId}
+          onClick={onDeleteItem} />
+      </Stack>
+      <CvDetailsList
+        columns={columns}
+        items={educations}
+        instanceContext={educationContext}
+        setKey={entityName}
+        onExposeSelectionRef={onExposeSelectionRef}
+        onItemInvoked={onEditItem} />
+      <EducationEdit
+        instanceContext={educationContext}/>
+    </Stack>
   );
 };
 
 EducationList.propTypes = {
+  locale: PropTypes.string.isRequired,
   selectedCvId: PropTypes.string,
   educationEntity: PropTypes.object,
-  educationId: PropTypes.string,
-  locale: PropTypes.string,
-  onExposeSelectionRef: PropTypes.func.isRequired,
-  selectEducationId: PropTypes.func.isRequired
+  replaceEducation: PropTypes.func.isRequired,
+  selectedEducationId: PropTypes.string,
+  setSelectedEducationId: PropTypes.func.isRequired,
+  setDialogConfig: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedCvId,
-  educationId: state.ui.selectedEducationId,
-  educationEntity: state.safe.education
+  educationEntity: state.safe[entityName],
+  selectedEducationId: state.ui.selectedEducationId
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  selectEducationId: (educationId) => dispatch(selectEducationId(educationId))
+  replaceEducation: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
+  setSelectedEducationId: (educationId) => dispatch(setSelectedEducationId(educationId)),
+  setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 
 export default connect(select, mapDispatchToProps)(EducationList);

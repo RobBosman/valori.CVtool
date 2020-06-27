@@ -4,11 +4,11 @@ import { connect } from "react-redux";
 import { Nav, Separator, Stack } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import Profile from "./cv/Profile";
-import Education from "./cv/Education";
+import EducationList from "./cv/EducationList";
 import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
-import SkillsList from "./cv/SkillsList";
-import { selectCvId } from "../services/ui/ui-actions";
+import SkillList from "./cv/SkillList";
+import { setSelectedCvId } from "../services/ui/ui-actions";
 
 const ADMIN_LINKS = [
   {
@@ -47,14 +47,14 @@ const CV_LINKS = [
     url: "#education",
     name: "Opleiding",
     icon: "PublishCourse",
-    content: <Education />
+    content: <EducationList />
   },
   {
     key: "#skills",
     url: "#skills",
     name: "Vaardigheden",
     icon: "SortLines",
-    content: <SkillsList />
+    content: <SkillList />
   },
   {
     key: "#publications",
@@ -87,7 +87,7 @@ const ContentPage = (props) => {
     const cvInstance = accountId
       && props.cvEntity
       && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
-    props.selectCvId(cvInstance?._id);
+    props.setSelectedCvId(cvInstance?._id);
   });
 
   const isAdmin = props.account?.privileges?.find((privilege) => privilege === "ADMIN");
@@ -140,7 +140,7 @@ ContentPage.propTypes = {
   account: PropTypes.object,
   cvEntity: PropTypes.object,
   locationHash: PropTypes.string,
-  selectCvId: PropTypes.func.isRequired
+  setSelectedCvId: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
@@ -150,7 +150,7 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  selectCvId: (cvId) => dispatch(selectCvId(cvId))
+  setSelectedCvId: (cvId) => dispatch(setSelectedCvId(cvId))
 });
 
 export default connect(select, mapDispatchToProps)(ContentPage);

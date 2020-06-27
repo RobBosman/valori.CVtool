@@ -3,7 +3,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Fabric, Text, Separator } from "@fluentui/react";
 import { LoginStates } from "../services/authentication/authentication-actions";
-import ErrorBoundary from "../utils/ErrorBoundary";
 import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import CvTopBar from "./widgets/CvTopBar";
@@ -25,13 +24,11 @@ const Main = (props) => {
 
   return (
     <Fabric>
-      <ErrorBoundary>
-        <CvTopBar />
-        <Separator />
-        {renderContent}
-        {/* <AutoLogout delayMillis={10000}/> */}
-        <PulseMonitor />
-      </ErrorBoundary>
+      <CvTopBar />
+      <Separator />
+      {renderContent}
+      {/* <AutoLogout delayMillis={10000}/> */}
+      <PulseMonitor />
     </Fabric>
   );
 };

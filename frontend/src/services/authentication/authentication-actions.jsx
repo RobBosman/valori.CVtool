@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { filter, flatMap, map, delay } from "rxjs/operators";
+import { filter, flatMap, map } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { fromArray } from "rxjs/internal/observable/fromArray";
 import { reducerRegistry } from "../../redux/reducerRegistry";
@@ -54,13 +54,14 @@ reducerRegistry.register(
       [setAccount]: (state, action) => {
         state.account = action.payload;
       }
-    }));
+    }
+  )
+);
 
 epicRegistry.register(
 
   (actions$, state$) => actions$.pipe(
     ofType(requestLogin.type, updateEventBusConnectionState.type),
-    delay(1000), // TODO - remove delay
     flatMap(() => loginToRemote(state$.value, eventBusClient.sendEvent))
   ),
 
@@ -75,7 +76,6 @@ epicRegistry.register(
   
   (actions$) => actions$.pipe(
     ofType(requestLogout.type),
-    delay(1000), // TODO - remove delay
     flatMap(() => fromArray([
       replaceSafeContent(undefined),
       setAccount(undefined)
