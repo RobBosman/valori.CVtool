@@ -7,6 +7,8 @@ export const setThemeName = createAction("UI_SET_THEME_NAME");
 export const setSelectedCvId = createAction("UI_SET_SELECTED_CV_ID");
 export const setSelectedEducationId = createAction("UI_SET_SELECTED_EDUCATION_ID");
 export const setSelectedSkillId = createAction("UI_SET_SELECTED_SKILL_ID");
+export const setSelectedPublicationId = createAction("UI_SET_SELECTED_PUBLICATION_ID");
+export const setSelectedReferenceId = createAction("UI_SET_SELECTED_REFERENCE_ID");
 export const setDialogConfig = createAction("UI_SET_DIALOG_CONFIG",
   (dialog, config) => ({ payload: { dialog, config } }));
 
@@ -35,6 +37,12 @@ const reducer = createReducer(
     },
     [setSelectedSkillId]: (state, action) => {
       state.selectedSkillId = action.payload;
+    },
+    [setSelectedPublicationId]: (state, action) => {
+      state.selectedPublicationId = action.payload;
+    },
+    [setSelectedReferenceId]: (state, action) => {
+      state.selectedReferenceId = action.payload;
     },
     [setDialogConfig]: (state, action) => {
       state.dialogConfig[action.payload.dialog] = action.payload.config;

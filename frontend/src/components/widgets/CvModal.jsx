@@ -3,7 +3,7 @@ import React from "react";
 import { ContextualMenu, Text, mergeStyleSets, IconButton, FontWeights, Modal } from "@fluentui/react";
 import { useTheme } from "../../services/ui/ui-services";
 
-const CvModal = (props) => {
+export const CvModal = (props) => {
 
   const { theme } = useTheme();
 
@@ -83,5 +83,3 @@ CvModal.propTypes = {
 CvModal.defaultProps = {
   isModeless: true
 };
-
-export default CvModal;

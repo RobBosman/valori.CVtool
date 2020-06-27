@@ -4,18 +4,16 @@ import { connect } from "react-redux";
 import { Stack } from "@fluentui/react";
 import { setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
-import CvDropdown from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvModal } from "../widgets/CvModal";
-import { SkillCategories, SkillLevels } from "./Enums";
 
-const entityName = "skill";
+const entityName = "publication";
 
-const SkillEdit = (props) => {
+const PublicationEdit = (props) => {
 
-  const skillContext = {
+  const publicationContext = {
     ...props.instanceContext,
-    replaceInstance: props.onChangeSkill
+    replaceInstance: props.onChangePublication
   };
 
   return (
@@ -24,31 +22,35 @@ const SkillEdit = (props) => {
       isOpen={props.dialogConfig.isOpen || false}
       dismiss={() => props.setDialogConfig(false)}>
       <Stack horizontal>
-        <CvDropdown
-          label="Categorie"
-          field="category"
-          instanceContext={skillContext}
-          options={SkillCategories[skillContext.locale]}
-          styles={{ dropdown: { width: 150 } }} />
+        <CvTextField
+          label="Jaar"
+          field="year"
+          instanceContext={publicationContext}
+          placeholder='yyyy'
+          styles={{ fieldGroup: { width: 80 } }} />
+        <CvTextField
+          label="Media"
+          field="media"
+          instanceContext={publicationContext}
+          styles={{ dropdown: { width: 100 } }} />
+        <CvTextField
+          label="Titel"
+          localeField="title"
+          instanceContext={publicationContext}
+          styles={{ dropdown: { width: 100 } }} />
         <CvTextField
           label="Omschrijving"
           localeField="description"
-          instanceContext={skillContext}
+          instanceContext={publicationContext}
           styles={{ dropdown: { width: 400 } }} />
-        <CvDropdown
-          label="Niveau"
-          field="skillLevel"
-          instanceContext={skillContext}
-          options={SkillLevels}
-          styles={{ dropdown: { width: 80 } }} />
       </Stack>
     </CvModal>
   );
 };
 
-SkillEdit.propTypes = {
+PublicationEdit.propTypes = {
   instanceContext: PropTypes.object.isRequired,
-  onChangeSkill: PropTypes.func.isRequired,
+  onChangePublication: PropTypes.func.isRequired,
   dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
@@ -58,8 +60,8 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeSkill: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
+  onChangePublication: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
   setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 
-export default connect(select, mapDispatchToProps)(SkillEdit);
+export default connect(select, mapDispatchToProps)(PublicationEdit);

@@ -4,18 +4,17 @@ import { connect } from "react-redux";
 import { Stack } from "@fluentui/react";
 import { setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
-import CvDropdown from "../widgets/CvDropdown";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvModal } from "../widgets/CvModal";
-import { SkillCategories, SkillLevels } from "./Enums";
 
-const entityName = "skill";
+const entityName = "reference";
 
-const SkillEdit = (props) => {
+const ReferenceEdit = (props) => {
 
-  const skillContext = {
+  const referenceContext = {
     ...props.instanceContext,
-    replaceInstance: props.onChangeSkill
+    replaceInstance: props.onChangeReference
   };
 
   return (
@@ -24,31 +23,34 @@ const SkillEdit = (props) => {
       isOpen={props.dialogConfig.isOpen || false}
       dismiss={() => props.setDialogConfig(false)}>
       <Stack horizontal>
-        <CvDropdown
-          label="Categorie"
-          field="category"
-          instanceContext={skillContext}
-          options={SkillCategories[skillContext.locale]}
-          styles={{ dropdown: { width: 150 } }} />
+        <CvTextField
+          label="Naam"
+          field="referentName"
+          instanceContext={referenceContext}
+          styles={{ fieldGroup: { width: 150 } }} />
+        <CvTextField
+          label="Functie"
+          localeField="referentFunction"
+          instanceContext={referenceContext}
+          styles={{ dropdown: { width: 100 } }} />
         <CvTextField
           label="Omschrijving"
           localeField="description"
-          instanceContext={skillContext}
+          instanceContext={referenceContext}
           styles={{ dropdown: { width: 400 } }} />
-        <CvDropdown
-          label="Niveau"
-          field="skillLevel"
-          instanceContext={skillContext}
-          options={SkillLevels}
-          styles={{ dropdown: { width: 80 } }} />
+        <CvCheckbox
+          label="In cv"
+          field="includeInCv"
+          instanceContext={referenceContext}
+          styles={{ dropdown: { width: 70 } }} />
       </Stack>
     </CvModal>
   );
 };
 
-SkillEdit.propTypes = {
+ReferenceEdit.propTypes = {
   instanceContext: PropTypes.object.isRequired,
-  onChangeSkill: PropTypes.func.isRequired,
+  onChangeReference: PropTypes.func.isRequired,
   dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
@@ -58,8 +60,8 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeSkill: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
+  onChangeReference: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
   setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 
-export default connect(select, mapDispatchToProps)(SkillEdit);
+export default connect(select, mapDispatchToProps)(ReferenceEdit);

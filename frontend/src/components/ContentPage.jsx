@@ -9,6 +9,8 @@ import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
 import SkillList from "./cv/SkillList";
 import { setSelectedCvId } from "../services/ui/ui-actions";
+import PublicationList from "./cv/PublicationList";
+import ReferenceList from "./cv/ReferenceList";
 
 const ADMIN_LINKS = [
   {
@@ -61,14 +63,14 @@ const CV_LINKS = [
     url: "#publications",
     name: "Publicaties",
     icon: "ReadingMode",
-    content: <ErrorPage message="TODO" />
+    content: <PublicationList />
   },
   {
     key: "#references",
     url: "#references",
     name: "Referenties",
     icon: "ReminderGroup",
-    content: <ErrorPage message="TODO" />
+    content: <ReferenceList />
   },
   {
     key: "#experience",

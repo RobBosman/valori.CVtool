@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { TextField } from "@fluentui/react";
 
-const CvTextField = (props) => {
+export const CvTextField = (props) => {
   const { entity, entityId, locale, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
 
@@ -55,5 +55,3 @@ CvTextField.propTypes = {
   autoAdjustHeight: PropTypes.bool,
   styles: PropTypes.object
 };
-
-export default CvTextField;

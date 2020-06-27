@@ -5,7 +5,7 @@ import { Stack, Text } from "@fluentui/react";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import CvDatePicker from "../widgets/CvDatePicker";
-import CvTextField from "../widgets/CvTextField";
+import { CvTextField } from "../widgets/CvTextField";
 
 const Profile = (props) => {
   // Find the {profile} of the selected {account}.

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { ChoiceGroup } from "@fluentui/react";
 
-const CvChoiceGroup = (props) => {
+export const CvChoiceGroup = (props) => {
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
   const value = instance && instance[props.field] || props.defaultValue || "";
@@ -33,5 +33,3 @@ CvChoiceGroup.propTypes = {
   options: PropTypes.array,
   styles: PropTypes.object
 };
-
-export default CvChoiceGroup;

@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { Stack } from "@fluentui/react";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { EducationTypes, EducationResultTypes } from "./Enums";
-import CvTextField from "../widgets/CvTextField";
-import CvChoiceGroup from "../widgets/CvChoiceGroup";
+import { CvTextField } from "../widgets/CvTextField";
+import { CvChoiceGroup } from "../widgets/CvChoiceGroup";
 import CvDropdown from "../widgets/CvDropdown";
-import CvModal from "../widgets/CvModal";
+import { CvModal } from "../widgets/CvModal";
 import { setDialogConfig } from "../../services/ui/ui-actions";
 
 const entityName = "education";
