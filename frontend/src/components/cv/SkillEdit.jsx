@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Stack } from "@fluentui/react";
 import { setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
-import CvDropdown from "../widgets/CvDropdown";
+import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvModal } from "../widgets/CvModal";
 import { SkillCategories, SkillLevels } from "./Enums";

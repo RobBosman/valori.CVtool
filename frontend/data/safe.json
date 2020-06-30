@@ -134,9 +134,9 @@
       "skillLevel": "EXPERT"
     }
   },
-  "workingExperience": {
-    "uuid-workingExperience-1": {
-      "_id": "uuid-workingExperience-1",
+  "experience": {
+    "uuid-experience-1": {
+      "_id": "uuid-experience-1",
       "cvId": "uuid-cv-1",
       "periodBegin": "2020-01-01",
       "periodEnd": "2099-12-31",
@@ -158,7 +158,7 @@
         "nl_NL": "nog bezig",
         "uk_UK": "ongoing"
       },
-      "keyWords": {
+      "keywords": {
         "nl_NL": "java, Spring",
         "uk_UK": "java, Spring"
       },

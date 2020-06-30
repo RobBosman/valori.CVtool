@@ -6,7 +6,7 @@ import { setSelectedEducationId, setDialogConfig } from "../../services/ui/ui-ac
 import { useTheme } from "../../services/ui/ui-services";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
-import CvDetailsList from "../widgets/CvDetailsList";
+import { CvDetailsList } from "../widgets/CvDetailsList";
 import EducationEdit from "./EducationEdit";
 
 const entityName = "education";

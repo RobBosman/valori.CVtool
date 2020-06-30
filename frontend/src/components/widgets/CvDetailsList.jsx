@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
 
-const CvDetailsList = (props) => {
+export const CvDetailsList = (props) => {
 
   const { entityId, setSelectedInstance } = props.instanceContext;
   const getKey = (item) => item._id;
@@ -45,5 +45,3 @@ CvDetailsList.propTypes = {
   onExposeSelectionRef: PropTypes.func,
   onItemInvoked: PropTypes.func
 };
-
-export default CvDetailsList;

@@ -11,6 +11,7 @@ import SkillList from "./cv/SkillList";
 import { setSelectedCvId } from "../services/ui/ui-actions";
 import PublicationList from "./cv/PublicationList";
 import ReferenceList from "./cv/ReferenceList";
+import ExperienceList from "./cv/ExperienceList";
 
 const ADMIN_LINKS = [
   {
@@ -77,7 +78,7 @@ const CV_LINKS = [
     url: "#experience",
     name: "Ervaring",
     icon: "CheckboxComposite",
-    content: <ErrorPage message="TODO" />
+    content: <ExperienceList />
   }
 ];
 

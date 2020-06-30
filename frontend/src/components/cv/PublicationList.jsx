@@ -6,7 +6,7 @@ import { setSelectedPublicationId, setDialogConfig } from "../../services/ui/ui-
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
-import CvDetailsList from "../widgets/CvDetailsList";
+import { CvDetailsList } from "../widgets/CvDetailsList";
 import PublicationEdit from "./PublicationEdit";
 
 const entityName = "publication";

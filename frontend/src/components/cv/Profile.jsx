@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
-import CvDatePicker from "../widgets/CvDatePicker";
+import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
 
 const Profile = (props) => {
@@ -79,8 +79,8 @@ const Profile = (props) => {
           label="IT ervaring sinds"
           field="inItSince"
           instanceContext={cvContext}
-          styles={{ fieldGroup: { width: 80 } }}
-          placeholder='yyyy' />
+          placeholder='yyyy' 
+          styles={{ fieldGroup: { width: 80 } }}/>
       </Stack>
     </Stack>
   );

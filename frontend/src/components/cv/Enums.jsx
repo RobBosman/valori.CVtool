@@ -38,16 +38,40 @@ export const EducationResultTypes = [
 export const SkillCategories = {
   nl_NL: [
     {
-      key: "BRANCHES",
-      text: "BRANCHES"
-    },
-    {
       key: "LANGUAGES",
       text: "LANGUAGES"
     },
     {
+      key: "BRANCHES",
+      text: "BRANCHES"
+    },
+    {
+      key: "DATABASES",
+      text: "DATABASES"
+    },
+    {
       key: "PROGRAMMING",
       text: "PROGRAMMING"
+    },
+    {
+      key: "APPLICATIONS",
+      text: "APPLICATIONS"
+    },
+    {
+      key: "METHODS",
+      text: "METHODS"
+    },
+    {
+      key: "EXPERTISE",
+      text: "EXPERTISE"
+    },
+    {
+      key: "TOOLS",
+      text: "TOOLS"
+    },
+    {
+      key: "OS_NETWORKS",
+      text: "OS_NETWORKS"
     }
   ]
 };

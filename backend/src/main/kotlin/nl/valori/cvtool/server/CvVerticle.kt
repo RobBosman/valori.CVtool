@@ -66,7 +66,7 @@ internal class CvVerticle : AbstractVerticle() {
           |  "skill": [{ "cvId": "$cvId" }],
           |  "publication": [{ "cvId": "$cvId" }],
           |  "reference": [{ "cvId": "$cvId" }],
-          |  "workingExperience": [{ "cvId": "$cvId" }]
+          |  "experience": [{ "cvId": "$cvId" }]
           |}"""
           .trimMargin())
 }

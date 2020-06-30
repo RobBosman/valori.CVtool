@@ -31,7 +31,7 @@ const formatDate = (date) => {
   }
 };
 
-const CvDatePicker = (props) => {
+export const CvDatePicker = (props) => {
 
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
@@ -66,5 +66,3 @@ CvDatePicker.propTypes = {
   label: PropTypes.string,
   styles: PropTypes.object
 };
-
-export default CvDatePicker;

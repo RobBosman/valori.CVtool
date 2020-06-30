@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Dropdown } from "@fluentui/react";
 
-const CvDropdown = (props) => {
+export const CvDropdown = (props) => {
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
   const value = instance && instance[props.field] || props.defaultValue || "";
@@ -33,5 +33,3 @@ CvDropdown.propTypes = {
   options: PropTypes.any.isRequired,
   styles: PropTypes.object
 };
-
-export default CvDropdown;

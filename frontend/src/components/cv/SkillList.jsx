@@ -6,7 +6,7 @@ import { setSelectedSkillId, setDialogConfig } from "../../services/ui/ui-action
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
-import CvDetailsList from "../widgets/CvDetailsList";
+import { CvDetailsList } from "../widgets/CvDetailsList";
 import { SkillLevels } from "./Enums";
 import SkillEdit from "./SkillEdit";
 

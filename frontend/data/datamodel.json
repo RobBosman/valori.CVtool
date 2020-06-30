@@ -80,7 +80,7 @@
     },
     "skillLevel": "ENUM_SKILL_LEVEL"
   },
-  "workingExperience": {
+  "experience": {
     "id": "ID",
     "cvId": "ID",
     "periodBegin": "DATE",
@@ -99,7 +99,7 @@
     "results": {
       "locale": "STRING"
     },
-    "keyWords": {
+    "keywords": {
       "locale": "STRING"
     },
     "sortIndex": "NUMBER",
