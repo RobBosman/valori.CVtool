@@ -4,7 +4,7 @@ import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
 
 export const CvDetailsList = (props) => {
 
-  const { entityId, setSelectedInstance } = props.instanceContext;
+  const { entityId, setSelectedInstance, locale } = props.instanceContext;
   const getKey = (item) => item._id;
 
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
@@ -22,9 +22,19 @@ export const CvDetailsList = (props) => {
 
   props.onExposeSelectionRef && props.onExposeSelectionRef(selection);
 
+  const mapLocaleFields = props.columns.map((column) =>
+    column.localeFieldName
+      ? {
+        ...column,
+        fieldName: column.localeFieldName,
+        onRender: (instance) => instance[column.localeFieldName] && instance[column.localeFieldName][locale]
+      }
+      : column
+  );
+
   return (
     <DetailsList
-      columns={props.columns}
+      columns={mapLocaleFields}
       items={props.items}
       setKey={props.setKey}
       getKey={getKey}

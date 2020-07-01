@@ -3,6 +3,7 @@ import React from "react";
 import { Checkbox } from "@fluentui/react";
 
 export const CvCheckbox = (props) => {
+  
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
   const value = instance && instance[props.field] || props.defaultValue || false;

@@ -3,13 +3,11 @@ import React from "react";
 import { SpinButton } from "@fluentui/react";
 
 export const CvSpinButton = (props) => {
+
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
 
-  let value = 0;
-  if (instance) {
-    value = instance[props.field] || props.defaultValue || 0;
-  }
+  const value = instance && instance[props.field] || props.defaultValue || 0;
 
   const onChange = (event) => onValueChange(event.target.value);
 

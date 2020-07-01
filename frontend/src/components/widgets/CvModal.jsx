@@ -8,6 +8,7 @@ export const CvModal = (props) => {
   const { theme } = useTheme();
 
   const dragOptions = {
+    dragHandleSelector: "#dragGrip",
     moveMenuItemText: "Move",
     closeMenuItemText: "Close",
     menu: ContextualMenu
@@ -23,6 +24,7 @@ export const CvModal = (props) => {
       borderTop: `4px solid ${theme.palette.themePrimary}`,
       background: theme.palette.themeLight,
       color: theme.palette.neutralPrimary,
+      cursor: "move",
       display: "flex",
       alignItems: "center",
       fontWeight: FontWeights.semibold,
@@ -54,15 +56,15 @@ export const CvModal = (props) => {
   return (
     <Modal
       isOpen={props.isOpen}
-      isModeless={props.isModeless}
+      isModeless={true}
       dragOptions={dragOptions}
       containerClassName={contentStyles.container}>
-      <div className={contentStyles.header}>
+      <div id="dragGrip" className={contentStyles.header}>
         <Text variant="xxLarge">{props.title}</Text>
         <IconButton
           styles={iconButtonStyles}
           iconProps={{ iconName: "Cancel" }}
-          onClick={() => props.dismiss()}
+          onClick={props.onDismiss}
         />
       </div>
       <div className={contentStyles.body}>
@@ -76,10 +78,5 @@ CvModal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  dismiss: PropTypes.func.isRequired,
-  isModeless: PropTypes.bool
-};
-
-CvModal.defaultProps = {
-  isModeless: true
+  onDismiss: PropTypes.func.isRequired
 };

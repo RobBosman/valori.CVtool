@@ -75,18 +75,3 @@ export const SkillCategories = {
     }
   ]
 };
-
-export const SkillLevels = [
-  {
-    key: "FOUDATION",
-    text: "*"
-  },
-  {
-    key: "ADVANCED",
-    text: "* *"
-  },
-  {
-    key: "EXPERT",
-    text: "* * *"
-  }
-];

@@ -7,7 +7,6 @@ import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
-import { SkillLevels } from "./Enums";
 import SkillEdit from "./SkillEdit";
 
 const entityName = "skill";
@@ -26,8 +25,7 @@ const SkillList = (props) => {
     },
     {
       key: "description",
-      fieldName: "description",
-      onRender: (skill) => skill.description[props.locale],
+      localeFieldName: "description",
       name: "Omschrijving",
       isResizable: true,
       minWidth: 150,
@@ -38,11 +36,11 @@ const SkillList = (props) => {
     {
       key: "skillLevel",
       fieldName: "skillLevel",
-      onRender: (skill) => SkillLevels.filter((skillLevel) => skillLevel.key === skill.skillLevel)[0]?.text,
+      onRender: (skill) => "* ".repeat(skill.skillLevel),
       name: "Niveau",
       isResizable: false,
       minWidth: 100,
-      data: "string"
+      data: "number"
     }
   ];
 
@@ -78,8 +76,7 @@ const SkillList = (props) => {
     const id = createId();
     props.replaceSkill(id, {
       _id: id,
-      cvId: props.selectedCvId,
-      name: {}
+      cvId: props.selectedCvId
     });
     props.setSelectedSkillId(id);
     props.setDialogConfig(true);
@@ -90,12 +87,13 @@ const SkillList = (props) => {
     }, 10);
   };
 
-  const onEditItem = () => props.setDialogConfig(true);
+  const onEditItem = () => props.setDialogConfig(!props.dialogConfig?.isOpen);
 
   const onDeleteItem = () => {
     if (props.selectedSkillId) {
       props.replaceSkill(props.selectedSkillId, {});
       props.setSelectedSkillId(undefined);
+      props.setDialogConfig(false);
     }
   };
 
@@ -135,6 +133,7 @@ SkillList.propTypes = {
   replaceSkill: PropTypes.func.isRequired,
   selectedSkillId: PropTypes.string,
   setSelectedSkillId: PropTypes.func.isRequired,
+  dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
 
@@ -142,7 +141,8 @@ const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedCvId,
   skillEntity: state.safe[entityName],
-  selectedSkillId: state.ui.selectedSkillId
+  selectedSkillId: state.ui.selectedSkillId,
+  dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({

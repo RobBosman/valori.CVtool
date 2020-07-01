@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import { Stack } from "@fluentui/react";
 import { setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
+import { CvModal } from "../widgets/CvModal";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
-import { CvModal } from "../widgets/CvModal";
-import { SkillCategories, SkillLevels } from "./Enums";
+import { CvRating } from "../widgets/CvRating";
+import { SkillCategories } from "./Enums";
 
 const entityName = "skill";
 
@@ -22,25 +23,22 @@ const SkillEdit = (props) => {
     <CvModal
       title="Edit"
       isOpen={props.dialogConfig.isOpen || false}
-      dismiss={() => props.setDialogConfig(false)}>
-      <Stack horizontal>
+      onDismiss={() => props.setDialogConfig(false)}>
+      <Stack horizontal
+        tokens={{ childrenGap: 20 }}>
         <CvDropdown
           label="Categorie"
           field="category"
-          instanceContext={skillContext}
           options={SkillCategories[skillContext.locale]}
-          styles={{ dropdown: { width: 150 } }} />
+          instanceContext={skillContext} />
         <CvTextField
           label="Omschrijving"
           localeField="description"
-          instanceContext={skillContext}
-          styles={{ dropdown: { width: 400 } }} />
-        <CvDropdown
+          instanceContext={skillContext} />
+        <CvRating
           label="Niveau"
           field="skillLevel"
-          instanceContext={skillContext}
-          options={SkillLevels}
-          styles={{ dropdown: { width: 80 } }} />
+          instanceContext={skillContext} />
       </Stack>
     </CvModal>
   );

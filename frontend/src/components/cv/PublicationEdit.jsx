@@ -20,7 +20,7 @@ const PublicationEdit = (props) => {
     <CvModal
       title="Edit"
       isOpen={props.dialogConfig.isOpen || false}
-      dismiss={() => props.setDialogConfig(false)}>
+      onDismiss={() => props.setDialogConfig(false)}>
       <Stack horizontal>
         <CvTextField
           label="Jaar"

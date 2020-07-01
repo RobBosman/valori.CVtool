@@ -23,7 +23,7 @@ const ExperienceEdit = (props) => {
     <CvModal
       title="Edit"
       isOpen={props.dialogConfig.isOpen || false}
-      dismiss={() => props.setDialogConfig(false)}>
+      onDismiss={() => props.setDialogConfig(false)}>
       <Stack>
         <CvDatePicker
           label="Van"

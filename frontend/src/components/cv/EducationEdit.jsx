@@ -25,7 +25,7 @@ const EducationEdit = (props) => {
     <CvModal
       title="Edit"
       isOpen={props.dialogConfig.isOpen || false}
-      dismiss={() => props.setDialogConfig(false)}>
+      onDismiss={() => props.setDialogConfig(false)}>
       <Stack>
         <CvChoiceGroup
           label="Soort opleiding"

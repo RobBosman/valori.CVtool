@@ -13,6 +13,7 @@ import lightGreen from "../../themes/lightGreen";
 import darkYellow from "../../themes/darkYellow";
 
 const CvTopBar = (props) => {
+  
   const currentTheme = getTheme();
 
   const createThemeItem = (themeName, theme, label) => ({

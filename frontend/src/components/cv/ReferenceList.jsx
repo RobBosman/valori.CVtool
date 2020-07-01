@@ -25,8 +25,7 @@ const ReferenceList = (props) => {
     },
     {
       key: "referentFunction",
-      fieldName: "referentFunction",
-      onRender: (reference) => reference.referentFunction[props.locale],
+      localeFieldName: "referentFunction",
       name: "Functie",
       isResizable: true,
       minWidth: 150,
@@ -36,8 +35,7 @@ const ReferenceList = (props) => {
     },
     {
       key: "description",
-      fieldName: "description",
-      onRender: (reference) => reference.description[props.locale],
+      localeFieldName: "description",
       name: "Omschrijving",
       isResizable: true,
       minWidth: 150,
@@ -89,8 +87,7 @@ const ReferenceList = (props) => {
     const id = createId();
     props.replaceReference(id, {
       _id: id,
-      cvId: props.selectedCvId,
-      name: {}
+      cvId: props.selectedCvId
     });
     props.setSelectedReferenceId(id);
     props.setDialogConfig(true);
@@ -101,12 +98,13 @@ const ReferenceList = (props) => {
     }, 10);
   };
 
-  const onEditItem = () => props.setDialogConfig(true);
+  const onEditItem = () => props.setDialogConfig(!props.dialogConfig?.isOpen);
 
   const onDeleteItem = () => {
     if (props.selectedReferenceId) {
       props.replaceReference(props.selectedReferenceId, {});
       props.setSelectedReferenceId(undefined);
+      props.setDialogConfig(false);
     }
   };
 
@@ -146,6 +144,7 @@ ReferenceList.propTypes = {
   replaceReference: PropTypes.func.isRequired,
   selectedReferenceId: PropTypes.string,
   setSelectedReferenceId: PropTypes.func.isRequired,
+  dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
 
@@ -153,7 +152,8 @@ const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedCvId,
   referenceEntity: state.safe[entityName],
-  selectedReferenceId: state.ui.selectedReferenceId
+  selectedReferenceId: state.ui.selectedReferenceId,
+  dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({

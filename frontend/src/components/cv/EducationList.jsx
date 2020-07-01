@@ -27,8 +27,7 @@ const EducationList = (props) => {
     },
     {
       key: "name",
-      fieldName: "name",
-      onRender: (education) => education.name[props.locale],
+      localeFieldName: "name",
       name: "Opleiding",
       isResizable: true,
       minWidth: 150,
@@ -105,12 +104,13 @@ const EducationList = (props) => {
     }, 10);
   };
 
-  const onEditItem = () => props.setDialogConfig(true);
+  const onEditItem = () => props.setDialogConfig(!props.dialogConfig?.isOpen);
 
   const onDeleteItem = () => {
     if (props.selectedEducationId) {
       props.replaceEducation(props.selectedEducationId, {});
       props.setSelectedEducationId(undefined);
+      props.setDialogConfig(false);
     }
   };
 
@@ -150,6 +150,7 @@ EducationList.propTypes = {
   replaceEducation: PropTypes.func.isRequired,
   selectedEducationId: PropTypes.string,
   setSelectedEducationId: PropTypes.func.isRequired,
+  dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
 
@@ -157,7 +158,8 @@ const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedCvId,
   educationEntity: state.safe[entityName],
-  selectedEducationId: state.ui.selectedEducationId
+  selectedEducationId: state.ui.selectedEducationId,
+  dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -35,8 +35,7 @@ const PublicationList = (props) => {
     },
     {
       key: "title",
-      fieldName: "title",
-      onRender: (publication) => publication.title[props.locale],
+      localeFieldName: "title",
       name: "Titel",
       isResizable: true,
       minWidth: 150,
@@ -46,8 +45,7 @@ const PublicationList = (props) => {
     },
     {
       key: "description",
-      fieldName: "description",
-      onRender: (publication) => publication.description[props.locale],
+      localeFieldName: "description",
       name: "Omschrijving",
       isResizable: true,
       minWidth: 150,
@@ -89,8 +87,7 @@ const PublicationList = (props) => {
     const id = createId();
     props.replacePublication(id, {
       _id: id,
-      cvId: props.selectedCvId,
-      name: {}
+      cvId: props.selectedCvId
     });
     props.setSelectedPublicationId(id);
     props.setDialogConfig(true);
@@ -101,12 +98,13 @@ const PublicationList = (props) => {
     }, 10);
   };
 
-  const onEditItem = () => props.setDialogConfig(true);
+  const onEditItem = () => props.setDialogConfig(!props.dialogConfig?.isOpen);
 
   const onDeleteItem = () => {
     if (props.selectedPublicationId) {
       props.replacePublication(props.selectedPublicationId, {});
       props.setSelectedPublicationId(undefined);
+      props.setDialogConfig(false);
     }
   };
 
@@ -146,6 +144,7 @@ PublicationList.propTypes = {
   replacePublication: PropTypes.func.isRequired,
   selectedPublicationId: PropTypes.string,
   setSelectedPublicationId: PropTypes.func.isRequired,
+  dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
 
@@ -153,7 +152,8 @@ const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedCvId,
   publicationEntity: state.safe[entityName],
-  selectedPublicationId: state.ui.selectedPublicationId
+  selectedPublicationId: state.ui.selectedPublicationId,
+  dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -10,6 +10,7 @@ const select = (state) => ({
 });
 
 const CvTitle = (props) => {
+  
   // Find the {profile} of the selected {account}.
   const accountId = props.account?._id;
   const profile = accountId

@@ -101,7 +101,7 @@
         "nl_NL": "Java",
         "uk_UK": "Java"
       },
-      "skillLevel": "EXPERT"
+      "skillLevel": 5
     },
     "uuid-skill-2": {
       "_id": "uuid-skill-2",
@@ -111,7 +111,7 @@
         "nl_NL": "Javascript",
         "uk_UK": "Javascript"
       },
-      "skillLevel": "EXPERT"
+      "skillLevel": 4
     },
     "uuid-skill-3": {
       "_id": "uuid-skill-3",
@@ -121,7 +121,7 @@
         "nl_NL": "Bankwezen",
         "uk_UK": "Banking"
       },
-      "skillLevel": "ADVANCED"
+      "skillLevel": 3
     },
     "uuid-skill-4": {
       "_id": "uuid-skill-4",
@@ -131,7 +131,7 @@
         "nl_NL": "Nederlands",
         "uk_UK": "Dutch"
       },
-      "skillLevel": "EXPERT"
+      "skillLevel": 5
     }
   },
   "experience": {
@@ -190,10 +190,5 @@
     "EXPERTISE",
     "TOOLS",
     "OS_NETWORKS"
-  ],
-  "ENUM_SKILL_LEVEL": [
-    "FOUNDATION",
-    "ADVANCED",
-    "EXPERT"
   ]
 }

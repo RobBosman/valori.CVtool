@@ -51,8 +51,7 @@ const ExperienceList = (props) => {
     },
     {
       key: "role",
-      fieldName: "role",
-      onRender: (experience) => experience.role && experience.role[props.locale],
+      localeFieldName: "role",
       name: "Rol",
       isResizable: true,
       minWidth: 150,
@@ -62,8 +61,7 @@ const ExperienceList = (props) => {
     },
     {
       key: "assignment",
-      fieldName: "assignment",
-      onRender: (experience) => experience.assignment && experience.assignment[props.locale],
+      localeFieldName: "assignment",
       name: "Opdrachtomschrijving",
       isResizable: true,
       minWidth: 150,
@@ -73,8 +71,7 @@ const ExperienceList = (props) => {
     },
     {
       key: "activities",
-      fieldName: "activities",
-      onRender: (experience) => experience.activities && experience.activities[props.locale],
+      localeFieldName: "activities",
       name: "Activiteiten",
       isResizable: true,
       minWidth: 150,
@@ -84,8 +81,7 @@ const ExperienceList = (props) => {
     },
     {
       key: "results",
-      fieldName: "results",
-      onRender: (experience) => experience.results && experience.results[props.locale],
+      localeFieldName: "results",
       name: "Resultaten",
       isResizable: true,
       minWidth: 150,
@@ -95,8 +91,7 @@ const ExperienceList = (props) => {
     },
     {
       key: "keywords",
-      fieldName: "keywords",
-      onRender: (experience) => experience.keywords && experience.keywords[props.locale],
+      localeFieldName: "keywords",
       name: "Keywords",
       isResizable: true,
       minWidth: 150,
@@ -154,8 +149,7 @@ const ExperienceList = (props) => {
     const id = createId();
     props.replaceExperience(id, {
       _id: id,
-      cvId: props.selectedCvId,
-      name: {}
+      cvId: props.selectedCvId
     });
     props.setSelectedExperienceId(id);
     props.setDialogConfig(true);
@@ -166,12 +160,13 @@ const ExperienceList = (props) => {
     }, 10);
   };
 
-  const onEditItem = () => props.setDialogConfig(true);
+  const onEditItem = () => props.setDialogConfig(!props.dialogConfig?.isOpen);
 
   const onDeleteItem = () => {
     if (props.selectedExperienceId) {
       props.replaceExperience(props.selectedExperienceId, {});
       props.setSelectedExperienceId(undefined);
+      props.setDialogConfig(false);
     }
   };
 
@@ -211,6 +206,7 @@ ExperienceList.propTypes = {
   replaceExperience: PropTypes.func.isRequired,
   selectedExperienceId: PropTypes.string,
   setSelectedExperienceId: PropTypes.func.isRequired,
+  dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
 
@@ -218,7 +214,8 @@ const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedCvId,
   experienceEntity: state.safe[entityName],
-  selectedExperienceId: state.ui.selectedExperienceId
+  selectedExperienceId: state.ui.selectedExperienceId,
+  dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({

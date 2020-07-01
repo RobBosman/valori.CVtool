@@ -78,7 +78,7 @@
     "description": {
       "locale": "STRING"
     },
-    "skillLevel": "ENUM_SKILL_LEVEL"
+    "skillLevel": "NUMBER"
   },
   "experience": {
     "id": "ID",
@@ -129,10 +129,5 @@
     "EXPERTISE",
     "TOOLS",
     "OS_NETWORKS"
-  ],
-  "ENUM_SKILL_LEVEL": [
-    "FOUNDATION",
-    "ADVANCED",
-    "EXPERT"
   ]
 }

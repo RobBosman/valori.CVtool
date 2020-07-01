@@ -3,6 +3,7 @@ import React from "react";
 import { ChoiceGroup } from "@fluentui/react";
 
 export const CvChoiceGroup = (props) => {
+  
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
   const value = instance && instance[props.field] || props.defaultValue || "";
