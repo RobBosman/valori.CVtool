@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchAll, saveAll } from "../../services/safe/safe-actions";
 import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react";
-import { LoginStates, requestLogin, requestLogout } from "../../services/authentication/authentication-actions";
+import { LoginStates, requestToLogin, requestToLogout } from "../../services/authentication/authentication-actions";
 import { setThemeName } from "../../services/ui/ui-actions";
 import { EventBusConnectionStates } from "../../services/eventBus/eventBus-actions";
 import valoriNameImg from "../../static/valori-name.png";
@@ -55,7 +55,7 @@ const CvTopBar = (props) => {
       key: "login",
       text: "Aanmelden",
       iconProps: { iconName: "Signin" },
-      onClick: props.requestLogin
+      onClick: props.requestToLogin
     },
     props.loginState !== LoginStates.LOGGED_OUT && {
       key: "globalNav",
@@ -100,7 +100,7 @@ const CvTopBar = (props) => {
             key: "logout",
             text: "Afmelden",
             iconProps: { iconName: "SignOut" },
-            onClick: props.requestLogout
+            onClick: props.requestToLogout
           }
         ].filter(Boolean)
       }
@@ -127,8 +127,8 @@ CvTopBar.propTypes = {
   isConnected: PropTypes.bool.isRequired,
   hasSafeData: PropTypes.bool.isRequired,
   setThemeName: PropTypes.func.isRequired,
-  requestLogin: PropTypes.func.isRequired,
-  requestLogout: PropTypes.func.isRequired,
+  requestToLogin: PropTypes.func.isRequired,
+  requestToLogout: PropTypes.func.isRequired,
   fetchAll: PropTypes.func.isRequired,
   saveAll: PropTypes.func.isRequired
 };
@@ -142,8 +142,8 @@ const select = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setThemeName: (themeName) => dispatch(setThemeName(themeName)),
-  requestLogin: () => dispatch(requestLogin()),
-  requestLogout: () => dispatch(requestLogout()),
+  requestToLogin: () => dispatch(requestToLogin()),
+  requestToLogout: () => dispatch(requestToLogout()),
   fetchAll: () => dispatch(fetchAll()),
   saveAll: () => dispatch(saveAll())
 });

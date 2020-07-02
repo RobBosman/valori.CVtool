@@ -9,21 +9,21 @@ import { updateEventBusConnectionState } from "../eventBus/eventBus-actions";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import { loginToRemote } from "./authentication-services";
 
-export const requestLogin = createAction("AUTHENTICATION_REQUEST_LOGIN", () => ({}));
+export const requestToLogin = createAction("AUTHENTICATION_REQUEST_TO_LOGIN", () => ({}));
 export const confirmLoggingIn = createAction("AUTHENTICATION_CONFIRM_LOGGING_IN", () => ({}));
 export const confirmLoggedIn = createAction("AUTHENTICATION_CONFIRM_LOGGED_IN", () => ({}));
-export const requestLogout = createAction("AUTHENTICATION_REQUEST_LOGOUT", () => ({}));
+export const requestToLogout = createAction("AUTHENTICATION_REQUEST_TO_LOGOUT", () => ({}));
 export const confirmLoggingOut = createAction("AUTHENTICATION_CONFIRM_LOGGING_OUT", () => ({}));
 export const confirmLoggedOut = createAction("AUTHENTICATION_CONFIRM_LOGGED_OUT", () => ({}));
 export const setAccount = createAction("AUTHENTICATION_SET_ACCOUNT");
 
 export const LoginStates = {
-  REQUESTED_LOGIN: "REQUESTED_LOGIN",
+  LOGGED_OUT: "LOGGED_OUT",
+  REQUESTED_TO_LOGIN: "REQUESTED_TO_LOGIN",
   LOGGING_IN: "LOGGING_IN",
   LOGGED_IN: "LOGGED_IN",
-  REQUESTED_LOGOUT: "REQUESTED_LOGOUT",
-  LOGGING_OUT: "LOGGING_OUT",
-  LOGGED_OUT: "LOGGED_OUT"
+  REQUESTED_TO_LOGOUT: "REQUESTED_TO_LOGOUT",
+  LOGGING_OUT: "LOGGING_OUT"
 };
 
 reducerRegistry.register(
@@ -33,8 +33,8 @@ reducerRegistry.register(
       loginState: LoginStates.LOGGED_OUT
     },
     {
-      [requestLogin]: (state) => {
-        state.loginState = LoginStates.REQUESTED_LOGIN;
+      [requestToLogin]: (state) => {
+        state.loginState = LoginStates.REQUESTED_TO_LOGIN;
       },
       [confirmLoggingIn]: (state) => {
         state.loginState = LoginStates.LOGGING_IN;
@@ -42,8 +42,8 @@ reducerRegistry.register(
       [confirmLoggedIn]: (state) => {
         state.loginState = LoginStates.LOGGED_IN;
       },
-      [requestLogout]: (state) => {
-        state.loginState = LoginStates.REQUESTED_LOGOUT;
+      [requestToLogout]: (state) => {
+        state.loginState = LoginStates.REQUESTED_TO_LOGOUT;
       },
       [confirmLoggingOut]: (state) => {
         state.loginState = LoginStates.LOGGING_OUT;
@@ -61,7 +61,7 @@ reducerRegistry.register(
 epicRegistry.register(
 
   (actions$, state$) => actions$.pipe(
-    ofType(requestLogin.type, updateEventBusConnectionState.type),
+    ofType(requestToLogin.type, updateEventBusConnectionState.type),
     flatMap(() => loginToRemote(state$.value, eventBusClient.sendEvent))
   ),
 
@@ -75,7 +75,7 @@ epicRegistry.register(
   ),
   
   (actions$) => actions$.pipe(
-    ofType(requestLogout.type),
+    ofType(requestToLogout.type),
     flatMap(() => fromArray([
       replaceSafeContent(undefined),
       setAccount(undefined)

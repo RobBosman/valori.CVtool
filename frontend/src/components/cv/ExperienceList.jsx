@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text, Stack, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
-import { setSelectedExperienceId, setDialogConfig } from "../../services/ui/ui-actions";
+import { setSelectedId, setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
@@ -212,15 +212,15 @@ ExperienceList.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  selectedCvId: state.ui.selectedCvId,
+  selectedCvId: state.ui.selectedId["cv"],
   experienceEntity: state.safe[entityName],
-  selectedExperienceId: state.ui.selectedExperienceId,
+  selectedExperienceId: state.ui.selectedId[entityName],
   dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({
   replaceExperience: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
-  setSelectedExperienceId: (experienceId) => dispatch(setSelectedExperienceId(experienceId)),
+  setSelectedExperienceId: (experienceId) => dispatch(setSelectedId(entityName, experienceId)),
   setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 

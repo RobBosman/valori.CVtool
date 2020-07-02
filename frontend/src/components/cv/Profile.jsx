@@ -100,7 +100,7 @@ const select = (state) => ({
   account: state.authentication.account,
   profileEntity: state.safe.profile,
   cvEntity: state.safe.cv,
-  selectedCvId: state.ui.selectedCvId,
+  selectedCvId: state.ui.selectedId["cv"],
   locale: state.ui.locale
 });
 

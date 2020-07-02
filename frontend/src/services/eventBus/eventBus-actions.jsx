@@ -7,30 +7,33 @@ export const EventBusConnectionStates = {
   DISABLED: "DISABLED",
   CONNECTING: "CONNECTING",
   CONNECTED: "CONNECTED",
-  CLOSING: "CLOSING",
-  CLOSED: "CLOSED"
+  DISCONNECTING: "DISCONNECTING",
+  DISCONNECTED: "DISCONNECTED"
 };
 
-const reducer = createReducer(
-  {
-    connectionState: EventBusConnectionStates.DISABLED
-  },
-  {
-    [updateEventBusConnectionState]: (state, action) => {
-      const currentState = state.connectionState;
-      const newState = action.payload;
-      if (currentState === EventBusConnectionStates.CONNECTING && newState === EventBusConnectionStates.CLOSED) {
+reducerRegistry.register(
+  "eventBus",
+  createReducer(
+    {
+      connectionState: EventBusConnectionStates.DISABLED
+    },
+    {
+      [updateEventBusConnectionState]: (state, action) => {
+        const currentState = state.connectionState;
+        const newState = action.payload;
+        if (currentState === EventBusConnectionStates.CONNECTING
+         && newState === EventBusConnectionStates.DISCONNECTED) {
         // this is a failed connection attempt
-        return;
-      }
-      if (currentState === EventBusConnectionStates.CLOSING && newState === EventBusConnectionStates.CLOSED) {
+          return;
+        }
+        if (currentState === EventBusConnectionStates.DISCONNECTING
+         && newState === EventBusConnectionStates.DISCONNECTED) {
         // this is the last time that onClose() was called
-        state.connectionState = EventBusConnectionStates.DISABLED;
-      } else {
-        state.connectionState = newState;
+          state.connectionState = EventBusConnectionStates.DISABLED;
+        } else {
+          state.connectionState = newState;
+        }
       }
     }
-  }
+  )
 );
-
-reducerRegistry.register("eventBus", reducer);

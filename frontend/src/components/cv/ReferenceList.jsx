@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text, Stack, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
-import { setSelectedReferenceId, setDialogConfig } from "../../services/ui/ui-actions";
+import { setSelectedId, setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
@@ -150,15 +150,15 @@ ReferenceList.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  selectedCvId: state.ui.selectedCvId,
+  selectedCvId: state.ui.selectedId["cv"],
   referenceEntity: state.safe[entityName],
-  selectedReferenceId: state.ui.selectedReferenceId,
+  selectedReferenceId: state.ui.selectedId[entityName],
   dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({
   replaceReference: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
-  setSelectedReferenceId: (referenceId) => dispatch(setSelectedReferenceId(referenceId)),
+  setSelectedReferenceId: (referenceId) => dispatch(setSelectedId(entityName, referenceId)),
   setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text, Stack, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
-import { setSelectedSkillId, setDialogConfig } from "../../services/ui/ui-actions";
+import { setSelectedId, setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
@@ -139,15 +139,15 @@ SkillList.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  selectedCvId: state.ui.selectedCvId,
+  selectedCvId: state.ui.selectedId["cv"],
   skillEntity: state.safe[entityName],
-  selectedSkillId: state.ui.selectedSkillId,
+  selectedSkillId: state.ui.selectedId[entityName],
   dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({
   replaceSkill: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
-  setSelectedSkillId: (skillId) => dispatch(setSelectedSkillId(skillId)),
+  setSelectedSkillId: (skillId) => dispatch(setSelectedId(entityName, skillId)),
   setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 

@@ -4,7 +4,7 @@ import { EventBusConnectionStates } from "../eventBus/eventBus-actions";
 
 export const loginToRemote = (state, sendEvent) =>
   new Observable((subscriber) => {
-    if (state.authentication.loginState === LoginStates.REQUESTED_LOGIN
+    if (state.authentication.loginState === LoginStates.REQUESTED_TO_LOGIN
       && state.eventBus.connectionState === EventBusConnectionStates.CONNECTED) {
       subscriber.next(confirmLoggingIn());
       sendEvent("login", { authenticationCode: "My AuthCode" }) // TODO obtain authentication code
@@ -24,6 +24,6 @@ const mapLoggedInResponse = (message) => {
   if (!account) {
     throw new Error("message.body.account is not present");
   }
-  console.debug("You successfully logged in", message);
+  console.debug("Successfully logged in", message);
   return setAccount(account);
 };

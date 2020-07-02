@@ -1,6 +1,6 @@
 import { BehaviorSubject, of, EMPTY } from "rxjs";
 import { mergeMap, catchError } from "rxjs/operators";
-import { setEpicError } from "./errorHandler";
+import { setEpicError } from "./error-actions";
 
 export class EpicRegistry {
   
@@ -11,12 +11,11 @@ export class EpicRegistry {
   register = (...epics) =>
     epics.map((epic) => this._epic$.next(epic));
 
-  rootEpic = (...args$) => {
-    return this._epic$.pipe(
+  rootEpic = (...args$) =>
+    this._epic$.pipe(
       mergeMap((epic) => epic(...args$)),
       catchError((error) => of(setEpicError(error)))
     );
-  };
 }
 
 export const epicRegistry = new EpicRegistry();

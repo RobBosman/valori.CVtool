@@ -8,7 +8,7 @@ import EducationList from "./cv/EducationList";
 import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
 import SkillList from "./cv/SkillList";
-import { setSelectedCvId } from "../services/ui/ui-actions";
+import { setSelectedId } from "../services/ui/ui-actions";
 import PublicationList from "./cv/PublicationList";
 import ReferenceList from "./cv/ReferenceList";
 import ExperienceList from "./cv/ExperienceList";
@@ -153,7 +153,7 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSelectedCvId: (cvId) => dispatch(setSelectedCvId(cvId))
+  setSelectedCvId: (cvId) => dispatch(setSelectedId("cv", cvId))
 });
 
 export default connect(select, mapDispatchToProps)(ContentPage);

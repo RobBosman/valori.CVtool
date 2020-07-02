@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginStates, requestLogout } from "../redux/authentication";
+import { LoginStates, requestToLogout } from "../redux/authentication";
 import { connect } from "react-redux";
 
 const select = (state) => ({
@@ -7,14 +7,14 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestLogout: () => dispatch(requestLogout())
+  requestToLogout: () => dispatch(requestToLogout())
 });
 
 const AutoLogout = (props) => {
   
   React.useEffect(() => {
     if (props.loginState === LoginStates.LOGGED_IN && props.delayMillis > 0) {
-      const timeoutID = setTimeout(props.requestLogout, props.delayMillis);
+      const timeoutID = setTimeout(props.requestToLogout, props.delayMillis);
       console.log(`set logout timeout[${timeoutID}]`);
 
       // clean-up

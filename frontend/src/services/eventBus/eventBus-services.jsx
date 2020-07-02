@@ -1,7 +1,7 @@
 import EventBus from "vertx3-eventbus-client";
 import { EventBusConnectionStates } from "./eventBus-actions";
 
-const CONNECT_URL = "http://localhost:80/eventbus";
+const CONNECT_URL = "http://localhost:80/eventbus"; // TODO - specify via environment variable.
 const CONNECT_OPTIONS = {
   vertxbus_reconnect_attempts_max: Infinity, // Max reconnect attempts
   vertxbus_reconnect_delay_min: 500, // Initial delay (in ms) before first reconnect attempt
@@ -35,13 +35,13 @@ export class EventBusClient {
 
     this._eventBus.onclose = () => {
       console.debug("The vert.x EventBus is closed.");
-      updateConnectionState(EventBusConnectionStates.CLOSED);
+      updateConnectionState(EventBusConnectionStates.DISCONNECTED);
     };
   };
 
   disconnectEventBus = (updateConnectionState) => {
     console.debug("Closing the vert.x EventBus.");
-    updateConnectionState(EventBusConnectionStates.CLOSING);
+    updateConnectionState(EventBusConnectionStates.DISCONNECTING);
     this._handlersToBeUnregistered.clear();
     if (this._eventBus?.state === EventBus.OPEN) {
       this._eventBus.close();

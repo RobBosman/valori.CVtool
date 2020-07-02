@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Stack, Text, IconButton } from "@fluentui/react";
-import { setSelectedEducationId, setDialogConfig } from "../../services/ui/ui-actions";
+import { setSelectedId, setDialogConfig } from "../../services/ui/ui-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createId } from "../../services/safe/safe-services";
@@ -156,15 +156,15 @@ EducationList.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  selectedCvId: state.ui.selectedCvId,
+  selectedCvId: state.ui.selectedId["cv"],
   educationEntity: state.safe[entityName],
-  selectedEducationId: state.ui.selectedEducationId,
+  selectedEducationId: state.ui.selectedId[entityName],
   dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 
 const mapDispatchToProps = (dispatch) => ({
   replaceEducation: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
-  setSelectedEducationId: (educationId) => dispatch(setSelectedEducationId(educationId)),
+  setSelectedEducationId: (educationId) => dispatch(setSelectedId(entityName, educationId)),
   setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 
