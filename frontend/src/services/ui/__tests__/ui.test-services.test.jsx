@@ -8,9 +8,16 @@ import lightBlue from "../../../themes/lightBlue";
 import lightGreen from "../../../themes/lightGreen";
 import { useTheme, initializeUI } from "../ui-services";
 import { loadTheme } from "@fluentui/react";
+import { setWindowError } from "../../../redux/error-actions";
 
 describe("ui", () => {
+
   let container = null;
+  const dispatchedActions = [];
+
+  beforeAll(() => {
+    initializeUI((action) => dispatchedActions.push(action));
+  });
 
   beforeEach(() => {
     container = document.createElement("div");
@@ -23,14 +30,32 @@ describe("ui", () => {
     container = null;
   });
 
-  it("should initialize UI", () => new Promise((_resolve) => {
-    initializeUI((action) => {
-      expect(action).toStrictEqual(setLocationHash(""));
-      _resolve();
-    });
-    window.dispatchEvent(new CustomEvent("unhandledrejection", { detail: "real thing" }));
+  it("should handle windows event 'hashchange'", () => {
+    const lengthBefore = dispatchedActions.length;
     window.dispatchEvent(new CustomEvent("hashchange", {}));
-  }));
+    expect(dispatchedActions.length)
+      .toBe(lengthBefore + 1);
+    expect(dispatchedActions[lengthBefore].type)
+      .toBe(setLocationHash.type);
+  });
+
+  it("should handle windows event 'error'", () => {
+    const lengthBefore = dispatchedActions.length;
+    window.dispatchEvent(new CustomEvent("error", {}));
+    expect(dispatchedActions.length)
+      .toBe(lengthBefore + 1);
+    expect(dispatchedActions[lengthBefore].type)
+      .toBe(setWindowError.type);
+  });
+
+  it("should handle windows event 'unhandledrejection'", () => {
+    const lengthBefore = dispatchedActions.length;
+    window.dispatchEvent(new CustomEvent("unhandledrejection", {}));
+    expect(dispatchedActions.length)
+      .toBe(lengthBefore + 1);
+    expect(dispatchedActions[lengthBefore].type)
+      .toBe(setWindowError.type);
+  });
 
   it("should useTheme", () => {
     const TestComp = () => {

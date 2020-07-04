@@ -6,8 +6,8 @@ import { flatMap } from "rxjs/operators";
 import { fetchCvFromRemote, saveAllToRemote } from "./safe-services";
 import { eventBusClient } from "../eventBus/eventBus-services";
 
-export const fetchAll = createAction("SAFE_FETCH_ALL", () => ({ payload: null }));
-export const saveAll = createAction("SAFE_SAVE_ALL", () => ({ payload: null }));
+export const fetchAll = createAction("SAFE_FETCH_ALL", () => ({}));
+export const saveAll = createAction("SAFE_SAVE_ALL", () => ({}));
 export const replaceSafeContent = createAction("SAFE_REPLACE_CONTENT");
 export const replaceSafeInstance = createAction("SAFE_REPLACE_INSTANCE",
   (entity, id, instance) => ({ payload: { entity, id, instance } }));

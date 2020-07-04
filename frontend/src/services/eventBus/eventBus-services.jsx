@@ -1,5 +1,5 @@
 import EventBus from "vertx3-eventbus-client";
-import { EventBusConnectionStates } from "./eventBus-actions";
+import { Observable } from "rxjs";
 
 const CONNECT_URL = "http://localhost:80/eventbus"; // TODO - specify via environment variable.
 const CONNECT_OPTIONS = {
@@ -10,6 +10,13 @@ const CONNECT_OPTIONS = {
   vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
 };
 
+export const EventBusConnectionStates = {
+  DISCONNECTED: "DISCONNECTED",
+  CONNECTING: "CONNECTING",
+  CONNECTED: "CONNECTED",
+  DISCONNECTING: "DISCONNECTING"
+};
+
 export class EventBusClient {
 
   constructor() {
@@ -18,82 +25,98 @@ export class EventBusClient {
     this._handlersToBeUnregistered = new Set();
   }
 
-  connectEventBus = (updateConnectionState) => {
-    console.debug("Creating the vert.x EventBus.");
-    updateConnectionState(EventBusConnectionStates.CONNECTING);
-    this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
-    this._eventBus.enableReconnect(true);
+  connectEventBus = () =>
+    new Observable((subscriber) => {
+      console.debug("Creating the vert.x EventBus.");
+      this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
+      this._eventBus.enableReconnect(true);
+      subscriber.next(EventBusConnectionStates.CONNECTING);
 
-    this._eventBus.onerror = (error) => {
-      console.error("An error occurred on the vert.x EventBus.", error);
-    };
+      this._eventBus.onopen = () => {
+        console.debug("The vert.x EventBus is open.");
+        subscriber.next(EventBusConnectionStates.CONNECTED);
+      };
 
-    this._eventBus.onopen = () => {
-      console.debug("The vert.x EventBus is open.");
-      updateConnectionState(EventBusConnectionStates.CONNECTED);
-    };
+      this._eventBus.onclosing = () => {
+        console.debug("The vert.x EventBus is closing...");
+        subscriber.next(EventBusConnectionStates.DISCONNECTING);
+      };
 
-    this._eventBus.onclose = () => {
-      console.debug("The vert.x EventBus is closed.");
-      updateConnectionState(EventBusConnectionStates.DISCONNECTED);
-    };
-  };
+      this._eventBus.onclose = () => {
+        if (this._eventBus.reconnectTimerID) {
+          console.debug("The vert.x EventBus is still closed, reconnecting...");
+          subscriber.next(EventBusConnectionStates.CONNECTING);
+        } else {
+          console.debug("The vert.x EventBus is closed.");
+          subscriber.next(EventBusConnectionStates.DISCONNECTED);
+          subscriber.complete();
+          this._eventBus = null;
+        }
+      };
 
-  disconnectEventBus = (updateConnectionState) => {
-    console.debug("Closing the vert.x EventBus.");
-    updateConnectionState(EventBusConnectionStates.DISCONNECTING);
+      this._eventBus.onerror = (error) => {
+        console.debug("An error occurred on the vert.x EventBus.", error);
+        subscriber.error(error);
+      };
+    });
+  
+  disconnectEventBus = () => {
     this._handlersToBeUnregistered.clear();
     if (this._eventBus?.state === EventBus.OPEN) {
+      this._eventBus.onclosing && this._eventBus.onclosing();
       this._eventBus.close();
     } else {
       this._eventBus?.enableReconnect(false);
     }
   };
 
-  sendEvent = (address, requestData, headerData = {}) => new Promise((_resolve, _reject) => {
-    if (this._eventBus?.state === EventBus.OPEN) {
-      console.debug(`Sending event '${address}'`);
-      this._eventBus.send(
-        address, requestData, headerData,
-        (error, message) => error ? _reject(error) : _resolve(message)
-      );
-    } else {
-      _reject(`Error sending '${address}' event; the EventBus is not connected.`);
-    }
-  });
-
-  addEventHandler = (handler) => new Promise((_resolve, _reject) => {
-    if (this._handlers.has(handler)) {
-      _resolve();
-    } else {
-      this._handlers.add(handler);
+  sendEvent = (address, requestData, headerData = {}) =>
+    new Promise((_resolve, _reject) => {
       if (this._eventBus?.state === EventBus.OPEN) {
-        this._eventBus.registerHandler(
-          handler.address, handler.headers, handler.callback,
+        console.debug(`Sending event '${address}'`);
+        this._eventBus.send(
+          address, requestData, headerData,
           (error, message) => error ? _reject(error) : _resolve(message)
         );
       } else {
-        _resolve();
+        _reject(`Error sending '${address}' event; the EventBus is not connected.`);
       }
-    }
-  });
+    });
 
-  removeEventHandler = (handler) => new Promise((_resolve, _reject) => {
-    if (!this._handlers.has(handler)) {
-      _resolve();
-    } else {
-      this._handlers.delete(handler);
-      if (this._eventBus?.state === EventBus.OPEN) {
-        this._eventBus.unregisterHandler(
-          handler.address, handler.headers, handler.callback,
-          (error, message) => error ? _reject(error) : _resolve(message)
-        );
-      } else {
-        this._handlersToBeUnregistered.add(handler);
+  addEventHandler = (handler) =>
+    new Promise((_resolve, _reject) => {
+      if (this._handlers.has(handler)) {
         _resolve();
+      } else {
+        this._handlers.add(handler);
+        if (this._eventBus?.state === EventBus.OPEN) {
+          this._eventBus.registerHandler(
+            handler.address, handler.headers, handler.callback,
+            (error, message) => error ? _reject(error) : _resolve(message)
+          );
+        } else {
+          _resolve();
+        }
       }
-    }
-  });
+    });
+
+  removeEventHandler = (handler) =>
+    new Promise((_resolve, _reject) => {
+      if (!this._handlers.has(handler)) {
+        _resolve();
+      } else {
+        this._handlers.delete(handler);
+        if (this._eventBus?.state === EventBus.OPEN) {
+          this._eventBus.unregisterHandler(
+            handler.address, handler.headers, handler.callback,
+            (error, message) => error ? _reject(error) : _resolve(message)
+          );
+        } else {
+          this._handlersToBeUnregistered.add(handler);
+          _resolve();
+        }
+      }
+    });
 
   refreshHandlerRegistrations = () => {
     for (let i = this._handlersToBeUnregistered.size - 1; i >= 0; i--) { // loop reversed, so we can 'shrink' the list

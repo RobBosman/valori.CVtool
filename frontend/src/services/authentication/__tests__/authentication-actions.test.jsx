@@ -1,5 +1,5 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
-import { LoginStates, requestToLogin, confirmLoggingIn, confirmLoggedIn, requestToLogout, confirmLoggingOut, confirmLoggedOut, setAccount } from "../authentication-actions";
+import { LoginRequestStates, LoginStates, requestToLogin, confirmLoggingIn, confirmLoggedIn, requestToLogout, confirmLoggingOut, confirmLoggedOut, setAccount } from "../authentication-actions";
 
 describe("authentication", () => {
 
@@ -7,7 +7,12 @@ describe("authentication", () => {
 
   it("should reduce requestToLogin", () => {
     const state = reducer(undefined, requestToLogin());
-    expect(state.authentication.loginState).toBe(LoginStates.REQUESTED_TO_LOGIN);
+    expect(state.authentication.loginState).toBe(LoginRequestStates.REQUESTED_TO_LOGIN);
+  });
+
+  it("should reduce requestToLogout", () => {
+    const state = reducer(undefined, requestToLogout());
+    expect(state.authentication.loginState).toBe(LoginRequestStates.REQUESTED_TO_LOGOUT);
   });
 
   it("should reduce confirmLoggingIn", () => {
@@ -18,11 +23,6 @@ describe("authentication", () => {
   it("should reduce confirmLoggedIn", () => {
     const state = reducer(undefined, confirmLoggedIn());
     expect(state.authentication.loginState).toBe(LoginStates.LOGGED_IN);
-  });
-
-  it("should reduce requestToLogout", () => {
-    const state = reducer(undefined, requestToLogout());
-    expect(state.authentication.loginState).toBe(LoginStates.REQUESTED_TO_LOGOUT);
   });
 
   it("should reduce confirmLoggingOut", () => {

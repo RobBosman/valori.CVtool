@@ -17,10 +17,10 @@ export const fetchCvFromRemote = (state, sendEvent) =>
 export const saveAllToRemote = (state, sendEvent) =>
   sendEvent("save", state.safe);
 
-/** Use this function to create a unique object id. */
-export const createId = () => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-    const r = Math.random() * 16 | 0, v = c == "x" ? r : (r & 0x3 | 0x8);
+// Use this function to create a unique object id (UUID).
+export const createId = () =>
+  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0;
+    const v = c == "x" ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
-};

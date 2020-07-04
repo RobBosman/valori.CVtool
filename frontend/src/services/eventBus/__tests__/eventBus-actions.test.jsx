@@ -1,33 +1,34 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
-import { EventBusConnectionStates, updateEventBusConnectionState } from "../eventBus-actions";
+import { setEventBusConnectionState } from "../eventBus-actions";
+import { EventBusConnectionStates } from "../eventBus-services";
 
 describe("eventBus-actions", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 
-  it("should reduce updateEventBusConnectionStat[0]", () => {
-    let state = reducer(undefined, updateEventBusConnectionState(EventBusConnectionStates.DISCONNECTED));
+  it("should reduce setEventBusConnectionStat[0]", () => {
+    let state = reducer(undefined, setEventBusConnectionState(EventBusConnectionStates.DISCONNECTED));
     expect(state.eventBus.connectionState)
       .toBe(EventBusConnectionStates.DISCONNECTED);
   });
 
-  it("should reduce updateEventBusConnectionState[1]", () => {
-    let state = reducer(undefined, updateEventBusConnectionState(EventBusConnectionStates.CONNECTING));
+  it("should reduce setEventBusConnectionState[1]", () => {
+    let state = reducer(undefined, setEventBusConnectionState(EventBusConnectionStates.CONNECTING));
     expect(state.eventBus.connectionState)
       .toBe(EventBusConnectionStates.CONNECTING);
     
-    state = reducer(state, updateEventBusConnectionState(EventBusConnectionStates.DISCONNECTED));
+    state = reducer(state, setEventBusConnectionState(EventBusConnectionStates.CONNECTED));
     expect(state.eventBus.connectionState)
-      .toBe(EventBusConnectionStates.CONNECTING); // no change expected
+      .toBe(EventBusConnectionStates.CONNECTED);
   });
 
-  it("should reduce updateEventBusConnectionState[2]", () => {
-    let state = reducer(undefined, updateEventBusConnectionState(EventBusConnectionStates.DISCONNECTING));
+  it("should reduce setEventBusConnectionState[2]", () => {
+    let state = reducer(undefined, setEventBusConnectionState(EventBusConnectionStates.DISCONNECTING));
     expect(state.eventBus.connectionState)
       .toBe(EventBusConnectionStates.DISCONNECTING);
     
-    state = reducer(state, updateEventBusConnectionState(EventBusConnectionStates.DISCONNECTED));
+    state = reducer(state, setEventBusConnectionState(EventBusConnectionStates.DISCONNECTED));
     expect(state.eventBus.connectionState)
-      .toBe(EventBusConnectionStates.DISABLED);
+      .toBe(EventBusConnectionStates.DISCONNECTED);
   });
 });

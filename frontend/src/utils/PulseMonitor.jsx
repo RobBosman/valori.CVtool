@@ -3,8 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getTheme } from "@fluentui/react";
 import { LoginStates } from "../services/authentication/authentication-actions";
-import { EventBusConnectionStates } from "../services/eventBus/eventBus-actions";
-import { eventBusClient } from "../services/eventBus/eventBus-services";
+import { eventBusClient, EventBusConnectionStates } from "../services/eventBus/eventBus-services";
 import "./KeyFrames.css";
 
 const PulseMonitor = (props) => {
@@ -61,7 +60,7 @@ PulseMonitor.propTypes = {
 const select = (state) => ({
   shouldBeConnected: state.authentication.loginState === LoginStates.LOGGED_IN,
   isConnected: state.eventBus.connectionState === EventBusConnectionStates.CONNECTED,
-  isDisconnected: (state.eventBus.connectionState === EventBusConnectionStates.CLOSED || state.eventBus.connectionState === EventBusConnectionStates.DISABLED)
+  isDisconnected: (state.eventBus.connectionState === EventBusConnectionStates.DISCONNECTED)
 });
 
 export default connect(select)(PulseMonitor);
