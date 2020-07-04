@@ -15,9 +15,7 @@ const entityName = "education";
 const EducationEdit = (props) => {
 
   const educationContext = {
-    locale: props.locale,
-    entity: props.educationEntity,
-    entityId: props.selectedEducationId,
+    ...props.instanceContext,
     replaceInstance: props.onChangeEducation
   };
 
@@ -60,18 +58,13 @@ const EducationEdit = (props) => {
 };
 
 EducationEdit.propTypes = {
-  educationEntity: PropTypes.object,
-  selectedEducationId: PropTypes.string,
-  locale: PropTypes.string,
+  instanceContext: PropTypes.object.isRequired,
   onChangeEducation: PropTypes.func.isRequired,
   dialogConfig: PropTypes.object.isRequired,
   setDialogConfig: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
-  locale: state.ui.locale,
-  selectedEducationId: state.ui.selectedEducationId,
-  educationEntity: state.safe[entityName],
   dialogConfig: state.ui.dialogConfig[entityName] || {}
 });
 

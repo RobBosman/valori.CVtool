@@ -5,7 +5,7 @@ import { Stack, Text, IconButton } from "@fluentui/react";
 import { setSelectedId, setDialogConfig } from "../../services/ui/ui-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
-import { createId } from "../../services/safe/safe-services";
+import { createUuid } from "../../services/safe/safe-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import EducationEdit from "./EducationEdit";
 
@@ -68,6 +68,7 @@ const EducationList = (props) => {
     || [];
 
   const educationContext = {
+    locale: props.locale,
     entity: props.educationEntity,
     entityId: props.selectedEducationId,
     setSelectedInstance: props.setSelectedEducationId
@@ -89,7 +90,7 @@ const EducationList = (props) => {
   };
 
   const onAddItem = () => {
-    const id = createId();
+    const id = createUuid();
     props.replaceEducation(id, {
       _id: id,
       cvId: props.selectedCvId,

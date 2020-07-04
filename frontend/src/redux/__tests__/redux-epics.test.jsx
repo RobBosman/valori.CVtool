@@ -34,17 +34,17 @@ describe("redux", () => {
     dummyAction3("176-761")
   ];
   const dummyEpics0 = [
-    (actions$) => actions$.pipe(
+    (action$) => action$.pipe(
       ofType(dummyAction3.type),
       map(() => dummyAction1(313))
     )
   ];
   const dummyEpics1 = [
-    (actions$) => actions$.pipe(
+    (action$) => action$.pipe(
       ofType(dummyAction3.type),
       map(() => dummyAction2(671))
     ),
-    (actions$) => actions$.pipe(
+    (action$) => action$.pipe(
       ofType(dummyAction1.type),
       map(() => dummyAction2(617))
     )

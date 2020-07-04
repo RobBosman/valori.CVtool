@@ -3,7 +3,7 @@ import { Stack, Text } from "@fluentui/react";
 import { connect } from "react-redux";
 
 const select = (state) => ({
-  account: state.authentication.account,
+  account: state.authentication.accountInfo,
   profileEntity: state.safe.profile,
   cvEntity: state.safe.cv,
   locale: state.ui.locale

@@ -134,7 +134,7 @@ CvTopBar.propTypes = {
 };
 
 const select = (state) => ({
-  account: state.authentication.account,
+  account: state.authentication.accountInfo,
   loginState: state.authentication.loginState,
   isConnected: state.eventBus.connectionState === EventBusConnectionStates.CONNECTED,
   hasSafeData: Object.keys(state.safe).length > 0

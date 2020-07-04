@@ -5,8 +5,10 @@ import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.rxjava.core.AbstractVerticle
+import io.vertx.rxjava.core.eventbus.Message
 import nl.valori.cvtool.server.mongodb.ADDRESS_FETCH
 import org.slf4j.LoggerFactory
+import rx.Single
 
 const val ADDRESS_LOGIN = "login"
 
@@ -19,32 +21,32 @@ internal class AuthVerticle : AbstractVerticle() {
         .consumer<JsonObject>(ADDRESS_LOGIN)
         .toObservable()
         .subscribe(
-            { loginMessage ->
-              val authCode = loginMessage.body().getString("authenticationCode")
-              log.info("Someone logs in with authCode '$authCode'")
-              fetchAccount(
-                  "uuid-account-1", // TODO: determine accountId,
-                  {
-                    log.debug("Successfully fetched account")
-                    loginMessage.reply(it)
-                  },
-                  {
-                    log.warn("Error fetching account", it)
-                    loginMessage.fail(RECIPIENT_FAILURE.toInt(), it.message)
-                  })
+            { message ->
+              fetchAccount(message)
+                  .subscribe(
+                      {
+                        log.debug("Successfully fetched account")
+                        message.reply(it)
+                      },
+                      {
+                        log.warn("Error fetching account", it)
+                        message.fail(RECIPIENT_FAILURE.toInt(), it.message)
+                      })
             },
             {
               log.error("Vertx error", it)
             })
   }
 
-  private fun fetchAccount(accountId: String, onSuccess: (JsonObject) -> Unit, onError: (Throwable) -> Unit) {
-    vertx.eventBus()
+  private fun fetchAccount(message: Message<JsonObject>): Single<JsonObject> {
+    val authCode = message.body().getString("authenticationCode")
+    log.info("Someone logs in with authCode '$authCode'")
+    val accountId = "uuid-account-1" // TODO: determine accountId,
+    return vertx.eventBus()
         .rxRequest<JsonObject>(
             ADDRESS_FETCH,
             JsonObject("""{ "account": [{ "_id": "$accountId" }] }"""),
             DeliveryOptions().setSendTimeout(2000))
         .map { it.body() }
-        .subscribe(onSuccess, onError)
   }
 }

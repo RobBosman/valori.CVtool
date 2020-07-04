@@ -4,7 +4,7 @@ import { Text, Stack, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId, setDialogConfig } from "../../services/ui/ui-actions";
 import { replaceSafeInstance } from "../../services/safe/safe-actions";
-import { createId } from "../../services/safe/safe-services";
+import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import ReferenceEdit from "./ReferenceEdit";
@@ -84,7 +84,7 @@ const ReferenceList = (props) => {
   };
 
   const onAddItem = () => {
-    const id = createId();
+    const id = createUuid();
     props.replaceReference(id, {
       _id: id,
       cvId: props.selectedCvId

@@ -2,14 +2,14 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 import { epicRegistry } from "../../redux/epicRegistry";
 import { ofType } from "redux-observable";
-import { flatMap } from "rxjs/operators";
+import { flatMap, map, filter } from "rxjs/operators";
 import { fetchCvFromRemote, saveAllToRemote } from "./safe-services";
 import { eventBusClient } from "../eventBus/eventBus-services";
 
-export const fetchAll = createAction("SAFE_FETCH_ALL", () => ({}));
-export const saveAll = createAction("SAFE_SAVE_ALL", () => ({}));
-export const replaceSafeContent = createAction("SAFE_REPLACE_CONTENT");
-export const replaceSafeInstance = createAction("SAFE_REPLACE_INSTANCE",
+export const fetchAll = createAction("FETCH_ALL", () => ({}));
+export const saveAll = createAction("SAVE_ALL", () => ({}));
+export const replaceSafeContent = createAction("REPLACE_SAFE_CONTENT");
+export const replaceSafeInstance = createAction("REPLACE_SAFE_INSTANCE",
   (entity, id, instance) => ({ payload: { entity, id, instance } }));
 
 reducerRegistry.register(
@@ -34,12 +34,14 @@ reducerRegistry.register(
 
 epicRegistry.register(
 
-  (actions$, state$) => actions$.pipe(
+  (action$, state$) => action$.pipe(
     ofType(fetchAll.type),
-    flatMap(() => fetchCvFromRemote(state$.value, eventBusClient.sendEvent))
+    filter(() => state$.value.authentication?.accountInfo),
+    flatMap(() => fetchCvFromRemote(state$.value.authentication?.accountInfo, eventBusClient.sendEvent)),
+    map((safeContent) => replaceSafeContent(safeContent))
   ),
 
-  (actions$, state$) => actions$.pipe(
+  (action$, state$) => action$.pipe(
     ofType(saveAll.type),
     flatMap(() => saveAllToRemote(state$.value, eventBusClient.sendEvent))
   )

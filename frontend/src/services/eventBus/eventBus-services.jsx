@@ -25,32 +25,31 @@ export class EventBusClient {
     this._handlersToBeUnregistered = new Set();
   }
 
-  connectEventBus = () =>
+  connectAndMonitorEventBus = () =>
     new Observable((subscriber) => {
-      console.debug("Creating the vert.x EventBus.");
+      console.debug("Creating the vert.x EventBus.connecting...");
       this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
       this._eventBus.enableReconnect(true);
       subscriber.next(EventBusConnectionStates.CONNECTING);
 
       this._eventBus.onopen = () => {
-        console.debug("The vert.x EventBus is open.");
+        console.debug("The vert.x EventBus is connected.");
         subscriber.next(EventBusConnectionStates.CONNECTED);
       };
 
       this._eventBus.onclosing = () => {
-        console.debug("The vert.x EventBus is closing...");
+        console.debug("The vert.x EventBus is disconnecting...");
         subscriber.next(EventBusConnectionStates.DISCONNECTING);
       };
 
       this._eventBus.onclose = () => {
         if (this._eventBus.reconnectTimerID) {
-          console.debug("The vert.x EventBus is still closed, reconnecting...");
+          console.debug("The vert.x EventBus is (re)connecting...");
           subscriber.next(EventBusConnectionStates.CONNECTING);
         } else {
-          console.debug("The vert.x EventBus is closed.");
+          console.debug("The vert.x EventBus is disconnected.");
           subscriber.next(EventBusConnectionStates.DISCONNECTED);
           subscriber.complete();
-          this._eventBus = null;
         }
       };
 
@@ -79,7 +78,7 @@ export class EventBusClient {
           (error, message) => error ? _reject(error) : _resolve(message)
         );
       } else {
-        _reject(`Error sending '${address}' event; the EventBus is not connected.`);
+        _reject(new Error(`Error sending '${address}' event; the EventBus is not connected.`));
       }
     });
 

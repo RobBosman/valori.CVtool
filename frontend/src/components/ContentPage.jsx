@@ -147,7 +147,7 @@ ContentPage.propTypes = {
 };
 
 const select = (state) => ({
-  account: state.authentication.account,
+  account: state.authentication.accountInfo,
   cvEntity: state.safe.cv,
   locationHash: state.ui.locationHash
 });

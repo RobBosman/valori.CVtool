@@ -19,7 +19,7 @@ export const heavyWait = (remark = "", waitMillis = 1000) => {
 };
 
 epicRegistry.register([
-  (actions$) => actions$.pipe(
+  (action$) => action$.pipe(
     // tap((action) => console.debug("dispatched action: ", action)),
     tap((action) => heavyWait(action.type, 0)),
     ignoreElements()

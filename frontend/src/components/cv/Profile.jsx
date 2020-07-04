@@ -97,7 +97,7 @@ Profile.propTypes = {
 };
 
 const select = (state) => ({
-  account: state.authentication.account,
+  account: state.authentication.accountInfo,
   profileEntity: state.safe.profile,
   cvEntity: state.safe.cv,
   selectedCvId: state.ui.selectedId["cv"],

@@ -8,6 +8,7 @@ import io.vertx.rxjava.core.AbstractVerticle
 import io.vertx.rxjava.core.eventbus.Message
 import nl.valori.cvtool.server.mongodb.ADDRESS_FETCH
 import org.slf4j.LoggerFactory
+import rx.Single
 
 const val ADDRESS_FETCH_CV = "fetch.cv"
 
@@ -22,25 +23,26 @@ internal class CvVerticle : AbstractVerticle() {
         .toObservable()
         .subscribe(
             { message ->
-              fetchCvData(
-                  message.body().getString("accountId"),
-                  {
-                    log.debug("Successfully fetched cv data")
-                    message.reply(it)
-                  },
-                  {
-                    log.warn("Error fetching cv data", it)
-                    message.fail(RECIPIENT_FAILURE.toInt(), it.message)
-                  })
+              fetchCvData(message)
+                  .subscribe(
+                      {
+                        log.debug("Successfully fetched cv data")
+                        message.reply(it)
+                      },
+                      {
+                        log.warn("Error fetching cv data", it)
+                        message.fail(RECIPIENT_FAILURE.toInt(), "Error fetching cv data: ${it.message}")
+                      })
             },
             {
               log.error("Vertx error", it)
             })
   }
 
-  private fun fetchCvData(accountId: String, onSuccess: (JsonObject) -> Unit, onError: (Throwable) -> Unit) {
+  private fun fetchCvData(message: Message<JsonObject>): Single<JsonObject> {
+    val accountId = message.body().getString("accountId")
     val accountCriteria = JsonObject("""{ "cv": [{ "accountId": "$accountId" }] }""")
-    vertx.eventBus()
+    return vertx.eventBus()
         .rxRequest<JsonObject>(ADDRESS_FETCH, accountCriteria, deliveryOptions)
         .map(::obtainCvId)
         .map { composeCvCriteria(accountId, it) }
@@ -49,12 +51,11 @@ internal class CvVerticle : AbstractVerticle() {
               .rxRequest<JsonObject>(ADDRESS_FETCH, cvCriteria, deliveryOptions)
         }
         .map { it.body() }
-        .subscribe(onSuccess, onError)
   }
 
   private fun obtainCvId(accountResponse: Message<JsonObject>) =
       accountResponse.body()
-          .getJsonObject("cv")
+          .getJsonObject("cv", JsonObject("""{ "cv": [] }"""))
           .fieldNames()
           .first()
 

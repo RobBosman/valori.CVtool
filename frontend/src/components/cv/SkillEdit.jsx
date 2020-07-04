@@ -29,8 +29,8 @@ const SkillEdit = (props) => {
         <CvDropdown
           label="Categorie"
           field="category"
-          options={SkillCategories[skillContext.locale]}
-          instanceContext={skillContext} />
+          instanceContext={skillContext}
+          options={SkillCategories[skillContext.locale]} />
         <CvTextField
           label="Omschrijving"
           localeField="description"
