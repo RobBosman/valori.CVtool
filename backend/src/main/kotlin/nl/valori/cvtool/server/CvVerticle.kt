@@ -23,7 +23,11 @@ internal class CvVerticle : AbstractVerticle() {
         .toObservable()
         .subscribe(
             { message ->
-              fetchCvData(message)
+              Single
+                  .just(message)
+                  .map { it.body().getString("accountId") }
+                  .doOnSuccess { if (it === null) throw IllegalArgumentException("'accountId' is not specified.") }
+                  .flatMap { accountId -> fetchCvData(accountId) }
                   .subscribe(
                       {
                         log.debug("Successfully fetched cv data")
@@ -39,19 +43,19 @@ internal class CvVerticle : AbstractVerticle() {
             })
   }
 
-  private fun fetchCvData(message: Message<JsonObject>): Single<JsonObject> {
-    val accountId = message.body().getString("accountId")
-    val accountCriteria = JsonObject("""{ "cv": [{ "accountId": "$accountId" }] }""")
-    return vertx.eventBus()
-        .rxRequest<JsonObject>(ADDRESS_FETCH, accountCriteria, deliveryOptions)
-        .map(::obtainCvId)
-        .map { composeCvCriteria(accountId, it) }
-        .flatMap { cvCriteria ->
-          vertx.eventBus()
-              .rxRequest<JsonObject>(ADDRESS_FETCH, cvCriteria, deliveryOptions)
-        }
-        .map { it.body() }
-  }
+  private fun fetchCvData(accountId: String): Single<JsonObject> =
+      vertx.eventBus()
+          .rxRequest<JsonObject>(ADDRESS_FETCH, composeCriteria(accountId), deliveryOptions)
+          .map(::obtainCvId)
+          .map { composeCvCriteria(accountId, it) }
+          .flatMap { cvCriteria ->
+            vertx.eventBus()
+                .rxRequest<JsonObject>(ADDRESS_FETCH, cvCriteria, deliveryOptions)
+          }
+          .map { it.body() }
+
+  private fun composeCriteria(accountId: String) =
+      JsonObject("""{ "cv": [{ "accountId": "$accountId" }] }""")
 
   private fun obtainCvId(accountResponse: Message<JsonObject>) =
       accountResponse.body()

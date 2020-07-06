@@ -25,7 +25,7 @@ const SkillEdit = (props) => {
       isOpen={props.dialogConfig.isOpen || false}
       onDismiss={() => props.setDialogConfig(false)}>
       <Stack horizontal
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: "l1" }}>
         <CvDropdown
           label="Categorie"
           field="category"

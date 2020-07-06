@@ -1,5 +1,5 @@
-export const fetchCvFromRemote = (accountInfo, sendEvent) =>
-  sendEvent("fetch.cv", { accountId: accountInfo._id })
+export const fetchCvFromRemote = (accountId, sendEvent) =>
+  sendEvent("fetch.cv", { accountId })
     .then((message) => message.body);
 
 export const saveAllToRemote = (state, sendEvent) =>

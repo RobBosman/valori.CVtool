@@ -8,7 +8,6 @@ import EducationList from "./cv/EducationList";
 import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
 import SkillList from "./cv/SkillList";
-import { setSelectedId } from "../services/ui/ui-actions";
 import PublicationList from "./cv/PublicationList";
 import ReferenceList from "./cv/ReferenceList";
 import ExperienceList from "./cv/ExperienceList";
@@ -83,17 +82,8 @@ const CV_LINKS = [
 ];
 
 const ContentPage = (props) => {
-  const [isNavExpanded] = React.useState(true);
 
-  React.useEffect(() => {
-    const accountId = props.account?._id;
-    const cvInstance = accountId
-      && props.cvEntity
-      && Object.values(props.cvEntity).find((instance) => instance.accountId === accountId);
-    props.setSelectedCvId(cvInstance?._id);
-  });
-
-  const isAdmin = props.account?.privileges?.find((privilege) => privilege === "ADMIN");
+  const isAdmin = props.accountInfo?.privileges?.find((privilege) => privilege === "ADMIN");
   const navGroups = [
     isAdmin && {
       name: "Admin",
@@ -122,7 +112,7 @@ const ContentPage = (props) => {
           <CvLogo />
         </div>
         <Nav
-          styles={{ root: { width: isNavExpanded ? 180 : 20 } }}
+          styles={{ root: { width: 180 } }}
           groups={navGroups}
           selectedKey={props.navKey}
           onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
@@ -140,20 +130,13 @@ const ContentPage = (props) => {
 
 ContentPage.propTypes = {
   navKey: PropTypes.string,
-  account: PropTypes.object,
-  cvEntity: PropTypes.object,
-  locationHash: PropTypes.string,
-  setSelectedCvId: PropTypes.func.isRequired
+  accountInfo: PropTypes.object,
+  locationHash: PropTypes.string
 };
 
 const select = (state) => ({
-  account: state.authentication.accountInfo,
-  cvEntity: state.safe.cv,
+  accountInfo: state.authentication.accountInfo,
   locationHash: state.ui.locationHash
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setSelectedCvId: (cvId) => dispatch(setSelectedId("cv", cvId))
-});
-
-export default connect(select, mapDispatchToProps)(ContentPage);
+export default connect(select)(ContentPage);

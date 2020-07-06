@@ -30,7 +30,7 @@ const CvTitle = (props) => {
       <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
         <Text variant="xxLarge">{title}</Text>
         <Stack horizontal
-          tokens={{ childrenGap: 10 }}>
+          tokens={{ childrenGap: "l1" }}>
           <Text variant="large">{role}</Text>
           <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
           <Text variant="large">{dateOfBirth}</Text>

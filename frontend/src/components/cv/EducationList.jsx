@@ -117,19 +117,27 @@ const EducationList = (props) => {
 
   return (
     <Stack styles={viewStyles}>
-      <Stack horizontal>
-        <Text variant="xxLarge">Opleiding</Text>
-        <IconButton
-          iconProps={{ iconName: "Add" }}
-          onClick={onAddItem} />
-        <IconButton
-          iconProps={{ iconName: "Edit" }}
-          disabled={!props.selectedEducationId}
-          onClick={onEditItem} />
-        <IconButton
-          iconProps={{ iconName: "Delete" }}
-          disabled={!props.selectedEducationId}
-          onClick={onDeleteItem} />
+      <Stack horizontal tokens={{childrenGap: "l1"}}>
+        <Stack.Item align="start">
+          <Text variant="xxLarge">Opleiding</Text>
+        </Stack.Item>
+        <Stack.Item align="end">
+          <IconButton
+            iconProps={{ iconName: "Add" }}
+            onClick={onAddItem} />
+        </Stack.Item>
+        <Stack.Item align="end">
+          <IconButton
+            iconProps={{ iconName: "Edit" }}
+            disabled={!props.selectedEducationId}
+            onClick={onEditItem} />
+        </Stack.Item>
+        <Stack.Item align="end">
+          <IconButton
+            iconProps={{ iconName: "Delete" }}
+            disabled={!props.selectedEducationId}
+            onClick={onDeleteItem} />
+        </Stack.Item>
       </Stack>
       <CvDetailsList
         columns={columns}

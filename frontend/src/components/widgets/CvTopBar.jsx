@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { fetchAll, saveAll } from "../../services/safe/safe-actions";
-import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react";
-import { LoginStates, requestToLogin, requestToLogout } from "../../services/authentication/authentication-actions";
+import { saveAll, fetchCvByAccountId } from "../../services/safe/safe-actions";
+import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack, Dialog, DialogFooter, DefaultButton } from "@fluentui/react";
+import { LoginStates, requestLogin } from "../../services/authentication/authentication-actions";
 import { setThemeName } from "../../services/ui/ui-actions";
 import { EventBusConnectionStates } from "../../services/eventBus/eventBus-services";
 import valoriNameImg from "../../static/valori-name.png";
@@ -79,11 +79,11 @@ const CvTopBar = (props) => {
             }
           },
           {
-            key: "fetchAll",
+            key: "fetchCv",
             text: "Ophalen",
             iconProps: { iconName: "CloudDownload" },
             disabled: !props.isConnected,
-            onClick: props.fetchAll
+            onClick: () => props.fetchCv(props.account._id)
           },
           {
             key: "saveAll",
@@ -110,13 +110,23 @@ const CvTopBar = (props) => {
   return (
     <Stack horizontal
       verticalAlign="center"
-      tokens={{ childrenGap: 50 }}>
+      tokens={{ childrenGap: 90}}>
       <img src={valoriNameImg} alt="Valori" height="20em" />
       <Stack.Item grow>
         <CommandBar
           items={items}
           farItems={farItems} />
       </Stack.Item>
+      
+      <Dialog
+        title="Logging in..."
+        isOpen={props.loginState == LoginStates.LOGGING_IN}>
+        <DialogFooter>
+          <DefaultButton
+            text="Cancel"
+            onClick={props.requestToLogout} />
+        </DialogFooter>
+      </Dialog>
     </Stack>
   );
 };
@@ -129,7 +139,7 @@ CvTopBar.propTypes = {
   setThemeName: PropTypes.func.isRequired,
   requestToLogin: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
-  fetchAll: PropTypes.func.isRequired,
+  fetchCv: PropTypes.func.isRequired,
   saveAll: PropTypes.func.isRequired
 };
 
@@ -142,9 +152,9 @@ const select = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setThemeName: (themeName) => dispatch(setThemeName(themeName)),
-  requestToLogin: () => dispatch(requestToLogin()),
-  requestToLogout: () => dispatch(requestToLogout()),
-  fetchAll: () => dispatch(fetchAll()),
+  requestToLogin: () => dispatch(requestLogin(true)),
+  requestToLogout: () => dispatch(requestLogin(false)),
+  fetchCv: (accountId) => dispatch(fetchCvByAccountId(accountId)),
   saveAll: () => dispatch(saveAll())
 });
 
