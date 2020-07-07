@@ -9,16 +9,12 @@
   "account": {
     "id": "ID",
     "name": "STRING",
+    "dateOfBirth": "DATE",
+    "residence": "STRING",
     "privileges": [
       "ENUM_PRIVILEGE"
     ],
     "businessUnitIds": []
-  },
-  "profile": {
-    "id": "ID",
-    "accountId": "ID",
-    "dateOfBirth": "DATE",
-    "residence": "STRING"
   },
   "cv": {
     "id": "ID",

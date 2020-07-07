@@ -13,21 +13,14 @@
     "uuid-account-1": {
       "_id": "uuid-account-1",
       "name": "Rob Bosman",
+      "dateOfBirth": "1965-09-06",
+      "residence": "Leusden",
       "privileges": [
         "ADMIN"
       ],
       "businessUnitIds": [
         "uuid-businessUnit-1"
       ]
-    }
-  },
-  "profile": {
-    "uuid-profile-1": {
-      "_id": "uuid-profile-1",
-      "accountId": "uuid-account-1",
-      "name": "Rob Bosman",
-      "dateOfBirth": "1965-09-06",
-      "residence": "Leusden"
     }
   },
   "cv": {

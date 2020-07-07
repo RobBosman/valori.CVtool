@@ -5,8 +5,8 @@ import { setWindowError } from "../../redux/error-actions";
 
 export const initializeUI = (dispatch) => {
 
-  window.addEventListener("unhandledrejection", (event) => dispatch(setWindowError(event)));
-  window.addEventListener("error", (event) => dispatch(setWindowError(event)));
+  window.addEventListener("unhandledrejection", (event) => dispatch(setWindowError(event.stack)));
+  window.addEventListener("error", (event) => dispatch(setWindowError(event.error.stack)));
   window.addEventListener("hashchange", () => dispatch(setLocationHash(document.location.hash || "")));
 
   initializeIcons();

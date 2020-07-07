@@ -8,23 +8,18 @@ import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
 
 const Profile = (props) => {
-  // Find the {profile} of the selected {account}.
-  const accountId = props.account?._id;
-  const profile = accountId
-    && props.profileEntity
-    && Object.values(props.profileEntity).find((instance) => instance.accountId === accountId);
 
   const cvContext = {
+    locale: props.locale,
     entity: props.cvEntity,
     entityId: props.selectedCvId,
-    locale: props.locale,
     replaceInstance: props.onCvChange
   };
-  const profileContext = {
-    entity: props.profileEntity,
-    entityId: profile?._id,
+  const accountContext = {
     locale: props.locale,
-    replaceInstance: props.onProfileChange
+    entity: props.accountEntity,
+    entityId: props.cvEntity && props.cvEntity[props.selectedCvId] && props.cvEntity[props.selectedCvId].accountId,
+    replaceInstance: props.onAccountChange
   };
   const { editPaneColor } = useTheme();
   const editStyles = {
@@ -42,7 +37,7 @@ const Profile = (props) => {
       <CvTextField
         label="Naam"
         field="name"
-        instanceContext={profileContext} />
+        instanceContext={accountContext} />
       <CvTextField
         label="Rol"
         localeField='role'
@@ -50,12 +45,12 @@ const Profile = (props) => {
       <CvDatePicker
         label="Geboortedatum"
         field="dateOfBirth"
-        instanceContext={profileContext}
+        instanceContext={accountContext}
         styles={{ root: { width: 140 } }} />
       <CvTextField
         label="Woonplaats"
         field="residence"
-        instanceContext={profileContext} />
+        instanceContext={accountContext} />
       <CvTextField
         label="Profielschets"
         localeField='profile'
@@ -87,26 +82,24 @@ const Profile = (props) => {
 };
 
 Profile.propTypes = {
-  account: PropTypes.object,
-  profileEntity: PropTypes.object,
+  locale: PropTypes.string.isRequired,
   cvEntity: PropTypes.object,
   selectedCvId: PropTypes.string,
-  locale: PropTypes.string,
+  accountEntity: PropTypes.object,
   onCvChange: PropTypes.func.isRequired,
-  onProfileChange: PropTypes.func.isRequired
+  onAccountChange: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
-  account: state.authentication.accountInfo,
-  profileEntity: state.safe.profile,
+  locale: state.ui.locale,
   cvEntity: state.safe.cv,
   selectedCvId: state.ui.selectedId["cv"],
-  locale: state.ui.locale
+  accountEntity: state.safe.account
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onCvChange: (id, instance) => dispatch(replaceSafeInstance("cv", id, instance)),
-  onProfileChange: (id, instance) => dispatch(replaceSafeInstance("profile", id, instance))
+  onAccountChange: (id, instance) => dispatch(replaceSafeInstance("account", id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Profile);

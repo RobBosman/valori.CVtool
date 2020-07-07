@@ -1,15 +1,18 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { of, merge, EMPTY } from "rxjs";
-import { flatMap, map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
+import { of, merge } from "rxjs";
+import { flatMap, map, distinctUntilChanged, switchMap, filter } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 import { epicRegistry } from "../../redux/epicRegistry";
-import { replaceSafeContent, fetchAccountInfo, fetchCvByAccountId } from "../safe/safe-actions";
-import { EventBusConnectionStates } from "../eventBus/eventBus-services";
-import { requestToDisconnectEventBus } from "../eventBus/eventBus-actions";
+import { requestEventBusConnection } from "../eventBus/eventBus-actions";
+import { EventBusConnectionStates, eventBusClient } from "../eventBus/eventBus-services";
+import { replaceSafeContent, fetchCvByAccountId } from "../safe/safe-actions";
+import { fetchAccountInfoFromRemote } from "../authentication/authentication-services";
 
 export const requestLogin = createAction("REQUEST_LOGIN");
 export const setLoginState = createAction("SET_LOGIN_STATE");
+export const fetchAccountInfo = createAction("FETCH_ACCOUNT_INFO");
+export const eraseAccountInfo = createAction("ERASE_ACCOUNT_INFO");
 export const setAccountInfo = createAction("SET_ACCOUNT_INFO");
 
 export const LoginStates = {
@@ -38,62 +41,67 @@ reducerRegistry.register(
 
 epicRegistry.register(
 
-  (action$, state$) => action$.pipe(
+  (action$) => action$.pipe(
     ofType(requestLogin.type),
     switchMap((action) => action.payload
       ? of(
-        // When requested to login then request to connect the EventBus.
+        // When requested to login then fetch the accountInfo data.
         setLoginState(LoginStates.LOGGING_IN),
         fetchAccountInfo("authenticationCode") // TODO obtain authenticationCode
       )
+      : of(
+        // When requested to logout then delete the accountInfo data.
+        setLoginState(LoginStates.LOGGING_OUT),
+        eraseAccountInfo()
+      )
+    )
+  ),
+
+  (action$, state$) => action$.pipe(
+    ofType(fetchAccountInfo.type),
+    map((action) => action.payload),
+    switchMap((authenticationCode) => state$.value.eventBus?.connectionState === EventBusConnectionStates.CONNECTED
+      ? of(authenticationCode).pipe(
+        flatMap((authenticationCode) => fetchAccountInfoFromRemote(authenticationCode, eventBusClient.sendEvent)),
+        map((accountInfo) => setAccountInfo(accountInfo))
+      )
       : merge(
-        // When requested to logout then delete the accountInfo data and request to disconnect the EventBus.
-        of(
-          setLoginState(LoginStates.LOGGING_OUT),
-          setAccountInfo(undefined)
-        ),
-        // When the EventBus is disconnected then update the LoginState.
+        of(requestEventBusConnection(true)),
+        // When the EventBus is connected then fetch the accountInfo data from remote.
         state$.pipe(
-          map((state) => state.eventBus.connectionState),
+          map((state) => state.eventBus?.connectionState),
           distinctUntilChanged(),
-          filter((connectionState) => connectionState === EventBusConnectionStates.DISCONNECTED),
-          flatMap(() => of(
-            setLoginState(LoginStates.LOGGED_OUT),
-            // Once logged out then erase the cv data.
-            replaceSafeContent(undefined)
-          ))
+          filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED),
+          flatMap(() => fetchAccountInfoFromRemote(authenticationCode, eventBusClient.sendEvent)),
+          map((accountInfo) => setAccountInfo(accountInfo))
         )
       )
     )
   ),
 
-  (_action$, state$) => state$.pipe(
-    map((state) => state.authentication?.loginState),
-    distinctUntilChanged(),
-    flatMap((loginState) => {
-      if (loginState === LoginStates.LOGGED_IN) {
-        // Once logged in then fetch the cv data.
-        return of(
-          fetchCvByAccountId(state$.value.authentication.accountInfo._id)
-        );
-      } else if (loginState === LoginStates.LOGGED_OUT) {
-        // Once logged out then erase the cv data.
-        return of(
-          replaceSafeContent(undefined),
-          requestToDisconnectEventBus()
-        );
-      } else {
-        return EMPTY;
-      }
-    })
+  (action$) => action$.pipe(
+    ofType(eraseAccountInfo.type),
+    map((action) => action.payload),
+    flatMap(() => of(
+      setAccountInfo(undefined),
+      requestEventBusConnection(false)
+    ))
   ),
 
   (action$) => action$.pipe(
     ofType(setAccountInfo.type),
     map((action) => action.payload?._id),
-    map((accountId) => accountId
-      ? setLoginState(LoginStates.LOGGED_IN)
-      : setLoginState(LoginStates.LOGGED_OUT)
+    switchMap((accountId) => accountId
+      ? of(
+        setLoginState(LoginStates.LOGGED_IN),
+        // Once logged in then fetch the cv data.
+        fetchCvByAccountId(accountId)
+      )
+      : of(
+        setLoginState(LoginStates.LOGGED_OUT),
+        // Once logged out then erase the cv data.
+        replaceSafeContent(undefined)
+      )
     )
   )
 );

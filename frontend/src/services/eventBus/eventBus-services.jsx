@@ -61,11 +61,10 @@ export class EventBusClient {
   
   disconnectEventBus = () => {
     this._handlersToBeUnregistered.clear();
+    this._eventBus?.enableReconnect(false);
     if (this._eventBus?.state === EventBus.OPEN) {
       this._eventBus.onclosing && this._eventBus.onclosing();
       this._eventBus.close();
-    } else {
-      this._eventBus?.enableReconnect(false);
     }
   };
 
