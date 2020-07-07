@@ -1,4 +1,4 @@
-export const fetchAccountInfo = (authenticationCode, sendEvent) =>
+export const fetchAccountInfoFromRemote = (authenticationCode, sendEvent) =>
   sendEvent("login", { authenticationCode })
     .then((message) => {
       const accountInstances = Object.values(message.body.account || {});

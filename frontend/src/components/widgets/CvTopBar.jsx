@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { saveAll, fetchCvByAccountId } from "../../services/safe/safe-actions";
-import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack, Dialog, DialogFooter, DefaultButton } from "@fluentui/react";
+import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react";
 import { LoginStates, requestLogin } from "../../services/authentication/authentication-actions";
 import { setThemeName } from "../../services/ui/ui-actions";
 import { EventBusConnectionStates } from "../../services/eventBus/eventBus-services";
@@ -117,16 +117,6 @@ const CvTopBar = (props) => {
           items={items}
           farItems={farItems} />
       </Stack.Item>
-      
-      <Dialog
-        title="Logging in..."
-        isOpen={props.loginState == LoginStates.LOGGING_IN}>
-        <DialogFooter>
-          <DefaultButton
-            text="Cancel"
-            onClick={props.requestToLogout} />
-        </DialogFooter>
-      </Dialog>
     </Stack>
   );
 };
