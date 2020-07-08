@@ -1,5 +1,5 @@
-export const fetchAccountInfoFromRemote = (authenticationCode, sendEvent) =>
-  sendEvent("login", { authenticationCode })
+export const fetchAccountInfoFromRemote = (authorizationCode, sendEvent) =>
+  sendEvent("login", { authorizationCode })
     .then((message) => {
       const accountInstances = Object.values(message.body.account || {});
       const accountInfo = accountInstances && accountInstances[0];

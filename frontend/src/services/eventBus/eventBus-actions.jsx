@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { ofType } from "redux-observable";
-import { map, ignoreElements, filter, distinctUntilChanged, flatMap } from "rxjs/operators";
+import { map, ignoreElements, filter, distinctUntilChanged, mergeMap } from "rxjs/operators";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 import { epicRegistry } from "../../redux/epicRegistry";
 import { eventBusClient, EventBusConnectionStates } from "./eventBus-services";
@@ -28,7 +28,7 @@ epicRegistry.register(
   // When requested to connect the EventBus, monitor its connection state.
   (action$, state$) => action$.pipe(
     ofType(requestEventBusConnection.type),
-    flatMap((action) => {
+    mergeMap((action) => {
       const connectionState = state$.value.eventBus.connectionState;
       if (action.payload && connectionState === EventBusConnectionStates.DISCONNECTED) {
         return eventBusClient.connectAndMonitorEventBus();

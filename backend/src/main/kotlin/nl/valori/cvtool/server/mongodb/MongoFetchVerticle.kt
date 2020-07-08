@@ -6,8 +6,8 @@ import io.vertx.core.Future
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import io.vertx.rxjava.core.AbstractVerticle
-import io.vertx.rxjava.core.eventbus.Message
+import io.vertx.reactivex.core.AbstractVerticle
+import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.reactive.RSSubscriberCollector
 import org.bson.BsonDocument
 import org.bson.Document
@@ -31,7 +31,7 @@ internal class MongoFetchVerticle : AbstractVerticle() {
         .consumer<JsonObject>(ADDRESS_FETCH)
         .toObservable()
         .subscribe(
-            { handleFetchRequests(it, mongoDatabase) },
+            { handleRequests(it, mongoDatabase) },
             { log.error("Vertx error", it) })
   }
 
@@ -66,7 +66,7 @@ internal class MongoFetchVerticle : AbstractVerticle() {
    *   }
    * </pre>
    */
-  private fun handleFetchRequests(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
+  private fun handleRequests(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
     message.body().map.entries.stream()
         .map { (entity, criteriaArray) ->
           if (criteriaArray !is JsonArray) throw IllegalArgumentException("Search criteria must be of type JsonArray")

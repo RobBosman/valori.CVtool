@@ -1,14 +1,14 @@
 package nl.valori.cvtool.server
 
+import io.reactivex.Single
 import io.vertx.core.Future
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
-import io.vertx.rxjava.core.AbstractVerticle
-import io.vertx.rxjava.core.eventbus.Message
+import io.vertx.reactivex.core.AbstractVerticle
+import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.mongodb.ADDRESS_FETCH
 import org.slf4j.LoggerFactory
-import rx.Single
 
 const val ADDRESS_FETCH_CV = "fetch.cv"
 
@@ -34,8 +34,9 @@ internal class CvVerticle : AbstractVerticle() {
                         message.reply(it)
                       },
                       {
-                        log.warn("Error fetching cv data", it)
-                        message.fail(RECIPIENT_FAILURE.toInt(), "Error fetching cv data: ${it.message}")
+                        val errorMsg = "Error fetching cv data: ${it.message}"
+                        log.warn(errorMsg)
+                        message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
                       })
             },
             {

@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { of, merge } from "rxjs";
-import { flatMap, map, distinctUntilChanged, switchMap, filter } from "rxjs/operators";
+import { mergeMap, map, distinctUntilChanged, switchMap, filter } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 import { epicRegistry } from "../../redux/epicRegistry";
@@ -47,7 +47,7 @@ epicRegistry.register(
       ? of(
         // When requested to login then fetch the accountInfo data.
         setLoginState(LoginStates.LOGGING_IN),
-        fetchAccountInfo("authenticationCode") // TODO obtain authenticationCode
+        fetchAccountInfo("authorizationCode") // TODO obtain authorizationCode
       )
       : of(
         // When requested to logout then delete the accountInfo data.
@@ -60,9 +60,9 @@ epicRegistry.register(
   (action$, state$) => action$.pipe(
     ofType(fetchAccountInfo.type),
     map((action) => action.payload),
-    switchMap((authenticationCode) => state$.value.eventBus?.connectionState === EventBusConnectionStates.CONNECTED
-      ? of(authenticationCode).pipe(
-        flatMap((authenticationCode) => fetchAccountInfoFromRemote(authenticationCode, eventBusClient.sendEvent)),
+    switchMap((authorizationCode) => state$.value.eventBus?.connectionState === EventBusConnectionStates.CONNECTED
+      ? of(authorizationCode).pipe(
+        mergeMap(() => fetchAccountInfoFromRemote(authorizationCode, eventBusClient.sendEvent)),
         map((accountInfo) => setAccountInfo(accountInfo))
       )
       : merge(
@@ -72,7 +72,7 @@ epicRegistry.register(
           map((state) => state.eventBus?.connectionState),
           distinctUntilChanged(),
           filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED),
-          flatMap(() => fetchAccountInfoFromRemote(authenticationCode, eventBusClient.sendEvent)),
+          mergeMap(() => fetchAccountInfoFromRemote(authorizationCode, eventBusClient.sendEvent)),
           map((accountInfo) => setAccountInfo(accountInfo))
         )
       )
@@ -82,7 +82,7 @@ epicRegistry.register(
   (action$) => action$.pipe(
     ofType(eraseAccountInfo.type),
     map((action) => action.payload),
-    flatMap(() => of(
+    mergeMap(() => of(
       setAccountInfo(undefined),
       requestEventBusConnection(false)
     ))

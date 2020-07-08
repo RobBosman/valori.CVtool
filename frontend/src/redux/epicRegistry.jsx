@@ -1,4 +1,4 @@
-import { BehaviorSubject, of, EMPTY } from "rxjs";
+import { BehaviorSubject, of, EMPTY, merge } from "rxjs";
 import { mergeMap, catchError } from "rxjs/operators";
 import { setEpicError } from "./error-actions";
 
@@ -13,8 +13,12 @@ export class EpicRegistry {
 
   rootEpic = (...args$) =>
     this._epic$.pipe(
-      mergeMap((epic) => epic(...args$)),
-      catchError((error) => of(setEpicError(error.stack)))
+      mergeMap((epic) => epic(...args$).pipe(
+        catchError((error, source$) => merge(
+          of(setEpicError(error.stack || error.error?.stack || error.message)),
+          source$)
+        )
+      )),
     );
 }
 

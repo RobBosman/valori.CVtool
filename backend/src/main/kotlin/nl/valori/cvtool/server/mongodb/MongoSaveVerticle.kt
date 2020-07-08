@@ -7,15 +7,14 @@ import com.mongodb.client.model.ReplaceOptions
 import com.mongodb.client.model.WriteModel
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
+import io.reactivex.Flowable
 import io.vertx.core.Future
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
-import io.vertx.rxjava.core.AbstractVerticle
-import io.vertx.rxjava.core.eventbus.Message
-import nl.valori.reactive.RSSubscriberCollector
+import io.vertx.reactivex.core.AbstractVerticle
+import io.vertx.reactivex.core.eventbus.Message
 import org.bson.Document
 import org.slf4j.LoggerFactory
-import java.util.stream.Collectors.joining
 import java.util.stream.Collectors.toList
 
 const val ADDRESS_SAVE = "save"
@@ -35,7 +34,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
         .consumer<JsonObject>(ADDRESS_SAVE)
         .toObservable()
         .subscribe(
-            { handleSaveRequest(it, mongoDatabase) },
+            { handleRequest(it, mongoDatabase) },
             { log.error("Vertx error", it) })
   }
 
@@ -62,26 +61,27 @@ internal class MongoSaveVerticle : AbstractVerticle() {
    *   }
    * </pre>
    */
-  private fun handleSaveRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) {
-    message.body().map.entries.stream()
-        .map { (entity, instances) ->
+  private fun handleRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) {
+    Flowable
+        .fromIterable(message.body().map.entries)
+        .map { it.key to it.value }
+        .flatMap { (entity, instances) ->
           if (instances !is JsonObject) throw IllegalArgumentException("Expected JsonObject here")
-
           log.debug("Vertx saving instances of '$entity'...")
-          entity to mongoDatabase
+          mongoDatabase
               .getCollection(entity)
               .bulkWrite(composeWriteRequests(instances.map))
         }
-        .collect(RSSubscriberCollector())
         .subscribe(
+            {},
             {
-              log.debug("MongoDB saved documents")
-              message.reply("Successfully saved documents")
-            },
-            {
-              val errorMsg = composeErrorMessage(it)
+              val errorMsg = "Error saving documents: ${it.message}"
               log.warn(errorMsg)
               message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+            },
+            {
+              log.debug("MongoDB saved documents (onComplete)")
+              message.reply("Successfully saved documents")
             })
   }
 
@@ -122,16 +122,6 @@ internal class MongoSaveVerticle : AbstractVerticle() {
       ReplaceOneModel(Filters.eq("_id", id), instanceDoc, ReplaceOptions().upsert(true))
     } else {
       DeleteOneModel(Filters.eq("_id", id))
-    }
-  }
-
-  private fun composeErrorMessage(errors: Map<String, Throwable>): String {
-    val errorMessages = errors.values.stream()
-        .map(Throwable::message)
-        .collect(joining("\n\t"))
-    return when (errors.size) {
-      1 -> "MongoDB error: $errorMessages"
-      else -> "${errors.size} MongoDB errors:\n\t$errorMessages"
     }
   }
 }
