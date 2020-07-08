@@ -16,9 +16,9 @@ export class EpicRegistry {
       mergeMap((epic) => epic(...args$).pipe(
         catchError((error, source$) => merge(
           of(setEpicError(error.stack || error.error?.stack || error.message)),
-          source$)
-        )
-      )),
+          source$
+        ))
+      ))
     );
 }
 
