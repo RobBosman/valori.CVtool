@@ -1,5 +1,5 @@
 import EventBus from "vertx3-eventbus-client";
-import { Observable } from "rxjs";
+import { Subject } from "rxjs";
 
 const CONNECT_URL = "http://localhost:80/eventbus"; // TODO - specify via environment variable.
 const CONNECT_OPTIONS = {
@@ -23,48 +23,53 @@ export class EventBusClient {
     this._eventBus = null;
     this._handlers = new Set();
     this._handlersToBeUnregistered = new Set();
+    this._connectionStateSubject = new Subject();
   }
 
-  connectAndMonitorEventBus = () =>
-    new Observable((subscriber) => {
-      console.debug("Creating the vert.x EventBus.connecting...");
-      this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
-      this._eventBus.enableReconnect(true);
-      subscriber.next(EventBusConnectionStates.CONNECTING);
+  connectEventBus = () => {
+    if (this._eventBus?.sockJSConn) {
+      this._eventBus.close();
+    }
+    this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
+    this._eventBus.enableReconnect(true);
+    console.debug("The vert.x EventBus is connecting...");
+    this._connectionStateSubject.next(EventBusConnectionStates.CONNECTING);
 
-      this._eventBus.onopen = () => {
-        console.debug("The vert.x EventBus is connected.");
-        subscriber.next(EventBusConnectionStates.CONNECTED);
-      };
+    this._eventBus.onopen = () => {
+      console.debug("The vert.x EventBus is connected.");
+      this._connectionStateSubject.next(EventBusConnectionStates.CONNECTED);
+    };
 
-      this._eventBus.onclosing = () => {
-        console.debug("The vert.x EventBus is disconnecting...");
-        subscriber.next(EventBusConnectionStates.DISCONNECTING);
-      };
+    this._eventBus.onclose = () => {
+      if (this._eventBus.reconnectTimerID) {
+        console.debug("The vert.x EventBus is re-connecting...");
+        this._connectionStateSubject.next(EventBusConnectionStates.CONNECTING);
+      } else {
+        console.debug("The vert.x EventBus is disconnected.");
+        this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTED);
+        this._eventBus = null;
+      }
+    };
 
-      this._eventBus.onclose = () => {
-        if (this._eventBus.reconnectTimerID) {
-          console.debug("The vert.x EventBus is (re)connecting...");
-          subscriber.next(EventBusConnectionStates.CONNECTING);
-        } else {
-          console.debug("The vert.x EventBus is disconnected.");
-          subscriber.next(EventBusConnectionStates.DISCONNECTED);
-          subscriber.complete();
-        }
-      };
+    this._eventBus.onerror = (error) => {
+      console.debug("An error occurred on the vert.x EventBus.", error);
+      this._connectionStateSubject.error(error);
+      this._eventBus = null;
+    };
+  }
 
-      this._eventBus.onerror = (error) => {
-        console.debug("An error occurred on the vert.x EventBus.", error);
-        subscriber.error(error);
-      };
-    });
+  monitorEventBus = () => this._connectionStateSubject.asObservable();
   
   disconnectEventBus = () => {
+    console.debug("The vert.x EventBus is disconnecting...");
+    this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTING);
     this._handlersToBeUnregistered.clear();
-    this._eventBus?.enableReconnect(false);
-    if (this._eventBus?.state === EventBus.OPEN) {
-      this._eventBus.onclosing && this._eventBus.onclosing();
+    if (this._eventBus?.sockJSConn) {
       this._eventBus.close();
+    } else if (this._eventBus) {
+      this._eventBus.enableReconnect(false);
+      console.debug("The vert.x EventBus is disconnected.");
+      this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTED);
     }
   };
 

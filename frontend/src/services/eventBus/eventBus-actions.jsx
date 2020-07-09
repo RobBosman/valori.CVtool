@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { ofType } from "redux-observable";
-import { map, ignoreElements, filter, distinctUntilChanged, mergeMap } from "rxjs/operators";
+import { map, ignoreElements, filter, distinctUntilChanged, mergeMap, take } from "rxjs/operators";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 import { epicRegistry } from "../../redux/epicRegistry";
 import { eventBusClient, EventBusConnectionStates } from "./eventBus-services";
@@ -25,20 +25,25 @@ reducerRegistry.register(
 
 epicRegistry.register(
 
+  // Monitor the EventBus connection state.
+  (_action$, state$) => state$.pipe(
+    take(1),
+    mergeMap(() => eventBusClient.monitorEventBus()),
+    map((connectionState) => setEventBusConnectionState(connectionState))
+  ),
+
   // When requested to connect the EventBus, monitor its connection state.
   (action$, state$) => action$.pipe(
     ofType(requestEventBusConnection.type),
     mergeMap((action) => {
       const connectionState = state$.value.eventBus.connectionState;
       if (action.payload && connectionState === EventBusConnectionStates.DISCONNECTED) {
-        return eventBusClient.connectAndMonitorEventBus();
-      }
-      if (!action.payload && connectionState !== EventBusConnectionStates.DISCONNECTED) {
+        eventBusClient.connectEventBus();
+      } else if (!action.payload && connectionState !== EventBusConnectionStates.DISCONNECTED) {
         eventBusClient.disconnectEventBus();
       }
       return EMPTY;
-    }),
-    map((connectionState) => setEventBusConnectionState(connectionState))
+    })
   ),
 
   // When the EventBus connection state changes to CONNECTED, re-register all eventHandlers.
