@@ -7,7 +7,7 @@
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
       <!-- see https://logback.qos.ch/manual/layouts.html -->
-      <Pattern>%d{HH:mm:ss.SSS} %-41logger{40} [%level] %msg%n%ex</Pattern>
+      <Pattern>%d{HH:mm:ss.SSS} %-31logger{30} [%level] %msg%n%ex</Pattern>
     </layout>
   </appender>
 

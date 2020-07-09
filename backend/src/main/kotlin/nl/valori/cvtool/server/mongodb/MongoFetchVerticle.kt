@@ -2,17 +2,16 @@ package nl.valori.cvtool.server.mongodb
 
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
+import io.reactivex.Flowable
+import io.reactivex.Single
 import io.vertx.core.Future
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
-import nl.valori.reactive.RSSubscriberCollector
 import org.bson.BsonDocument
-import org.bson.Document
 import org.slf4j.LoggerFactory
-import java.util.stream.Collectors.joining
 
 const val ADDRESS_FETCH = "fetch"
 
@@ -67,47 +66,41 @@ internal class MongoFetchVerticle : AbstractVerticle() {
    * </pre>
    */
   private fun handleRequests(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
-    message.body().map.entries.stream()
-        .map { (entity, criteriaArray) ->
-          if (criteriaArray !is JsonArray) throw IllegalArgumentException("Search criteria must be of type JsonArray")
+      Flowable
+          .fromIterable(message.body().map.entries)
+          .flatMap { fetchInstancesOfEntity(it.key, it.value, mongoDatabase).toFlowable() }
+          .reduceWith(
+              { JsonObject() },
+              { resultJson, (entity, instanceJson) ->
+                resultJson.put(entity, instanceJson)
+              })
+          .subscribe(
+              { fetchResult ->
+                log.debug("Successfully fetched instances of ${fetchResult.map.size} entities")
+                message.reply(fetchResult)
+              },
+              {
+                val errorMsg = "Error fetching data: ${it.message}"
+                log.warn(errorMsg)
+                message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+              })
 
-          val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
-          log.debug("Vertx fetching '$entity' documents using criteria [$criteria]")
-          entity to mongoDatabase
+  private fun fetchInstancesOfEntity(entity: String, criteriaArray: Any, mongoDatabase: MongoDatabase): Single<Pair<String, JsonObject>> {
+    if (criteriaArray !is JsonArray)
+      throw IllegalArgumentException("Error fetching data: search criteria must be of type JsonArray")
+    val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
+    return Flowable
+        .defer {
+          log.debug("Vertx fetching '$entity' documents using criteria [$criteria]...")
+          mongoDatabase
               .getCollection(entity)
               .find(BsonDocument.parse(criteria))
         }
-        .collect(RSSubscriberCollector())
-        .subscribeAndCollect(
-            { fetchedInstances ->
-              log.debug("Successfully fetched instances of ${fetchedInstances.size} entities")
-              message.reply(composeReplyJson(fetchedInstances))
-            },
-            {
-              val errorMsg = composeErrorMessage(it)
-              log.warn(errorMsg)
-              message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+        .reduceWith(
+            { JsonObject() },
+            { instanceJson, instance ->
+              instanceJson.put(instance.getString("_id"), instance)
             })
-
-  private fun composeReplyJson(fetchedInstances: Map<String, Collection<Document>>): JsonObject {
-    val resultJson = JsonObject()
-    fetchedInstances.entries.stream()
-        .forEach { (entity, instances) ->
-          val instancesJson = JsonObject()
-          instances.stream()
-              .forEach { instance -> instancesJson.put(instance.getString("_id"), instance) }
-          resultJson.put(entity, instancesJson)
-        }
-    return resultJson
-  }
-
-  private fun composeErrorMessage(errors: Map<String, Throwable>): String {
-    val errorMessages = errors.values.stream()
-        .map(Throwable::message)
-        .collect(joining("\n\t"))
-    return when (errors.size) {
-      1 -> "MongoDB error: $errorMessages"
-      else -> "${errors.size} MongoDB errors:\n\t$errorMessages"
-    }
+        .map { entity to it }
   }
 }

@@ -66,8 +66,8 @@ internal class CvVerticle : AbstractVerticle() {
 
   private fun composeCvCriteria(accountId: String, cvId: String?) =
       JsonObject("""{
-          |  "account": [{ "_id": "$accountId" }],
           |  "cv": [{ "_id": "$cvId" }],
+          |  "account": [{ "_id": "$accountId" }],
           |  "education": [{ "cvId": "$cvId" }],
           |  "skill": [{ "cvId": "$cvId" }],
           |  "publication": [{ "cvId": "$cvId" }],
