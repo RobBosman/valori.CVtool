@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { of, merge } from "rxjs";
-import { mergeMap, map, distinctUntilChanged, switchMap, filter } from "rxjs/operators";
+import { mergeMap, map, switchMap, filter } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 import { epicRegistry } from "../../redux/epicRegistry";
@@ -41,6 +41,7 @@ reducerRegistry.register(
 
 epicRegistry.register(
 
+  // Handle requests to login/out.
   (action$) => action$.pipe(
     ofType(requestLogin.type),
     switchMap((action) => action.payload
@@ -57,10 +58,11 @@ epicRegistry.register(
     )
   ),
 
-  (action$, state$) => action$.pipe(
+  // Fetch the accountInfo. But first ensure the EventBus is connected.
+  (action$) => action$.pipe(
     ofType(fetchAccountInfo.type),
     map((action) => action.payload),
-    switchMap((authorizationCode) => state$.value.eventBus?.connectionState === EventBusConnectionStates.CONNECTED
+    switchMap((authorizationCode) => eventBusClient.getConnectionState() === EventBusConnectionStates.CONNECTED
       ? of(authorizationCode).pipe(
         mergeMap(() => fetchAccountInfoFromRemote(authorizationCode, eventBusClient.sendEvent)),
         map((accountInfo) => setAccountInfo(accountInfo))
@@ -68,9 +70,7 @@ epicRegistry.register(
       : merge(
         of(requestEventBusConnection(true)),
         // When the EventBus is connected then fetch the accountInfo data from remote.
-        state$.pipe(
-          map((state) => state.eventBus?.connectionState),
-          distinctUntilChanged(),
+        eventBusClient.monitorConnectionState().pipe(
           filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED),
           mergeMap(() => fetchAccountInfoFromRemote(authorizationCode, eventBusClient.sendEvent)),
           map((accountInfo) => setAccountInfo(accountInfo))
@@ -79,6 +79,7 @@ epicRegistry.register(
     )
   ),
 
+  // Erase the accountInfo and close the EventBus connection.
   (action$) => action$.pipe(
     ofType(eraseAccountInfo.type),
     map((action) => action.payload),
@@ -88,6 +89,7 @@ epicRegistry.register(
     ))
   ),
 
+  // Store or clear the accountInfo (and other data).
   (action$) => action$.pipe(
     ofType(setAccountInfo.type),
     map((action) => action.payload?._id),

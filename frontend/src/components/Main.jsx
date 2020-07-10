@@ -7,14 +7,12 @@ import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import CvTopBar from "./widgets/CvTopBar";
 import PulseMonitor from "../utils/PulseMonitor";
-import LoginDialog from "./LoginDialog";
 
 const Main = (props) => {
 
   return (
     <Fabric>
       <CvTopBar />
-      <LoginDialog />
       {props.isLoggedIn ? <ContentPage /> : <LoginPage />}
       <PulseMonitor />
     </Fabric>

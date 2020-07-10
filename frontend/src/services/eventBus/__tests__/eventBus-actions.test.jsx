@@ -6,7 +6,7 @@ describe("eventBus-actions", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 
-  it("should reduce setEventBusConnectionStat[0]", () => {
+  it("should reduce setEventBusConnectionState[0]", () => {
     let state = reducer(undefined, setEventBusConnectionState(EventBusConnectionStates.DISCONNECTED));
     expect(state.eventBus.connectionState)
       .toBe(EventBusConnectionStates.DISCONNECTED);

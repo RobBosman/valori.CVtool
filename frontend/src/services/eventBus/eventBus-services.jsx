@@ -1,5 +1,6 @@
 import EventBus from "vertx3-eventbus-client";
-import { Subject } from "rxjs";
+import { BehaviorSubject } from "rxjs";
+import { distinctUntilChanged, filter, tap } from "rxjs/operators";
 
 const CONNECT_URL = "http://localhost:80/eventbus"; // TODO - specify via environment variable.
 const CONNECT_OPTIONS = {
@@ -22,32 +23,41 @@ export class EventBusClient {
   constructor() {
     this._eventBus = null;
     this._handlers = new Set();
-    this._handlersToBeUnregistered = new Set();
-    this._connectionStateSubject = new Subject();
+    this._connectionStateSubject = new BehaviorSubject(EventBusConnectionStates.DISCONNECTED);
+
+    // Make sure all event handlers are (re-)registered each time the EventBus connects.
+    this.monitorConnectionState()
+      .pipe(
+        tap((connectionState) => console.debug(`The vert.x EventBus is ${connectionState}.`)),
+        filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED)
+      )
+      .subscribe(() => this.registerEventHandlers());
   }
 
-  monitorConnectionState = () => this._connectionStateSubject.asObservable();
+  getConnectionState = () =>
+    this._connectionStateSubject.value;
+
+  monitorConnectionState = () =>
+    this._connectionStateSubject.asObservable().pipe(
+      distinctUntilChanged()
+    );
 
   connectEventBus = () => {
     if (this._eventBus?.sockJSConn) {
       this._eventBus.close();
     }
+
     this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
     this._eventBus.enableReconnect(true);
-    console.debug("The vert.x EventBus is connecting...");
     this._connectionStateSubject.next(EventBusConnectionStates.CONNECTING);
 
-    this._eventBus.onopen = () => {
-      console.debug("The vert.x EventBus is connected.");
+    this._eventBus.onopen = () =>
       this._connectionStateSubject.next(EventBusConnectionStates.CONNECTED);
-    };
 
     this._eventBus.onclose = () => {
       if (this._eventBus.reconnectTimerID) {
-        console.debug("The vert.x EventBus is re-connecting...");
         this._connectionStateSubject.next(EventBusConnectionStates.CONNECTING);
       } else {
-        console.debug("The vert.x EventBus is disconnected.");
         this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTED);
         this._eventBus = null;
       }
@@ -60,14 +70,11 @@ export class EventBusClient {
   }
   
   disconnectEventBus = () => {
-    console.debug("The vert.x EventBus is disconnecting...");
     this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTING);
-    this._handlersToBeUnregistered.clear();
     if (this._eventBus?.sockJSConn) {
       this._eventBus.close();
     } else if (this._eventBus) {
       this._eventBus.enableReconnect(false);
-      console.debug("The vert.x EventBus is disconnected.");
       this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTED);
     }
   };
@@ -87,9 +94,7 @@ export class EventBusClient {
 
   addEventHandler = (handler) =>
     new Promise((_resolve, _reject) => {
-      if (this._handlers.has(handler)) {
-        _resolve();
-      } else {
+      if (!this._handlers.has(handler)) {
         this._handlers.add(handler);
         if (this._eventBus?.state === EventBus.OPEN) {
           this._eventBus.registerHandler(
@@ -99,14 +104,14 @@ export class EventBusClient {
         } else {
           _resolve();
         }
+      } else {
+        _resolve();
       }
     });
 
   removeEventHandler = (handler) =>
     new Promise((_resolve, _reject) => {
-      if (!this._handlers.has(handler)) {
-        _resolve();
-      } else {
+      if (this._handlers.has(handler)) {
         this._handlers.delete(handler);
         if (this._eventBus?.state === EventBus.OPEN) {
           this._eventBus.unregisterHandler(
@@ -114,27 +119,20 @@ export class EventBusClient {
             (error, message) => error ? _reject(error) : _resolve(message)
           );
         } else {
-          this._handlersToBeUnregistered.add(handler);
           _resolve();
         }
+      } else {
+        _resolve();
       }
     });
 
-  refreshHandlerRegistrations = () => {
-    for (let i = this._handlersToBeUnregistered.size - 1; i >= 0; i--) { // loop reversed, so we can 'shrink' the list
-      const handler = this._handlersToBeUnregistered[i];
-      if (handler && this._eventBus?.state === EventBus.OPEN) {
-        this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
-        this._handlersToBeUnregistered.delete(handler);
-      }
-    }
+  registerEventHandlers = () =>
     this._handlers.forEach(handler => {
       if (this._eventBus?.state === EventBus.OPEN) {
         this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
         this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
       }
     });
-  };
 }
 
 export const eventBusClient = new EventBusClient();

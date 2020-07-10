@@ -54,21 +54,29 @@ const ExperienceEdit = (props) => {
           label="Opdracht"
           localeField="assignment"
           instanceContext={experienceContext}
+          multiline
+          autoAdjustHeight
           styles={{ dropdown: { width: 400 } }} />
         <CvTextField
           label="Activiteiten"
           localeField="activities"
           instanceContext={experienceContext}
+          multiline
+          autoAdjustHeight
           styles={{ dropdown: { width: 400 } }} />
         <CvTextField
           label="Resultaten"
           localeField="results"
           instanceContext={experienceContext}
+          multiline
+          autoAdjustHeight
           styles={{ dropdown: { width: 400 } }} />
         <CvTextField
           label="Keywords"
           localeField="keywords"
           instanceContext={experienceContext}
+          multiline
+          autoAdjustHeight
           styles={{ dropdown: { width: 400 } }} />
         <CvSpinButton
           label="Sorteer index"
