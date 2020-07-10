@@ -26,6 +26,8 @@ export class EventBusClient {
     this._connectionStateSubject = new Subject();
   }
 
+  monitorConnectionState = () => this._connectionStateSubject.asObservable();
+
   connectEventBus = () => {
     if (this._eventBus?.sockJSConn) {
       this._eventBus.close();
@@ -53,12 +55,9 @@ export class EventBusClient {
 
     this._eventBus.onerror = (error) => {
       console.debug("An error occurred on the vert.x EventBus.", error);
-      this._connectionStateSubject.error(error);
-      this._eventBus = null;
+      throw error;
     };
   }
-
-  monitorEventBus = () => this._connectionStateSubject.asObservable();
   
   disconnectEventBus = () => {
     console.debug("The vert.x EventBus is disconnecting...");

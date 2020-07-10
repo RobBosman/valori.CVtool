@@ -28,7 +28,7 @@ epicRegistry.register(
   // Monitor the EventBus connection state.
   (_action$, state$) => state$.pipe(
     take(1),
-    mergeMap(() => eventBusClient.monitorEventBus()),
+    mergeMap(() => eventBusClient.monitorConnectionState()),
     map((connectionState) => setEventBusConnectionState(connectionState))
   ),
 
