@@ -26,29 +26,24 @@ object Main {
 
   fun run() {
     val options = VertxOptions()
-    // allow blocking threads for max 10 minutes (for debugging)
     if (log.isDebugEnabled)
-      options.blockedThreadCheckInterval = 1_000 * 60 * 10
+      options.blockedThreadCheckInterval = 1_000 * 60 * 10 // allow blocking threads for max 10 minutes (for debugging)
 
     val vertx = Vertx.vertx(options)
-    ConfigRetriever.create(
-        vertx,
-        ConfigRetrieverOptions()
-            .addStore(ConfigStoreOptions()
-                .setType("env")
-                .setConfig(JsonObject())))
+    ConfigRetriever
+        .create(
+            vertx,
+            ConfigRetrieverOptions()
+                .addStore(ConfigStoreOptions()
+                    .setType("env")
+                    .setConfig(JsonObject())
+                )
+        )
         .getConfig { config ->
           val deploymentOptions = DeploymentOptions().setConfig(config.result())
           verticlesToDeploy
               .forEach { deployVerticle(vertx, it.java.name, deploymentOptions) }
         }
-
-    // run server for max 10 minutes
-//    if (log.isDebugEnabled)
-//      vertx.setTimer(1_000 * 60 * 10) {
-//        vertx.close()
-//        log.info("And... it's gone!")
-//      }
   }
 
   private fun deployVerticle(vertx: Vertx, verticleClassName: String, deploymentOptions: DeploymentOptions) =

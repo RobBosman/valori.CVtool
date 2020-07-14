@@ -22,7 +22,8 @@ internal class AuthVerticle : AbstractVerticle() {
         .toObservable()
         .subscribe(
             { handleRequest(it) },
-            { log.error("Vertx error", it) })
+            { log.error("Vertx error", it) }
+        )
   }
 
   private fun handleRequest(message: Message<JsonObject>) =
@@ -42,7 +43,8 @@ internal class AuthVerticle : AbstractVerticle() {
               {
                 log.warn("Error fetching accountInfo: $it")
                 message.fail(RECIPIENT_FAILURE.toInt(), it.message)
-              })
+              }
+          )
 
   private fun fetchAccountInfo(authorizationCode: String): Single<JsonObject> {
     log.info("Someone logs in with authorizationCode '$authorizationCode'")

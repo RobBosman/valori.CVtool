@@ -18,6 +18,7 @@ internal class HeartbeatVerticle : AbstractVerticle() {
         .map { if (it % 2 == 0L) "tik" else "tik" }
         .subscribe(
             { vertx.eventBus().publish(ADDRESS_SERVER_HEARTBEAT, it) },
-            { log.error("Error: {}", it.message, it) })
+            { log.error("Error: {}", it.message, it) }
+        )
   }
 }

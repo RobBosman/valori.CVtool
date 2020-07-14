@@ -37,7 +37,8 @@ internal class MongoSaveVerticle : AbstractVerticle() {
         .toObservable()
         .subscribe(
             { handleRequest(it, mongoDatabase) },
-            { log.error("Vertx error", it) })
+            { log.error("Vertx error", it) }
+        )
   }
 
   /**
@@ -77,7 +78,8 @@ internal class MongoSaveVerticle : AbstractVerticle() {
               {
                 log.debug("Successfully saved data")
                 message.reply("Successfully saved data")
-              })
+              }
+          )
 
   private fun saveInstancesOfEntity(entity: String, instances: Any, mongoDatabase: MongoDatabase): Publisher<BulkWriteResult> {
     if (instances !is JsonObject)
@@ -111,20 +113,16 @@ internal class MongoSaveVerticle : AbstractVerticle() {
    *   }
    * </pre>
    */
-  private fun composeWriteRequests(
-      instanceMap: Map<String, Any>
-  ): List<WriteModel<Document>> {
-    return instanceMap.entries.stream()
-        .map { (id, instance) -> toWriteModel(id, instance) }
-        .collect(toList())
-  }
+  private fun composeWriteRequests(instanceMap: Map<String, Any>): List<WriteModel<Document>> =
+      instanceMap.entries.stream()
+          .map { (id, instance) -> toWriteModel(id, instance) }
+          .collect(toList())
 
-  private fun toWriteModel(id: String, instance: Any): WriteModel<Document> {
-    return if (instance is JsonObject && instance.getString("_id") == id) {
-      val instanceDoc = Document.parse(instance.encode())
-      ReplaceOneModel(Filters.eq("_id", id), instanceDoc, ReplaceOptions().upsert(true))
-    } else {
-      DeleteOneModel(Filters.eq("_id", id))
-    }
-  }
+  private fun toWriteModel(id: String, instance: Any): WriteModel<Document> =
+      if (instance is JsonObject && instance.getString("_id", "") == id) {
+        val instanceDoc = Document.parse(instance.encode())
+        ReplaceOneModel(Filters.eq("_id", id), instanceDoc, ReplaceOptions().upsert(true))
+      } else {
+        DeleteOneModel(Filters.eq("_id", id))
+      }
 }

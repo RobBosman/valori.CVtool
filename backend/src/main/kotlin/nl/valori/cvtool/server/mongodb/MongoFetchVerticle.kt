@@ -31,7 +31,8 @@ internal class MongoFetchVerticle : AbstractVerticle() {
         .toObservable()
         .subscribe(
             { handleRequests(it, mongoDatabase) },
-            { log.error("Vertx error", it) })
+            { log.error("Vertx error", it) }
+        )
   }
 
   /**
@@ -71,9 +72,8 @@ internal class MongoFetchVerticle : AbstractVerticle() {
           .flatMap { fetchInstancesOfEntity(it.key, it.value, mongoDatabase).toFlowable() }
           .reduceWith(
               { JsonObject() },
-              { resultJson, (entity, instanceJson) ->
-                resultJson.put(entity, instanceJson)
-              })
+              { resultJson, entityJson -> resultJson.mergeIn(entityJson) }
+          )
           .subscribe(
               { fetchResult ->
                 log.debug("Successfully fetched instances of ${fetchResult.map.size} entities")
@@ -83,9 +83,27 @@ internal class MongoFetchVerticle : AbstractVerticle() {
                 val errorMsg = "Error fetching data: ${it.message}"
                 log.warn(errorMsg)
                 message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
-              })
+              }
+          )
 
-  private fun fetchInstancesOfEntity(entity: String, criteriaArray: Any, mongoDatabase: MongoDatabase): Single<Pair<String, JsonObject>> {
+  /**
+   * Returns JSON:
+   * <pre>
+   *   {
+   *     entity_1: {
+   *       XXX: {
+   *         _id: "XXX",
+   *         property: "value"
+   *       },
+   *       YYY: {
+   *         _id: "YYY",
+   *         property: "value"
+   *       }
+   *     }
+   *   }
+   * </pre>
+   */
+  private fun fetchInstancesOfEntity(entity: String, criteriaArray: Any, mongoDatabase: MongoDatabase): Single<JsonObject> {
     if (criteriaArray !is JsonArray)
       throw IllegalArgumentException("Error fetching data: search criteria must be of type JsonArray")
     val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
@@ -98,9 +116,8 @@ internal class MongoFetchVerticle : AbstractVerticle() {
         }
         .reduceWith(
             { JsonObject() },
-            { instanceJson, instance ->
-              instanceJson.put(instance.getString("_id"), instance)
-            })
-        .map { entity to it }
+            { instanceJson, instance -> instanceJson.put(instance.getString("_id"), instance) }
+        )
+        .map { JsonObject().put(entity, it) }
   }
 }

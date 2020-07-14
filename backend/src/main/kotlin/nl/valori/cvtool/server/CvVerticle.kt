@@ -22,32 +22,33 @@ internal class CvVerticle : AbstractVerticle() {
         .consumer<JsonObject>(ADDRESS_FETCH_CV)
         .toObservable()
         .subscribe(
-            { message ->
-              Single
-                  .just(message)
-                  .map { it.body().getString("accountId") }
-                  .doOnSuccess { if (it === null) throw IllegalArgumentException("'accountId' is not specified.") }
-                  .flatMap { accountId -> fetchCvData(accountId) }
-                  .subscribe(
-                      {
-                        log.debug("Successfully fetched cv data")
-                        message.reply(it)
-                      },
-                      {
-                        val errorMsg = "Error fetching cv data: ${it.message}"
-                        log.warn(errorMsg)
-                        message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
-                      })
-            },
-            {
-              log.error("Vertx error", it)
-            })
+            { handleRequest(it) },
+            { log.error("Vertx error", it) }
+        )
   }
+
+  private fun handleRequest(message: Message<JsonObject>) =
+      Single
+          .just(message)
+          .map { it.body().getString("accountId", "") }
+          .doOnSuccess { if (it === "") throw IllegalArgumentException("'accountId' is not specified.") }
+          .flatMap { accountId -> fetchCvData(accountId) }
+          .subscribe(
+              {
+                log.debug("Successfully fetched cv data")
+                message.reply(it)
+              },
+              {
+                val errorMsg = "Error fetching cv data: ${it.message}"
+                log.warn(errorMsg)
+                message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+              }
+          )
 
   private fun fetchCvData(accountId: String): Single<JsonObject> =
       vertx.eventBus()
           .rxRequest<JsonObject>(ADDRESS_FETCH, composeCriteria(accountId), deliveryOptions)
-          .map(::obtainCvId)
+          .map { obtainCvId(it) }
           .map { composeCvCriteria(accountId, it) }
           .flatMap { cvCriteria ->
             vertx.eventBus()
