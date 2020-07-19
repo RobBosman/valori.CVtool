@@ -7,12 +7,13 @@ import { epicRegistry } from "../../redux/epicRegistry";
 import { requestEventBusConnection } from "../eventBus/eventBus-actions";
 import { EventBusConnectionStates, eventBusClient } from "../eventBus/eventBus-services";
 import { replaceSafeContent, fetchCvByAccountId } from "../safe/safe-actions";
-import { fetchAccountInfoFromRemote } from "../authentication/authentication-services";
+import { authorizeAtOpenIdProvider, fetchAccountInfoFromRemote } from "../authentication/authentication-services";
 
-export const requestLogin = createAction("REQUEST_LOGIN");
+export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
+export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
+export const setLoginResponse = createAction("SET_LOGIN_RESPONSE");
 export const setLoginState = createAction("SET_LOGIN_STATE");
 export const fetchAccountInfo = createAction("FETCH_ACCOUNT_INFO");
-export const eraseAccountInfo = createAction("ERASE_ACCOUNT_INFO");
 export const setAccountInfo = createAction("SET_ACCOUNT_INFO");
 
 export const LoginStates = {
@@ -29,6 +30,9 @@ reducerRegistry.register(
       loginState: LoginStates.LOGGED_OUT
     },
     {
+      [setLoginResponse]: (state, action) => {
+        state.loginResponse = action.payload;
+      },
       [setLoginState]: (state, action) => {
         state.loginState = action.payload;
       },
@@ -41,19 +45,34 @@ reducerRegistry.register(
 
 epicRegistry.register(
 
-  // Handle requests to login/out.
+  // Handle requests to login or logout.
   (action$) => action$.pipe(
-    ofType(requestLogin.type),
-    switchMap((action) => action.payload
-      ? of(
-        // When requested to login then fetch the accountInfo data.
-        setLoginState(LoginStates.LOGGING_IN),
-        fetchAccountInfo("authorizationCode") // TODO obtain authorizationCode
+    ofType(requestLogin.type, requestLogout.type),
+    map((action) => action.type === requestLogin.type),
+    switchMap((mustLogin) => mustLogin
+      ? merge(
+        of(setLoginState(LoginStates.LOGGING_IN)),
+        of(1).pipe(
+          mergeMap(() => authorizeAtOpenIdProvider()),
+          // When requested to login then fetch the accountInfo data.
+          mergeMap((loginResponse) => of(
+            setLoginResponse(loginResponse),
+            setLoginState(LoginStates.LOGGED_IN),
+            // When requested to login then fetch the accountInfo data.
+            requestEventBusConnection(true),
+            fetchAccountInfo(loginResponse.accessToken)
+          ))
+        )
       )
       : of(
-        // When requested to logout then delete the accountInfo data.
         setLoginState(LoginStates.LOGGING_OUT),
-        eraseAccountInfo()
+        // TODO: revoke JWT
+        
+        setLoginResponse(undefined),
+        setLoginState(LoginStates.LOGGED_OUT),
+        // When requested to logout then delete the accountInfo data and disconnect the EventBus.
+        setAccountInfo(undefined),
+        requestEventBusConnection(false)
       )
     )
   ),
@@ -62,48 +81,27 @@ epicRegistry.register(
   (action$) => action$.pipe(
     ofType(fetchAccountInfo.type),
     map((action) => action.payload),
-    switchMap((authorizationCode) => eventBusClient.getConnectionState() === EventBusConnectionStates.CONNECTED
-      ? of(authorizationCode).pipe(
-        mergeMap(() => fetchAccountInfoFromRemote(authorizationCode, eventBusClient.sendEvent)),
+    switchMap((accessToken) => eventBusClient.getConnectionState() === EventBusConnectionStates.CONNECTED
+      ? of(1).pipe(
+        mergeMap(() => fetchAccountInfoFromRemote(accessToken, eventBusClient.sendEvent)),
         map((accountInfo) => setAccountInfo(accountInfo))
       )
-      : merge(
-        of(requestEventBusConnection(true)),
+      : eventBusClient.monitorConnectionState().pipe(
         // When the EventBus is connected then fetch the accountInfo data from remote.
-        eventBusClient.monitorConnectionState().pipe(
-          filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED),
-          mergeMap(() => fetchAccountInfoFromRemote(authorizationCode, eventBusClient.sendEvent)),
-          map((accountInfo) => setAccountInfo(accountInfo))
-        )
+        filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED),
+        mergeMap(() => fetchAccountInfoFromRemote(accessToken, eventBusClient.sendEvent)),
+        map((accountInfo) => setAccountInfo(accountInfo))
       )
     )
-  ),
-
-  // Erase the accountInfo and close the EventBus connection.
-  (action$) => action$.pipe(
-    ofType(eraseAccountInfo.type),
-    map((action) => action.payload),
-    mergeMap(() => of(
-      setAccountInfo(undefined),
-      requestEventBusConnection(false)
-    ))
   ),
 
   // Store or clear the accountInfo (and other data).
   (action$) => action$.pipe(
     ofType(setAccountInfo.type),
     map((action) => action.payload?._id),
-    switchMap((accountId) => accountId
-      ? of(
-        setLoginState(LoginStates.LOGGED_IN),
-        // Once logged in then fetch the cv data.
-        fetchCvByAccountId(accountId)
-      )
-      : of(
-        setLoginState(LoginStates.LOGGED_OUT),
-        // Once logged out then erase the cv data.
-        replaceSafeContent(undefined)
-      )
+    map((accountInfoId) => accountInfoId // When accountInfo is available, then fetch the cv data, otherwise erase it.
+      ? fetchCvByAccountId(accountInfoId)
+      : replaceSafeContent(undefined)
     )
   )
 );

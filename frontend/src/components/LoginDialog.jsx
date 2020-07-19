@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Dialog, DialogFooter, DefaultButton, DialogType } from "@fluentui/react";
-import { requestLogin } from "../services/authentication/authentication-actions";
+import { requestLogout } from "../services/authentication/authentication-actions";
 
 const LoginDialog = (props) => {
 
@@ -41,7 +41,7 @@ LoginDialog.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  requestToLogout: () => dispatch(requestLogin(false))
+  requestToLogout: () => dispatch(requestLogout())
 });
 
 export default connect(null, mapDispatchToProps)(LoginDialog);

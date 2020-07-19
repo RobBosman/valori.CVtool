@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { saveAll, fetchCvByAccountId } from "../../services/safe/safe-actions";
 import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react";
-import { LoginStates, requestLogin } from "../../services/authentication/authentication-actions";
+import { LoginStates, requestLogin, requestLogout } from "../../services/authentication/authentication-actions";
 import { setThemeName } from "../../services/ui/ui-actions";
 import { EventBusConnectionStates } from "../../services/eventBus/eventBus-services";
 import valoriNameImg from "../../static/valori-name.png";
@@ -142,8 +142,8 @@ const select = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setThemeName: (themeName) => dispatch(setThemeName(themeName)),
-  requestToLogin: () => dispatch(requestLogin(true)),
-  requestToLogout: () => dispatch(requestLogin(false)),
+  requestToLogin: () => dispatch(requestLogin()),
+  requestToLogout: () => dispatch(requestLogout()),
   fetchCv: (accountId) => dispatch(fetchCvByAccountId(accountId)),
   saveAll: () => dispatch(saveAll())
 });

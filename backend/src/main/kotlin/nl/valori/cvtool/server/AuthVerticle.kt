@@ -29,12 +29,12 @@ internal class AuthVerticle : AbstractVerticle() {
   private fun handleRequest(message: Message<JsonObject>) =
       Single
           .just(message)
-          .map { it.body().getString("authorizationCode", "") }
+          .map { it.body().getString("accessToken", "") }
           .doOnSuccess {
             if (it === "")
-              throw IllegalArgumentException("Error fetching accountInfo; 'authorizationCode' is not specified.")
+              throw IllegalArgumentException("Error fetching accountInfo; 'accessToken' is not specified.")
           }
-          .flatMap { authorizationCode -> fetchAccountInfo(authorizationCode) }
+          .flatMap { accessToken -> fetchAccountInfo(accessToken) }
           .subscribe(
               {
                 log.debug("Successfully fetched accountInfo")
@@ -46,8 +46,8 @@ internal class AuthVerticle : AbstractVerticle() {
               }
           )
 
-  private fun fetchAccountInfo(authorizationCode: String): Single<JsonObject> {
-    log.info("Someone logs in with authorizationCode '$authorizationCode'")
+  private fun fetchAccountInfo(accessToken: String): Single<JsonObject> {
+    log.info("Someone logs in with accessToken '$accessToken'")
     val accountId = "uuid-account-1" // TODO: determine accountId,
     return vertx.eventBus()
         .rxRequest<JsonObject>(

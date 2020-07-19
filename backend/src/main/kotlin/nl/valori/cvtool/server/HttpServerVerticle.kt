@@ -33,9 +33,6 @@ internal class HttpServerVerticle : AbstractVerticle() {
 
   private fun createRouter(): Router {
     val router = Router.router(vertx)
-    router.route("/login").handler(
-      LoginHandler.create(vertx)
-    )
     router.mountSubRouter("/eventbus",
         SockJSHandler.create(vertx)
             .bridge(createBridgeOptions())
