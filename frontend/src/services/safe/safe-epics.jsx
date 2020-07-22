@@ -3,10 +3,11 @@ import { map, switchMap, distinctUntilChanged } from "rxjs/operators";
 import { fetchCvFromRemote, saveAllToRemote } from "./safe-services";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import { setSelectedId } from "../ui/ui-actions";
-import { fetchCvByAccountId, replaceSafeContent, saveAll } from "./safe-actions";
+import { fetchCvByAccountId, replaceSafeContent, replaceSafeInstance, saveAll } from "./safe-actions";
+import { setAccountInfo } from "../authentication/authentication-actions";
 
 const getCvId = (cvEntity, accountInfoId) =>
-  cvEntity && Object.values(cvEntity).find((cvInstance) => cvInstance.accountId === accountInfoId)?._id;
+  cvEntity && accountInfoId && Object.values(cvEntity).find((cvInstance) => cvInstance.accountId === accountInfoId)?._id;
 
 export const safeEpics = [
   // Fetch accountInfo from the server.
@@ -18,13 +19,11 @@ export const safeEpics = [
   ),
 
   // Select or reset the current cv.
-  (_action$, state$) => state$.pipe(
-    map((state) => ({
-      accountInfoId: state.authentication?.accountInfo?._id,
-      cvEntity: state.safe?.cv
-    })),
+  (action$, state$) => action$.pipe(
+    ofType(setAccountInfo.type, replaceSafeContent.type, replaceSafeInstance.type),
+    map(() => getCvId(state$.value.safe?.cv, state$.value.authentication?.accountInfo?._id)),
     distinctUntilChanged(),
-    map((subState) => setSelectedId("cv", getCvId(subState.cvEntity, subState.accountInfoId)))
+    map((cvId) => setSelectedId("cv", cvId))
   ),
 
   // Send the content of the safe to the server.

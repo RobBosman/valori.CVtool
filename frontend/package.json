@@ -1,7 +1,7 @@
 {
   "author": "Rob Bosman",
   "dependencies": {
-    "@azure/msal-browser": "^2.0.0-beta.4",
+    "@azure/msal-browser": "^2.0.0",
     "@babel/runtime": "^7.10.5",
     "@fluentui/react": "^7.123.3",
     "@reduxjs/toolkit": "^1.4.0",
@@ -12,7 +12,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-observable": "^1.2.0",
     "rxjs": "^6.6.0",
-    "vertx3-eventbus-client": "^3.9.1"
+    "vertx3-eventbus-client": "^3.9.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
