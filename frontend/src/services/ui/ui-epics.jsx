@@ -1,5 +1,4 @@
-import { tap, ignoreElements, map } from "rxjs/operators";
-import { heavyWait } from "./ui-services";
+import { map } from "rxjs/operators";
 import { fromEvent } from "rxjs";
 import { setLocationHash } from "./ui-actions";
 
@@ -15,9 +14,9 @@ export const uiEpics = [
   //   ignoreElements()
   // ),
 
-  // Add artificial delays.
-  (action$) => action$.pipe(
-    tap((action) => heavyWait(action.type, 0)),
-    ignoreElements()
-  )
+  // // Add artificial delays.
+  // (action$) => action$.pipe(
+  //   tap((action) => heavyWait(action.type, 0)),
+  //   ignoreElements()
+  // )
 ];

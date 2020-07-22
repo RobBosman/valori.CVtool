@@ -1,17 +1,11 @@
 import { setLastError } from "./error-actions";
 import { fromEvent } from "rxjs";
-import { map, tap, delay, ignoreElements } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 
 export const errorEpics = [
-  // Keep windows 'error' events.
+  // Keep track of windows 'error' events.
   () => fromEvent(window, "error").pipe(
-    tap((event) => {
-      console.log("errorEpics.error", event);
-      return event;
-    }),
-    delay(100),
     tap((event) => event.preventDefault()),
-    map((event) => setLastError(event.error.message)),
-    ignoreElements()
+    map((event) => setLastError(event.error.message))
   )
 ];

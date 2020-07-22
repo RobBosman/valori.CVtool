@@ -24,10 +24,11 @@ describe("ui-epics", () => {
     expect(_store.getState().ui.locationHash)
       .toBe("");
     document.location.hash = "hashLocation";
-    return new Promise((_resolve) => setTimeout(() => {
-      expect(_store.getState().ui.locationHash)
-        .toBe("#hashLocation");
-      _resolve();
-    }, 0));
+    return new Promise((_resolve) =>
+      setTimeout(() => {
+        expect(_store.getState().ui.locationHash)
+          .toBe("#hashLocation");
+        _resolve();
+      }, 0));
   });
 });
