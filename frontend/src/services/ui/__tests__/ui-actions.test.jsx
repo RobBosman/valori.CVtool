@@ -1,7 +1,7 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { setLocationHash, setThemeName, setLocale, setDialogConfig, setSelectedId } from "../ui-actions";
 
-describe("ui", () => {
+describe("ui-actions", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 

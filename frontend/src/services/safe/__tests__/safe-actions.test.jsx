@@ -1,7 +1,7 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { replaceSafeContent, replaceSafeInstance } from "../safe-actions";
 
-describe("safe", () => {
+describe("safe-actions", () => {
 
   it("should reduce safe", () => {
     const reducer = reducerRegistry.getRootReducer();

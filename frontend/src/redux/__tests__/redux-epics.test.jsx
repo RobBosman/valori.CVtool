@@ -1,10 +1,9 @@
 import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
 import { EpicRegistry } from "../epicRegistry";
 import { createEpicMiddleware, ofType, combineEpics } from "redux-observable";
-import { EMPTY } from "rxjs";
-import { map, switchMap, tap } from "rxjs/operators";
+import { map, tap, ignoreElements } from "rxjs/operators";
 
-describe("redux", () => {
+describe("redux-epics", () => {
 
   const dummyAction1 = createAction("DUMMY_ACTION_1");
   const dummyAction2 = createAction("DUMMY_ACTION_2");
@@ -64,7 +63,7 @@ describe("redux", () => {
     _dispatchedActions = [];
     const actionRecorder = (action$) => action$.pipe(
       tap((action) => _dispatchedActions.push(action)),
-      switchMap(() => EMPTY)
+      ignoreElements()
     );
 
     _epicRegistry = new EpicRegistry();

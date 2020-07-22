@@ -1,7 +1,7 @@
 import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../reducerRegistry";
 
-describe("redux", () => {
+describe("redux-reducers", () => {
 
   const dummyAction = createAction("DUMMY_ACTION");
   const dummyReducer = createReducer(

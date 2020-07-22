@@ -1,60 +1,26 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { setLocationHash } from "../ui-actions";
 import darkOrange from "../../../themes/darkOrange";
 import darkYellow from "../../../themes/darkYellow";
 import lightBlue from "../../../themes/lightBlue";
 import lightGreen from "../../../themes/lightGreen";
-import { useTheme, initializeUI } from "../ui-services";
+import { useTheme } from "../ui-services";
 import { loadTheme } from "@fluentui/react";
-import { setWindowError } from "../../../redux/error-actions";
 
-describe("ui", () => {
+describe("ui-services", () => {
 
-  let container = null;
-  const dispatchedActions = [];
-
-  beforeAll(() => {
-    initializeUI((action) => dispatchedActions.push(action));
-  });
+  let _container = null;
 
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.appendChild(container);
+    _container = document.createElement("div");
+    document.body.appendChild(_container);
   });
 
   afterEach(() => {
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
-  });
-
-  it("should handle windows event 'hashchange'", () => {
-    const lengthBefore = dispatchedActions.length;
-    window.dispatchEvent(new CustomEvent("hashchange", {}));
-    expect(dispatchedActions.length)
-      .toBe(lengthBefore + 1);
-    expect(dispatchedActions[lengthBefore].type)
-      .toBe(setLocationHash.type);
-  });
-
-  it("should handle windows event 'error'", () => {
-    const lengthBefore = dispatchedActions.length;
-    window.dispatchEvent(new CustomEvent("error", {}));
-    expect(dispatchedActions.length)
-      .toBe(lengthBefore + 1);
-    expect(dispatchedActions[lengthBefore].type)
-      .toBe(setWindowError.type);
-  });
-
-  it("should handle windows event 'unhandledrejection'", () => {
-    const lengthBefore = dispatchedActions.length;
-    window.dispatchEvent(new CustomEvent("unhandledrejection", {}));
-    expect(dispatchedActions.length)
-      .toBe(lengthBefore + 1);
-    expect(dispatchedActions[lengthBefore].type)
-      .toBe(setWindowError.type);
+    unmountComponentAtNode(_container);
+    _container.remove();
+    _container = null;
   });
 
   it("should useTheme", () => {
@@ -66,7 +32,7 @@ describe("ui", () => {
     };
 
     act(() => {
-      render(<TestComp />, container);
+      render(<TestComp />, _container);
     });
     const testTarget = document.getElementById("testTarget");
     expect(testTarget.style.background)

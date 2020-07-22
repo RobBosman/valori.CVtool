@@ -1,7 +1,7 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { LoginStates, setLoginState, setAccountInfo } from "../authentication-actions";
 
-describe("authentication", () => {
+describe("authentication-actions", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 
