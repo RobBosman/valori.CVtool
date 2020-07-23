@@ -1,11 +1,12 @@
-import { setLastError } from "./error-actions";
+import { setLastError, ErrorSources } from "./error-actions";
 import { fromEvent } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { map, filter } from "rxjs/operators";
 
 export const errorEpics = [
   // Keep track of windows 'error' events.
   () => fromEvent(window, "error").pipe(
-    tap((event) => event.preventDefault()),
-    map((event) => setLastError(event.error.message))
+    map((event) => event.error?.message),
+    filter((errorMessage) => errorMessage),
+    map((errorMessage) => setLastError(errorMessage, ErrorSources.windowErrorEvent))
   )
 ];

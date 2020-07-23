@@ -1,6 +1,6 @@
 import { BehaviorSubject, of, EMPTY, merge } from "rxjs";
 import { mergeMap, catchError } from "rxjs/operators";
-import { setLastError } from "../services/error/error-actions";
+import { ErrorSources, setLastError } from "../services/error/error-actions";
 
 export class EpicRegistry {
   
@@ -15,7 +15,7 @@ export class EpicRegistry {
     this._epic$.pipe(
       mergeMap((epic) => epic(...args).pipe(
         catchError((error, source$) => merge(
-          of(setLastError(error.stack || error.error?.stack || error.message)),
+          of(setLastError(error.stack || error.error?.stack || error.message, ErrorSources.reduxMiddleware)),
           source$
         ))
       ))

@@ -27,7 +27,7 @@ describe("error-epics", () => {
       setTimeout(() => { throw new Error("Amai zeg!"); }, 0);
       setTimeout(() => _resolve(), 5);
     })
-      .then(() => expect(_store.getState().error.lastError)
+      .then(() => expect(_store.getState().error.lastError.message)
         .toContain("Amai zeg!"))
   );
 });
