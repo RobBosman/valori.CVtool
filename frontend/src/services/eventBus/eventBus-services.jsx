@@ -1,6 +1,6 @@
 import EventBus from "vertx3-eventbus-client";
 import { BehaviorSubject } from "rxjs";
-import { distinctUntilChanged, filter, tap } from "rxjs/operators";
+import { distinctUntilChanged } from "rxjs/operators";
 
 const CONNECT_URL = "http://localhost:80/eventbus"; // TODO - specify via environment variable.
 const CONNECT_OPTIONS = {
@@ -24,14 +24,7 @@ export class EventBusClient {
     this._eventBus = null;
     this._handlers = new Set();
     this._connectionStateSubject = new BehaviorSubject(EventBusConnectionStates.DISCONNECTED);
-
-    // Make sure all event handlers are (re-)registered each time the EventBus connects.
-    this.monitorConnectionState()
-      .pipe(
-        tap((connectionState) => console.debug(`The vert.x EventBus is ${connectionState}.`)),
-        filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED)
-      )
-      .subscribe(() => this.registerEventHandlers());
+    this._defaultHeaders = {};
   }
 
   getConnectionState = () =>
@@ -51,8 +44,11 @@ export class EventBusClient {
     this._eventBus.enableReconnect(true);
     this._connectionStateSubject.next(EventBusConnectionStates.CONNECTING);
 
-    this._eventBus.onopen = () =>
+    this._eventBus.onopen = () => {
+      // Make sure all event handlers are (re-)registered each time the EventBus connects.
+      this.registerEventHandlers();
       this._connectionStateSubject.next(EventBusConnectionStates.CONNECTED);
+    };
 
     this._eventBus.onclose = () => {
       if (this._eventBus.reconnectTimerID) {
@@ -79,12 +75,27 @@ export class EventBusClient {
     }
   };
 
-  sendEvent = (address, requestData, headerData = {}) =>
+  addDefaultHeaders = (headers) => {
+    this._defaultHeaders = {
+      ...this._defaultHeaders,
+      ...headers
+    };
+  }
+
+  deleteDefaultHeaders = (headers) =>
+    Object.keys(headers).forEach((key) =>
+      key in this._defaultHeaders && delete this._defaultHeaders[key]);
+
+  mergeHeaders = (headers) => ({
+    ...this._defaultHeaders,
+    ...headers
+  });
+
+  sendEvent = (address, requestData, headers = {}) =>
     new Promise((_resolve, _reject) => {
       if (this._eventBus?.state === EventBus.OPEN) {
         console.debug(`Sending event '${address}'`);
-        this._eventBus.send(
-          address, requestData, headerData,
+        this._eventBus.send(address, requestData, this.mergeHeaders(headers),
           (error, message) => error ? _reject(error) : _resolve(message)
         );
       } else {
@@ -92,47 +103,28 @@ export class EventBusClient {
       }
     });
 
-  addEventHandler = (handler) =>
-    new Promise((_resolve, _reject) => {
-      if (!this._handlers.has(handler)) {
-        this._handlers.add(handler);
-        if (this._eventBus?.state === EventBus.OPEN) {
-          console.log(`Registering eventBusHandler ${handler.address}`, handler.headers); // TODO - connect securely?
-          this._eventBus.registerHandler(
-            handler.address, handler.headers, handler.callback,
-            (error, message) => error ? _reject(error) : _resolve(message)
-          );
-        } else {
-          _resolve();
-        }
-      } else {
-        _resolve();
+  addEventHandler = (handler) => {
+    if (!this._handlers.has(handler)) {
+      this._handlers.add(handler);
+      if (this._eventBus?.state === EventBus.OPEN) {
+        this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
       }
-    });
+    }
+  };
 
-  removeEventHandler = (handler) =>
-    new Promise((_resolve, _reject) => {
-      if (this._handlers.has(handler)) {
-        this._handlers.delete(handler);
-        if (this._eventBus?.state === EventBus.OPEN) {
-          this._eventBus.unregisterHandler(
-            handler.address, handler.headers, handler.callback,
-            (error, message) => error ? _reject(error) : _resolve(message)
-          );
-        } else {
-          _resolve();
-        }
-      } else {
-        _resolve();
+  removeEventHandler = (handler) => {
+    if (this._handlers.has(handler)) {
+      this._handlers.delete(handler);
+      if (this._eventBus?.state === EventBus.OPEN) {
+        this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
       }
-    });
+    }
+  };
 
   registerEventHandlers = () =>
     this._handlers.forEach(handler => {
       if (this._eventBus?.state === EventBus.OPEN) {
-        console.log(`Unregistering eventBusHandler ${handler.address}`, handler.headers); // TODO - connect securely?
         this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
-        console.log(`Registering eventBusHandler ${handler.address}`, handler.headers); // TODO - connect securely?
         this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
       }
     });

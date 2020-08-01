@@ -2,11 +2,11 @@ import { of, merge } from "rxjs";
 import { mergeMap, map, switchMap, filter, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
 import { ErrorSources, setLastError } from "../error/error-actions";
-import { requestEventBusConnection } from "../eventBus/eventBus-actions";
+import { requestEventBusConnection, addEventBusHeaders, deleteEventBusHeaders } from "../eventBus/eventBus-actions";
 import { EventBusConnectionStates, eventBusClient } from "../eventBus/eventBus-services";
 import { replaceSafeContent, fetchCvByAccountId } from "../safe/safe-actions";
-import { authorizeAtOpenIdProvider, fetchAccountInfoFromRemote } from "../authentication/authentication-services";
-import { requestLogin, requestLogout, setLoginState, LoginStates, setLoginResponse, setAccountInfo, fetchAccountInfo } from "./authentication-actions";
+import { requestLogin, requestLogout, setLoginState, LoginStates, setAccountInfo, fetchAccountInfo } from "./authentication-actions";
+import { authorizeAtOpenIdProvider, fetchAccountInfoFromRemote } from "./authentication-services";
 
 export const authenticationEpics = [
   // Handle requests to login or logout.
@@ -20,18 +20,17 @@ export const authenticationEpics = [
           mergeMap(() => authorizeAtOpenIdProvider()),
           // When requested to login then fetch the accountInfo data.
           mergeMap((loginResponse) => of(
-            setLoginResponse(loginResponse),
             // When requested to login then fetch the accountInfo data.
+            addEventBusHeaders({ Authorization: "Bearer " + loginResponse.idToken }),
             requestEventBusConnection(true),
-            fetchAccountInfo(loginResponse.idToken)
+            fetchAccountInfo()
           ))
         )
       )
       : of(
         setLoginState(LoginStates.LOGGING_OUT),
         // TODO: revoke JWT
-        
-        setLoginResponse(undefined),
+        deleteEventBusHeaders({ Authorization: "" }),
         // When requested to logout then delete the accountInfo data and disconnect the EventBus.
         setAccountInfo(undefined),
         requestEventBusConnection(false)
@@ -43,15 +42,15 @@ export const authenticationEpics = [
   (action$) => action$.pipe(
     ofType(fetchAccountInfo.type),
     map((action) => action.payload),
-    switchMap((jwt) => eventBusClient.getConnectionState() === EventBusConnectionStates.CONNECTED
+    switchMap(() => eventBusClient.getConnectionState() === EventBusConnectionStates.CONNECTED
       ? of(1).pipe(
-        mergeMap(() => fetchAccountInfoFromRemote(jwt, eventBusClient.sendEvent)),
+        mergeMap(() => fetchAccountInfoFromRemote(eventBusClient.sendEvent)),
         map((accountInfo) => setAccountInfo(accountInfo))
       )
       : eventBusClient.monitorConnectionState().pipe(
         // When the EventBus is connected then fetch the accountInfo data from remote.
         filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED),
-        mergeMap(() => fetchAccountInfoFromRemote(jwt, eventBusClient.sendEvent)),
+        mergeMap(() => fetchAccountInfoFromRemote(eventBusClient.sendEvent)),
         map((accountInfo) => setAccountInfo(accountInfo))
       )
     ),

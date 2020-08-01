@@ -8,7 +8,7 @@ const ErrorDialog = (props) => {
   const [showDialog, setShowDialog] = React.useState(false);
 
   React.useEffect(() => {
-    if (props.lastError && props.lastError.timestamp > Date.now() - 100)
+    if (props.lastError)
       setShowDialog(true);
   }, [props.lastError]);
 

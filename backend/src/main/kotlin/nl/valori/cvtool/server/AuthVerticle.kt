@@ -13,6 +13,7 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import nl.valori.cvtool.server.Model.composeAccountInstance
 import nl.valori.cvtool.server.Model.composeEntity
+import nl.valori.cvtool.server.Model.getInstanceMap
 import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -92,22 +93,23 @@ internal class AuthVerticle : AbstractVerticle() {
   private fun fetchAccountInfo(email: String, name: String): Single<JsonObject> =
       vertx.eventBus()
           .rxRequest<JsonObject>(FETCH_ADDRESS, composeAccountCriteria(email), deliveryOptions)
-          .map { it.body().getJsonObject("account")?.map ?: emptyMap() }
-          .flatMap { accountMap ->
-            when {
-              accountMap.size == 1 -> Single.just(accountMap.values.iterator().next())
-              accountMap.isEmpty() -> {
-                // Create and save a new Account if necessary.
-                val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), email, name)
-                vertx.eventBus()
-                    .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
-                    .map { accountInstance }
-              }
-              else -> throw IllegalStateException("Found ${accountMap.size} accountInfo records for $email.")
-            }
-          }
+          .flatMap { obtainOrCreateAccount(it.body(), email, name) }
           .map { JsonObject().put("accountInfo", it) }
 
   private fun composeAccountCriteria(email: String) =
       JsonObject("""{ "account": [{ "email": "$email" }] }""")
+
+  private fun obtainOrCreateAccount(accountEntity: JsonObject, email: String, name: String): Single<JsonObject> {
+    val accountInstanceMap = accountEntity.getInstanceMap("account")
+    return when (accountInstanceMap.size) {
+      0 -> {
+        val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), email, name)
+        vertx.eventBus()
+            .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
+            .map { accountInstance }
+      }
+      1 -> Single.just(accountInstanceMap.values.first())
+      else -> throw IllegalStateException("Found ${accountInstanceMap.size} accountInfo records for $email.")
+    }
+  }
 }

@@ -3,9 +3,8 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
-export const setLoginResponse = createAction("SET_LOGIN_RESPONSE");
+export const fetchAccountInfo = createAction("FETCH_ACCOUNT_INFO", () => ({}));
 export const setLoginState = createAction("SET_LOGIN_STATE");
-export const fetchAccountInfo = createAction("FETCH_ACCOUNT_INFO");
 export const setAccountInfo = createAction("SET_ACCOUNT_INFO");
 
 export const LoginStates = {
@@ -22,9 +21,6 @@ reducerRegistry.register(
       loginState: LoginStates.LOGGED_OUT
     },
     {
-      [setLoginResponse]: (state, action) => {
-        state.loginResponse = action.payload;
-      },
       [setLoginState]: (state, action) => {
         state.loginState = action.payload;
       },

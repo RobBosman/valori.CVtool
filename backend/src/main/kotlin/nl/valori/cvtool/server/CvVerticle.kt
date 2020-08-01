@@ -73,16 +73,16 @@ internal class CvVerticle : AbstractVerticle() {
         }""".trimIndent())
 
   private fun obtainOrCreateCvId(cvEntity: JsonObject, accountId: String): Single<String> {
-    var cvId = cvEntity.getInstanceMap("cv").keys.firstOrNull() // TODO - multiple cv's?
-    return if (cvId !== null) {
-      Single.just(cvId)
-    } else {
-      // Create and save a new cv if necessary.
-      cvId = UUID.randomUUID().toString()
-      val cvInstance = composeCvInstance(cvId, accountId)
-      vertx.eventBus()
-          .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("cv", cvInstance), deliveryOptions)
-          .map { cvId }
+    val cvInstanceMap = cvEntity.getInstanceMap("cv")
+    return when (cvInstanceMap.size) {
+      0 -> {
+        val cvId = UUID.randomUUID().toString()
+        vertx.eventBus()
+            .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("cv", composeCvInstance(cvId, accountId)), deliveryOptions)
+            .map { cvId }
+      }
+      1 -> Single.just(cvInstanceMap.keys.first())
+      else -> throw IllegalStateException("Found ${cvInstanceMap.size} cv records with accountId $accountId.")
     }
   }
 }

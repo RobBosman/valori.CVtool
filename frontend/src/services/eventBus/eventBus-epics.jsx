@@ -1,8 +1,8 @@
 import { ofType } from "redux-observable";
-import { map, mergeMap } from "rxjs/operators";
+import { map, mergeMap, ignoreElements } from "rxjs/operators";
 import { eventBusClient, EventBusConnectionStates } from "./eventBus-services";
 import { EMPTY } from "rxjs";
-import { setEventBusConnectionState, requestEventBusConnection } from "./eventBus-actions";
+import { setEventBusConnectionState, requestEventBusConnection, addEventBusHeaders,deleteEventBusHeaders } from "./eventBus-actions";
 
 export const eventBusEpics = [
   // Copy the EventBus connection state to Redux.
@@ -26,5 +26,21 @@ export const eventBusEpics = [
       }
       return EMPTY;
     })
+  ),
+  
+  // Add EventBus headers.
+  (action$) => action$.pipe(
+    ofType(addEventBusHeaders.type),
+    map((action) => action.payload),
+    map((headers) => eventBusClient.addDefaultHeaders(headers)),
+    ignoreElements()
+  ),
+  
+  // Delete EventBus headers.
+  (action$) => action$.pipe(
+    ofType(deleteEventBusHeaders.type),
+    map((action) => action.payload),
+    map((headers) => eventBusClient.deleteDefaultHeaders(headers)),
+    ignoreElements()
   )
 ];

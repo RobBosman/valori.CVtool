@@ -15,8 +15,8 @@ const msalInstance = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 export const authorizeAtOpenIdProvider = () =>
   msalInstance.loginPopup({scopes: OAUTH2_SCOPES});
 
-export const fetchAccountInfoFromRemote = (jwt, sendEvent) =>
-  sendEvent("authenticate", {}, { Authorization: "Bearer " + jwt })
+export const fetchAccountInfoFromRemote = (sendEvent) =>
+  sendEvent("authenticate", {})
     .then((message) => {
       const accountInfo = message.body.accountInfo;
       if (!accountInfo) {
