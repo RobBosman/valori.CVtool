@@ -10,7 +10,7 @@ const PulseMonitor = (props) => {
 
   React.useEffect(() => {
     const handler = { address: "server.heartbeat", header: {}, callback: serverHeartbeatHandler };
-    eventBusClient.addEventHandler(handler, "add handlers");
+    eventBusClient.addEventHandler(handler);
     // at the close:
     return () => eventBusClient.removeEventHandler(handler);
   }, []);

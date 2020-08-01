@@ -14,10 +14,13 @@ export class EpicRegistry {
   rootEpic = (...args) =>
     this._epic$.pipe(
       mergeMap((epic) => epic(...args).pipe(
-        catchError((error, source$) => merge(
-          of(setLastError(error.stack || error.error?.stack || error.message, ErrorSources.reduxMiddleware)),
-          source$
-        ))
+        catchError((error, source$) => {
+          console.error("REDUX_MIDDLEWARE ERROR", error);
+          return merge(
+            of(setLastError(error.stack || error.error?.stack || error.message, ErrorSources.reduxMiddleware)),
+            source$
+          );
+        })
       ))
     );
 }

@@ -7,10 +7,15 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
-import nl.valori.cvtool.server.mongodb.ADDRESS_FETCH
+import nl.valori.cvtool.server.Model.composeCvInstance
+import nl.valori.cvtool.server.Model.composeEntity
+import nl.valori.cvtool.server.Model.getInstanceMap
+import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
+import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
+import java.util.*
 
-const val ADDRESS_FETCH_CV = "fetch.cv"
+const val FETCH_CV_ADDRESS = "fetch.cv"
 
 internal class CvVerticle : AbstractVerticle() {
 
@@ -19,7 +24,7 @@ internal class CvVerticle : AbstractVerticle() {
 
   override fun start(future: Future<Void>) {
     vertx.eventBus()
-        .consumer<JsonObject>(ADDRESS_FETCH_CV)
+        .consumer<JsonObject>(FETCH_CV_ADDRESS)
         .toObservable()
         .subscribe(
             { handleRequest(it) },
@@ -47,33 +52,37 @@ internal class CvVerticle : AbstractVerticle() {
 
   private fun fetchCvData(accountId: String): Single<JsonObject> =
       vertx.eventBus()
-          .rxRequest<JsonObject>(ADDRESS_FETCH, composeCriteria(accountId), deliveryOptions)
-          .map { obtainCvId(it) }
-          .map { composeCvCriteria(accountId, it) }
-          .flatMap { cvCriteria ->
-            vertx.eventBus()
-                .rxRequest<JsonObject>(ADDRESS_FETCH, cvCriteria, deliveryOptions)
-          }
+          .rxRequest<JsonObject>(FETCH_ADDRESS, composeCvCriteria(accountId), deliveryOptions)
+          .flatMap { obtainOrCreateCvId(it.body(), accountId) }
+          .map { composeCvDataCriteria(accountId, it) }
+          .flatMap { vertx.eventBus().rxRequest<JsonObject>(FETCH_ADDRESS, it, deliveryOptions) }
           .map { it.body() }
 
-  private fun composeCriteria(accountId: String) =
+  private fun composeCvCriteria(accountId: String) =
       JsonObject("""{ "cv": [{ "accountId": "$accountId" }] }""")
 
-  private fun obtainCvId(accountResponse: Message<JsonObject>) =
-      accountResponse.body()
-          .getJsonObject("cv", JsonObject("""{ "cv": [] }"""))
-          .fieldNames()
-          .first()
-
-  private fun composeCvCriteria(accountId: String, cvId: String?) =
+  private fun composeCvDataCriteria(accountId: String, cvId: String?) =
       JsonObject("""{
-          |  "cv": [{ "_id": "$cvId" }],
-          |  "account": [{ "_id": "$accountId" }],
-          |  "education": [{ "cvId": "$cvId" }],
-          |  "skill": [{ "cvId": "$cvId" }],
-          |  "publication": [{ "cvId": "$cvId" }],
-          |  "reference": [{ "cvId": "$cvId" }],
-          |  "experience": [{ "cvId": "$cvId" }]
-          |}"""
-          .trimMargin())
+          "cv": [{ "_id": "$cvId" }],
+          "account": [{ "_id": "$accountId" }],
+          "education": [{ "cvId": "$cvId" }],
+          "skill": [{ "cvId": "$cvId" }],
+          "publication": [{ "cvId": "$cvId" }],
+          "reference": [{ "cvId": "$cvId" }],
+          "experience": [{ "cvId": "$cvId" }]
+        }""".trimIndent())
+
+  private fun obtainOrCreateCvId(cvEntity: JsonObject, accountId: String): Single<String> {
+    var cvId = cvEntity.getInstanceMap("cv").keys.firstOrNull() // TODO - multiple cv's?
+    return if (cvId !== null) {
+      Single.just(cvId)
+    } else {
+      // Create and save a new cv if necessary.
+      cvId = UUID.randomUUID().toString()
+      val cvInstance = composeCvInstance(cvId, accountId)
+      vertx.eventBus()
+          .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("cv", cvInstance), deliveryOptions)
+          .map { cvId }
+    }
+  }
 }

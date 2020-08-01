@@ -2,8 +2,8 @@ const { createAction, createReducer } = require("@reduxjs/toolkit");
 const { reducerRegistry } = require("../../redux/reducerRegistry");
 
 export const ErrorSources = {
-  reduxMiddleware: "REDUX_MIDDLEWARE",
-  windowErrorEvent: "WINDOW_ERROR_EVENT"
+  REDUX_MIDDLEWARE: "REDUX_MIDDLEWARE",
+  WINDOW_ERROR_EVENT: "WINDOW_ERROR_EVENT"
 };
 
 export const setLastError = createAction("SET_LAST_ERROR",
@@ -15,7 +15,10 @@ reducerRegistry.register(
     {},
     {
       [setLastError]: (state, action) => {
-        state.lastError = action.payload;
+        state.lastError = {
+          ...action.payload,
+          timestamp: Date.now()
+        };
       }
     }
   )

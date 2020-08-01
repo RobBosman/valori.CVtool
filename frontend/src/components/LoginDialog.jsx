@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Dialog, DialogFooter, DefaultButton, DialogType } from "@fluentui/react";
-import { requestLogout } from "../services/authentication/authentication-actions";
+import { requestLogout, LoginStates } from "../services/authentication/authentication-actions";
 
 const LoginDialog = (props) => {
 
@@ -24,7 +24,7 @@ const LoginDialog = (props) => {
   return (
     <Dialog
       dialogContentProps={dialogContentProps}
-      hidden={false}>
+      hidden={!props.isLoggingIn}>
       {allowCancel ?
         <DialogFooter>
           <DefaultButton
@@ -37,11 +37,16 @@ const LoginDialog = (props) => {
 };
 
 LoginDialog.propTypes = {
+  isLoggingIn: PropTypes.bool.isRequired,
   requestToLogout: PropTypes.func.isRequired
 };
+
+const select = (state) => ({
+  isLoggingIn: state.authentication.loginState === LoginStates.LOGGING_IN
+});
 
 const mapDispatchToProps = (dispatch) => ({
   requestToLogout: () => dispatch(requestLogout())
 });
 
-export default connect(null, mapDispatchToProps)(LoginDialog);
+export default connect(select, mapDispatchToProps)(LoginDialog);

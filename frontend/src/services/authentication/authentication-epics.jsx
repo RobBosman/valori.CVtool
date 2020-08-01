@@ -1,6 +1,7 @@
 import { of, merge } from "rxjs";
-import { mergeMap, map, switchMap, filter } from "rxjs/operators";
+import { mergeMap, map, switchMap, filter, catchError } from "rxjs/operators";
 import { ofType } from "redux-observable";
+import { ErrorSources, setLastError } from "../error/error-actions";
 import { requestEventBusConnection } from "../eventBus/eventBus-actions";
 import { EventBusConnectionStates, eventBusClient } from "../eventBus/eventBus-services";
 import { replaceSafeContent, fetchCvByAccountId } from "../safe/safe-actions";
@@ -20,10 +21,9 @@ export const authenticationEpics = [
           // When requested to login then fetch the accountInfo data.
           mergeMap((loginResponse) => of(
             setLoginResponse(loginResponse),
-            setLoginState(LoginStates.LOGGED_IN),
             // When requested to login then fetch the accountInfo data.
             requestEventBusConnection(true),
-            fetchAccountInfo(loginResponse.accessToken)
+            fetchAccountInfo(loginResponse.idToken)
           ))
         )
       )
@@ -32,7 +32,6 @@ export const authenticationEpics = [
         // TODO: revoke JWT
         
         setLoginResponse(undefined),
-        setLoginState(LoginStates.LOGGED_OUT),
         // When requested to logout then delete the accountInfo data and disconnect the EventBus.
         setAccountInfo(undefined),
         requestEventBusConnection(false)
@@ -44,27 +43,41 @@ export const authenticationEpics = [
   (action$) => action$.pipe(
     ofType(fetchAccountInfo.type),
     map((action) => action.payload),
-    switchMap((accessToken) => eventBusClient.getConnectionState() === EventBusConnectionStates.CONNECTED
+    switchMap((jwt) => eventBusClient.getConnectionState() === EventBusConnectionStates.CONNECTED
       ? of(1).pipe(
-        mergeMap(() => fetchAccountInfoFromRemote(accessToken, eventBusClient.sendEvent)),
+        mergeMap(() => fetchAccountInfoFromRemote(jwt, eventBusClient.sendEvent)),
         map((accountInfo) => setAccountInfo(accountInfo))
       )
       : eventBusClient.monitorConnectionState().pipe(
         // When the EventBus is connected then fetch the accountInfo data from remote.
         filter((connectionState) => connectionState === EventBusConnectionStates.CONNECTED),
-        mergeMap(() => fetchAccountInfoFromRemote(accessToken, eventBusClient.sendEvent)),
+        mergeMap(() => fetchAccountInfoFromRemote(jwt, eventBusClient.sendEvent)),
         map((accountInfo) => setAccountInfo(accountInfo))
       )
-    )
+    ),
+    catchError((error, source$) => merge(
+      of(
+        setLastError(`Error logging in: ${error.message}`, ErrorSources.REDUX_MIDDLEWARE),
+        requestLogout()
+      ),
+      source$
+    ))
   ),
 
   // Store or clear the accountInfo (and other data).
   (action$) => action$.pipe(
     ofType(setAccountInfo.type),
     map((action) => action.payload?._id),
-    map((accountInfoId) => accountInfoId // When accountInfo is available, then fetch the cv data, otherwise erase it.
-      ? fetchCvByAccountId(accountInfoId)
-      : replaceSafeContent(undefined)
-    )
+    mergeMap((accountInfoId) => {
+      if (accountInfoId) { // When accountInfo is available, then fetch the cv data, otherwise erase it.
+        return of(
+          setLoginState(LoginStates.LOGGED_IN),
+          fetchCvByAccountId(accountInfoId));
+      } else {
+        return of(
+          setLoginState(LoginStates.LOGGED_OUT),
+          replaceSafeContent(undefined));
+      }
+    })
   )
 ];

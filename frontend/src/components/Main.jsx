@@ -7,11 +7,13 @@ import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import CvTopBar from "./widgets/CvTopBar";
 import PulseMonitor from "../utils/PulseMonitor";
+import ErrorDialog from "./ErrorDialog";
 
 const Main = (props) => {
 
   return (
     <Fabric>
+      <ErrorDialog />
       <CvTopBar />
       {props.isLoggedIn ? <ContentPage /> : <LoginPage />}
       <PulseMonitor />

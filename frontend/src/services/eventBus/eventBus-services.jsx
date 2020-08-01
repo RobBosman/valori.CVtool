@@ -97,6 +97,7 @@ export class EventBusClient {
       if (!this._handlers.has(handler)) {
         this._handlers.add(handler);
         if (this._eventBus?.state === EventBus.OPEN) {
+          console.log(`Registering eventBusHandler ${handler.address}`, handler.headers); // TODO - connect securely?
           this._eventBus.registerHandler(
             handler.address, handler.headers, handler.callback,
             (error, message) => error ? _reject(error) : _resolve(message)
@@ -129,7 +130,9 @@ export class EventBusClient {
   registerEventHandlers = () =>
     this._handlers.forEach(handler => {
       if (this._eventBus?.state === EventBus.OPEN) {
+        console.log(`Unregistering eventBusHandler ${handler.address}`, handler.headers); // TODO - connect securely?
         this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+        console.log(`Registering eventBusHandler ${handler.address}`, handler.headers); // TODO - connect securely?
         this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
       }
     });

@@ -1,6 +1,5 @@
 package nl.valori.cvtool.server.mongodb
 
-import com.mongodb.bulk.BulkWriteResult
 import com.mongodb.client.model.DeleteOneModel
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.ReplaceOneModel
@@ -9,17 +8,17 @@ import com.mongodb.client.model.WriteModel
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable
+import io.reactivex.internal.operators.flowable.FlowableEmpty
 import io.vertx.core.Future
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import org.bson.Document
-import org.reactivestreams.Publisher
 import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.toList
 
-const val ADDRESS_SAVE = "save"
+const val SAVE_ADDRESS = "save"
 
 internal class MongoSaveVerticle : AbstractVerticle() {
 
@@ -33,7 +32,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
         .getDatabase(databaseName)
 
     vertx.eventBus()
-        .consumer<JsonObject>(ADDRESS_SAVE)
+        .consumer<JsonObject>(SAVE_ADDRESS)
         .toObservable()
         .subscribe(
             { handleRequest(it, mongoDatabase) },
@@ -67,7 +66,21 @@ internal class MongoSaveVerticle : AbstractVerticle() {
   private fun handleRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
       Flowable
           .fromIterable(message.body().map.entries)
-          .flatMap { saveInstancesOfEntity(it.key, it.value, mongoDatabase) }
+          .flatMap {
+            val entity = it.key
+            val instances = it.value
+            if (instances !is JsonObject)
+              throw IllegalArgumentException("Error saving data: expected JsonObject here")
+            when (instances.isEmpty) {
+              true -> FlowableEmpty.empty()
+              else -> {
+                log.debug("Vertx saving ${instances.map.size} instances of '$entity'...")
+                mongoDatabase
+                    .getCollection(entity)
+                    .bulkWrite(composeWriteRequests(instances.map))
+              }
+            }
+          }
           .subscribe(
               {},
               {
@@ -80,15 +93,6 @@ internal class MongoSaveVerticle : AbstractVerticle() {
                 message.reply("Successfully saved data")
               }
           )
-
-  private fun saveInstancesOfEntity(entity: String, instances: Any, mongoDatabase: MongoDatabase): Publisher<BulkWriteResult> {
-    if (instances !is JsonObject)
-      throw IllegalArgumentException("Error saving data: expected JsonObject here")
-    log.debug("Vertx saving ${instances.map.size} instances of '$entity'...")
-    return mongoDatabase
-        .getCollection(entity)
-        .bulkWrite(composeWriteRequests(instances.map))
-  }
 
   /**
    * TODO: CRUD

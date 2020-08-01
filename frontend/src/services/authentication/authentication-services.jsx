@@ -2,7 +2,7 @@ import * as MSAL from "@azure/msal-browser";
 
 const OAUTH2_CONFIG = {
   auth: {
-    clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
+    clientId: "57e3b5d5-d7d6-40db-850b-5947ea1f2209",
     authority: "https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
     redirectUri: "http://localhost:8080/",
     navigateToLoginRequestUrl: false
@@ -15,13 +15,12 @@ const msalInstance = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 export const authorizeAtOpenIdProvider = () =>
   msalInstance.loginPopup({scopes: OAUTH2_SCOPES});
 
-export const fetchAccountInfoFromRemote = (accessToken, sendEvent) =>
-  sendEvent("login", { accessToken })
+export const fetchAccountInfoFromRemote = (jwt, sendEvent) =>
+  sendEvent("authenticate", {}, { Authorization: "Bearer " + jwt })
     .then((message) => {
-      const accountInstances = Object.values(message.body.account || {});
-      const accountInfo = accountInstances && accountInstances[0];
+      const accountInfo = message.body.accountInfo;
       if (!accountInfo) {
-        throw new Error("message.body.account is not present");
+        throw new Error("Authentication error: message.body contains no accountInfo");
       }
       return accountInfo;
     });

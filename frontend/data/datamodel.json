@@ -9,6 +9,7 @@
   "account": {
     "id": "ID",
     "name": "STRING",
+    "email": "STRING",
     "dateOfBirth": "DATE",
     "residence": "STRING",
     "privileges": [
@@ -19,11 +20,10 @@
   "cv": {
     "id": "ID",
     "accountId": "ID",
-    "name": "STRING",
     "role": {
       "locale": "STRING"
     },
-    "personalProfile": {
+    "profile": {
       "locale": "STRING"
     },
     "interests": {

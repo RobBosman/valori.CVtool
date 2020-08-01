@@ -13,7 +13,7 @@ import io.vertx.reactivex.core.eventbus.Message
 import org.bson.BsonDocument
 import org.slf4j.LoggerFactory
 
-const val ADDRESS_FETCH = "fetch"
+const val FETCH_ADDRESS = "fetch"
 
 internal class MongoFetchVerticle : AbstractVerticle() {
 
@@ -27,7 +27,7 @@ internal class MongoFetchVerticle : AbstractVerticle() {
         .getDatabase(databaseName)
 
     vertx.eventBus()
-        .consumer<JsonObject>(ADDRESS_FETCH)
+        .consumer<JsonObject>(FETCH_ADDRESS)
         .toObservable()
         .subscribe(
             { handleRequests(it, mongoDatabase) },

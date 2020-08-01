@@ -13,6 +13,7 @@
     "uuid-account-1": {
       "_id": "uuid-account-1",
       "name": "Rob Bosman",
+      "email": "RobBosman@valori.nl",
       "dateOfBirth": "1965-09-06",
       "residence": "Leusden",
       "privileges": [
@@ -30,7 +31,7 @@
       "role": {
         "nl_NL": "senior software developer"
       },
-      "personalProfile": {
+      "profile": {
         "nl_NL": "Blabla fantastisch bla"
       },
       "interests": {
