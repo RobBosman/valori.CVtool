@@ -2,7 +2,8 @@ import { ofType } from "redux-observable";
 import { map, mergeMap, ignoreElements } from "rxjs/operators";
 import { eventBusClient, EventBusConnectionStates } from "./eventBus-services";
 import { EMPTY } from "rxjs";
-import { setEventBusConnectionState, requestEventBusConnection, addEventBusHeaders,deleteEventBusHeaders } from "./eventBus-actions";
+import { setEventBusConnectionState, requestEventBusConnection } from "./eventBus-actions";
+import { setAuthenticationInfo } from "../authentication/authentication-actions";
 
 export const eventBusEpics = [
   // Copy the EventBus connection state to Redux.
@@ -28,19 +29,15 @@ export const eventBusEpics = [
     })
   ),
   
-  // Add EventBus headers.
+  // Add or delete EventBus headers.
   (action$) => action$.pipe(
-    ofType(addEventBusHeaders.type),
-    map((action) => action.payload),
-    map((headers) => eventBusClient.addDefaultHeaders(headers)),
-    ignoreElements()
-  ),
-  
-  // Delete EventBus headers.
-  (action$) => action$.pipe(
-    ofType(deleteEventBusHeaders.type),
-    map((action) => action.payload),
-    map((headers) => eventBusClient.deleteDefaultHeaders(headers)),
+    ofType(setAuthenticationInfo.type),
+    map((action) => action.payload?.idToken),
+    map((jwt) =>
+      jwt
+        ? eventBusClient.addDefaultHeaders({ Authorization: `Bearer ${jwt}` })
+        : eventBusClient.deleteDefaultHeaders({ Authorization: "" })
+    ),
     ignoreElements()
   )
 ];

@@ -27,7 +27,6 @@ internal class AuthVerticle : AbstractVerticle() {
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
   override fun rxStart(): Completable {
-    // https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663/v2.0?57e3b5d5-d7d6-40db-850b-5947ea1f2209:==22Af-PkYQ8og.hsxh09A?q0UCWm_8E
     val connectionString = config().getString("authConnectionString")
     val site = connectionString.substringBefore("?")
     val clientId = connectionString.substringAfter("?").substringBefore(":")

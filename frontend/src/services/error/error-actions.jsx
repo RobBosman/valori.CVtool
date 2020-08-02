@@ -16,7 +16,8 @@ reducerRegistry.register(
     {
       [setLastError]: (state, action) => {
         state.lastError = {
-          ...action.payload,
+          message: action.payload.message.substring(0, 1000),
+          source: action.payload.source,
           timestamp: Date.now()
         };
       }
