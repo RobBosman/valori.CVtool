@@ -17,9 +17,9 @@
   <properties>
     <target.environment>PROD</target.environment>
     <dependency-check-maven.version>5.3.2</dependency-check-maven.version>
+    <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
     <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-    <maven-frontent-plugin.version>1.9.1</maven-frontent-plugin.version>
-    <nodejs.version>v14.3.0</nodejs.version>
+    <nodejs.version>v14.7.0</nodejs.version>
   </properties>
 
   <build>
@@ -61,7 +61,7 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>${maven-frontent-plugin.version}</version>
+        <version>${frontend-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>install-node-and-npm</id>

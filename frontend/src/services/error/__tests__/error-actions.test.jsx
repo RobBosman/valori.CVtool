@@ -6,7 +6,7 @@ describe("error-actions", () => {
   const reducer = reducerRegistry.getRootReducer();
 
   it("should reduce setLastError", () => {
-    const state = reducer(undefined, setLastError("176-671", ErrorSources.reduxMiddleware));
+    const state = reducer(undefined, setLastError("176-671", ErrorSources.REDUX_MIDDLEWARE));
     expect(state.error.lastError.message)
       .toBe("176-671");
     expect(state.error.lastError.source)

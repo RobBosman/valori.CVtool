@@ -1,6 +1,6 @@
 import { ofType } from "redux-observable";
 import { map, mergeMap, ignoreElements } from "rxjs/operators";
-import { eventBusClient, EventBusConnectionStates } from "./eventBus-services";
+import { eventBusClient, ConnectionStates } from "./eventBus-services";
 import { EMPTY } from "rxjs";
 import { setEventBusConnectionState, requestEventBusConnection } from "./eventBus-actions";
 import { setAuthenticationInfo } from "../authentication/authentication-actions";
@@ -18,11 +18,11 @@ export const eventBusEpics = [
     mergeMap((shouldConnect) => {
       const connectionState = eventBusClient.getConnectionState();
       if (shouldConnect 
-        && connectionState !== EventBusConnectionStates.CONNECTED
-        && connectionState !== EventBusConnectionStates.CONNECTING) {
+        && connectionState !== ConnectionStates.CONNECTED
+        && connectionState !== ConnectionStates.CONNECTING) {
         eventBusClient.connectEventBus();
       } else if (!shouldConnect
-        && connectionState !== EventBusConnectionStates.DISCONNECTED) {
+        && connectionState !== ConnectionStates.DISCONNECTED) {
         eventBusClient.disconnectEventBus();
       }
       return EMPTY;

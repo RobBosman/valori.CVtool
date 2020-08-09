@@ -5,7 +5,7 @@ import { saveAll, fetchCvByAccountId } from "../../services/safe/safe-actions";
 import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react";
 import { LoginStates, requestLogin, requestLogout } from "../../services/authentication/authentication-actions";
 import { setThemeName } from "../../services/ui/ui-actions";
-import { EventBusConnectionStates } from "../../services/eventBus/eventBus-services";
+import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import valoriNameImg from "../../static/valori-name.png";
 import darkOrange from "../../themes/darkOrange";
 import lightBlue from "../../themes/lightBlue";
@@ -136,7 +136,7 @@ CvTopBar.propTypes = {
 const select = (state) => ({
   account: state.authentication.accountInfo,
   loginState: state.authentication.loginState,
-  isConnected: state.eventBus.connectionState === EventBusConnectionStates.CONNECTED,
+  isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
   hasSafeData: Object.keys(state.safe).length > 0
 });
 

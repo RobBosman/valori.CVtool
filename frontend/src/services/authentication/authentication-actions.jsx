@@ -3,6 +3,7 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
+export const fetchAuthenticationInfo = createAction("FETCH_AUTHENTICATION_INFO", () => ({}));
 export const setAuthenticationInfo = createAction("SET_AUTHENTICATION_INFO");
 export const fetchAccountInfo = createAction("FETCH_ACCOUNT_INFO", () => ({}));
 export const setLoginState = createAction("SET_LOGIN_STATE");

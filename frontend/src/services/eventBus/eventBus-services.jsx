@@ -11,7 +11,7 @@ const CONNECT_OPTIONS = {
   vertxbus_randomization_factor: 0.5 // Randomization factor between 0 and 1
 };
 
-export const EventBusConnectionStates = {
+export const ConnectionStates = {
   DISCONNECTED: "DISCONNECTED",
   CONNECTING: "CONNECTING",
   CONNECTED: "CONNECTED",
@@ -23,7 +23,7 @@ export class EventBusClient {
   constructor() {
     this._eventBus = null;
     this._handlers = new Set();
-    this._connectionStateSubject = new BehaviorSubject(EventBusConnectionStates.DISCONNECTED);
+    this._connectionStateSubject = new BehaviorSubject(ConnectionStates.DISCONNECTED);
     this._defaultHeaders = {};
   }
 
@@ -42,19 +42,19 @@ export class EventBusClient {
 
     this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
     this._eventBus.enableReconnect(true);
-    this._connectionStateSubject.next(EventBusConnectionStates.CONNECTING);
+    this._connectionStateSubject.next(ConnectionStates.CONNECTING);
 
     this._eventBus.onopen = () => {
       // Make sure all event handlers are (re-)registered each time the EventBus connects.
-      this.registerEventHandlers();
-      this._connectionStateSubject.next(EventBusConnectionStates.CONNECTED);
+      this.registerEventHandlers()
+        .then(() => this._connectionStateSubject.next(ConnectionStates.CONNECTED));
     };
 
     this._eventBus.onclose = () => {
       if (this._eventBus.reconnectTimerID) {
-        this._connectionStateSubject.next(EventBusConnectionStates.CONNECTING);
+        this._connectionStateSubject.next(ConnectionStates.CONNECTING);
       } else {
-        this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTED);
+        this._connectionStateSubject.next(ConnectionStates.DISCONNECTED);
         this._eventBus = null;
       }
     };
@@ -66,12 +66,12 @@ export class EventBusClient {
   }
   
   disconnectEventBus = () => {
-    this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTING);
+    this._connectionStateSubject.next(ConnectionStates.DISCONNECTING);
     if (this._eventBus?.sockJSConn) {
       this._eventBus.close();
     } else if (this._eventBus) {
       this._eventBus.enableReconnect(false);
-      this._connectionStateSubject.next(EventBusConnectionStates.DISCONNECTED);
+      this._connectionStateSubject.next(ConnectionStates.DISCONNECTED);
     }
   };
 
@@ -122,11 +122,12 @@ export class EventBusClient {
   };
 
   registerEventHandlers = () =>
-    this._handlers.forEach(handler => {
-      if (this._eventBus?.state === EventBus.OPEN) {
+    new Promise((_resolve) => {
+      this._handlers.forEach(handler => {
         this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
         this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
-      }
+      });
+      setTimeout(_resolve, 250);
     });
 }
 
