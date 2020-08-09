@@ -18,7 +18,8 @@ export const authenticationEpics = [
       mustLogin
         ? of(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN),
-          authenticationActions.fetchAuthenticationInfo()
+          authenticationActions.fetchAuthenticationInfo(),
+          eventBusActions.requestEventBusConnection(true),
         )
         : of(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_OUT),
@@ -37,7 +38,6 @@ export const authenticationEpics = [
     mergeMap((authenticationInfo) => of(
       authenticationActions.setAuthenticationInfo(authenticationInfo),
       // When requested to login then fetch the accountInfo data.
-      eventBusActions.requestEventBusConnection(true),
       authenticationActions.fetchAccountInfo()
     )),
     catchError((error, source$) => merge(

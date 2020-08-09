@@ -46,8 +46,8 @@ export class EventBusClient {
 
     this._eventBus.onopen = () => {
       // Make sure all event handlers are (re-)registered each time the EventBus connects.
-      this.registerEventHandlers()
-        .then(() => this._connectionStateSubject.next(ConnectionStates.CONNECTED));
+      this.registerEventHandlers();
+      this._connectionStateSubject.next(ConnectionStates.CONNECTED);
     };
 
     this._eventBus.onclose = () => {
@@ -122,12 +122,9 @@ export class EventBusClient {
   };
 
   registerEventHandlers = () =>
-    new Promise((_resolve) => {
-      this._handlers.forEach(handler => {
-        this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
-        this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
-      });
-      setTimeout(_resolve, 250);
+    this._handlers.forEach(handler => {
+      this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+      this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
     });
 }
 
