@@ -9,8 +9,8 @@ import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
 import SkillList from "./cv/SkillList";
 import PublicationList from "./cv/PublicationList";
-import ReferenceList from "./cv/ReferenceList";
-import ExperienceList from "./cv/ExperienceList";
+import Experience from "./cv/Experience";
+import Reference from "./cv/Reference";
 
 const ADMIN_LINKS = [
   {
@@ -70,14 +70,14 @@ const CV_LINKS = [
     url: "#references",
     name: "Referenties",
     icon: "ReminderGroup",
-    content: <ReferenceList />
+    content: <Reference />
   },
   {
     key: "#experience",
     url: "#experience",
     name: "Ervaring",
     icon: "CheckboxComposite",
-    content: <ExperienceList />
+    content: <Experience />
   }
 ];
 

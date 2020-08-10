@@ -43,6 +43,7 @@ export const CvDetailsList = (props) => {
       layoutMode={DetailsListLayoutMode.justified}
       selectionMode={1}
       selectionPreservedOnEmptyClick={true}
+      onRenderItemColumn={props.onRenderItemColumn}
       onItemInvoked={props.onItemInvoked}/>
   );
 };
@@ -52,6 +53,7 @@ CvDetailsList.propTypes = {
   columns: PropTypes.array.isRequired,
   items: PropTypes.array.isRequired,
   setKey: PropTypes.string,
+  onRenderItemColumn: PropTypes.func,
   onExposeSelectionRef: PropTypes.func,
   onItemInvoked: PropTypes.func
 };

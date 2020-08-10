@@ -7,11 +7,12 @@ import { replaceSafeInstance } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
-import ReferenceEdit from "./ReferenceEdit";
+import { CvTextField } from "../widgets/CvTextField";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const entityName = "reference";
 
-const ReferenceList = (props) => {
+const Reference = (props) => {
 
   const columns = [
     {
@@ -20,7 +21,6 @@ const ReferenceList = (props) => {
       name: "Naam",
       isResizable: false,
       minWidth: 150,
-      maxWidth: 150,
       data: "string"
     },
     {
@@ -29,8 +29,6 @@ const ReferenceList = (props) => {
       name: "Functie",
       isResizable: true,
       minWidth: 150,
-      isSorted: false,
-      isSortedDescending: false,
       data: "string"
     },
     {
@@ -39,18 +37,14 @@ const ReferenceList = (props) => {
       name: "Omschrijving",
       isResizable: true,
       minWidth: 150,
-      isSorted: false,
-      isSortedDescending: false,
       data: "string"
     },
     {
       key: "includeInCv",
       fieldName: "includeInCv",
       name: "In cv",
-      isResizable: true,
-      minWidth: 80,
-      isSorted: false,
-      isSortedDescending: false,
+      isResizable: false,
+      minWidth: 40,
       data: "bool"
     }
   ];
@@ -83,6 +77,20 @@ const ReferenceList = (props) => {
     selection = selectionRef;
   };
 
+  const onRenderItem = (item, number, column) => {
+    switch (column.fieldName) {
+    case "includeInCv":
+      return <CvCheckbox
+        field="includeInCv"
+        instanceContext={{
+          ...referenceContext,
+          entityId: item._id
+        }} />;
+    default:
+      return item[column.fieldName];
+    }
+  };
+
   const onAddItem = () => {
     const id = createUuid();
     props.replaceReference(id, {
@@ -98,8 +106,6 @@ const ReferenceList = (props) => {
     }, 10);
   };
 
-  const onEditItem = () => props.setDialogConfig(!props.dialogConfig?.isOpen);
-
   const onDeleteItem = () => {
     if (props.selectedReferenceId) {
       props.replaceReference(props.selectedReferenceId, {});
@@ -109,35 +115,52 @@ const ReferenceList = (props) => {
   };
 
   return (
-    <Stack styles={viewStyles}>
-      <Stack horizontal>
-        <Text variant="xxLarge">Referenties</Text>
-        <IconButton
-          iconProps={{ iconName: "Add" }}
-          onClick={onAddItem} />
-        <IconButton
-          iconProps={{ iconName: "Edit" }}
-          disabled={!props.selectedReferenceId}
-          onClick={onEditItem} />
-        <IconButton
-          iconProps={{ iconName: "Delete" }}
-          disabled={!props.selectedReferenceId}
-          onClick={onDeleteItem} />
-      </Stack>
-      <CvDetailsList
-        columns={columns}
-        items={references}
-        instanceContext={referenceContext}
-        setKey={entityName}
-        onExposeSelectionRef={onExposeSelectionRef}
-        onItemInvoked={onEditItem} />
-      <ReferenceEdit
-        instanceContext={referenceContext}/>
-    </Stack>
+    <table width="100%">
+      <tr>
+        <td width="40%" valign="top">
+          <Stack styles={viewStyles}>
+            <Stack horizontal>
+              <Text variant="xxLarge">Referenties</Text>
+              <IconButton
+                iconProps={{ iconName: "Add" }}
+                onClick={onAddItem} />
+              <IconButton
+                iconProps={{ iconName: "Delete" }}
+                disabled={!props.selectedReferenceId}
+                onClick={onDeleteItem} />
+            </Stack>
+            <CvDetailsList
+              columns={columns}
+              items={references}
+              instanceContext={referenceContext}
+              setKey={entityName}
+              onRenderItemColumn={onRenderItem}
+              onExposeSelectionRef={onExposeSelectionRef} />
+          </Stack>
+        </td>
+
+        <td width="60%" valign="top">
+          <Stack>
+            <CvTextField
+              label="Naam"
+              field="referentName"
+              instanceContext={referenceContext} />
+            <CvTextField
+              label="Functie"
+              localeField="referentFunction"
+              instanceContext={referenceContext} />
+            <CvTextField
+              label="Omschrijving"
+              localeField="description"
+              instanceContext={referenceContext} />
+          </Stack>
+        </td>
+      </tr> 
+    </table>
   );
 };
 
-ReferenceList.propTypes = {
+Reference.propTypes = {
   locale: PropTypes.string.isRequired,
   selectedCvId: PropTypes.string,
   referenceEntity: PropTypes.object,
@@ -162,4 +185,4 @@ const mapDispatchToProps = (dispatch) => ({
   setDialogConfig: (isOpen) => dispatch(setDialogConfig(entityName, {isOpen}))
 });
 
-export default connect(select, mapDispatchToProps)(ReferenceList);
+export default connect(select, mapDispatchToProps)(Reference);

@@ -6,7 +6,9 @@ export const CvCheckbox = (props) => {
   
   const { entity, entityId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[entityId];
-  const value = instance && instance[props.field] || props.defaultValue || false;
+  let value = instance && instance[props.field];
+  value = value !== undefined ? !!value : props.defaultValue;
+  value = value !== undefined ? !!value : false;
 
   const onChange = (_event, isChecked) =>
     replaceInstance && replaceInstance(entityId,
@@ -19,7 +21,7 @@ export const CvCheckbox = (props) => {
     <Checkbox
       label={props.label}
       disabled={!instance}
-      defaultChecked={value}
+      checked={value}
       onChange={onChange}
       styles={props.styles} />
   );
