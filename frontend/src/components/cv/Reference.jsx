@@ -116,46 +116,48 @@ const Reference = (props) => {
 
   return (
     <table width="100%">
-      <tr>
-        <td width="40%" valign="top">
-          <Stack styles={viewStyles}>
-            <Stack horizontal>
-              <Text variant="xxLarge">Referenties</Text>
-              <IconButton
-                iconProps={{ iconName: "Add" }}
-                onClick={onAddItem} />
-              <IconButton
-                iconProps={{ iconName: "Delete" }}
-                disabled={!props.selectedReferenceId}
-                onClick={onDeleteItem} />
+      <tbody>
+        <tr>
+          <td width="40%" valign="top">
+            <Stack styles={viewStyles}>
+              <Stack horizontal>
+                <Text variant="xxLarge">Referenties</Text>
+                <IconButton
+                  iconProps={{ iconName: "Add" }}
+                  onClick={onAddItem} />
+                <IconButton
+                  iconProps={{ iconName: "Delete" }}
+                  disabled={!props.selectedReferenceId}
+                  onClick={onDeleteItem} />
+              </Stack>
+              <CvDetailsList
+                columns={columns}
+                items={references}
+                instanceContext={referenceContext}
+                setKey={entityName}
+                onRenderItemColumn={onRenderItem}
+                onExposeSelectionRef={onExposeSelectionRef} />
             </Stack>
-            <CvDetailsList
-              columns={columns}
-              items={references}
-              instanceContext={referenceContext}
-              setKey={entityName}
-              onRenderItemColumn={onRenderItem}
-              onExposeSelectionRef={onExposeSelectionRef} />
-          </Stack>
-        </td>
+          </td>
 
-        <td width="60%" valign="top">
-          <Stack>
-            <CvTextField
-              label="Naam"
-              field="referentName"
-              instanceContext={referenceContext} />
-            <CvTextField
-              label="Functie"
-              localeField="referentFunction"
-              instanceContext={referenceContext} />
-            <CvTextField
-              label="Omschrijving"
-              localeField="description"
-              instanceContext={referenceContext} />
-          </Stack>
-        </td>
-      </tr> 
+          <td width="60%" valign="top">
+            <Stack>
+              <CvTextField
+                label="Naam"
+                field="referentName"
+                instanceContext={referenceContext} />
+              <CvTextField
+                label="Functie"
+                localeField="referentFunction"
+                instanceContext={referenceContext} />
+              <CvTextField
+                label="Omschrijving"
+                localeField="description"
+                instanceContext={referenceContext} />
+            </Stack>
+          </td>
+        </tr>
+      </tbody>
     </table>
   );
 };

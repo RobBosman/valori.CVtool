@@ -63,20 +63,18 @@ const Profile = (props) => {
         instanceContext={cvContext}
         multiline
         autoAdjustHeight />
-      <Stack horizontal>
-        <CvTextField
-          label="Werkervaring sinds"
-          field="workingSince"
-          instanceContext={cvContext}
-          placeholder='yyyy'
-          styles={{ fieldGroup: { width: 80 } }} />
-        <CvTextField
-          label="IT ervaring sinds"
-          field="inItSince"
-          instanceContext={cvContext}
-          placeholder='yyyy' 
-          styles={{ fieldGroup: { width: 80 } }}/>
-      </Stack>
+      <CvTextField
+        label="Werkervaring sinds"
+        field="workingSince"
+        instanceContext={cvContext}
+        placeholder='yyyy'
+        styles={{ fieldGroup: { width: 80 } }} />
+      <CvTextField
+        label="IT ervaring sinds"
+        field="inItSince"
+        instanceContext={cvContext}
+        placeholder='yyyy' 
+        styles={{ fieldGroup: { width: 80 } }}/>
     </Stack>
   );
 };

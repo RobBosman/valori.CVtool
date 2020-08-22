@@ -18,13 +18,21 @@ const OAUTH2_REFRESH_CONFIG = {
   }
 };
 
-const msalInstance = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
+const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 
 export const authorizeAtOpenIdProvider = () =>
-  msalInstance.loginPopup();
+  msal.getAllAccounts().length > 0
+    ? msal
+      .ssoSilent({
+        ...OAUTH2_CONFIG,
+        loginHint: msal.getAllAccounts()[0].username
+      })
+      .catch(() => msal.loginPopup())
+    : msal.loginPopup();
+  
 
 export const refreshTokenAtOpenIdProvider = (oldAuthenticationInfo) =>
-  msalInstance.acquireTokenSilent({
+  msal.acquireTokenSilent({
     ...OAUTH2_REFRESH_CONFIG,
     account: oldAuthenticationInfo.account
   });

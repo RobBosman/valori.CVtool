@@ -43,7 +43,7 @@ const Experience = (props) => {
     {
       key: "includeInCv",
       fieldName: "includeInCv",
-      name: "In Cv",
+      name: "In cv",
       isResizable: false,
       minWidth: 40,
       data: "bool"
@@ -127,89 +127,91 @@ const Experience = (props) => {
 
   return (
     <table width="100%">
-      <tr>
-        <td width="40%" valign="top">
-          <Stack styles={viewStyles}>
-            <Stack horizontal>
-              <Text variant="xxLarge">Werkervaring</Text>
-              <IconButton
-                iconProps={{ iconName: "Add" }}
-                onClick={onAddItem} />
-              <IconButton
-                iconProps={{ iconName: "Delete" }}
-                disabled={!props.selectedExperienceId}
-                onClick={onDeleteItem} />
+      <tbody>
+        <tr>
+          <td width="40%" valign="top">
+            <Stack styles={viewStyles}>
+              <Stack horizontal>
+                <Text variant="xxLarge">Werkervaring</Text>
+                <IconButton
+                  iconProps={{ iconName: "Add" }}
+                  onClick={onAddItem} />
+                <IconButton
+                  iconProps={{ iconName: "Delete" }}
+                  disabled={!props.selectedExperienceId}
+                  onClick={onDeleteItem} />
+              </Stack>
+              <CvDetailsList
+                columns={columns}
+                items={experiences}
+                instanceContext={experienceContext}
+                setKey={entityName}
+                onRenderItemColumn={onRenderItem}
+                onExposeSelectionRef={onExposeSelectionRef} />
             </Stack>
-            <CvDetailsList
-              columns={columns}
-              items={experiences}
-              instanceContext={experienceContext}
-              setKey={entityName}
-              onRenderItemColumn={onRenderItem}
-              onExposeSelectionRef={onExposeSelectionRef} />
-          </Stack>
-        </td>
+          </td>
 
-        <td width="60%" valign="top">
-          <Pivot styles={editStyles}>
-            <PivotItem headerText="Edit">
-              <CvDatePicker
-                label="Van"
-                field="periodBegin"
-                instanceContext={experienceContext}
-                styles={{ root: { width: 140 } }} />
-              <CvDatePicker
-                label="t/m"
-                field="periodEnd"
-                instanceContext={experienceContext}
-                styles={{ root: { width: 140 } }} />
-              <CvTextField
-                label="Opdrachtgever"
-                field="client"
-                instanceContext={experienceContext} />
-              <CvTextField
-                label="Werkgever"
-                field="employer"
-                instanceContext={experienceContext} />
-              <CvTextField
-                label="Rol"
-                localeField="role"
-                instanceContext={experienceContext} />
-              <CvSpinButton
-                label="Sorteer index"
-                field="sortIndex"
-                instanceContext={experienceContext}
-                styles={{ root: { width: 140 } }} />
-            </PivotItem>
-            <PivotItem headerText="Details">
-              <CvTextField
-                label="Opdracht"
-                localeField="assignment"
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight />
-              <CvTextField
-                label="Activiteiten"
-                localeField="activities"
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight/>
-              <CvTextField
-                label="Resultaten"
-                localeField="results"
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight />
-              <CvTextField
-                label="Keywords"
-                localeField="keywords"
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight />
-            </PivotItem>
-          </Pivot>
-        </td>
-      </tr> 
+          <td width="60%" valign="top">
+            <Pivot styles={editStyles}>
+              <PivotItem headerText="Edit">
+                <CvDatePicker
+                  label="Van"
+                  field="periodBegin"
+                  instanceContext={experienceContext}
+                  styles={{ root: { width: 140 } }} />
+                <CvDatePicker
+                  label="t/m"
+                  field="periodEnd"
+                  instanceContext={experienceContext}
+                  styles={{ root: { width: 140 } }} />
+                <CvTextField
+                  label="Opdrachtgever"
+                  field="client"
+                  instanceContext={experienceContext} />
+                <CvTextField
+                  label="Werkgever"
+                  field="employer"
+                  instanceContext={experienceContext} />
+                <CvTextField
+                  label="Rol"
+                  localeField="role"
+                  instanceContext={experienceContext} />
+                <CvSpinButton
+                  label="Sorteer index"
+                  field="sortIndex"
+                  instanceContext={experienceContext}
+                  styles={{ root: { width: 140 } }} />
+              </PivotItem>
+              <PivotItem headerText="Details">
+                <CvTextField
+                  label="Opdracht"
+                  localeField="assignment"
+                  instanceContext={experienceContext}
+                  multiline
+                  autoAdjustHeight />
+                <CvTextField
+                  label="Activiteiten"
+                  localeField="activities"
+                  instanceContext={experienceContext}
+                  multiline
+                  autoAdjustHeight/>
+                <CvTextField
+                  label="Resultaten"
+                  localeField="results"
+                  instanceContext={experienceContext}
+                  multiline
+                  autoAdjustHeight />
+                <CvTextField
+                  label="Keywords"
+                  localeField="keywords"
+                  instanceContext={experienceContext}
+                  multiline
+                  autoAdjustHeight />
+              </PivotItem>
+            </Pivot>
+          </td>
+        </tr>
+      </tbody>
     </table>
   );
 };
