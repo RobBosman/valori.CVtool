@@ -1,14 +1,14 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
+import { loadTheme } from "@fluentui/react";
 import darkOrange from "../../../themes/darkOrange";
 import darkYellow from "../../../themes/darkYellow";
 import lightBlue from "../../../themes/lightBlue";
 import lightGreen from "../../../themes/lightGreen";
-import { useTheme } from "../ui-services";
-import { loadTheme } from "@fluentui/react";
+import * as uiServices from "../ui-services";
 
-describe("ui-services", () => {
+describe("ui-services.test", () => {
 
   let _container = null;
 
@@ -25,7 +25,7 @@ describe("ui-services", () => {
 
   it("should useTheme", () => {
     const TestComp = () => {
-      const { viewPaneColor } = useTheme();
+      const { viewPaneColor } = uiServices.useTheme();
       return (
         <div id="testTarget" style={{ background: viewPaneColor }} />
       );

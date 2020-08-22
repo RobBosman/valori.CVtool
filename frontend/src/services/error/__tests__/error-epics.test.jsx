@@ -4,7 +4,7 @@ import { reducerRegistry } from "../../../redux/reducerRegistry";
 import { EpicRegistry } from "../../../redux/epicRegistry";
 import { errorEpics } from "../error-epics";
 
-describe("error-epics", () => {
+describe("error-epics.test", () => {
 
   let _epicRegistry;
   let _store;

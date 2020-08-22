@@ -15,6 +15,7 @@ import { CvDatePicker } from "../widgets/CvDatePicker";
 const entityName = "experience";
 
 const Experience = (props) => {
+  
   const columns = [
     {
       key: "period",
@@ -235,7 +236,7 @@ const select = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   replaceExperience: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
-  setSelectedExperienceId: (experienceId) => dispatch(setSelectedId(entityName, experienceId))
+  setSelectedExperienceId: (id) => dispatch(setSelectedId(entityName, id))
 });
 
 export default connect(select, mapDispatchToProps)(Experience);

@@ -1,12 +1,12 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
-import { setLastError, ErrorSources } from "../error-actions";
+import * as errorActions from "../error-actions";
 
-describe("error-actions", () => {
+describe("error-actions.test", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 
   it("should reduce setLastError", () => {
-    const state = reducer(undefined, setLastError("176-671", ErrorSources.REDUX_MIDDLEWARE));
+    const state = reducer(undefined, errorActions.setLastError("176-671", errorActions.ErrorSources.REDUX_MIDDLEWARE));
     expect(state.error.lastError.message)
       .toBe("176-671");
     expect(state.error.lastError.source)

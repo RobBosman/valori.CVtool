@@ -1,37 +1,37 @@
 import { reducerRegistry } from "../../../redux/reducerRegistry";
-import { LoginStates, setLoginState, setAccountInfo } from "../authentication-actions";
+import * as authenticationActions from "../authentication-actions";
 
-describe("authentication-actions", () => {
+describe("authentication-actions.test", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 
   it("should reduce confirmLoggingIn", () => {
-    const state = reducer(undefined, setLoginState(LoginStates.LOGGING_IN));
+    const state = reducer(undefined, authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN));
     expect(state.authentication.loginState)
-      .toBe(LoginStates.LOGGING_IN);
+      .toBe(authenticationActions.LoginStates.LOGGING_IN);
   });
 
   it("should reduce confirmLoggedIn", () => {
-    const state = reducer(undefined, setLoginState(LoginStates.LOGGED_IN));
+    const state = reducer(undefined, authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_IN));
     expect(state.authentication.loginState)
-      .toBe(LoginStates.LOGGED_IN);
+      .toBe(authenticationActions.LoginStates.LOGGED_IN);
   });
 
   it("should reduce confirmLoggingOut", () => {
-    const state = reducer(undefined, setLoginState(LoginStates.LOGGING_OUT));
+    const state = reducer(undefined, authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_OUT));
     expect(state.authentication.loginState)
-      .toBe(LoginStates.LOGGING_OUT);
+      .toBe(authenticationActions.LoginStates.LOGGING_OUT);
   });
 
   it("should reduce confirmLoggedOut", () => {
-    const state = reducer(undefined, setLoginState(LoginStates.LOGGED_OUT));
+    const state = reducer(undefined, authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_OUT));
     expect(state.authentication.loginState)
-      .toBe(LoginStates.LOGGED_OUT);
+      .toBe(authenticationActions.LoginStates.LOGGED_OUT);
   });
 
   it("should reduce setAccountInfo", () => {
     const dummyAccount = { _id: 313, name: "Duck" };
-    const state = reducer(undefined, setAccountInfo(dummyAccount));
+    const state = reducer(undefined, authenticationActions.setAccountInfo(dummyAccount));
     expect(state.authentication.accountInfo)
       .toStrictEqual(dummyAccount);
   });

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Rating } from "@fluentui/react";
+import { Rating, Stack, Label } from "@fluentui/react";
+import { useId } from "@uifabric/react-hooks";
 
 export const CvRating = (props) => {
 
@@ -15,14 +16,21 @@ export const CvRating = (props) => {
       [props.field]: rating
     });
 
+  const ratingId = useId("rating");
+
   return (
-    <Rating
-      label={props.label}
-      min={1}
-      max={5}
-      disabled={!instance}
-      rating={value}
-      onChange={onChange} />
+    <Stack>
+      <Label
+        htmlFor={ratingId}
+        disabled={!instance}
+      >{props.label}</Label>
+      <Rating
+        min={1}
+        max={5}
+        disabled={!instance}
+        rating={value}
+        onChange={onChange} />
+    </Stack>
   );
 };
 

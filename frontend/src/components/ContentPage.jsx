@@ -3,14 +3,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { Nav, Separator, Stack } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
-import Profile from "./cv/Profile";
-import EducationList from "./cv/EducationList";
 import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
-import SkillList from "./cv/SkillList";
-import PublicationList from "./cv/PublicationList";
+import Education from "./cv/Education";
 import Experience from "./cv/Experience";
+import Profile from "./cv/Profile";
+import Publication from "./cv/Publication";
 import Reference from "./cv/Reference";
+import Skill from "./cv/Skill";
 
 const ADMIN_LINKS = [
   {
@@ -49,21 +49,21 @@ const CV_LINKS = [
     url: "#education",
     name: "Opleiding",
     icon: "PublishCourse",
-    content: <EducationList />
+    content: <Education />
   },
   {
     key: "#skills",
     url: "#skills",
     name: "Vaardigheden",
     icon: "SortLines",
-    content: <SkillList />
+    content: <Skill />
   },
   {
     key: "#publications",
     url: "#publications",
     name: "Publicaties",
     icon: "ReadingMode",
-    content: <PublicationList />
+    content: <Publication />
   },
   {
     key: "#references",

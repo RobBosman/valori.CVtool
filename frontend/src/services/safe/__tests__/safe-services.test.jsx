@@ -1,13 +1,13 @@
-import { createUuid, fetchCvFromRemote, saveAllToRemote } from "../safe-services";
+import * as safeServices from "../safe-services";
 
-describe("safe", () => {
+describe("safe-services.test", () => {
 
   const sendEventSuccess = (eventName) => new Promise((_resolve) => _resolve({ body: `${eventName}_resolved` }));
   const sendEventError = (eventName) => new Promise((_resolve, _reject) => _reject(new Error(`${eventName}_rejected`)));
 
   it("should fetchCvFromRemote success", () => {
     expect.assertions(1);
-    return fetchCvFromRemote({}, sendEventSuccess)
+    return safeServices.fetchCvFromRemote({}, sendEventSuccess)
       .then((action) => expect(action)
         .toBe("fetch.cv_resolved")
       );
@@ -16,7 +16,7 @@ describe("safe", () => {
   it("should fetchCvFromRemote error response", () => {
     expect.assertions(2);
     const actions = [];
-    return fetchCvFromRemote({}, sendEventError)
+    return safeServices.fetchCvFromRemote({}, sendEventError)
       .then((action) => actions.push(action))
       .catch((error) => {
         expect(actions.length)
@@ -28,26 +28,26 @@ describe("safe", () => {
 
   it("should saveAllToRemote success", () => {
     expect.assertions(1);
-    return saveAllToRemote({}, sendEventSuccess)
+    return safeServices.saveAllToRemote({}, sendEventSuccess)
       .then((message) => expect(message)
         .toStrictEqual({body: "save_resolved"}));
   });
 
   it("should saveAllToRemote error", () => {
     expect.assertions(1);
-    return saveAllToRemote({}, sendEventError)
+    return safeServices.saveAllToRemote({}, sendEventError)
       .catch((error) => expect(error.message)
         .toBe("save_rejected"));
   });
 
   it("should create unique ids", () => {
-    const id0 = createUuid();
+    const id0 = safeServices.createUuid();
     expect(id0.length)
       .toBe(36);
     expect(id0.replace(/-/g, "").length)
       .toBe(32);
 
-    const id1 = createUuid();
+    const id1 = safeServices.createUuid();
     expect(id1.length)
       .toBe(36);
     expect(id1.replace(/-/g, "").length)

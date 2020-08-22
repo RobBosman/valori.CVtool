@@ -1,9 +1,9 @@
 import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
-import { EpicRegistry } from "../epicRegistry";
 import { createEpicMiddleware, ofType, combineEpics } from "redux-observable";
 import { map, tap, ignoreElements } from "rxjs/operators";
+import { EpicRegistry } from "../epicRegistry";
 
-describe("redux-epics", () => {
+describe("redux-epics.test", () => {
 
   const dummyAction1 = createAction("DUMMY_ACTION_1");
   const dummyAction2 = createAction("DUMMY_ACTION_2");

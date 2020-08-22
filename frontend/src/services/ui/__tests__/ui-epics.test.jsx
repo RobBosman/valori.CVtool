@@ -1,10 +1,10 @@
 import { createEpicMiddleware } from "redux-observable";
 import { configureStore } from "@reduxjs/toolkit";
 import { EpicRegistry } from "../../../redux/epicRegistry";
-import { uiEpics } from "../ui-epics";
 import { reducerRegistry } from "../../../redux/reducerRegistry";
+import { uiEpics } from "../ui-epics";
 
-describe("ui-epics", () => {
+describe("ui-epics.test", () => {
 
   let _store;
 
