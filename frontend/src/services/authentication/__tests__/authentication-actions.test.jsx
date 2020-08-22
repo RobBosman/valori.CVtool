@@ -5,10 +5,16 @@ describe("authentication-actions.test", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 
-  it("should reduce confirmLoggingIn", () => {
-    const state = reducer(undefined, authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN));
+  it("should reduce confirmLoggingIn OpenID", () => {
+    const state = reducer(undefined, authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN_OPENID));
     expect(state.authentication.loginState)
-      .toBe(authenticationActions.LoginStates.LOGGING_IN);
+      .toBe(authenticationActions.LoginStates.LOGGING_IN_OPENID);
+  });
+
+  it("should reduce confirmLoggingIn Backend", () => {
+    const state = reducer(undefined, authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN_BACKEND));
+    expect(state.authentication.loginState)
+      .toBe(authenticationActions.LoginStates.LOGGING_IN_BACKEND);
   });
 
   it("should reduce confirmLoggedIn", () => {

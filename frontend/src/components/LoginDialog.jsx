@@ -1,48 +1,52 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Dialog, DialogFooter, DefaultButton, DialogType } from "@fluentui/react";
+import { Dialog, DialogFooter, DefaultButton, DialogType, ProgressIndicator, Icon, Stack, Label } from "@fluentui/react";
 import { requestLogout, LoginStates } from "../services/authentication/authentication-actions";
 
 const LoginDialog = (props) => {
 
-  const [allowCancel, setAllowCancel] = React.useState(false);
-
-  React.useEffect(() => {
-    const timeoutId = setTimeout(() => setAllowCancel(true), 3000);
-    return () => clearTimeout(timeoutId);
-  }, []);
-
   const dialogContentProps = {
     type: DialogType.normal,
-    title: "Bezig met inloggen...",
-    subText: allowCancel
-      ? <span>Dit duurt langer dan verwacht.<br/>Klik <strong>Cancel</strong> om af te breken.</span>
-      : undefined
+    title: "Bezig met inloggen..."
   };
   
   return (
     <Dialog
       dialogContentProps={dialogContentProps}
-      hidden={!props.isLoggingIn}>
-      {allowCancel ?
-        <DialogFooter>
-          <DefaultButton
-            text="Cancel"
-            onClick={props.requestToLogout} />
-        </DialogFooter>
-        : undefined}
+      hidden={!(props.isLoggingInOpenId || props.isLoggingInBackend)}>
+      <Stack horizontal tokens={{ childrenGap: "l2" }}>
+        <Label>Inloggen met Valori account</Label>
+        <Stack.Item align="center">
+          {props.isLoggingInOpenId
+            ?  undefined
+            :  <Icon iconName="Accept" />}
+        </Stack.Item>
+      </Stack>
+      <Stack horizontal tokens={{ childrenGap: "l2" }}>
+        <Label
+          disabled={!props.isLoggingInBackend}
+        >Verbinden met backend server</Label>
+      </Stack>
+      <ProgressIndicator />
+      <DialogFooter>
+        <DefaultButton
+          text="Cancel"
+          onClick={props.requestToLogout} />
+      </DialogFooter>
     </Dialog>
   );
 };
 
 LoginDialog.propTypes = {
-  isLoggingIn: PropTypes.bool.isRequired,
+  isLoggingInOpenId: PropTypes.bool.isRequired,
+  isLoggingInBackend: PropTypes.bool.isRequired,
   requestToLogout: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
-  isLoggingIn: state.authentication.loginState === LoginStates.LOGGING_IN
+  isLoggingInOpenId: state.authentication.loginState === LoginStates.LOGGING_IN_OPENID,
+  isLoggingInBackend: state.authentication.loginState === LoginStates.LOGGING_IN_BACKEND
 });
 
 const mapDispatchToProps = (dispatch) => ({

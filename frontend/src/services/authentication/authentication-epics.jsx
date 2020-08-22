@@ -17,7 +17,7 @@ export const authenticationEpics = [
     switchMap((mustLogin) =>
       mustLogin
         ? of(
-          authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN),
+          authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN_OPENID),
           authenticationActions.fetchAuthenticationInfo(),
           eventBusActions.requestEventBusConnection(true),
         )
@@ -38,6 +38,7 @@ export const authenticationEpics = [
     mergeMap((authenticationInfo) => of(
       authenticationActions.setAuthenticationInfo(authenticationInfo),
       // When requested to login then fetch the accountInfo data.
+      authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_IN_BACKEND),
       authenticationActions.fetchAccountInfo()
     )),
     catchError((error, source$) => merge(

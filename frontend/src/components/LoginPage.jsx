@@ -39,7 +39,8 @@ LoginPage.propTypes = {
 };
 
 const select = (state) => ({
-  isLoggingIn: state.authentication.loginState === LoginStates.LOGGING_IN
+  isLoggingIn: state.authentication.loginState === LoginStates.LOGGING_IN_OPENID
+      || state.authentication.loginState === LoginStates.LOGGING_IN_BACKEND
 });
 
 export default connect(select)(LoginPage);

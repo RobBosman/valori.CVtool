@@ -25,6 +25,7 @@ export const CvRating = (props) => {
         disabled={!instance}
       >{props.label}</Label>
       <Rating
+        id={ratingId}
         min={1}
         max={5}
         disabled={!instance}

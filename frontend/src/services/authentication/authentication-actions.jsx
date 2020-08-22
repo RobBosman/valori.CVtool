@@ -11,7 +11,8 @@ export const setAccountInfo = createAction("SET_ACCOUNT_INFO");
 
 export const LoginStates = {
   LOGGED_OUT: "LOGGED_OUT",
-  LOGGING_IN: "LOGGING_IN",
+  LOGGING_IN_OPENID: "LOGGING_IN_OPENID",
+  LOGGING_IN_BACKEND: "LOGGING_IN_BACKEND",
   LOGGED_IN: "LOGGED_IN",
   LOGGING_OUT: "LOGGING_OUT"
 };
