@@ -43,7 +43,6 @@
         <configuration>
           <excludes>
             <!-- don't add config stuff to the jar file -->
-            <exclude>config.json</exclude>
             <exclude>logback.xml</exclude>
           </excludes>
         </configuration>

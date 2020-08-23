@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Dialog, DialogFooter, DefaultButton, DialogType, ProgressIndicator, Icon, Stack, Label } from "@fluentui/react";
+import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner } from "@fluentui/react";
 import { requestLogout, LoginStates } from "../services/authentication/authentication-actions";
 
 const LoginDialog = (props) => {
@@ -15,20 +15,22 @@ const LoginDialog = (props) => {
     <Dialog
       dialogContentProps={dialogContentProps}
       hidden={!(props.isLoggingInOpenId || props.isLoggingInBackend)}>
-      <Stack horizontal tokens={{ childrenGap: "l2" }}>
-        <Label>Inloggen met Valori account</Label>
-        <Stack.Item align="center">
-          {props.isLoggingInOpenId
-            ?  undefined
-            :  <Icon iconName="Accept" />}
-        </Stack.Item>
-      </Stack>
-      <Stack horizontal tokens={{ childrenGap: "l2" }}>
-        <Label
-          disabled={!props.isLoggingInBackend}
-        >Verbinden met backend server</Label>
-      </Stack>
-      <ProgressIndicator />
+      <table>
+        <tbody>
+          <tr>
+            <td>{props.isLoggingInOpenId ? <Spinner /> : <Icon iconName="Accept" />}</td>
+            <td>&nbsp;</td>
+            <td><Label>Inloggen met Valori account</Label></td>
+          </tr>
+          <tr>
+            <td>{props.isLoggingInBackend ? <Spinner /> : undefined}</td>
+            <td>&nbsp;</td>
+            <td><Label
+              disabled={!props.isLoggingInBackend}
+            >Verbinden met backend server</Label></td>
+          </tr>
+        </tbody>
+      </table>
       <DialogFooter>
         <DefaultButton
           text="Cancel"

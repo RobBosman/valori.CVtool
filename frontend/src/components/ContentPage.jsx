@@ -7,100 +7,78 @@ import CvTitle from "./widgets/CvTitle";
 import CvLogo from "./widgets/CvLogo";
 import Education from "./cv/Education";
 import Experience from "./cv/Experience";
+import Info from "./cv/Info";
 import Profile from "./cv/Profile";
 import Publication from "./cv/Publication";
 import Reference from "./cv/Reference";
 import Skill from "./cv/Skill";
 
-const ADMIN_LINKS = [
+const NAV_GROUPS = [
   {
-    key: "#tribes",
-    url: "#tribes",
-    name: "Tribes",
-    icon: "HomeGroup",
-    content: <ErrorPage message="TODO" />
-  },
-  {
-    key: "#accounts",
-    url: "#accounts",
-    name: "Accounts",
-    icon: "People",
-    content: <ErrorPage message="TODO" />
-  },
-  {
-    key: "#search",
-    url: "#search",
-    name: "Zoeken",
-    icon: "Search",
-    content: <ErrorPage message="TODO" />
-  }
-];
-
-const CV_LINKS = [
-  {
-    key: "#profile",
-    url: "#profile",
-    name: "Profiel",
-    icon: "ContactInfo",
-    content: <Profile />
-  },
-  {
-    key: "#education",
-    url: "#education",
-    name: "Opleiding",
-    icon: "PublishCourse",
-    content: <Education />
-  },
-  {
-    key: "#skills",
-    url: "#skills",
-    name: "Vaardigheden",
-    icon: "SortLines",
-    content: <Skill />
-  },
-  {
-    key: "#publications",
-    url: "#publications",
-    name: "Publicaties",
-    icon: "ReadingMode",
-    content: <Publication />
-  },
-  {
-    key: "#references",
-    url: "#references",
-    name: "Referenties",
-    icon: "ReminderGroup",
-    content: <Reference />
-  },
-  {
-    key: "#experience",
-    url: "#experience",
-    name: "Ervaring",
-    icon: "CheckboxComposite",
-    content: <Experience />
+    name: "Eigen CV",
+    links: [
+      {
+        key: "#",
+        url: "#",
+        name: "Info",
+        icon: "ContactInfo",
+        content: <Info />
+      },
+      {
+        key: "#profile",
+        url: "#profile",
+        name: "Profiel",
+        icon: "ContactInfo",
+        content: <Profile />
+      },
+      {
+        key: "#education",
+        url: "#education",
+        name: "Opleiding",
+        icon: "PublishCourse",
+        content: <Education />
+      },
+      {
+        key: "#skills",
+        url: "#skills",
+        name: "Vaardigheden",
+        icon: "SortLines",
+        content: <Skill />
+      },
+      {
+        key: "#publications",
+        url: "#publications",
+        name: "Publicaties",
+        icon: "ReadingMode",
+        content: <Publication />
+      },
+      {
+        key: "#references",
+        url: "#references",
+        name: "Referenties",
+        icon: "ReminderGroup",
+        content: <Reference />
+      },
+      {
+        key: "#experience",
+        url: "#experience",
+        name: "Ervaring",
+        icon: "CheckboxComposite",
+        content: <Experience />
+      }
+    ]
   }
 ];
 
 const ContentPage = (props) => {
 
-  const isAdmin = props.accountInfo?.privileges?.find((privilege) => privilege === "ADMIN");
-  const navGroups = [
-    isAdmin && {
-      name: "Admin",
-      links: ADMIN_LINKS
-    },
-    {
-      name: "Eigen CV",
-      links: CV_LINKS
-    }
-  ].filter(Boolean);
-
   let renderContent = null;
   if (props.locationHash === "" || props.locationHash === "#") {
-    renderContent = <ErrorPage message={"TODO - home"} />;
+    renderContent = <Info />;
   } else {
-    const allLinks = isAdmin ? ADMIN_LINKS.concat(CV_LINKS) : CV_LINKS;
-    const item = allLinks.find((item) => item.url === props.locationHash);
+    const item = NAV_GROUPS
+      .flatMap((navGroup) => navGroup.links)
+      .find((item) => item.url === props.locationHash);
     renderContent = item?.content
       || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
@@ -113,7 +91,8 @@ const ContentPage = (props) => {
         </div>
         <Nav
           styles={{ root: { width: 180 } }}
-          groups={navGroups}
+          groups={NAV_GROUPS}
+          initialSelectedKey="#"
           selectedKey={props.navKey}
           onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
       </Stack>
