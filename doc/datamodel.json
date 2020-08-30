@@ -53,7 +53,8 @@
     },
     "description": {
       "locale": "STRING"
-    }
+    },
+    "includeInCv": "BOOLEAN"
   },
   "reference": {
     "id": "ID",
@@ -102,7 +103,8 @@
     "includeInCv": "BOOLEAN"
   },
   "ENUM_PRIVILEGE": [
-    "ADMIN"
+    "ADMIN",
+    "CONSULTANT"
   ],
   "ENUM_EDUCATION_TYPE": [
     "EDUCATION",
