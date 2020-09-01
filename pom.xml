@@ -18,5 +18,6 @@
   <modules>
     <module>backend</module>
     <module>frontend</module>
+    <module>conversion</module>
   </modules>
 </project>

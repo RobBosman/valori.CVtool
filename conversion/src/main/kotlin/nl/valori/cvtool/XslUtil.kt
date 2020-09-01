@@ -1,6 +1,6 @@
 package nl.valori.cvtool
 
-import java.nio.charset.StandardCharsets
+import java.nio.charset.StandardCharsets.UTF_8
 import java.util.*
 
 object XslUtil {
@@ -14,5 +14,5 @@ object XslUtil {
 
   @JvmStatic
   fun uuid(seed: String): UUID? =
-      UUID.nameUUIDFromBytes(seed.toByteArray(StandardCharsets.UTF_8))
+      UUID.nameUUIDFromBytes(seed.toByteArray(UTF_8))
 }
