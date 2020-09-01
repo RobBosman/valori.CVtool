@@ -94,7 +94,7 @@
             <xsl:text>&#x0A;&#x0A;</xsl:text>
             <xsl:value-of select="util:jsonText(cv:vaardigheden)"/>
           </xsl:variable>
-          <xsl:if test="normalize-space($profileText)">
+          <xsl:if test="normalize-space($profileText) != ''">
             "<xsl:value-of select="cv:locale"/>": "<xsl:value-of select="util:jsonText($profileText)"/>",
           </xsl:if>
         </xsl:for-each>
