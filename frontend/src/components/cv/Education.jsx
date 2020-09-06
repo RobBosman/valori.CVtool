@@ -139,10 +139,10 @@ const Education = (props) => {
   };
 
   return (
-    <table width="100%">
+    <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="40%" valign="top">
+          <td width="30%" valign="top">
             <Stack styles={viewStyles}>
               <Stack horizontal>
                 <Text variant="xxLarge">Publicaties</Text>
@@ -164,7 +164,7 @@ const Education = (props) => {
             </Stack>
           </td>
 
-          <td width="60%" valign="top">
+          <td width="70%" valign="top">
             <Stack styles={editStyles}>
               <CvChoiceGroup
                 label="Soort opleiding"

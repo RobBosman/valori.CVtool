@@ -62,11 +62,19 @@ const Reference = (props) => {
     setSelectedInstance: props.setSelectedReferenceId
   };
 
-  const { viewPaneColor } = useTheme();
+  const { viewPaneColor, editPaneColor } = useTheme();
   const viewStyles = {
     root: [
       {
         background: viewPaneColor,
+        padding: 20
+      }
+    ]
+  };
+  const editStyles = {
+    root: [
+      {
+        background: editPaneColor,
         padding: 20
       }
     ]
@@ -113,7 +121,7 @@ const Reference = (props) => {
   };
 
   return (
-    <table width="100%">
+    <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
           <td width="40%" valign="top">
@@ -139,7 +147,7 @@ const Reference = (props) => {
           </td>
 
           <td width="60%" valign="top">
-            <Stack>
+            <Stack styles={editStyles}>
               <CvTextField
                 label="Naam"
                 field="referentName"

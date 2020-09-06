@@ -92,13 +92,13 @@ const ContentPage = (props) => {
         <Nav
           styles={{ root: { width: 180 } }}
           groups={NAV_GROUPS}
-          initialSelectedKey="#"
+          initialSelectedKey={props.locationHash}
           selectedKey={props.navKey}
           onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
       </Stack>
       <Separator vertical />
       <Stack.Item grow>
-        <div style={{ paddingLeft: 140, height: 100 }}>
+        <div style={{ paddingLeft: 140, height: 105 }}>
           <CvTitle />
         </div>
         {renderContent}

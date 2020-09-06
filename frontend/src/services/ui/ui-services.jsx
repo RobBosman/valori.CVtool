@@ -17,8 +17,8 @@ export const useTheme = () => {
 
   return {
     theme,
-    viewPaneColor: theme.palette.neutralQuaternaryAlt,
-    editPaneColor: theme.palette.neutralTertiaryAlt
+    viewPaneColor: theme.palette.neutralLighter,
+    editPaneColor: theme.palette.neutralLighterAlt
   };
 };
 

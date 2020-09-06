@@ -122,7 +122,7 @@ const Skill = (props) => {
   };
 
   return (
-    <table width="100%">
+    <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
           <td width="40%" valign="top">

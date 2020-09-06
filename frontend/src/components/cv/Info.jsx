@@ -24,7 +24,7 @@ const Info = () => {
           <li>AutoSave: al je wijzigingen worden na twee seconden vanzelf opgeslagen.
             <br/>Als je niet van plan bent iets te wijzigen, zet &apos;AutoSave&apos; dan uit met de knop rechtsonder.</li>
           <br/>
-          <li><strong>Publiceren</strong> plaatst je cv in de <a href="https://valorinl.sharepoint.com/sites/Kantoor/CV_databank" target="blank">CV Databank in SharePoint</a>.</li>
+          <li><em>Publiceren</em> plaatst je cv in de <a href="https://valorinl.sharepoint.com/sites/Kantoor/CV_databank" target="blank">CV Databank in SharePoint</a>.</li>
           <br/>
           <li>Sorteren: gegevens in tabellen kun je sorteren door op de kolomheader te klikken.
             <br/>Het sorteren van tabelgegevens heeft geen invloed op de volgorde in je cv, behalve bij Werkopdrachten.
