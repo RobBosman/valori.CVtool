@@ -157,16 +157,19 @@ const Experience = (props) => {
             <Pivot>
               <PivotItem headerText="Edit">
                 <Stack styles={editStyles}>
-                  <CvDatePicker
-                    label="Van"
-                    field="periodBegin"
-                    instanceContext={experienceContext}
-                    styles={{ root: { width: 140 } }} />
-                  <CvDatePicker
-                    label="t/m"
-                    field="periodEnd"
-                    instanceContext={experienceContext}
-                    styles={{ root: { width: 140 } }} />
+                  <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <CvDatePicker
+                      label="Van"
+                      field="periodBegin"
+                      instanceContext={experienceContext}
+                      styles={{ root: { width: 140 } }} />
+                    <CvDatePicker
+                      label="t/m"
+                      field="periodEnd"
+                      instanceContext={experienceContext}
+                      styles={{ root: { width: 140 } }} />
+                  </Stack>
                   <CvTextField
                     label="Opdrachtgever"
                     field="client"

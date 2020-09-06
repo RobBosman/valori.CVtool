@@ -76,7 +76,7 @@ export const authenticationEpics = [
     switchMap(() => eventBusServices.eventBusClient.monitorConnectionState().pipe(
       // Fetch the accountInfo data as soon as the EventBus is connected.
       filter((connectionState) => connectionState === eventBusServices.ConnectionStates.CONNECTED),
-      take(1) // don't retry automatically
+      take(1) // Connect once; don't automatically fetch accountInfo at future reconnects.
     )),
     mergeMap(() => authenticationServices.fetchAccountInfoFromRemote(eventBusServices.eventBusClient.sendEvent)),
     map((accountInfo) => authenticationActions.setAccountInfo(accountInfo)),

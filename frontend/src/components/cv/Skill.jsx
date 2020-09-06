@@ -128,7 +128,7 @@ const Skill = (props) => {
           <td width="40%" valign="top">
             <Stack styles={viewStyles}>
               <Stack horizontal>
-                <Text variant="xxLarge">Publicaties</Text>
+                <Text variant="xxLarge">Vaardigheden</Text>
                 <IconButton
                   iconProps={{ iconName: "Add" }}
                   onClick={onAddItem} />

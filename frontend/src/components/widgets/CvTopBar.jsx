@@ -28,12 +28,13 @@ const CvTopBar = (props) => {
     {
       key: "cvDatabank",
       text: "CV Databank",
-      // onClick: link
+      // TODO: onClick: link
     },
     {
-      key: "appPermissions",
-      text: "Apps",
-      // onClick: link
+      key: "download",
+      text: "Download",
+      disabled: props.loginState !== LoginStates.LOGGED_IN,
+      // TODO: onClick: download
     },
     {
       key: "help",
@@ -44,7 +45,7 @@ const CvTopBar = (props) => {
             key: "emailMe",
             text: "Problemen? Mail even!",
             iconProps: { iconName: "NewMail" },
-            // onClick: mail-link
+            // TODO: onClick: mail-link
           }
         ]
       }

@@ -59,7 +59,8 @@ const Reference = (props) => {
     locale: props.locale,
     entity: props.referenceEntity,
     entityId: props.selectedReferenceId,
-    setSelectedInstance: props.setSelectedReferenceId
+    setSelectedInstance: props.setSelectedReferenceId,
+    replaceInstance: props.replaceReference
   };
 
   const { viewPaneColor, editPaneColor } = useTheme();
@@ -103,7 +104,8 @@ const Reference = (props) => {
     const id = createUuid();
     props.replaceReference(id, {
       _id: id,
-      cvId: props.selectedCvId
+      cvId: props.selectedCvId,
+      includeInCv: true
     });
     props.setSelectedReferenceId(id);
 

@@ -1,5 +1,5 @@
 import { ofType } from "redux-observable";
-import { map, switchMap, distinctUntilChanged } from "rxjs/operators";
+import { map, switchMap, distinctUntilChanged, debounceTime } from "rxjs/operators";
 import { fetchCvFromRemote, saveAllToRemote } from "./safe-services";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import { setSelectedId } from "../ui/ui-actions";
@@ -10,6 +10,7 @@ const getCvId = (cvEntity, accountInfoId) =>
   cvEntity && accountInfoId && Object.values(cvEntity).find((cvInstance) => cvInstance.accountId === accountInfoId)?._id;
 
 export const safeEpics = [
+
   // Fetch accountInfo from the server.
   (action$) => action$.pipe(
     ofType(fetchCvByAccountId.type),
@@ -30,5 +31,12 @@ export const safeEpics = [
   (action$, state$) => action$.pipe(
     ofType(saveAll.type),
     switchMap(() => saveAllToRemote(state$.value, eventBusClient.sendEvent))
+  ),
+
+  // Auto-save after 3 seconds.
+  (action$) => action$.pipe(
+    ofType(replaceSafeInstance.type),
+    debounceTime(3000),
+    map(() => saveAll())
   )
 ];

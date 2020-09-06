@@ -42,15 +42,34 @@ const Profile = (props) => {
         label="Rol"
         localeField='role'
         instanceContext={cvContext} />
-      <CvDatePicker
-        label="Geboortedatum"
-        field="dateOfBirth"
-        instanceContext={accountContext}
-        styles={{ root: { width: 140 } }} />
-      <CvTextField
-        label="Woonplaats"
-        field="residence"
-        instanceContext={accountContext} />
+      <Stack horizontal
+        tokens={{ childrenGap: "l1" }}>
+        <CvDatePicker
+          label="Geboortedatum"
+          field="dateOfBirth"
+          instanceContext={accountContext}
+          styles={{ root: { width: 140 } }} />
+        <CvTextField
+          label="Woonplaats"
+          field="residence"
+          instanceContext={accountContext} 
+          styles={{ root: { width: "100%" } }} />
+      </Stack>
+      <Stack horizontal
+        tokens={{ childrenGap: "l1" }}>
+        <CvTextField
+          label="Werkervaring sinds"
+          field="workingSince"
+          instanceContext={cvContext}
+          placeholder='yyyy'
+          styles={{ fieldGroup: { width: 80 } }} />
+        <CvTextField
+          label="IT ervaring sinds"
+          field="inItSince"
+          instanceContext={cvContext}
+          placeholder='yyyy' 
+          styles={{ fieldGroup: { width: 80 } }}/>
+      </Stack>
       <CvTextField
         label="Profielschets"
         localeField='profile'
@@ -63,18 +82,6 @@ const Profile = (props) => {
         instanceContext={cvContext}
         multiline
         autoAdjustHeight />
-      <CvTextField
-        label="Werkervaring sinds"
-        field="workingSince"
-        instanceContext={cvContext}
-        placeholder='yyyy'
-        styles={{ fieldGroup: { width: 80 } }} />
-      <CvTextField
-        label="IT ervaring sinds"
-        field="inItSince"
-        instanceContext={cvContext}
-        placeholder='yyyy' 
-        styles={{ fieldGroup: { width: 80 } }}/>
     </Stack>
   );
 };

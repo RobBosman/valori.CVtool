@@ -166,13 +166,11 @@ const Publication = (props) => {
                 label="Media"
                 field="media"
                 instanceContext={publicationContext}
-                multiline
                 autoAdjustHeight />
               <CvTextField
                 label="Titel"
                 localeField="title"
                 instanceContext={publicationContext}
-                multiline
                 autoAdjustHeight/>
               <CvTextField
                 label="Omschrijving"

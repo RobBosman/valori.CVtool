@@ -47,7 +47,10 @@ export class EventBusClient {
     this._eventBus.onopen = () => {
       // Make sure all event handlers are (re-)registered each time the EventBus connects.
       this.registerEventHandlers();
-      this._connectionStateSubject.next(ConnectionStates.CONNECTED);
+      // Give the new connection a few milliseconds to register handlers.
+      setTimeout(
+        () => this._connectionStateSubject.next(ConnectionStates.CONNECTED),
+        100);
     };
 
     this._eventBus.onclose = () => {

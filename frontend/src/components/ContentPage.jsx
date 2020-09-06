@@ -92,7 +92,7 @@ const ContentPage = (props) => {
         <Nav
           styles={{ root: { width: 180 } }}
           groups={NAV_GROUPS}
-          initialSelectedKey={props.locationHash}
+          initialSelectedKey={props.locationHash || "#"}
           selectedKey={props.navKey}
           onRenderGroupHeader={(group) => (<h3>{group.name}</h3>)} />
       </Stack>
