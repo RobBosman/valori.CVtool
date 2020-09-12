@@ -1,3 +1,4 @@
+setenv.cmd
 .idea/
 *.iml
 .vscode/

@@ -36,25 +36,25 @@ describe("ui-services.test", () => {
     });
     const testTarget = document.getElementById("testTarget");
     expect(testTarget.style.background)
-      .toBe(colorToRgb(lightBlue.palette.neutralQuaternaryAlt));
+      .toBe(colorToRgb(lightBlue.palette.neutralLighter));
 
     act(() => {
       loadTheme(darkOrange);
     });
     expect(testTarget.style.background)
-      .toBe(colorToRgb(darkOrange.palette.neutralQuaternaryAlt));
+      .toBe(colorToRgb(darkOrange.palette.neutralLighter));
 
     act(() => {
       loadTheme(darkYellow);
     });
     expect(testTarget.style.background)
-      .toBe(colorToRgb(darkYellow.palette.neutralQuaternaryAlt));
+      .toBe(colorToRgb(darkYellow.palette.neutralLighter));
 
     act(() => {
       loadTheme(lightGreen);
     });
     expect(testTarget.style.background)
-      .toBe(colorToRgb(lightGreen.palette.neutralQuaternaryAlt));
+      .toBe(colorToRgb(lightGreen.palette.neutralLighter));
   });
 });
 

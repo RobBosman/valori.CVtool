@@ -72,7 +72,8 @@ module.exports = {
     "coverage/**",
     "dist/**",
     "node/**",
-    "node_modules/**"
+    "node_modules/**",
+    "target/**"
   ],
   overrides: [
     {

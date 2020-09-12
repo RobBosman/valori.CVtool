@@ -1,0 +1,6 @@
+
+SET httpConnectionString=http://localhost:8080/
+SET authConnectionString=https://login.microsoftonline.com/<TENANT_ID>/v2.0?<APP_ID>:<CLIENT_SECRET>
+SET mongodbConnectionString=mongodb://localhost:27017/<DATABASE>
+::SET mongodbConnectionString=mongodb+srv://<USER>:<PASSWORD>@<CLUSTER_URL>/<DATABASE>
+::SET mariadbConnectionString=jdbc:mariadb://localhost:3306/<SCHEMA>?maxPoolSize=10&user=<USER>&password=<PASSWORD>

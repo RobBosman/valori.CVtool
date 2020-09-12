@@ -10,7 +10,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>cinversion</artifactId>
+  <artifactId>conversion</artifactId>
   <description>conversion of CVtool data format (XML) to CvCenter (JSON)</description>
 
   <properties>

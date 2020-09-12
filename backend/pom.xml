@@ -16,10 +16,11 @@
   <properties>
     <java.version>14</java.version>
     <java-target.version>14</java-target.version>
-    <kotlin.version>1.4.0</kotlin.version>
+    <kotlin.version>1.4.10</kotlin.version>
     <logback-classic.version>1.2.3</logback-classic.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+    <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     <mongodb-driver-reactivestreams.version>4.1.0</mongodb-driver-reactivestreams.version>
     <vertx.version>3.9.2</vertx.version>
   </properties>
@@ -34,17 +35,6 @@
         <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <release>${java.version}</release>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>${maven-jar-plugin.version}</version>
-        <configuration>
-          <excludes>
-            <!-- don't add config stuff to the jar file -->
-            <exclude>logback.xml</exclude>
-          </excludes>
         </configuration>
       </plugin>
       <plugin>
@@ -71,10 +61,51 @@
           <jvmTarget>${java-target.version}</jvmTarget>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+        <configuration>
+          <excludes>
+            <!-- don't add config stuff to the jar file -->
+            <exclude>logback.xml</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${maven-shade-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Main-Class>nl.valori.cvtool.server.MainKt</Main-Class>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+              <artifactSet/>
+              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>nl.valori.cvtool</groupId>
+      <artifactId>frontend</artifactId>
+      <type>war</type>
+      <version>${project.version}</version>
+    </dependency>
     <!-- logging -->
     <dependency>
       <groupId>ch.qos.logback</groupId>

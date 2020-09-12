@@ -2,7 +2,7 @@ import EventBus from "vertx3-eventbus-client";
 import { BehaviorSubject } from "rxjs";
 import { distinctUntilChanged } from "rxjs/operators";
 
-const CONNECT_URL = "http://localhost:80/eventbus"; // TODO - specify via environment variable.
+const CONNECT_URL = "http://localhost:8080/eventbus"; // TODO - specify via environment variable.
 const CONNECT_OPTIONS = {
   vertxbus_reconnect_attempts_max: Infinity, // Max reconnect attempts
   vertxbus_reconnect_delay_min: 500, // Initial delay (in ms) before first reconnect attempt

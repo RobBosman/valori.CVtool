@@ -40,7 +40,6 @@ internal class HttpServerVerticle : AbstractVerticle() {
     router.route("/*").handler(
         StaticHandler.create()
             .setWebRoot("frontend/dist")
-            .setIndexPage("index.html")
     )
     return router
   }
