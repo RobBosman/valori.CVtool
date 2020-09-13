@@ -5,7 +5,7 @@ const OAUTH2_CONFIG = {
     authority: "https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
     clientId: "57e3b5d5-d7d6-40db-850b-5947ea1f2209",
     domainHint: "valori.nl",
-    redirectUri: "http://localhost:8080/", // TODO: fill dynamically
+    redirectUri: window.location,
     navigateToLoginRequestUrl: false
   },
   scopes: ["openid", "Sites.ReadWrite.All", "Files.ReadWrite"]
