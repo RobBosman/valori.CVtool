@@ -11,7 +11,7 @@
   </parent>
 
   <artifactId>conversion</artifactId>
-  <description>conversion of CVtool data format (XML) to CvCenter (JSON)</description>
+  <description>conversion of old CVtool data format (XML) to new (JSON)</description>
 
   <properties>
     <java.version>14</java.version>

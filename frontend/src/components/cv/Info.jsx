@@ -18,7 +18,7 @@ const Info = () => {
     <Stack styles={viewStyles}>
       <Text variant="xLarge">Welkom Rob Bosman</Text>
       <Text>
-        <br/>Dit is versie v20200101 van de <strong>CvCenter</strong> app van Valori, waarmee je je curriculum vitae kunt invoeren.
+        <br/>Dit is versie v20200101 van de <strong>CVtool</strong> app van Valori, waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
         <ul>
           <li><strong>TODO:</strong> AutoSave: al je wijzigingen worden na drie seconden vanzelf opgeslagen.

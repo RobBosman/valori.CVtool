@@ -146,6 +146,9 @@ module.exports = (_env, argv) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*"
+      },
+      proxy: {
+        "/eventbus": "http://localhost:80"
       }
     }
   };

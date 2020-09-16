@@ -1,9 +1,9 @@
 import { ofType } from "redux-observable";
-import { map, switchMap, distinctUntilChanged, debounceTime } from "rxjs/operators";
+import { map, switchMap, distinctUntilChanged } from "rxjs/operators";
 import { fetchCvFromRemote, saveAllToRemote } from "./safe-services";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import { setSelectedId } from "../ui/ui-actions";
-import { fetchCvByAccountId, replaceSafeContent, replaceSafeInstance, saveAll } from "./safe-actions";
+import * as safeActions from "./safe-actions";
 import { setAccountInfo } from "../authentication/authentication-actions";
 
 const getCvId = (cvEntity, accountInfoId) =>
@@ -13,15 +13,15 @@ export const safeEpics = [
 
   // Fetch accountInfo from the server.
   (action$) => action$.pipe(
-    ofType(fetchCvByAccountId.type),
+    ofType(safeActions.fetchCvByAccountId.type),
     map((action) => action.payload),
     switchMap((accountId) => fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
-    map((safeContent) => replaceSafeContent(safeContent))
+    map((safeContent) => safeActions.replaceSafeContent(safeContent))
   ),
 
   // Select or reset the current cv.
   (action$, state$) => action$.pipe(
-    ofType(setAccountInfo.type, replaceSafeContent.type, replaceSafeInstance.type),
+    ofType(setAccountInfo.type, safeActions.replaceSafeContent.type, safeActions.replaceSafeInstance.type),
     map(() => getCvId(state$.value.safe?.cv, state$.value.authentication?.accountInfo?._id)),
     distinctUntilChanged(),
     map((cvId) => setSelectedId("cv", cvId))
@@ -29,14 +29,7 @@ export const safeEpics = [
 
   // Send the content of the safe to the server.
   (action$, state$) => action$.pipe(
-    ofType(saveAll.type),
+    ofType(safeActions.saveAll.type),
     switchMap(() => saveAllToRemote(state$.value, eventBusClient.sendEvent))
-  ),
-
-  // Auto-save after 3 seconds.
-  (action$) => action$.pipe(
-    ofType(replaceSafeInstance.type),
-    debounceTime(3000),
-    map(() => saveAll())
   )
 ];

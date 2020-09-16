@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { saveAll, fetchCvByAccountId } from "../../services/safe/safe-actions";
-import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack } from "@fluentui/react";
-import { LoginStates, requestLogin, requestLogout } from "../../services/authentication/authentication-actions";
-import { setThemeName } from "../../services/ui/ui-actions";
+import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack, Toggle } from "@fluentui/react";
+import * as safeActions from "../../services/safe/safe-actions";
+import * as authenticationActions from "../../services/authentication/authentication-actions";
+import * as uiActions from "../../services/ui/ui-actions";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import valoriNameImg from "../../static/valori-name.png";
 import darkOrange from "../../themes/darkOrange";
@@ -33,7 +33,7 @@ const CvTopBar = (props) => {
     {
       key: "download",
       text: "Download",
-      disabled: props.loginState !== LoginStates.LOGGED_IN,
+      disabled: props.loginState !== authenticationActions.LoginStates.LOGGED_IN,
       // TODO: onClick: download
     },
     {
@@ -51,19 +51,44 @@ const CvTopBar = (props) => {
       }
     }
   ];
+
+  const autoSaveToggle = <Toggle
+    label="AutoSave" inlineLabel
+    onText="on" offText="off"
+    defaultChecked={props.autoSaveEnabled}
+    onChange={(_, checked) => props.setAutoSaveEnabled(checked)}
+    styles={{
+      root: [
+        {
+          margin: "auto"
+        }
+      ]
+    }} />;
   const farItems = [
-    props.loginState === LoginStates.LOGGED_OUT && {
+    props.loginState === authenticationActions.LoginStates.LOGGED_IN && {
+      key: "toggleAutoSave",
+      onRender: () => autoSaveToggle
+    },
+    props.loginState === authenticationActions.LoginStates.LOGGED_IN && {
+      key: "save",
+      text: "Opslaan",
+      iconProps: { iconName: "CloudUpload" },
+      disabled: !(props.isConnected && props.hasSafeData),
+      onClick: props.saveAll
+    },
+
+    props.loginState === authenticationActions.LoginStates.LOGGED_OUT && {
       key: "login",
       text: "Aanmelden",
       iconProps: { iconName: "Signin" },
       onClick: props.requestToLogin
     },
-    props.loginState !== LoginStates.LOGGED_OUT && {
+    props.loginState !== authenticationActions.LoginStates.LOGGED_OUT && {
       key: "globalNav",
       text: props.account?.name || "",
       iconProps: { iconName: "GlobalNavButton" },
       iconOnly: false,
-      disabled: props.loginState !== LoginStates.LOGGED_IN,
+      disabled: props.loginState !== authenticationActions.LoginStates.LOGGED_IN,
       subMenuProps: {
         items: [
           {
@@ -127,6 +152,8 @@ CvTopBar.propTypes = {
   loginState: PropTypes.string.isRequired,
   isConnected: PropTypes.bool.isRequired,
   hasSafeData: PropTypes.bool.isRequired,
+  autoSaveEnabled: PropTypes.bool.isRequired,
+  setAutoSaveEnabled: PropTypes.func.isRequired,
   setThemeName: PropTypes.func.isRequired,
   requestToLogin: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
@@ -138,15 +165,22 @@ const select = (state) => ({
   account: state.authentication.accountInfo,
   loginState: state.authentication.loginState,
   isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
-  hasSafeData: Object.keys(state.safe).length > 0
+  hasSafeData: Object.keys(state.safe).length > 0,
+  autoSaveEnabled: state.ui.autoSaveEnabled,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setThemeName: (themeName) => dispatch(setThemeName(themeName)),
-  requestToLogin: () => dispatch(requestLogin()),
-  requestToLogout: () => dispatch(requestLogout()),
-  fetchCv: (accountId) => dispatch(fetchCvByAccountId(accountId)),
-  saveAll: () => dispatch(saveAll())
+  setAutoSaveEnabled: (autoSaveEnabled) => {
+    if (autoSaveEnabled) {
+      dispatch(safeActions.saveAll());
+    }
+    dispatch(uiActions.setAutoSaveEnabled(autoSaveEnabled));
+  },
+  setThemeName: (themeName) => dispatch(uiActions.setThemeName(themeName)),
+  requestToLogin: () => dispatch(authenticationActions.requestLogin()),
+  requestToLogout: () => dispatch(authenticationActions.requestLogout()),
+  fetchCv: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId)),
+  saveAll: () => dispatch(safeActions.saveAll())
 });
 
 export default connect(select, mapDispatchToProps)(CvTopBar);

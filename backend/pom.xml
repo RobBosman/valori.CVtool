@@ -11,7 +11,7 @@
   </parent>
 
   <artifactId>backend</artifactId>
-  <description>backend of CvCenter-app to enter and maintain cv's (curricula vitae)</description>
+  <description>backend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
   <properties>
     <java.version>14</java.version>
