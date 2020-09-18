@@ -3,7 +3,7 @@ import * as MSAL from "@azure/msal-browser";
 const OAUTH2_CONFIG = {
   auth: {
     authority: "https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
-    clientId: "57e3b5d5-d7d6-40db-850b-5947ea1f2209",
+    clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
     domainHint: "valori.nl",
     redirectUri: window.location.origin,
     navigateToLoginRequestUrl: false
