@@ -1,5 +1,10 @@
 {
+  "name": "cvtool-frontend",
+  "version": "0.0.1",
+  "description": "Frontend for Valori CVtool appliaction",
   "author": "Rob Bosman",
+  "license": "MIT",
+  "main": "index.html",
   "dependencies": {
     "@azure/msal-browser": "^2.1.0",
     "@babel/runtime": "^7.11.2",
@@ -48,9 +53,6 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
-  "license": "MIT",
-  "main": "index.html",
-  "name": "cvtool-frontend",
   "scripts": {
     "dev-server": "webpack-dev-server --mode development",
     "prod-server": "webpack-dev-server --mode production",
@@ -62,6 +64,5 @@
     "npm-outdated": "npm outdated > npm-outdated.txt || exit 0",
     "npm-audit": "npm audit > npm-audit.txt || exit 0",
     "analyze": "webpack --profile --json > stats.json"
-  },
-  "version": "0.0.1"
+  }
 }

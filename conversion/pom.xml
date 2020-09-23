@@ -14,7 +14,7 @@
   <description>conversion of old CVtool data format (XML) to new (JSON)</description>
 
   <properties>
-    <java.version>14</java.version>
+    <java.version>15</java.version>
     <java-target.version>14</java-target.version>
     <kotlin.version>1.4.0</kotlin.version>
   </properties>
@@ -29,7 +29,7 @@
         <executions>
           <execution>
             <id>compile</id>
-            <phase>compile</phase>
+            <phase>process-sources</phase>
             <goals>
               <goal>compile</goal>
             </goals>

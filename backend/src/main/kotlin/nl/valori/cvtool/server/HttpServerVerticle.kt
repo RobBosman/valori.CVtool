@@ -4,7 +4,6 @@ import io.vertx.core.Future
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.reactivex.core.AbstractVerticle
-import io.vertx.reactivex.core.net.SocketAddress
 import io.vertx.reactivex.ext.web.Router
 import io.vertx.reactivex.ext.web.handler.StaticHandler
 import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
@@ -24,7 +23,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
     vertx
         .createHttpServer()
         .requestHandler(createRouter())
-        .listen(SocketAddress.inetSocketAddress(port, hostName)) { result ->
+        .listen(port, hostName) { result ->
           if (result.succeeded())
             log.info("Listening on {}", connectionString)
           future.handle(result.mapEmpty())

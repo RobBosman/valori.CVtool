@@ -12,7 +12,7 @@
 
   <artifactId>frontend</artifactId>
   <packaging>war</packaging>
-  <description>frontend of cvtool-app to enter and maintain cv's (curricula vitae)</description>
+  <description>Frontend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
   <properties>
     <target.environment>PROD</target.environment>
