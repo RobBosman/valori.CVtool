@@ -26,7 +26,7 @@ RUN rm ${MAVEN_FILE}.tar.gz
 RUN mv apache-maven-${MAVEN_VERSION} ${MAVEN_HOME}
 
 # Copy the sources.
-COPY pom.xml /
+COPY pom.xml .
 COPY backend/pom.xml backend/pom.xml
 COPY backend/src backend/src
 COPY --from=frontend-builder frontend/dist frontend/dist

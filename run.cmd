@@ -16,7 +16,7 @@ java ^
 GOTO EOF
 
 :BUILD_DOCKER
-docker build -t %IMAGE_NAME% -f Dockerfile.%IMAGE_NAME% .
+docker build -t %IMAGE_NAME% .
 GOTO EOF
 
 :RUN_DOCKER
