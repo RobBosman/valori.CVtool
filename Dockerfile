@@ -13,17 +13,7 @@ FROM openjdk:15-alpine as backend-builder
 # Add binutils for objcopy, needed by jlink.
 RUN apk --update add \
     binutils \
-    wget
-
-# Install maven
-ARG MAVEN_VERSION=3.6.3
-ARG MAVEN_FILE=apache-maven-${MAVEN_VERSION}-bin
-ENV MAVEN_HOME=/usr/lib/mvn
-ENV PATH ${MAVEN_HOME}/bin:${PATH}
-RUN wget http://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/${MAVEN_FILE}.tar.gz
-RUN tar -zxvf ${MAVEN_FILE}.tar.gz
-RUN rm ${MAVEN_FILE}.tar.gz
-RUN mv apache-maven-${MAVEN_VERSION} ${MAVEN_HOME}
+    maven
 
 # Copy the sources.
 COPY pom.xml .
@@ -43,9 +33,7 @@ RUN mvn install:install-file \
 RUN mvn package
 RUN mv target/*-fat.jar /fat.jar
 WORKDIR /
-# Module jdk.naming.dns is required for TLS connections to MongoDB.
-RUN echo -n "jdk.naming.dns," > java.modules
-RUN jdeps --print-module-deps --ignore-missing-deps /fat.jar >> java.modules
+RUN jdeps --print-module-deps --ignore-missing-deps /fat.jar > java.modules
 RUN jlink --compress 2 --strip-debug --no-header-files --no-man-pages \
     --add-modules $(cat java.modules) \
     --output /java/
@@ -53,8 +41,9 @@ RUN jlink --compress 2 --strip-debug --no-header-files --no-man-pages \
 
 # Compose the final container.
 FROM alpine:latest
-##RUN apk --no-cache --update add openjdk11-jre openjdk11-jmods
-RUN apk --no-cache --update add openjdk11-jre
-##COPY --from=backend-builder /java /java
+MAINTAINER RobBosman@valori.nl
+COPY --from=backend-builder /java /java
 COPY --from=backend-builder /fat.jar /fat.jar
-CMD exec java -jar /fat.jar
+EXPOSE 80
+CMD exec mongod \
+    && /java/bin/java -jar /fat.jar

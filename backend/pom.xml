@@ -15,11 +15,10 @@
 
   <properties>
     <java.version>15</java.version>
-    <java-target.version>11</java-target.version>
+    <java-target.version>14</java-target.version>
     <kotlin.version>1.4.10</kotlin.version>
     <logback-classic.version>1.2.3</logback-classic.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     <mongodb-driver-reactivestreams.version>4.1.0</mongodb-driver-reactivestreams.version>
     <vertx.version>3.9.2</vertx.version>
@@ -59,17 +58,6 @@
         </executions>
         <configuration>
           <jvmTarget>${java-target.version}</jvmTarget>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>${maven-jar-plugin.version}</version>
-        <configuration>
-          <excludes>
-            <!-- don't add config stuff to the jar file -->
-            <exclude>logback.xml</exclude>
-          </excludes>
         </configuration>
       </plugin>
       <plugin>

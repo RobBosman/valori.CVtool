@@ -1,7 +1,7 @@
 @ECHO OFF
 
 CALL setenv.cmd
-SET IMAGE_NAME=cvtool
+SET IMAGE_NAME=cvtool-backend
 
 ::GOTO RUN_STANDALONE
 GOTO BUILD_DOCKER
@@ -10,8 +10,7 @@ GOTO BUILD_DOCKER
 
 :RUN_STANDALONE
 java ^
-  --add-opens java.base/jdk.internal.misc=ALL-UNNAMED ^
-  -Dio.netty.tryReflectionSetAccessible=true ^
+  --illegal-access=warn ^
   -jar .\backend\target\backend-0.0.1-SNAPSHOT-fat.jar
 GOTO EOF
 
@@ -20,17 +19,18 @@ docker build -t %IMAGE_NAME% .
 GOTO EOF
 
 :RUN_DOCKER
-docker run -d ^
+docker run ^
   -p 80:80 ^
+  -p 443:443 ^
   --env httpConnectionString=%httpConnectionString% ^
   --env authConnectionString=%authConnectionString% ^
   --env mongodbConnectionString=%mongodbConnectionString% ^
   --name %IMAGE_NAME% ^
-  %IMAGE_NAME%
+  -d %IMAGE_NAME%
 GOTO EOF
 
 :PUSH_DOCKER
-SET TAG_NAME=bransom/cvtool/%IMAGE_NAME%:latest
+SET TAG_NAME=bransom/%IMAGE_NAME%:latest
 docker tag %IMAGE_NAME% %TAG_NAME%
 docker push %TAG_NAME%
 GOTO EOF

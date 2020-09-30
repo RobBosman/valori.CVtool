@@ -16,7 +16,7 @@
   </logger>
 
   <!-- set default log level and appender -->
-  <root level="ERROR">
+  <root level="INFO">
     <appender-ref ref="CONSOLE"/>
   </root>
 
