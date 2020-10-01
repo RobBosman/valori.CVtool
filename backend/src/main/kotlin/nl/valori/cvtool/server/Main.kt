@@ -17,6 +17,7 @@ object Main {
 
   private val log = LoggerFactory.getLogger(javaClass)
   private val verticlesToDeploy = listOf(
+      HttpRedirectVerticle::class,
       HttpServerVerticle::class,
       AuthVerticle::class,
       CvVerticle::class,

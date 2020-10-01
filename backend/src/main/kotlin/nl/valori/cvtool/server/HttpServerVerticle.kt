@@ -16,9 +16,15 @@ internal class HttpServerVerticle : AbstractVerticle() {
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
+    // Environment variable: httpConnectionString=https://0.0.0.0:8000/
     val connectionString = config().getString("httpConnectionString")
+    val protocol = connectionString.substringBefore(":")
     val hostName = connectionString.substringAfter("//").substringBefore(":")
     val port = connectionString.substringAfterLast(":").substringBefore("/").toInt()
+    if ((protocol.toUpperCase() == "HTTPS" && port == 80)
+        || (protocol.toUpperCase() == "HTTP" && port == 443))
+      throw IllegalArgumentException("You should not configure $protocol on port $port." +
+          " Please specify a valid value for environment variable 'httpsConnectionString'.")
 
     vertx
         .createHttpServer()

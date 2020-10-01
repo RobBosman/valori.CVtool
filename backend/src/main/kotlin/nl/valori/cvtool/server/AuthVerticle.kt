@@ -27,6 +27,7 @@ internal class AuthVerticle : AbstractVerticle() {
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
   override fun rxStart(): Completable {
+    // authConnectionString=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<APP_ID>:<CLIENT_SECRET>
     val connectionString = config().getString("authConnectionString")
     val site = connectionString.substringBefore("?")
     val clientId = connectionString.substringAfter("?").substringBefore(":")

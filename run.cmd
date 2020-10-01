@@ -22,6 +22,7 @@ GOTO EOF
 docker run ^
   -p 80:80 ^
   -p 443:443 ^
+  --env redirectConnectionString=%redirectConnectionString% ^
   --env httpConnectionString=%httpConnectionString% ^
   --env authConnectionString=%authConnectionString% ^
   --env mongodbConnectionString=%mongodbConnectionString% ^
