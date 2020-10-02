@@ -11,3 +11,4 @@ HeadlessChrome_81.0.4044_(Windows_10.0.0)/
 npm-audit.txt
 npm-outdated.txt
 stats.json
+*.p12

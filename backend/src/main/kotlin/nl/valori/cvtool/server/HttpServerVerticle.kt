@@ -1,6 +1,8 @@
 package nl.valori.cvtool.server
 
 import io.vertx.core.Future
+import io.vertx.core.http.HttpServerOptions
+import io.vertx.core.net.JksOptions
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.reactivex.core.AbstractVerticle
@@ -10,6 +12,7 @@ import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
 import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
+import java.nio.file.Paths
 
 internal class HttpServerVerticle : AbstractVerticle() {
 
@@ -17,7 +20,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
 
   override fun start(future: Future<Void>) {
     // Environment variable: httpConnectionString=https://0.0.0.0:8000/
-    val connectionString = config().getString("httpConnectionString")
+    val connectionString = config().getString("httpConnectionString", "https://0.0.0.0:443/")
     val protocol = connectionString.substringBefore(":")
     val hostName = connectionString.substringAfter("//").substringBefore(":")
     val port = connectionString.substringAfterLast(":").substringBefore("/").toInt()
@@ -27,9 +30,18 @@ internal class HttpServerVerticle : AbstractVerticle() {
           " Please specify a valid value for environment variable 'httpsConnectionString'.")
 
     vertx
-        .createHttpServer()
+        .createHttpServer(HttpServerOptions()
+            .setCompressionSupported(true)
+            .setHost(hostName)
+            .setPort(port)
+            .setSsl(true)
+            .setKeyStoreOptions(JksOptions()
+                .setPath(Paths.get("secret").resolve("keystore.p12").toString())
+                .setPassword("KeyStorePassword")
+            )
+        )
         .requestHandler(createRouter())
-        .listen(port, hostName) { result ->
+        .listen { result ->
           if (result.succeeded())
             log.info("Listening on {}", connectionString)
           future.handle(result.mapEmpty())
