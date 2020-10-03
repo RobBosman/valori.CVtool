@@ -1,7 +1,7 @@
 @ECHO OFF
 
-CALL setenv.cmd
-SET IMAGE_NAME=cvtool-backend
+CALL secret\setenv.cmd
+SET IMAGE_NAME=cvtool
 
 ::GOTO RUN_STANDALONE
 GOTO BUILD_DOCKER
@@ -10,8 +10,8 @@ GOTO BUILD_DOCKER
 
 :RUN_STANDALONE
 java ^
-  --illegal-access=warn ^
-  -jar .\backend\target\backend-0.0.1-SNAPSHOT-fat.jar
+    --illegal-access=warn ^
+    -jar .\backend\target\backend-0.0.1-SNAPSHOT-fat.jar
 GOTO EOF
 
 :BUILD_DOCKER
@@ -20,14 +20,15 @@ GOTO EOF
 
 :RUN_DOCKER
 docker run ^
-  -p 80:80 ^
-  -p 443:443 ^
-  --env redirectConnectionString=%redirectConnectionString% ^
-  --env httpConnectionString=%httpConnectionString% ^
-  --env authConnectionString=%authConnectionString% ^
-  --env mongodbConnectionString=%mongodbConnectionString% ^
-  --name %IMAGE_NAME% ^
-  -d %IMAGE_NAME%
+    --network="host" ^
+    -p 80:80 ^
+    -p 443:443 ^
+    --mount source=secret,target=/secret,readonly ^
+    --env HTTP_CONNECTION_STRING=%HTTP_CONNECTION_STRING% ^
+    --env AUTH_CONNECTION_STRING=%AUTH_CONNECTION_STRING% ^
+    --env MONGO_CONNECTION_STRING=%MONGO_CONNECTION_STRING% ^
+    --name %IMAGE_NAME% ^
+    -d %IMAGE_NAME%
 GOTO EOF
 
 :PUSH_DOCKER

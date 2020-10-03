@@ -20,7 +20,7 @@ internal class MongoFetchVerticle : AbstractVerticle() {
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
-    val connectionString = config().getString("mongodbConnectionString")
+    val connectionString = config().getString("MONGO_CONNECTION_STRING")
     val databaseName = connectionString.substringAfterLast("/").substringBefore("?")
     val mongoDatabase = MongoClients
         .create(connectionString)

@@ -44,6 +44,5 @@ FROM alpine:latest
 MAINTAINER RobBosman@valori.nl
 COPY --from=backend-builder /java /java
 COPY --from=backend-builder /fat.jar /fat.jar
-EXPOSE 80
-CMD exec mongod \
-    && /java/bin/java -jar /fat.jar
+COPY secret/keystore.p12 .
+CMD exec /java/bin/java -jar /fat.jar

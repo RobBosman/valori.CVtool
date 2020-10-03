@@ -12,40 +12,47 @@ import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
 import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
-import java.nio.file.Paths
+import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Path
 
 internal class HttpServerVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
-    // Environment variable: httpConnectionString=https://0.0.0.0:8000/
-    val connectionString = config().getString("httpConnectionString", "https://0.0.0.0:443/")
-    val protocol = connectionString.substringBefore(":")
-    val hostName = connectionString.substringAfter("//").substringBefore(":")
-    val port = connectionString.substringAfterLast(":").substringBefore("/").toInt()
-    if ((protocol.toUpperCase() == "HTTPS" && port == 80)
-        || (protocol.toUpperCase() == "HTTP" && port == 443))
-      throw IllegalArgumentException("You should not configure $protocol on port $port." +
-          " Please specify a valid value for environment variable 'httpsConnectionString'.")
+    // Environment variables: HTTP_CONNECTION_STRING=https://0.0.0.0:443/?keystore.p12:KeyStorePassword
+    val connectionString = config().getString("HTTP_CONNECTION_STRING")
+    val connectionURL = URL(connectionString)
+    val params = connectionURL.query.split(":")
 
     vertx
         .createHttpServer(HttpServerOptions()
             .setCompressionSupported(true)
-            .setHost(hostName)
-            .setPort(port)
+            .setHost(connectionURL.host)
+            .setPort(connectionURL.port)
             .setSsl(true)
-            .setKeyStoreOptions(JksOptions()
-                .setPath(Paths.get("secret").resolve("keystore.p12").toString())
-                .setPassword("KeyStorePassword")
-            )
+            .setKeyStoreOptions(createKeyCertOptions(params[0], params[1]))
         )
         .requestHandler(createRouter())
         .listen { result ->
           if (result.succeeded())
-            log.info("Listening on {}", connectionString)
+            log.info("Listening on {}", connectionString.substringBefore("?"))
           future.handle(result.mapEmpty())
         }
+  }
+
+  private fun createKeyCertOptions(keyStorePath: String, keyStorePassword: String): JksOptions {
+    // If the shared SSL keyStore cannot be found, then use a fallback.
+    if (!Files.exists(Path.of(keyStorePath))) {
+      log.warn("SSL keystore {} cannot be found; using fallback keyStore", keyStorePath)
+      return JksOptions()
+          .setPath(javaClass.getResource("/keystore.p12").path)
+          .setPassword("KeyStorePassword")
+    }
+    return JksOptions()
+        .setPath(keyStorePath)
+        .setPassword(keyStorePassword)
   }
 
   private fun createRouter(): Router {

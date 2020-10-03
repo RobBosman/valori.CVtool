@@ -1,10 +1,6 @@
 package nl.valori.cvtool.server.mongodb
 
-import com.mongodb.client.model.DeleteOneModel
-import com.mongodb.client.model.Filters
-import com.mongodb.client.model.ReplaceOneModel
-import com.mongodb.client.model.ReplaceOptions
-import com.mongodb.client.model.WriteModel
+import com.mongodb.client.model.*
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable
@@ -25,7 +21,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(future: Future<Void>) {
-    val connectionString = config().getString("mongodbConnectionString")
+    val connectionString = config().getString("MONGO_CONNECTION_STRING")
     val databaseName = connectionString.substringAfterLast("/").substringBefore("?")
     val mongoDatabase = MongoClients
         .create(connectionString)

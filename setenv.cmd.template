@@ -1,7 +1,0 @@
-
-SET redirectConnectionString=http://0.0.0.0:80/
-SET httpConnectionString=https://0.0.0.0:443/
-SET authConnectionString=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<APP_ID>:<CLIENT_SECRET>
-SET mongodbConnectionString=mongodb://<HOST>:27017/<DATABASE>
-::SET mongodbConnectionString=mongodb+srv://<USER>:<PASSWORD>@<CLUSTER_URL>/<DATABASE>
-::SET mariadbConnectionString=jdbc:mariadb://localhost:3306/<SCHEMA>?maxPoolSize=10&user=<USER>&password=<PASSWORD>

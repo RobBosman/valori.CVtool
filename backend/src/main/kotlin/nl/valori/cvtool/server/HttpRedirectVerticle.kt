@@ -12,25 +12,26 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
 
   override fun start(future: Future<Void>) {
     // Environment variables:
-    //    redirectConnectionString=http://0.0.0.0:80/
-    //    httpConnectionString=https://0.0.0.0:443/
-    val fromConnectionString = config().getString("redirectConnectionString", "http://0.0.0.0:80/")
-    val fromHostName = fromConnectionString.substringAfter("//").substringBefore(":")
-    val fromPort = fromConnectionString.substringAfterLast(":").substringBefore("/").toInt()
+    //    REDIRECT_CONNECTION_STRING=http://0.0.0.0:80/
+    //    HTTP_CONNECTION_STRING=https://0.0.0.0:443/
+    val fromConnectionString = config().getString("REDIRECT_CONNECTION_STRING", "http://0.0.0.0:80/")
+    val fromConnectionURL = URL(fromConnectionString)
 
-    val toConnectionString = config().getString("httpConnectionString", "https://0.0.0.0:443/")
-    val toProtocol = toConnectionString.substringBefore(":")
-    val toPort = toConnectionString.substringAfterLast(":").substringBefore("/").toInt()
+    val toConnectionString = config().getString("HTTP_CONNECTION_STRING").substringBefore("?")
+    val toConnectionURL = URL(toConnectionString)
+    if (fromConnectionURL == toConnectionURL)
+      throw IllegalArgumentException("You cannot redirect to the same URL: $fromConnectionString." +
+          " Please specify valid values for environment variables 'REDIRECT_CONNECTION_STRING' and 'HTTP_CONNECTION_STRING'.")
 
     vertx
         .createHttpServer(HttpServerOptions()
             .setCompressionSupported(true)
-            .setHost(fromHostName)
-            .setPort(fromPort))
+            .setHost(fromConnectionURL.host)
+            .setPort(fromConnectionURL.port))
         .requestHandler { request ->
           request.response()
               .setStatusCode(301)
-              .putHeader("Location", composeRedirectUrl(request.absoluteURI(), toProtocol, toPort))
+              .putHeader("Location", composeRedirectUrl(request.absoluteURI(), toConnectionURL.protocol, toConnectionURL.port))
               .end()
         }
         .listen { result ->
@@ -48,12 +49,6 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
         else
           String.format("%s://%s:%d/", url.protocol, url.host, url.port)
     val replacement = String.format("%s://%s:%d/", toProtocol, url.host, toPort)
-    val redirectURI = absoluteURI.replace(source, replacement)
-
-    if (redirectURI == absoluteURI)
-      throw IllegalArgumentException("You cannot redirect to the same URL: $redirectURI." +
-          " Please specify valid values for environment variables 'httpConnectionString' and 'httpsConnectionString'.")
-
-    return redirectURI
+    return absoluteURI.replace(source, replacement)
   }
 }

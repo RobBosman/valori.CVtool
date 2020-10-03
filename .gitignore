@@ -1,4 +1,4 @@
-setenv.cmd
+secret/setenv.cmd
 .idea/
 *.iml
 .vscode/
@@ -12,3 +12,4 @@ npm-audit.txt
 npm-outdated.txt
 stats.json
 *.p12
+.env
