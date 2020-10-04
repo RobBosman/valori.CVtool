@@ -17,6 +17,7 @@ import nl.valori.cvtool.server.Model.getInstanceMap
 import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
+import java.net.URL
 import java.util.*
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
@@ -27,17 +28,17 @@ internal class AuthVerticle : AbstractVerticle() {
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
   override fun rxStart(): Completable {
-    // AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<APP_ID>:<CLIENT_SECRET>
+    // Environment variable:
+    //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<APP_ID>:<CLIENT_SECRET>
     val connectionString = config().getString("AUTH_CONNECTION_STRING")
-    val site = connectionString.substringBefore("?")
-    val clientId = connectionString.substringAfter("?").substringBefore(":")
-    val clientSecret = connectionString.substringAfterLast(":")
+    val connectionURL = URL(connectionString)
+    val clientIdSecret = connectionURL.query.split(":")
 
     return OpenIDConnectAuth
         .rxDiscover(vertx, OAuth2ClientOptions()
-            .setSite(site)
-            .setClientID(clientId)
-            .setClientSecret(clientSecret)
+            .setSite(connectionString.substringBefore("?"))
+            .setClientID(clientIdSecret[0])
+            .setClientSecret(clientIdSecret[1])
         )
         .doOnSuccess { oauth2 ->
           vertx.eventBus()

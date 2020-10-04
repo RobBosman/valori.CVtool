@@ -32,5 +32,32 @@ curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compo
     -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
+docker login -u bransom
+# remove pwd form /root/.docker/config.json
+
 # Install MongoDB and CVtool app.
-docker-compose up -d
+docker-compose --env-file=/secret/.env up -d
+
+
+# Fetch LetsEncrypt certificate
+docker run -it --rm \
+  --mount source=secret,target=/etc/letsencrypt \
+  --mount source=webroot,target=/webroot \
+  --name certbot \
+  certbot/certbot  \
+  certonly \
+  --register-unsafely-without-email \
+  --agree-tos \
+  --webroot --webroot-path=/webroot \
+  --staging \
+  -d vcv01.valori.nl
+
+
+# remove containers
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+# armageddon
+docker network prune -f
+docker rmi -f $(docker images --filter dangling=true -qa)
+docker volume rm $(docker volume ls --filter dangling=true -q)
+docker rmi -f $(docker images -qa)

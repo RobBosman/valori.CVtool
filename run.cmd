@@ -1,7 +1,7 @@
 @ECHO OFF
 
 CALL secret\setenv.cmd
-SET IMAGE_NAME=cvtool
+SET IMAGE_NAME=bransom/cvtool
 
 ::GOTO RUN_STANDALONE
 GOTO BUILD_DOCKER
@@ -23,7 +23,7 @@ docker run ^
     --network="host" ^
     -p 80:80 ^
     -p 443:443 ^
-    --mount source=secret,target=/secret,readonly ^
+    --mount source=ssl_cert,target=/ssl_cert,readonly ^
     --env HTTP_CONNECTION_STRING=%HTTP_CONNECTION_STRING% ^
     --env AUTH_CONNECTION_STRING=%AUTH_CONNECTION_STRING% ^
     --env MONGO_CONNECTION_STRING=%MONGO_CONNECTION_STRING% ^
@@ -33,7 +33,7 @@ GOTO EOF
 
 :PUSH_DOCKER
 SET TAG_NAME=bransom/%IMAGE_NAME%:latest
-docker tag %IMAGE_NAME% %TAG_NAME%
+::docker tag %IMAGE_NAME% %TAG_NAME%
 docker push %TAG_NAME%
 GOTO EOF
 

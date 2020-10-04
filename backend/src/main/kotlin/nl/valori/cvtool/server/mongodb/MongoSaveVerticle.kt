@@ -1,11 +1,10 @@
 package nl.valori.cvtool.server.mongodb
 
 import com.mongodb.client.model.*
-import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable
 import io.reactivex.internal.operators.flowable.FlowableEmpty
-import io.vertx.core.Future
+import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
@@ -20,13 +19,22 @@ internal class MongoSaveVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
-  override fun start(future: Future<Void>) {
-    val connectionString = config().getString("MONGO_CONNECTION_STRING")
-    val databaseName = connectionString.substringAfterLast("/").substringBefore("?")
-    val mongoDatabase = MongoClients
-        .create(connectionString)
-        .getDatabase(databaseName)
-
+  override fun start(startPromise: Promise<Void>) {
+//    MongoConnection
+//        .getMongoDatabase(config())
+//        .subscribe(
+//            { mongoDatabase ->
+//              vertx.eventBus()
+//                  .consumer<JsonObject>(SAVE_ADDRESS)
+//                  .toObservable()
+//                  .subscribe(
+//                      { handleRequest(it, mongoDatabase) },
+//                      { log.error("Vertx error", it) }
+//                  )
+//            },
+//            { log.error("Error connecting to MongoDB", it) }
+//        )
+    val mongoDatabase = MongoConnection.getMongoDatabase(config())
     vertx.eventBus()
         .consumer<JsonObject>(SAVE_ADDRESS)
         .toObservable()

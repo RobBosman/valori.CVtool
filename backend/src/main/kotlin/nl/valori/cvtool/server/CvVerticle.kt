@@ -1,7 +1,7 @@
 package nl.valori.cvtool.server
 
 import io.reactivex.Single
-import io.vertx.core.Future
+import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
@@ -22,7 +22,7 @@ internal class CvVerticle : AbstractVerticle() {
   private val log = LoggerFactory.getLogger(javaClass)
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
-  override fun start(future: Future<Void>) {
+  override fun start(startPromise: Promise<Void>) {
     vertx.eventBus()
         .consumer<JsonObject>(FETCH_CV_ADDRESS)
         .toObservable()

@@ -1,6 +1,6 @@
 package nl.valori.cvtool.server
 
-import io.vertx.core.Future
+import io.vertx.core.Promise
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.net.JksOptions
 import io.vertx.ext.bridge.PermittedOptions
@@ -13,18 +13,19 @@ import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.net.URL
-import java.nio.file.Files
-import java.nio.file.Path
 
 internal class HttpServerVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
-  override fun start(future: Future<Void>) {
-    // Environment variables: HTTP_CONNECTION_STRING=https://0.0.0.0:443/?keystore.p12:KeyStorePassword
+  override fun start(startPromise: Promise<Void>) {
+    // Environment variable:
+    //   HTTP_CONNECTION_STRING=https://0.0.0.0:443/?keystore.p12:KeyStorePassword
     val connectionString = config().getString("HTTP_CONNECTION_STRING")
     val connectionURL = URL(connectionString)
     val params = connectionURL.query.split(":")
+    val keyStoreFile = params[0]
+    val keyStorePassword = params[1]
 
     vertx
         .createHttpServer(HttpServerOptions()
@@ -32,39 +33,27 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .setHost(connectionURL.host)
             .setPort(connectionURL.port)
             .setSsl(true)
-            .setKeyStoreOptions(createKeyCertOptions(params[0], params[1]))
+            .setKeyStoreOptions(JksOptions()
+                .setPath("/secret/$keyStoreFile")
+                .setPassword(keyStorePassword)
+            )
         )
         .requestHandler(createRouter())
         .listen { result ->
           if (result.succeeded())
             log.info("Listening on {}", connectionString.substringBefore("?"))
-          future.handle(result.mapEmpty())
+          startPromise.complete()
         }
-  }
-
-  private fun createKeyCertOptions(keyStorePath: String, keyStorePassword: String): JksOptions {
-    // If the shared SSL keyStore cannot be found, then use a fallback.
-    if (!Files.exists(Path.of(keyStorePath))) {
-      log.warn("SSL keystore {} cannot be found; using fallback keyStore", keyStorePath)
-      return JksOptions()
-          .setPath(javaClass.getResource("/keystore.p12").path)
-          .setPassword("KeyStorePassword")
-    }
-    return JksOptions()
-        .setPath(keyStorePath)
-        .setPassword(keyStorePassword)
   }
 
   private fun createRouter(): Router {
     val router = Router.router(vertx)
+    router.route("/.well-known/acme-challenge/")
+        .handler(StaticHandler.create().setWebRoot("/webroot"))
     router.mountSubRouter("/eventbus",
-        SockJSHandler.create(vertx)
-            .bridge(createBridgeOptions())
-    )
-    router.route("/*").handler(
-        StaticHandler.create()
-            .setWebRoot("frontend/dist")
-    )
+        SockJSHandler.create(vertx).bridge(createBridgeOptions()))
+    router.route("/*")
+        .handler(StaticHandler.create().setWebRoot("frontend/dist"))
     return router
   }
 

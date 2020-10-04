@@ -44,5 +44,5 @@ FROM alpine:latest
 MAINTAINER RobBosman@valori.nl
 COPY --from=backend-builder /java /java
 COPY --from=backend-builder /fat.jar /fat.jar
-COPY secret/keystore.p12 .
+COPY secret/keystore.p12 /secret/
 CMD exec /java/bin/java -jar /fat.jar
