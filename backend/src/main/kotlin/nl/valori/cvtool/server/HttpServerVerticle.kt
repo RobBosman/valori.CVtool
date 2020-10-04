@@ -20,11 +20,11 @@ internal class HttpServerVerticle : AbstractVerticle() {
 
   override fun start(startPromise: Promise<Void>) {
     // Environment variable:
-    //   HTTP_CONNECTION_STRING=https://0.0.0.0:443/?keystore.p12:KeyStorePassword
+    //   HTTP_CONNECTION_STRING=https://0.0.0.0:443/?/secret/keystore.p12:KeyStorePassword
     val connectionString = config().getString("HTTP_CONNECTION_STRING")
     val connectionURL = URL(connectionString)
     val params = connectionURL.query.split(":")
-    val keyStoreFile = params[0]
+    val keyStorePath = params[0]
     val keyStorePassword = params[1]
 
     vertx
@@ -34,7 +34,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .setPort(connectionURL.port)
             .setSsl(true)
             .setKeyStoreOptions(JksOptions()
-                .setPath("/secret/$keyStoreFile")
+                .setPath(keyStorePath)
                 .setPassword(keyStorePassword)
             )
         )
@@ -49,7 +49,10 @@ internal class HttpServerVerticle : AbstractVerticle() {
   private fun createRouter(): Router {
     val router = Router.router(vertx)
     router.route("/.well-known/acme-challenge/")
-        .handler(StaticHandler.create().setWebRoot("/webroot"))
+        .handler(StaticHandler.create()
+            .setAllowRootFileSystemAccess(true)
+            .setWebRoot("/webroot")
+        )
     router.mountSubRouter("/eventbus",
         SockJSHandler.create(vertx).bridge(createBridgeOptions()))
     router.route("/*")

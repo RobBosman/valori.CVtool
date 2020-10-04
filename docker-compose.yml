@@ -6,7 +6,7 @@ services:
     image: bransom/cvtool
     restart: always
     environment:
-      - HTTP_CONNECTION_STRING=https://0.0.0.0:443/?${SSL_KEY_STORE_FILE}:${SSL_KEY_STORE_PASSWORD}
+      - HTTP_CONNECTION_STRING=https://0.0.0.0:443/?${SSL_KEY_STORE_PATH}:${SSL_KEY_STORE_PASSWORD}
       - REDIRECT_CONNECTION_STRING=http://0.0.0.0:80/
       - AUTH_CONNECTION_STRING=https://login.microsoftonline.com/${OAUTH_TENANT_ID}/v2.0?${OAUTH_CLIENT_ID}:${OAUTH_CLIENT_SECRET}
       - MONGO_CONNECTION_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin

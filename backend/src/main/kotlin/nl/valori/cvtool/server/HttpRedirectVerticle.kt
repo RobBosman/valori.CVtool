@@ -41,7 +41,10 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
   private fun createRouter(toConnectionURL: URL): Router {
     val router = Router.router(vertx)
     router.route("/.well-known/acme-challenge/")
-        .handler(StaticHandler.create().setWebRoot("/webroot"))
+        .handler(StaticHandler.create()
+            .setAllowRootFileSystemAccess(true)
+            .setWebRoot("/webroot")
+        )
     router.route("/*")
         .handler { context ->
           val redirectUrl = composeRedirectUrl(context.request().absoluteURI(), toConnectionURL.protocol, toConnectionURL.port)
@@ -55,13 +58,13 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
   }
 
   private fun composeRedirectUrl(absoluteURI: String, toProtocol: String, toPort: Int): String {
-    val url = URL(absoluteURI)
+    val fromUrl = URL(absoluteURI)
     val source =
-        if (url.port < 0)
-          String.format("%s://%s/", url.protocol, url.host)
+        if (fromUrl.port < 0)
+          String.format("%s://%s/", fromUrl.protocol, fromUrl.host)
         else
-          String.format("%s://%s:%d/", url.protocol, url.host, url.port)
-    val replacement = String.format("%s://%s:%d/", toProtocol, url.host, toPort)
-    return absoluteURI.replace(source, replacement)
+          String.format("%s://%s:%d/", fromUrl.protocol, fromUrl.host, fromUrl.port)
+    val target = String.format("%s://%s:%d/", toProtocol, fromUrl.host, toPort)
+    return absoluteURI.replace(source, target)
   }
 }

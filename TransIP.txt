@@ -39,6 +39,16 @@ docker login -u bransom
 docker-compose --env-file=/secret/.env up -d
 
 
+# Check cvtool
+docker run -it --rm \
+  --mount source=secret,target=/secret \
+  --mount source=webroot,target=/webroot \
+  bransom/cvtool \
+  sh
+
+echo "<html><body>.well-known/acme-challenge/</body></html?" > /webroot/index.html
+
+
 # Fetch LetsEncrypt certificate
 docker run -it --rm \
   --mount source=secret,target=/etc/letsencrypt \
