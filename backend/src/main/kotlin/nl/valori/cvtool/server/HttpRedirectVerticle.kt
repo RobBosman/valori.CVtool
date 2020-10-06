@@ -13,58 +13,42 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(startPromise: Promise<Void>) {
-    // Environment variables:
-    //    REDIRECT_CONNECTION_STRING=http://0.0.0.0:80/
-    //    HTTP_CONNECTION_STRING=https://0.0.0.0:443/?keystore.p12:KeyStorePassword
-    val fromConnectionString = config().getString("REDIRECT_CONNECTION_STRING", "http://0.0.0.0:80/")
-    val fromConnectionURL = URL(fromConnectionString)
-
-    val toConnectionString = config().getString("HTTP_CONNECTION_STRING").substringBefore("?")
-    val toConnectionURL = URL(toConnectionString)
-    if (fromConnectionURL == toConnectionURL)
-      throw IllegalArgumentException("You cannot redirect to the same URL: $fromConnectionString." +
-          " Please specify valid values for environment variables 'REDIRECT_CONNECTION_STRING' and 'HTTP_CONNECTION_STRING'.")
+    // Environment variable:
+    //    HTTPS_CONNECTION_STRING=https://0.0.0.0:443/?queryString
+    val httpsConfig = URL(config().getString("HTTPS_CONNECTION_STRING").substringBefore("?"))
 
     vertx
         .createHttpServer(HttpServerOptions()
             .setCompressionSupported(true)
-            .setHost(fromConnectionURL.host)
-            .setPort(fromConnectionURL.port))
-        .requestHandler(createRouter(toConnectionURL))
+            .setHost(httpsConfig.host)
+            .setPort(80)
+            .setSsl(false)
+        )
+        .requestHandler(createRouter())
         .listen { result ->
-          if (result.succeeded())
-            log.info("Redirecting {} to {}", fromConnectionString, toConnectionString)
+          if (result.succeeded()) {
+            val httpAuthority = if (httpsConfig.port == httpsConfig.defaultPort) httpsConfig.host else httpsConfig.authority
+            log.info("Redirecting http://${httpAuthority}/ to https://${httpsConfig.authority}/")
+          }
           startPromise.complete()
         }
   }
 
-  private fun createRouter(toConnectionURL: URL): Router {
+  private fun createRouter(): Router {
     val router = Router.router(vertx)
-    router.route("/.well-known/acme-challenge/")
+    router.route("/.well-known/acme-challenge/*")
         .handler(StaticHandler.create()
             .setAllowRootFileSystemAccess(true)
-            .setWebRoot("/webroot")
+            .setWebRoot("/webroot/.well-known/acme-challenge")
         )
     router.route("/*")
         .handler { context ->
-          val redirectUrl = composeRedirectUrl(context.request().absoluteURI(), toConnectionURL.protocol, toConnectionURL.port)
+          val absoluteURI = context.request().absoluteURI()
           context.response()
               .setStatusCode(301)
-              .putHeader("Location", redirectUrl)
+              .putHeader("Location", "https://${absoluteURI.substringAfter("://")}")
               .end()
-          context.reroute(redirectUrl)
         }
     return router
-  }
-
-  private fun composeRedirectUrl(absoluteURI: String, toProtocol: String, toPort: Int): String {
-    val fromUrl = URL(absoluteURI)
-    val source =
-        if (fromUrl.port < 0)
-          String.format("%s://%s/", fromUrl.protocol, fromUrl.host)
-        else
-          String.format("%s://%s:%d/", fromUrl.protocol, fromUrl.host, fromUrl.port)
-    val target = String.format("%s://%s:%d/", toProtocol, fromUrl.host, toPort)
-    return absoluteURI.replace(source, target)
   }
 }

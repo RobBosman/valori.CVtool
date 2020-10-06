@@ -23,8 +23,9 @@ docker run ^
     --network="host" ^
     -p 80:80 ^
     -p 443:443 ^
-    --mount source=ssl_cert,target=/ssl_cert,readonly ^
-    --env HTTP_CONNECTION_STRING=%HTTP_CONNECTION_STRING% ^
+    --mount source=webroot,target=/webroot ^
+    --mount source=ssl_certs,target=/ssl_certs,readonly ^
+    --env HTTPS_CONNECTION_STRING=%HTTPS_CONNECTION_STRING% ^
     --env AUTH_CONNECTION_STRING=%AUTH_CONNECTION_STRING% ^
     --env MONGO_CONNECTION_STRING=%MONGO_CONNECTION_STRING% ^
     --name %IMAGE_NAME% ^

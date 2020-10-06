@@ -1,4 +1,4 @@
-# ubuntu 20.04 - 37.97.242.249 / vcv01.valori.nl
+# ubuntu 20.04 - 37.97.242.249 / cvtool.bransom.nl / vcv01.valori.nl
 apt-get -y update
 apt-get -y upgrade
 
@@ -39,26 +39,38 @@ docker login -u bransom
 docker-compose --env-file=/secret/.env up -d
 
 
-# Check cvtool
-docker run -it --rm \
-  --mount source=secret,target=/secret \
-  --mount source=webroot,target=/webroot \
-  bransom/cvtool \
-  sh
+echo "<html><body>.well-known/acme-challenge/</body></html?" > /var/lib/docker/volumes/root_webroot/index.html
 
-echo "<html><body>.well-known/acme-challenge/</body></html?" > /webroot/index.html
+docker run -it --rm \
+  --mount source=root_ssl_certs,target=/ssl_certs \
+  --mount source=root_webroot,target=/webroot,readonly \
+  --name cvtool \
+  bransom/cvtool  \
+  sh
 
 
 # Fetch LetsEncrypt certificate
 docker run -it --rm \
-  --mount source=secret,target=/etc/letsencrypt \
-  --mount source=webroot,target=/webroot \
+  -v root_ssl_certs:/etc/letsencrypt/live \
+  -v root_webroot:/data/letsencrypt/.well-known/acme-challenge \
+  -v letsencrypt_logs:/var/log/letsencrypt \
+  certbot/certbot \
+  certonly --webroot \
+  --register-unsafely-without-email \
+  --agree-tos \
+  --webroot-path=/data/letsencrypt \
+  --staging \
+  -d cvtool.bransom.nl
+
+docker run -it --rm \
+  --mount source=root_ssl_certs,target=/etc/letsencrypt \
+  --mount source=root_webroot,target=/data/letsencrypt \
   --name certbot \
   certbot/certbot  \
   certonly \
   --register-unsafely-without-email \
   --agree-tos \
-  --webroot --webroot-path=/webroot \
+  --webroot --webroot-path=/data/letsencrypt \
   --staging \
   -d vcv01.valori.nl
 
@@ -66,8 +78,9 @@ docker run -it --rm \
 # remove containers
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
-# armageddon
+# prune
 docker network prune -f
 docker rmi -f $(docker images --filter dangling=true -qa)
+# armageddon
 docker volume rm $(docker volume ls --filter dangling=true -q)
 docker rmi -f $(docker images -qa)

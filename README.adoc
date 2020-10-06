@@ -3,7 +3,7 @@
 == React + Redux + vert.x application
 Configure via environment variables:
 
-- HTTP_CONNECTION_STRING=http://localhost:80/
+- HTTPS_CONNECTION_STRING=http://localhost:80/
 - MONGO_CONNECTION_STRING=mongodb://localhost:27017/cvtool
 
 == Dev env setup

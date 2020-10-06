@@ -16,7 +16,7 @@ import java.net.ServerSocket
 import java.util.concurrent.TimeUnit.SECONDS
 
 @ExtendWith(VertxExtension::class)
-internal object HttpServerVerticleTest {
+internal object HttpsServerVerticleTest {
 
   private const val HOST_NAME = "localhost"
   private var port = 0
@@ -29,8 +29,8 @@ internal object HttpServerVerticleTest {
 
     val options = DeploymentOptions()
         .setConfig(JsonObject()
-            .put("HTTP_CONNECTION_STRING", "http://$HOST_NAME:$port/"))
-    vertx.deployVerticle(HttpServerVerticle::class.java.name, options, testContext.completing())
+            .put("HTTPS_CONNECTION_STRING", "http://$HOST_NAME:$port/"))
+    vertx.deployVerticle(HttpsServerVerticle::class.java.name, options, testContext.completing())
   }
 
   @Test

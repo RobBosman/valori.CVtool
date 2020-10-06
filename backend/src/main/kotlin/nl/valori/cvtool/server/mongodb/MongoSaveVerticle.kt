@@ -20,27 +20,19 @@ internal class MongoSaveVerticle : AbstractVerticle() {
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(startPromise: Promise<Void>) {
-//    MongoConnection
-//        .getMongoDatabase(config())
-//        .subscribe(
-//            { mongoDatabase ->
-//              vertx.eventBus()
-//                  .consumer<JsonObject>(SAVE_ADDRESS)
-//                  .toObservable()
-//                  .subscribe(
-//                      { handleRequest(it, mongoDatabase) },
-//                      { log.error("Vertx error", it) }
-//                  )
-//            },
-//            { log.error("Error connecting to MongoDB", it) }
-//        )
-    val mongoDatabase = MongoConnection.getMongoDatabase(config())
-    vertx.eventBus()
-        .consumer<JsonObject>(SAVE_ADDRESS)
-        .toObservable()
+    MongoConnection
+        .mongodbConnection(config())
         .subscribe(
-            { handleRequest(it, mongoDatabase) },
-            { log.error("Vertx error", it) }
+            { mongoDatabase ->
+              vertx.eventBus()
+                  .consumer<JsonObject>(SAVE_ADDRESS)
+                  .toObservable()
+                  .subscribe(
+                      { handleRequest(it, mongoDatabase) },
+                      { log.error("Vertx error", it) }
+                  )
+            },
+            { log.error("Error connecting to MongoDB", it) }
         )
   }
 

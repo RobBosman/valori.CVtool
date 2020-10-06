@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 
 services:
 
@@ -6,8 +6,7 @@ services:
     image: bransom/cvtool
     restart: always
     environment:
-      - HTTP_CONNECTION_STRING=https://0.0.0.0:443/?${SSL_KEY_STORE_PATH}:${SSL_KEY_STORE_PASSWORD}
-      - REDIRECT_CONNECTION_STRING=http://0.0.0.0:80/
+      - HTTPS_CONNECTION_STRING=https://${HOST_NAME}:443/?${SSL_KEY_PATH}:${SSL_CERT_PATH}
       - AUTH_CONNECTION_STRING=https://login.microsoftonline.com/${OAUTH_TENANT_ID}/v2.0?${OAUTH_CLIENT_ID}:${OAUTH_CLIENT_SECRET}
       - MONGO_CONNECTION_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin
     networks:
@@ -17,12 +16,22 @@ services:
       - 443:443
     volumes:
       - type: volume
-        source: secret
-        target: /secret
-        readolny: true
+        source: ssl_certs
+        target: /ssl_certs
+        read_only: true
       - type: volume
         source: webroot
         target: /webroot
+
+#  certbot:
+#    image: certbot/certbot
+#    volumes:
+#      - type: volume
+#        source: ssl_certs
+#        target: /etc/letsencrypt
+#      - type: volume
+#        source: webroot
+#        target: /var/www/certbot
 
   mongodb:
     image: mongo
@@ -33,27 +42,17 @@ services:
     networks:
       - cvtool-network
     ports:
-      - 27117:27017
+      - 27017:27017
     volumes:
       - type: volume
-        source: mongodb_data
+        source: mongodb
         target: /data/db
-
-#  certbot:
-#    image: certbot/certbot
-#    volumes:
-#      - type: volume
-#        source: secret
-#        target: /etc/letsencrypt
-#      - type: volume
-#        source: webroot
-#        target: /var/www/certbot
 
 networks:
   cvtool-network:
     driver: bridge
 
 volumes:
-  secret:
+  ssl_certs:
   webroot:
-  mongodb_data:
+  mongodb:

@@ -2,7 +2,7 @@ package nl.valori.cvtool.server
 
 import io.vertx.core.Promise
 import io.vertx.core.http.HttpServerOptions
-import io.vertx.core.net.JksOptions
+import io.vertx.core.net.PemKeyCertOptions
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.reactivex.core.AbstractVerticle
@@ -14,49 +14,50 @@ import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.net.URL
 
-internal class HttpServerVerticle : AbstractVerticle() {
+internal class HttpsServerVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(startPromise: Promise<Void>) {
     // Environment variable:
-    //   HTTP_CONNECTION_STRING=https://0.0.0.0:443/?/secret/keystore.p12:KeyStorePassword
-    val connectionString = config().getString("HTTP_CONNECTION_STRING")
-    val connectionURL = URL(connectionString)
-    val params = connectionURL.query.split(":")
-    val keyStorePath = params[0]
-    val keyStorePassword = params[1]
+    //   HTTPS_CONNECTION_STRING=https://www.example.com:443/?/ssl_certs/privkey1.pem:/ssl_certs/fullchain1.pem
+    val connectionString = config().getString("HTTPS_CONNECTION_STRING")
+    val httpsConfig = URL(connectionString)
+    val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
+    val params = httpsConfig.query.split(":")
+    val keyPath = params[0]
+    val certPath = params[1]
 
     vertx
         .createHttpServer(HttpServerOptions()
             .setCompressionSupported(true)
-            .setHost(connectionURL.host)
-            .setPort(connectionURL.port)
+            .setHost(httpsConfig.host)
+            .setPort(httpsPort)
             .setSsl(true)
-            .setKeyStoreOptions(JksOptions()
-                .setPath(keyStorePath)
-                .setPassword(keyStorePassword)
+            .setPemKeyCertOptions(PemKeyCertOptions()
+                .setKeyPath(keyPath)
+                .setCertPath(certPath)
             )
         )
         .requestHandler(createRouter())
         .listen { result ->
           if (result.succeeded())
-            log.info("Listening on {}", connectionString.substringBefore("?"))
+            log.info("Listening on https://${httpsConfig.authority}/")
           startPromise.complete()
         }
   }
 
   private fun createRouter(): Router {
     val router = Router.router(vertx)
-    router.route("/.well-known/acme-challenge/")
+    router.route("/.well-known/acme-challenge/*")
         .handler(StaticHandler.create()
             .setAllowRootFileSystemAccess(true)
-            .setWebRoot("/webroot")
+            .setWebRoot("/webroot/.well-known/acme-challenge")
         )
-    router.mountSubRouter("/eventbus",
-        SockJSHandler.create(vertx).bridge(createBridgeOptions()))
+    router.mountSubRouter("/eventbus", SockJSHandler.create(vertx).bridge(createBridgeOptions()))
     router.route("/*")
-        .handler(StaticHandler.create().setWebRoot("frontend/dist"))
+        .handler(StaticHandler.create()
+            .setWebRoot("frontend/dist"))
     return router
   }
 
