@@ -2,6 +2,21 @@ version: "3.2"
 
 services:
 
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    networks:
+      - cvtool_network
+    ports:
+      - 27017:27017
+    volumes:
+      - type: volume
+        source: mongodb
+        target: /data/db
+
   cvtool:
     image: bransom/cvtool
     restart: always
@@ -10,10 +25,10 @@ services:
       - AUTH_CONNECTION_STRING=https://login.microsoftonline.com/${OAUTH_TENANT_ID}/v2.0?${OAUTH_CLIENT_ID}:${OAUTH_CLIENT_SECRET}
       - MONGO_CONNECTION_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin
     networks:
-      - cvtool-network
+      - cvtool_network
     ports:
-      - 80:80
       - 443:443
+      - 80:80
     volumes:
       - type: volume
         source: ssl_certs
@@ -22,34 +37,12 @@ services:
       - type: volume
         source: webroot
         target: /webroot
-
-#  certbot:
-#    image: certbot/certbot
-#    volumes:
-#      - type: volume
-#        source: ssl_certs
-#        target: /etc/letsencrypt
-#      - type: volume
-#        source: webroot
-#        target: /var/www/certbot
-
-  mongodb:
-    image: mongo
-    restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-    networks:
-      - cvtool-network
-    ports:
-      - 27017:27017
-    volumes:
-      - type: volume
-        source: mongodb
-        target: /data/db
+        read_only: true
+    depends_on:
+      - mongodb
 
 networks:
-  cvtool-network:
+  cvtool_network:
     driver: bridge
 
 volumes:

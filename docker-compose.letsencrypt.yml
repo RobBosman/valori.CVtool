@@ -1,0 +1,34 @@
+version: "3.2"
+
+services:
+
+  letsencrypt:
+    image: certbot/certbot
+    networks:
+      - cvtool-network
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - type: volume
+        source: ssl_certs
+        target: /etc/letsencrypt/live
+        read_only: true
+      - type: volume
+        source: webroot
+        target: /data/letsencrypt/.well-known/acme-challenge
+      - type: volume
+        source: letsencrypt_logs
+        target: /var/log/letsencrypt
+    depends_on:
+      - cvtool
+    command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos --staging -d ${HOST_NAME}
+
+networks:
+  cvtool-network:
+    driver: bridge
+
+volumes:
+  ssl_certs:
+  webroot:
+  letsencrypt_logs:

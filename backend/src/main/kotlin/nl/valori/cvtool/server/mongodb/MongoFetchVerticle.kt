@@ -27,11 +27,20 @@ internal class MongoFetchVerticle : AbstractVerticle() {
                   .consumer<JsonObject>(FETCH_ADDRESS)
                   .toObservable()
                   .subscribe(
-                      { handleRequest(it, mongoDatabase) },
-                      { log.error("Vertx error", it) }
+                      {
+                        startPromise.tryComplete()
+                        handleRequest(it, mongoDatabase)
+                      },
+                      {
+                        log.error("Vertx error processing MongoDB request '$FETCH_ADDRESS'")
+                        startPromise.fail(it)
+                      }
                   )
             },
-            { log.error("Error connecting to MongoDB", it) }
+            {
+              log.error("Error connecting to MongoDB")
+              startPromise.fail(it)
+            }
         )
   }
 

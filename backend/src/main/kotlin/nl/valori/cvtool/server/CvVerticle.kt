@@ -27,8 +27,14 @@ internal class CvVerticle : AbstractVerticle() {
         .consumer<JsonObject>(FETCH_CV_ADDRESS)
         .toObservable()
         .subscribe(
-            { handleRequest(it) },
-            { log.error("Vertx error", it) }
+            {
+              startPromise.tryComplete()
+              handleRequest(it)
+            },
+            {
+              log.error("Vertx error in CvVerticle")
+              startPromise.fail(it)
+            }
         )
   }
 

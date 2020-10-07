@@ -14,7 +14,7 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
 
   override fun start(startPromise: Promise<Void>) {
     // Environment variable:
-    //    HTTPS_CONNECTION_STRING=https://0.0.0.0:443/?queryString
+    //    HTTPS_CONNECTION_STRING=https://www.example.com:443/?queryString
     val httpsConfig = URL(config().getString("HTTPS_CONNECTION_STRING").substringBefore("?"))
 
     vertx
@@ -26,11 +26,14 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
         )
         .requestHandler(createRouter())
         .listen { result ->
+          val httpAuthority = if (httpsConfig.port == httpsConfig.defaultPort) httpsConfig.host else httpsConfig.authority
           if (result.succeeded()) {
-            val httpAuthority = if (httpsConfig.port == httpsConfig.defaultPort) httpsConfig.host else httpsConfig.authority
+            startPromise.complete()
             log.info("Redirecting http://${httpAuthority}/ to https://${httpsConfig.authority}/")
+          } else {
+            log.error("Error redirecting http://${httpAuthority}/ to https://${httpsConfig.authority}/")
+            startPromise.fail(result.cause())
           }
-          startPromise.complete()
         }
   }
 

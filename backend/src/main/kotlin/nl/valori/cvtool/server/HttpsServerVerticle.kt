@@ -41,9 +41,13 @@ internal class HttpsServerVerticle : AbstractVerticle() {
         )
         .requestHandler(createRouter())
         .listen { result ->
-          if (result.succeeded())
+          if (result.succeeded()) {
+            startPromise.complete()
             log.info("Listening on https://${httpsConfig.authority}/")
-          startPromise.complete()
+          } else {
+            log.error("Error starting server on https://${httpsConfig.authority}/")
+            startPromise.fail(result.cause())
+          }
         }
   }
 

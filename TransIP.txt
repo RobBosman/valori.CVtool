@@ -32,28 +32,34 @@ curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compo
     -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
+
+########################################################################################################################
+# login to DockerHub
+########################################################################################################################
 docker login -u bransom
-# remove pwd form /root/.docker/config.json
+# NOTE: remove pwd form /root/.docker/config.json
+
+
+########################################################################################################################
+# prepare
+########################################################################################################################
+mkdir -p /secret
+cp ~bosmanr/.env /secret
+chmod -R 400 /secret
+cp ~bosmanr/docker-compose.yml .
+
 
 # Install MongoDB and CVtool app.
-docker-compose --env-file=/secret/.env up -d
-
-
-echo "<html><body>.well-known/acme-challenge/</body></html?" > /var/lib/docker/volumes/root_webroot/index.html
-
-docker run -it --rm \
-  --mount source=root_ssl_certs,target=/ssl_certs \
-  --mount source=root_webroot,target=/webroot,readonly \
-  --name cvtool \
-  bransom/cvtool  \
-  sh
+docker-compose --env-file=/secret/.env -f docker-compose.yml up -d
 
 
 # Fetch LetsEncrypt certificate
+docker-compose --env-file=/secret/.env -f docker-compose.letsencrypt.yaml up -d
+
 docker run -it --rm \
-  -v root_ssl_certs:/etc/letsencrypt/live \
-  -v root_webroot:/data/letsencrypt/.well-known/acme-challenge \
-  -v letsencrypt_logs:/var/log/letsencrypt \
+  --mount source=root_ssl_certs,target=/etc/letsencrypt/live \
+  --mount source=root_webroot,target=/data/letsencrypt/.well-known/acme-challenge \
+  --mount source=letsencrypt_logs,target=/var/log/letsencrypt \
   certbot/certbot \
   certonly --webroot \
   --register-unsafely-without-email \
@@ -62,25 +68,17 @@ docker run -it --rm \
   --staging \
   -d cvtool.bransom.nl
 
-docker run -it --rm \
-  --mount source=root_ssl_certs,target=/etc/letsencrypt \
-  --mount source=root_webroot,target=/data/letsencrypt \
-  --name certbot \
-  certbot/certbot  \
-  certonly \
-  --register-unsafely-without-email \
-  --agree-tos \
-  --webroot --webroot-path=/data/letsencrypt \
-  --staging \
-  -d vcv01.valori.nl
 
-
-# remove containers
+########################################################################################################################
+# Docker stop and prune
+########################################################################################################################
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
-# prune
 docker network prune -f
 docker rmi -f $(docker images --filter dangling=true -qa)
-# armageddon
+
+########################################################################################################################
+# Docker armageddon
+########################################################################################################################
 docker volume rm $(docker volume ls --filter dangling=true -q)
 docker rmi -f $(docker images -qa)
