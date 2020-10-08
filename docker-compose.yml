@@ -1,5 +1,16 @@
 version: "3.2"
 
+networks:
+  cvtool_network:
+    driver: bridge
+
+volumes:
+  mongodb:
+  webroot:
+  ssl_certs:
+  letsencrypt_logs:
+  letsencrypt_var:
+
 services:
 
   mongodb:
@@ -19,6 +30,8 @@ services:
 
   cvtool:
     image: bransom/cvtool
+    depends_on:
+      - mongodb
     restart: always
     environment:
       - HTTPS_CONNECTION_STRING=https://${HOST_NAME}:443/?/ssl_certs/live/${HOST_NAME}/privkey.pem:/ssl_certs/live/${HOST_NAME}/fullchain.pem
@@ -38,14 +51,25 @@ services:
         source: webroot
         target: /webroot
         read_only: true
+
+  letsencrypt:
+    image: certbot/certbot
     depends_on:
-      - mongodb
+      - cvtool
+    networks:
+      - cvtool_network
+    volumes:
+      - type: volume
+        source: ssl_certs
+        target: /etc/letsencrypt
+      - type: volume
+        source: webroot
+        target: /data/letsencrypt
+      - type: volume
+        source: letsencrypt_logs
+        target: /var/log/letsencrypt
+      - type: volume
+        source: letsencrypt_var
+        target: /var/lib/letsencrypt
+    command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos -d ${HOST_NAME}
 
-networks:
-  cvtool_network:
-    driver: bridge
-
-volumes:
-  ssl_certs:
-  webroot:
-  mongodb:
