@@ -1,12 +1,11 @@
 package nl.valori.cvtool.server
 
-import io.reactivex.Completable
 import io.reactivex.Single
+import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
-import io.vertx.ext.auth.oauth2.AccessToken
-import io.vertx.ext.auth.oauth2.OAuth2ClientOptions
+import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
@@ -21,35 +20,47 @@ import java.net.URL
 import java.util.*
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
+const val AUTH_DOMAIN = "valori.nl"
 
 internal class AuthVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
-  override fun rxStart(): Completable {
+  override fun start(startPromise: Promise<Void>) {
     // Environment variable:
     //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<APP_ID>:<CLIENT_SECRET>
     val connectionString = config().getString("AUTH_CONNECTION_STRING")
     val connectionURL = URL(connectionString)
     val clientIdSecret = connectionURL.query.split(":")
 
-    return OpenIDConnectAuth
-        .rxDiscover(vertx, OAuth2ClientOptions()
+    OpenIDConnectAuth
+        .rxDiscover(vertx, OAuth2Options()
             .setSite(connectionString.substringBefore("?"))
             .setClientID(clientIdSecret[0])
             .setClientSecret(clientIdSecret[1])
         )
-        .doOnSuccess { oauth2 ->
-          vertx.eventBus()
-              .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
-              .toObservable()
-              .subscribe(
-                  { handleRequest(it, oauth2) },
-                  { log.error("Vertx error", it) }
-              )
-        }
-        .ignoreElement()
+        .subscribe(
+            { oauth2 ->
+              vertx.eventBus()
+                  .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
+                  .toObservable()
+                  .subscribe(
+                      {
+                        startPromise.tryComplete()
+                        handleRequest(it, oauth2)
+                      },
+                      {
+                        log.error("Vertx error: ${it.message}")
+                        startPromise.fail(it)
+                      }
+                  )
+            },
+            {
+              log.error("Error connecting to OpenIDConnect provider: ${it.message}")
+              startPromise.fail(it)
+            }
+        )
   }
 
   private fun handleRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
@@ -76,18 +87,15 @@ internal class AuthVerticle : AbstractVerticle() {
     return oauth2
         .rxAuthenticate(JsonObject().put("access_token", jwt))
         .map {
-          val accessToken = it.delegate
-          if (accessToken !is AccessToken) {
-            throw UnsupportedOperationException("Expected class AccessToken here, not ${accessToken.javaClass}.")
-          }
-          val email = accessToken.accessToken().getString("preferred_username", "")
+          val accessToken = it.attributes().getJsonObject("accessToken")
+          val email = accessToken.getString("preferred_username", "")
           if (email.isBlank()) {
             throw IllegalArgumentException("Cannot obtain email from JWT.")
-          } else if (!email.toLowerCase().endsWith("@valori.nl")) {
-            throw IllegalArgumentException("Email '$email' is not supported. Please use a '@Valori.nl' account.")
+          } else if (!email.toLowerCase().endsWith("@$AUTH_DOMAIN")) {
+            throw IllegalArgumentException("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
           }
           log.debug("Authorization successful")
-          email to accessToken.accessToken().getString("name", "")
+          email to accessToken.getString("name", "")
         }
   }
 

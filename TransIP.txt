@@ -57,14 +57,14 @@ docker-compose --env-file=/secret/.env -f docker-compose.yml up -d
 docker-compose --env-file=/secret/.env -f docker-compose.letsencrypt.yaml up -d
 
 docker run -it --rm \
-  --mount source=root_ssl_certs,target=/etc/letsencrypt/live \
-  --mount source=root_webroot,target=/data/letsencrypt/.well-known/acme-challenge \
+  --mount source=root_ssl_certs,target=/etc/letsencrypt \
+  --mount source=root_webroot,target=/data/letsencrypt \
   --mount source=letsencrypt_logs,target=/var/log/letsencrypt \
   certbot/certbot \
   certonly --webroot \
+  --webroot-path=/data/letsencrypt \
   --register-unsafely-without-email \
   --agree-tos \
-  --webroot-path=/data/letsencrypt \
   --staging \
   -d cvtool.bransom.nl
 

@@ -14,13 +14,13 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
 
   override fun start(startPromise: Promise<Void>) {
     // Environment variable:
-    //    HTTPS_CONNECTION_STRING=https://www.example.com:443/?queryString
+    //   HTTPS_CONNECTION_STRING=https://<HOST_NAME>:443/?<...>
+    //   HTTPS_CONNECTION_STRING=https://www.example.com:443/?queryString
     val httpsConfig = URL(config().getString("HTTPS_CONNECTION_STRING").substringBefore("?"))
 
     vertx
         .createHttpServer(HttpServerOptions()
             .setCompressionSupported(true)
-            .setHost(httpsConfig.host)
             .setPort(80)
             .setSsl(false)
         )
@@ -39,12 +39,14 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
 
   private fun createRouter(): Router {
     val router = Router.router(vertx)
-    router.route("/.well-known/acme-challenge/*")
+    router
+        .route("/.well-known/acme-challenge/*")
         .handler(StaticHandler.create()
             .setAllowRootFileSystemAccess(true)
             .setWebRoot("/webroot/.well-known/acme-challenge")
         )
-    router.route("/*")
+    router
+        .route("/*")
         .handler { context ->
           val absoluteURI = context.request().absoluteURI()
           context.response()

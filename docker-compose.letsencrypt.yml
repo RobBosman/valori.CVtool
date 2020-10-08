@@ -5,7 +5,7 @@ services:
   letsencrypt:
     image: certbot/certbot
     networks:
-      - cvtool-network
+      - cvtool_network
     ports:
       - 80:80
       - 443:443
@@ -25,7 +25,7 @@ services:
     command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos --staging -d ${HOST_NAME}
 
 networks:
-  cvtool-network:
+  cvtool_network:
     driver: bridge
 
 volumes:

@@ -1,6 +1,8 @@
 package nl.valori.cvtool.server
 
+import io.reactivex.Single
 import io.vertx.core.Promise
+import io.vertx.core.buffer.Buffer.buffer
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.net.PemKeyCertOptions
 import io.vertx.ext.bridge.PermittedOptions
@@ -20,46 +22,73 @@ internal class HttpsServerVerticle : AbstractVerticle() {
 
   override fun start(startPromise: Promise<Void>) {
     // Environment variable:
+    //   HTTPS_CONNECTION_STRING=https://<HOST_NAME>:443/?<SSL_KEY_PATH>:<SSL_CERT_PATH>
     //   HTTPS_CONNECTION_STRING=https://www.example.com:443/?/ssl_certs/privkey1.pem:/ssl_certs/fullchain1.pem
     val connectionString = config().getString("HTTPS_CONNECTION_STRING")
     val httpsConfig = URL(connectionString)
     val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
-    val params = httpsConfig.query.split(":")
-    val keyPath = params[0]
-    val certPath = params[1]
 
-    vertx
-        .createHttpServer(HttpServerOptions()
-            .setCompressionSupported(true)
-            .setHost(httpsConfig.host)
-            .setPort(httpsPort)
-            .setSsl(true)
-            .setPemKeyCertOptions(PemKeyCertOptions()
-                .setKeyPath(keyPath)
-                .setCertPath(certPath)
-            )
+    getSslOptions(httpsConfig)
+        .subscribe(
+            { pemKeyCertOptions ->
+              vertx
+                  .createHttpServer(HttpServerOptions()
+                      .setCompressionSupported(true)
+                      .setPort(httpsPort)
+                      .setSsl(true)
+                      .setPemKeyCertOptions(pemKeyCertOptions)
+                  )
+                  .requestHandler(createRouter())
+                  .listen { result ->
+                    if (result.succeeded()) {
+                      startPromise.complete()
+                      log.info("Listening on https://${httpsConfig.authority}/")
+                    } else {
+                      log.error("Error starting server on https://${httpsConfig.authority}/")
+                      startPromise.fail(result.cause())
+                    }
+                  }
+            },
+            {
+              log.error("Error loading SSL certificates")
+              startPromise.fail(it)
+            }
         )
-        .requestHandler(createRouter())
-        .listen { result ->
-          if (result.succeeded()) {
-            startPromise.complete()
-            log.info("Listening on https://${httpsConfig.authority}/")
-          } else {
-            log.error("Error starting server on https://${httpsConfig.authority}/")
-            startPromise.fail(result.cause())
-          }
+  }
+
+  private fun getSslOptions(httpsConfig: URL): Single<PemKeyCertOptions> {
+    val pemSslPaths = httpsConfig.query.split(":")
+    val keyPath = pemSslPaths[0]
+    val certPath = pemSslPaths[1]
+
+    return vertx.fileSystem().rxReadFile(keyPath)
+        .zipWith(vertx.fileSystem().rxReadFile(certPath)) { key, cert ->
+          PemKeyCertOptions()
+              .setKeyValue(key.delegate)
+              .setCertValue(cert.delegate)
+        }
+        .onErrorReturn {
+          log.debug("Error loading SSL certificates: ${it.message}.")
+          log.warn("Using fallback SSL certificates.")
+          PemKeyCertOptions()
+              .setKeyValue(buffer(HttpsServerVerticle::class.java.getResource("/fallback-privkey.pem").readText()))
+              .setCertValue(buffer(HttpsServerVerticle::class.java.getResource("/fallback-fullchain.pem").readText()))
         }
   }
 
   private fun createRouter(): Router {
     val router = Router.router(vertx)
-    router.route("/.well-known/acme-challenge/*")
+    router
+        .route("/.well-known/acme-challenge/*")
         .handler(StaticHandler.create()
             .setAllowRootFileSystemAccess(true)
             .setWebRoot("/webroot/.well-known/acme-challenge")
         )
-    router.mountSubRouter("/eventbus", SockJSHandler.create(vertx).bridge(createBridgeOptions()))
-    router.route("/*")
+    router
+        .mountSubRouter("/eventbus",
+            SockJSHandler.create(vertx).bridge(createBridgeOptions()))
+    router
+        .route("/*")
         .handler(StaticHandler.create()
             .setWebRoot("frontend/dist"))
     return router

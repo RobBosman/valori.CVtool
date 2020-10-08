@@ -17,8 +17,14 @@ internal class HeartbeatVerticle : AbstractVerticle() {
         .interval(1000, TimeUnit.MILLISECONDS)
         .map { if (it % 2 == 0L) "tik" else "tik" }
         .subscribe(
-            { vertx.eventBus().publish(SERVER_HEARTBEAT_ADDRESS, it) },
-            { log.error("Error: {}", it.message, it) }
+            {
+              startPromise.tryComplete()
+              vertx.eventBus().publish(SERVER_HEARTBEAT_ADDRESS, it)
+            },
+            {
+              log.error("Error starting HeartbeatVerticle")
+              startPromise.fail(it)
+            }
         )
   }
 }
