@@ -61,8 +61,8 @@ docker run -it --rm \
   --mount source=root_webroot,target=/data/letsencrypt \
   --mount source=letsencrypt_logs,target=/var/log/letsencrypt \
   certbot/certbot \
-  certonly --webroot \
-  --webroot-path=/data/letsencrypt \
+  certonly \
+  --webroot --webroot-path=/data/letsencrypt \
   --register-unsafely-without-email \
   --agree-tos \
   --staging \
