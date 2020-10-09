@@ -147,8 +147,13 @@ module.exports = (_env, argv) => {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*"
       },
+      port: 8000,
       proxy: {
-        "/eventbus": "http://localhost:80"
+        "/eventbus": {
+          target: "https://localhost:8443/",
+          secure: false,
+          changeOrigin: true
+        }
       }
     }
   };

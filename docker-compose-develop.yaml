@@ -22,7 +22,7 @@ services:
     networks:
       - cvtool_network
     ports:
-      - 27017:27017
+      - ${MONGO_PORT}:27017
     volumes:
       - type: volume
         source: mongodb
@@ -34,14 +34,15 @@ services:
       - mongodb
     restart: always
     environment:
-      - HTTPS_CONNECTION_STRING=https://${HOST_NAME}:443/?/ssl_certs/live/${HOST_NAME}/privkey.pem:/ssl_certs/live/${HOST_NAME}/fullchain.pem
+      - REDIRECT_CONNECTION_STRING=http://${HTTP_HOST}:${HTTP_PORT}/
+      - HTTPS_CONNECTION_STRING=https://${HTTP_HOST}:${HTTPS_PORT}/?/ssl_certs/live/${HTTP_HOST}/privkey.pem:/ssl_certs/live/${HTTP_HOST}/fullchain.pem
       - AUTH_CONNECTION_STRING=https://login.microsoftonline.com/${OAUTH_TENANT_ID}/v2.0?${OAUTH_CLIENT_ID}:${OAUTH_CLIENT_SECRET}
       - MONGO_CONNECTION_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin
     networks:
       - cvtool_network
     ports:
-      - 443:443
-      - 80:80
+      - ${HTTP_PORT}:${HTTP_PORT}
+      - ${HTTPS_PORT}:${HTTPS_PORT}
     volumes:
       - type: volume
         source: ssl_certs
@@ -71,5 +72,4 @@ services:
       - type: volume
         source: letsencrypt_var
         target: /var/lib/letsencrypt
-    command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos -d ${HOST_NAME}
-
+    command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos --staging -d ${HTTP_HOST}
