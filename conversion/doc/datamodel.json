@@ -43,6 +43,15 @@
     "result": "ENUM_EDUCATION_RESULT",
     "year": "YEAR"
   },
+  "skill": {
+    "id": "ID",
+    "cvId": "ID",
+    "category": "ENUM_SKILL_CATEGORY",
+    "description": {
+      "locale": "STRING"
+    },
+    "skillLevel": "NUMBER"
+  },
   "publication": {
     "id": "ID",
     "cvId": "ID",
@@ -67,15 +76,6 @@
       "locale": "STRING"
     },
     "includeInCv": "BOOLEAN"
-  },
-  "skill": {
-    "id": "ID",
-    "cvId": "ID",
-    "category": "ENUM_SKILL_CATEGORY",
-    "description": {
-      "locale": "STRING"
-    },
-    "skillLevel": "NUMBER"
   },
   "experience": {
     "id": "ID",

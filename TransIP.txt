@@ -51,9 +51,8 @@ cp ~bosmanr/docker-compose.yml .
 
 
 
-# Install MongoDB and CVtool app and run letsencrypt to obtain SSL certs. (Restart CVtool afterward.)
-docker-compose --env-file=/secret/.env -f docker-compose.yaml up -d
-docker-compose --env-file=secret/.env -f docker-compose-develop.yaml up -d
+# Install MongoDB and CVtool and run letsencrypt to obtain SSL certs. (You must restart CVtool afterward.)
+docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
 
 
 
@@ -65,9 +64,31 @@ docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 docker network prune -f
 docker rmi -f $(docker images --filter dangling=true -qa)
-
 ########################################################################################################################
 # Docker armageddon
 ########################################################################################################################
 docker volume rm $(docker volume ls --filter dangling=true -q)
 docker rmi -f $(docker images -qa)
+
+
+mongodump --out=backup/cvtool-2020-04-01 --uri mongodb://localhost:27017/cvtool
+mongorestore backup/cvtool-2020-04-01 --uri mongodb://localhost:27017/cvtool --stopOnError
+
+# MongoDB collections:
+#   businessUnit
+#   account
+#   cv
+#   education
+#   skill
+#   publication
+#   reference
+#   experience
+mongoimport --uri mongodb://localhost:27017/cvtool --mode=insert --file=skill.json --jsonArray --stopOnError
+mongoexport --uri mongodb://localhost:27017/cvtool --collection=skill --out=skill.json --jsonArray
+
+
+
+docker run -it --rm ^
+  --mount type=bind,source=/mongodb_backup,target=/backup ^
+  mongo ^
+  mongodump --out=/backup/cvtool-2020-10-09 --uri mongodb://10.0.0.191:27017/cvtool
