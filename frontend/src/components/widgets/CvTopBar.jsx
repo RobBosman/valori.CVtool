@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { CommandBar, getTheme, loadTheme, ContextualMenuItemType, Stack, Toggle } from "@fluentui/react";
+import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemType, Stack, TooltipHost } from "@fluentui/react";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as authenticationActions from "../../services/authentication/authentication-actions";
 import * as uiActions from "../../services/ui/ui-actions";
@@ -24,59 +24,40 @@ const CvTopBar = (props) => {
     onClick: () => props.setThemeName(themeName)
   });
 
-  const items = [
-    {
-      key: "cvDatabank",
-      text: "CV Databank",
-      // TODO: onClick: link
-    },
-    {
-      key: "download",
-      text: "Download",
-      disabled: props.loginState !== authenticationActions.LoginStates.LOGGED_IN,
-      // TODO: onClick: download
-    },
-    {
-      key: "help",
-      text: "Help",
-      subMenuProps: {
-        items: [
-          {
-            key: "emailMe",
-            text: "Problemen? Mail even!",
-            iconProps: { iconName: "NewMail" },
-            // TODO: onClick: mail-link
-          }
-        ]
+  const WrappedButton = (p) => (
+    <TooltipHost content={p.tooltipText}>
+      <CommandBarButton {...p}/>
+    </TooltipHost>
+  );
+  
+  const isDirty = props.isConnected && props.hasSafeData
+    && props.lastEditedTimestamp
+    && !props.lastSavedTimestamp || props.lastEditedTimestamp > props.lastSavedTimestamp;
+
+  const items = props.loginState === authenticationActions.LoginStates.LOGGED_IN
+    ? [
+      {
+        key: "save",
+        text: props.lastSavedTimestamp?.toLocaleTimeString() || "???",
+        iconProps: { iconName: "CloudUpload" },
+        disabled: !isDirty,
+        onClick: props.saveAll,
+        commandBarButtonAs: WrappedButton,
+        style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
+        tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
+      },
+      {
+        key: "download",
+        text: "Download",
+        iconProps: { iconName: "DownloadDocument" },
+        // TODO: onClick: download
+        commandBarButtonAs: WrappedButton,
+        tooltipText: "Download CV als MS-Word document"
       }
-    }
-  ];
+    ]
+    : [];
 
-  const autoSaveToggle = <Toggle
-    label="AutoSave" inlineLabel
-    onText="on" offText="off"
-    defaultChecked={props.autoSaveEnabled}
-    onChange={(_, checked) => props.setAutoSaveEnabled(checked)}
-    styles={{
-      root: [
-        {
-          margin: "auto"
-        }
-      ]
-    }} />;
   const farItems = [
-    props.loginState === authenticationActions.LoginStates.LOGGED_IN && {
-      key: "toggleAutoSave",
-      onRender: () => autoSaveToggle
-    },
-    props.loginState === authenticationActions.LoginStates.LOGGED_IN && {
-      key: "save",
-      text: "Opslaan",
-      iconProps: { iconName: "CloudUpload" },
-      disabled: !(props.isConnected && props.hasSafeData),
-      onClick: props.saveAll
-    },
-
     props.loginState === authenticationActions.LoginStates.LOGGED_OUT && {
       key: "login",
       text: "Aanmelden",
@@ -119,6 +100,20 @@ const CvTopBar = (props) => {
             onClick: props.saveAll
           },
           {
+            key: "help",
+            text: "Help",
+            subMenuProps: {
+              items: [
+                {
+                  key: "emailMe",
+                  text: "Problemen? Mail even!",
+                  iconProps: { iconName: "NewMail" },
+                  // TODO: onClick: mail-link
+                }
+              ]
+            }
+          },
+          {
             key: "loginDivider",
             itemType: ContextualMenuItemType.Divider
           },
@@ -141,7 +136,8 @@ const CvTopBar = (props) => {
       <Stack.Item grow>
         <CommandBar
           items={items}
-          farItems={farItems} />
+          farItems={farItems}
+        />
       </Stack.Item>
     </Stack>
   );
@@ -152,8 +148,8 @@ CvTopBar.propTypes = {
   loginState: PropTypes.string.isRequired,
   isConnected: PropTypes.bool.isRequired,
   hasSafeData: PropTypes.bool.isRequired,
-  autoSaveEnabled: PropTypes.bool.isRequired,
-  setAutoSaveEnabled: PropTypes.func.isRequired,
+  lastEditedTimestamp: PropTypes.object,
+  lastSavedTimestamp: PropTypes.object,
   setThemeName: PropTypes.func.isRequired,
   requestToLogin: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
@@ -166,16 +162,11 @@ const select = (state) => ({
   loginState: state.authentication.loginState,
   isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
   hasSafeData: Object.keys(state.safe).length > 0,
-  autoSaveEnabled: state.ui.autoSaveEnabled,
+  lastEditedTimestamp: state.ui.lastEditedTimestamp,
+  lastSavedTimestamp: state.ui.lastSavedTimestamp
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setAutoSaveEnabled: (autoSaveEnabled) => {
-    if (autoSaveEnabled) {
-      dispatch(safeActions.saveAll());
-    }
-    dispatch(uiActions.setAutoSaveEnabled(autoSaveEnabled));
-  },
   setThemeName: (themeName) => dispatch(uiActions.setThemeName(themeName)),
   requestToLogin: () => dispatch(authenticationActions.requestLogin()),
   requestToLogout: () => dispatch(authenticationActions.requestLogout()),

@@ -1,10 +1,10 @@
 import { ofType } from "redux-observable";
 import { map, switchMap, distinctUntilChanged } from "rxjs/operators";
-import { fetchCvFromRemote, saveAllToRemote } from "./safe-services";
+import { fetchCvFromRemote } from "./safe-services";
 import { eventBusClient } from "../eventBus/eventBus-services";
+import { setAccountInfo } from "../authentication/authentication-actions";
 import { setSelectedId } from "../ui/ui-actions";
 import * as safeActions from "./safe-actions";
-import { setAccountInfo } from "../authentication/authentication-actions";
 
 const getCvId = (cvEntity, accountInfoId) =>
   cvEntity && accountInfoId && Object.values(cvEntity).find((cvInstance) => cvInstance.accountId === accountInfoId)?._id;
@@ -25,11 +25,5 @@ export const safeEpics = [
     map(() => getCvId(state$.value.safe?.cv, state$.value.authentication?.accountInfo?._id)),
     distinctUntilChanged(),
     map((cvId) => setSelectedId("cv", cvId))
-  ),
-
-  // Send the content of the safe to the server.
-  (action$, state$) => action$.pipe(
-    ofType(safeActions.saveAll.type),
-    switchMap(() => saveAllToRemote(state$.value, eventBusClient.sendEvent))
   )
 ];

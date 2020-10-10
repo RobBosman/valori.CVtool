@@ -21,8 +21,7 @@ const Info = () => {
         <br/>Dit is versie v20200101 van de <strong>CVtool</strong> app van Valori, waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
         <ul>
-          <li><strong>TODO:</strong> AutoSave: al je wijzigingen worden na drie seconden vanzelf opgeslagen.
-            <br/>Als je niet van plan bent iets te wijzigen, zet &apos;AutoSave&apos; dan uit met de knop rechtsonder.</li>
+          <li>AutoSave: alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
           <br/>
           <li>Markdown lijst: In veel tekstvelden kun je een opsomming maken door regels te laten beginnen met
             <br/>&apos;<strong>* </strong>&apos; (sterretje + spatie) voor een lijst met &apos;Valori bullets&apos; of met

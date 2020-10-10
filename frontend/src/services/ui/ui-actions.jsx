@@ -3,11 +3,12 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const setLocationHash = createAction("SET_LOCATION_HASH");
 export const setLocale = createAction("SET_LOCALE");
-export const setAutoSaveEnabled = createAction("SET_AUTO_SAVE_ENABLED");
 export const setThemeName = createAction("SET_THEME_NAME");
 export const setSelectedId = createAction("SET_SELECTED_ID",
   (entityName, selectedId) => ({payload: {entityName, selectedId}}));
 export const resetSelectedIds = createAction("RESET_SELECTED_IDS", () => ({}));
+export const setLastEditedTimestamp = createAction("SET_LAST_EDITED_TIMESTAMP");
+export const setLastSavedTimestamp = createAction("SET_LAST_SAVED_TIMESTAMP");
 
 reducerRegistry.register(
   "ui", 
@@ -15,7 +16,6 @@ reducerRegistry.register(
     {
       locationHash: document.location.hash || "",
       locale: "nl_NL",
-      autoSaveEnabled: true,
       themeName: "lightBlue",
       selectedId: {}
     },
@@ -26,9 +26,6 @@ reducerRegistry.register(
       [setLocale]: (state, action) => {
         state.locale = action.payload;
       },
-      [setAutoSaveEnabled]: (state, action) => {
-        state.autoSaveEnabled = action.payload;
-      },
       [setThemeName]: (state, action) => {
         state.themeName = action.payload;
       },
@@ -37,6 +34,12 @@ reducerRegistry.register(
       },
       [resetSelectedIds]: (state) => {
         state.selectedId = {};
+      },
+      [setLastEditedTimestamp]: (state, action) => {
+        state.lastEditedTimestamp = action.payload;
+      },
+      [setLastSavedTimestamp]: (state, action) => {
+        state.lastSavedTimestamp = action.payload;
       }
     }
   )
