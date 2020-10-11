@@ -8,34 +8,40 @@ const OAUTH2_CONFIG = {
     redirectUri: window.location.origin,
     navigateToLoginRequestUrl: false
   },
-  scopes: ["openid", "Sites.ReadWrite.All", "Files.ReadWrite"]
-};
-const OAUTH2_REFRESH_CONFIG = {
-  ...OAUTH2_CONFIG,
-  auth: {
-    ...OAUTH2_CONFIG.auth,
-    prompt: "none"
+  cache: {
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge.
   }
+};
+const LOGIN_CONFIG = {
+  scopes: ["openid", "Sites.ReadWrite.All", "Files.ReadWrite"],
+  forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token.
 };
 
 const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 
-export const authorizeAtOpenIdProvider = () =>
-  msal.getAllAccounts().length > 0
-    ? msal
-      .ssoSilent({
-        ...OAUTH2_CONFIG,
-        loginHint: msal.getAllAccounts()[0].username
-      })
-      .catch(() => msal.loginPopup())
-    : msal.loginPopup();
-  
-
-export const refreshTokenAtOpenIdProvider = (oldAuthenticationInfo) =>
-  msal.acquireTokenSilent({
-    ...OAUTH2_REFRESH_CONFIG,
-    account: oldAuthenticationInfo.account
-  });
+export const authorizeAtOpenIdProvider = () => {
+  const allAccounts = msal.getAllAccounts();
+  if (allAccounts?.length > 0) {
+    const loginConfig = {
+      ...LOGIN_CONFIG,
+      account: allAccounts[0]
+    };
+    return msal
+      .acquireTokenSilent(loginConfig)
+      .catch((error) => {
+        if (error instanceof MSAL.InteractionRequiredAuthError) {
+          // fallback to interaction when silent call fails
+          return msal.acquireTokenPopup(loginConfig);
+        } else {
+          console.warn(error);
+          return Promise.resolve();
+        }
+      });
+  } else {
+    return msal.acquireTokenPopup(LOGIN_CONFIG);
+  }
+};
 
 export const fetchAccountInfoFromRemote = (sendEvent) =>
   sendEvent("authenticate", {})

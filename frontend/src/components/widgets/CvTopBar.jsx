@@ -73,19 +73,6 @@ const CvTopBar = (props) => {
       subMenuProps: {
         items: [
           {
-            key: "theme",
-            text: "Theme",
-            iconProps: { iconName: "Brightness" },
-            subMenuProps: {
-              items: [
-                createThemeItem("lightBlue", lightBlue, "Licht - Blauw"),
-                createThemeItem("lightGreen", lightGreen, "Licht - Groen"),
-                createThemeItem("darkOrange", darkOrange, "Donker - Oranje"),
-                createThemeItem("darkYellow", darkYellow, "Donker - Geel")
-              ]
-            }
-          },
-          {
             key: "fetchCv",
             text: "Ophalen",
             iconProps: { iconName: "CloudDownload" },
@@ -100,8 +87,22 @@ const CvTopBar = (props) => {
             onClick: props.saveAll
           },
           {
+            key: "theme",
+            text: "Theme",
+            iconProps: { iconName: "Brightness" },
+            subMenuProps: {
+              items: [
+                createThemeItem("lightBlue", lightBlue, "Licht - Blauw"),
+                createThemeItem("lightGreen", lightGreen, "Licht - Groen"),
+                createThemeItem("darkOrange", darkOrange, "Donker - Oranje"),
+                createThemeItem("darkYellow", darkYellow, "Donker - Geel")
+              ]
+            }
+          },
+          {
             key: "help",
             text: "Help",
+            iconProps: { iconName: "Help" },
             subMenuProps: {
               items: [
                 {

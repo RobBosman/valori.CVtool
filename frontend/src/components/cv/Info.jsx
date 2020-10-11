@@ -16,7 +16,7 @@ const Info = () => {
 
   return (
     <Stack styles={viewStyles}>
-      <Text variant="xLarge">Welkom Rob Bosman</Text>
+      <Text variant="xxLarge">Welkom Rob Bosman</Text>
       <Text>
         <br/>Dit is versie v20200101 van de <strong>CVtool</strong> app van Valori, waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
@@ -31,8 +31,6 @@ const Info = () => {
             <br/>Het sorteren van tabelgegevens heeft geen invloed op de volgorde in je cv, behalve bij Werkopdrachten.
             <br/>Die zijn standaard gesorteerd op einddatum, maar dat kun je met drag&amp;drop aanpassen.
             <br/>Dat kan handig zijn als je meerdere opdrachten tegelijk hebt.</li>
-          <br/>
-          <li><strong>TODO:</strong> <em>Publiceren</em> plaatst je cv in de <a href="https://valorinl.sharepoint.com/sites/Kantoor/CV_databank" target="blank">CV Databank in SharePoint</a>.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
         <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <a href="mailto:RobBosman@valori.nl" target="blank">RobBosman@valori.nl</a>.

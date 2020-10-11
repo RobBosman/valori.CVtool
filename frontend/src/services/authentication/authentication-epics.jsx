@@ -56,8 +56,8 @@ export const authenticationEpics = [
     map((action) => action.payload),
     filter((authenticationInfo) => authenticationInfo),
     switchMap((authenticationInfo) => of(1).pipe(
-      delay(new Date(authenticationInfo.expiresOn.getTime() + 1)), // refresh just after expiration time
-      mergeMap(() => authenticationServices.refreshTokenAtOpenIdProvider(authenticationInfo)),
+      delay(new Date(authenticationInfo.expiresOn.getTime() - 60000)), // Obtain a new token 1 minute before the current one expires.
+      mergeMap(() => authenticationServices.authorizeAtOpenIdProvider()),
       map((refreshedAuthenticationInfo) => authenticationActions.setAuthenticationInfo(refreshedAuthenticationInfo)),
       catchError((error, source$) => merge(
         of(

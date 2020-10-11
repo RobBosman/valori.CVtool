@@ -21,7 +21,7 @@ const NAV_GROUPS = [
         key: "#",
         url: "#",
         name: "Info",
-        icon: "ContactInfo",
+        icon: "BullseyeTarget",
         content: <Info />
       },
       {
@@ -35,14 +35,14 @@ const NAV_GROUPS = [
         key: "#education",
         url: "#education",
         name: "Opleiding",
-        icon: "PublishCourse",
+        icon: "D365TalentLearn",
         content: <Education />
       },
       {
         key: "#skills",
         url: "#skills",
         name: "Vaardigheden",
-        icon: "SortLines",
+        icon: "Backlog",
         content: <Skill />
       },
       {
@@ -63,7 +63,7 @@ const NAV_GROUPS = [
         key: "#experience",
         url: "#experience",
         name: "Ervaring",
-        icon: "CheckboxComposite",
+        icon: "TaskLogo",
         content: <Experience />
       }
     ]
