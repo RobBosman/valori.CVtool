@@ -13,3 +13,5 @@ npm-outdated.txt
 stats.json
 *.p12
 secret/.env
+/conversion/src/main/resources/69.xml
+/conversion/src/main/resources/all-cvs.xml
