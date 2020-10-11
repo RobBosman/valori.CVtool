@@ -21,7 +21,7 @@ object Main {
       HttpsServerVerticle::class,
       AuthVerticle::class,
       CvVerticle::class,
-      HeartbeatVerticle::class,
+//      HeartbeatVerticle::class,
       MongoFetchVerticle::class,
       MongoSaveVerticle::class)
 
