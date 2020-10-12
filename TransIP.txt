@@ -83,12 +83,15 @@ mongorestore backup/cvtool-2020-04-01 --uri mongodb://localhost:27017/cvtool --s
 #   publication
 #   reference
 #   experience
-mongoimport --uri mongodb://localhost:27017/cvtool --mode=insert --file=skill.json --jsonArray --stopOnError
-mongoexport --uri mongodb://localhost:27017/cvtool --collection=skill --out=skill.json --jsonArray
+mongoimport --uri mongodb://localhost:27017/cvtool --jsonArray --stopOnError --mode=upsert --file=skill.json
+mongoexport --uri mongodb://localhost:27017/cvtool --jsonArray --collection=skill --out=skill.json
+
+# FOR /R %i IN (exported-json\*.json) DO mongoimport --uri mongodb://localhost:27017/cvtool --jsonArray --stopOnError --mode=upsert --file=%i
+# ls -1 exported-json\*.json | while read jsonfile; do --uri mongodb://localhost:27017/cvtool --jsonArray --stopOnError --mode=upsert --file=$jsonfile; done
 
 
 
 docker run -it --rm ^
-  --mount type=bind,source=/mongodb_backup,target=/backup ^
-  mongo ^
-  mongodump --out=/backup/cvtool-2020-10-09 --uri mongodb://10.0.0.191:27017/cvtool
+    --mount type=bind,source=/mongodb_backup,target=/backup ^
+    mongo ^
+    mongodump --uri mongodb://mongodb:27017/cvtool --out=/backup/cvtool-2020-10-09

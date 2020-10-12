@@ -75,7 +75,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
             val entity = it.key
             val instances = it.value
             if (instances !is JsonObject)
-              throw IllegalArgumentException("Error saving data: expected JsonObject here")
+              throw IllegalArgumentException("Error saving data: expected 'JsonObject' but found '${instances.javaClass.name}'")
             when (instances.isEmpty) {
               true -> FlowableEmpty.empty()
               else -> {

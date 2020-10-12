@@ -26,6 +26,8 @@ internal class HttpsServerVerticle : AbstractVerticle() {
     //   HTTPS_CONNECTION_STRING=https://www.example.com:443/?/ssl_certs/privkey1.pem:/ssl_certs/fullchain1.pem
     val connectionString = config().getString("HTTPS_CONNECTION_STRING")
     val httpsConfig = URL(connectionString)
+    if (httpsConfig.protocol != "https")
+      throw IllegalArgumentException("Invalid protocol: expected 'https' but found '${httpsConfig.protocol}'.")
     val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
 
     getSslOptions(httpsConfig)
@@ -57,7 +59,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
   }
 
   private fun getSslOptions(httpsConfig: URL): Single<PemKeyCertOptions> {
-    val pemSslPaths = httpsConfig.query.split(":")
+    val pemSslPaths = (httpsConfig.query ?: ":").split(":")
     val keyPath = pemSslPaths[0]
     val certPath = pemSslPaths[1]
 

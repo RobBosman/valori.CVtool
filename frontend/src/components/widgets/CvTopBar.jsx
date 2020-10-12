@@ -41,7 +41,7 @@ const CvTopBar = (props) => {
         text: props.lastSavedTimestamp?.toLocaleTimeString() || "???",
         iconProps: { iconName: "CloudUpload" },
         disabled: !isDirty,
-        onClick: props.saveAll,
+        onClick: props.saveContent,
         commandBarButtonAs: WrappedButton,
         style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
         tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
@@ -80,11 +80,11 @@ const CvTopBar = (props) => {
             onClick: () => props.fetchCv(props.account._id)
           },
           {
-            key: "saveAll",
+            key: "saveContent",
             text: "Opslaan",
             iconProps: { iconName: "CloudUpload" },
             disabled: !(props.isConnected && props.hasSafeData),
-            onClick: props.saveAll
+            onClick: props.saveContent
           },
           {
             key: "theme",
@@ -155,16 +155,16 @@ CvTopBar.propTypes = {
   requestToLogin: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
   fetchCv: PropTypes.func.isRequired,
-  saveAll: PropTypes.func.isRequired
+  saveContent: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   account: state.authentication.accountInfo,
   loginState: state.authentication.loginState,
   isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
-  hasSafeData: Object.keys(state.safe).length > 0,
-  lastEditedTimestamp: state.ui.lastEditedTimestamp,
-  lastSavedTimestamp: state.ui.lastSavedTimestamp
+  hasSafeData: Object.keys(state.safe.content).length > 0,
+  lastEditedTimestamp: state.safe.lastEditedTimestamp,
+  lastSavedTimestamp: state.safe.lastSavedTimestamp
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -172,7 +172,7 @@ const mapDispatchToProps = (dispatch) => ({
   requestToLogin: () => dispatch(authenticationActions.requestLogin()),
   requestToLogout: () => dispatch(authenticationActions.requestLogout()),
   fetchCv: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId)),
-  saveAll: () => dispatch(safeActions.saveAll())
+  saveContent: () => dispatch(safeActions.saveContent())
 });
 
 export default connect(select, mapDispatchToProps)(CvTopBar);

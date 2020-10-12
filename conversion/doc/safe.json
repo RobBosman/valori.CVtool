@@ -6,7 +6,10 @@
       "name": "Quality & Architecture",
       "contactName": "Bob van Zeist",
       "contactEmail": "BobVanZeist@valori.nl",
-      "contactPhone": "+31612345678"
+      "contactPhone": "+31612345678",
+      "accountIds": [
+        "uuid-account-1"
+      ]
     }
   },
   "account": {
@@ -18,9 +21,6 @@
       "residence": "Leusden",
       "privileges": [
         "ADMIN"
-      ],
-      "businessUnitIds": [
-        "uuid-businessUnit-1"
       ]
     }
   },

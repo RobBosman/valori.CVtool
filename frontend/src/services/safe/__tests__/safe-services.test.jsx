@@ -26,16 +26,16 @@ describe("safe-services.test", () => {
       });
   });
 
-  it("should saveAllToRemote success", () => {
+  it("should saveToRemote success", () => {
     expect.assertions(1);
-    return safeServices.saveAllToRemote({}, sendEventSuccess)
+    return safeServices.saveToRemote({}, sendEventSuccess)
       .then((message) => expect(message)
         .toStrictEqual({body: "save_resolved"}));
   });
 
-  it("should saveAllToRemote error", () => {
+  it("should saveToRemote error", () => {
     expect.assertions(1);
-    return safeServices.saveAllToRemote({}, sendEventError)
+    return safeServices.saveToRemote({}, sendEventError)
       .catch((error) => expect(error.message)
         .toBe("save_rejected"));
   });

@@ -27,9 +27,8 @@ internal object HttpsServerVerticleTest {
       port = it.localPort
     }
 
-    val options = DeploymentOptions()
-        .setConfig(JsonObject()
-            .put("HTTPS_CONNECTION_STRING", "http://$HOST_NAME:$port/"))
+    val options = DeploymentOptions().setConfig(JsonObject()
+        .put("HTTPS_CONNECTION_STRING", "https://$HOST_NAME:$port/"))
     vertx.deployVerticle(HttpsServerVerticle::class.java.name, options, testContext.completing())
   }
 

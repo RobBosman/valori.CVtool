@@ -3,7 +3,7 @@ import React from "react";
 import { Text, Stack, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceSafeInstance } from "../../services/safe/safe-actions";
+import { replaceInstance } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
@@ -198,13 +198,13 @@ Publication.propTypes = {
 const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedId["cv"],
-  publicationEntity: state.safe[entityName],
+  publicationEntity: state.safe.content[entityName],
   selectedPublicationId: state.ui.selectedId[entityName],
   replacePublication: PropTypes.func.isRequired,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replacePublication: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
+  replacePublication: (id, instance) => dispatch(replaceInstance(entityName, id, instance)),
   setSelectedPublicationId: (id) => dispatch(setSelectedId(entityName, id))
 });
 

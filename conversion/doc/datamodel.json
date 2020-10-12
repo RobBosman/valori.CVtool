@@ -4,7 +4,8 @@
     "name": "STRING",
     "contactName": "STRING",
     "contactEmail": "STRING",
-    "contactPhone": "STRING"
+    "contactPhone": "STRING",
+    "accountIds": []
   },
   "account": {
     "id": "ID",
@@ -14,8 +15,7 @@
     "residence": "STRING",
     "privileges": [
       "ENUM_PRIVILEGE"
-    ],
-    "businessUnitIds": []
+    ]
   },
   "cv": {
     "id": "ID",

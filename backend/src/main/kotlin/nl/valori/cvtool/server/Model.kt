@@ -7,7 +7,7 @@ object Model {
   fun composeAccountInstance(id: String, email: String, name: String) =
       JsonObject("""{
           "_id": "$id",
-          "email": "$email",
+          "email": "${email.toUpperCase()}",
           "name": "$name",
           "businessUnitIds": [],
           "privileges": [],

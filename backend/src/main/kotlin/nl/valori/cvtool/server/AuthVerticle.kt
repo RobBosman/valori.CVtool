@@ -20,7 +20,7 @@ import java.net.URL
 import java.util.*
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
-const val AUTH_DOMAIN = "valori.nl"
+const val AUTH_DOMAIN = "Valori.nl"
 
 internal class AuthVerticle : AbstractVerticle() {
 
@@ -91,7 +91,7 @@ internal class AuthVerticle : AbstractVerticle() {
           val email = accessToken.getString("preferred_username", "")
           if (email.isBlank()) {
             throw IllegalArgumentException("Cannot obtain email from JWT.")
-          } else if (!email.toLowerCase().endsWith("@$AUTH_DOMAIN")) {
+          } else if (!email.toUpperCase().endsWith("@${AUTH_DOMAIN.toUpperCase()}")) {
             throw IllegalArgumentException("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
           }
           log.debug("Authorization successful")
@@ -99,14 +99,14 @@ internal class AuthVerticle : AbstractVerticle() {
         }
   }
 
-  private fun fetchAccountInfo(email: String, name: String): Single<JsonObject> =
+  private fun fetchAccountInfo(email: String, name: String) =
       vertx.eventBus()
           .rxRequest<JsonObject>(FETCH_ADDRESS, composeAccountCriteria(email), deliveryOptions)
           .flatMap { obtainOrCreateAccount(it.body(), email, name) }
           .map { JsonObject().put("accountInfo", it) }
 
   private fun composeAccountCriteria(email: String) =
-      JsonObject("""{ "account": [{ "email": "$email" }] }""")
+      JsonObject("""{ "account": [{ "email": "${email.toUpperCase()}" }] }""")
 
   private fun obtainOrCreateAccount(accountEntity: JsonObject, email: String, name: String): Single<JsonObject> {
     val accountInstanceMap = accountEntity.getInstanceMap("account")

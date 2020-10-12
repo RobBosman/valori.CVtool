@@ -7,8 +7,6 @@ export const setThemeName = createAction("SET_THEME_NAME");
 export const setSelectedId = createAction("SET_SELECTED_ID",
   (entityName, selectedId) => ({payload: {entityName, selectedId}}));
 export const resetSelectedIds = createAction("RESET_SELECTED_IDS", () => ({}));
-export const setLastEditedTimestamp = createAction("SET_LAST_EDITED_TIMESTAMP");
-export const setLastSavedTimestamp = createAction("SET_LAST_SAVED_TIMESTAMP");
 
 reducerRegistry.register(
   "ui", 
@@ -34,12 +32,6 @@ reducerRegistry.register(
       },
       [resetSelectedIds]: (state) => {
         state.selectedId = {};
-      },
-      [setLastEditedTimestamp]: (state, action) => {
-        state.lastEditedTimestamp = action.payload;
-      },
-      [setLastSavedTimestamp]: (state, action) => {
-        state.lastSavedTimestamp = action.payload;
       }
     }
   )

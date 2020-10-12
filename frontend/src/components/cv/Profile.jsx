@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
-import { replaceSafeInstance } from "../../services/safe/safe-actions";
+import { replaceInstance } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
@@ -97,14 +97,14 @@ Profile.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  cvEntity: state.safe.cv,
+  cvEntity: state.safe.content.cv,
   selectedCvId: state.ui.selectedId["cv"],
-  accountEntity: state.safe.account
+  accountEntity: state.safe.content.account
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onCvChange: (id, instance) => dispatch(replaceSafeInstance("cv", id, instance)),
-  onAccountChange: (id, instance) => dispatch(replaceSafeInstance("account", id, instance))
+  onCvChange: (id, instance) => dispatch(replaceInstance("cv", id, instance)),
+  onAccountChange: (id, instance) => dispatch(replaceInstance("account", id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Profile);

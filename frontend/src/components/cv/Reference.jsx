@@ -3,7 +3,7 @@ import React from "react";
 import { Text, Stack, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceSafeInstance } from "../../services/safe/safe-actions";
+import { replaceInstance } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
@@ -182,12 +182,12 @@ Reference.propTypes = {
 const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedId["cv"],
-  referenceEntity: state.safe[entityName],
+  referenceEntity: state.safe.content[entityName],
   selectedReferenceId: state.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceReference: (id, instance) => dispatch(replaceSafeInstance(entityName, id, instance)),
+  replaceReference: (id, instance) => dispatch(replaceInstance(entityName, id, instance)),
   setSelectedReferenceId: (id) => dispatch(setSelectedId(entityName, id))
 });
 

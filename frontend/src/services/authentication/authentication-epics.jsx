@@ -101,7 +101,7 @@ export const authenticationEpics = [
           safeActions.fetchCvByAccountId(accountInfoId))
         : of(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_OUT),
-          safeActions.replaceSafeContent(undefined))
+          safeActions.replaceContent(undefined))
     )
   )
 ];

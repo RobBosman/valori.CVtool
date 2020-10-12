@@ -36,9 +36,9 @@ CvTitle.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  cvEntity: state.safe.cv,
+  cvEntity: state.safe.content.cv,
   selectedCvId: state.ui.selectedId["cv"],
-  accountEntity: state.safe.account
+  accountEntity: state.safe.content.account
 });
 
 export default connect(select)(CvTitle);

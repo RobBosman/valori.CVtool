@@ -3,47 +3,59 @@ import * as safeActions from "../safe-actions";
 
 describe("safe-actions.test", () => {
 
-  it("should reduce safe", () => {
-    const reducer = reducerRegistry.getRootReducer();
-    let state = undefined;
+  const _reducer = reducerRegistry.getRootReducer();
 
-    const dummySafe0 = {
+  it("should reduce safe", () => {
+    let _state = undefined;
+
+    const dummySafeContentV0 = {
       DUMMY: {}
     };
-    state = reducer(state, safeActions.replaceSafeContent(dummySafe0));
-    expect(state.safe.DUMMY).toStrictEqual({});
+    _state = _reducer(_state, safeActions.replaceContent(dummySafeContentV0));
+    expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
 
-    state = reducer(state, safeActions.replaceSafeContent());
-    expect(state.safe).toStrictEqual({});
+    _state = _reducer(_state, safeActions.replaceContent());
+    expect(_state.safe.content).toStrictEqual({});
 
     const dummyInstanceV1 = {
       _id: 313,
       value: "176-761"
     };
-    const dummySafeV1 = {
+    const dummySafeContentV1 = {
       DUMMY: {
         313: dummyInstanceV1
       }
     };
-    state = reducer(state, safeActions.replaceSafeInstance("DUMMY", 313, dummyInstanceV1));
-    expect(state.safe).toStrictEqual(dummySafeV1);
+    _state = _reducer(_state, safeActions.replaceInstance("DUMMY", 313, dummyInstanceV1));
+    expect(_state.safe.content).toStrictEqual(dummySafeContentV1);
 
     const dummyInstanceV2 = {
       _id: 313,
       value: "176-617"
     };
-    const dummySafeV2 = {
+    const dummySafeContentV2 = {
       DUMMY: {
         313: dummyInstanceV2
       }
     };
-    state = reducer(state, safeActions.replaceSafeInstance("DUMMY", 313, dummyInstanceV2));
-    expect(state.safe).toStrictEqual(dummySafeV2);
+    _state = _reducer(_state, safeActions.replaceInstance("DUMMY", 313, dummyInstanceV2));
+    expect(_state.safe.content).toStrictEqual(dummySafeContentV2);
 
-    const dummySafeV3 = {
-      DUMMY: {}
-    };
-    state = reducer(state, safeActions.replaceSafeInstance("DUMMY", 313));
-    expect(state.safe).toStrictEqual(dummySafeV3);
+    _state = _reducer(_state, safeActions.replaceInstance("DUMMY", 313));
+    expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
+  });
+
+  it("should reduce setLastEditedTimestamp", () => {
+    const timestamp = new Date("1970-04-01");
+    const state = _reducer(undefined, safeActions.setLastEditedTimestamp(timestamp));
+    expect(state.safe.lastEditedTimestamp)
+      .toBe(timestamp);
+  });
+
+  it("should reduce setLastSavedTimestamp", () => {
+    const timestamp = new Date("1970-04-01");
+    const state = _reducer(undefined, safeActions.setLastSavedTimestamp(timestamp));
+    expect(state.safe.lastSavedTimestamp)
+      .toBe(timestamp);
   });
 });
