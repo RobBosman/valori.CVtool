@@ -45,7 +45,10 @@
             <fileset>
               <directory>.</directory>
               <includes>
-                <include>npm-*.txt</include>
+                <include>debug.log</include>
+                <include>npm-audit.txt</include>
+                <include>npm-outdated.txt</include>
+                <include>stats.json</include>
               </includes>
             </fileset>
           </filesets>
