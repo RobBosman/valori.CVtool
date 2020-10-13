@@ -27,22 +27,10 @@ module.exports = {
     "react"
   ],
   rules: {
-    indent: [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    quotes: [
-      "error",
-      "double"
-    ],
-    semi: [
-      "error",
-      "always"
-    ],
+    indent: ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    quotes: ["error", "double"],
+    semi: ["error", "always"],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   },

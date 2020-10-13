@@ -7,10 +7,10 @@ import * as authenticationActions from "../../services/authentication/authentica
 import * as uiActions from "../../services/ui/ui-actions";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import valoriNameImg from "../../static/valori-name.png";
-import darkOrange from "../../themes/darkOrange";
-import lightBlue from "../../themes/lightBlue";
-import lightGreen from "../../themes/lightGreen";
-import darkYellow from "../../themes/darkYellow";
+import lightBlueTheme from "../../static/themes/lightBlue.json";
+import lightGreenTheme from "../../static/themes/lightGreen.json";
+import darkOrangeTheme from "../../static/themes/darkOrange.json";
+import darkYellowTheme from "../../static/themes/darkYellow.json";
 
 const CvTopBar = (props) => {
   
@@ -92,10 +92,10 @@ const CvTopBar = (props) => {
             iconProps: { iconName: "Brightness" },
             subMenuProps: {
               items: [
-                createThemeItem("lightBlue", lightBlue, "Licht - Blauw"),
-                createThemeItem("lightGreen", lightGreen, "Licht - Groen"),
-                createThemeItem("darkOrange", darkOrange, "Donker - Oranje"),
-                createThemeItem("darkYellow", darkYellow, "Donker - Geel")
+                createThemeItem("lightBlue", lightBlueTheme, "Licht - Blauw"),
+                createThemeItem("lightGreen", lightGreenTheme, "Licht - Groen"),
+                createThemeItem("darkOrange", darkOrangeTheme, "Donker - Oranje"),
+                createThemeItem("darkYellow", darkYellowTheme, "Donker - Geel")
               ]
             }
           },
