@@ -61,7 +61,7 @@
     "lint": "eslint --ext .js,.jsx,.html .",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "build:prod": "webpack --config webpack.prod.js",
+    "build": "webpack --config webpack.prod.js",
     "npm-outdated": "npm outdated > npm-outdated.txt || exit 0",
     "npm-audit": "npm audit > npm-audit.txt || exit 0",
     "analyze": "webpack --config webpack.prod.js --profile --json > stats.json"
