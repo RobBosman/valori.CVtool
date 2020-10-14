@@ -1,8 +1,10 @@
+import PropTypes from "prop-types";
 import React from "react";
+import { connect } from "react-redux";
 import { Text, Stack } from "@fluentui/react";
 import { useTheme } from "../../services/ui/ui-services";
 
-const Info = () => {
+const Info = (props) => {
 
   const { viewPaneColor } = useTheme();
   const viewStyles = {
@@ -16,7 +18,7 @@ const Info = () => {
 
   return (
     <Stack styles={viewStyles}>
-      <Text variant="xxLarge">Welkom Rob Bosman</Text>
+      <Text variant="xxLarge">Welkom {props.account?.name}</Text>
       <Text>
         <br/>Dit is versie v20200101 van de <strong>CVtool</strong> app van Valori, waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
@@ -33,7 +35,7 @@ const Info = () => {
             <br/>Dat kan handig zijn als je meerdere opdrachten tegelijk hebt.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
-        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <a href="mailto:RobBosman@valori.nl" target="blank">RobBosman@valori.nl</a>.
+        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <a href="mailto:RobBosman@Valori.nl" target="blank">RobBosman@Valori.nl</a>.
         <br/>
         <br/>Enjoy!
         <br/>Rob
@@ -42,4 +44,12 @@ const Info = () => {
   );
 };
 
-export default Info;
+Info.propTypes = {
+  account: PropTypes.object
+};
+
+const select = (state) => ({
+  account: state.authentication.accountInfo
+});
+
+export default connect(select)(Info);

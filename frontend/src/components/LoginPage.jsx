@@ -16,7 +16,7 @@ const LoginPage = (props) => {
   return (
     <div>
       <Stack tokens={themedLargeStackTokens} style={{ textAlign: "center" }}>
-        <Text variant="xxLarge">Welkom bij <Logo height="24em" /></Text>
+        <Text variant="xxLarge">Welkom bij de <Logo height="24em" /></Text>
         <Text>Om de CVtool te gebruiken moet je je aanmelden met je <b>Valori</b> account.
           <br />Tijdens het inlogproces controleert de CVtool je account, je moet daar eenmalig toestemming voor geven.
           <br />

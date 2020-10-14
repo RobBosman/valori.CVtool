@@ -1,3 +1,5 @@
+export const getEnumData = (enumArray, key) =>
+  enumArray.find(entry => entry.key === key);
 
 export const EducationTypes = [
   {
@@ -35,43 +37,41 @@ export const EducationResultTypes = [
   }
 ];
 
-export const SkillCategories = {
-  nl_NL: [
-    {
-      key: "LANGUAGES",
-      text: "LANGUAGES"
-    },
-    {
-      key: "BRANCHES",
-      text: "BRANCHES"
-    },
-    {
-      key: "DATABASES",
-      text: "DATABASES"
-    },
-    {
-      key: "PROGRAMMING",
-      text: "PROGRAMMING"
-    },
-    {
-      key: "APPLICATIONS",
-      text: "APPLICATIONS"
-    },
-    {
-      key: "METHODS",
-      text: "METHODS"
-    },
-    {
-      key: "EXPERTISE",
-      text: "EXPERTISE"
-    },
-    {
-      key: "TOOLS",
-      text: "TOOLS"
-    },
-    {
-      key: "OS_NETWORKS",
-      text: "OS_NETWORKS"
-    }
-  ]
-};
+export const SkillCategories = [
+  {
+    key: "LANGUAGES",
+    text: "Talen"
+  },
+  {
+    key: "BRANCHES",
+    text: "Branches"
+  },
+  {
+    key: "DATABASES",
+    text: "Databases"
+  },
+  {
+    key: "PROGRAMMING",
+    text: "Programmeren"
+  },
+  {
+    key: "APPLICATIONS",
+    text: "Applicaties"
+  },
+  {
+    key: "METHODS",
+    text: "Methoden"
+  },
+  {
+    key: "EXPERTISE",
+    text: "Expertises"
+  },
+  {
+    key: "TOOLS",
+    text: "Tools"
+  },
+  {
+    key: "OS_NETWORKS",
+    text: "OS / Netwerken"
+  }
+];

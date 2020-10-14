@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, IconButton, Pivot, PivotItem } from "@fluentui/react";
+import { Text, Stack, Pivot, PivotItem, ActionButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { replaceInstance } from "../../services/safe/safe-actions";
@@ -15,42 +15,6 @@ import { CvDatePicker } from "../widgets/CvDatePicker";
 const entityName = "experience";
 
 const Experience = (props) => {
-  
-  const columns = [
-    {
-      key: "period",
-      fieldName: "period",
-      name: "Periode",
-      isResizable: false,
-      minWidth: 120,
-      maxWidth: 120,
-      data: "string"
-    },
-    {
-      key: "client",
-      fieldName: "client",
-      name: "Opdrachtgever",
-      isResizable: true,
-      minWidth: 150,
-      data: "string"
-    },
-    {
-      key: "role",
-      localeFieldName: "role",
-      name: "Rol",
-      isResizable: true,
-      minWidth: 100,
-      data: "string"
-    },
-    {
-      key: "includeInCv",
-      fieldName: "includeInCv",
-      name: "In cv",
-      isResizable: false,
-      minWidth: 40,
-      data: "bool"
-    }
-  ];
 
   // Find all {Experiences} of the selected {cv}.
   const experiences = props.experienceEntity
@@ -65,6 +29,45 @@ const Experience = (props) => {
     setSelectedInstance: props.setSelectedExperienceId,
     replaceInstance: props.replaceExperience
   };
+
+  const showCheckbox = (item) =>
+    <CvCheckbox field="includeInCv" instanceContext={{ ...experienceContext, entityId: item._id }} />;
+  
+  const columns = [
+    {
+      key: "period",
+      fieldName: "period",
+      name: "Periode",
+      onRender: (item) => `${item.periodBegin?.substr(0, 7) || ""} - ${item.periodEnd?.substr(0, 7) || "heden"}`,
+      isResizable: false,
+      minWidth: 120,
+      maxWidth: 120,
+      data: "string"
+    },
+    {
+      key: "client",
+      fieldName: "client",
+      name: "Opdrachtgever",
+      isResizable: true,
+      data: "string"
+    },
+    {
+      key: "role",
+      localeFieldName: "role",
+      name: "Rol",
+      isResizable: true,
+      data: "string"
+    },
+    {
+      key: "includeInCv",
+      fieldName: "includeInCv",
+      name: "In cv",
+      onRender: showCheckbox,
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40
+    }
+  ];
 
   const { viewPaneColor, editPaneColor } = useTheme();
   const viewStyles = {
@@ -87,22 +90,6 @@ const Experience = (props) => {
   let selection;
   const onExposeSelectionRef = (selectionRef) => {
     selection = selectionRef;
-  };
-
-  const onRenderItem = (item, number, column) => {
-    switch (column.fieldName) {
-    case "period":
-      return `${item.periodBegin?.substr(0, 7) || ""} t/m ${item.periodEnd?.substr(0, 7) || "heden"}`;
-    case "includeInCv":
-      return <CvCheckbox
-        field="includeInCv"
-        instanceContext={{
-          ...experienceContext,
-          entityId: item._id
-        }} />;
-    default:
-      return item[column.fieldName];
-    }
   };
 
   const onAddItem = () => {
@@ -133,23 +120,29 @@ const Experience = (props) => {
         <tr>
           <td width="50%" valign="top">
             <Stack styles={viewStyles}>
-              <Stack horizontal>
+              <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Werkervaring</Text>
-                <IconButton
-                  iconProps={{ iconName: "Add" }}
-                  onClick={onAddItem} />
-                <IconButton
-                  iconProps={{ iconName: "Delete" }}
-                  disabled={!props.selectedExperienceId}
-                  onClick={onDeleteItem} />
+                <div>
+                  <ActionButton
+                    text="Toevoegen"
+                    iconProps={{ iconName: "Add" }}
+                    onClick={onAddItem}
+                  />
+                  <ActionButton
+                    text="Verwijderen"
+                    iconProps={{ iconName: "Delete" }}
+                    disabled={!props.selectedExperienceId}
+                    onClick={onDeleteItem}
+                  />
+                </div>
               </Stack>
               <CvDetailsList
                 columns={columns}
                 items={experiences}
                 instanceContext={experienceContext}
                 setKey={entityName}
-                onRenderItemColumn={onRenderItem}
-                onExposeSelectionRef={onExposeSelectionRef} />
+                onExposeSelectionRef={onExposeSelectionRef}
+              />
             </Stack>
           </td>
 
@@ -163,30 +156,34 @@ const Experience = (props) => {
                       label="Van"
                       field="periodBegin"
                       instanceContext={experienceContext}
-                      styles={{ root: { width: 140 } }} />
+                    />
                     <CvDatePicker
                       label="t/m"
                       field="periodEnd"
                       instanceContext={experienceContext}
-                      styles={{ root: { width: 140 } }} />
+                    />
                   </Stack>
                   <CvTextField
                     label="Opdrachtgever"
                     field="client"
-                    instanceContext={experienceContext} />
+                    instanceContext={experienceContext}
+                  />
                   <CvTextField
                     label="Werkgever"
                     field="employer"
-                    instanceContext={experienceContext} />
+                    instanceContext={experienceContext}
+                  />
                   <CvTextField
                     label="Rol"
                     localeField="role"
-                    instanceContext={experienceContext} />
+                    instanceContext={experienceContext}
+                  />
                   <CvSpinButton
                     label="Sorteer index"
                     field="sortIndex"
                     instanceContext={experienceContext}
-                    styles={{ root: { width: 140 } }} />
+                    styles={{ root: { width: 100 } }}
+                  />
                 </Stack>
               </PivotItem>
               <PivotItem headerText="Details">
@@ -196,25 +193,29 @@ const Experience = (props) => {
                     localeField="assignment"
                     instanceContext={experienceContext}
                     multiline
-                    autoAdjustHeight />
+                    autoAdjustHeight
+                  />
                   <CvTextField
                     label="Activiteiten"
                     localeField="activities"
                     instanceContext={experienceContext}
                     multiline
-                    autoAdjustHeight/>
+                    autoAdjustHeight
+                  />
                   <CvTextField
                     label="Resultaten"
                     localeField="results"
                     instanceContext={experienceContext}
                     multiline
-                    autoAdjustHeight />
+                    autoAdjustHeight
+                  />
                   <CvTextField
                     label="Keywords"
                     localeField="keywords"
                     instanceContext={experienceContext}
                     multiline
-                    autoAdjustHeight />
+                    autoAdjustHeight
+                  />
                 </Stack>
               </PivotItem>
             </Pivot>

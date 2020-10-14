@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, IconButton } from "@fluentui/react";
+import { Text, Stack, ActionButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { replaceInstance } from "../../services/safe/safe-actions";
@@ -13,41 +13,6 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 const entityName = "reference";
 
 const Reference = (props) => {
-
-  const columns = [
-    {
-      key: "referentName",
-      fieldName: "referentName",
-      name: "Naam",
-      isResizable: false,
-      minWidth: 150,
-      data: "string"
-    },
-    {
-      key: "referentFunction",
-      localeFieldName: "referentFunction",
-      name: "Functie",
-      isResizable: true,
-      minWidth: 150,
-      data: "string"
-    },
-    {
-      key: "description",
-      localeFieldName: "description",
-      name: "Omschrijving",
-      isResizable: true,
-      minWidth: 150,
-      data: "string"
-    },
-    {
-      key: "includeInCv",
-      fieldName: "includeInCv",
-      name: "In cv",
-      isResizable: false,
-      minWidth: 40,
-      data: "bool"
-    }
-  ];
 
   // Find all {references} of the selected {cv}.
   const references = props.referenceEntity
@@ -62,6 +27,42 @@ const Reference = (props) => {
     setSelectedInstance: props.setSelectedReferenceId,
     replaceInstance: props.replaceReference
   };
+
+  const showCheckbox = (item) =>
+    <CvCheckbox field="includeInCv" instanceContext={{ ...referenceContext, entityId: item._id }} />;
+
+  const columns = [
+    {
+      key: "referentName",
+      fieldName: "referentName",
+      name: "Naam",
+      isResizable: true,
+      data: "string"
+    },
+    {
+      key: "referentFunction",
+      localeFieldName: "referentFunction",
+      name: "Functie",
+      isResizable: true,
+      data: "string"
+    },
+    {
+      key: "description",
+      localeFieldName: "description",
+      name: "Omschrijving",
+      isResizable: true,
+      data: "string"
+    },
+    {
+      key: "includeInCv",
+      fieldName: "includeInCv",
+      name: "In cv",
+      onRender: showCheckbox,
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40
+    }
+  ];
 
   const { viewPaneColor, editPaneColor } = useTheme();
   const viewStyles = {
@@ -84,20 +85,6 @@ const Reference = (props) => {
   let selection;
   const onExposeSelectionRef = (selectionRef) => {
     selection = selectionRef;
-  };
-
-  const onRenderItem = (item, number, column) => {
-    switch (column.fieldName) {
-    case "includeInCv":
-      return <CvCheckbox
-        field="includeInCv"
-        instanceContext={{
-          ...referenceContext,
-          entityId: item._id
-        }} />;
-    default:
-      return item[column.fieldName];
-    }
   };
 
   const onAddItem = () => {
@@ -126,29 +113,32 @@ const Reference = (props) => {
     <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="40%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={viewStyles}>
-              <Stack horizontal>
+              <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Referenties</Text>
-                <IconButton
-                  iconProps={{ iconName: "Add" }}
-                  onClick={onAddItem} />
-                <IconButton
-                  iconProps={{ iconName: "Delete" }}
-                  disabled={!props.selectedReferenceId}
-                  onClick={onDeleteItem} />
+                <div>
+                  <ActionButton
+                    text="Toevoegen"
+                    iconProps={{ iconName: "Add" }}
+                    onClick={onAddItem} />
+                  <ActionButton
+                    text="Verwijderen"
+                    iconProps={{ iconName: "Delete" }}
+                    disabled={!props.selectedReferenceId}
+                    onClick={onDeleteItem} />
+                </div>
               </Stack>
               <CvDetailsList
                 columns={columns}
                 items={references}
                 instanceContext={referenceContext}
                 setKey={entityName}
-                onRenderItemColumn={onRenderItem}
                 onExposeSelectionRef={onExposeSelectionRef} />
             </Stack>
           </td>
 
-          <td width="60%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={editStyles}>
               <CvTextField
                 label="Naam"

@@ -1,20 +1,20 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Stack, Text } from "@fluentui/react";
 import { connect } from "react-redux";
+import { Stack, Text } from "@fluentui/react";
 
 const CvTitle = (props) => {
   
   const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
   const account = props.accountEntity && props.accountEntity[cv?.accountId];
-  const title = account?.name || "<NAAM>";
+  const name = account?.name || "<NAAM>";
   const role = cv?.role && cv.role[props.locale] || "<ROL>";
   const dateOfBirth = account?.dateOfBirth || "<GEBOORTEDATUM>";
   const residence = account?.residence || "<WOONPLAATS>";
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
-      <Text variant="xxLarge">{title}</Text>
+      <Text variant="xxLarge">{name}</Text>
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
         <Text variant="large">{role}</Text>

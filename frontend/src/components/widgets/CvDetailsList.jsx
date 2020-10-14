@@ -44,7 +44,9 @@ export const CvDetailsList = (props) => {
       selectionMode={1}
       selectionPreservedOnEmptyClick={true}
       onRenderItemColumn={props.onRenderItemColumn}
-      onItemInvoked={props.onItemInvoked}/>
+      onItemInvoked={props.onItemInvoked}
+      styles={props.styles}
+    />
   );
 };
 
@@ -55,5 +57,6 @@ CvDetailsList.propTypes = {
   setKey: PropTypes.string,
   onRenderItemColumn: PropTypes.func,
   onExposeSelectionRef: PropTypes.func,
-  onItemInvoked: PropTypes.func
+  onItemInvoked: PropTypes.func,
+  styles: PropTypes.object
 };

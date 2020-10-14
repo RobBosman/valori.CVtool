@@ -86,8 +86,8 @@ mongorestore backup/cvtool-2020-04-01 --uri mongodb://localhost:27017/cvtool --s
 mongoimport --uri mongodb://localhost:27017/cvtool --jsonArray --stopOnError --mode=upsert --file=skill.json
 mongoexport --uri mongodb://localhost:27017/cvtool --jsonArray --collection=skill --out=skill.json
 
-# FOR /R %i IN (exported-json\*.json) DO mongoimport --uri mongodb://localhost:27017/cvtool --jsonArray --stopOnError --mode=upsert --file=%i
-# ls -1 exported-json\*.json | while read jsonfile; do --uri mongodb://localhost:27017/cvtool --jsonArray --stopOnError --mode=upsert --file=$jsonfile; done
+# FOR /R %i IN (exported-json\*.json) DO mongoimport --jsonArray --stopOnError --mode=upsert --file=%i --uri mongodb://localhost:27017/cvtool
+# ls -1 exported-json\*.json | while read jsonfile; do --jsonArray --stopOnError --mode=upsert --file=$jsonfile --uri mongodb://localhost:27017/cvtool; done
 
 
 

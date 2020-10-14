@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, IconButton } from "@fluentui/react";
+import { Text, Stack, ActionButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { replaceInstance } from "../../services/safe/safe-actions";
@@ -13,47 +13,6 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 const entityName = "publication";
 
 const Publication = (props) => {
-  const columns = [
-    {
-      key: "year",
-      fieldName: "year",
-      name: "Jaar",
-      isResizable: false,
-      minWidth: 80,
-      maxWidth: 80,
-      data: "number"
-    },
-    {
-      key: "media",
-      fieldName: "media",
-      name: "Media",
-      isResizable: true,
-      minWidth: 150,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
-    },
-    {
-      key: "title",
-      localeFieldName: "title",
-      name: "Titel",
-      isResizable: true,
-      minWidth: 150,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
-    },
-    {
-      key: "description",
-      localeFieldName: "description",
-      name: "Omschrijving",
-      isResizable: true,
-      minWidth: 150,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
-    }
-  ];
 
   // Find all {Publication} of the selected {cv}.
   const publications = props.publicationEntity
@@ -68,6 +27,45 @@ const Publication = (props) => {
     setSelectedInstance: props.setSelectedPublicationId,
     replaceInstance: props.replacePublication
   };
+
+  const columns = [
+    {
+      key: "year",
+      fieldName: "year",
+      name: "Jaar",
+      isResizable: false,
+      minWidth: 30,
+      maxWidth: 30,
+      data: "number"
+    },
+    {
+      key: "media",
+      fieldName: "media",
+      name: "Media",
+      isResizable: true,
+      isSorted: false,
+      isSortedDescending: false,
+      data: "string"
+    },
+    {
+      key: "title",
+      localeFieldName: "title",
+      name: "Titel",
+      isResizable: true,
+      isSorted: false,
+      isSortedDescending: false,
+      data: "string"
+    },
+    {
+      key: "description",
+      localeFieldName: "description",
+      name: "Omschrijving",
+      isResizable: true,
+      isSorted: false,
+      isSortedDescending: false,
+      data: "string"
+    }
+  ];
 
   const { viewPaneColor, editPaneColor } = useTheme();
   const viewStyles = {
@@ -132,17 +130,21 @@ const Publication = (props) => {
     <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="30%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={viewStyles}>
-              <Stack horizontal>
+              <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Publicaties</Text>
-                <IconButton
-                  iconProps={{ iconName: "Add" }}
-                  onClick={onAddItem} />
-                <IconButton
-                  iconProps={{ iconName: "Delete" }}
-                  disabled={!props.selectedPublicationId}
-                  onClick={onDeleteItem} />
+                <div>
+                  <ActionButton
+                    text="Toevoegen"
+                    iconProps={{ iconName: "Add" }}
+                    onClick={onAddItem} />
+                  <ActionButton
+                    text="Verwijderen"
+                    iconProps={{ iconName: "Delete" }}
+                    disabled={!props.selectedPublicationId}
+                    onClick={onDeleteItem} />
+                </div>
               </Stack>
               <CvDetailsList
                 columns={columns}
@@ -154,7 +156,7 @@ const Publication = (props) => {
             </Stack>
           </td>
 
-          <td width="70%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={editStyles}>
               <CvTextField
                 label="Jaar"

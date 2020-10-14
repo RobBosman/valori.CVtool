@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, IconButton } from "@fluentui/react";
+import { Text, Stack, ActionButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { replaceInstance } from "../../services/safe/safe-actions";
@@ -10,43 +10,12 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDropdown } from "../widgets/CvDropdown";
-import { SkillCategories } from "./Enums";
+import { getEnumData, SkillCategories } from "./Enums";
 import { CvRating } from "../widgets/CvRating";
 
 const entityName = "skill";
 
 const Skill = (props) => {
-
-  const columns = [
-    {
-      key: "category",
-      fieldName: "category",
-      name: "Soort opleiding",
-      isResizable: false,
-      minWidth: 150,
-      maxWidth: 150,
-      data: "string"
-    },
-    {
-      key: "description",
-      localeFieldName: "description",
-      name: "Omschrijving",
-      isResizable: true,
-      minWidth: 150,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
-    },
-    {
-      key: "skillLevel",
-      fieldName: "skillLevel",
-      onRender: (skill) => "* ".repeat(skill.skillLevel),
-      name: "Niveau",
-      isResizable: false,
-      minWidth: 100,
-      data: "number"
-    }
-  ];
 
   // Find all {Skill} of the selected {cv}.
   const skills = props.skillEntity
@@ -61,6 +30,38 @@ const Skill = (props) => {
     setSelectedInstance: props.setSelectedSkillId,
     replaceInstance: props.replaceSkill
   };
+
+  const columns = [
+    {
+      key: "category",
+      fieldName: "category",
+      name: "Categorie",
+      onRender: (item) => getEnumData(SkillCategories, item.category).text,
+      isResizable: false,
+      minWidth: 120,
+      maxWidth: 120,
+      data: "string"
+    },
+    {
+      key: "description",
+      localeFieldName: "description",
+      name: "Omschrijving",
+      isResizable: true,
+      isSorted: false,
+      isSortedDescending: false,
+      data: "string"
+    },
+    {
+      key: "skillLevel",
+      fieldName: "skillLevel",
+      name: "Niveau",
+      onRender: (item) => "* ".repeat(item.skillLevel),
+      isResizable: false,
+      minWidth: 60,
+      maxWidth: 60,
+      data: "string"
+    }
+  ];
 
   const { viewPaneColor, editPaneColor } = useTheme();
   const viewStyles = {
@@ -125,17 +126,21 @@ const Skill = (props) => {
     <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="40%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={viewStyles}>
-              <Stack horizontal>
+              <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Vaardigheden</Text>
-                <IconButton
-                  iconProps={{ iconName: "Add" }}
-                  onClick={onAddItem} />
-                <IconButton
-                  iconProps={{ iconName: "Delete" }}
-                  disabled={!props.selectedSkillId}
-                  onClick={onDeleteItem} />
+                <div>
+                  <ActionButton
+                    text="Toevoegen"
+                    iconProps={{ iconName: "Add" }}
+                    onClick={onAddItem} />
+                  <ActionButton
+                    text="Verwijderen"
+                    iconProps={{ iconName: "Delete" }}
+                    disabled={!props.selectedSkillId}
+                    onClick={onDeleteItem} />
+                </div>
               </Stack>
               <CvDetailsList
                 columns={columns}
@@ -147,7 +152,7 @@ const Skill = (props) => {
             </Stack>
           </td>
 
-          <td width="60%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={editStyles}>
               <CvDropdown
                 label="Categorie"

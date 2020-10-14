@@ -23,7 +23,8 @@ export const CvCheckbox = (props) => {
       disabled={!instance}
       checked={value}
       onChange={onChange}
-      styles={props.styles} />
+      styles={props.styles}
+    />
   );
 };
 

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, IconButton } from "@fluentui/react";
+import { Text, Stack, ActionButton, FontIcon } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { replaceInstance } from "../../services/safe/safe-actions";
@@ -8,62 +8,13 @@ import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
-import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { CvChoiceGroup } from "../widgets/CvChoiceGroup";
-import { EducationTypes, EducationResultTypes } from "./Enums";
+import { EducationTypes, EducationResultTypes, getEnumData } from "./Enums";
 
 const entityName = "education";
 
 const Education = (props) => {
-
-  const columns = [
-    {
-      key: "type",
-      fieldName: "type",
-      name: "Soort opleiding",
-      iconName: "PublishCourse",
-      isIconOnly: true,
-      isResizable: false,
-      minWidth: 40,
-      maxWidth: 40,
-      data: "string"
-    },
-    {
-      key: "name",
-      localeFieldName: "name",
-      name: "Opleiding",
-      isResizable: true,
-      minWidth: 150,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
-    },
-    {
-      key: "institution",
-      fieldName: "institution",
-      name: "Opleidingsinstituut",
-      isResizable: true,
-      minWidth: 150,
-      data: "string"
-    },
-    {
-      key: "result",
-      fieldName: "result",
-      name: "Resultaat",
-      isResizable: true,
-      data: "string"
-    },
-    {
-      key: "year",
-      fieldName: "year",
-      name: "Jaar",
-      isResizable: true,
-      minWidth: 40,
-      maxWidth: 40,
-      data: "number"
-    }
-  ];
 
   // Find all {Education} of the selected {cv}.
   const educations = props.educationEntity
@@ -78,6 +29,58 @@ const Education = (props) => {
     setSelectedInstance: props.setSelectedEducationId,
     replaceInstance: props.replaceEducation
   };
+
+  const showIcon = (iconProps) => <FontIcon iconName={iconProps.iconName} />;
+
+  const columns = [
+    {
+      key: "type",
+      fieldName: "type",
+      name: "Soort opleiding",
+      iconName: "Certificate",
+      isIconOnly: true,
+      onRender: (item) => showIcon(getEnumData(EducationTypes, item.type).iconProps),
+      isResizable: false,
+      minWidth: 20,
+      maxWidth: 20
+    },
+    {
+      key: "name",
+      localeFieldName: "name",
+      name: "Opleiding",
+      isResizable: true,
+      isSorted: false,
+      isSortedDescending: false,
+      data: "string"
+    },
+    {
+      key: "institution",
+      fieldName: "institution",
+      name: "Opleidingsinstituut",
+      isResizable: true,
+      data: "string"
+    },
+    {
+      key: "period",
+      fieldName: "year",
+      name: "Periode",
+      onRender: (item) => `${item.year} - ${item.year || "heden"}`,
+      isResizable: false,
+      minWidth: 70,
+      maxWidth: 70,
+      data: "string"
+    },
+    {
+      key: "result",
+      fieldName: "result",
+      name: "Resultaat",
+      onRender: (item) => getEnumData(EducationResultTypes, item.result).text,
+      isResizable: false,
+      minWidth: 80,
+      maxWidth: 80,
+      data: "string"
+    }
+  ];
 
   const { viewPaneColor, editPaneColor } = useTheme();
   const viewStyles = {
@@ -100,20 +103,6 @@ const Education = (props) => {
   let selection;
   const onExposeSelectionRef = (selectionRef) => {
     selection = selectionRef;
-  };
-
-  const onRenderItem = (item, number, column) => {
-    switch (column.fieldName) {
-    case "includeInCv":
-      return <CvCheckbox
-        field="includeInCv"
-        instanceContext={{
-          ...educationContext,
-          entityId: item._id
-        }} />;
-    default:
-      return item[column.fieldName];
-    }
   };
 
   const onAddItem = () => {
@@ -142,29 +131,35 @@ const Education = (props) => {
     <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="60%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={viewStyles}>
-              <Stack horizontal>
+              <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Opleiding</Text>
-                <IconButton
-                  iconProps={{ iconName: "Add" }}
-                  onClick={onAddItem} />
-                <IconButton
-                  iconProps={{ iconName: "Delete" }}
-                  disabled={!props.selectedEducationId}
-                  onClick={onDeleteItem} />
+                <div>
+                  <ActionButton
+                    text="Toevoegen"
+                    iconProps={{ iconName: "Add" }}
+                    onClick={onAddItem}
+                  />
+                  <ActionButton
+                    text="Verwijderen"
+                    iconProps={{ iconName: "Delete" }}
+                    disabled={!props.selectedEducationId}
+                    onClick={onDeleteItem}
+                  />
+                </div>
               </Stack>
               <CvDetailsList
                 columns={columns}
                 items={educations}
                 instanceContext={educationContext}
                 setKey={entityName}
-                onRenderItemColumn={onRenderItem}
-                onExposeSelectionRef={onExposeSelectionRef} />
+                onExposeSelectionRef={onExposeSelectionRef}
+              />
             </Stack>
           </td>
 
-          <td width="40%" valign="top">
+          <td width="50%" valign="top">
             <Stack styles={editStyles}>
               <CvChoiceGroup
                 label="Soort opleiding"
@@ -181,18 +176,27 @@ const Education = (props) => {
                 instanceContext={educationContext} />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
+                <CvTextField
+                  label="Periode van"
+                  field="year"
+                  instanceContext={educationContext}
+                  placeholder='yyyy'
+                  styles={{ fieldGroup: { width: 80 } }}
+                />
+                <CvTextField
+                  label="tot jaar"
+                  field="year"
+                  instanceContext={educationContext}
+                  placeholder='yyyy'
+                  styles={{ fieldGroup: { width: 80 } }}
+                />
                 <CvDropdown
                   label='Resultaat'
                   field="result"
                   instanceContext={educationContext}
                   options={EducationResultTypes}
-                  styles={{ dropdown: { width: 120 } }} />
-                <CvTextField
-                  label="Jaar"
-                  field="year"
-                  instanceContext={educationContext}
-                  placeholder='yyyy'
-                  styles={{ fieldGroup: { width: 100 } }} />
+                  styles={{ dropdown: { width: 120 } }}
+                />
               </Stack>
             </Stack>
           </td>
