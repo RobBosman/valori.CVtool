@@ -118,13 +118,13 @@
     {
     "_id": "<xsl:value-of select="util:uuid(@id)"/>"
     ,"cvId": "<xsl:value-of select="util:uuid(../@id)"/>"
-    ,"type": "<xsl:apply-templates mode="educationType" select="cv:soort_opleiding"/>"
+    ,"type": "<xsl:apply-templates select="cv:soort_opleiding" mode="educationType"/>"
     ,"name": {
-    "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
+      "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
     }
-    ,"institution": "<xsl:value-of select="util:jsonText(cv:naam_instituut)"/>"
-    ,"result": "<xsl:apply-templates mode="educationResult" select="cv:diploma"/>"
-    ,"year": <xsl:value-of select="util:jsonInt(cv:jaar_diploma)"/>
+    ,"institution": "<xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/>"
+    ,"yearTo": <xsl:value-of select="util:jsonInt(cv:jaar_diploma)"/>
+    ,"result": "<xsl:apply-templates select="cv:diploma" mode="educationResult"/>"
     }
   </xsl:template>
 
@@ -195,7 +195,7 @@
         </xsl:if>
         }
       </xsl:if>
-      ,"includeInCv": <xsl:apply-templates mode="toBoolean" select="cv:opnemen_in_cv"/>
+      ,"includeInCv": <xsl:apply-templates select="cv:opnemen_in_cv" mode="toBoolean"/>
       }
     </xsl:if>
   </xsl:template>
@@ -218,7 +218,7 @@
         "uk_UK": "<xsl:value-of select="$taal_UK"/>"
       </xsl:if>
       }
-      ,"skillLevel": <xsl:apply-templates mode="languageLevel" select="cv:mondeling"/>
+      ,"skillLevel": <xsl:apply-templates select="cv:mondeling" mode="languageLevel"/>
       }
     </xsl:if>
   </xsl:template>
@@ -253,7 +253,7 @@
       {
       "_id": "<xsl:value-of select="util:uuid(@id)"/>"
       ,"cvId": "<xsl:value-of select="util:uuid(../@id)"/>"
-      ,"category": "<xsl:apply-templates mode="convertCategory" select="cv:categorie"/>"
+      ,"category": "<xsl:apply-templates select="cv:categorie" mode="convertCategory"/>"
       ,"description": {
       "nl_NL": "<xsl:value-of select="$omschrijving"/>"
       }
@@ -312,7 +312,7 @@
       }
     </xsl:if>
     ,"sortIndex": <xsl:value-of select="util:jsonInt(cv:sort_index)"/>
-    ,"includeInCv": <xsl:apply-templates mode="toBoolean" select="cv:opnemen_in_cv"/>
+    ,"includeInCv": <xsl:apply-templates select="cv:opnemen_in_cv" mode="toBoolean"/>
     }
   </xsl:template>
 

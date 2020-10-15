@@ -40,8 +40,9 @@
       "locale": "STRING"
     },
     "institution": "STRING",
-    "result": "ENUM_EDUCATION_RESULT",
-    "year": "YEAR"
+    "yearFrom": "YEAR",
+    "yearTo": "YEAR",
+    "result": "ENUM_EDUCATION_RESULT"
   },
   "skill": {
     "id": "ID",

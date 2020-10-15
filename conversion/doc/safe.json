@@ -50,8 +50,9 @@
         "nl_NL": "Atheneum-B"
       },
       "institution": "Bataafse Kamp",
-      "result": "DIPLOMA",
-      "year": 1988
+      "yearFrom": 1984,
+      "yearTo": 1988,
+      "result": "DIPLOMA"
     }
   },
   "publication": {
