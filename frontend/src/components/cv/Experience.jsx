@@ -163,7 +163,7 @@ const Experience = (props) => {
                       instanceContext={experienceContext}
                     />
                     <CvDatePicker
-                      label="t/m"
+                      label="tot"
                       field="periodEnd"
                       instanceContext={experienceContext}
                     />

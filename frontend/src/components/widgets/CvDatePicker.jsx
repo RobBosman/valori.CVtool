@@ -17,32 +17,45 @@ const datePickerStrings = {
   invalidInputErrorMessage: "Ongeldig datumformaat."
 };
 
-const parseDateFromString = (value) => {
-  return value && new Date(value);
-};
-
-const formatDate = (date) => {
-  if (date) {
-    const correctedDate = new Date(date);
-    correctedDate.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // prevent timezone offset errors
-    return correctedDate.toISOString().substring(0, 10);
-  } else {
-    return "";
-  }
-};
-
 export const CvDatePicker = (props) => {
 
-  const { entity, entityId, replaceInstance } = props.instanceContext;
+  const { entity, entityId, replaceInstance, locale } = props.instanceContext;
   const instance = entity && entity[entityId];
-  const value = parseDateFromString(instance && instance[props.field] || props.defaultValue || "");
 
-  const onChange = (newDate) => replaceInstance
-    && replaceInstance(entityId,
+  const correctDateForTimezone = (date) => {
+    if (date) {
+      const correctedDate = new Date(date);
+      correctedDate.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // prevent timezone offset errors
+      return correctedDate;
+    } else {
+      return date;
+    }
+  };
+
+  const formatDateForStorage = (date) =>
+    date
+      ? correctDateForTimezone(date).toISOString().substring(0, 10) // yyyy-mm-dd
+      : "";
+
+  const formatDateForScreen = (date) =>
+    date
+      ? correctDateForTimezone(date).toLocaleDateString(locale.replace("_", "-"))
+      : "";
+
+  const parseDateFromStorage = (dateString) =>
+    dateString && new Date(dateString);
+
+  const parseDateFromScreen = (dateString) =>
+    dateString && new Date(dateString);
+
+  const onChange = (newDate) =>
+    replaceInstance && replaceInstance(entityId,
       {
         ...instance,
-        [props.field]: formatDate(newDate)
+        [props.field]: formatDateForStorage(newDate)
       });
+  
+  const value = parseDateFromStorage(instance && instance[props.field] || props.defaultValue || "");
 
   return (
     <DatePicker
@@ -54,8 +67,8 @@ export const CvDatePicker = (props) => {
       allowTextInput
       value={value}
       onSelectDate={onChange}
-      formatDate={formatDate}
-      parseDateFromString={parseDateFromString} />
+      formatDate={formatDateForScreen}
+      parseDateFromString={parseDateFromScreen} />
   );
 };
 
