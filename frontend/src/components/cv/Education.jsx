@@ -16,10 +16,17 @@ const entityName = "education";
 
 const Education = (props) => {
 
+  const compareStrings = (l, r) =>
+    l < r ? -1 : l > r ? 1 : 0;
+
+  const composePeriod = (education) => 
+    `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || "heden"}`;
+
   // Find all {Education} of the selected {cv}.
   const educations = props.educationEntity
     && props.selectedCvId
     && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.selectedCvId)
+      .sort((l, r) => compareStrings(composePeriod(r), composePeriod(l)))
     || [];
 
   const educationContext = {
@@ -62,12 +69,11 @@ const Education = (props) => {
     },
     {
       key: "period",
-      fieldName: "year",
       name: "Periode",
-      onRender: (item) => `${item.year} - ${item.year || "heden"}`,
+      onRender: composePeriod,
       isResizable: false,
-      minWidth: 70,
-      maxWidth: 70,
+      minWidth: 75,
+      maxWidth: 75,
       data: "string"
     },
     {
@@ -178,14 +184,14 @@ const Education = (props) => {
                 tokens={{ childrenGap: "l1" }}>
                 <CvTextField
                   label="Periode van"
-                  field="year"
+                  field="yearFrom"
                   instanceContext={educationContext}
                   placeholder='yyyy'
                   styles={{ fieldGroup: { width: 80 } }}
                 />
                 <CvTextField
                   label="tot jaar"
-                  field="year"
+                  field="yearTo"
                   instanceContext={educationContext}
                   placeholder='yyyy'
                   styles={{ fieldGroup: { width: 80 } }}

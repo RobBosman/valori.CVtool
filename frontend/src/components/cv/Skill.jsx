@@ -17,10 +17,20 @@ const entityName = "skill";
 
 const Skill = (props) => {
 
+  const compareStrings = (l, r) =>
+    l < r ? -1 : l > r ? 1 : 0;
+
   // Find all {Skill} of the selected {cv}.
   const skills = props.skillEntity
     && props.selectedCvId
     && Object.values(props.skillEntity).filter((instance) => instance.cvId === props.selectedCvId)
+      .sort((l, r) => {
+        let compare = compareStrings(l.category, r.category);
+        if (compare === 0) {
+          compare = compareStrings(l.description, r.description);
+        }
+        return compare;
+      })
     || [];
 
   const skillContext = {

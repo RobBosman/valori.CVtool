@@ -18,6 +18,7 @@ const Publication = (props) => {
   const publications = props.publicationEntity
     && props.selectedCvId
     && Object.values(props.publicationEntity).filter((instance) => instance.cvId === props.selectedCvId)
+      .sort((l, r) => r.year - l.year)
     || [];
 
   const publicationContext = {

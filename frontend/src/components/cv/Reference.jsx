@@ -14,10 +14,14 @@ const entityName = "reference";
 
 const Reference = (props) => {
 
+  const compareStrings = (l, r) =>
+    l < r ? -1 : l > r ? 1 : 0;
+
   // Find all {references} of the selected {cv}.
   const references = props.referenceEntity
     && props.selectedCvId
     && Object.values(props.referenceEntity).filter((instance) => instance.cvId === props.selectedCvId)
+      .sort((l, r) => compareStrings(l.referentName, r.referentName))
     || [];
 
   const referenceContext = {
