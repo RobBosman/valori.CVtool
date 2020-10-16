@@ -4,8 +4,8 @@ import { SpinButton } from "@fluentui/react";
 
 export const CvSpinButton = (props) => {
 
-  const { entity, entityId, replaceInstance } = props.instanceContext;
-  const instance = entity && entity[entityId];
+  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const instance = entity && entity[instanceId];
 
   const value = instance && instance[props.field] || props.defaultValue || 0;
 
@@ -16,10 +16,7 @@ export const CvSpinButton = (props) => {
   const onDecrement = (value) => onValueChange(value - 1);
 
   const onValueChange = (value) =>
-    replaceInstance && replaceInstance(entityId, {
-      ...instance,
-      [props.field]: Number(value)
-    });
+    replaceInstance && replaceInstance(instanceId, { ...instance, [props.field]: Number(value) });
 
   return (
     <SpinButton

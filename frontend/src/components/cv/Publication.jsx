@@ -24,7 +24,7 @@ const Publication = (props) => {
   const publicationContext = {
     locale: props.locale,
     entity: props.publicationEntity,
-    entityId: props.selectedPublicationId,
+    instanceId: props.selectedPublicationId,
     setSelectedInstance: props.setSelectedPublicationId,
     replaceInstance: props.replacePublication
   };
@@ -96,10 +96,7 @@ const Publication = (props) => {
     case "includeInCv":
       return <CvCheckbox
         field="includeInCv"
-        instanceContext={{
-          ...publicationContext,
-          entityId: item._id
-        }} />;
+        instanceContext={{ ...publicationContext, instanceId: item._id }} />;
     default:
       return item[column.fieldName];
     }
@@ -139,12 +136,14 @@ const Publication = (props) => {
                   <ActionButton
                     text="Toevoegen"
                     iconProps={{ iconName: "Add" }}
-                    onClick={onAddItem} />
+                    onClick={onAddItem}
+                  />
                   <ActionButton
                     text="Verwijderen"
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedPublicationId}
-                    onClick={onDeleteItem} />
+                    onClick={onDeleteItem}
+                  />
                 </div>
               </Stack>
               <CvDetailsList
@@ -153,7 +152,8 @@ const Publication = (props) => {
                 instanceContext={publicationContext}
                 setKey={entityName}
                 onRenderItemColumn={onRenderItem}
-                onExposeSelectionRef={onExposeSelectionRef} />
+                onExposeSelectionRef={onExposeSelectionRef}
+              />
             </Stack>
           </td>
 
@@ -164,23 +164,27 @@ const Publication = (props) => {
                 field="year"
                 instanceContext={publicationContext}
                 placeholder='yyyy'
-                styles={{ fieldGroup: { width: 80 } }} />
+                styles={{ fieldGroup: { width: 80 } }}
+              />
               <CvTextField
                 label="Media"
                 field="media"
                 instanceContext={publicationContext}
-                autoAdjustHeight />
+                autoAdjustHeight
+              />
               <CvTextField
                 label="Titel"
                 localeField="title"
                 instanceContext={publicationContext}
-                autoAdjustHeight/>
+                autoAdjustHeight
+              />
               <CvTextField
                 label="Omschrijving"
                 localeField="description"
                 instanceContext={publicationContext}
                 multiline
-                autoAdjustHeight />
+                autoAdjustHeight
+              />
             </Stack>
           </td>
         </tr>

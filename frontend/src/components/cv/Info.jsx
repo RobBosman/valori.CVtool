@@ -1,10 +1,8 @@
-import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
 import { Text, Stack } from "@fluentui/react";
 import { useTheme } from "../../services/ui/ui-services";
 
-const Info = (props) => {
+const Info = () => {
 
   const { viewPaneColor } = useTheme();
   const viewStyles = {
@@ -18,21 +16,21 @@ const Info = (props) => {
 
   return (
     <Stack styles={viewStyles}>
-      <Text variant="xxLarge">Welkom {props.account?.name}</Text>
+      <Text variant="xxLarge">Info</Text>
       <Text>
         <br/>Dit is versie v20200101 van de <strong>CVtool</strong> app van Valori, waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
         <ul>
-          <li>AutoSave: alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
+          <li><u>AutoSave</u>: alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
           <br/>
-          <li>Markdown lijst: In veel tekstvelden kun je een opsomming maken door regels te laten beginnen met
+          <li><u>Markdown lijst</u>: In veel tekstvelden kun je een opsomming maken door regels te laten beginnen met
             <br/>&apos;<strong>* </strong>&apos; (sterretje + spatie) voor een lijst met &apos;Valori bullets&apos; of met
             <br/>&apos;<strong># </strong>&apos; (hekje + spatie) voor een genummerde lijst.</li>
           <br/>
-          <li><strong>TODO:</strong> Sorteren: gegevens in tabellen kun je sorteren door op de kolomheader te klikken.
-            <br/>Het sorteren van tabelgegevens heeft geen invloed op de volgorde in je cv, behalve bij Werkopdrachten.
-            <br/>Die zijn standaard gesorteerd op einddatum, maar dat kun je met drag&amp;drop aanpassen.
-            <br/>Dat kan handig zijn als je meerdere opdrachten tegelijk hebt.</li>
+          <li><u>Sorteren</u>: gegevens in tabellen worden gesorteerd in dezelfde volgorde als in het cv-document.
+            <br/><em>Uitzondering</em>: Werkervaringen moet je handmatig sorteren.
+            <br/>Automatisch sorteren werkt niet altijd goed als je meerdere opdrachten tegelijk hebt.
+            <br/>Je kunt de volgorde van Werkervaringen met drag&amp;drop aanpassen.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
         <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <a href="mailto:RobBosman@Valori.nl" target="blank">RobBosman@Valori.nl</a>.
@@ -44,12 +42,4 @@ const Info = (props) => {
   );
 };
 
-Info.propTypes = {
-  account: PropTypes.object
-};
-
-const select = (state) => ({
-  account: state.authentication.accountInfo
-});
-
-export default connect(select)(Info);
+export default Info;

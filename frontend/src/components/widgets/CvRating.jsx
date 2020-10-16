@@ -5,16 +5,13 @@ import { useId } from "@uifabric/react-hooks";
 
 export const CvRating = (props) => {
 
-  const { entity, entityId, replaceInstance } = props.instanceContext;
-  const instance = entity && entity[entityId];
+  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const instance = entity && entity[instanceId];
 
   const value = instance && instance[props.field] || props.defaultValue || 0;
 
   const onChange = (_event, rating) =>
-    replaceInstance && replaceInstance(entityId, {
-      ...instance,
-      [props.field]: rating
-    });
+    replaceInstance && replaceInstance(instanceId, { ...instance, [props.field]: rating });
 
   const ratingId = useId("rating");
 

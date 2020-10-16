@@ -4,16 +4,12 @@ import { ChoiceGroup } from "@fluentui/react";
 
 export const CvChoiceGroup = (props) => {
   
-  const { entity, entityId, replaceInstance } = props.instanceContext;
-  const instance = entity && entity[entityId];
+  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const instance = entity && entity[instanceId];
   const value = instance && instance[props.field] || props.defaultValue || "";
 
   const onChange = (_event, option) => replaceInstance
-    && replaceInstance(entityId,
-      {
-        ...instance,
-        [props.field]: option.key
-      });
+    && replaceInstance(instanceId, { ...instance, [props.field]: option.key });
 
   return (
     <ChoiceGroup

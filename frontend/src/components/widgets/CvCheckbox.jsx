@@ -4,14 +4,14 @@ import { Checkbox } from "@fluentui/react";
 
 export const CvCheckbox = (props) => {
   
-  const { entity, entityId, replaceInstance } = props.instanceContext;
-  const instance = entity && entity[entityId];
+  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const instance = entity && entity[instanceId];
   let value = instance && instance[props.field];
   value = value !== undefined ? !!value : props.defaultValue;
   value = value !== undefined ? !!value : false;
 
   const onChange = (_event, isChecked) =>
-    replaceInstance && replaceInstance(entityId,
+    replaceInstance && replaceInstance(instanceId,
       {
         ...instance,
         [props.field]: isChecked

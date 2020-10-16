@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, Pivot, PivotItem, ActionButton } from "@fluentui/react";
+import { Text, Stack, Pivot, PivotItem, ActionButton, TeachingBubbleContent, Coachmark, DirectionalHint } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceInstance } from "../../services/safe/safe-actions";
+import { replaceInstance, replaceInstances } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
-import { CvSpinButton } from "../widgets/CvSpinButton";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 
@@ -29,24 +28,32 @@ const Experience = (props) => {
   const experienceContext = {
     locale: props.locale,
     entity: props.experienceEntity,
-    entityId: props.selectedExperienceId,
+    instanceId: props.selectedExperienceId,
     setSelectedInstance: props.setSelectedExperienceId,
     replaceInstance: props.replaceExperience
   };
+  
+  const [isCoachmarkVisible, setCoachmarkVisible] = React.useState(false);
+  const hideCoachmark = () => setCoachmarkVisible(false);
 
-  const showCheckbox = (item) =>
-    <CvCheckbox field="includeInCv" instanceContext={{ ...experienceContext, entityId: item._id }} />;
+  const renderCheckbox = (item) =>
+    <CvCheckbox
+      field="includeInCv"
+      instanceContext={{ ...experienceContext, instanceId: item._id }}
+    />;
   
   const columns = [
     {
+      id: "periode",
       key: "period",
       fieldName: "period",
-      name: "Periode",
+      name: "Periode *",
       onRender: composePeriod,
       isResizable: false,
       minWidth: 120,
       maxWidth: 120,
-      data: "string"
+      data: "string",
+      onColumnClick: () => setCoachmarkVisible(true),
     },
     {
       key: "client",
@@ -66,7 +73,7 @@ const Experience = (props) => {
       key: "includeInCv",
       fieldName: "includeInCv",
       name: "In cv",
-      onRender: showCheckbox,
+      onRender: renderCheckbox,
       isResizable: false,
       minWidth: 40,
       maxWidth: 40
@@ -118,12 +125,46 @@ const Experience = (props) => {
       props.setSelectedExperienceId(undefined);
     }
   };
+  
+  // Keep hold of the dragged item.
+  const [draggedItem, setDraggedItem] = React.useState(undefined);
+  
+  const dragDropEvents = {
+    canDrop: () => true,
+    canDrag: () => true,
+    onDragStart: (item) => { setDraggedItem(item); },
+    onDragEnd: () => { setDraggedItem(undefined); },
+    onDragEnter: () => "", // return string is the css classes that will be added to the entering element.
+    onDragLeave: () => {},
+    onDrop: (targetItem) => {
+      const draggedItemKey = draggedItem._id;
+      if (draggedItem && targetItem._id !== draggedItemKey) {
+        const insertIndex = experiences.indexOf(targetItem);
+        const items = experiences.filter(item => item._id !== draggedItemKey);
+        items.splice(insertIndex, 0, draggedItem);
+        updateSortIndexes(items);
+      }
+    }
+  };
+
+  const updateSortIndexes = (items) => {
+    const reIndexedItems = [];
+    items.forEach((item, index) => {
+      const sortIndex = index + 1;
+      if (item.sortIndex !== sortIndex) {
+        reIndexedItems.push({ ...item, sortIndex: sortIndex });
+      }
+    });
+    if (reIndexedItems.length > 0) {
+      props.replaceExperiences(reIndexedItems);
+    }
+  };
 
   return (
     <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="50%" valign="top">
+          <td width="50%" valign="top" id="coachmarkTarget">
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Werkervaring</Text>
@@ -147,7 +188,26 @@ const Experience = (props) => {
                 instanceContext={experienceContext}
                 setKey={entityName}
                 onExposeSelectionRef={onExposeSelectionRef}
+                dragDropEvents={dragDropEvents}
               />
+              {isCoachmarkVisible && (
+                <Coachmark
+                  target="#coachmarkTarget"
+                  positioningContainerProps={{
+                    directionalHint: DirectionalHint.topLeftEdge,
+                    doNotLayer: false
+                  }}>
+                  <TeachingBubbleContent
+                    target="#coachmarkTarget"
+                    headline="Sorteren met drag&amp;drop"
+                    asSmallHeadline={true}
+                    isWide={true}
+                    hasCloseButton={true}
+                    onDismiss={hideCoachmark}>
+                    Bepaal handmatig de volgorde waarin Werkervaringen in je cv komen te staan.
+                  </TeachingBubbleContent>
+                </Coachmark>
+              )}
             </Stack>
           </td>
 
@@ -182,12 +242,6 @@ const Experience = (props) => {
                     label="Rol"
                     localeField="role"
                     instanceContext={experienceContext}
-                  />
-                  <CvSpinButton
-                    label="Sorteer index"
-                    field="sortIndex"
-                    instanceContext={experienceContext}
-                    styles={{ root: { width: 100 } }}
                   />
                 </Stack>
               </PivotItem>
@@ -236,6 +290,7 @@ Experience.propTypes = {
   selectedCvId: PropTypes.string,
   experienceEntity: PropTypes.object,
   replaceExperience: PropTypes.func.isRequired,
+  replaceExperiences: PropTypes.func.isRequired,
   selectedExperienceId: PropTypes.string,
   setSelectedExperienceId: PropTypes.func.isRequired
 };
@@ -250,6 +305,7 @@ const select = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   replaceExperience: (id, instance) => dispatch(replaceInstance(entityName, id, instance)),
+  replaceExperiences: (instances) => dispatch(replaceInstances(entityName, instances)),
   setSelectedExperienceId: (id) => dispatch(setSelectedId(entityName, id))
 });
 

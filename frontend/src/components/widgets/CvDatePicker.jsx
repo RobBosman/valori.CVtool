@@ -19,8 +19,8 @@ const datePickerStrings = {
 
 export const CvDatePicker = (props) => {
 
-  const { entity, entityId, replaceInstance, locale } = props.instanceContext;
-  const instance = entity && entity[entityId];
+  const { entity, instanceId, replaceInstance, locale } = props.instanceContext;
+  const instance = entity && entity[instanceId];
 
   const correctDateForTimezone = (date) => {
     if (date) {
@@ -49,11 +49,7 @@ export const CvDatePicker = (props) => {
     dateString && new Date(dateString);
 
   const onChange = (newDate) =>
-    replaceInstance && replaceInstance(entityId,
-      {
-        ...instance,
-        [props.field]: formatDateForStorage(newDate)
-      });
+    replaceInstance && replaceInstance(instanceId, { ...instance, [props.field]: formatDateForStorage(newDate) });
   
   const value = parseDateFromStorage(instance && instance[props.field] || props.defaultValue || "");
 

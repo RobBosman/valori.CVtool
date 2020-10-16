@@ -21,7 +21,7 @@ export const safeEpics = [
 
   // Select or reset the current cv.
   (action$, state$) => action$.pipe(
-    ofType(setAccountInfo.type, safeActions.replaceContent.type, safeActions.replaceInstance.type),
+    ofType(setAccountInfo.type, safeActions.replaceContent.type, safeActions.replaceInstance.type, safeActions.replaceInstances.type),
     map(() => getCvId(state$.value.safe?.content?.cv, state$.value.authentication?.accountInfo?._id)),
     distinctUntilChanged(),
     map((cvId) => setSelectedId("cv", cvId))
@@ -29,7 +29,7 @@ export const safeEpics = [
 
   // Register last edited timestamp.
   (action$) => action$.pipe(
-    ofType(safeActions.replaceInstance.type),
+    ofType(safeActions.replaceInstance.type, safeActions.replaceInstances.type),
     map(() => safeActions.setLastEditedTimestamp(new Date()))
   ),
 

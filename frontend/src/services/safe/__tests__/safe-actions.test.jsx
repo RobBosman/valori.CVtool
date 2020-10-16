@@ -5,7 +5,7 @@ describe("safe-actions.test", () => {
 
   const _reducer = reducerRegistry.getRootReducer();
 
-  it("should reduce safe", () => {
+  it("should reduce replaceContent and replaceInstance(s)", () => {
     let _state = undefined;
 
     const dummySafeContentV0 = {
@@ -43,6 +43,23 @@ describe("safe-actions.test", () => {
 
     _state = _reducer(_state, safeActions.replaceInstance("DUMMY", 313));
     expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
+
+
+    _state = _reducer(_state, safeActions.replaceInstances("DUMMY", []));
+    expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
+
+    const dummyInstanceV3 = {
+      _id: "176-617",
+      value: 313
+    };
+    const dummySafeContentV3 = {
+      DUMMY: {
+        313: dummyInstanceV2,
+        "176-617": dummyInstanceV3
+      }
+    };
+    _state = _reducer(_state, safeActions.replaceInstances("DUMMY", [dummyInstanceV1, dummyInstanceV2, dummyInstanceV3]));
+    expect(_state.safe.content).toStrictEqual(dummySafeContentV3);
   });
 
   it("should reduce setLastEditedTimestamp", () => {

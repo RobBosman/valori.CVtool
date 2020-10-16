@@ -32,7 +32,7 @@ const Education = (props) => {
   const educationContext = {
     locale: props.locale,
     entity: props.educationEntity,
-    entityId: props.selectedEducationId,
+    instanceId: props.selectedEducationId,
     setSelectedInstance: props.setSelectedEducationId,
     replaceInstance: props.replaceEducation
   };

@@ -4,7 +4,7 @@ import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
 
 export const CvDetailsList = (props) => {
 
-  const { entityId, setSelectedInstance, locale } = props.instanceContext;
+  const { instanceId, setSelectedInstance, locale } = props.instanceContext;
   const getKey = (item) => item._id;
 
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
@@ -17,7 +17,7 @@ export const CvDetailsList = (props) => {
   // Re-select current item when navigating back to this page.
   React.useEffect(() => {
     selection.setAllSelected(false);
-    selection.setKeySelected(entityId, true, false);
+    selection.setKeySelected(instanceId, true, false);
   }, []);
 
   props.onExposeSelectionRef && props.onExposeSelectionRef(selection);
@@ -39,11 +39,12 @@ export const CvDetailsList = (props) => {
       setKey={props.setKey}
       getKey={getKey}
       selection={selection}
+      selectionMode={1}
       isHeaderVisible={true}
       layoutMode={DetailsListLayoutMode.justified}
-      selectionMode={1}
       selectionPreservedOnEmptyClick={true}
       onRenderItemColumn={props.onRenderItemColumn}
+      dragDropEvents={props.dragDropEvents}
       onItemInvoked={props.onItemInvoked}
       styles={props.styles}
     />
@@ -54,6 +55,7 @@ CvDetailsList.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
   items: PropTypes.array.isRequired,
+  dragDropEvents: PropTypes.object,
   setKey: PropTypes.string,
   onRenderItemColumn: PropTypes.func,
   onExposeSelectionRef: PropTypes.func,

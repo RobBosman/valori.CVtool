@@ -36,7 +36,7 @@ const Skill = (props) => {
   const skillContext = {
     locale: props.locale,
     entity: props.skillEntity,
-    entityId: props.selectedSkillId,
+    instanceId: props.selectedSkillId,
     setSelectedInstance: props.setSelectedSkillId,
     replaceInstance: props.replaceSkill
   };
@@ -101,10 +101,7 @@ const Skill = (props) => {
     case "includeInCv":
       return <CvCheckbox
         field="includeInCv"
-        instanceContext={{
-          ...skillContext,
-          entityId: item._id
-        }} />;
+        instanceContext={{ ...skillContext, instanceId: item._id }} />;
     default:
       return item[column.fieldName];
     }
@@ -144,12 +141,14 @@ const Skill = (props) => {
                   <ActionButton
                     text="Toevoegen"
                     iconProps={{ iconName: "Add" }}
-                    onClick={onAddItem} />
+                    onClick={onAddItem}
+                  />
                   <ActionButton
                     text="Verwijderen"
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedSkillId}
-                    onClick={onDeleteItem} />
+                    onClick={onDeleteItem}
+                  />
                 </div>
               </Stack>
               <CvDetailsList
@@ -158,7 +157,8 @@ const Skill = (props) => {
                 instanceContext={skillContext}
                 setKey={entityName}
                 onRenderItemColumn={onRenderItem}
-                onExposeSelectionRef={onExposeSelectionRef} />
+                onExposeSelectionRef={onExposeSelectionRef}
+              />
             </Stack>
           </td>
 
@@ -168,15 +168,18 @@ const Skill = (props) => {
                 label="Categorie"
                 field="category"
                 instanceContext={skillContext}
-                options={SkillCategories[skillContext.locale]} />
+                options={SkillCategories[skillContext.locale]}
+              />
               <CvTextField
                 label="Omschrijving"
                 localeField="description"
-                instanceContext={skillContext} />
+                instanceContext={skillContext}
+              />
               <CvRating
                 label="Niveau"
                 field="skillLevel"
-                instanceContext={skillContext} />
+                instanceContext={skillContext}
+              />
             </Stack>
           </td>
         </tr>

@@ -3,8 +3,9 @@ import React from "react";
 import { TextField } from "@fluentui/react";
 
 export const CvTextField = (props) => {
-  const { entity, entityId, locale, replaceInstance } = props.instanceContext;
-  const instance = entity && entity[entityId];
+  
+  const { entity, instanceId, locale, replaceInstance } = props.instanceContext;
+  const instance = entity && entity[instanceId];
 
   let value = "";
   if (instance) {
@@ -16,8 +17,8 @@ export const CvTextField = (props) => {
     value = value || props.defaultValue || "";
   }
 
-  const onChange = (event) => replaceInstance
-    && replaceInstance(entityId, props.localeField
+  const onChange = (event) =>
+    replaceInstance && replaceInstance(instanceId, props.localeField
       ? {
         ...instance,
         [props.localeField]: {

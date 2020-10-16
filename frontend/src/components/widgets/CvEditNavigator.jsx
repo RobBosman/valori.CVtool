@@ -44,7 +44,9 @@ const CvEditNavigator = (props) => {
   ];
 
   return (
-    <CommandBar items={items} farItems={farItems} />
+    <CommandBar
+      items={items}
+      farItems={farItems} />
   );
 };
 
