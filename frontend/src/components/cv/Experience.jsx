@@ -33,18 +33,17 @@ const Experience = (props) => {
     replaceInstance: props.replaceExperience
   };
   
-  const [isCoachmarkVisible, setCoachmarkVisible] = React.useState(false);
-  const hideCoachmark = () => setCoachmarkVisible(false);
+  const [coachmarkTarget, setCoachmarkTarget] = React.useState(undefined);
+  const hideCoachmark = () => setCoachmarkTarget(undefined);
 
   const renderCheckbox = (item) =>
     <CvCheckbox
       field="includeInCv"
       instanceContext={{ ...experienceContext, instanceId: item._id }}
     />;
-  
+
   const columns = [
     {
-      id: "periode",
       key: "period",
       fieldName: "period",
       name: "Periode *",
@@ -53,7 +52,7 @@ const Experience = (props) => {
       minWidth: 120,
       maxWidth: 120,
       data: "string",
-      onColumnClick: () => setCoachmarkVisible(true),
+      onColumnClick: (e) => setCoachmarkTarget(e.target),
     },
     {
       key: "client",
@@ -164,7 +163,7 @@ const Experience = (props) => {
     <table width="100%" style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="50%" valign="top" id="coachmarkTarget">
+          <td width="50%" valign="top">
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Werkervaring</Text>
@@ -190,15 +189,15 @@ const Experience = (props) => {
                 onExposeSelectionRef={onExposeSelectionRef}
                 dragDropEvents={dragDropEvents}
               />
-              {isCoachmarkVisible && (
+              {coachmarkTarget && (
                 <Coachmark
-                  target="#coachmarkTarget"
+                  target={coachmarkTarget}
                   positioningContainerProps={{
-                    directionalHint: DirectionalHint.topLeftEdge,
+                    directionalHint: DirectionalHint.topCenter,
                     doNotLayer: false
                   }}>
                   <TeachingBubbleContent
-                    target="#coachmarkTarget"
+                    target={coachmarkTarget}
                     headline="Sorteren met drag&amp;drop"
                     asSmallHeadline={true}
                     isWide={true}

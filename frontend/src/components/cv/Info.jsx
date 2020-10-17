@@ -28,8 +28,7 @@ const Info = () => {
             <br/>&apos;<strong># </strong>&apos; (hekje + spatie) voor een genummerde lijst.</li>
           <br/>
           <li><u>Sorteren</u>: gegevens in tabellen worden gesorteerd in dezelfde volgorde als in het cv-document.
-            <br/><em>Uitzondering</em>: Werkervaringen moet je handmatig sorteren.
-            <br/>Automatisch sorteren werkt niet altijd goed als je meerdere opdrachten tegelijk hebt.
+            <br/><em>Werkervaringen</em> moet je handmatig sorteren. omdat automatisch sorteren niet altijd goed werkt als je meerdere opdrachten tegelijk hebt.
             <br/>Je kunt de volgorde van Werkervaringen met drag&amp;drop aanpassen.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
