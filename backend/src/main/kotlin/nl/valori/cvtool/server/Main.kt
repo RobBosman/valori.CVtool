@@ -20,10 +20,11 @@ object Main {
       HttpRedirectVerticle::class,
       HttpsServerVerticle::class,
       AuthVerticle::class,
-      CvVerticle::class,
-//      HeartbeatVerticle::class,
       MongoFetchVerticle::class,
-      MongoSaveVerticle::class)
+      MongoSaveVerticle::class,
+      CvFetchVerticle::class,
+      CvSaveVerticle::class,
+      CvGenerateVerticle::class)
 
   fun run() {
     val options = VertxOptions()

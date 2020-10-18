@@ -1,9 +1,9 @@
 export const fetchCvFromRemote = (accountId, sendEventFunc) =>
-  sendEventFunc("fetch.cv", { accountId })
+  sendEventFunc("cv.fetch", { accountId })
     .then((message) => message.body);
 
-export const saveToRemote = (safeData, sendEventFunc) =>
-  sendEventFunc("save", safeData);
+export const saveCvToRemote = (cvData, sendEventFunc) =>
+  sendEventFunc("cv.save", cvData);
 
 // Use this function to create a unique object id (UUID).
 export const createUuid = () =>

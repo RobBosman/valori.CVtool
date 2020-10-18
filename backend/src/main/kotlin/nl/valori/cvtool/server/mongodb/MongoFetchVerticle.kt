@@ -32,7 +32,7 @@ internal class MongoFetchVerticle : AbstractVerticle() {
                         handleRequest(it, mongoDatabase)
                       },
                       {
-                        log.error("Vertx error processing MongoDB request '$FETCH_ADDRESS'")
+                        log.error("Vertx error processing MongoDB request: ${it.message}.")
                         startPromise.fail(it)
                       }
                   )

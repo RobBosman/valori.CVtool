@@ -15,16 +15,16 @@ import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.util.*
 
-const val FETCH_CV_ADDRESS = "fetch.cv"
+const val CV_FETCH_ADDRESS = "cv.fetch"
 
-internal class CvVerticle : AbstractVerticle() {
+internal class CvFetchVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
   override fun start(startPromise: Promise<Void>) {
     vertx.eventBus()
-        .consumer<JsonObject>(FETCH_CV_ADDRESS)
+        .consumer<JsonObject>(CV_FETCH_ADDRESS)
         .toObservable()
         .subscribe(
             {
@@ -32,7 +32,7 @@ internal class CvVerticle : AbstractVerticle() {
               handleRequest(it)
             },
             {
-              log.error("Vertx error in CvVerticle")
+              log.error("Vertx error in CvFetchVerticle")
               startPromise.fail(it)
             }
         )

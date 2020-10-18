@@ -2,7 +2,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const fetchCvByAccountId = createAction("FECTH_CV_BY_ACCOUNT_ID");
-export const saveContent = createAction("SAVE_CONTENT", () => ({}));
+export const saveCv = createAction("SAVE_CV");
 export const replaceContent = createAction("REPLACE_CONTENT");
 export const replaceInstance = createAction("REPLACE_INSTANCE",
   (entity, instanceId, instance) => ({ payload: { entity, instanceId, instance } }));

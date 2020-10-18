@@ -11,8 +11,6 @@ import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
 import io.vertx.reactivex.ext.web.handler.StaticHandler
 import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
-import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.net.URL
 
@@ -99,8 +97,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
   private fun createBridgeOptions() =
       SockJSBridgeOptions()
           .addInboundPermitted(PermittedOptions().setAddress(AUTHENTICATE_ADDRESS))
-          .addInboundPermitted(PermittedOptions().setAddress(FETCH_ADDRESS))
-          .addInboundPermitted(PermittedOptions().setAddress(FETCH_CV_ADDRESS))
-          .addInboundPermitted(PermittedOptions().setAddress(SAVE_ADDRESS))
-          .addOutboundPermitted(PermittedOptions().setAddress(SERVER_HEARTBEAT_ADDRESS))
+          .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
+          .addInboundPermitted(PermittedOptions().setAddress(CV_SAVE_ADDRESS))
+          .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
 }

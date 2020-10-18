@@ -9,7 +9,7 @@ describe("safe-services.test", () => {
     expect.assertions(1);
     return safeServices.fetchCvFromRemote({}, sendEventSuccess)
       .then((action) => expect(action)
-        .toBe("fetch.cv_resolved")
+        .toBe("cv.fetch_resolved")
       );
   });
 
@@ -22,22 +22,22 @@ describe("safe-services.test", () => {
         expect(actions.length)
           .toBe(0);
         expect(error.message)
-          .toBe("fetch.cv_rejected");
+          .toBe("cv.fetch_rejected");
       });
   });
 
-  it("should saveToRemote success", () => {
+  it("should saveCvToRemote success", () => {
     expect.assertions(1);
-    return safeServices.saveToRemote({}, sendEventSuccess)
+    return safeServices.saveCvToRemote({}, sendEventSuccess)
       .then((message) => expect(message)
-        .toStrictEqual({body: "save_resolved"}));
+        .toStrictEqual({body: "cv.save_resolved"}));
   });
 
-  it("should saveToRemote error", () => {
+  it("should saveCvToRemote error", () => {
     expect.assertions(1);
-    return safeServices.saveToRemote({}, sendEventError)
+    return safeServices.saveCvToRemote({}, sendEventError)
       .catch((error) => expect(error.message)
-        .toBe("save_rejected"));
+        .toBe("cv.save_rejected"));
   });
 
   it("should create unique ids", () => {

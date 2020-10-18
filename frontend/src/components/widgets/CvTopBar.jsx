@@ -5,6 +5,7 @@ import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemTy
 import * as safeActions from "../../services/safe/safe-actions";
 import * as authenticationActions from "../../services/authentication/authentication-actions";
 import * as uiActions from "../../services/ui/ui-actions";
+import * as cvActions from "../../services/cv/cv-actions";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import valoriNameImg from "../../static/valori-name.png";
 import lightBlueTheme from "../../static/themes/lightBlue.json";
@@ -33,6 +34,8 @@ const CvTopBar = (props) => {
   const isDirty = props.isConnected && props.hasSafeData
     && props.lastEditedTimestamp
     && !props.lastSavedTimestamp || props.lastEditedTimestamp > props.lastSavedTimestamp;
+  const onFetchCv = () => props.fetchCv(props.account._id);
+  const onGenerateCv = () => props.generateCv(props.account._id);
 
   const items = props.loginState === authenticationActions.LoginStates.LOGGED_IN
     ? [
@@ -41,7 +44,7 @@ const CvTopBar = (props) => {
         text: props.lastSavedTimestamp?.toLocaleTimeString() || "???",
         iconProps: { iconName: "CloudUpload" },
         disabled: !isDirty,
-        onClick: props.saveContent,
+        onClick: props.saveCv,
         commandBarButtonAs: WrappedButton,
         style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
         tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
@@ -50,9 +53,9 @@ const CvTopBar = (props) => {
         key: "download",
         text: "Download",
         iconProps: { iconName: "DownloadDocument" },
-        // TODO: onClick: download
         commandBarButtonAs: WrappedButton,
-        tooltipText: "Download CV als MS-Word document"
+        tooltipText: "Download CV als MS-Word document",
+        onClick: onGenerateCv
       }
     ]
     : [];
@@ -77,14 +80,14 @@ const CvTopBar = (props) => {
             text: "Ophalen",
             iconProps: { iconName: "CloudDownload" },
             disabled: !props.isConnected,
-            onClick: () => props.fetchCv(props.account._id)
+            onClick: onFetchCv
           },
           {
-            key: "saveContent",
+            key: "saveCv",
             text: "Opslaan",
             iconProps: { iconName: "CloudUpload" },
             disabled: !(props.isConnected && props.hasSafeData),
-            onClick: props.saveContent
+            onClick: props.saveCv
           },
           {
             key: "theme",
@@ -155,7 +158,8 @@ CvTopBar.propTypes = {
   requestToLogin: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
   fetchCv: PropTypes.func.isRequired,
-  saveContent: PropTypes.func.isRequired
+  saveCv: PropTypes.func.isRequired,
+  generateCv: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
@@ -172,7 +176,8 @@ const mapDispatchToProps = (dispatch) => ({
   requestToLogin: () => dispatch(authenticationActions.requestLogin()),
   requestToLogout: () => dispatch(authenticationActions.requestLogout()),
   fetchCv: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId)),
-  saveContent: () => dispatch(safeActions.saveContent())
+  saveCv: () => dispatch(safeActions.saveCv(true)),
+  generateCv: (accountId) => dispatch(cvActions.generateCv(accountId))
 });
 
 export default connect(select, mapDispatchToProps)(CvTopBar);

@@ -9,8 +9,9 @@ import * as authenticationActions from "./authentication-actions";
 import * as authenticationServices from "./authentication-services";
 
 export const authenticationEpics = [
+
   // Handle requests to login or logout.
-  (action$) => action$.pipe(
+  (action$, state$) => action$.pipe(
     ofType(authenticationActions.requestLogin.type, authenticationActions.requestLogout.type),
     map((action) => action.type === authenticationActions.requestLogin.type),
     distinctUntilChanged(),
@@ -21,12 +22,21 @@ export const authenticationEpics = [
           authenticationActions.fetchAuthenticationInfo(),
           eventBusActions.requestEventBusConnection(true),
         )
-        : of(
-          authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_OUT),
-          // When requested to logout then delete the accountInfo data and disconnect the EventBus.
-          authenticationActions.setAccountInfo(undefined),
-          authenticationActions.setAuthenticationInfo(undefined),
-          eventBusActions.requestEventBusConnection(false)
+        : merge(
+          // When requested to logout then first save any changes...
+          of(safeActions.saveCv(false)),
+          state$.pipe(
+            // ...and wait for the data to be saved.
+            filter((state) => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
+            take(1),
+            mergeMap(() => of(
+              authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGING_OUT),
+              // Then delete the accountInfo data and disconnect the EventBus.
+              authenticationActions.setAccountInfo(undefined),
+              authenticationActions.setAuthenticationInfo(undefined),
+              eventBusActions.requestEventBusConnection(false)
+            ))
+          )
         )
     )
   ),

@@ -33,7 +33,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
                         handleRequest(it, mongoDatabase)
                       },
                       {
-                        log.error("Vertx error processing MongoDB request '$SAVE_ADDRESS'")
+                        log.error("Vertx error processing MongoDB request: ${it.message}.")
                         startPromise.fail(it)
                       }
                   )
@@ -95,7 +95,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
               },
               {
                 log.debug("Successfully saved data")
-                message.reply("Successfully saved data")
+                message.reply(JsonObject().put("result", "Successfully saved data"))
               }
           )
 
