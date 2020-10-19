@@ -7,6 +7,7 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
+import nl.valori.cvtool.server.Model.jsonToXml
 import org.slf4j.LoggerFactory
 
 const val CV_GENERATE_ADDRESS = "cv.generate"
@@ -49,8 +50,9 @@ internal class CvGenerateVerticle : AbstractVerticle() {
               }
           )
 
-  private fun fetchCvData(requestData: JsonObject): Single<JsonObject> =
+  private fun fetchCvData(requestData: JsonObject): Single<String> =
       vertx.eventBus()
           .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, deliveryOptions)
           .map { it.body() }
+          .map { jsonToXml(it) }
 }

@@ -7,7 +7,7 @@ node/
 node_modules/
 dist/
 coverage/
-HeadlessChrome_81.0.4044_(Windows_10.0.0)/
+HeadlessChrome_*/
 debug.log
 npm-audit.txt
 npm-outdated.txt
