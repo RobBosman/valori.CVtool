@@ -9,6 +9,15 @@ import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.Model.jsonToXml
 import org.slf4j.LoggerFactory
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.io.StringWriter
+import java.net.URL
+import javax.xml.stream.XMLOutputFactory
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.stream.StreamResult
+import javax.xml.transform.stream.StreamSource
 
 const val CV_GENERATE_ADDRESS = "cv.generate"
 
@@ -54,5 +63,27 @@ internal class CvGenerateVerticle : AbstractVerticle() {
       vertx.eventBus()
           .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, deliveryOptions)
           .map { it.body() }
-          .map { jsonToXml(it) }
+          .map {
+            val writer = ByteArrayOutputStream()
+            val xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer)
+            jsonToXml(it, xmlWriter)
+            xmlWriter.flush()
+            xmlToWord(ByteArrayInputStream(writer.toByteArray()))
+          }
+
+  private fun xmlToWord(xmlStream: InputStream) =
+      xslTransform(xmlStream, javaClass.getResource("/xml-to-docx.xsl"))
+
+  private fun xslTransform(xmlStream: InputStream, xsltUrl: URL): String {
+    xsltUrl
+        .openStream()
+        .use { xsltStream ->
+          val result = StringWriter()
+          TransformerFactory
+              .newInstance()
+              .newTransformer(StreamSource(xsltStream))
+              .transform(StreamSource(xmlStream), StreamResult(result))
+          return result.toString()
+        }
+  }
 }

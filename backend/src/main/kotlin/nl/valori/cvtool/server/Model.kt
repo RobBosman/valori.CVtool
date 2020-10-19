@@ -2,7 +2,7 @@ package nl.valori.cvtool.server
 
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import java.util.stream.Collectors.joining
+import javax.xml.stream.XMLStreamWriter
 
 object Model {
 
@@ -46,61 +46,52 @@ object Model {
           }
           ?: emptyMap()
 
-  fun jsonToXml(json: JsonObject): String {
-    var xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<root>"
-    json.map.forEach { (entity, instances) ->
-      val instanceMap = when (instances) {
-        is Map<*, *> -> instances
-        is JsonObject -> instances.map
-        else -> throw IllegalArgumentException("Expected 'instances' to be a JsonObjet or Map, not a ${instances.javaClass.name}.")
-      }
-      instanceMap.forEach { (id, instance) ->
-        val valueMap = when (instance) {
-          is Map<*, *> -> instance
-          is JsonObject -> instance.map
-          else -> throw IllegalArgumentException("Expected 'instance' to be a JsonObjet or Map, not a ${instance?.javaClass?.name}.")
+  fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter) {
+    xmlWriter.writeStartDocument()
+    xmlWriter.writeStartElement("root")
+
+    json.map
+        .forEach { (entity, instances) ->
+          val instanceMap = when (instances) {
+            is Map<*, *> -> instances
+            is JsonObject -> instances.map
+            else -> throw IllegalArgumentException("Expected 'instances' to be a JsonObject or Map, not a ${instances.javaClass.name}.")
+          }
+          instanceMap
+              .forEach { (id, instance) ->
+                val valueMap = when (instance) {
+                  is Map<*, *> -> instance
+                  is JsonObject -> instance.map
+                  else -> throw IllegalArgumentException("Expected 'instance' to be a JsonObject or Map, not a ${instance?.javaClass?.name}.")
+                }
+                xmlWriter.writeStartElement(entity)
+                xmlWriter.writeAttribute("id", id.toString())
+                valueMap.forEach { (tag, value) ->
+                  if (tag != "_id")
+                    writeJsonKeyValue(xmlWriter, tag.toString(), value)
+                }
+                xmlWriter.writeEndElement()
+              }
         }
-        xml += "<$entity id=\"$id\">"
-        valueMap.forEach { (tag, value) ->
-          if (tag != "_id")
-            xml += jsonKeyValueToXml(tag, value)
-        }
-        xml += "</$entity>"
-      }
-    }
-    xml += "</root>"
-    return xml
+
+    xmlWriter.writeEndElement()
+    xmlWriter.writeEndDocument()
   }
 
-  private fun jsonKeyValueToXml(tag: Any?, value: Any?): String =
+  private fun writeJsonKeyValue(xmlWriter: XMLStreamWriter, tag: String, value: Any?, cdata: Boolean = false) {
+    if (value != null && value.toString().isNotBlank()) {
+      xmlWriter.writeStartElement(tag)
       when (value) {
-        null, "" -> ""
-        is JsonObject ->
-          "<$tag>${
-            value.map.entries.stream()
-                .map { jsonKeyValueToXml(it.key, it.value) }
-                .collect(joining())
-          }</$tag>"
-        is Map<*, *> ->
-          "<$tag>${
-            value.entries.stream()
-                .map { jsonKeyValueToXml(it.key, it.value) }
-                .collect(joining())
-          }</$tag>"
-        is JsonArray -> value.stream()
-            .map { jsonKeyValueToXml(tag, it) }
-            .collect(joining())
-        is List<*> -> value.stream()
-            .map { jsonKeyValueToXml(tag, it) }
-            .collect(joining())
-        is String -> "<$tag>${xmlEscape(value)}</$tag>"
-        else -> "<$tag>$value</$tag>"
+        is JsonObject -> value.map.forEach { (t, u) -> writeJsonKeyValue(xmlWriter, t, u, true) }
+        is Map<*, *> -> value.forEach { (t, v) -> writeJsonKeyValue(xmlWriter, t as String, v, true) }
+        is JsonArray -> value.forEach { writeJsonKeyValue(xmlWriter, tag, it) }
+        is List<*> -> value.forEach { writeJsonKeyValue(xmlWriter, tag, it) }
+        is String -> if (cdata) xmlWriter.writeCData(value) else xmlWriter.writeCharacters(value)
+        else -> xmlWriter.writeCharacters(value.toString())
       }
-
-  private fun xmlEscape(value: String) =
-      value
-          .replace("&", "\n&amp;")
-          .replace("\n", "\n&#x0A;")
+      xmlWriter.writeEndElement()
+    }
+  }
 }
 
 

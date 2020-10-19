@@ -30,13 +30,12 @@ object XmlToJsonConverter {
     }
     Files.createDirectory(targetDir)
 
-    convert(XmlToJsonConverter::class.java.getResource("/businessunits.xml"), targetDir)
-    convert(XmlToJsonConverter::class.java.getResource("/accounts.xml"), targetDir)
+    convert(javaClass.getResource("/businessunits.xml"), targetDir)
+    convert(javaClass.getResource("/accounts.xml"), targetDir)
   }
 
   private fun convert(sourceUrl: URL, targetDir: Path) {
-    val jsonEntities = xslTransform(sourceUrl,
-        XmlToJsonConverter::class.java.getResource("/xml-to-json.xsl"))
+    val jsonEntities = xslTransform(sourceUrl, javaClass.getResource("/xml-to-json.xsl"))
     JsonObject(jsonEntities)
         .map
         .forEach { (entity, instances) ->

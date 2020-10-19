@@ -71,8 +71,8 @@ internal class HttpsServerVerticle : AbstractVerticle() {
           log.debug("Error loading SSL certificates: ${it.message}.")
           log.warn("Using fallback SSL certificates.")
           PemKeyCertOptions()
-              .setKeyValue(buffer(HttpsServerVerticle::class.java.getResource("/fallback-privkey.pem").readText()))
-              .setCertValue(buffer(HttpsServerVerticle::class.java.getResource("/fallback-fullchain.pem").readText()))
+              .setKeyValue(buffer(javaClass.getResource("/fallback-privkey.pem").readText()))
+              .setCertValue(buffer(javaClass.getResource("/fallback-fullchain.pem").readText()))
         }
   }
 
