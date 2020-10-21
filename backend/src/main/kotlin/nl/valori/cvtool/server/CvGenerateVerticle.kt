@@ -11,9 +11,6 @@ import nl.valori.cvtool.server.Model.jsonToXml
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.StringWriter
-import java.net.URL
 import javax.xml.stream.XMLOutputFactory
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
@@ -25,6 +22,7 @@ internal class CvGenerateVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
+  private val commonXslt = javaClass.getResource("/docx/Valori/common.xsl").readBytes()
 
   override fun start(startPromise: Promise<Void>) {
     vertx.eventBus()
@@ -59,7 +57,7 @@ internal class CvGenerateVerticle : AbstractVerticle() {
               }
           )
 
-  private fun fetchCvData(requestData: JsonObject): Single<String> =
+  private fun fetchCvData(requestData: JsonObject): Single<ByteArray> =
       vertx.eventBus()
           .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, deliveryOptions)
           .map { it.body() }
@@ -68,22 +66,24 @@ internal class CvGenerateVerticle : AbstractVerticle() {
             val xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer)
             jsonToXml(it, xmlWriter)
             xmlWriter.flush()
-            xmlToWord(ByteArrayInputStream(writer.toByteArray()))
+            xmlToWord(writer.toByteArray())
           }
 
-  private fun xmlToWord(xmlStream: InputStream) =
-      xslTransform(xmlStream, javaClass.getResource("/xml-to-docx.xsl"))
+  private fun xmlToWord(xmlBytes: ByteArray) =
+      xslTransform(xmlBytes, commonXslt)
 
-  private fun xslTransform(xmlStream: InputStream, xsltUrl: URL): String {
-    xsltUrl
-        .openStream()
-        .use { xsltStream ->
-          val result = StringWriter()
-          TransformerFactory
-              .newInstance()
-              .newTransformer(StreamSource(xsltStream))
-              .transform(StreamSource(xmlStream), StreamResult(result))
-          return result.toString()
+  private fun xslTransform(xmlBytes: ByteArray, xsltBytes: ByteArray): ByteArray {
+    ByteArrayInputStream(xmlBytes)
+        .use { xml ->
+          ByteArrayInputStream(xsltBytes)
+              .use { xsltStream ->
+                val result = ByteArrayOutputStream()
+                TransformerFactory
+                    .newInstance()
+                    .newTransformer(StreamSource(xsltStream))
+                    .transform(StreamSource(xml), StreamResult(result))
+                return result.toByteArray()
+              }
         }
   }
 }

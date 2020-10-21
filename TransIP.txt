@@ -99,3 +99,21 @@ db.education.updateMany({}, {$rename: {"year": "yearTo"}})
 # FOR /R %i IN (exported-json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool
 # ls -1 exported-json\*.json | while read jsonfile; do --file=$jsonfile --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool; done
 
+
+lftp
+    set ftp:ssl-allow true ;\
+    set ssl:verify-certificate no ;\
+    open -u VCV01,WYenU7hKxnet3vyD \
+    157.97.115.138
+
+lftp -c '\
+    set ftp:ssl-allow true ;\
+    set ssl:verify-certificate no ;\
+    open -u VCV01,WYenU7hKxnet3vyD \
+      -e " \
+        cd /cvtool/2020-10-21/ ;\
+        put ./dummy.txt ;\
+        quit \
+        " \
+    157.97.115.138 \
+    '

@@ -162,7 +162,8 @@
     }
   },
   "ENUM_ROLE": [
-    "ADMIN"
+    "ADMIN",
+    "CONSULTANT"
   ],
   "ENUM_EDUCATION_TYPE": [
     "EDUCATION",
