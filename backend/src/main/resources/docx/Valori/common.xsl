@@ -2,22 +2,10 @@
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-    xmlns:cv="https://ns.bransom.nl/cerios/cv/v20110401"
-    exclude-result-prefixes="cv"
     version="1.0">
 
   <xsl:variable name="LOWERCASE">abcdefghijklmnopqrstuvwxyz</xsl:variable>
   <xsl:variable name="UPPERCASE">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
-
-  <xsl:template match="cv:persoonsgegevens" mode="full-name">
-    <xsl:value-of select="cv:voornaam" />
-    <xsl:if test="cv:tussenvoegsel">
-      <xsl:text> </xsl:text>
-      <xsl:value-of select="cv:tussenvoegsel" />
-    </xsl:if>
-    <xsl:text> </xsl:text>
-    <xsl:value-of select="cv:achternaam" />
-  </xsl:template>
 
   <xsl:template name="skill-level">
     <xsl:param name="level" />

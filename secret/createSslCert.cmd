@@ -24,3 +24,6 @@ keytool ^
 ::    -storepass %STOREPASS% ^
 ::    -list ^
 ::    -rfc
+
+openssl pkcs12 -in keystore.p12 -nocerts -nodes -out localhost-privkey.pem
+openssl pkcs12 -in keystore.p12 -clcerts -nokeys -out localhost-fullchain.pem

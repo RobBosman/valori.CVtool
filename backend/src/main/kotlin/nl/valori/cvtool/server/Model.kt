@@ -46,9 +46,10 @@ object Model {
           }
           ?: emptyMap()
 
-  fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter) {
+  fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter, defaultNamespaceURI: String) {
     xmlWriter.writeStartDocument()
     xmlWriter.writeStartElement("root")
+    xmlWriter.writeDefaultNamespace(defaultNamespaceURI)
 
     json.map
         .forEach { (entity, instances) ->
@@ -66,9 +67,9 @@ object Model {
                 }
                 xmlWriter.writeStartElement(entity)
                 xmlWriter.writeAttribute("id", id.toString())
-                valueMap.forEach { (tag, value) ->
-                  if (tag != "_id")
-                    writeJsonKeyValue(xmlWriter, tag.toString(), value)
+                valueMap.forEach { (localName, value) ->
+                  if (localName != "_id")
+                    writeJsonKeyValue(xmlWriter, localName.toString(), value)
                 }
                 xmlWriter.writeEndElement()
               }
@@ -78,18 +79,33 @@ object Model {
     xmlWriter.writeEndDocument()
   }
 
-  private fun writeJsonKeyValue(xmlWriter: XMLStreamWriter, tag: String, value: Any?, cdata: Boolean = false) {
-    if (value != null && value.toString().isNotBlank()) {
-      xmlWriter.writeStartElement(tag)
-      when (value) {
-        is JsonObject -> value.map.forEach { (t, u) -> writeJsonKeyValue(xmlWriter, t, u, true) }
-        is Map<*, *> -> value.forEach { (t, v) -> writeJsonKeyValue(xmlWriter, t as String, v, true) }
-        is JsonArray -> value.forEach { writeJsonKeyValue(xmlWriter, tag, it) }
-        is List<*> -> value.forEach { writeJsonKeyValue(xmlWriter, tag, it) }
-        is String -> if (cdata) xmlWriter.writeCData(value) else xmlWriter.writeCharacters(value)
-        else -> xmlWriter.writeCharacters(value.toString())
+  private fun writeJsonKeyValue(xmlWriter: XMLStreamWriter, localName: String, value: Any?, cdata: Boolean = false) {
+    when (value) {
+      null -> { }
+      is JsonArray -> value.forEach { writeJsonKeyValue(xmlWriter, localName, it) }
+      is List<*> -> value.forEach { writeJsonKeyValue(xmlWriter, localName, it) }
+      is JsonObject -> {
+        xmlWriter.writeStartElement(localName)
+        value.map.forEach { (k, v) -> writeJsonKeyValue(xmlWriter, k, v, true) }
+        xmlWriter.writeEndElement()
       }
-      xmlWriter.writeEndElement()
+      is Map<*, *> -> {
+        xmlWriter.writeStartElement(localName)
+        value.forEach { (k, v) -> writeJsonKeyValue(xmlWriter, k as String, v, true) }
+        xmlWriter.writeEndElement()
+      }
+      is String -> {
+        if (value.isNotBlank()) {
+          xmlWriter.writeStartElement(localName)
+          if (cdata) xmlWriter.writeCData(value) else xmlWriter.writeCharacters(value)
+          xmlWriter.writeEndElement()
+        }
+      }
+      else -> {
+        xmlWriter.writeStartElement(localName)
+        xmlWriter.writeCharacters(value.toString())
+        xmlWriter.writeEndElement()
+      }
     }
   }
 }

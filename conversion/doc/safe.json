@@ -20,7 +20,8 @@
       "dateOfBirth": "1965-09-06",
       "residence": "Leusden",
       "privileges": [
-        "ADMIN"
+        "ADMIN",
+        "CONSULTANT"
       ]
     }
   },

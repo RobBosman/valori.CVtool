@@ -16,6 +16,11 @@ import java.net.URL
 
 internal class HttpsServerVerticle : AbstractVerticle() {
 
+  companion object {
+    internal val sslCert = buffer(HttpsServerVerticle::class.java.getResource("/ssl/localhost-fullchain.pem").readText())
+    internal val sslKey = buffer(HttpsServerVerticle::class.java.getResource("/ssl/localhost-privkey.pem").readText())
+  }
+
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun start(startPromise: Promise<Void>) {
@@ -71,8 +76,8 @@ internal class HttpsServerVerticle : AbstractVerticle() {
           log.debug("Error loading SSL certificates: ${it.message}.")
           log.warn("Using fallback SSL certificates.")
           PemKeyCertOptions()
-              .setKeyValue(buffer(javaClass.getResource("/fallback-privkey.pem").readText()))
-              .setCertValue(buffer(javaClass.getResource("/fallback-fullchain.pem").readText()))
+              .setKeyValue(sslKey)
+              .setCertValue(sslCert)
         }
   }
 
