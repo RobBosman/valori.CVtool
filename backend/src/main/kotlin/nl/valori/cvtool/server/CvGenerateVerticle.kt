@@ -1,6 +1,8 @@
 package nl.valori.cvtool.server
 
+import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
@@ -30,34 +32,35 @@ internal class CvGenerateVerticle : AbstractVerticle() {
     private val log = LoggerFactory.getLogger(CvGenerateVerticle::class.java)
     private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
-    private val templateDocx = loadByteArray("/docx/Valori/template.docx")
+    private val docxTemplate = loadBytes("/docx/Valori/template.docx")
+    private val xsltRefMap = mapOf(
+        "common.xsl" to loadBytes("/docx/Valori/common.xsl"),
+        "common-per-locale.xsl" to loadBytes("/docx/Valori/nl_NL/common-per-locale.xsl")
+    )
+    private val docxXsltMap = mapOf(
+        "docProps/core.xml" to loadBytes("/docx/Valori/nl_NL/docProps/core.xml.xsl"),
+        "word/document.xml" to loadBytes("/docx/Valori/nl_NL/word/document.xml.xsl"),
+        "word/footer1.xml" to loadBytes("/docx/Valori/nl_NL/word/footer1.xml.xsl"),
+        "word/footer2.xml" to loadBytes("/docx/Valori/nl_NL/word/footer2.xml.xsl"),
+        "word/header2.xml" to loadBytes("/docx/Valori/nl_NL/word/header2.xml.xsl")
+    )
 
-    private val commonXslt = loadByteArray("/docx/Valori/common.xsl")
-    private val commonPerLocaleXslt = loadByteArray("/docx/Valori/nl_NL/common-per-locale.xsl")
-
-    private val docPropsCoreXslt = loadByteArray("/docx/Valori/nl_NL/docProps/core.xml.xsl")
-    private val wordDocumentXslt = loadByteArray("/docx/Valori/nl_NL/word/document.xml.xsl")
-    private val wordFooter1Xslt = loadByteArray("/docx/Valori/nl_NL/word/footer1.xml.xsl")
-    private val wordFooter2Xslt = loadByteArray("/docx/Valori/nl_NL/word/footer2.xml.xsl")
-    private val wordHeader2Xslt = loadByteArray("/docx/Valori/nl_NL/word/header2.xml.xsl")
-
-    private val transformerFactory = TransformerFactory
-        .newInstance()
-        .also {
-          it.setURIResolver { href, _ ->
-            val resolvedXslt = when (href) {
-              "../common.xsl" -> commonXslt
-              "../common-per-locale.xsl" -> commonPerLocaleXslt
-              else -> throw IllegalArgumentException("Cannot find XSLT $href.")
-            }
-            StreamSource(ByteArrayInputStream(resolvedXslt))
-          }
-        }
-
-    private fun loadByteArray(location: String) =
+    private fun loadBytes(location: String) =
         CvGenerateVerticle::class.java.getResource(location).readBytes()
 
-    fun xslTransform(xmlBytes: ByteArray, xsltBytes: ByteArray): ByteArray {
+    private val transformerFactory =
+        TransformerFactory
+            .newInstance()
+            .also {
+              it.setURIResolver { href, _ ->
+                val xslt = xsltRefMap.getOrElse(href.substringAfter("/")) {
+                  throw IllegalArgumentException("Cannot find XSLT $href.")
+                }
+                StreamSource(ByteArrayInputStream(xslt))
+              }
+            }
+
+    internal fun xslTransform(xmlBytes: ByteArray, xsltBytes: ByteArray): ByteArray {
       ByteArrayInputStream(xmlBytes)
           .use { xml ->
             ByteArrayInputStream(xsltBytes)
@@ -92,11 +95,16 @@ internal class CvGenerateVerticle : AbstractVerticle() {
 
   private fun handleRequest(message: Message<JsonObject>) =
       Single
-          .just(message)
-          .map { it.body() }
-          .flatMap(::fetchCvDataAsXml)
-          .doOnSuccess { docx -> FileOutputStream("cv.docx").use { it.write(docx) } }
-          .map { String(it) }
+          .just(message.body())
+          .flatMap(::fetchCvData)
+          .flatMap { cvJson ->
+            xmlToDocx(convertToXml(cvJson))
+                .map { composeFileName(cvJson) to it }
+          }
+          .map { (fileName, docxBytes) ->
+            FileOutputStream(fileName).use { it.write(docxBytes) }
+            fileName
+          }
           .subscribe(
               {
                 log.debug("Successfully generated cv data")
@@ -109,51 +117,39 @@ internal class CvGenerateVerticle : AbstractVerticle() {
               }
           )
 
-  private fun fetchCvDataAsXml(requestData: JsonObject): Single<ByteArray> =
+  private fun fetchCvData(requestData: JsonObject): Single<JsonObject> =
       vertx.eventBus()
           .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, deliveryOptions)
           .map { it.body() }
-          .map {
-            val writer = ByteArrayOutputStream()
-            jsonToXml(it, XMLOutputFactory.newInstance().createXMLStreamWriter(writer), CV_XML_NAMESPACE)
-            writer.toByteArray()
-          }
-          .flatMap(::xmlToDocx)
+
+  private fun convertToXml(json: JsonObject): ByteArray {
+    val writer = ByteArrayOutputStream()
+    jsonToXml(json, XMLOutputFactory.newInstance().createXMLStreamWriter(writer), CV_XML_NAMESPACE)
+    return writer.toByteArray()
+  }
 
   private fun xmlToDocx(xmlBytes: ByteArray) =
-      Single
-          .zip(
-              Single.create<ByteArray> { it.onSuccess(xslTransform(xmlBytes, docPropsCoreXslt)) },
-              Single.create<ByteArray> { it.onSuccess(xslTransform(xmlBytes, wordHeader2Xslt)) },
-              Single.create<ByteArray> { it.onSuccess(xslTransform(xmlBytes, wordDocumentXslt)) },
-              Single.create<ByteArray> { it.onSuccess(xslTransform(xmlBytes, wordFooter1Xslt)) },
-              Single.create<ByteArray> { it.onSuccess(xslTransform(xmlBytes, wordFooter2Xslt)) }
-          )
-          { docPropsCoreXml, wordHeader2Xml, wordDocumentXml, wordFooter1Xml, wordFooter2Xml ->
-            mapOf(
-                "docProps/core.xml" to docPropsCoreXml,
-                "word/header2.xml" to wordHeader2Xml,
-                "word/document.xml" to wordDocumentXml,
-                "word/footer1.xml" to wordFooter1Xml,
-                "word/footer2.xml" to wordFooter2Xml
-            )
+      Flowable
+          .fromIterable(docxXsltMap.entries)
+          .parallel()
+          .runOn(Schedulers.computation())
+          .map { entry -> entry.key to xslTransform(xmlBytes, entry.value) }
+          .sequential()
+          .reduce(HashMap<String, ByteArray>()) { map, (docxEntryName, xsltBytes) ->
+            map[docxEntryName] = xsltBytes
+            map
           }
-          .map {
+          .map { xsltMap ->
             val docxBytes = ByteArrayOutputStream()
             ZipOutputStream(docxBytes)
                 .use { docxOutputStream ->
-                  ZipInputStream(ByteArrayInputStream(templateDocx))
+                  ZipInputStream(ByteArrayInputStream(docxTemplate))
                       .use { zipIn ->
                         var entry = zipIn.nextEntry
                         while (entry != null) {
 
                           docxOutputStream.putNextEntry(ZipEntry(entry.name))
-                          val bytes = it[entry.name]
-                          if (bytes != null) {
-                            docxOutputStream.write(bytes)
-                          } else {
-                            docxOutputStream.write(zipIn.readAllBytes())
-                          }
+                          docxOutputStream.write(xsltMap.getOrElse(entry.name) { zipIn.readAllBytes() })
                           docxOutputStream.closeEntry()
 
                           zipIn.closeEntry()
@@ -163,4 +159,12 @@ internal class CvGenerateVerticle : AbstractVerticle() {
                 }
             docxBytes.toByteArray()
           }
+
+  private fun composeFileName(cvJson: JsonObject): String {
+    val name = (cvJson.getJsonObject("account")
+        .map.values.elementAt(0) as JsonObject)
+        .getString("name")
+        .replace(" ", "")
+    return "CV_NL_$name.docx"
+  }
 }
