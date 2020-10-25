@@ -35,7 +35,7 @@ internal class CvGenerateVerticle : AbstractVerticle() {
     private val docxTemplate = loadBytes("/docx/Valori/template.docx")
     private val xsltRefMap = mapOf(
         "common.xsl" to loadBytes("/docx/Valori/common.xsl"),
-        "common-per-locale.xsl" to loadBytes("/docx/Valori/nl_NL/common-per-locale.xsl")
+        "common-nl_NL.xsl" to loadBytes("/docx/Valori/nl_NL/common-nl_NL.xsl")
     )
     private val docxXsltMap = mapOf(
         "docProps/core.xml" to loadBytes("/docx/Valori/nl_NL/docProps/core.xml.xsl"),
@@ -53,7 +53,7 @@ internal class CvGenerateVerticle : AbstractVerticle() {
             .newInstance()
             .also {
               it.setURIResolver { href, _ ->
-                val xslt = xsltRefMap.getOrElse(href.substringAfter("/")) {
+                val xslt = xsltRefMap.getOrElse(href.substringAfterLast("/")) {
                   throw IllegalArgumentException("Cannot find XSLT $href.")
                 }
                 StreamSource(ByteArrayInputStream(xslt))

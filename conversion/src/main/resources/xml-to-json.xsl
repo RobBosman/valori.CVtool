@@ -8,8 +8,8 @@
 
   <xsl:output method="text" encoding="utf-8" omit-xml-declaration="yes" indent="yes"/>
 
-  <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'"/>
-  <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+  <xsl:variable name="LOWERCASE" select="'abcdefghijklmnopqrstuvwxyz'"/>
+  <xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 
   <xsl:template match="cv:set_of_businessunit">
     {
@@ -56,7 +56,7 @@
     {
     "_id": "<xsl:value-of select="util:uuid(@id)"/>"
     ,"name": "<xsl:value-of select="cv:name"/>"
-    ,"email": "<xsl:value-of select="translate(translate(cv:name, ' ', ''), $lowercase, $uppercase)"/>@VALORI.NL"
+    ,"email": "<xsl:value-of select="translate(translate(cv:name, ' ', ''), $LOWERCASE, $UPPERCASE)"/>@VALORI.NL"
     ,"dateOfBirth": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:geboortedatum"/>"
     ,"residence": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:woonplaats"/>"
     ,"privileges": [

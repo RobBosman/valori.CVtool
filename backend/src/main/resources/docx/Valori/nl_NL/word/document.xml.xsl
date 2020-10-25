@@ -9,9 +9,10 @@
     exclude-result-prefixes="cv"
     version="1.0">
 
-  <xsl:import href="../common-per-locale.xsl" />
+  <xsl:import href="../../common.xsl"/>
+  <xsl:import href="../common-nl_NL.xsl"/>
 
-  <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no" />
+  <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
   <xsl:template match="/">
     <xsl:apply-templates select="cv:root"/>
@@ -20,2387 +21,623 @@
   <xsl:template match="cv:root">
     <w:document mc:Ignorable="w14">
       <w:body>
-        <w:tbl>
-          <w:tblPr>
-            <w:tblStyle w:val="Tabelraster"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
-            <w:tblBorders>
-              <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-            </w:tblBorders>
-            <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
-          </w:tblPr>
-          <w:tblGrid>
-            <w:gridCol w:w="9498"/>
-          </w:tblGrid>
-          <w:tr w:rsidR="00C97881" w14:paraId="422E7796" w14:textId="77777777" w:rsidTr="00F63003">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7795" w14:textId="77777777" w:rsidR="00C97881" w:rsidRPr="009D3B92" w:rsidRDefault="00C97881" w:rsidP="00CA50C8">
-                <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="009D3B92">
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                  <w:t>Profielschets</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00C97881" w14:paraId="422E779A" w14:textId="77777777" w:rsidTr="00F63003">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7797" w14:textId="77777777" w:rsidR="00C97881" w:rsidRDefault="00C97881" w:rsidP="00B13743"/>
-              <w:p w14:paraId="422E7799" w14:textId="11773C42" w:rsidR="00C97881" w:rsidRDefault="00241B19" w:rsidP="007C28F4">
-                <w:r>
-                  <w:t><xsl:value-of select="cv:cv/cv:profile"/></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-        </w:tbl>
-        <w:p w14:paraId="422E779B" w14:textId="77777777" w:rsidR="004706F5" w:rsidRDefault="004706F5" w:rsidP="0080064E"/>
-        <w:p w14:paraId="422E77A7" w14:textId="77777777" w:rsidR="005F1B7E" w:rsidRDefault="005F1B7E" w:rsidP="0080064E"/>
-
         <!--
-        SKILL
+
+        PROFILE
+
         -->
-        <w:tbl>
-          <w:tblPr>
-            <w:tblStyle w:val="Tabelraster"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
-            <w:tblBorders>
-              <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-            </w:tblBorders>
-            <w:tblLayout w:type="fixed"/>
-            <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
-          </w:tblPr>
-          <w:tblGrid>
-            <w:gridCol w:w="2268"/>
-            <w:gridCol w:w="800"/>
-            <w:gridCol w:w="2461"/>
-            <w:gridCol w:w="754"/>
-            <w:gridCol w:w="2364"/>
-            <w:gridCol w:w="851"/>
-          </w:tblGrid>
-          <w:tr w:rsidR="00814E35" w14:paraId="422E77A9" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:gridSpan w:val="6"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77A8" w14:textId="77777777" w:rsidR="00814E35" w:rsidRPr="009D3B92" w:rsidRDefault="00814E35" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="009D3B92">
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                  <w:t>Kennis &amp; vaardigheden</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00F137DF" w14:paraId="422E77B0" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77AA" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="009153D7" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="002060"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77AB" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="009153D7" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="002060"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77AC" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="00C21213" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="002060"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77AD" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRDefault="00A64FC2" w:rsidP="007A7825"/>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77AE" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRDefault="00A64FC2" w:rsidP="007A7825"/>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77AF" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRDefault="00A64FC2" w:rsidP="007A7825"/>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00F137DF" w:rsidRPr="00A64FC2" w14:paraId="422E77B7" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B1" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="00F63003" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Talen</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B2" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="00F63003" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B3" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="00F63003" w:rsidRDefault="00057059" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Databases</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B4" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="00F63003" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B5" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="00F63003" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Programmeren</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B6" w14:textId="77777777" w:rsidR="00A64FC2" w:rsidRPr="00F63003" w:rsidRDefault="00A64FC2" w:rsidP="007A7825">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w14:paraId="422E77BE" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B8" w14:textId="1317CDD2" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:proofErr w:type="spellStart"/>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-                <w:proofErr w:type="spellEnd"/>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t xml:space="preserve"> </w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77B9" w14:textId="7C86DD46" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77BA" w14:textId="2263C547" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77BB" w14:textId="04308FBA" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77BC" w14:textId="10954A76" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77BD" w14:textId="51FB3B6C" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w14:paraId="422E77DA" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77D4" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77D5" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77D6" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77D7" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77D8" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77D9" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w:rsidRPr="00A64FC2" w14:paraId="422E77E1" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77DB" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Branches</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77DC" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77DD" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Applicaties</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77DE" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77DF" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Methodes</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77E0" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w:rsidRPr="00A64FC2" w14:paraId="422E77E8" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77E2" w14:textId="7E99CCEB" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77E3" w14:textId="4FDDB643" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77E4" w14:textId="77E0691C" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C" w:themeColor="text1"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77E5" w14:textId="7FFD5841" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77E6" w14:textId="6BA268F7" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C" w:themeColor="text1"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77E7" w14:textId="2071F1B5" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w14:paraId="422E7804" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77FE" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E77FF" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7800" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7801" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7802" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7803" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w:rsidRPr="00A64FC2" w14:paraId="422E780B" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7805" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Expertises</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7806" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7807" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Tools</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7808" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7809" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Certificeringen</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E780A" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w:rsidRPr="00F63003" w14:paraId="422E7812" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E780C" w14:textId="49286BD8" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1B5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E780D" w14:textId="093DD2E6" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E780E" w14:textId="3338305F" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E780F" w14:textId="1200A4BC" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7810" w14:textId="18BBFA76" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>SKILL_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7811" w14:textId="29FC2F41" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00244516" w:rsidRPr="00F63003" w14:paraId="422E782E" w14:textId="77777777" w:rsidTr="55ED3856">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2268" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7828" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="800" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7829" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2461" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E782A" w14:textId="01760788" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="754" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E782B" w14:textId="64E2548B" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-                    <w:color w:val="0A1C5C" w:themeColor="text1"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2364" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E782C" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="851" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E782D" w14:textId="77777777" w:rsidR="00244516" w:rsidRPr="00B75B87" w:rsidRDefault="00244516" w:rsidP="00244516">
-                <w:pPr>
-                  <w:rPr>
-                    <w:rFonts w:ascii="Wingdings" w:hAnsi="Wingdings"/>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-              </w:p>
-            </w:tc>
-          </w:tr>
-        </w:tbl>
-        <w:p w14:paraId="53D0C375" w14:textId="77777777" w:rsidR="00244516" w:rsidRDefault="00244516" w:rsidP="00244516">
+        <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949" w:rsidP="00D55949">
           <w:pPr>
-            <w:numPr>
-              <w:ilvl w:val="0"/>
-              <w:numId w:val="0"/>
-            </w:numPr>
-            <w:rPr>
-              <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-              <w:color w:val="0A1C5C"/>
-            </w:rPr>
+            <w:pStyle w:val="Kop1"/>
+          </w:pPr>
+          <w:r w:rsidRPr="00D55949">
+            <w:t>Profielschets</w:t>
+          </w:r>
+        </w:p>
+        <xsl:apply-templates select="cv:cv/cv:profile/cv:nl_NL" mode="markdown"/>
+        <!--
+
+        SKILLS
+
+        -->
+        <w:p w14:paraId="6DD8B0DA" w14:textId="3ABD36DD" w:rsidR="00475635" w:rsidRDefault="00BF29B7" w:rsidP="00302F10">
+          <w:pPr>
+            <w:pStyle w:val="Kop1"/>
+          </w:pPr>
+          <w:r>
+            <w:t>Kennis &amp; vaardigheden</w:t>
+          </w:r>
+        </w:p>
+        <w:p w14:paraId="295EA1F8" w14:textId="77777777" w:rsidR="00BF29B7" w:rsidRDefault="00BF29B7" w:rsidP="00BB35DE">
+          <w:pPr>
+            <w:sectPr w:rsidR="00BF29B7" w:rsidSect="000A5FCA">
+              <w:headerReference w:type="default" r:id="rId7"/>
+              <w:footerReference w:type="default" r:id="rId8"/>
+              <w:headerReference w:type="first" r:id="rId9"/>
+              <w:footerReference w:type="first" r:id="rId10"/>
+              <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
+              <w:pgMar w:top="2835" w:right="707" w:bottom="1701" w:left="1701" w:header="1276" w:footer="641" w:gutter="0"/>
+              <w:cols w:space="708"/>
+              <w:titlePg/>
+              <w:docGrid w:linePitch="360"/>
+            </w:sectPr>
           </w:pPr>
         </w:p>
-        <w:p w14:paraId="6C7C904F" w14:textId="5EF331B9" w:rsidR="00F63003" w:rsidRDefault="00244516" w:rsidP="00244516">
+        <!-- LANGUAGES -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">LANGUAGES</xsl:with-param>
+          <xsl:with-param name="newColumn">false</xsl:with-param>
+        </xsl:call-template>
+        <!-- BRANCHES -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">BRANCHES</xsl:with-param>
+          <xsl:with-param name="newColumn">false</xsl:with-param>
+        </xsl:call-template>
+        <!-- EXPERTISE -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">EXPERTISE</xsl:with-param>
+          <xsl:with-param name="newColumn">false</xsl:with-param>
+        </xsl:call-template>
+        <w:p w14:paraId="08AFDAB3" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
           <w:pPr>
-            <w:numPr>
-              <w:ilvl w:val="0"/>
-              <w:numId w:val="0"/>
-            </w:numPr>
+            <w:pStyle w:val="Kop2"/>
           </w:pPr>
-          <w:r w:rsidRPr="00F63003">
+        </w:p>
+        <!-- DATABASES -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">DATABASES</xsl:with-param>
+          <xsl:with-param name="newColumn">true</xsl:with-param>
+        </xsl:call-template>
+        <!-- APPLICATIONS -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">APPLICATIONS</xsl:with-param>
+          <xsl:with-param name="newColumn">false</xsl:with-param>
+        </xsl:call-template>
+        <!-- TOOLS -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">TOOLS</xsl:with-param>
+          <xsl:with-param name="newColumn">false</xsl:with-param>
+        </xsl:call-template>
+        <w:p w14:paraId="3B21A4AF" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
+          <w:pPr>
+            <w:pStyle w:val="Kop2"/>
+          </w:pPr>
+        </w:p>
+        <!-- PROGRAMMING -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">PROGRAMMING</xsl:with-param>
+          <xsl:with-param name="newColumn">true</xsl:with-param>
+        </xsl:call-template>
+        <!-- METHODS -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">METHODS</xsl:with-param>
+          <xsl:with-param name="newColumn">false</xsl:with-param>
+        </xsl:call-template>
+        <!-- OS_NETWORKS -->
+        <xsl:call-template name="skill-section">
+          <xsl:with-param name="category">OS_NETWORKS</xsl:with-param>
+          <xsl:with-param name="newColumn">false</xsl:with-param>
+        </xsl:call-template>
+        <w:p w14:paraId="68712A30" w14:textId="77777777" w:rsidR="00660A7D" w:rsidRDefault="00660A7D" w:rsidP="00666ED6">
+          <w:pPr>
+            <w:sectPr w:rsidR="00660A7D" w:rsidSect="00660A7D">
+              <w:type w:val="continuous"/>
+              <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
+              <w:pgMar w:top="1843" w:right="707" w:bottom="1701" w:left="1701" w:header="714" w:footer="641" w:gutter="0"/>
+              <w:cols w:num="3" w:space="238"/>
+              <w:titlePg/>
+              <w:docGrid w:linePitch="360"/>
+            </w:sectPr>
+          </w:pPr>
+        </w:p>
+        <w:p w14:paraId="6C7C904F" w14:textId="5AB055EC" w:rsidR="00F63003" w:rsidRDefault="00C14BDE" w:rsidP="00FD53E1">
+          <w:pPr>
+            <w:pStyle w:val="Valori-blauw"/>
+          </w:pPr>
+          <w:r w:rsidRPr="00C14BDE">
             <w:rPr>
-              <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-              <w:color w:val="0A1C5C"/>
+              <w:rStyle w:val="Valori-niveau"/>
             </w:rPr>
-            <w:t></w:t>
+            <w:t xml:space="preserve"> </w:t>
           </w:r>
-          <w:r w:rsidRPr="00F63003">
-            <w:rPr>
-              <w:color w:val="0A1C5C"/>
-            </w:rPr>
-            <w:t xml:space="preserve"> foundation  </w:t>
+          <w:r w:rsidRPr="00C14BDE">
+            <w:t>foundation</w:t>
           </w:r>
-          <w:r w:rsidRPr="00F63003">
+          <w:r w:rsidRPr="00C14BDE">
             <w:rPr>
-              <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-              <w:color w:val="0A1C5C"/>
+              <w:rStyle w:val="Valori-niveau"/>
             </w:rPr>
-            <w:t></w:t>
+            <w:t xml:space="preserve">      </w:t>
           </w:r>
-          <w:r w:rsidRPr="00F63003">
-            <w:rPr>
-              <w:color w:val="0A1C5C"/>
-            </w:rPr>
-            <w:t xml:space="preserve"> advanced  </w:t>
+          <w:r w:rsidRPr="00C14BDE">
+            <w:t>advanced</w:t>
           </w:r>
-          <w:r w:rsidRPr="00F63003">
+          <w:r w:rsidRPr="00C14BDE">
             <w:rPr>
-              <w:rFonts w:ascii="Wingdings" w:eastAsia="Wingdings" w:hAnsi="Wingdings" w:cs="Wingdings"/>
-              <w:color w:val="0A1C5C"/>
+              <w:rStyle w:val="Valori-niveau"/>
             </w:rPr>
-            <w:t></w:t>
+            <w:t xml:space="preserve">     </w:t>
           </w:r>
-          <w:r w:rsidRPr="00F63003">
-            <w:rPr>
-              <w:color w:val="0A1C5C"/>
-            </w:rPr>
-            <w:t xml:space="preserve"> expert</w:t>
+          <w:r w:rsidRPr="00C14BDE">
+            <w:t>expert</w:t>
           </w:r>
           <w:r w:rsidR="00F63003" w:rsidRPr="00360F7D">
             <w:br w:type="page"/>
           </w:r>
         </w:p>
-
         <!--
+
         EXPERIENCE - OVERVIEW
+
         -->
+        <w:p w14:paraId="6B721967" w14:textId="392E381D" w:rsidR="00F15DA6" w:rsidRDefault="00F15DA6" w:rsidP="00F15DA6">
+          <w:pPr>
+            <w:pStyle w:val="Kop1"/>
+          </w:pPr>
+          <w:r>
+            <w:lastRenderedPageBreak/>
+            <w:t>Werkervaring</w:t>
+          </w:r>
+        </w:p>
         <w:tbl>
           <w:tblPr>
             <w:tblStyle w:val="Tabelraster"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
+            <w:tblW w:w="0" w:type="auto"/>
             <w:tblBorders>
               <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
               <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
               <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
               <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              <w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              <w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/>
             </w:tblBorders>
+            <w:tblCellMar>
+              <w:left w:w="0" w:type="dxa"/>
+              <w:right w:w="0" w:type="dxa"/>
+            </w:tblCellMar>
             <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
           </w:tblPr>
           <w:tblGrid>
-            <w:gridCol w:w="3073"/>
-            <w:gridCol w:w="3073"/>
-            <w:gridCol w:w="3352"/>
+            <w:gridCol w:w="3164"/>
+            <w:gridCol w:w="3164"/>
+            <w:gridCol w:w="3164"/>
           </w:tblGrid>
-          <w:tr w:rsidR="00AA01B7" w:rsidRPr="009D3B92" w14:paraId="2ADC19DB" w14:textId="77777777" w:rsidTr="00F63003">
+          <w:tr w:rsidR="00F15DA6" w14:paraId="2666AACC" w14:textId="77777777" w:rsidTr="001860B4">
             <w:tc>
               <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:gridSpan w:val="3"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                </w:tcBorders>
+                <w:tcW w:w="3164" w:type="dxa"/>
               </w:tcPr>
-              <w:p w14:paraId="6E1B5D6D" w14:textId="545F70F0" w:rsidR="00AA01B7" w:rsidRPr="009D3B92" w:rsidRDefault="00AA01B7" w:rsidP="00AE0F8D">
+              <w:p w14:paraId="0BF044E4" w14:textId="0D364EF6" w:rsidR="00F15DA6" w:rsidRDefault="00F15DA6" w:rsidP="00F15DA6">
                 <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
+                  <w:pStyle w:val="Kop2"/>
+                  <w:outlineLvl w:val="1"/>
                 </w:pPr>
-                <w:r w:rsidRPr="009D3B92">
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                  <w:lastRenderedPageBreak/>
-                  <w:t>WERKERVARING</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00AA01B7" w:rsidRPr="00297BAF" w14:paraId="7462B8E8" w14:textId="77777777" w:rsidTr="00F63003">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="58D8B8C1" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="00AA01B7" w:rsidP="00AE0F8D">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
+                <w:r>
                   <w:t>Periode</w:t>
                 </w:r>
               </w:p>
             </w:tc>
             <w:tc>
               <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-                </w:tcBorders>
+                <w:tcW w:w="3164" w:type="dxa"/>
               </w:tcPr>
-              <w:p w14:paraId="0D34A7EC" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="00AA01B7" w:rsidP="00AE0F8D">
+              <w:p w14:paraId="1B8FA0EB" w14:textId="06FE1258" w:rsidR="00F15DA6" w:rsidRDefault="00F15DA6" w:rsidP="00F15DA6">
                 <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
+                  <w:pStyle w:val="Kop2"/>
+                  <w:outlineLvl w:val="1"/>
                 </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
+                <w:r>
                   <w:t>Rol</w:t>
                 </w:r>
               </w:p>
             </w:tc>
             <w:tc>
               <w:tcPr>
-                <w:tcW w:w="3352" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
+                <w:tcW w:w="3164" w:type="dxa"/>
               </w:tcPr>
-              <w:p w14:paraId="381ABA1D" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="00AA01B7" w:rsidP="00AE0F8D">
+              <w:p w14:paraId="701D12C9" w14:textId="71E2D10A" w:rsidR="00F15DA6" w:rsidRDefault="00F15DA6" w:rsidP="00F15DA6">
                 <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
+                  <w:pStyle w:val="Kop2"/>
+                  <w:outlineLvl w:val="1"/>
                 </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
+                <w:r>
                   <w:t>Opdrachtgever</w:t>
                 </w:r>
               </w:p>
             </w:tc>
           </w:tr>
-
-          <xsl:apply-templates select="cv:experience" mode="overview"/>
-
+          <xsl:apply-templates select="cv:experience[cv:includeInCv = 'true']" mode="overview">
+            <xsl:sort select="cv:sortIndex" data-type="number"/>
+          </xsl:apply-templates>
         </w:tbl>
-        <w:p w14:paraId="6F0C9091" w14:textId="1C6350A0" w:rsidR="00AA01B7" w:rsidRDefault="00AA01B7">
-          <w:pPr>
-            <w:rPr>
-              <w:caps/>
-            </w:rPr>
-          </w:pPr>
-        </w:p>
-
         <!--
+
         EDUCATION
+
         -->
-        <w:tbl>
-          <w:tblPr>
-            <w:tblStyle w:val="Tabelraster"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
-            <w:tblBorders>
-              <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-            </w:tblBorders>
-            <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
-          </w:tblPr>
-          <w:tblGrid>
-            <w:gridCol w:w="3073"/>
-            <w:gridCol w:w="3073"/>
-            <w:gridCol w:w="3352"/>
-          </w:tblGrid>
-          <w:tr w:rsidR="00AA01B7" w14:paraId="2B25A77A" w14:textId="77777777" w:rsidTr="7A67F1BE">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:gridSpan w:val="3"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="121783BD" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="009D3B92" w:rsidRDefault="00AA01B7" w:rsidP="00AE0F8D">
-                <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="009D3B92">
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                  <w:t>Opleidingen</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00AA01B7" w:rsidRPr="00297BAF" w14:paraId="0CD6C632" w14:textId="77777777" w:rsidTr="7A67F1BE">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="5E96C78A" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="00AA01B7" w:rsidP="00AE0F8D">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Opleiding</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="5971D944" w14:textId="1FB0EFC9" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="7A67F1BE" w:rsidP="7A67F1BE">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:color w:val="F39900" w:themeColor="text2"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="7A67F1BE">
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:color w:val="F39900" w:themeColor="text2"/>
-                  </w:rPr>
-                  <w:t>Onderwijsinstelling</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3352" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="7FA8E143" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="00AA01B7" w:rsidP="00AE0F8D">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Diploma</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-
-          <xsl:apply-templates select="cv:education[cv:type = 'EDUCATION']"/>
-
-        </w:tbl>
-        <w:p w14:paraId="2918BDFA" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRDefault="00AA01B7">
-          <w:pPr>
-            <w:rPr>
-              <w:caps/>
-            </w:rPr>
-          </w:pPr>
-        </w:p>
-
+        <xsl:variable name="education" select="cv:education[cv:type = 'EDUCATION']"/>
+        <xsl:if test="$education">
+          <w:p w14:paraId="6C209D83" w14:textId="48D9D99D" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+            <w:pPr>
+              <w:pStyle w:val="Kop1"/>
+            </w:pPr>
+            <w:r>
+              <w:t>Opleiding</w:t>
+            </w:r>
+          </w:p>
+          <w:tbl>
+            <w:tblPr>
+              <w:tblStyle w:val="Tabelraster"/>
+              <w:tblW w:w="0" w:type="auto"/>
+              <w:tblBorders>
+                <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              </w:tblBorders>
+              <w:tblCellMar>
+                <w:left w:w="0" w:type="dxa"/>
+                <w:right w:w="0" w:type="dxa"/>
+              </w:tblCellMar>
+              <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+            </w:tblPr>
+            <w:tblGrid>
+              <w:gridCol w:w="3164"/>
+              <w:gridCol w:w="3164"/>
+              <w:gridCol w:w="3164"/>
+            </w:tblGrid>
+            <w:tr w:rsidR="001860B4" w14:paraId="0B48CA77" w14:textId="77777777" w:rsidTr="000B7B5E">
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3164" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="3A478FD2" w14:textId="4AEE9AAE" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Opleiding</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3164" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="66652E0C" w14:textId="2130757E" w:rsidR="001860B4" w:rsidRDefault="001860B4"
+                     w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Onderwijsinstelling</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3164" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="52A47C7E" w14:textId="4A1C98C1" w:rsidR="001860B4" w:rsidRDefault="001860B4"
+                     w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Diploma</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+            </w:tr>
+            <xsl:apply-templates select="$education">
+              <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
+            </xsl:apply-templates>
+          </w:tbl>
+        </xsl:if>
         <!--
+
         TRAINING
+
         -->
-        <w:tbl>
-          <w:tblPr>
-            <w:tblStyle w:val="Tabelraster"/>
-            <w:tblpPr w:leftFromText="141" w:rightFromText="141" w:vertAnchor="text" w:horzAnchor="margin" w:tblpY="77"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
-            <w:tblBorders>
-              <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-            </w:tblBorders>
-            <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
-          </w:tblPr>
-          <w:tblGrid>
-            <w:gridCol w:w="3073"/>
-            <w:gridCol w:w="3073"/>
-            <w:gridCol w:w="3352"/>
-          </w:tblGrid>
-          <w:tr w:rsidR="00AA01B7" w14:paraId="69ABAF28" w14:textId="77777777" w:rsidTr="7A67F1BE">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:gridSpan w:val="3"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="6F995DAD" w14:textId="0CF91645" w:rsidR="00AA01B7" w:rsidRPr="009D3B92" w:rsidRDefault="54284890" w:rsidP="54284890">
-                <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="54284890">
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                  </w:rPr>
-                  <w:t>TRAININGEN</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00AA01B7" w:rsidRPr="00297BAF" w14:paraId="1D67D44F" w14:textId="77777777" w:rsidTr="7A67F1BE">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="7A6B6E5D" w14:textId="5316C728" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="7A67F1BE" w:rsidP="7A67F1BE">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="7A67F1BE">
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:color w:val="F39900" w:themeColor="text2"/>
-                  </w:rPr>
-                  <w:t>Training</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="0675E804" w14:textId="340ED3F4" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="7A67F1BE" w:rsidP="7A67F1BE">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="7A67F1BE">
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:color w:val="F39900" w:themeColor="text2"/>
-                  </w:rPr>
-                  <w:t>Opleidingsinstituut</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3352" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="7452893D" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="00F63003" w:rsidRDefault="00AA01B7" w:rsidP="00AA01B7">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>Certificaat</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-
-          <w:tr w:rsidR="00AA01B7" w14:paraId="433A7857" w14:textId="77777777" w:rsidTr="7A67F1BE">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="3348AAF3" w14:textId="6EC0B993" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
-                <w:r>
-                  <w:t><xsl:value-of select="cv:education/cv:name"/></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3073" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                  <w:bottom w:val="nil"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="05D2F45D" w14:textId="404B7A29" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
-                <w:r>
-                  <w:t><xsl:value-of select="cv:education/cv:institution"/></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="3352" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="08F53D39" w14:textId="31CC8A18" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00AA01B7">
-                <w:r>
-                  <w:t><xsl:value-of select="cv:education/cv:yearFrom"/> - <xsl:value-of select="cv:education/cv:yearTo"/></w:t>
-                </w:r>
-                <w:r w:rsidRPr="00F63003">
-                  <w:rPr>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t xml:space="preserve"> // </w:t>
-                </w:r>
-                <w:r>
-                  <w:t><xsl:value-of select="cv:education/cv:result"/></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-
-        </w:tbl>
-        <w:p w14:paraId="5FE16C0D" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRDefault="00AA01B7">
-          <w:pPr>
-            <w:rPr>
-              <w:caps/>
-            </w:rPr>
-          </w:pPr>
-        </w:p>
-
+        <xsl:variable name="training" select="cv:education[cv:type = 'TRAINING']"/>
+        <xsl:if test="$training">
+          <w:p w14:paraId="6600C847" w14:textId="2432E297" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+            <w:pPr>
+              <w:pStyle w:val="Kop1"/>
+            </w:pPr>
+            <w:r>
+              <w:t>Trainingen</w:t>
+            </w:r>
+          </w:p>
+          <w:tbl>
+            <w:tblPr>
+              <w:tblStyle w:val="Tabelraster"/>
+              <w:tblW w:w="0" w:type="auto"/>
+              <w:tblBorders>
+                <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              </w:tblBorders>
+              <w:tblCellMar>
+                <w:left w:w="0" w:type="dxa"/>
+                <w:right w:w="0" w:type="dxa"/>
+              </w:tblCellMar>
+              <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+            </w:tblPr>
+            <w:tblGrid>
+              <w:gridCol w:w="3164"/>
+              <w:gridCol w:w="3164"/>
+              <w:gridCol w:w="3164"/>
+            </w:tblGrid>
+            <w:tr w:rsidR="001860B4" w14:paraId="185231E8" w14:textId="77777777" w:rsidTr="000B7B5E">
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3164" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="47102961" w14:textId="549871FC" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Training</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3164" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="5210430E" w14:textId="77777777" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Onderwijsinstelling</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3164" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="54E9619A" w14:textId="45D64A8B" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Certificaten</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+            </w:tr>
+            <xsl:apply-templates select="$training">
+              <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
+            </xsl:apply-templates>
+          </w:tbl>
+        </xsl:if>
         <!--
+
+        PUBLICATIONS
+
+        -->
+        <xsl:variable name="publications" select="cv:publication"/>
+        <xsl:if test="$publications">
+          <w:p w14:paraId="409CC56D" w14:textId="55003D82" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+            <w:pPr>
+              <w:pStyle w:val="Kop1"/>
+            </w:pPr>
+            <w:r>
+              <w:t>Publicaties</w:t>
+            </w:r>
+          </w:p>
+          <w:tbl>
+            <w:tblPr>
+              <w:tblStyle w:val="Tabelraster"/>
+              <w:tblW w:w="0" w:type="auto"/>
+              <w:tblBorders>
+                <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              </w:tblBorders>
+              <w:tblLayout w:type="fixed"/>
+              <w:tblCellMar>
+                <w:left w:w="0" w:type="dxa"/>
+                <w:right w:w="0" w:type="dxa"/>
+              </w:tblCellMar>
+              <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+            </w:tblPr>
+            <w:tblGrid>
+              <w:gridCol w:w="708"/>
+              <w:gridCol w:w="2410"/>
+              <w:gridCol w:w="3119"/>
+              <w:gridCol w:w="3261"/>
+            </w:tblGrid>
+            <w:tr w:rsidR="001860B4" w14:paraId="6575444B" w14:textId="77777777" w:rsidTr="001860B4">
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="708" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="0B2114F9" w14:textId="30FD0186" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Jaar</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="2410" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="3E786C01" w14:textId="6055BD31" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Media</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3119" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="594EC8C1" w14:textId="30B63790" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Titel</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3261" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="2CD43EAD" w14:textId="13C86D98" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Omschrijving</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+            </w:tr>
+            <xsl:apply-templates select="$publications">
+              <xsl:sort select="cv:year" data-type="number" order="descending"/>
+            </xsl:apply-templates>
+          </w:tbl>
+        </xsl:if>
+        <!--
+
         INTERESTS
-        -->
-        <w:tbl>
-          <w:tblPr>
-            <w:tblStyle w:val="Tabelraster"/>
-            <w:tblpPr w:leftFromText="141" w:rightFromText="141" w:vertAnchor="text" w:horzAnchor="margin" w:tblpY="54"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
-            <w:tblBorders>
-              <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-            </w:tblBorders>
-            <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
-          </w:tblPr>
-          <w:tblGrid>
-            <w:gridCol w:w="9498"/>
-          </w:tblGrid>
-          <w:tr w:rsidR="00AA01B7" w14:paraId="345577A6" w14:textId="77777777" w:rsidTr="00F63003">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="465E8D09" w14:textId="77777777" w:rsidR="00AA01B7" w:rsidRPr="009D3B92" w:rsidRDefault="00AA01B7" w:rsidP="00AA01B7">
-                <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="009D3B92">
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                  <w:t>Interesses</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="00AA01B7" w14:paraId="7F4A775F" w14:textId="77777777" w:rsidTr="00F63003">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:right w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="08F6CE06" w14:textId="38885E26" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
-                <w:r>
-                  <w:t><xsl:value-of select="cv:cv/cv:interests"/></w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-        </w:tbl>
-        <w:p w14:paraId="422E7833" w14:textId="69E7570C" w:rsidR="00233ED9" w:rsidRDefault="00233ED9"/>
 
+        -->
+        <xsl:variable name="interests" select="cv:cv/cv:interests/cv:nl_NL"/>
+        <xsl:if test="$interests">
+          <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+            <w:pPr>
+              <w:pStyle w:val="Kop1"/>
+            </w:pPr>
+            <w:r>
+              <w:t>Interesses</w:t>
+            </w:r>
+          </w:p>
+          <xsl:apply-templates select="$interests" mode="markdown"/>
+        </xsl:if>
         <!--
-        PUBLICATION
-        -->
 
+        REFERENCES
+
+        -->
+        <xsl:variable name="references" select="cv:reference[cv:includeInCv = 'true']"/>
+        <xsl:if test="$references">
+          <w:p w14:paraId="33B477DB" w14:textId="1CC053B4" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+            <w:pPr>
+              <w:pStyle w:val="Kop1"/>
+            </w:pPr>
+            <w:r>
+              <w:t>Referenties</w:t>
+            </w:r>
+          </w:p>
+          <w:tbl>
+            <w:tblPr>
+              <w:tblStyle w:val="Tabelraster"/>
+              <w:tblW w:w="0" w:type="auto"/>
+              <w:tblBorders>
+                <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideH w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+                <w:insideV w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              </w:tblBorders>
+              <w:tblLayout w:type="fixed"/>
+              <w:tblCellMar>
+                <w:left w:w="0" w:type="dxa"/>
+                <w:right w:w="0" w:type="dxa"/>
+              </w:tblCellMar>
+              <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+            </w:tblPr>
+            <w:tblGrid>
+              <w:gridCol w:w="9498"/>
+            </w:tblGrid>
+            <xsl:apply-templates select="$references"/>
+          </w:tbl>
+        </xsl:if>
         <!--
-        REFERENCE
+
+        EXPERIENCE
+
         -->
-        <w:tbl>
-          <w:tblPr>
-            <w:tblStyle w:val="Tabelraster"/>
-            <w:tblpPr w:leftFromText="141" w:rightFromText="141" w:vertAnchor="text" w:horzAnchor="margin" w:tblpY="77"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
-            <w:tblBorders>
-              <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-            </w:tblBorders>
-            <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
-          </w:tblPr>
-          <w:tblGrid>
-            <w:gridCol w:w="9498"/>
-          </w:tblGrid>
-          <w:tr w:rsidR="007D1F36" w14:paraId="5CB0D252" w14:textId="77777777" w:rsidTr="00D8540B">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="4EA9A1CB" w14:textId="035657EC" w:rsidR="007D1F36" w:rsidRPr="009D3B92" w:rsidRDefault="007D1F36" w:rsidP="00D8540B">
-                <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                  <w:t>REFERENTIES</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-
-          <w:tr w:rsidR="007D1F36" w:rsidRPr="00297BAF" w14:paraId="089E30A7" w14:textId="77777777" w:rsidTr="00D423D4">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900"/>
-                  <w:bottom w:val="nil"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="5BE2031C" w14:textId="18CC5370" w:rsidR="007D1F36" w:rsidRPr="00F63003" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
-                <w:pPr>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:b/>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>REFERENCE_referentName REFERENCE_referentFunction</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-          <w:tr w:rsidR="008D538D" w14:paraId="5625DC0E" w14:textId="77777777" w:rsidTr="00917136">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="3A61D49A" w14:textId="541D9D1B" w:rsidR="008D538D" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
-                <w:r>
-                  <w:t>REFERENCE_description</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-
-        </w:tbl>
-        <w:p w14:paraId="422E787B" w14:textId="55333B6C" w:rsidR="00CA50C8" w:rsidRDefault="00CA50C8">
+        <w:p w14:paraId="422E787B" w14:textId="55333B6C" w:rsidR="00CA50C8" w:rsidRDefault="00CA50C8" w:rsidP="00BB35DE">
           <w:r>
             <w:br w:type="page"/>
           </w:r>
         </w:p>
-
-        <!--
-        EXPERIENCE
-        -->
+        <w:p w14:paraId="21955C12" w14:textId="009E8DC2" w:rsidR="00BF3AD1" w:rsidRPr="008C7521" w:rsidRDefault="00BF3AD1" w:rsidP="008C7521">
+          <w:pPr>
+            <w:pStyle w:val="Kop1"/>
+          </w:pPr>
+          <w:r w:rsidRPr="008C7521">
+            <w:lastRenderedPageBreak/>
+            <w:t>Werkervaring</w:t>
+          </w:r>
+        </w:p>
         <w:tbl>
           <w:tblPr>
             <w:tblStyle w:val="Tabelraster"/>
-            <w:tblW w:w="9498" w:type="dxa"/>
+            <w:tblW w:w="0" w:type="auto"/>
             <w:tblBorders>
               <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
               <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-              <w:bottom w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F19100"/>
               <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
+              <w:insideH w:val="single" w:sz="4" w:space="0" w:color="F19100"/>
+              <w:insideV w:val="dashed" w:sz="4" w:space="0" w:color="F19100"/>
             </w:tblBorders>
+            <w:tblLayout w:type="fixed"/>
+            <w:tblCellMar>
+              <w:left w:w="0" w:type="dxa"/>
+              <w:bottom w:w="113" w:type="dxa"/>
+              <w:right w:w="0" w:type="dxa"/>
+            </w:tblCellMar>
             <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
           </w:tblPr>
           <w:tblGrid>
-            <w:gridCol w:w="2684"/>
-            <w:gridCol w:w="6814"/>
+            <w:gridCol w:w="2098"/>
+            <w:gridCol w:w="7400"/>
           </w:tblGrid>
-          <w:tr w:rsidR="00D23D04" w14:paraId="422E787D" w14:textId="77777777" w:rsidTr="7A67F1BE">
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="9498" w:type="dxa"/>
-                <w:gridSpan w:val="2"/>
-                <w:tcBorders>
-                  <w:top w:val="nil"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E787C" w14:textId="77777777" w:rsidR="00D23D04" w:rsidRPr="009D3B92" w:rsidRDefault="00D23D04" w:rsidP="006E0130">
-                <w:pPr>
-                  <w:pStyle w:val="Stijl1"/>
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r w:rsidRPr="009D3B92">
-                  <w:rPr>
-                    <w:b/>
-                  </w:rPr>
-                  <w:lastRenderedPageBreak/>
-                  <w:t>Werkervaring</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
-
-          <w:tr w:rsidR="00C36158" w14:paraId="422E7883" w14:textId="77777777" w:rsidTr="7A67F1BE">
-            <w:trPr>
-              <w:trHeight w:val="1890"/>
-            </w:trPr>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="2261" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E787E" w14:textId="0E6D4381" w:rsidR="00C36158" w:rsidRPr="00F63003" w:rsidRDefault="009A2060" w:rsidP="006E0130">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t>EXPERIENCE_periodBegin</w:t>
-                </w:r>
-                <w:r w:rsidR="005C301C">
-                  <w:rPr>
-                    <w:color w:val="0A1C5C"/>
-                  </w:rPr>
-                  <w:t xml:space="preserve"> - EXPERIENCE_periodEnd</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="422E787F" w14:textId="7D7D1FC3" w:rsidR="00C36158" w:rsidRPr="00F63003" w:rsidRDefault="005C301C" w:rsidP="006E0130">
-                <w:pPr>
-                  <w:rPr>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                </w:pPr>
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>EXPERIENCE_role</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="422E7880" w14:textId="1AFDDA5B" w:rsidR="00C36158" w:rsidRDefault="005C301C" w:rsidP="005C301C">
-                <w:r>
-                  <w:rPr>
-                    <w:color w:val="F39900"/>
-                  </w:rPr>
-                  <w:t>EXPERIENCE_client</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-            <w:tc>
-              <w:tcPr>
-                <w:tcW w:w="7237" w:type="dxa"/>
-                <w:tcBorders>
-                  <w:top w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                  <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F39900" w:themeColor="text2"/>
-                </w:tcBorders>
-              </w:tcPr>
-              <w:p w14:paraId="422E7881" w14:textId="168A1571" w:rsidR="00C36158" w:rsidRDefault="005C301C" w:rsidP="006E0130">
-                <w:r>
-                  <w:t>EXPERIENCE_assignment</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="4C9ADDF3" w14:textId="77777777" w:rsidR="00C36158" w:rsidRDefault="00C36158" w:rsidP="006E0130"/>
-              <w:p w14:paraId="6C7C0125" w14:textId="0486E462" w:rsidR="00C36158" w:rsidRDefault="005C301C" w:rsidP="006E0130">
-                <w:r>
-                  <w:t>EXPERIENCE_activities:</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="6C44E8CB" w14:textId="77777777" w:rsidR="00C36158" w:rsidRDefault="00C36158" w:rsidP="006E0130">
-                <w:pPr>
-                  <w:pStyle w:val="Lijstalinea"/>
-                  <w:numPr>
-                    <w:ilvl w:val="0"/>
-                    <w:numId w:val="9"/>
-                  </w:numPr>
-                </w:pPr>
-                <w:r>
-                  <w:t>…</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="2AA3936E" w14:textId="20EF2808" w:rsidR="00C36158" w:rsidRPr="00C97881" w:rsidRDefault="005C301C" w:rsidP="00C97881">
-                <w:r>
-                  <w:t>EXPERIENCE_results:</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="605BBB26" w14:textId="77777777" w:rsidR="00C36158" w:rsidRDefault="00C36158" w:rsidP="00C97881">
-                <w:pPr>
-                  <w:pStyle w:val="Lijstalinea"/>
-                  <w:numPr>
-                    <w:ilvl w:val="0"/>
-                    <w:numId w:val="9"/>
-                  </w:numPr>
-                </w:pPr>
-                <w:r>
-                  <w:t>…</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="3A2798FE" w14:textId="4CEC370A" w:rsidR="00C36158" w:rsidRDefault="005C301C" w:rsidP="00C97881">
-                <w:r>
-                  <w:t>EXPERIENCE_keywords</w:t>
-                </w:r>
-                <w:r w:rsidR="00C36158">
-                  <w:t>:</w:t>
-                </w:r>
-              </w:p>
-              <w:p w14:paraId="422E7882" w14:textId="1C25093D" w:rsidR="00C36158" w:rsidRDefault="00C36158" w:rsidP="00C97881">
-                <w:pPr>
-                  <w:pStyle w:val="Lijstalinea"/>
-                  <w:numPr>
-                    <w:ilvl w:val="0"/>
-                    <w:numId w:val="9"/>
-                  </w:numPr>
-                </w:pPr>
-                <w:r>
-                  <w:t>…</w:t>
-                </w:r>
-              </w:p>
-            </w:tc>
-          </w:tr>
+          <xsl:apply-templates select="cv:experience[cv:includeInCv = 'true']">
+            <xsl:sort select="cv:sortIndex" data-type="number"/>
+          </xsl:apply-templates>
         </w:tbl>
-        <w:p w14:paraId="422E78E8" w14:textId="77777777" w:rsidR="009C0A9D" w:rsidRPr="0080064E" w:rsidRDefault="009C0A9D" w:rsidP="00F05A03"/>
-        <w:sectPr w:rsidR="009C0A9D" w:rsidRPr="0080064E" w:rsidSect="006D3439">
-          <w:headerReference w:type="default" r:id="rId7"/>
-          <w:footerReference w:type="default" r:id="rId8"/>
-          <w:headerReference w:type="first" r:id="rId9"/>
-          <w:footerReference w:type="first" r:id="rId10"/>
+        <w:p w14:paraId="258AC442" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00A52C14"/>
+        <w:sectPr w:rsidR="00A52C14" w:rsidSect="004D5885">
+          <w:type w:val="continuous"/>
           <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
-          <w:pgMar w:top="1843" w:right="1985" w:bottom="1701" w:left="1701" w:header="714" w:footer="641" w:gutter="0"/>
+          <w:pgMar w:top="1843" w:right="707" w:bottom="1701" w:left="1701" w:header="714" w:footer="641" w:gutter="0"/>
           <w:cols w:space="708"/>
           <w:titlePg/>
           <w:docGrid w:linePitch="360"/>
@@ -2408,35 +645,128 @@
       </w:body>
     </w:document>
   </xsl:template>
-  
-  <xsl:template match="cv:education">
-    <w:tr w:rsidR="00AA01B7" w14:paraId="50D34FBD" w14:textId="77777777" w:rsidTr="7A67F1BE">
+
+  <!-- SKILL SECTION -->
+  <xsl:template name="skill-section">
+    <xsl:param name="category"/>
+    <xsl:param name="newColumn"/>
+    <xsl:variable name="skills" select="cv:skill[cv:category = $category]"/>
+    <xsl:choose>
+      <xsl:when test="$skills">
+        <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE" w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
+          <w:pPr>
+            <w:pStyle w:val="Kop2"/>
+          </w:pPr>
+          <w:r>
+            <xsl:if test="$newColumn = 'true'">
+              <w:br w:type="column"/>
+            </xsl:if>
+            <w:t><xsl:value-of select="$category"/></w:t>
+          </w:r>
+        </w:p>
+        <xsl:apply-templates select="$skills"/>
+      </xsl:when>
+      <xsl:when test="$newColumn = 'true'">
+        <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE" w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
+          <w:pPr>
+            <w:pStyle w:val="Kop2"/>
+          </w:pPr>
+          <w:r>
+            <w:br w:type="column"/>
+          </w:r>
+        </w:p>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- SKILL -->
+  <xsl:template match="cv:skill">
+    <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
+      <w:pPr>
+        <w:pStyle w:val="Valori-blauw"/>
+        <w:tabs>
+          <w:tab w:val="clear" w:pos="2835"/>
+          <w:tab w:val="right" w:pos="2977"/>
+        </w:tabs>
+        <w:rPr>
+          <w:rStyle w:val="Valori-niveau"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r w:rsidRPr="00752D43">
+        <w:rPr>
+          <w:rStyle w:val="Valori-skillChar"/>
+        </w:rPr>
+        <w:t><xsl:value-of select="cv:description/cv:nl_NL"/></w:t>
+        <w:tab/>
+      </w:r>
+      <w:r w:rsidRPr="00C14BDE">
+        <w:rPr>
+          <w:rStyle w:val="Valori-niveau"/>
+        </w:rPr>
+        <w:t><xsl:apply-templates select="cv:skillLevel" mode="skill-level"/></w:t>
+      </w:r>
+    </w:p>
+  </xsl:template>
+
+  <!-- EXPERIENCE - OVERVIEW -->
+  <xsl:template match="cv:experience" mode="overview">
+    <w:tr w:rsidR="00F15DA6" w14:paraId="6F0C0FFB" w14:textId="77777777" w:rsidTr="001860B4">
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="3073" w:type="dxa"/>
-          <w:tcBorders>
-            <w:top w:val="nil"/>
-            <w:bottom w:val="nil"/>
-            <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-          </w:tcBorders>
+          <w:tcW w:w="3164" w:type="dxa"/>
         </w:tcPr>
-        <w:p w14:paraId="267E3393" w14:textId="54675297" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
-          <w:r>
-            <w:t><xsl:value-of select="cv:name"/></w:t>
+        <w:p w14:paraId="4BB31EAA" w14:textId="681AB43A" w:rsidR="00F15DA6" w:rsidRDefault="00F15DA6" w:rsidP="001860B4">
+          <w:r w:rsidRPr="00F15DA6">
+            <w:t>
+              <xsl:call-template name="period">
+                <xsl:with-param name="periodBegin" select="cv:periodBegin"/>
+                <xsl:with-param name="periodEnd" select="cv:periodEnd"/>
+              </xsl:call-template>
+            </w:t>
           </w:r>
         </w:p>
       </w:tc>
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="3073" w:type="dxa"/>
-          <w:tcBorders>
-            <w:top w:val="nil"/>
-            <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-            <w:bottom w:val="nil"/>
-            <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-          </w:tcBorders>
+          <w:tcW w:w="3164" w:type="dxa"/>
         </w:tcPr>
-        <w:p w14:paraId="528D45D9" w14:textId="0DFCE66D" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
+        <w:p w14:paraId="31AC2F55" w14:textId="399AB44B" w:rsidR="00F15DA6" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+          <w:r>
+            <w:t><xsl:value-of select="cv:role/cv:nl_NL"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3164" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="35A0A5F9" w14:textId="7A864B0E" w:rsidR="00F15DA6" w:rsidRDefault="001860B4" w:rsidP="001860B4">
+          <w:r>
+            <w:t><xsl:value-of select="cv:client"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+    </w:tr>
+  </xsl:template>
+
+  <!-- EDUCATION -->
+  <xsl:template match="cv:education">
+    <w:tr w:rsidR="001860B4" w14:paraId="150F7FE7" w14:textId="77777777" w:rsidTr="000B7B5E">
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3164" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="028BDECC" w14:textId="0BDF33E7" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000B7B5E">
+          <w:r>
+            <w:t><xsl:value-of select="cv:name/cv:nl_NL"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3164" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="4AEEE7FD" w14:textId="373E4A48" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
           <w:r>
             <w:t><xsl:value-of select="cv:institution"/></w:t>
           </w:r>
@@ -2444,78 +774,194 @@
       </w:tc>
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="3352" w:type="dxa"/>
-          <w:tcBorders>
-            <w:top w:val="nil"/>
-            <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6" w:themeColor="background1"/>
-            <w:bottom w:val="nil"/>
-          </w:tcBorders>
+          <w:tcW w:w="3164" w:type="dxa"/>
         </w:tcPr>
-        <w:p w14:paraId="10BD7F8F" w14:textId="0F1AB388" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
+        <w:p w14:paraId="4A46B160" w14:textId="391ADBDB" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
           <w:r>
-            <w:t><xsl:value-of select="cv:yearFrom"/> - <xsl:value-of select="cv:yearTo"/></w:t>
+            <xsl:variable name="yearFrom" select="cv:yearFrom"/>
+            <xsl:variable name="yearTo" select="cv:yearTo"/>
+            <w:t>
+              <xsl:if test="$yearFrom">
+                <xsl:value-of select="$yearFrom"/>
+                <xsl:text> – </xsl:text>
+              </xsl:if>
+              <xsl:choose>
+                <xsl:when test="$yearTo"><xsl:value-of select="$yearTo"/></xsl:when>
+                <xsl:otherwise>heden</xsl:otherwise>
+              </xsl:choose>
+            </w:t>
           </w:r>
-          <w:r w:rsidR="00AA01B7" w:rsidRPr="00F63003">
+          <w:r w:rsidRPr="001860B4">
             <w:rPr>
-              <w:color w:val="F39900"/>
+              <w:rStyle w:val="Valori-geel"/>
             </w:rPr>
             <w:t xml:space="preserve"> // </w:t>
           </w:r>
-          <w:r>
-            <w:t><xsl:value-of select="cv:result"/></w:t>
+          <w:r w:rsidRPr="00666ED6">
+            <w:t><xsl:apply-templates select="cv:result" mode="education-result"/></w:t>
           </w:r>
         </w:p>
       </w:tc>
     </w:tr>
   </xsl:template>
 
-  <xsl:template match="cv:experience" mode="overview">
-    <w:tr w:rsidR="00AA01B7" w14:paraId="161EF383" w14:textId="77777777" w:rsidTr="00C44A77">
+  <!-- PUBLICATION -->
+  <xsl:template match="cv:publication">
+    <w:tr w:rsidR="001860B4" w14:paraId="2E94810F" w14:textId="77777777" w:rsidTr="001860B4">
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="3073" w:type="dxa"/>
-          <w:tcBorders>
-            <w:top w:val="nil"/>
-            <w:bottom w:val="nil"/>
-            <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-          </w:tcBorders>
+          <w:tcW w:w="708" w:type="dxa"/>
         </w:tcPr>
-        <w:p w14:paraId="0A5C9C56" w14:textId="739C5181" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00AE0F8D">
+        <w:p w14:paraId="7CD275C5" w14:textId="2B1B7994" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
           <w:r>
-            <w:t>EXPERIENCE_periodBegin - EXPERIENCE_periodEnd</w:t>
+            <w:t><xsl:value-of select="cv:year"/></w:t>
           </w:r>
         </w:p>
       </w:tc>
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="3073" w:type="dxa"/>
-          <w:tcBorders>
-            <w:top w:val="nil"/>
-            <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-            <w:bottom w:val="nil"/>
-            <w:right w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-          </w:tcBorders>
+          <w:tcW w:w="2410" w:type="dxa"/>
         </w:tcPr>
-        <w:p w14:paraId="1DE6530E" w14:textId="0838A226" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
+        <w:p w14:paraId="010D5F50" w14:textId="215C545B" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
           <w:r>
-            <w:t>EXPERIENCE_role</w:t>
+            <w:t><xsl:value-of select="cv:media"/></w:t>
           </w:r>
         </w:p>
       </w:tc>
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="3352" w:type="dxa"/>
-          <w:tcBorders>
-            <w:top w:val="nil"/>
-            <w:left w:val="dashed" w:sz="4" w:space="0" w:color="F6F6F6"/>
-            <w:bottom w:val="nil"/>
-          </w:tcBorders>
+          <w:tcW w:w="3119" w:type="dxa"/>
         </w:tcPr>
-        <w:p w14:paraId="280D0253" w14:textId="4EEFBC4C" w:rsidR="00AA01B7" w:rsidRDefault="00EA128A" w:rsidP="00EA128A">
+        <w:p w14:paraId="5EC9DC18" w14:textId="73E77901" w:rsidR="001860B4" w:rsidRDefault="000A5FCA" w:rsidP="000B7B5E">
           <w:r>
-            <w:t>EXPERIENCE_client</w:t>
+            <w:t><xsl:value-of select="cv:title/cv:nl_NL"/></w:t>
           </w:r>
         </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3261" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="790E2453" w14:textId="0F2E4324" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+          <w:r>
+            <w:t><xsl:value-of select="cv:description/cv:nl_NL"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+    </w:tr>
+  </xsl:template>
+
+  <!-- REFERENCE -->
+  <xsl:template match="cv:reference">
+    <w:tr w:rsidR="001860B4" w14:paraId="44A9A9D2" w14:textId="77777777" w:rsidTr="001860B4">
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="9498" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="2D66D278" w14:textId="68175263" w:rsidR="001860B4" w:rsidRPr="00666ED6" w:rsidRDefault="001860B4" w:rsidP="00666ED6">
+          <w:pPr>
+            <w:pStyle w:val="Kop2"/>
+            <w:outlineLvl w:val="1"/>
+          </w:pPr>
+          <w:r w:rsidRPr="00666ED6">
+            <w:t xml:space="preserve"><xsl:value-of select="cv:referentName"/> <xsl:value-of select="cv:referentFunction/cv:nl_NL"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+    </w:tr>
+    <w:tr w:rsidR="001860B4" w14:paraId="18A8EE06" w14:textId="77777777" w:rsidTr="001860B4">
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="9498" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="3BE4A452" w14:textId="20C5834B" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+          <w:proofErr w:type="spellStart"/>
+          <w:r>
+            <w:t><xsl:value-of select="cv:description/cv:nl_NL"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+    </w:tr>
+  </xsl:template>
+
+  <!-- EXPERIENCE -->
+  <xsl:template match="cv:experience">
+    <w:tr w:rsidR="00A52C14" w14:paraId="480B31F7" w14:textId="77777777" w:rsidTr="004D5885">
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="2098" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="1F9BB23A" w14:textId="5CBB339A" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
+          <w:pPr>
+            <w:pStyle w:val="Valori-blauw"/>
+          </w:pPr>
+          <w:r>
+            <w:t>
+              <xsl:call-template name="period">
+                <xsl:with-param name="periodBegin" select="cv:periodBegin"/>
+                <xsl:with-param name="periodEnd" select="cv:periodEnd"/>
+              </xsl:call-template>
+            </w:t>
+          </w:r>
+        </w:p>
+        <w:p w14:paraId="2AD5877B" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
+          <w:pPr>
+            <w:rPr>
+              <w:rStyle w:val="Valori-geel"/>
+            </w:rPr>
+          </w:pPr>
+          <w:r w:rsidRPr="00A52C14">
+            <w:rPr>
+              <w:rStyle w:val="Valori-geel"/>
+            </w:rPr>
+            <w:t><xsl:value-of select="cv:role/cv:nl_NL"/></w:t>
+          </w:r>
+        </w:p>
+        <w:p w14:paraId="533DCC22" w14:textId="190759EB" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
+          <w:r w:rsidRPr="00A52C14">
+            <w:rPr>
+              <w:rStyle w:val="Valori-geel"/>
+            </w:rPr>
+            <w:t><xsl:value-of select="cv:client"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="7400" w:type="dxa"/>
+        </w:tcPr>
+        <xsl:apply-templates select="cv:assignment/cv:nl_NL" mode="markdown"/>
+        <w:p w14:paraId="5C3DDAF9" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00A52C14"/>
+        <xsl:variable name="activities" select="cv:activities/cv:nl_NL"/>
+        <xsl:if test="$activities">
+          <w:p w14:paraId="4C066476" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
+            <w:r>
+              <w:t>Taken/werkzaamheden:</w:t>
+            </w:r>
+          </w:p>
+          <xsl:apply-templates select="$activities" mode="markdown"/>
+        </xsl:if>
+        <xsl:variable name="results" select="cv:results/cv:nl_NL"/>
+        <xsl:if test="$results">
+          <w:p w14:paraId="05A636A2" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
+            <w:r>
+              <w:t>Resultaat:</w:t>
+            </w:r>
+          </w:p>
+          <xsl:apply-templates select="$results" mode="markdown"/>
+        </xsl:if>
+        <xsl:variable name="keywords" select="cv:keywords/cv:nl_NL"/>
+        <xsl:if test="$keywords">
+          <w:p w14:paraId="62A3EFF7" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
+            <w:r>
+              <w:t>Werkomgeving:</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00C97881">
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+          </w:p>
+          <xsl:apply-templates select="$keywords" mode="markdown"/>
+        </xsl:if>
       </w:tc>
     </w:tr>
   </xsl:template>

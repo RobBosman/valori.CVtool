@@ -180,12 +180,12 @@
   "ENUM_SKILL_CATEGORY": [
     "LANGUAGES",
     "BRANCHES",
-    "DATABASES",
-    "PROGRAMMING",
-    "APPLICATIONS",
-    "METHODS",
     "EXPERTISE",
+    "DATABASES",
+    "APPLICATIONS",
     "TOOLS",
+    "PROGRAMMING",
+    "METHODS",
     "OS_NETWORKS"
   ]
 }

@@ -8,8 +8,6 @@
     exclude-result-prefixes="cv"
     version="1.0">
 
-  <xsl:import href="../common-per-locale.xsl" />
-
   <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no" />
 
   <xsl:template match="/">
@@ -23,55 +21,45 @@
           <w:rPr>
             <w:szCs w:val="16"/>
           </w:rPr>
-          <w:id w:val="-1113437201"/>
+          <w:id w:val="-121388785"/>
           <w:docPartObj>
             <w:docPartGallery w:val="Page Numbers (Bottom of Page)"/>
             <w:docPartUnique/>
           </w:docPartObj>
         </w:sdtPr>
-        <w:sdtEndPr/>
+        <w:sdtEndPr>
+          <w:rPr>
+            <w:szCs w:val="20"/>
+          </w:rPr>
+        </w:sdtEndPr>
         <w:sdtContent>
-          <w:p w14:paraId="422E78FA" w14:textId="64E6A217" w:rsidR="00940ACC" w:rsidRPr="00F05A03" w:rsidRDefault="00C97881" w:rsidP="00F05A03">
+          <w:p w14:paraId="422E78FA" w14:textId="0108B5FC" w:rsidR="00940ACC" w:rsidRPr="00C0691A" w:rsidRDefault="00C97881" w:rsidP="000A5FCA">
             <w:pPr>
               <w:pStyle w:val="Voettekst"/>
               <w:jc w:val="center"/>
-              <w:rPr>
-                <w:szCs w:val="16"/>
-              </w:rPr>
             </w:pPr>
-            <w:r>
-              <w:rPr>
-                <w:szCs w:val="16"/>
-              </w:rPr>
+            <w:r w:rsidRPr="00C0691A">
               <w:t>Curriculum vitae van <xsl:value-of select="cv:name"/></w:t>
             </w:r>
-            <w:r w:rsidRPr="00F63003">
+            <w:r w:rsidRPr="00C0691A">
               <w:rPr>
-                <w:color w:val="F39900"/>
-                <w:szCs w:val="16"/>
+                <w:rStyle w:val="Valori-geel"/>
               </w:rPr>
               <w:t xml:space="preserve"> // </w:t>
             </w:r>
-            <w:r>
-              <w:rPr>
-                <w:szCs w:val="16"/>
-              </w:rPr>
-              <w:t>VALORI</w:t>
+            <w:r w:rsidRPr="00C0691A">
+              <w:t>Valori</w:t>
             </w:r>
-            <w:r w:rsidRPr="00F63003">
+            <w:r w:rsidRPr="00C0691A">
               <w:rPr>
-                <w:color w:val="F39900"/>
-                <w:szCs w:val="16"/>
+                <w:rStyle w:val="Valori-geel"/>
               </w:rPr>
-              <w:t xml:space="preserve"> //</w:t>
+              <w:t xml:space="preserve"> // </w:t>
               <w:tab/>
             </w:r>
             <w:sdt>
               <w:sdtPr>
-                <w:rPr>
-                  <w:szCs w:val="16"/>
-                </w:rPr>
-                <w:id w:val="1381835335"/>
+                <w:id w:val="-1033118212"/>
                 <w:docPartObj>
                   <w:docPartGallery w:val="Page Numbers (Top of Page)"/>
                   <w:docPartUnique/>
@@ -79,22 +67,31 @@
               </w:sdtPr>
               <w:sdtEndPr/>
               <w:sdtContent>
-                <w:r w:rsidRPr="0080064E">
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:szCs w:val="16"/>
-                  </w:rPr>
+                <w:r w:rsidRPr="00C0691A">
                   <w:fldChar w:fldCharType="begin"/>
                   <w:instrText>PAGE</w:instrText>
                   <w:fldChar w:fldCharType="separate"/>
+                </w:r>
+                <w:r w:rsidR="008C7521">
+                  <w:rPr>
+                    <w:noProof/>
+                  </w:rPr>
                   <w:t>1</w:t>
+                </w:r>
+                <w:r w:rsidRPr="00C0691A">
                   <w:fldChar w:fldCharType="end"/>
                   <w:t xml:space="preserve"> van </w:t>
                   <w:fldChar w:fldCharType="begin"/>
                   <w:instrText>NUMPAGES</w:instrText>
                   <w:fldChar w:fldCharType="separate"/>
+                </w:r>
+                <w:r w:rsidR="008C7521">
+                  <w:rPr>
+                    <w:noProof/>
+                  </w:rPr>
                   <w:t>3</w:t>
+                </w:r>
+                <w:r w:rsidRPr="00C0691A">
                   <w:fldChar w:fldCharType="end"/>
                 </w:r>
               </w:sdtContent>

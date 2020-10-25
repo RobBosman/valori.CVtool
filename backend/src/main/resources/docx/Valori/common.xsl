@@ -2,29 +2,21 @@
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
     version="1.0">
 
-  <xsl:variable name="LOWERCASE">abcdefghijklmnopqrstuvwxyz</xsl:variable>
-  <xsl:variable name="UPPERCASE">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
-
-  <xsl:template name="skill-level">
-    <xsl:param name="level" />
-    <w:r w:rsidR="00DE6855" w:rsidRPr="002271D3">
-      <w:rPr>
-        <w:rStyle w:val="Valori-niveau"/>
-      </w:rPr>
-      <w:t>
-        <xsl:choose>
-          <xsl:when test="$level = '1'"></xsl:when>
-          <xsl:when test="$level = '2'"></xsl:when>
-          <xsl:when test="$level = '3'"></xsl:when>
-          <xsl:when test="$level = '4'"></xsl:when>
-          <xsl:when test="$level = '5'"></xsl:when>
-        </xsl:choose>
-      </w:t>
-    </w:r>
+  <!-- SKILL LEVEL -->
+  <xsl:template match="* | @* | text()" mode="skill-level">
+    <xsl:choose>
+      <xsl:when test=". = 5"></xsl:when>
+      <xsl:when test=". = 4"></xsl:when>
+      <xsl:when test=". = 3"></xsl:when>
+      <xsl:when test=". = 2"></xsl:when>
+      <xsl:when test=". = 1"></xsl:when>
+    </xsl:choose>
   </xsl:template>
 
+  <!-- MARKDOWN -->
   <xsl:template match="* | @* | text()" mode="markdown">
     <xsl:call-template name="format-markdown">
       <xsl:with-param name="text" select="." />
@@ -68,21 +60,29 @@
     <xsl:param name="listItemNumber" />
     <xsl:choose>
       <xsl:when test="starts-with($text, '* ')">
-        <w:p w:rsidR="00181F85" w:rsidRPr="00181F85" w:rsidRDefault="00181F85" w:rsidP="00181F85">
+        <w:p w14:paraId="2C48F330" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
           <w:pPr>
-            <w:pStyle w:val="Lijst-bullets"/>
+            <w:pStyle w:val="Lijstalinea"/>
+            <w:numPr>
+              <w:ilvl w:val="0"/>
+              <w:numId w:val="18"/>
+            </w:numPr>
           </w:pPr>
-          <w:r>
+          <w:r w:rsidRPr="00A52C14">
             <w:t><xsl:value-of select="substring($text, 3)" /></w:t>
           </w:r>
         </w:p>
       </xsl:when>
       <xsl:when test="starts-with($text, '# ')">
-        <w:p w:rsidR="00DA0696" w:rsidRDefault="00DA0696" w:rsidP="00DA0696">
+        <w:p w14:paraId="2C48F330" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
           <w:pPr>
-            <w:pStyle w:val="Lijstalinea" />
+            <w:pStyle w:val="Lijstalinea"/>
+            <w:numPr>
+              <w:ilvl w:val="0"/>
+              <w:numId w:val="18"/>
+            </w:numPr>
           </w:pPr>
-          <w:r>
+          <w:r w:rsidRPr="00A52C14">
             <w:t><xsl:value-of select="$listItemNumber" />.</w:t>
             <w:tab/>
             <w:t><xsl:value-of select="substring($text, 3)" /></w:t>
@@ -90,10 +90,7 @@
         </w:p>
       </xsl:when>
       <xsl:when test="$text">
-        <w:p w:rsidR="00EA114C" w:rsidRDefault="00EA114C" w:rsidP="004609AB">
-          <w:pPr>
-            <w:pStyle w:val="Paragraaf" />
-          </w:pPr>
+        <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949" w:rsidP="006A76DB">
           <w:r>
             <w:t><xsl:value-of select="$text" /></w:t>
           </w:r>

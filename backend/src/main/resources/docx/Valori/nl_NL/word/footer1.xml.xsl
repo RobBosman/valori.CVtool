@@ -8,8 +8,6 @@
     exclude-result-prefixes="cv"
     version="1.0">
 
-  <xsl:import href="../common-per-locale.xsl" />
-
   <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no" />
 
   <xsl:template match="/">
@@ -23,7 +21,7 @@
           <w:rPr>
             <w:szCs w:val="16"/>
           </w:rPr>
-          <w:id w:val="-2006035612"/>
+          <w:id w:val="-118143501"/>
           <w:docPartObj>
             <w:docPartGallery w:val="Page Numbers (Bottom of Page)"/>
             <w:docPartUnique/>
@@ -31,47 +29,33 @@
         </w:sdtPr>
         <w:sdtEndPr/>
         <w:sdtContent>
-          <w:p w14:paraId="422E78EF" w14:textId="3A21F65F" w:rsidR="006E0130" w:rsidRPr="00F05A03" w:rsidRDefault="006E0130" w:rsidP="002B60E8">
+          <w:p w14:paraId="422E78EF" w14:textId="4E452350" w:rsidR="006E0130" w:rsidRPr="006A76DB" w:rsidRDefault="006E0130" w:rsidP="000A5FCA">
             <w:pPr>
               <w:pStyle w:val="Voettekst"/>
               <w:jc w:val="center"/>
-              <w:rPr>
-                <w:szCs w:val="16"/>
-              </w:rPr>
             </w:pPr>
-            <w:r>
-              <w:rPr>
-                <w:szCs w:val="16"/>
-              </w:rPr>
+            <w:r w:rsidRPr="006A76DB">
               <w:t>Curriculum vitae van <xsl:value-of select="cv:name"/></w:t>
             </w:r>
-            <w:r w:rsidRPr="00A33FC0">
+            <w:r w:rsidRPr="006A76DB">
               <w:rPr>
-                <w:color w:val="F39900" w:themeColor="text2"/>
-                <w:szCs w:val="16"/>
+                <w:rStyle w:val="Valori-geel"/>
               </w:rPr>
               <w:t xml:space="preserve"> // </w:t>
             </w:r>
-            <w:r>
-              <w:rPr>
-                <w:szCs w:val="16"/>
-              </w:rPr>
-              <w:t>VALORI</w:t>
+            <w:r w:rsidRPr="006A76DB">
+              <w:t>Valori</w:t>
             </w:r>
-            <w:r w:rsidRPr="00A33FC0">
+            <w:r w:rsidRPr="006A76DB">
               <w:rPr>
-                <w:color w:val="F39900" w:themeColor="text2"/>
-                <w:szCs w:val="16"/>
+                <w:rStyle w:val="Valori-geel"/>
               </w:rPr>
-              <w:t xml:space="preserve"> //</w:t>
+              <w:t xml:space="preserve"> // </w:t>
               <w:tab/>
             </w:r>
             <w:sdt>
               <w:sdtPr>
-                <w:rPr>
-                  <w:szCs w:val="16"/>
-                </w:rPr>
-                <w:id w:val="-2030790155"/>
+                <w:id w:val="-891891085"/>
                 <w:docPartObj>
                   <w:docPartGallery w:val="Page Numbers (Top of Page)"/>
                   <w:docPartUnique/>
@@ -79,22 +63,31 @@
               </w:sdtPr>
               <w:sdtEndPr/>
               <w:sdtContent>
-                <w:r w:rsidRPr="0080064E">
-                  <w:rPr>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:szCs w:val="16"/>
-                  </w:rPr>
+                <w:r w:rsidRPr="006A76DB">
                   <w:fldChar w:fldCharType="begin"/>
                   <w:instrText>PAGE</w:instrText>
                   <w:fldChar w:fldCharType="separate"/>
+                </w:r>
+                <w:r w:rsidR="008C7521">
+                  <w:rPr>
+                    <w:noProof/>
+                  </w:rPr>
                   <w:t>3</w:t>
+                </w:r>
+                <w:r w:rsidRPr="006A76DB">
                   <w:fldChar w:fldCharType="end"/>
                   <w:t xml:space="preserve"> van </w:t>
                   <w:fldChar w:fldCharType="begin"/>
                   <w:instrText>NUMPAGES</w:instrText>
                   <w:fldChar w:fldCharType="separate"/>
+                </w:r>
+                <w:r w:rsidR="008C7521">
+                  <w:rPr>
+                    <w:noProof/>
+                  </w:rPr>
                   <w:t>3</w:t>
+                </w:r>
+                <w:r w:rsidRPr="006A76DB">
                   <w:fldChar w:fldCharType="end"/>
                 </w:r>
               </w:sdtContent>
