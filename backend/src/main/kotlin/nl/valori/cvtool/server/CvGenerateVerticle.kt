@@ -18,6 +18,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 import javax.xml.stream.XMLOutputFactory
+import javax.xml.transform.Templates
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
@@ -32,17 +33,9 @@ internal class CvGenerateVerticle : AbstractVerticle() {
     private val log = LoggerFactory.getLogger(CvGenerateVerticle::class.java)
     private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
 
-    private val docxTemplate = loadBytes("/docx/Valori/template.docx")
-    private val xsltRefMap = mapOf(
+    private val xslIncludesMap = mapOf(
         "common.xsl" to loadBytes("/docx/Valori/common.xsl"),
         "common-nl_NL.xsl" to loadBytes("/docx/Valori/nl_NL/common-nl_NL.xsl")
-    )
-    private val docxXsltMap = mapOf(
-        "docProps/core.xml" to loadBytes("/docx/Valori/nl_NL/docProps/core.xml.xsl"),
-        "word/document.xml" to loadBytes("/docx/Valori/nl_NL/word/document.xml.xsl"),
-        "word/footer1.xml" to loadBytes("/docx/Valori/nl_NL/word/footer1.xml.xsl"),
-        "word/footer2.xml" to loadBytes("/docx/Valori/nl_NL/word/footer2.xml.xsl"),
-        "word/header2.xml" to loadBytes("/docx/Valori/nl_NL/word/header2.xml.xsl")
     )
 
     private fun loadBytes(location: String) =
@@ -53,25 +46,34 @@ internal class CvGenerateVerticle : AbstractVerticle() {
             .newInstance()
             .also {
               it.setURIResolver { href, _ ->
-                val xslt = xsltRefMap.getOrElse(href.substringAfterLast("/")) {
+                val xslt = xslIncludesMap.getOrElse(href.substringAfterLast("/")) {
                   throw IllegalArgumentException("Cannot find XSLT $href.")
                 }
                 StreamSource(ByteArrayInputStream(xslt))
               }
             }
 
-    internal fun xslTransform(xmlBytes: ByteArray, xsltBytes: ByteArray): ByteArray {
+    internal fun createXslTemplate(location: String) =
+        transformerFactory.newTemplates(StreamSource(ByteArrayInputStream(loadBytes(location))))
+
+    private val docxTemplate = loadBytes("/docx/Valori/template.docx")
+    private val docxPartNamesXslTemplatesMap = mapOf(
+        "docProps/core.xml" to createXslTemplate("/docx/Valori/nl_NL/docProps/core.xml.xsl"),
+        "word/document.xml" to createXslTemplate("/docx/Valori/nl_NL/word/document.xml.xsl"),
+        "word/footer1.xml" to createXslTemplate("/docx/Valori/nl_NL/word/footer1.xml.xsl"),
+        "word/footer2.xml" to createXslTemplate("/docx/Valori/nl_NL/word/footer2.xml.xsl"),
+        "word/header2.xml" to createXslTemplate("/docx/Valori/nl_NL/word/header2.xml.xsl")
+    )
+
+    internal fun xslTransform(xmlBytes: ByteArray, xslTemplate: Templates): ByteArray {
       ByteArrayInputStream(xmlBytes)
           .use { xml ->
-            ByteArrayInputStream(xsltBytes)
-                .use { xsltStream ->
-                  ByteArrayOutputStream()
-                      .use { result ->
-                        transformerFactory
-                            .newTransformer(StreamSource(xsltStream))
-                            .transform(StreamSource(xml), StreamResult(result))
-                        return result.toByteArray()
-                      }
+            ByteArrayOutputStream()
+                .use { result ->
+                  xslTemplate
+                      .newTransformer()
+                      .transform(StreamSource(xml), StreamResult(result))
+                  return result.toByteArray()
                 }
           }
     }
@@ -122,15 +124,15 @@ internal class CvGenerateVerticle : AbstractVerticle() {
           .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, deliveryOptions)
           .map { it.body() }
 
-  private fun convertToXml(json: JsonObject): ByteArray {
+  internal fun convertToXml(json: JsonObject): ByteArray {
     val writer = ByteArrayOutputStream()
     jsonToXml(json, XMLOutputFactory.newInstance().createXMLStreamWriter(writer), CV_XML_NAMESPACE)
     return writer.toByteArray()
   }
 
-  private fun xmlToDocx(xmlBytes: ByteArray) =
+  internal fun xmlToDocx(xmlBytes: ByteArray) =
       Flowable
-          .fromIterable(docxXsltMap.entries)
+          .fromIterable(docxPartNamesXslTemplatesMap.entries)
           .parallel()
           .runOn(Schedulers.computation())
           .map { entry -> entry.key to xslTransform(xmlBytes, entry.value) }
