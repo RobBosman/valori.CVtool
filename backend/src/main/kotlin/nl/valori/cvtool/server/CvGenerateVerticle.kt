@@ -13,7 +13,7 @@ import nl.valori.cvtool.server.Model.jsonToXml
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -22,6 +22,7 @@ import javax.xml.transform.Templates
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
+import kotlin.collections.HashMap
 
 const val CV_GENERATE_ADDRESS = "cv.generate"
 
@@ -104,8 +105,9 @@ internal class CvGenerateVerticle : AbstractVerticle() {
                 .map { composeFileName(cvJson) to it }
           }
           .map { (fileName, docxBytes) ->
-            FileOutputStream(fileName).use { it.write(docxBytes) }
-            fileName
+            JsonObject()
+                .put("fileName", fileName)
+                .put("contentB64", String(Base64.getEncoder().encode(docxBytes)))
           }
           .subscribe(
               {

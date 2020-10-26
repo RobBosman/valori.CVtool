@@ -25,7 +25,29 @@ export const cvEpics = [
     ofType(cvActions.generateCv.type),
     map((action) => action.payload),
     switchMap((accountId) => cvServices.generateCvAtRemote(accountId, eventBusClient.sendEvent)),
-    tap((generatedCv) => console.log("generatedCv", generatedCv)),
+    tap((generatedCv) => downloadFile(generatedCv.fileName, generatedCv.contentB64)),
     ignoreElements()
   )
 ];
+
+const downloadFile = (fileName, contentB64) => {
+
+  const a = document.createElement("a");
+  a.style = "display: none";
+  document.body.appendChild(a);
+  
+  // Convert the Base64 data into a byte array.
+  const contentBytes = atob(contentB64);
+  var uintArray = new Uint8Array(new ArrayBuffer(contentBytes.length));
+  for (var i = 0; i < contentBytes.length; i++) {
+    uintArray[i] = contentBytes.charCodeAt(i);
+  }
+
+  const blob = new Blob([uintArray], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  const url = window.URL.createObjectURL(blob);
+  console.log("url", url);
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  window.URL.revokeObjectURL(url);
+};

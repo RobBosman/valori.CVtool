@@ -19,7 +19,7 @@ const CvTitle = (props) => {
         tokens={{ childrenGap: "l1" }}>
         <Text variant="large">{role}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
-        <Text variant="large">{dateOfBirth}</Text>
+        <Text variant="large">{new Date(dateOfBirth).toLocaleDateString(props.locale.replace("_", "-"))}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
         <Text variant="large">{residence}</Text>
       </Stack>
