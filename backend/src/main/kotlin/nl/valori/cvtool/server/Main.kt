@@ -19,7 +19,8 @@ object Main {
   private val verticlesToDeploy = listOf(
       HttpRedirectVerticle::class,
       HttpsServerVerticle::class,
-      AuthVerticle::class,
+      AuthenticateVerticle::class,
+      AuthInfoFetchVerticle::class,
       MongoFetchVerticle::class,
       MongoSaveVerticle::class,
       CvFetchVerticle::class,

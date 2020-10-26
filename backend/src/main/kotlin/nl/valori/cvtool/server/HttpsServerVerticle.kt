@@ -3,13 +3,17 @@ package nl.valori.cvtool.server
 import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.buffer.Buffer.buffer
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.http.HttpServerOptions
+import io.vertx.core.json.JsonObject
 import io.vertx.core.net.PemKeyCertOptions
+import io.vertx.ext.bridge.BridgeEventType
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
 import io.vertx.reactivex.ext.web.handler.StaticHandler
+import io.vertx.reactivex.ext.web.handler.sockjs.BridgeEvent
 import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
 import org.slf4j.LoggerFactory
 import java.net.URL
@@ -17,11 +21,15 @@ import java.net.URL
 internal class HttpsServerVerticle : AbstractVerticle() {
 
   companion object {
-    internal val sslCert = buffer(HttpsServerVerticle::class.java.getResource("/ssl/localhost-fullchain.pem").readText())
-    internal val sslKey = buffer(HttpsServerVerticle::class.java.getResource("/ssl/localhost-privkey.pem").readText())
-  }
+    private fun loadCert(resourceName: String) =
+        buffer(HttpsServerVerticle::class.java.getResource(resourceName).readText())
 
-  private val log = LoggerFactory.getLogger(javaClass)
+    internal val sslCert = loadCert("/ssl/localhost-fullchain.pem")
+    internal val sslKey = loadCert("/ssl/localhost-privkey.pem")
+
+    private val log = LoggerFactory.getLogger(HttpsServerVerticle::class.java)
+    private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
+  }
 
   override fun start(startPromise: Promise<Void>) {
     // Environment variable:
@@ -81,6 +89,42 @@ internal class HttpsServerVerticle : AbstractVerticle() {
         }
   }
 
+  private fun authenticationHandler(bridgeEvent: BridgeEvent) {
+    when (bridgeEvent.type()) {
+      BridgeEventType.SEND, BridgeEventType.PUBLISH -> {
+        val headers = bridgeEvent.rawMessage.getJsonObject("headers")
+        val jwt = headers.getString("Authorization")?.substringAfter("Bearer ")
+            ?: throw IllegalArgumentException("Cannot obtain 'Bearer' token from message Authorization header.")
+
+        vertx
+            .eventBus()
+            .rxRequest<JsonObject>(AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
+            .map { it.body() }
+            .subscribe(
+                {
+                  bridgeEvent.rawMessage
+                      .put("headers", headers
+                          .put("email", it.getString("email"))
+                          .put("name", it.getString("name"))
+                      )
+                  bridgeEvent.complete(true)
+                },
+                {
+                  bridgeEvent.complete(false)
+                }
+            )
+      }
+      else -> bridgeEvent.complete(true)
+    }
+  }
+
+  private fun createBridgeOptions() =
+      SockJSBridgeOptions()
+          .addInboundPermitted(PermittedOptions().setAddress(AUTH_INFO_FETCH_ADDRESS))
+          .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
+          .addInboundPermitted(PermittedOptions().setAddress(CV_SAVE_ADDRESS))
+          .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
+
   private fun createRouter(): Router {
     val router = Router.router(vertx)
     router
@@ -91,18 +135,13 @@ internal class HttpsServerVerticle : AbstractVerticle() {
         )
     router
         .mountSubRouter("/eventbus",
-            SockJSHandler.create(vertx).bridge(createBridgeOptions()))
+            SockJSHandler.create(vertx).bridge(createBridgeOptions(), ::authenticationHandler)
+        )
     router
         .route("/*")
         .handler(StaticHandler.create()
-            .setWebRoot("frontend/dist"))
+            .setWebRoot("frontend/dist")
+        )
     return router
   }
-
-  private fun createBridgeOptions() =
-      SockJSBridgeOptions()
-          .addInboundPermitted(PermittedOptions().setAddress(AUTHENTICATE_ADDRESS))
-          .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
-          .addInboundPermitted(PermittedOptions().setAddress(CV_SAVE_ADDRESS))
-          .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
 }

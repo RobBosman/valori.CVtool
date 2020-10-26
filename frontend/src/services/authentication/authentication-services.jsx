@@ -44,7 +44,7 @@ export const authorizeAtOpenIdProvider = () => {
 };
 
 export const fetchAccountInfoFromRemote = (sendEvent) =>
-  sendEvent("authenticate", {})
+  sendEvent("authInfo.fetch", {})
     .then((message) => {
       const accountInfo = message.body.accountInfo;
       if (!accountInfo) {
