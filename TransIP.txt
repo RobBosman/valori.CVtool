@@ -52,6 +52,7 @@ cp ~bosmanr/docker-compose.yml .
 
 
 # Install MongoDB and CVtool and run letsencrypt to obtain SSL certs. (You must restart CVtool afterward.)
+docker pull bransom/cvtool
 docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
 
 
