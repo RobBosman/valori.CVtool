@@ -66,57 +66,47 @@
         <!-- LANGUAGES -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">LANGUAGES</xsl:with-param>
-          <xsl:with-param name="newColumn">false</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- BRANCHES -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">BRANCHES</xsl:with-param>
-          <xsl:with-param name="newColumn">false</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- EXPERTISE -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">EXPERTISE</xsl:with-param>
-          <xsl:with-param name="newColumn">false</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">true</xsl:with-param>
         </xsl:call-template>
-        <w:p w14:paraId="08AFDAB3" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
-          <w:pPr>
-            <w:pStyle w:val="Kop2"/>
-          </w:pPr>
-        </w:p>
         <!-- DATABASES -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">DATABASES</xsl:with-param>
-          <xsl:with-param name="newColumn">true</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- APPLICATIONS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">APPLICATIONS</xsl:with-param>
-          <xsl:with-param name="newColumn">false</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- TOOLS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">TOOLS</xsl:with-param>
-          <xsl:with-param name="newColumn">false</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">true</xsl:with-param>
         </xsl:call-template>
-        <w:p w14:paraId="3B21A4AF" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
-          <w:pPr>
-            <w:pStyle w:val="Kop2"/>
-          </w:pPr>
-        </w:p>
         <!-- PROGRAMMING -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">PROGRAMMING</xsl:with-param>
-          <xsl:with-param name="newColumn">true</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- METHODS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">METHODS</xsl:with-param>
-          <xsl:with-param name="newColumn">false</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- OS_NETWORKS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">OS_NETWORKS</xsl:with-param>
-          <xsl:with-param name="newColumn">false</xsl:with-param>
+          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <w:p w14:paraId="68712A30" w14:textId="77777777" w:rsidR="00660A7D" w:rsidRDefault="00660A7D" w:rsidP="00666ED6">
           <w:pPr>
@@ -130,6 +120,7 @@
             </w:sectPr>
           </w:pPr>
         </w:p>
+        <w:p w14:paraId="6C7C904F" w14:textId="5AB055EC" w:rsidR="00F63003" w:rsidRDefault="00C14BDE" w:rsidP="00FD53E1"/>
         <w:p w14:paraId="6C7C904F" w14:textId="5AB055EC" w:rsidR="00F63003" w:rsidRDefault="00C14BDE" w:rsidP="00FD53E1">
           <w:pPr>
             <w:pStyle w:val="Valori-blauw"/>
@@ -649,7 +640,7 @@
   <!-- SKILL SECTION -->
   <xsl:template name="skill-section">
     <xsl:param name="category"/>
-    <xsl:param name="newColumn"/>
+    <xsl:param name="appendColumnBreak"/>
     <xsl:variable name="skills" select="cv:skill[cv:category = $category]"/>
     <xsl:choose>
       <xsl:when test="$skills">
@@ -658,19 +649,15 @@
             <w:pStyle w:val="Kop2"/>
           </w:pPr>
           <w:r>
-            <xsl:if test="$newColumn = 'true'">
-              <w:br w:type="column"/>
-            </xsl:if>
-            <w:t><xsl:value-of select="$category"/></w:t>
+            <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
           </w:r>
         </w:p>
-        <xsl:apply-templates select="$skills"/>
+        <xsl:apply-templates select="$skills">
+          <xsl:with-param name="appendColumnBreak"><xsl:value-of select="$appendColumnBreak"/></xsl:with-param>
+        </xsl:apply-templates>
       </xsl:when>
-      <xsl:when test="$newColumn = 'true'">
-        <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE" w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
-          <w:pPr>
-            <w:pStyle w:val="Kop2"/>
-          </w:pPr>
+      <xsl:when test="$appendColumnBreak = 'true'">
+        <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
           <w:r>
             <w:br w:type="column"/>
           </w:r>
@@ -681,6 +668,7 @@
 
   <!-- SKILL -->
   <xsl:template match="cv:skill">
+    <xsl:param name="appendColumnBreak">false</xsl:param>
     <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
       <w:pPr>
         <w:pStyle w:val="Valori-blauw"/>
@@ -704,6 +692,9 @@
           <w:rStyle w:val="Valori-niveau"/>
         </w:rPr>
         <w:t><xsl:apply-templates select="cv:skillLevel" mode="skill-level"/></w:t>
+        <xsl:if test="$appendColumnBreak = 'true' and position() = last()">
+          <w:br w:type="column"/>
+        </xsl:if>
       </w:r>
     </w:p>
   </xsl:template>

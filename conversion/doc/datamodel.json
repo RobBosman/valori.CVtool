@@ -21,13 +21,13 @@
     "id": "ID",
     "accountId": "ID",
     "role": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "profile": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "interests": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "workingSince": "YEAR",
     "inItSince": "YEAR"
@@ -37,7 +37,7 @@
     "cvId": "ID",
     "type": "ENUM_EDUCATION_TYPE",
     "name": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "institution": "STRING",
     "yearFrom": "YEAR",
@@ -49,7 +49,7 @@
     "cvId": "ID",
     "category": "ENUM_SKILL_CATEGORY",
     "description": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "skillLevel": "NUMBER"
   },
@@ -59,10 +59,10 @@
     "year": "YEAR",
     "media": "STRING",
     "title": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "description": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "includeInCv": "BOOLEAN"
   },
@@ -71,10 +71,10 @@
     "cvId": "ID",
     "referentName": "STRING",
     "referentFunction": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "description": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "includeInCv": "BOOLEAN"
   },
@@ -86,19 +86,19 @@
     "employer": "STRING",
     "client": "STRING",
     "role": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "assignment": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "activities": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "results": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "keywords": {
-      "locale": "STRING"
+      "[locale]": "STRING"
     },
     "sortIndex": "NUMBER",
     "includeInCv": "BOOLEAN"

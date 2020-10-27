@@ -23,9 +23,10 @@ const Skill = (props) => {
   // Find all {Skill} of the selected {cv}.
   const skills = props.skillEntity
     && props.selectedCvId
-    && Object.values(props.skillEntity).filter((instance) => instance.cvId === props.selectedCvId)
+    && Object.values(props.skillEntity)
+      .filter((instance) => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = compareStrings(l.category, r.category);
+        let compare = getEnumData(SkillCategories, l.category).sortIndex - getEnumData(SkillCategories, r.category).sortIndex;
         if (compare === 0) {
           compare = compareStrings(l.description, r.description);
         }
@@ -168,7 +169,7 @@ const Skill = (props) => {
                 label="Categorie"
                 field="category"
                 instanceContext={skillContext}
-                options={SkillCategories[skillContext.locale]}
+                options={SkillCategories}
               />
               <CvTextField
                 label="Omschrijving"

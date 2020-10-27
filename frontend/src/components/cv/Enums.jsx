@@ -40,38 +40,47 @@ export const EducationResultTypes = [
 export const SkillCategories = [
   {
     key: "LANGUAGES",
-    text: "Talen"
+    text: "Talen",
+    sortIndex: 1
   },
   {
     key: "BRANCHES",
-    text: "Branches"
-  },
-  {
-    key: "DATABASES",
-    text: "Databases"
-  },
-  {
-    key: "PROGRAMMING",
-    text: "Programmeren"
-  },
-  {
-    key: "APPLICATIONS",
-    text: "Applicaties"
-  },
-  {
-    key: "METHODS",
-    text: "Methoden"
+    text: "Branches",
+    sortIndex: 2
   },
   {
     key: "EXPERTISE",
-    text: "Expertises"
+    text: "Expertises",
+    sortIndex: 3
+  },
+  {
+    key: "DATABASES",
+    text: "Databases",
+    sortIndex: 4
+  },
+  {
+    key: "APPLICATIONS",
+    text: "Applicaties",
+    sortIndex: 5
   },
   {
     key: "TOOLS",
-    text: "Tools"
+    text: "Tools",
+    sortIndex: 6
+  },
+  {
+    key: "PROGRAMMING",
+    text: "Programmeren",
+    sortIndex: 7
+  },
+  {
+    key: "METHODS",
+    text: "Methoden",
+    sortIndex: 8
   },
   {
     key: "OS_NETWORKS",
-    text: "OS / Netwerken"
+    text: "OS &amp; Netwerken",
+    sortIndex: 9
   }
 ];

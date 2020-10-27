@@ -27,7 +27,7 @@ const Reference = (props) => {
   const referenceContext = {
     locale: props.locale,
     entity: props.referenceEntity,
-    entinstanceIdityId: props.selectedReferenceId,
+    instanceId: props.selectedReferenceId,
     setSelectedInstance: props.setSelectedReferenceId,
     replaceInstance: props.replaceReference
   };

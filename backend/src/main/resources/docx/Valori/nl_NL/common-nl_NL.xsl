@@ -47,7 +47,7 @@
       <xsl:when test=". = 'PROGRAMMING'">Programmeren</xsl:when>
       <xsl:when test=". = 'METHODS'">Methoden</xsl:when>
       <xsl:when test=". = 'OS_NETWORKS'">OS &amp; Netwerken</xsl:when>
-      <xsl:otherwise><xsl:value-of select="." /></xsl:otherwise>
+      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

@@ -268,7 +268,7 @@ const Experience = (props) => {
                     autoAdjustHeight
                   />
                   <CvTextField
-                    label="Keywords"
+                    label="Werkomgeving"
                     localeField="keywords"
                     instanceContext={experienceContext}
                     multiline

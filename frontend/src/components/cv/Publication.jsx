@@ -8,7 +8,6 @@ import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
-import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const entityName = "publication";
 
@@ -91,17 +90,6 @@ const Publication = (props) => {
     selection = selectionRef;
   };
 
-  const onRenderItem = (item, number, column) => {
-    switch (column.fieldName) {
-    case "includeInCv":
-      return <CvCheckbox
-        field="includeInCv"
-        instanceContext={{ ...publicationContext, instanceId: item._id }} />;
-    default:
-      return item[column.fieldName];
-    }
-  };
-
   const onAddItem = () => {
     const id = createUuid();
     props.replacePublication(id, {
@@ -151,7 +139,6 @@ const Publication = (props) => {
                 items={publications}
                 instanceContext={publicationContext}
                 setKey={entityName}
-                onRenderItemColumn={onRenderItem}
                 onExposeSelectionRef={onExposeSelectionRef}
               />
             </Stack>
@@ -170,20 +157,16 @@ const Publication = (props) => {
                 label="Media"
                 field="media"
                 instanceContext={publicationContext}
-                autoAdjustHeight
               />
               <CvTextField
                 label="Titel"
                 localeField="title"
                 instanceContext={publicationContext}
-                autoAdjustHeight
               />
               <CvTextField
                 label="Omschrijving"
                 localeField="description"
                 instanceContext={publicationContext}
-                multiline
-                autoAdjustHeight
               />
             </Stack>
           </td>
