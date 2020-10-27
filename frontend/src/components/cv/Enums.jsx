@@ -80,7 +80,7 @@ export const SkillCategories = [
   },
   {
     key: "OS_NETWORKS",
-    text: "OS &amp; Netwerken",
+    text: "OS & Netwerken",
     sortIndex: 9
   }
 ];
