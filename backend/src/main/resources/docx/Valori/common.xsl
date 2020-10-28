@@ -60,7 +60,7 @@
     <xsl:param name="listItemNumber" />
     <xsl:choose>
       <xsl:when test="starts-with($text, '* ')">
-        <w:p w14:paraId="2C48F330" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
+        <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949" w:rsidP="001730DD">
           <w:pPr>
             <w:pStyle w:val="Lijstalinea"/>
             <w:numPr>
@@ -74,9 +74,8 @@
         </w:p>
       </xsl:when>
       <xsl:when test="starts-with($text, '# ')">
-        <w:p w14:paraId="2C48F330" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
+        <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949" w:rsidP="001730DD">
           <w:pPr>
-            <w:pStyle w:val="Lijstalinea"/>
             <w:numPr>
               <w:ilvl w:val="0"/>
               <w:numId w:val="18"/>
@@ -90,7 +89,7 @@
         </w:p>
       </xsl:when>
       <xsl:when test="$text">
-        <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949" w:rsidP="006A76DB">
+        <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949" w:rsidP="001730DD">
           <w:r>
             <w:t><xsl:value-of select="$text" /></w:t>
           </w:r>

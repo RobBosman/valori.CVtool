@@ -30,6 +30,20 @@ const Publication = (props) => {
 
   const columns = [
     {
+      key: "title",
+      localeFieldName: "title",
+      name: "Titel",
+      isResizable: true,
+      data: "string"
+    },
+    {
+      key: "media",
+      fieldName: "media",
+      name: "Media",
+      isResizable: true,
+      data: "string"
+    },
+    {
       key: "year",
       fieldName: "year",
       name: "Jaar",
@@ -39,30 +53,10 @@ const Publication = (props) => {
       data: "number"
     },
     {
-      key: "media",
-      fieldName: "media",
-      name: "Media",
-      isResizable: true,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
-    },
-    {
-      key: "title",
-      localeFieldName: "title",
-      name: "Titel",
-      isResizable: true,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
-    },
-    {
       key: "description",
       localeFieldName: "description",
       name: "Omschrijving",
       isResizable: true,
-      isSorted: false,
-      isSortedDescending: false,
       data: "string"
     }
   ];
@@ -83,6 +77,10 @@ const Publication = (props) => {
         padding: 20
       }
     ]
+  };
+  const tdStyle = {
+    minWidth: 250,
+    width: "calc(50vw - 98px)"
   };
 
   let selection;
@@ -113,10 +111,10 @@ const Publication = (props) => {
   };
 
   return (
-    <table width="100%" style={{ borderCollapse: "collapse" }}>
+    <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Publicaties</Text>
@@ -144,14 +142,12 @@ const Publication = (props) => {
             </Stack>
           </td>
 
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvTextField
-                label="Jaar"
-                field="year"
+                label="Titel"
+                localeField="title"
                 instanceContext={publicationContext}
-                placeholder='yyyy'
-                styles={{ fieldGroup: { width: 80 } }}
               />
               <CvTextField
                 label="Media"
@@ -159,9 +155,11 @@ const Publication = (props) => {
                 instanceContext={publicationContext}
               />
               <CvTextField
-                label="Titel"
-                localeField="title"
+                label="Jaar"
+                field="year"
                 instanceContext={publicationContext}
+                placeholder='yyyy'
+                styles={{ fieldGroup: { width: 80 } }}
               />
               <CvTextField
                 label="Omschrijving"

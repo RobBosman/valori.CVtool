@@ -64,7 +64,8 @@ export const CvDatePicker = (props) => {
       value={value}
       onSelectDate={onChange}
       formatDate={formatDateForScreen}
-      parseDateFromString={parseDateFromScreen} />
+      parseDateFromString={parseDateFromScreen}
+    />
   );
 };
 

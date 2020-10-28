@@ -105,6 +105,10 @@ const Education = (props) => {
       }
     ]
   };
+  const tdStyle = {
+    minWidth: 250,
+    width: "calc(50vw - 98px)"
+  };
 
   let selection;
   const onExposeSelectionRef = (selectionRef) => {
@@ -134,10 +138,10 @@ const Education = (props) => {
   };
 
   return (
-    <table width="100%" style={{ borderCollapse: "collapse" }}>
+    <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Opleiding</Text>
@@ -165,7 +169,7 @@ const Education = (props) => {
             </Stack>
           </td>
 
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvChoiceGroup
                 label="Soort opleiding"

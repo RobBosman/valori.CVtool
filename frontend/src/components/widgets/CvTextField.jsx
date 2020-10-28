@@ -41,7 +41,8 @@ export const CvTextField = (props) => {
       disabled={!instance}
       value={value}
       styles={props.styles}
-      onChange={onChange} />
+      onChange={onChange}
+    />
   );
 };
 

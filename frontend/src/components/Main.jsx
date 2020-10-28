@@ -7,8 +7,6 @@ import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import CvTopBar from "./widgets/CvTopBar";
 import ErrorDialog from "./ErrorDialog";
-
-// import PulseMonitor from "../utils/PulseMonitor";
 // import "./ThemeExposer";
 
 const Main = (props) => {
@@ -18,9 +16,6 @@ const Main = (props) => {
       <ErrorDialog />
       <CvTopBar />
       {props.isLoggedIn ? <ContentPage /> : <LoginPage />}
-      {
-        // <PulseMonitor />
-      }
     </Fabric>
   );
 };

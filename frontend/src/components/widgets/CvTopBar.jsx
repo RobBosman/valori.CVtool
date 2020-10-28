@@ -5,7 +5,6 @@ import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemTy
 import * as safeActions from "../../services/safe/safe-actions";
 import * as authenticationActions from "../../services/authentication/authentication-actions";
 import * as uiActions from "../../services/ui/ui-actions";
-import * as cvActions from "../../services/cv/cv-actions";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import valoriNameImg from "../../static/valori-name.png";
 import lightBlueTheme from "../../static/themes/lightBlue.json";
@@ -34,8 +33,6 @@ const CvTopBar = (props) => {
   const isDirty = props.isConnected && props.hasSafeData
     && props.lastEditedTimestamp
     && !props.lastSavedTimestamp || props.lastEditedTimestamp > props.lastSavedTimestamp;
-  const onFetchCv = () => props.fetchCv(props.account._id);
-  const onGenerateCv = () => props.generateCv(props.account._id);
 
   const items = props.loginState === authenticationActions.LoginStates.LOGGED_IN
     ? [
@@ -48,25 +45,12 @@ const CvTopBar = (props) => {
         commandBarButtonAs: WrappedButton,
         style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
         tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
-      },
-      {
-        key: "download",
-        text: "Download",
-        iconProps: { iconName: "DownloadDocument" },
-        commandBarButtonAs: WrappedButton,
-        tooltipText: "Download CV als MS-Word document",
-        onClick: onGenerateCv
       }
     ]
     : [];
 
+  const onFetchCv = () => props.fetchCv(props.account._id);
   const farItems = [
-    props.loginState === authenticationActions.LoginStates.LOGGED_OUT && {
-      key: "login",
-      text: "Aanmelden",
-      iconProps: { iconName: "Signin" },
-      onClick: props.requestToLogin
-    },
     props.loginState !== authenticationActions.LoginStates.LOGGED_OUT && {
       key: "globalNav",
       text: props.account?.name || "",
@@ -155,11 +139,9 @@ CvTopBar.propTypes = {
   lastEditedTimestamp: PropTypes.object,
   lastSavedTimestamp: PropTypes.object,
   setThemeName: PropTypes.func.isRequired,
-  requestToLogin: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
   fetchCv: PropTypes.func.isRequired,
-  saveCv: PropTypes.func.isRequired,
-  generateCv: PropTypes.func.isRequired
+  saveCv: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
@@ -173,11 +155,9 @@ const select = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setThemeName: (themeName) => dispatch(uiActions.setThemeName(themeName)),
-  requestToLogin: () => dispatch(authenticationActions.requestLogin()),
   requestToLogout: () => dispatch(authenticationActions.requestLogout()),
   fetchCv: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId)),
-  saveCv: () => dispatch(safeActions.saveCv(true)),
-  generateCv: (accountId) => dispatch(cvActions.generateCv(accountId))
+  saveCv: () => dispatch(safeActions.saveCv(true))
 });
 
 export default connect(select, mapDispatchToProps)(CvTopBar);

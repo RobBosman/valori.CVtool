@@ -20,7 +20,7 @@
     <frontend-maven-plugin.version>1.10.3</frontend-maven-plugin.version>
     <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
     <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
-    <nodejs.version>v14.13.1</nodejs.version>
+    <nodejs.version>v14.15.0</nodejs.version>
   </properties>
 
   <build>

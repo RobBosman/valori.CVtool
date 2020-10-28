@@ -21,8 +21,9 @@ const Experience = (props) => {
   // Find all {Experiences} of the selected {cv}.
   const experiences = props.experienceEntity
     && props.selectedCvId
-    && Object.values(props.experienceEntity).filter((instance) => instance.cvId === props.selectedCvId)
-      .sort((l, r) => l.sortIndex > 0 && r.sortIndex > 0 ? l.sortIndex - r.sortIndex : -1)
+    && Object.values(props.experienceEntity)
+      .filter((instance) => instance.cvId === props.selectedCvId)
+      .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
     || [];
 
   const experienceContext = {
@@ -96,6 +97,11 @@ const Experience = (props) => {
       }
     ]
   };
+  const tdStyle = {
+    minWidth: 250,
+    width: "calc(50vw - 98px)",
+    background: viewPaneColor,
+  };
 
   let selection;
   const onExposeSelectionRef = (selectionRef) => {
@@ -160,10 +166,10 @@ const Experience = (props) => {
   };
 
   return (
-    <table width="100%" style={{ borderCollapse: "collapse" }}>
+    <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Werkervaring</Text>
@@ -210,8 +216,8 @@ const Experience = (props) => {
             </Stack>
           </td>
 
-          <td width="50%" valign="top">
-            <Pivot>
+          <td valign="top" style={{...tdStyle, padding: "20px"}}>
+            <Pivot styles={{editStyles}}>
               <PivotItem headerText="Edit">
                 <Stack styles={editStyles}>
                   <Stack horizontal

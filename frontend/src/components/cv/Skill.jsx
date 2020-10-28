@@ -26,7 +26,10 @@ const Skill = (props) => {
     && Object.values(props.skillEntity)
       .filter((instance) => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = getEnumData(SkillCategories, l.category).sortIndex - getEnumData(SkillCategories, r.category).sortIndex;
+        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
+        if (compare === 0) {
+          compare = l.skillLevel, r.skillLevel;
+        }
         if (compare === 0) {
           compare = compareStrings(l.description, r.description);
         }
@@ -47,7 +50,7 @@ const Skill = (props) => {
       key: "category",
       fieldName: "category",
       name: "Categorie",
-      onRender: (item) => getEnumData(SkillCategories, item.category).text,
+      onRender: (item) => getEnumData(SkillCategories, item.category)?.text || item.category,
       isResizable: false,
       minWidth: 120,
       maxWidth: 120,
@@ -91,6 +94,10 @@ const Skill = (props) => {
       }
     ]
   };
+  const tdStyle = {
+    minWidth: 250,
+    width: "calc(50vw - 98px)"
+  };
 
   let selection;
   const onExposeSelectionRef = (selectionRef) => {
@@ -131,10 +138,10 @@ const Skill = (props) => {
   };
 
   return (
-    <table width="100%" style={{ borderCollapse: "collapse" }}>
+    <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Vaardigheden</Text>
@@ -163,7 +170,7 @@ const Skill = (props) => {
             </Stack>
           </td>
 
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvDropdown
                 label="Categorie"

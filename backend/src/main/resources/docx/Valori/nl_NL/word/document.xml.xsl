@@ -29,6 +29,7 @@
         <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949" w:rsidP="00D55949">
           <w:pPr>
             <w:pStyle w:val="Kop1"/>
+            <w:spacing w:after="60"/>
           </w:pPr>
           <w:r w:rsidRPr="00D55949">
             <w:t>Profielschets</w:t>
@@ -452,12 +453,40 @@
               <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
             </w:tblPr>
             <w:tblGrid>
-              <w:gridCol w:w="708"/>
-              <w:gridCol w:w="2410"/>
               <w:gridCol w:w="3119"/>
-              <w:gridCol w:w="3261"/>
+              <w:gridCol w:w="2551"/>
+              <w:gridCol w:w="709"/>
+              <w:gridCol w:w="3119"/>
             </w:tblGrid>
             <w:tr w:rsidR="001860B4" w14:paraId="6575444B" w14:textId="77777777" w:rsidTr="001860B4">
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="3164" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="594EC8C1" w14:textId="30B63790" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Titel</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
+              <w:tc>
+                <w:tcPr>
+                  <w:tcW w:w="2456" w:type="dxa"/>
+                </w:tcPr>
+                <w:p w14:paraId="3E786C01" w14:textId="6055BD31" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+                  <w:pPr>
+                    <w:pStyle w:val="Kop2"/>
+                    <w:outlineLvl w:val="1"/>
+                  </w:pPr>
+                  <w:r>
+                    <w:t>Media</w:t>
+                  </w:r>
+                </w:p>
+              </w:tc>
               <w:tc>
                 <w:tcPr>
                   <w:tcW w:w="708" w:type="dxa"/>
@@ -474,35 +503,7 @@
               </w:tc>
               <w:tc>
                 <w:tcPr>
-                  <w:tcW w:w="2410" w:type="dxa"/>
-                </w:tcPr>
-                <w:p w14:paraId="3E786C01" w14:textId="6055BD31" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
-                  <w:pPr>
-                    <w:pStyle w:val="Kop2"/>
-                    <w:outlineLvl w:val="1"/>
-                  </w:pPr>
-                  <w:r>
-                    <w:t>Media</w:t>
-                  </w:r>
-                </w:p>
-              </w:tc>
-              <w:tc>
-                <w:tcPr>
-                  <w:tcW w:w="3119" w:type="dxa"/>
-                </w:tcPr>
-                <w:p w14:paraId="594EC8C1" w14:textId="30B63790" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
-                  <w:pPr>
-                    <w:pStyle w:val="Kop2"/>
-                    <w:outlineLvl w:val="1"/>
-                  </w:pPr>
-                  <w:r>
-                    <w:t>Titel</w:t>
-                  </w:r>
-                </w:p>
-              </w:tc>
-              <w:tc>
-                <w:tcPr>
-                  <w:tcW w:w="3261" w:type="dxa"/>
+                  <w:tcW w:w="3164" w:type="dxa"/>
                 </w:tcPr>
                 <w:p w14:paraId="2CD43EAD" w14:textId="13C86D98" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
                   <w:pPr>
@@ -530,6 +531,7 @@
           <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="001860B4">
             <w:pPr>
               <w:pStyle w:val="Kop1"/>
+              <w:spacing w:after="60"/>
             </w:pPr>
             <w:r>
               <w:t>Interesses</w:t>
@@ -642,33 +644,24 @@
     <xsl:param name="category"/>
     <xsl:param name="appendColumnBreak"/>
     <xsl:variable name="skills" select="cv:skill[cv:category = $category]"/>
-    <xsl:choose>
-      <xsl:when test="$skills">
-        <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE" w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
-          <w:pPr>
-            <w:pStyle w:val="Kop2"/>
-          </w:pPr>
-          <w:r>
-            <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
-          </w:r>
-        </w:p>
-        <xsl:apply-templates select="$skills">
-          <xsl:with-param name="appendColumnBreak"><xsl:value-of select="$appendColumnBreak"/></xsl:with-param>
-        </xsl:apply-templates>
-      </xsl:when>
-      <xsl:when test="$appendColumnBreak = 'true'">
-        <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
-          <w:r>
-            <w:br w:type="column"/>
-          </w:r>
-        </w:p>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:if test="$skills">
+      <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE" w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
+        <w:pPr>
+          <w:pStyle w:val="Kop2"/>
+        </w:pPr>
+        <w:r>
+          <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
+        </w:r>
+      </w:p>
+      <xsl:apply-templates select="$skills">
+        <xsl:with-param name="appendColumnBreak"><xsl:value-of select="$appendColumnBreak"/></xsl:with-param>
+      </xsl:apply-templates>
+    </xsl:if>
   </xsl:template>
 
   <!-- SKILL -->
   <xsl:template match="cv:skill">
-    <xsl:param name="appendColumnBreak">false</xsl:param>
+    <xsl:param name="appendColumnBreak"/>
     <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
       <w:pPr>
         <w:pStyle w:val="Valori-blauw"/>
@@ -692,10 +685,12 @@
           <w:rStyle w:val="Valori-niveau"/>
         </w:rPr>
         <w:t><xsl:apply-templates select="cv:skillLevel" mode="skill-level"/></w:t>
-        <xsl:if test="$appendColumnBreak = 'true' and position() = last()">
-          <w:br w:type="column"/>
-        </xsl:if>
       </w:r>
+      <xsl:if test="$appendColumnBreak = 'true' and position() = last()">
+        <w:r>
+          <w:br w:type="column"/>
+        </w:r>
+      </xsl:if>
     </w:p>
   </xsl:template>
 
@@ -801,26 +796,6 @@
     <w:tr w:rsidR="001860B4" w14:paraId="2E94810F" w14:textId="77777777" w:rsidTr="001860B4">
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="708" w:type="dxa"/>
-        </w:tcPr>
-        <w:p w14:paraId="7CD275C5" w14:textId="2B1B7994" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
-          <w:r>
-            <w:t><xsl:value-of select="cv:year"/></w:t>
-          </w:r>
-        </w:p>
-      </w:tc>
-      <w:tc>
-        <w:tcPr>
-          <w:tcW w:w="2410" w:type="dxa"/>
-        </w:tcPr>
-        <w:p w14:paraId="010D5F50" w14:textId="215C545B" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
-          <w:r>
-            <w:t><xsl:value-of select="cv:media"/></w:t>
-          </w:r>
-        </w:p>
-      </w:tc>
-      <w:tc>
-        <w:tcPr>
           <w:tcW w:w="3119" w:type="dxa"/>
         </w:tcPr>
         <w:p w14:paraId="5EC9DC18" w14:textId="73E77901" w:rsidR="001860B4" w:rsidRDefault="000A5FCA" w:rsidP="000B7B5E">
@@ -831,7 +806,27 @@
       </w:tc>
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="3261" w:type="dxa"/>
+          <w:tcW w:w="2551" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="010D5F50" w14:textId="215C545B" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+          <w:r>
+            <w:t><xsl:value-of select="cv:media"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="709" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="7CD275C5" w14:textId="2B1B7994" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
+          <w:r>
+            <w:t><xsl:value-of select="cv:year"/></w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3119" w:type="dxa"/>
         </w:tcPr>
         <w:p w14:paraId="790E2453" w14:textId="0F2E4324" w:rsidR="001860B4" w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
           <w:r>
@@ -920,12 +915,17 @@
       <w:tc>
         <w:tcPr>
           <w:tcW w:w="7400" w:type="dxa"/>
+          <w:tcMar>
+            <w:left w:w="113" w:type="dxa"/>
+          </w:tcMar>
         </w:tcPr>
         <xsl:apply-templates select="cv:assignment/cv:nl_NL" mode="markdown"/>
-        <w:p w14:paraId="5C3DDAF9" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00A52C14"/>
         <xsl:variable name="activities" select="cv:activities/cv:nl_NL"/>
         <xsl:if test="$activities">
           <w:p w14:paraId="4C066476" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
+            <w:pPr>
+              <w:pStyle w:val="Paragraaf"/>
+            </w:pPr>
             <w:r>
               <w:t>Taken/werkzaamheden:</w:t>
             </w:r>
@@ -935,6 +935,9 @@
         <xsl:variable name="results" select="cv:results/cv:nl_NL"/>
         <xsl:if test="$results">
           <w:p w14:paraId="05A636A2" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
+            <w:pPr>
+              <w:pStyle w:val="Paragraaf"/>
+            </w:pPr>
             <w:r>
               <w:t>Resultaat:</w:t>
             </w:r>
@@ -944,6 +947,9 @@
         <xsl:variable name="keywords" select="cv:keywords/cv:nl_NL"/>
         <xsl:if test="$keywords">
           <w:p w14:paraId="62A3EFF7" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
+            <w:pPr>
+              <w:pStyle w:val="Paragraaf"/>
+            </w:pPr>
             <w:r>
               <w:t>Werkomgeving:</w:t>
             </w:r>

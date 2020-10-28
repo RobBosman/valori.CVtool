@@ -88,6 +88,10 @@ const Reference = (props) => {
       }
     ]
   };
+  const tdStyle = {
+    minWidth: 250,
+    width: "calc(50vw - 98px)"
+  };
 
   let selection;
   const onExposeSelectionRef = (selectionRef) => {
@@ -117,10 +121,10 @@ const Reference = (props) => {
   };
 
   return (
-    <table width="100%" style={{ borderCollapse: "collapse" }}>
+    <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Referenties</Text>
@@ -148,7 +152,7 @@ const Reference = (props) => {
             </Stack>
           </td>
 
-          <td width="50%" valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvTextField
                 label="Naam"
@@ -164,6 +168,8 @@ const Reference = (props) => {
                 label="Omschrijving"
                 localeField="description"
                 instanceContext={referenceContext}
+                multiline
+                autoAdjustHeight
               />
             </Stack>
           </td>

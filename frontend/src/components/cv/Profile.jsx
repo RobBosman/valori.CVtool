@@ -26,7 +26,8 @@ const Profile = (props) => {
     root: [
       {
         background: editPaneColor,
-        padding: 20
+        padding: 20,
+        maxWidth: "calc(100vw - 200px)"
       }
     ]
   };
@@ -34,62 +35,52 @@ const Profile = (props) => {
   return (
     <Stack styles={editStyles}>
       <Text variant="xxLarge">Profiel</Text>
-      <CvTextField
-        label="Naam"
-        field="name"
-        instanceContext={accountContext}
-      />
-      <CvTextField
-        label="Rol"
-        localeField='role'
-        instanceContext={cvContext}
-      />
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
-        <CvDatePicker
-          label="Geboortedatum"
-          field="dateOfBirth"
-          instanceContext={accountContext}
-          styles={{ root: { width: 140 } }}
-        />
+        <Stack
+          styles={{ root: { width: "50%" } }}>
+          <CvTextField
+            label="Naam"
+            field="name"
+            instanceContext={accountContext}
+          />
+          <CvTextField
+            label="Rol"
+            localeField='role'
+            instanceContext={cvContext}
+          />
+          <Stack horizontal
+            tokens={{ childrenGap: "l1" }}>
+            <CvDatePicker
+              label="Geboortedatum"
+              field="dateOfBirth"
+              instanceContext={accountContext}
+              styles={{ root: { width: 140 } }}
+            />
+            <CvTextField
+              label="Woonplaats"
+              field="residence"
+              instanceContext={accountContext}
+              styles={{ root: { width: "100%" } }}
+            />
+          </Stack>
+          <CvTextField
+            label="Interesses"
+            localeField='interests'
+            instanceContext={cvContext}
+            multiline
+            autoAdjustHeight
+          />
+        </Stack>
         <CvTextField
-          label="Woonplaats"
-          field="residence"
-          instanceContext={accountContext} 
-          styles={{ root: { width: "100%" } }}
+          label="Profielschets"
+          localeField='profile'
+          instanceContext={cvContext}
+          multiline
+          autoAdjustHeight
+          styles={{ root: { width: "50%" } }}
         />
       </Stack>
-      <Stack horizontal
-        tokens={{ childrenGap: "l1" }}>
-        <CvTextField
-          label="Werkervaring sinds"
-          field="workingSince"
-          instanceContext={cvContext}
-          placeholder='yyyy'
-          styles={{ fieldGroup: { width: 80 } }}
-        />
-        <CvTextField
-          label="IT ervaring sinds"
-          field="inItSince"
-          instanceContext={cvContext}
-          placeholder='yyyy' 
-          styles={{ fieldGroup: { width: 80 } }}
-        />
-      </Stack>
-      <CvTextField
-        label="Profielschets"
-        localeField='profile'
-        instanceContext={cvContext}
-        multiline
-        autoAdjustHeight
-      />
-      <CvTextField
-        label="Interesses"
-        localeField='interests'
-        instanceContext={cvContext}
-        multiline
-        autoAdjustHeight
-      />
     </Stack>
   );
 };
