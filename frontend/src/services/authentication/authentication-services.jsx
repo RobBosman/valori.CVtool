@@ -31,7 +31,7 @@ export const authorizeAtOpenIdProvider = () => {
       .acquireTokenSilent(loginConfig)
       .catch((error) => {
         if (error instanceof MSAL.InteractionRequiredAuthError) {
-          // fallback to interaction when silent call fails
+          // Fallback to interaction mode when silent call fails.
           return msal.acquireTokenPopup(loginConfig);
         } else {
           console.warn(error);
@@ -46,7 +46,7 @@ export const authorizeAtOpenIdProvider = () => {
 export const fetchAccountInfoFromRemote = (sendEvent) =>
   sendEvent("authInfo.fetch", {})
     .then((message) => {
-      const accountInfo = message.body.accountInfo;
+      const accountInfo = message.body;
       if (!accountInfo) {
         throw new Error("Authentication error: message.body contains no accountInfo");
       }

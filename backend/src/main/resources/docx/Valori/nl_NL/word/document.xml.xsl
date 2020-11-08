@@ -109,6 +109,9 @@
           <xsl:with-param name="category">OS_NETWORKS</xsl:with-param>
           <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
+        <!-- OTHER -->
+        <xsl:call-template name="skill-section-other"/>
+
         <w:p w14:paraId="68712A30" w14:textId="77777777" w:rsidR="00660A7D" w:rsidRDefault="00660A7D" w:rsidP="00666ED6">
           <w:pPr>
             <w:sectPr w:rsidR="00660A7D" w:rsidSect="00660A7D">
@@ -655,6 +658,25 @@
       </w:p>
       <xsl:apply-templates select="$skills">
         <xsl:with-param name="appendColumnBreak"><xsl:value-of select="$appendColumnBreak"/></xsl:with-param>
+      </xsl:apply-templates>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- SKILL SECTION OTHER -->
+  <xsl:variable name="SKILL_CATEGORIES" select="'LANGUAGES BRANCHES EXPERTISE DATABASES APPLICATIONS TOOLS PROGRAMMING METHODS OS_NETWORKS'" />
+  <xsl:template name="skill-section-other">
+    <xsl:variable name="skills" select="cv:skill[not(contains($SKILL_CATEGORIES, cv:category))]"/>
+    <xsl:if test="$skills">
+      <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE" w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
+        <w:pPr>
+          <w:pStyle w:val="Kop2"/>
+        </w:pPr>
+        <w:r>
+          <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
+        </w:r>
+      </w:p>
+      <xsl:apply-templates select="$skills">
+        <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
       </xsl:apply-templates>
     </xsl:if>
   </xsl:template>

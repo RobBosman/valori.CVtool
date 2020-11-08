@@ -32,24 +32,19 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setClientID(clientIdSecret[0])
             .setClientSecret(clientIdSecret[1])
         )
+        .flatMapObservable { oauth2 ->
+          vertx.eventBus()
+              .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
+              .toObservable()
+              .map { it to oauth2 }
+        }
         .subscribe(
-            { oauth2 ->
-              vertx.eventBus()
-                  .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
-                  .toObservable()
-                  .subscribe(
-                      {
-                        startPromise.tryComplete()
-                        handleRequest(it, oauth2)
-                      },
-                      {
-                        log.error("Vertx error: ${it.message}")
-                        startPromise.fail(it)
-                      }
-                  )
+            { (message, oauth2) ->
+              startPromise.tryComplete()
+              handleRequest(message, oauth2)
             },
             {
-              log.error("Error connecting to OpenIDConnect provider: ${it.message}")
+              log.error("Vertx error: ${it.message}")
               startPromise.fail(it)
             }
         )
@@ -68,7 +63,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
           .flatMap { authenticateJwt(it, oauth2) }
           .subscribe(
               {
-                log.debug("Successfully authenticated")
+                log.debug("Authenticated successfully.")
                 message.reply(it)
               },
               {
@@ -87,9 +82,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
               throw IllegalArgumentException("Cannot obtain email from JWT.")
             else if (!email.toUpperCase().endsWith("@${AUTH_DOMAIN.toUpperCase()}"))
               throw IllegalArgumentException("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
-            log.debug("Authorization successful")
             JsonObject()
-                .put("name", accessToken.getString("name", ""))
                 .put("email", email)
+                .put("name", accessToken.getString("name", ""))
           }
 }

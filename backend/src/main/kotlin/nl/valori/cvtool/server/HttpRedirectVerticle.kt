@@ -44,7 +44,7 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
     val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
     val router = Router.router(vertx)
     router
-        .route("/.well-known/acme-challenge/*")
+        .route("/.well-known/acme-challenge/*") // Used by letsencrypt to renew SSL certificates.
         .handler(StaticHandler.create()
             .setAllowRootFileSystemAccess(true)
             .setWebRoot("/webroot/.well-known/acme-challenge")

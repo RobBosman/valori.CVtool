@@ -39,18 +39,45 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
   }
 
   /**
-   * Expects message header <pre>
+   * Expects message header
    *   {
    *     "email": "PietjePuk@Valori.nl",
-   *     "name": "Pietje Puk
+   *     "name": "Pietje Puk"
    *   }
-   * </pre>
+   *   or message body
+   *   {
+   *     "email": "PietjePuk@Valori.nl"
+   *   }
+   *
+   * Response:
+   *   {
+   *     "_id": ""1111-2222-5555-7777,
+   *     "name": "Pietje Puk",
+   *     "email": "PietjePuk@Valori.nl",
+   *     ...
+   *   }
    */
   private fun handleRequest(message: Message<JsonObject>) =
       Single
           .just(message)
-          .map(::getEmailAndName)
-          .flatMap { (email, name) -> fetchAccountInfo(email, name) }
+          .flatMap {
+            val authInfo = getAuthInfo(message)
+            val emailFromAuth = authInfo["email"] ?: error("Email is not defined in Auth header.")
+            val accountIdFromBody = it.body()?.getString("accountId")
+            if (accountIdFromBody != null) {
+              authorize(authInfo, accountIdFromBody)
+              fetchAccountById(accountIdFromBody)
+                  .map { accountOptional -> accountOptional.orElse(JsonObject()) }
+            } else {
+              fetchAccountByEmail(emailFromAuth)
+                  .flatMap { accountOptional ->
+                    if (accountOptional.isPresent)
+                      Single.just(accountOptional.get())
+                    else
+                      createAccount(emailFromAuth, authInfo["name"] ?: error("Name is not defined in Auth header."))
+                  }
+            }
+          }
           .subscribe(
               {
                 log.debug("Successfully fetched accountInfo")
@@ -62,34 +89,43 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
               }
           )
 
-  private fun getEmailAndName(message: Message<JsonObject>): Pair<String, String> {
-    val email = message.headers()["email"]
-        ?: throw IllegalArgumentException("Error fetching accountInfo: cannot get 'email' from message headers.")
-    val name = message.headers()["name"]
-        ?: throw IllegalArgumentException("Error fetching accountInfo: cannot get 'name' from message headers.")
-    return email to name
+  private fun getAuthInfo(message: Message<JsonObject>): Map<String, String> {
+    val headers = message.headers() ?: error("Error fetching accountInfo: cannot get message headers.")
+    val authHeader = headers["Auth"] ?: error("Error fetching accountInfo: cannot get 'Auth' message header.")
+    val auth = JsonObject(authHeader)
+    return mapOf(
+        "email" to auth.getString("email"),
+        "name" to auth.getString("name"),
+        "privileges" to auth.getString("privileges"))
   }
 
-  private fun fetchAccountInfo(email: String, name: String) =
+  private fun authorize(authInfo: Map<String, String>, accountId: String) {
+    // TODO: authorize
+    error("Not authorized!")
+  }
+
+  private fun fetchAccountById(accountId: String) =
+      fetchAccount(JsonObject("""{ "account": [{ "_id": "$accountId" }] }"""))
+
+  private fun fetchAccountByEmail(email: String) =
+      fetchAccount(JsonObject("""{ "account": [{ "email": "${email.toUpperCase()}" }] }"""))
+
+  private fun fetchAccount(criteria: JsonObject): Single<Optional<JsonObject>> =
       vertx.eventBus()
-          .rxRequest<JsonObject>(FETCH_ADDRESS, composeAccountCriteria(email), deliveryOptions)
-          .flatMap { obtainOrCreateAccount(it.body(), email, name) }
-          .map { JsonObject().put("accountInfo", it) }
+        .rxRequest<JsonObject>(FETCH_ADDRESS, criteria, deliveryOptions)
+        .map {
+          val accounts = it.body().getInstanceMap("account").values
+          when (accounts.size) {
+            0 -> Optional.empty()
+            1 -> Optional.of(accounts.iterator().next())
+            else -> error("Error fetching accountInfo: found ${accounts.size} accounts.")
+          }
+        }
 
-  private fun composeAccountCriteria(email: String) =
-      JsonObject("""{ "account": [{ "email": "${email.toUpperCase()}" }] }""")
-
-  private fun obtainOrCreateAccount(accountEntity: JsonObject, email: String, name: String): Single<JsonObject> {
-    val accountInstanceMap = accountEntity.getInstanceMap("account")
-    return when (accountInstanceMap.size) {
-      0 -> {
-        val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), email, name)
-        vertx.eventBus()
-            .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
-            .map { accountInstance }
-      }
-      1 -> Single.just(accountInstanceMap.values.first())
-      else -> throw IllegalStateException("Error fetching accountInfo: found ${accountInstanceMap.size} records for $email.")
-    }
+  private fun createAccount(email: String, name: String): Single<JsonObject> {
+    val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), email, name)
+    return vertx.eventBus()
+        .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
+        .map { accountInstance }
   }
 }

@@ -63,8 +63,8 @@ export class EventBusClient {
     };
 
     this._eventBus.onerror = (error) => {
-      console.debug("An error occurred on the vert.x EventBus.", error);
-      throw error;
+      console.error("An error occurred on the vert.x EventBus.", error);
+      // throw error;
     };
   }
   

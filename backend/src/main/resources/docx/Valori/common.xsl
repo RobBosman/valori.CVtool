@@ -74,12 +74,9 @@
         </w:p>
       </xsl:when>
       <xsl:when test="starts-with($text, '# ')">
-        <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949" w:rsidP="001730DD">
+        <w:p w14:paraId="548A8F2F" w14:textId="0A8A5403" w:rsidR="00A52C14" w:rsidRDefault="0038710B" w:rsidP="0038710B">
           <w:pPr>
-            <w:numPr>
-              <w:ilvl w:val="0"/>
-              <w:numId w:val="18"/>
-            </w:numPr>
+            <w:ind w:left="534" w:hanging="364"/>
           </w:pPr>
           <w:r w:rsidRPr="00A52C14">
             <w:t><xsl:value-of select="$listItemNumber" />.</w:t>
@@ -88,13 +85,13 @@
           </w:r>
         </w:p>
       </xsl:when>
-      <xsl:when test="$text">
+      <xsl:otherwise>
         <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949" w:rsidP="001730DD">
           <w:r>
             <w:t><xsl:value-of select="$text" /></w:t>
           </w:r>
         </w:p>
-      </xsl:when>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
   

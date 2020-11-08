@@ -5,6 +5,7 @@ import io.vertx.core.Promise
 import io.vertx.core.buffer.Buffer.buffer
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.http.HttpServerOptions
+import io.vertx.core.http.impl.headers.VertxHttpHeaders
 import io.vertx.core.json.JsonObject
 import io.vertx.core.net.PemKeyCertOptions
 import io.vertx.ext.bridge.BridgeEventType
@@ -81,41 +82,31 @@ internal class HttpsServerVerticle : AbstractVerticle() {
               .setCertValue(cert.delegate)
         }
         .onErrorReturn {
-          log.debug("Error loading SSL certificates: ${it.message}.")
-          log.warn("Using fallback SSL certificates.")
+          log.warn("Error loading SSL certificates (${it.message}). Using fallback SSL certificates.")
           PemKeyCertOptions()
               .setKeyValue(sslKey)
               .setCertValue(sslCert)
         }
   }
 
-  private fun authenticationHandler(bridgeEvent: BridgeEvent) {
-    when (bridgeEvent.type()) {
-      BridgeEventType.SEND, BridgeEventType.PUBLISH -> {
-        val headers = bridgeEvent.rawMessage.getJsonObject("headers")
-        val jwt = headers.getString("Authorization")?.substringAfter("Bearer ")
-            ?: throw IllegalArgumentException("Cannot obtain 'Bearer' token from message Authorization header.")
-
-        vertx
-            .eventBus()
-            .rxRequest<JsonObject>(AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
-            .map { it.body() }
-            .subscribe(
-                {
-                  bridgeEvent.rawMessage
-                      .put("headers", headers
-                          .put("email", it.getString("email"))
-                          .put("name", it.getString("name"))
-                      )
-                  bridgeEvent.complete(true)
-                },
-                {
-                  bridgeEvent.complete(false)
-                }
-            )
-      }
-      else -> bridgeEvent.complete(true)
-    }
+  private fun createRouter(): Router {
+    val router = Router.router(vertx)
+    router
+        .route("/.well-known/acme-challenge/*") // Used by letsencrypt to renew SSL certificates.
+        .handler(StaticHandler.create()
+            .setAllowRootFileSystemAccess(true)
+            .setWebRoot("/webroot/.well-known/acme-challenge")
+        )
+    router
+        .mountSubRouter("/eventbus",
+            SockJSHandler.create(vertx).bridge(createBridgeOptions(), ::authHandler)
+        )
+    router
+        .route("/*")
+        .handler(StaticHandler.create()
+            .setWebRoot("frontend/dist")
+        )
+    return router
   }
 
   private fun createBridgeOptions() =
@@ -125,23 +116,79 @@ internal class HttpsServerVerticle : AbstractVerticle() {
           .addInboundPermitted(PermittedOptions().setAddress(CV_SAVE_ADDRESS))
           .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
 
-  private fun createRouter(): Router {
-    val router = Router.router(vertx)
-    router
-        .route("/.well-known/acme-challenge/*")
-        .handler(StaticHandler.create()
-            .setAllowRootFileSystemAccess(true)
-            .setWebRoot("/webroot/.well-known/acme-challenge")
-        )
-    router
-        .mountSubRouter("/eventbus",
-            SockJSHandler.create(vertx).bridge(createBridgeOptions(), ::authenticationHandler)
-        )
-    router
-        .route("/*")
-        .handler(StaticHandler.create()
-            .setWebRoot("frontend/dist")
-        )
-    return router
+  private fun authHandler(bridgeEvent: BridgeEvent) {
+    when (bridgeEvent.type()) {
+      BridgeEventType.SEND,
+      BridgeEventType.PUBLISH -> {
+        // Make sure we start with an empty 'Auth' header.
+        setAuthHeader(bridgeEvent, JsonObject())
+        Single
+            .just(bridgeEvent)
+            .flatMap(::authenticate)
+            .flatMap(::fetchPrivileges)
+            .subscribe(
+                {
+                  bridgeEvent.complete(true)
+                },
+                {
+                  log.debug("Error authenticating event bridge message.", it)
+                  bridgeEvent.complete(false)
+                }
+            )
+      }
+      else -> bridgeEvent.complete(true)
+    }
+  }
+
+  /**
+   * If successfully authenticated, an 'Auth' header will be added containing the user's 'name' and 'email'.
+   */
+  private fun authenticate(bridgeEvent: BridgeEvent): Single<BridgeEvent> {
+    val jwt = bridgeEvent.rawMessage
+        ?.getJsonObject("headers")
+        ?.getString("Authorization")
+        ?.substringAfter("Bearer ")
+        ?: throw IllegalArgumentException("Cannot obtain 'Bearer' token from Authorization header.")
+    return vertx
+        .eventBus()
+        .rxRequest<JsonObject>(AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
+        .map {
+          setAuthHeader(bridgeEvent, JsonObject()
+              .put("email", it.body().getString("email"))
+              .put("name", it.body().getString("name"))
+          )
+          bridgeEvent
+        }
+  }
+
+  /**
+   * If successfully authorized, the user's 'privileges' will be added to the 'Auth' header.
+   */
+  private fun fetchPrivileges(bridgeEvent: BridgeEvent): Single<BridgeEvent> {
+    val authHeader = getAuthHeader(bridgeEvent)
+    return vertx
+        .eventBus()
+        .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, null,
+            deliveryOptions.setHeaders(VertxHttpHeaders().add("Auth", authHeader.encode())))
+        .map {
+          val userPrivileges = it.body().getJsonArray("privileges")
+          setAuthHeader(bridgeEvent, authHeader.put("privileges", userPrivileges))
+
+          bridgeEvent
+        }
+  }
+
+  private fun getAuthHeader(bridgeEvent: BridgeEvent) =
+      bridgeEvent.rawMessage
+          ?.getJsonObject("headers")
+          ?.getJsonObject("Auth")
+          ?: JsonObject()
+
+  private fun setAuthHeader(bridgeEvent: BridgeEvent, authJson: JsonObject) {
+    val headers = bridgeEvent.rawMessage
+        ?.getJsonObject("headers")
+        ?: JsonObject()
+    bridgeEvent.rawMessage = bridgeEvent.rawMessage
+        .put("headers", headers.put("Auth", authJson))
   }
 }

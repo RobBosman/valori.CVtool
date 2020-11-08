@@ -9,9 +9,9 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
-import { CvDropdown } from "../widgets/CvDropdown";
 import { getEnumData, SkillCategories } from "./Enums";
 import { CvRating } from "../widgets/CvRating";
+import { CvComboBox } from "../widgets/CvComboBox";
 
 const entityName = "skill";
 
@@ -109,7 +109,8 @@ const Skill = (props) => {
     case "includeInCv":
       return <CvCheckbox
         field="includeInCv"
-        instanceContext={{ ...skillContext, instanceId: item._id }} />;
+        instanceContext={{ ...skillContext, instanceId: item._id }}
+      />;
     default:
       return item[column.fieldName];
     }
@@ -172,11 +173,12 @@ const Skill = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <CvDropdown
+              <CvComboBox
                 label="Categorie"
                 field="category"
                 instanceContext={skillContext}
                 options={SkillCategories}
+                allowFreeform={true}
               />
               <CvTextField
                 label="Omschrijving"
