@@ -112,6 +112,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
   private fun createBridgeOptions() =
       SockJSBridgeOptions()
           .addInboundPermitted(PermittedOptions().setAddress(AUTH_INFO_FETCH_ADDRESS))
+          .addInboundPermitted(PermittedOptions().setAddress(ACCOUNTS_FETCH_ADDRESS))
           .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
           .addInboundPermitted(PermittedOptions().setAddress(CV_SAVE_ADDRESS))
           .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))

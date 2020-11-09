@@ -14,7 +14,7 @@ export const cvEpics = [
 
   // Select or reset the current cv.
   (action$, state$) => action$.pipe(
-    ofType(setAccountInfo.type, safeActions.replaceContent.type, safeActions.replaceInstance.type, safeActions.replaceInstances.type),
+    ofType(setAccountInfo.type, safeActions.replaceContent.type, safeActions.replaceContentInstance.type, safeActions.replaceContentInstances.type),
     map(() => getCvId(state$.value.safe?.content?.cv, state$.value.authentication?.accountInfo?._id)),
     distinctUntilChanged(),
     map((cvId) => setSelectedId("cv", cvId))

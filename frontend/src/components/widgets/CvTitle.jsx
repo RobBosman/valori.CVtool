@@ -9,7 +9,7 @@ const CvTitle = (props) => {
   const account = props.accountEntity && props.accountEntity[cv?.accountId];
   const name = account?.name || "<NAAM>";
   const role = cv?.role && cv.role[props.locale] || "<ROL>";
-  const dateOfBirth = account?.dateOfBirth || "<GEBOORTEDATUM>";
+  const dateOfBirth = account?.dateOfBirth && new Date(account.dateOfBirth).toLocaleDateString(props.locale.substr(0, 2)) || "<GEBOORTEDATUM>";
   const residence = account?.residence || "<WOONPLAATS>";
 
   return (
@@ -19,7 +19,7 @@ const CvTitle = (props) => {
         tokens={{ childrenGap: "l1" }}>
         <Text variant="large">{role}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
-        <Text variant="large">{new Date(dateOfBirth).toLocaleDateString(props.locale.replace("_", "-"))}</Text>
+        <Text variant="large">{dateOfBirth}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
         <Text variant="large">{residence}</Text>
       </Stack>

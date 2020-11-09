@@ -5,7 +5,7 @@ import { useId } from "@uifabric/react-hooks";
 
 export const CvRating = (props) => {
 
-  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const { entity, instanceId, replaceContentInstance } = props.instanceContext;
   const instance = entity && entity[instanceId];
 
   const value = instance && instance[props.field] || props.defaultValue || 0;

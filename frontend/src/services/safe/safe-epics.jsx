@@ -6,17 +6,24 @@ import * as safeServices from "./safe-services";
 
 export const safeEpics = [
 
+  // Fetch accounts from the server.
+  (action$) => action$.pipe(
+    ofType(safeActions.fetchAccounts.type),
+    switchMap(() => safeServices.fetchAccountsFromRemote(eventBusClient.sendEvent)),
+    map((fetchedAccunts) => safeActions.replaceAccounts(fetchedAccunts))
+  ),
+
   // Fetch cv data from the server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchCvByAccountId.type),
     map((action) => action.payload),
     switchMap((accountId) => safeServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
-    map((safeContent) => safeActions.replaceContent(safeContent))
+    map((fetchedCv) => safeActions.replaceContent(fetchedCv))
   ),
 
   // Register last edited timestamp.
   (action$) => action$.pipe(
-    ofType(safeActions.replaceInstance.type, safeActions.replaceInstances.type),
+    ofType(safeActions.replaceAccountInstance.type, safeActions.replaceContentInstance.type, safeActions.replaceContentInstances.type),
     map(() => safeActions.setLastEditedTimestamp(new Date()))
   ),
 

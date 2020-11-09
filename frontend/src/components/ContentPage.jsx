@@ -13,71 +13,85 @@ import Publication from "./cv/Publication";
 import Reference from "./cv/Reference";
 import Skill from "./cv/Skill";
 import * as cvActions from "../services/cv/cv-actions";
-
-const NAV_GROUPS = [
-  {
-    name: "Eigen CV",
-    links: [
-      {
-        key: "#",
-        url: "#",
-        name: "Info",
-        icon: "BullseyeTarget",
-        content: <Info />
-      },
-      {
-        key: "#profile",
-        url: "#profile",
-        name: "Profiel",
-        icon: "ContactInfo",
-        content: <Profile />
-      },
-      {
-        key: "#education",
-        url: "#education",
-        name: "Opleiding",
-        icon: "D365TalentLearn",
-        content: <Education />
-      },
-      {
-        key: "#skills",
-        url: "#skills",
-        name: "Vaardigheden",
-        icon: "Backlog",
-        content: <Skill />
-      },
-      {
-        key: "#publications",
-        url: "#publications",
-        name: "Publicaties",
-        icon: "ReadingMode",
-        content: <Publication />
-      },
-      {
-        key: "#references",
-        url: "#references",
-        name: "Referenties",
-        icon: "ReminderGroup",
-        content: <Reference />
-      },
-      {
-        key: "#experience",
-        url: "#experience",
-        name: "Ervaring",
-        icon: "TaskLogo",
-        content: <Experience />
-      }
-    ]
-  }
-];
+import Accounts from "./admin/Accounts";
 
 const ContentPage = (props) => {
+
+  const isAdmin = props.accountInfo.privileges.includes("ADMIN");
+  const navGroups = [
+    isAdmin && {
+      name: "Admin",
+      links: [
+        {
+          key: "#accounts",
+          url: "#accounts",
+          name: "Accounts",
+          icon: "AccountManagement",
+          content: <Accounts />
+        }
+      ]
+    },
+    {
+      name: "Eigen CV",
+      links: [
+        {
+          key: "#",
+          url: "#",
+          name: "Info",
+          icon: "BullseyeTarget",
+          content: <Info />
+        },
+        {
+          key: "#profile",
+          url: "#profile",
+          name: "Profiel",
+          icon: "ContactInfo",
+          content: <Profile />
+        },
+        {
+          key: "#education",
+          url: "#education",
+          name: "Opleiding",
+          icon: "D365TalentLearn",
+          content: <Education />
+        },
+        {
+          key: "#skills",
+          url: "#skills",
+          name: "Vaardigheden",
+          icon: "Backlog",
+          content: <Skill />
+        },
+        {
+          key: "#publications",
+          url: "#publications",
+          name: "Publicaties",
+          icon: "ReadingMode",
+          content: <Publication />
+        },
+        {
+          key: "#references",
+          url: "#references",
+          name: "Referenties",
+          icon: "ReminderGroup",
+          content: <Reference />
+        },
+        {
+          key: "#experience",
+          url: "#experience",
+          name: "Ervaring",
+          icon: "TaskLogo",
+          content: <Experience />
+        }
+      ]
+    }
+  ].filter(Boolean);
 
   let renderContent = null;
   if (props.locationHash === "" || props.locationHash === "#") {
     renderContent = <Info />;
   } else {
-    const item = NAV_GROUPS
+    const item = navGroups
       .flatMap((navGroup) => navGroup.links)
       .find((item) => item.url === props.locationHash);
     renderContent = item?.content
@@ -94,13 +108,13 @@ const ContentPage = (props) => {
         </div>
         <Nav
           styles={{ root: { width: 180 } }}
-          groups={NAV_GROUPS}
+          groups={navGroups}
           initialSelectedKey={props.locationHash || "#"}
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />
         <DefaultButton
-          text="Download cv"
+          text="Download CV"
           iconProps={{ iconName: "DownloadDocument" }}
           tooltipText="Download CV als MS-Word document"
           onClick={onGenerateCv}

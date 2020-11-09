@@ -5,7 +5,7 @@ describe("safe-actions.test", () => {
 
   const _reducer = reducerRegistry.getRootReducer();
 
-  it("should reduce replaceContent and replaceInstance(s)", () => {
+  it("should reduce replaceContent and replaceContentInstance(s)", () => {
     let _state = undefined;
 
     const dummySafeContentV0 = {
@@ -26,7 +26,7 @@ describe("safe-actions.test", () => {
         313: dummyInstanceV1
       }
     };
-    _state = _reducer(_state, safeActions.replaceInstance("DUMMY", 313, dummyInstanceV1));
+    _state = _reducer(_state, safeActions.replaceContentInstance("DUMMY", 313, dummyInstanceV1));
     expect(_state.safe.content).toStrictEqual(dummySafeContentV1);
 
     const dummyInstanceV2 = {
@@ -38,14 +38,14 @@ describe("safe-actions.test", () => {
         313: dummyInstanceV2
       }
     };
-    _state = _reducer(_state, safeActions.replaceInstance("DUMMY", 313, dummyInstanceV2));
+    _state = _reducer(_state, safeActions.replaceContentInstance("DUMMY", 313, dummyInstanceV2));
     expect(_state.safe.content).toStrictEqual(dummySafeContentV2);
 
-    _state = _reducer(_state, safeActions.replaceInstance("DUMMY", 313));
+    _state = _reducer(_state, safeActions.replaceContentInstance("DUMMY", 313));
     expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
 
 
-    _state = _reducer(_state, safeActions.replaceInstances("DUMMY", []));
+    _state = _reducer(_state, safeActions.replaceContentInstances("DUMMY", []));
     expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
 
     const dummyInstanceV3 = {
@@ -58,7 +58,7 @@ describe("safe-actions.test", () => {
         "176-617": dummyInstanceV3
       }
     };
-    _state = _reducer(_state, safeActions.replaceInstances("DUMMY", [dummyInstanceV1, dummyInstanceV2, dummyInstanceV3]));
+    _state = _reducer(_state, safeActions.replaceContentInstances("DUMMY", [dummyInstanceV1, dummyInstanceV2, dummyInstanceV3]));
     expect(_state.safe.content).toStrictEqual(dummySafeContentV3);
   });
 

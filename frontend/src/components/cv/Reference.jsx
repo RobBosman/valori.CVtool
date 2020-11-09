@@ -3,7 +3,7 @@ import React from "react";
 import { Text, Stack, ActionButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceInstance } from "../../services/safe/safe-actions";
+import { replaceContentInstance } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
@@ -32,7 +32,7 @@ const Reference = (props) => {
     replaceInstance: props.replaceReference
   };
 
-  const renderCheckbox = (item) =>
+  const renderInCvCheckbox = (item) =>
     <CvCheckbox
       field="includeInCv"
       instanceContext={{ ...referenceContext, instanceId: item._id }}
@@ -64,7 +64,7 @@ const Reference = (props) => {
       key: "includeInCv",
       fieldName: "includeInCv",
       name: "In cv",
-      onRender: renderCheckbox,
+      onRender: renderInCvCheckbox,
       isResizable: false,
       minWidth: 40,
       maxWidth: 40
@@ -196,7 +196,7 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceReference: (id, instance) => dispatch(replaceInstance(entityName, id, instance)),
+  replaceReference: (id, instance) => dispatch(replaceContentInstance(entityName, id, instance)),
   setSelectedReferenceId: (id) => dispatch(setSelectedId(entityName, id))
 });
 

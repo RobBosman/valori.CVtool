@@ -3,7 +3,7 @@ import React from "react";
 import { Text, Stack, Pivot, PivotItem, ActionButton, TeachingBubbleContent, Coachmark, DirectionalHint } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceInstance, replaceInstances } from "../../services/safe/safe-actions";
+import { replaceContentInstance, replaceContentInstances } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
@@ -37,7 +37,7 @@ const Experience = (props) => {
   const [coachmarkTarget, setCoachmarkTarget] = React.useState(undefined);
   const hideCoachmark = () => setCoachmarkTarget(undefined);
 
-  const renderCheckbox = (item) =>
+  const renderInCvCheckbox = (item) =>
     <CvCheckbox
       field="includeInCv"
       instanceContext={{ ...experienceContext, instanceId: item._id }}
@@ -73,7 +73,7 @@ const Experience = (props) => {
       key: "includeInCv",
       fieldName: "includeInCv",
       name: "In cv",
-      onRender: renderCheckbox,
+      onRender: renderInCvCheckbox,
       isResizable: false,
       minWidth: 40,
       maxWidth: 40
@@ -304,13 +304,12 @@ const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedId["cv"],
   experienceEntity: state.safe.content[entityName],
-  selectedExperienceId: state.ui.selectedId[entityName],
-  replaceExperience: PropTypes.func.isRequired,
+  selectedExperienceId: state.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceExperience: (id, instance) => dispatch(replaceInstance(entityName, id, instance)),
-  replaceExperiences: (instances) => dispatch(replaceInstances(entityName, instances)),
+  replaceExperience: (id, instance) => dispatch(replaceContentInstance(entityName, id, instance)),
+  replaceExperiences: (instances) => dispatch(replaceContentInstances(entityName, instances)),
   setSelectedExperienceId: (id) => dispatch(setSelectedId(entityName, id))
 });
 

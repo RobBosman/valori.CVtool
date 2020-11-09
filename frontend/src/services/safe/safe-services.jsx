@@ -1,6 +1,14 @@
+export const fetchAccountsFromRemote = (sendEventFunc) =>
+  sendEventFunc("accounts.fetch", {})
+    .then((message) => message.body);
+
 export const fetchCvFromRemote = (accountId, sendEventFunc) =>
   sendEventFunc("cv.fetch", { accountId })
     .then((message) => message.body);
+
+export const saveAccountToRemote = (accountData, sendEventFunc) =>
+  sendEventFunc("account.save", accountData);
+
 
 export const saveCvToRemote = (cvData, sendEventFunc) =>
   sendEventFunc("cv.save", cvData);

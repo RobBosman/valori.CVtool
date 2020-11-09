@@ -25,7 +25,8 @@ object Main {
       MongoSaveVerticle::class,
       CvFetchVerticle::class,
       CvSaveVerticle::class,
-      CvGenerateVerticle::class)
+      CvGenerateVerticle::class,
+      AccountsFetchVerticle::class)
 
   fun run() {
     val options = VertxOptions()
