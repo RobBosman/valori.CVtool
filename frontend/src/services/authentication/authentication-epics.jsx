@@ -102,17 +102,18 @@ export const authenticationEpics = [
   // Store or clear the accountInfo (and other data).
   (action$) => action$.pipe(
     ofType(authenticationActions.setAccountInfo.type),
-    map((action) => action.payload?._id),
-    switchMap((accountInfoId) =>
-      // When accountInfo is available, then fetch the cv data, otherwise erase it.
-      accountInfoId
+    map((action) => action.payload),
+    switchMap((accountInfo) =>
+      // When accountInfo is available, then fetch the admin or cv data, otherwise erase it.
+      accountInfo
         ? of(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_IN),
-          safeActions.fetchAccounts(),
-          safeActions.fetchCvByAccountId(accountInfoId))
+          accountInfo.privileges.includes("ADMIN")
+            ? safeActions.fetchAccounts()
+            : safeActions.fetchCvByAccountId(accountInfo._id))
         : of(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_OUT),
-          safeActions.replaceContent(undefined))
+          safeActions.replaceCvContent(undefined))
     )
   )
 ];

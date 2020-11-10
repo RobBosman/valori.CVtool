@@ -15,17 +15,5 @@ export const uiEpics = [
     distinctUntilChanged(),
     filter((loginState) => loginState === LoginStates.LOGGED_OUT),
     map(() => uiActions.resetSelectedIds())
-  ),
-
-  // // Log all Redux actions.
-  // (action$) => action$.pipe(
-  //   tap((action) => console.debug("dispatched action: ", action)),
-  //   ignoreElements()
-  // ),
-
-  // // Add artificial delays.
-  // (action$) => action$.pipe(
-  //   tap((action) => heavyWait(action.type, 0)),
-  //   ignoreElements()
-  // )
+  )
 ];

@@ -5,17 +5,17 @@ describe("safe-actions.test", () => {
 
   const _reducer = reducerRegistry.getRootReducer();
 
-  it("should reduce replaceContent and replaceContentInstance(s)", () => {
+  it("should reduce replaceCvContent and replaceCvContentInstance(s)", () => {
     let _state = undefined;
 
     const dummySafeContentV0 = {
       DUMMY: {}
     };
-    _state = _reducer(_state, safeActions.replaceContent(dummySafeContentV0));
-    expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
+    _state = _reducer(_state, safeActions.replaceCvContent(dummySafeContentV0));
+    expect(_state.safe.cvContent).toStrictEqual(dummySafeContentV0);
 
-    _state = _reducer(_state, safeActions.replaceContent());
-    expect(_state.safe.content).toStrictEqual({});
+    _state = _reducer(_state, safeActions.replaceCvContent());
+    expect(_state.safe.cvContent).toStrictEqual({});
 
     const dummyInstanceV1 = {
       _id: 313,
@@ -26,8 +26,8 @@ describe("safe-actions.test", () => {
         313: dummyInstanceV1
       }
     };
-    _state = _reducer(_state, safeActions.replaceContentInstance("DUMMY", 313, dummyInstanceV1));
-    expect(_state.safe.content).toStrictEqual(dummySafeContentV1);
+    _state = _reducer(_state, safeActions.replaceCvContentInstance("DUMMY", 313, dummyInstanceV1));
+    expect(_state.safe.cvContent).toStrictEqual(dummySafeContentV1);
 
     const dummyInstanceV2 = {
       _id: 313,
@@ -38,15 +38,15 @@ describe("safe-actions.test", () => {
         313: dummyInstanceV2
       }
     };
-    _state = _reducer(_state, safeActions.replaceContentInstance("DUMMY", 313, dummyInstanceV2));
-    expect(_state.safe.content).toStrictEqual(dummySafeContentV2);
+    _state = _reducer(_state, safeActions.replaceCvContentInstance("DUMMY", 313, dummyInstanceV2));
+    expect(_state.safe.cvContent).toStrictEqual(dummySafeContentV2);
 
-    _state = _reducer(_state, safeActions.replaceContentInstance("DUMMY", 313));
-    expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
+    _state = _reducer(_state, safeActions.replaceCvContentInstance("DUMMY", 313));
+    expect(_state.safe.cvContent).toStrictEqual(dummySafeContentV0);
 
 
-    _state = _reducer(_state, safeActions.replaceContentInstances("DUMMY", []));
-    expect(_state.safe.content).toStrictEqual(dummySafeContentV0);
+    _state = _reducer(_state, safeActions.replaceCvContentInstances("DUMMY", []));
+    expect(_state.safe.cvContent).toStrictEqual(dummySafeContentV0);
 
     const dummyInstanceV3 = {
       _id: "176-617",
@@ -58,8 +58,8 @@ describe("safe-actions.test", () => {
         "176-617": dummyInstanceV3
       }
     };
-    _state = _reducer(_state, safeActions.replaceContentInstances("DUMMY", [dummyInstanceV1, dummyInstanceV2, dummyInstanceV3]));
-    expect(_state.safe.content).toStrictEqual(dummySafeContentV3);
+    _state = _reducer(_state, safeActions.replaceCvContentInstances("DUMMY", [dummyInstanceV1, dummyInstanceV2, dummyInstanceV3]));
+    expect(_state.safe.cvContent).toStrictEqual(dummySafeContentV3);
   });
 
   it("should reduce setLastEditedTimestamp", () => {

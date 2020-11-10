@@ -7,21 +7,23 @@ const CvTitle = (props) => {
   
   const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
   const account = props.accountEntity && props.accountEntity[cv?.accountId];
-  const name = account?.name || "<NAAM>";
-  const role = cv?.role && cv.role[props.locale] || "<ROL>";
-  const dateOfBirth = account?.dateOfBirth && new Date(account.dateOfBirth).toLocaleDateString(props.locale.substr(0, 2)) || "<GEBOORTEDATUM>";
-  const residence = account?.residence || "<WOONPLAATS>";
+  const titleFields = {
+    name: account?.name || "<NAAM>",
+    role: cv?.role && cv.role[props.locale] || "<ROL>",
+    dateOfBirth: account?.dateOfBirth && new Date(account.dateOfBirth).toLocaleDateString(props.locale.substr(0, 2)) || "<GEBOORTEDATUM>",
+    residence: account?.residence || "<WOONPLAATS>"
+  };
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
-      <Text variant="xxLarge">{name}</Text>
+      <Text variant="xxLarge">{titleFields.name}</Text>
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
-        <Text variant="large">{role}</Text>
+        <Text variant="large">{titleFields.role}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
-        <Text variant="large">{dateOfBirth}</Text>
+        <Text variant="large">{titleFields.dateOfBirth}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
-        <Text variant="large">{residence}</Text>
+        <Text variant="large">{titleFields.residence}</Text>
       </Stack>
     </Stack>
   );
@@ -36,9 +38,9 @@ CvTitle.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  cvEntity: state.safe.content.cv,
+  cvEntity: state.safe.cvContent.cv,
   selectedCvId: state.ui.selectedId["cv"],
-  accountEntity: state.safe.content.account
+  accountEntity: state.safe.cvContent.account
 });
 
 export default connect(select)(CvTitle);

@@ -2,15 +2,16 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const fetchAccounts = createAction("FECTH_ACCOUNTS", () => ({}));
-export const replaceAccounts = createAction("REPLACE_ACCOUNTS");
-export const replaceAccountInstance = createAction("REPLACE_ACCOUNT_INSTANCE",
-  (entity, instanceId, instance) => ({ payload: { entity, instanceId, instance } }));
 export const fetchCvByAccountId = createAction("FECTH_CV_BY_ACCOUNT_ID");
 export const saveCv = createAction("SAVE_CV");
-export const replaceContent = createAction("REPLACE_CONTENT");
-export const replaceContentInstance = createAction("REPLACE_CONTENT_INSTANCE",
+
+export const replaceAdminContent = createAction("REPLACE_ADMIN_CONTENT");
+export const replaceAdminContentInstance = createAction("REPLACE_ADMIN_CONTENT_INSTANCE",
   (entity, instanceId, instance) => ({ payload: { entity, instanceId, instance } }));
-export const replaceContentInstances = createAction("REPLACE_CONTENT_INSTANCES",
+export const replaceCvContent = createAction("REPLACE_CV_CONTENT");
+export const replaceCvContentInstance = createAction("REPLACE_CV_CONTENT_INSTANCE",
+  (entity, instanceId, instance) => ({ payload: { entity, instanceId, instance } }));
+export const replaceCvContentInstances = createAction("REPLACE_CV_CONTENT_INSTANCES",
   (entity, instances) => ({ payload: { entity, instances } }));
 export const setLastEditedTimestamp = createAction("SET_LAST_EDITED_TIMESTAMP");
 export const setLastSavedTimestamp = createAction("SET_LAST_SAVED_TIMESTAMP");
@@ -19,43 +20,43 @@ reducerRegistry.register(
   "safe",
   createReducer(
     {
-      accounts: {},
-      content: {}
+      adminContent: {},
+      cvContent: {}
     },
     {
-      [replaceAccounts]: (state, action) => {
-        state.accounts = action.payload ? action.payload : {};
+      [replaceAdminContent]: (state, action) => {
+        state.adminContent = action.payload ? action.payload : {};
       },
-      [replaceAccountInstance]: (state, action) => {
-        if (!state.accounts[action.payload.entity]) {
-          state.accounts[action.payload.entity] = {};
+      [replaceAdminContentInstance]: (state, action) => {
+        if (!state.adminContent[action.payload.entity]) {
+          state.adminContent[action.payload.entity] = {};
         }
         if (action.payload.instance) {
-          state.accounts[action.payload.entity][action.payload.instanceId] = action.payload.instance;
+          state.adminContent[action.payload.entity][action.payload.instanceId] = action.payload.instance;
         } else {
-          delete(state.accounts[action.payload.entity][action.payload.instanceId]);
+          delete(state.adminContent[action.payload.entity][action.payload.instanceId]);
         }
       },
-      [replaceContent]: (state, action) => {
-        state.content = action.payload ? action.payload : {};
+      [replaceCvContent]: (state, action) => {
+        state.cvContent = action.payload ? action.payload : {};
       },
-      [replaceContentInstance]: (state, action) => {
-        if (!state.content[action.payload.entity]) {
-          state.content[action.payload.entity] = {};
+      [replaceCvContentInstance]: (state, action) => {
+        if (!state.cvContent[action.payload.entity]) {
+          state.cvContent[action.payload.entity] = {};
         }
         if (action.payload.instance) {
-          state.content[action.payload.entity][action.payload.instanceId] = action.payload.instance;
+          state.cvContent[action.payload.entity][action.payload.instanceId] = action.payload.instance;
         } else {
-          delete(state.content[action.payload.entity][action.payload.instanceId]);
+          delete(state.cvContent[action.payload.entity][action.payload.instanceId]);
         }
       },
-      [replaceContentInstances]: (state, action) => {
-        if (!state.content[action.payload.entity]) {
-          state.content[action.payload.entity] = {};
+      [replaceCvContentInstances]: (state, action) => {
+        if (!state.cvContent[action.payload.entity]) {
+          state.cvContent[action.payload.entity] = {};
         }
         for (let i = 0; i < action.payload.instances.length; i++) {
           const instance = action.payload.instances[i];
-          state.content[action.payload.entity][instance._id] = instance;
+          state.cvContent[action.payload.entity][instance._id] = instance;
         }
       },
       [setLastEditedTimestamp]: (state, action) => {

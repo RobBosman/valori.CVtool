@@ -148,7 +148,7 @@ const select = (state) => ({
   account: state.authentication.accountInfo,
   loginState: state.authentication.loginState,
   isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
-  hasSafeData: Object.keys(state.safe.content).length > 0,
+  hasSafeData: Object.keys(state.safe.cvContent).length > 0,
   lastEditedTimestamp: state.safe.lastEditedTimestamp,
   lastSavedTimestamp: state.safe.lastSavedTimestamp
 });

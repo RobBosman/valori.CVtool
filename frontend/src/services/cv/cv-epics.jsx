@@ -2,20 +2,19 @@ import { ofType } from "redux-observable";
 import { map, distinctUntilChanged, switchMap, ignoreElements, tap } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "../safe/safe-actions";
-import { setAccountInfo } from "../authentication/authentication-actions";
 import { setSelectedId } from "../ui/ui-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
 
-const getCvId = (cvEntity, accountInfoId) =>
-  cvEntity && accountInfoId && Object.values(cvEntity).find((cvInstance) => cvInstance.accountId === accountInfoId)?._id;
+const getFirstCvId = (cvEntity) =>
+  cvEntity && Object.keys(cvEntity)[0];
 
 export const cvEpics = [
 
-  // Select or reset the current cv.
+  // Select or reset the first available cv.
   (action$, state$) => action$.pipe(
-    ofType(setAccountInfo.type, safeActions.replaceContent.type, safeActions.replaceContentInstance.type, safeActions.replaceContentInstances.type),
-    map(() => getCvId(state$.value.safe?.content?.cv, state$.value.authentication?.accountInfo?._id)),
+    ofType(safeActions.replaceCvContent.type),
+    map(() => getFirstCvId(state$.value.safe?.cvContent?.cv)),
     distinctUntilChanged(),
     map((cvId) => setSelectedId("cv", cvId))
   ),
@@ -31,7 +30,6 @@ export const cvEpics = [
 ];
 
 const downloadFile = (fileName, contentB64) => {
-
   const a = document.createElement("a");
   a.style = "display: none";
   document.body.appendChild(a);

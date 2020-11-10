@@ -32,7 +32,7 @@ const ContentPage = (props) => {
       ]
     },
     {
-      name: "Eigen CV",
+      name: "CV",
       links: [
         {
           key: "#",
@@ -46,6 +46,7 @@ const ContentPage = (props) => {
           url: "#profile",
           name: "Profiel",
           icon: "ContactInfo",
+          disabled: !props.selectedCvId,
           content: <Profile />
         },
         {
@@ -53,6 +54,7 @@ const ContentPage = (props) => {
           url: "#education",
           name: "Opleiding",
           icon: "D365TalentLearn",
+          disabled: !props.selectedCvId,
           content: <Education />
         },
         {
@@ -60,6 +62,7 @@ const ContentPage = (props) => {
           url: "#skills",
           name: "Vaardigheden",
           icon: "Backlog",
+          disabled: !props.selectedCvId,
           content: <Skill />
         },
         {
@@ -67,6 +70,7 @@ const ContentPage = (props) => {
           url: "#publications",
           name: "Publicaties",
           icon: "ReadingMode",
+          disabled: !props.selectedCvId,
           content: <Publication />
         },
         {
@@ -74,6 +78,7 @@ const ContentPage = (props) => {
           url: "#references",
           name: "Referenties",
           icon: "ReminderGroup",
+          disabled: !props.selectedCvId,
           content: <Reference />
         },
         {
@@ -81,6 +86,7 @@ const ContentPage = (props) => {
           url: "#experience",
           name: "Ervaring",
           icon: "TaskLogo",
+          disabled: !props.selectedCvId,
           content: <Experience />
         }
       ]
@@ -117,6 +123,7 @@ const ContentPage = (props) => {
           text="Download CV"
           iconProps={{ iconName: "DownloadDocument" }}
           tooltipText="Download CV als MS-Word document"
+          disabled={!props.selectedCvId}
           onClick={onGenerateCv}
         />
       </Stack>
@@ -135,12 +142,14 @@ ContentPage.propTypes = {
   navKey: PropTypes.string,
   accountInfo: PropTypes.object,
   locationHash: PropTypes.string,
+  selectedCvId: PropTypes.string,
   generateCv: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   accountInfo: state.authentication.accountInfo,
-  locationHash: state.ui.locationHash
+  locationHash: state.ui.locationHash,
+  selectedCvId: state.ui.selectedId["cv"]
 });
 
 const mapDispatchToProps = (dispatch) => ({

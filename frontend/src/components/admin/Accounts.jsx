@@ -1,13 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, Checkbox, ActionButton } from "@fluentui/react";
+import { Text, Stack, Checkbox } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceAccountInstance } from "../../services/safe/safe-actions";
+import { fetchCvByAccountId, replaceAdminContentInstance, replaceCvContent } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
-import { CvTextField } from "../widgets/CvTextField";
-import * as cvActions from "../../services/cv/cv-actions";
 
 const entityName = "account";
 
@@ -27,16 +25,28 @@ const Accounts = (props) => {
     entity: props.accountEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
-    replaceInstance: props.replaceAccount
+    replaceInstance: props.replaceAccountInstance
   };
 
-  const renderAdminCheckbox = (item) => {
-    return <Checkbox
+  const renderAdminCheckbox = (item) => (
+    <Checkbox
       checked={item.privileges.includes("ADMIN")}
-      onChange={ (event) => console.log("event", event) }
-    />;
-  };
-    
+      onChange={() => {
+        alert("TODO: update privileges!"); // TODO: update privileges!
+        // const selectedAccount = props.accountEntity[props.selectedAccountId];
+        // console.log("selectedAccount", selectedAccount);
+        // if (selectedAccount) {
+        //   console.log("selectedAccount.privileges", selectedAccount.privileges);
+        //   const changedAccount = { ...selectedAccount };
+        //   if (selectedAccount.privileges.includes("ADMIN")) {
+        //     changedAccount.privileges = selectedAccount.privileges.filter(privilege => privilege === "ADMIN");
+        //   } else {
+        //     changedAccount.privileges.push("ADMIN");
+        //   }
+        //   props.replaceAccountInstance(props.selectedAccountId, changedAccount);
+        // }
+      }}
+    />);
 
   const columns = [
     {
@@ -58,7 +68,7 @@ const Accounts = (props) => {
     }
   ];
 
-  const { viewPaneColor, editPaneColor } = useTheme();
+  const { viewPaneColor } = useTheme();
   const viewStyles = {
     root: [
       {
@@ -67,22 +77,24 @@ const Accounts = (props) => {
       }
     ]
   };
-  const editStyles = {
-    root: [
-      {
-        background: editPaneColor,
-        padding: 20
-      }
-    ]
-  };
   const tdStyle = {
     minWidth: 250,
     width: "calc(50vw - 98px)"
   };
+  
+  const [currentAccountId, setCurrentAccountId] = React.useState(null);
+  React.useEffect(() => {
+    if (currentAccountId != props.selectedAccountId) {
+      if (currentAccountId) {
+        props.clearCvContent();
+      }
+      setCurrentAccountId(props.selectedAccountId);
+    }
+  });
 
-  const onGenerateCv = () => {
+  const onSelectCv = () => {
     if (props.selectedAccountId) {
-      props.generateCv(props.selectedAccountId);
+      props.fetchCv(props.selectedAccountId);
     }
   };
 
@@ -100,27 +112,7 @@ const Accounts = (props) => {
                 items={accounts}
                 instanceContext={accountContext}
                 setKey={entityName}
-              />
-            </Stack>
-          </td>
-
-          <td valign="top" style={tdStyle}>
-            <Stack styles={editStyles}>
-              <CvTextField
-                label="Naam"
-                field="name"
-                instanceContext={accountContext}
-              />
-              <CvTextField
-                label="Autorisaties"
-                field="privileges"
-                instanceContext={accountContext}
-              />
-              <ActionButton
-                text="Download"
-                iconProps={{ iconName: "DownloadDocument" }}
-                disabled={!props.selectedAccountId}
-                onClick={onGenerateCv}
+                onItemInvoked={onSelectCv}
               />
             </Stack>
           </td>
@@ -133,22 +125,24 @@ const Accounts = (props) => {
 Accounts.propTypes = {
   locale: PropTypes.string.isRequired,
   accountEntity: PropTypes.object,
-  replaceAccount: PropTypes.func.isRequired,
+  replaceAccountInstance: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
   setSelectedAccountId: PropTypes.func.isRequired,
-  generateCv: PropTypes.func.isRequired
+  clearCvContent: PropTypes.func.isRequired,
+  fetchCv: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   locale: state.ui.locale,
-  accountEntity: state.safe.accounts[entityName],
+  accountEntity: state.safe.adminContent[entityName],
   selectedAccountId: state.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceAccount: (id, instance) => dispatch(replaceAccountInstance(entityName, id, instance)),
+  replaceAccountInstance: (id, instance) => dispatch(replaceAdminContentInstance(entityName, id, instance)),
+  clearCvContent: () => dispatch(replaceCvContent(undefined)),
   setSelectedAccountId: (id) => dispatch(setSelectedId(entityName, id)),
-  generateCv: (accountId) => dispatch(cvActions.generateCv(accountId))
+  fetchCv: (accountId) => dispatch(fetchCvByAccountId(accountId))
 });
 
 export default connect(select, mapDispatchToProps)(Accounts);

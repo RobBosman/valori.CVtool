@@ -3,7 +3,7 @@ import React from "react";
 import { Text, Stack, ActionButton, FontIcon } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceContentInstance } from "../../services/safe/safe-actions";
+import { replaceCvContentInstance } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
@@ -229,12 +229,12 @@ Education.propTypes = {
 const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedId["cv"],
-  educationEntity: state.safe.content[entityName],
+  educationEntity: state.safe.cvContent[entityName],
   selectedEducationId: state.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceEducation: (id, instance) => dispatch(replaceContentInstance(entityName, id, instance)),
+  replaceEducation: (id, instance) => dispatch(replaceCvContentInstance(entityName, id, instance)),
   setSelectedEducationId: (id) => dispatch(setSelectedId(entityName, id))
 });
 
