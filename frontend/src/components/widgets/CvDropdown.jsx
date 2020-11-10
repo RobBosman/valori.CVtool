@@ -4,7 +4,7 @@ import { Dropdown } from "@fluentui/react";
 
 export const CvDropdown = (props) => {
   
-  const { entity, instanceId, replaceCvContentInstance } = props.instanceContext;
+  const { entity, instanceId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[instanceId];
   const value = instance && instance[props.field] || props.defaultValue || "";
 
