@@ -122,6 +122,7 @@ const Publication = (props) => {
                   <ActionButton
                     text="Toevoegen"
                     iconProps={{ iconName: "Add" }}
+                    disabled={!props.selectedCvId}
                     onClick={onAddItem}
                   />
                   <ActionButton

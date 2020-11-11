@@ -73,7 +73,7 @@ const Accounts = (props) => {
     root: [
       {
         background: viewPaneColor,
-        padding: 20
+        padding: 20,
       }
     ]
   };

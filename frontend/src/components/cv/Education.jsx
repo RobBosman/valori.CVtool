@@ -47,7 +47,7 @@ const Education = (props) => {
       name: "Soort opleiding",
       iconName: "Certificate",
       isIconOnly: true,
-      onRender: (item) => showIcon(getEnumData(EducationTypes, item.type).iconProps),
+      onRender: (item) => showIcon(getEnumData(EducationTypes, item.type)?.iconProps),
       isResizable: false,
       minWidth: 20,
       maxWidth: 20
@@ -81,7 +81,7 @@ const Education = (props) => {
       key: "result",
       fieldName: "result",
       name: "Resultaat",
-      onRender: (item) => getEnumData(EducationResultTypes, item.result).text,
+      onRender: (item) => getEnumData(EducationResultTypes, item.result)?.text,
       isResizable: false,
       minWidth: 80,
       maxWidth: 80,
@@ -150,6 +150,7 @@ const Education = (props) => {
                   <ActionButton
                     text="Toevoegen"
                     iconProps={{ iconName: "Add" }}
+                    disabled={!props.selectedCvId}
                     onClick={onAddItem}
                   />
                   <ActionButton

@@ -1,7 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
-export const fetchAccounts = createAction("FECTH_ACCOUNTS", () => ({}));
+export const fetchAdminContent = createAction("FECTH_ADMIN_CONTENT", () => ({}));
 export const fetchCvByAccountId = createAction("FECTH_CV_BY_ACCOUNT_ID");
 export const saveCv = createAction("SAVE_CV");
 

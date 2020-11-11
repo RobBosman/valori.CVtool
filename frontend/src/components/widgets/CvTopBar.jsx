@@ -107,7 +107,7 @@ const CvTopBar = (props) => {
           },
           {
             key: "logout",
-            text: "Afmelden",
+            text: "Uitloggen",
             iconProps: { iconName: "SignOut" },
             onClick: props.requestToLogout
           }

@@ -1,14 +1,16 @@
 import { ofType } from "redux-observable";
-import { map, switchMap, debounceTime, filter } from "rxjs/operators";
+import { of } from "rxjs";
+import { map, switchMap, debounceTime, filter, mergeMap } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
+import * as uiActions from "../ui/ui-actions";
 
 export const safeEpics = [
 
-  // Fetch accounts from the server.
+  // Fetch all accounts from the server.
   (action$) => action$.pipe(
-    ofType(safeActions.fetchAccounts.type),
+    ofType(safeActions.fetchAdminContent.type),
     switchMap(() => safeServices.fetchAccountsFromRemote(eventBusClient.sendEvent)),
     map((fetchedAccunts) => safeActions.replaceAdminContent(fetchedAccunts))
   ),
@@ -18,7 +20,10 @@ export const safeEpics = [
     ofType(safeActions.fetchCvByAccountId.type),
     map((action) => action.payload),
     switchMap((accountId) => safeServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
-    map((fetchedCv) => safeActions.replaceCvContent(fetchedCv))
+    mergeMap((fetchedCv) => of(
+      safeActions.replaceCvContent(fetchedCv),
+      uiActions.setSelectedId("account", Object.keys(fetchedCv.account)[0])
+    ))
   ),
 
   // Register last edited timestamp.

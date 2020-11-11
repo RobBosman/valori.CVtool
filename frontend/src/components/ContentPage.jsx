@@ -19,6 +19,17 @@ const ContentPage = (props) => {
 
   const isAdmin = props.accountInfo.privileges.includes("ADMIN");
   const navGroups = [
+    {
+      links: [
+        {
+          key: "#",
+          url: "#",
+          name: "Info",
+          icon: "BullseyeTarget",
+          content: <Info />
+        },
+      ]
+    },
     isAdmin && {
       name: "Admin",
       links: [
@@ -34,13 +45,6 @@ const ContentPage = (props) => {
     {
       name: "CV",
       links: [
-        {
-          key: "#",
-          url: "#",
-          name: "Info",
-          icon: "BullseyeTarget",
-          content: <Info />
-        },
         {
           key: "#profile",
           url: "#profile",
@@ -112,7 +116,7 @@ const ContentPage = (props) => {
   return (
     <Stack horizontal>
       <Stack>
-        <div style={{ height: 50 }}>
+        <div style={{ height: 104 }}>
           <CvLogo />
         </div>
         <Nav

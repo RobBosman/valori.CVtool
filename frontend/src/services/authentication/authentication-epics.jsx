@@ -103,17 +103,24 @@ export const authenticationEpics = [
   (action$) => action$.pipe(
     ofType(authenticationActions.setAccountInfo.type),
     map((action) => action.payload),
-    switchMap((accountInfo) =>
-      // When accountInfo is available, then fetch the admin or cv data, otherwise erase it.
-      accountInfo
-        ? of(
+    switchMap((accountInfo) => {
+      // When accountInfo is available, then fetch the cv data (and also the admin data if applicable), otherwise erase everything.
+      const actions = [];
+      if (accountInfo) {
+        actions.push(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_IN),
-          accountInfo.privileges.includes("ADMIN")
-            ? safeActions.fetchAccounts()
-            : safeActions.fetchCvByAccountId(accountInfo._id))
-        : of(
+          safeActions.fetchCvByAccountId(accountInfo._id));
+        if (accountInfo.privileges.includes("ADMIN")) {
+          actions.push(safeActions.fetchAdminContent());
+        }
+      } else {
+        actions.push(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_OUT),
-          safeActions.replaceCvContent(undefined))
-    )
+          safeActions.replaceCvContent(undefined),
+          safeActions.replaceAdminContent(undefined)
+        );
+      }
+      return of(...actions);
+    })
   )
 ];

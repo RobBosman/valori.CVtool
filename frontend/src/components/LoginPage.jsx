@@ -31,7 +31,7 @@ const LoginPage = (props) => {
         </Text>
         <Stack.Item align="center">
           <PrimaryButton
-            text="Aanmelden"
+            text="Inloggen"
             iconProps={{ iconName: "Signin" }}
             onClick={props.requestToLogin}
           />

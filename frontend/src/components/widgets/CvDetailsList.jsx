@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { DetailsList, DetailsListLayoutMode, Selection } from "@fluentui/react";
+import { DetailsList, DetailsListLayoutMode, ScrollablePane, Selection, Sticky, StickyPositionType, TooltipHost } from "@fluentui/react";
 
 export const CvDetailsList = (props) => {
 
@@ -18,7 +18,7 @@ export const CvDetailsList = (props) => {
   React.useEffect(() => {
     selection.setAllSelected(false);
     selection.setKeySelected(instanceId, true, false);
-  }, []);
+  }, [instanceId]);
 
   props.onExposeSelectionRef && props.onExposeSelectionRef(selection);
 
@@ -32,22 +32,53 @@ export const CvDetailsList = (props) => {
       : column
   );
 
+  const scrollStyle = {
+    position: "relative",
+    overflowY: "auto",
+    // width: "calc(50vw - 98px)",
+    height: "calc(100vh - 250px)",
+    ...props.scrollStyle
+  };
+
+  
+  const onRenderDetailsHeader = (props, defaultRender) => {
+    if (!props) {
+      return null;
+    }
+    const onRenderColumnHeaderTooltip = tooltipHostProps => (
+      <TooltipHost {...tooltipHostProps} />
+    );
+    return (
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
+        {defaultRender({
+          ...props,
+          onRenderColumnHeaderTooltip,
+        })}
+      </Sticky>
+    );
+  };
+
   return (
-    <DetailsList
-      columns={mapLocaleFields}
-      items={props.items}
-      setKey={props.setKey}
-      getKey={getKey}
-      selection={selection}
-      selectionMode={1}
-      isHeaderVisible={true}
-      layoutMode={DetailsListLayoutMode.justified}
-      selectionPreservedOnEmptyClick={true}
-      onRenderItemColumn={props.onRenderItemColumn}
-      dragDropEvents={props.dragDropEvents}
-      onItemInvoked={props.onItemInvoked}
-      styles={props.styles}
-    />
+    <div style={scrollStyle}>
+      <ScrollablePane>
+        <DetailsList
+          columns={mapLocaleFields}
+          items={props.items}
+          setKey={props.setKey}
+          getKey={getKey}
+          selection={selection}
+          selectionMode={1}
+          isHeaderVisible={true}
+          layoutMode={DetailsListLayoutMode.justified}
+          selectionPreservedOnEmptyClick={true}
+          onRenderDetailsHeader={onRenderDetailsHeader}
+          onRenderItemColumn={props.onRenderItemColumn}
+          dragDropEvents={props.dragDropEvents}
+          onItemInvoked={props.onItemInvoked}
+          styles={props.styles}
+        />
+      </ScrollablePane>
+    </div>
   );
 };
 
@@ -60,5 +91,6 @@ CvDetailsList.propTypes = {
   onRenderItemColumn: PropTypes.func,
   onExposeSelectionRef: PropTypes.func,
   onItemInvoked: PropTypes.func,
-  styles: PropTypes.object
+  styles: PropTypes.object,
+  scrollStyle: PropTypes.object
 };
