@@ -104,8 +104,11 @@ const ContentPage = (props) => {
       || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
 
-  const onRenderGroupHeader = (group) => (<h3>{group.name}</h3>);
-  const onGenerateCv = () => props.generateCv(props.accountInfo._id);
+  const onRenderGroupHeader = (group) =>
+    (<h3>{group.name}</h3>);
+  const onGenerateCv = () =>
+    props.generateCv(props.selectedAccountId || props.accountInfo._id);
+
   return (
     <Stack horizontal>
       <Stack>
@@ -142,6 +145,7 @@ ContentPage.propTypes = {
   navKey: PropTypes.string,
   accountInfo: PropTypes.object,
   locationHash: PropTypes.string,
+  selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
   generateCv: PropTypes.func.isRequired
 };
@@ -149,6 +153,7 @@ ContentPage.propTypes = {
 const select = (state) => ({
   accountInfo: state.authentication.accountInfo,
   locationHash: state.ui.locationHash,
+  selectedAccountId: state.ui.selectedId["account"],
   selectedCvId: state.ui.selectedId["cv"]
 });
 
