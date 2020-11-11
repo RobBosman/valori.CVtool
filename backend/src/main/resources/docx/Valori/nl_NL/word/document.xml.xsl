@@ -67,47 +67,38 @@
         <!-- LANGUAGES -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">LANGUAGES</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- BRANCHES -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">BRANCHES</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- EXPERTISE -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">EXPERTISE</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">true</xsl:with-param>
         </xsl:call-template>
         <!-- DATABASES -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">DATABASES</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- APPLICATIONS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">APPLICATIONS</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- TOOLS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">TOOLS</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">true</xsl:with-param>
         </xsl:call-template>
         <!-- PROGRAMMING -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">PROGRAMMING</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- METHODS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">METHODS</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- OS_NETWORKS -->
         <xsl:call-template name="skill-section">
           <xsl:with-param name="category">OS_NETWORKS</xsl:with-param>
-          <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
         </xsl:call-template>
         <!-- OTHER -->
         <xsl:call-template name="skill-section-other"/>
@@ -645,7 +636,6 @@
   <!-- SKILL SECTION -->
   <xsl:template name="skill-section">
     <xsl:param name="category"/>
-    <xsl:param name="appendColumnBreak"/>
     <xsl:variable name="skills" select="cv:skill[cv:category = $category]"/>
     <xsl:if test="$skills">
       <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE" w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
@@ -656,9 +646,7 @@
           <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
         </w:r>
       </w:p>
-      <xsl:apply-templates select="$skills">
-        <xsl:with-param name="appendColumnBreak"><xsl:value-of select="$appendColumnBreak"/></xsl:with-param>
-      </xsl:apply-templates>
+      <xsl:apply-templates select="$skills"/>
     </xsl:if>
   </xsl:template>
 
@@ -675,15 +663,12 @@
           <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
         </w:r>
       </w:p>
-      <xsl:apply-templates select="$skills">
-        <xsl:with-param name="appendColumnBreak">false</xsl:with-param>
-      </xsl:apply-templates>
+      <xsl:apply-templates select="$skills"/>
     </xsl:if>
   </xsl:template>
 
   <!-- SKILL -->
   <xsl:template match="cv:skill">
-    <xsl:param name="appendColumnBreak"/>
     <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
       <w:pPr>
         <w:pStyle w:val="Valori-blauw"/>
@@ -708,11 +693,6 @@
         </w:rPr>
         <w:t><xsl:apply-templates select="cv:skillLevel" mode="skill-level"/></w:t>
       </w:r>
-      <xsl:if test="$appendColumnBreak = 'true' and position() = last()">
-        <w:r>
-          <w:br w:type="column"/>
-        </w:r>
-      </xsl:if>
     </w:p>
   </xsl:template>
 
@@ -941,7 +921,8 @@
             <w:left w:w="113" w:type="dxa"/>
           </w:tcMar>
         </w:tcPr>
-        <xsl:apply-templates select="cv:assignment/cv:nl_NL" mode="markdown"/>
+        <xsl:variable name="assignment" select="cv:assignment/cv:nl_NL"/>
+        <xsl:apply-templates select="$assignment" mode="markdown"/>
         <xsl:variable name="activities" select="cv:activities/cv:nl_NL"/>
         <xsl:if test="$activities">
           <w:p w14:paraId="4C066476" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
@@ -975,11 +956,16 @@
             <w:r>
               <w:t>Werkomgeving:</w:t>
             </w:r>
-            <w:r w:rsidRPr="00C97881">
-              <w:t xml:space="preserve"> </w:t>
-            </w:r>
           </w:p>
           <xsl:apply-templates select="$keywords" mode="markdown"/>
+        </xsl:if>
+        <xsl:if test="not($assignment) and not($activities) and not($results) and not($keywords)">
+          <w:p w14:paraId="62A3EFF7" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881" w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
+            <w:pPr>
+              <w:pStyle w:val="Paragraaf"/>
+            </w:pPr>
+            <w:r/>
+          </w:p>
         </xsl:if>
       </w:tc>
     </w:tr>
