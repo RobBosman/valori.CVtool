@@ -49,6 +49,9 @@ chmod -R 400 /secret
 cp ~bosmanr/docker-compose.yml .
 
 
+# Build and publish docker image.
+docker build -t bransom/cvtool .
+docker push bransom/cvtool
 
 
 # Install MongoDB and CVtool and run letsencrypt to obtain SSL certs. (You must restart CVtool afterward.)

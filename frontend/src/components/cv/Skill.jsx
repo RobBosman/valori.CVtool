@@ -95,13 +95,7 @@ const Skill = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 250,
     width: "calc(50vw - 98px)"
-  };
-
-  let selection;
-  const onExposeSelectionRef = (selectionRef) => {
-    selection = selectionRef;
   };
 
   const onRenderItem = (item, number, column) => {
@@ -124,11 +118,6 @@ const Skill = (props) => {
       includeInCv: true
     });
     props.setSelectedSkillId(id);
-
-    setTimeout(() => { // TODO: fix this?
-      selection.setAllSelected(false);
-      selection.setKeySelected(id, true, false);
-    }, 1);
   };
 
   const onDeleteItem = () => {
@@ -167,7 +156,6 @@ const Skill = (props) => {
                 instanceContext={skillContext}
                 setKey={entityName}
                 onRenderItemColumn={onRenderItem}
-                onExposeSelectionRef={onExposeSelectionRef}
               />
             </Stack>
           </td>

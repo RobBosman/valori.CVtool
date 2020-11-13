@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, Pivot, PivotItem, ActionButton, TeachingBubbleContent, Coachmark, DirectionalHint } from "@fluentui/react";
+import { Text, Stack, ActionButton, TeachingBubbleContent, Coachmark, DirectionalHint, Separator } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { replaceCvContentInstance, replaceCvContentInstances } from "../../services/safe/safe-actions";
@@ -98,14 +98,7 @@ const Experience = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 250,
-    width: "calc(50vw - 98px)",
-    background: viewPaneColor,
-  };
-
-  let selection;
-  const onExposeSelectionRef = (selectionRef) => {
-    selection = selectionRef;
+    width: "calc(50vw - 98px)"
   };
 
   const onAddItem = () => {
@@ -117,11 +110,6 @@ const Experience = (props) => {
       sortIndex: 0
     });
     props.setSelectedExperienceId(id);
-
-    setTimeout(() => { // TODO: fix this?
-      selection.setAllSelected(false);
-      selection.setKeySelected(id, true, false);
-    }, 1);
   };
 
   const onDeleteItem = () => {
@@ -193,7 +181,6 @@ const Experience = (props) => {
                 items={experiences}
                 instanceContext={experienceContext}
                 setKey={entityName}
-                onExposeSelectionRef={onExposeSelectionRef}
                 dragDropEvents={dragDropEvents}
               />
               {coachmarkTarget && (
@@ -210,80 +197,76 @@ const Experience = (props) => {
                     isWide={true}
                     hasCloseButton={true}
                     onDismiss={hideCoachmark}>
-                    Bepaal handmatig de volgorde waarin Werkervaringen in je cv komen te staan.
+                    Bepaal handmatig de volgorde waarin werkervaringen in je cv komen te staan.
                   </TeachingBubbleContent>
                 </Coachmark>
               )}
             </Stack>
           </td>
 
-          <td valign="top" style={{...tdStyle, padding: "20px"}}>
-            <Pivot styles={{editStyles}}>
-              <PivotItem headerText="Edit">
-                <Stack styles={editStyles}>
-                  <Stack horizontal
-                    tokens={{ childrenGap: "l1" }}>
-                    <CvDatePicker
-                      label="Van"
-                      field="periodBegin"
-                      instanceContext={experienceContext}
-                    />
-                    <CvDatePicker
-                      label="tot"
-                      field="periodEnd"
-                      instanceContext={experienceContext}
-                    />
-                  </Stack>
-                  <CvTextField
-                    label="Opdrachtgever"
-                    field="client"
-                    instanceContext={experienceContext}
-                  />
-                  <CvTextField
-                    label="Werkgever"
-                    field="employer"
-                    instanceContext={experienceContext}
-                  />
-                  <CvTextField
-                    label="Rol"
-                    localeField="role"
-                    instanceContext={experienceContext}
-                  />
-                </Stack>
-              </PivotItem>
-              <PivotItem headerText="Details">
-                <Stack styles={editStyles}>
-                  <CvTextField
-                    label="Opdracht"
-                    localeField="assignment"
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                  <CvTextField
-                    label="Activiteiten"
-                    localeField="activities"
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                  <CvTextField
-                    label="Resultaten"
-                    localeField="results"
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                  <CvTextField
-                    label="Werkomgeving"
-                    localeField="keywords"
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                </Stack>
-              </PivotItem>
-            </Pivot>
+          <td valign="top" style={tdStyle}>
+            <Stack styles={editStyles}>
+              <Stack horizontal
+                tokens={{ childrenGap: "l1" }}>
+                <CvDatePicker
+                  label="Van"
+                  field="periodBegin"
+                  instanceContext={experienceContext}
+                />
+                <CvDatePicker
+                  label="tot"
+                  field="periodEnd"
+                  instanceContext={experienceContext}
+                />
+              </Stack>
+              <CvTextField
+                label="Rol"
+                localeField="role"
+                instanceContext={experienceContext}
+              />
+              <Stack horizontal
+                tokens={{ childrenGap: "l1" }}>
+                <CvTextField
+                  label="Opdrachtgever"
+                  field="client"
+                  instanceContext={experienceContext}
+                />
+                <CvTextField
+                  label="Werkgever"
+                  field="employer"
+                  instanceContext={experienceContext}
+                />
+              </Stack>
+              <Separator/>
+              <CvTextField
+                label="Opdracht"
+                localeField="assignment"
+                instanceContext={experienceContext}
+                multiline
+                autoAdjustHeight
+              />
+              <CvTextField
+                label="Activiteiten"
+                localeField="activities"
+                instanceContext={experienceContext}
+                multiline
+                autoAdjustHeight
+              />
+              <CvTextField
+                label="Resultaten"
+                localeField="results"
+                instanceContext={experienceContext}
+                multiline
+                autoAdjustHeight
+              />
+              <CvTextField
+                label="Werkomgeving"
+                localeField="keywords"
+                instanceContext={experienceContext}
+                multiline
+                autoAdjustHeight
+              />
+            </Stack>
           </td>
         </tr>
       </tbody>

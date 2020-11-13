@@ -1,19 +1,20 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { DefaultButton, Nav, Separator, Stack } from "@fluentui/react";
+import { DefaultButton, Nav, Separator, Stack, TooltipHost } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
-import CvLogo from "./widgets/CvLogo";
+import Info from "./Info";
+import Accounts from "./admin/Accounts";
 import Education from "./cv/Education";
 import Experience from "./cv/Experience";
-import Info from "./cv/Info";
 import Profile from "./cv/Profile";
 import Publication from "./cv/Publication";
 import Reference from "./cv/Reference";
 import Skill from "./cv/Skill";
 import * as cvActions from "../services/cv/cv-actions";
-import Accounts from "./admin/Accounts";
+import CvTopBar from "./widgets/CvTopBar";
+import CvLogo from "./widgets/CvLogo";
 
 const ContentPage = (props) => {
 
@@ -110,32 +111,33 @@ const ContentPage = (props) => {
 
   const onRenderGroupHeader = (group) =>
     (<h3>{group.name}</h3>);
+
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.accountInfo._id);
 
   return (
     <Stack horizontal>
       <Stack>
-        <div style={{ height: 104 }}>
-          <CvLogo />
-        </div>
+        <CvLogo/>
         <Nav
-          styles={{ root: { width: 180 } }}
+          styles={{ root: { width: 180, marginTop: 49 } }}
           groups={navGroups}
           initialSelectedKey={props.locationHash || "#"}
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />
-        <DefaultButton
-          text="Download CV"
-          iconProps={{ iconName: "DownloadDocument" }}
-          tooltipText="Download CV als MS-Word document"
-          disabled={!props.selectedCvId}
-          onClick={onGenerateCv}
-        />
+        <TooltipHost content="Download CV als MS-Word document">
+          <DefaultButton
+            text="Download CV"
+            iconProps={{ iconName: "DownloadDocument" }}
+            disabled={!props.selectedCvId}
+            onClick={onGenerateCv}
+          />
+        </TooltipHost>
       </Stack>
       <Separator vertical />
       <Stack.Item grow>
+        <CvTopBar/>
         <div style={{ height: 105 }}>
           <CvTitle />
         </div>

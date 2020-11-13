@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemType, Stack, TooltipHost } from "@fluentui/react";
+import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemType, TooltipHost } from "@fluentui/react";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as authenticationActions from "../../services/authentication/authentication-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
-import valoriNameImg from "../../static/valori-name.png";
 import lightBlueTheme from "../../static/themes/lightBlue.json";
 import lightGreenTheme from "../../static/themes/lightGreen.json";
 import darkOrangeTheme from "../../static/themes/darkOrange.json";
@@ -34,45 +33,35 @@ const CvTopBar = (props) => {
     && props.lastEditedTimestamp
     && !props.lastSavedTimestamp || props.lastEditedTimestamp > props.lastSavedTimestamp;
 
-  const items = props.loginState === authenticationActions.LoginStates.LOGGED_IN
-    ? [
-      {
-        key: "save",
-        text: props.lastSavedTimestamp?.toLocaleTimeString() || "???",
-        iconProps: { iconName: "CloudUpload" },
-        disabled: !isDirty,
-        onClick: props.saveCv,
-        commandBarButtonAs: WrappedButton,
-        style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
-        tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
-      }
-    ]
-    : [];
+  const items = [
+    {
+      key: "connected",
+      iconProps: { iconName: props.isConnected ? "PlugConnected" : "PlugDisconnected" },
+      disabled: true,
+      commandBarButtonAs: WrappedButton,
+      style: { background: props.isConnected ? "initial" : currentTheme.semanticColors.warningBackground },
+      tooltipText: props.isConnected ? "Verbonden met backend" : "Geen verbinding met backend"
+    },
+    {
+      key: "save",
+      text: props.lastSavedTimestamp?.toLocaleTimeString() || "-",
+      iconProps: { iconName: "CloudUpload" },
+      disabled: !isDirty,
+      onClick: props.saveCv,
+      commandBarButtonAs: WrappedButton,
+      style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
+      tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
+    }
+  ];
 
-  const onFetchCv = () => props.fetchCv(props.account._id);
   const farItems = [
-    props.loginState !== authenticationActions.LoginStates.LOGGED_OUT && {
+    {
       key: "globalNav",
       text: props.account?.name || "",
       iconProps: { iconName: "GlobalNavButton" },
       iconOnly: false,
-      disabled: props.loginState !== authenticationActions.LoginStates.LOGGED_IN,
       subMenuProps: {
         items: [
-          {
-            key: "fetchCv",
-            text: "Ophalen",
-            iconProps: { iconName: "CloudDownload" },
-            disabled: !props.isConnected,
-            onClick: onFetchCv
-          },
-          {
-            key: "saveCv",
-            text: "Opslaan",
-            iconProps: { iconName: "CloudUpload" },
-            disabled: !(props.isConnected && props.hasSafeData),
-            onClick: props.saveCv
-          },
           {
             key: "theme",
             text: "Theme",
@@ -117,36 +106,27 @@ const CvTopBar = (props) => {
   ].filter(Boolean);
 
   return (
-    <Stack horizontal
-      verticalAlign="center"
-      tokens={{ childrenGap: 90}}>
-      <img src={valoriNameImg} alt="Valori" height="20em" />
-      <Stack.Item grow>
-        <CommandBar
-          items={items}
-          farItems={farItems}
-        />
-      </Stack.Item>
-    </Stack>
+    <CommandBar
+      items={items}
+      farItems={farItems}
+      styles={{ root: { paddingLeft: 0 } }}
+    />
   );
 };
 
 CvTopBar.propTypes = {
   account: PropTypes.object,
-  loginState: PropTypes.string.isRequired,
   isConnected: PropTypes.bool.isRequired,
   hasSafeData: PropTypes.bool.isRequired,
   lastEditedTimestamp: PropTypes.object,
   lastSavedTimestamp: PropTypes.object,
   setThemeName: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
-  fetchCv: PropTypes.func.isRequired,
   saveCv: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   account: state.authentication.accountInfo,
-  loginState: state.authentication.loginState,
   isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
   hasSafeData: Object.keys(state.safe.cvContent).length > 0,
   lastEditedTimestamp: state.safe.lastEditedTimestamp,
@@ -156,7 +136,6 @@ const select = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setThemeName: (themeName) => dispatch(uiActions.setThemeName(themeName)),
   requestToLogout: () => dispatch(authenticationActions.requestLogout()),
-  fetchCv: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId)),
   saveCv: () => dispatch(safeActions.saveCv(true))
 });
 

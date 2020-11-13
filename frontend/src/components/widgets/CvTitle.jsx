@@ -6,10 +6,14 @@ import { Stack, Text } from "@fluentui/react";
 const CvTitle = (props) => {
   
   const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+  if (!cv) {
+    return null;
+  }
+
   const account = props.accountEntity && props.accountEntity[cv?.accountId];
   const titleFields = {
     name: account?.name || "<NAAM>",
-    role: cv?.role && cv.role[props.locale] || "<ROL>",
+    role: cv.role && cv.role[props.locale] || "<ROL>",
     dateOfBirth: account?.dateOfBirth && new Date(account.dateOfBirth).toLocaleDateString(props.locale.substr(0, 2)) || "<GEBOORTEDATUM>",
     residence: account?.residence || "<WOONPLAATS>"
   };

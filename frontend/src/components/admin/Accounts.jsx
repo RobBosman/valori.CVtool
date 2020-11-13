@@ -61,7 +61,7 @@ const Accounts = (props) => {
     {
       key: "privileges",
       fieldName: "privileges",
-      name: "Is admin",
+      name: "admin",
       isResizable: true,
       onRender: renderAdminCheckbox,
       data: "string"
@@ -78,7 +78,6 @@ const Accounts = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 250,
     width: "calc(50vw - 98px)"
   };
   

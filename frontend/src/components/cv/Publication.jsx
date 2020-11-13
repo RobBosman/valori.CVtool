@@ -79,13 +79,7 @@ const Publication = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 250,
     width: "calc(50vw - 98px)"
-  };
-
-  let selection;
-  const onExposeSelectionRef = (selectionRef) => {
-    selection = selectionRef;
   };
 
   const onAddItem = () => {
@@ -96,11 +90,6 @@ const Publication = (props) => {
       includeInCv: true
     });
     props.setSelectedPublicationId(id);
-
-    setTimeout(() => { // TODO: fix this?
-      selection.setAllSelected(false);
-      selection.setKeySelected(id, true, false);
-    }, 1);
   };
 
   const onDeleteItem = () => {
@@ -138,7 +127,6 @@ const Publication = (props) => {
                 items={publications}
                 instanceContext={publicationContext}
                 setKey={entityName}
-                onExposeSelectionRef={onExposeSelectionRef}
               />
             </Stack>
           </td>

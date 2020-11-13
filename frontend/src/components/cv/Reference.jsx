@@ -89,13 +89,7 @@ const Reference = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 250,
     width: "calc(50vw - 98px)"
-  };
-
-  let selection;
-  const onExposeSelectionRef = (selectionRef) => {
-    selection = selectionRef;
   };
 
   const onAddItem = () => {
@@ -106,11 +100,6 @@ const Reference = (props) => {
       includeInCv: true
     });
     props.setSelectedReferenceId(id);
-
-    setTimeout(() => { // TODO: fix this
-      selection.setAllSelected(false);
-      selection.setKeySelected(id, true, false);
-    }, 10);
   };
 
   const onDeleteItem = () => {
@@ -148,7 +137,6 @@ const Reference = (props) => {
                 items={references}
                 instanceContext={referenceContext}
                 setKey={entityName}
-                onExposeSelectionRef={onExposeSelectionRef}
               />
             </Stack>
           </td>

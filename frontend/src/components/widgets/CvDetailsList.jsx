@@ -20,8 +20,6 @@ export const CvDetailsList = (props) => {
     selection.setKeySelected(instanceId, true, false);
   }, [instanceId]);
 
-  props.onExposeSelectionRef && props.onExposeSelectionRef(selection);
-
   const mapLocaleFields = props.columns.map((column) =>
     column.localeFieldName
       ? {
@@ -89,7 +87,6 @@ CvDetailsList.propTypes = {
   dragDropEvents: PropTypes.object,
   setKey: PropTypes.string,
   onRenderItemColumn: PropTypes.func,
-  onExposeSelectionRef: PropTypes.func,
   onItemInvoked: PropTypes.func,
   styles: PropTypes.object,
   scrollStyle: PropTypes.object

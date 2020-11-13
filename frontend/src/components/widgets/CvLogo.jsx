@@ -1,8 +1,8 @@
 import React from "react";
-import { Text } from "@fluentui/react";
+import valorLogoImg from "../../static/CV Tool.png";
 
 const CvLogo = () => (
-  <Text variant="xxLarge" style={{ color: "#999999", whiteSpace: "nowrap" }}><b>CVtool</b></Text>
+  <img src={valorLogoImg} alt="Valori CVtool" width="100em" height="100em"/>
 );
 
 export default CvLogo;

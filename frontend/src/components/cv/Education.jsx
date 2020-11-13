@@ -26,7 +26,16 @@ const Education = (props) => {
   const educations = props.educationEntity
     && props.selectedCvId
     && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.selectedCvId)
-      .sort((l, r) => compareStrings(composePeriod(r), composePeriod(l)))
+      .sort((l, r) => {
+        let compare = (getEnumData(EducationTypes, l.type)?.sortIndex || 0) - (getEnumData(EducationTypes, r.type)?.sortIndex || 0);
+        if (compare === 0) {
+          compare = compareStrings(composePeriod(r), composePeriod(l));
+        }
+        if (compare === 0) {
+          compare = compareStrings(l.name || "", r.name || "");
+        }
+        return compare;
+      })
     || [];
 
   const educationContext = {
@@ -37,8 +46,8 @@ const Education = (props) => {
     replaceInstance: props.replaceEducation
   };
 
-  const showIcon = (iconProps) =>
-    <FontIcon iconName={iconProps.iconName} />;
+  const showIcon = (educationType) =>
+    <FontIcon iconName={educationType?.iconProps?.iconName || "Remove"} />;
 
   const columns = [
     {
@@ -47,7 +56,7 @@ const Education = (props) => {
       name: "Soort opleiding",
       iconName: "Certificate",
       isIconOnly: true,
-      onRender: (item) => showIcon(getEnumData(EducationTypes, item.type)?.iconProps),
+      onRender: (item) => showIcon(getEnumData(EducationTypes, item.type)),
       isResizable: false,
       minWidth: 20,
       maxWidth: 20
@@ -81,7 +90,7 @@ const Education = (props) => {
       key: "result",
       fieldName: "result",
       name: "Resultaat",
-      onRender: (item) => getEnumData(EducationResultTypes, item.result)?.text,
+      onRender: (item) => getEnumData(EducationResultTypes, item.result)?.text || "",
       isResizable: false,
       minWidth: 80,
       maxWidth: 80,
@@ -107,13 +116,7 @@ const Education = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 250,
     width: "calc(50vw - 98px)"
-  };
-
-  let selection;
-  const onExposeSelectionRef = (selectionRef) => {
-    selection = selectionRef;
   };
 
   const onAddItem = () => {
@@ -124,11 +127,6 @@ const Education = (props) => {
       includeInCv: true
     });
     props.setSelectedEducationId(id);
-
-    setTimeout(() => { // TODO: fix this?
-      selection.setAllSelected(false);
-      selection.setKeySelected(id, true, false);
-    }, 1);
   };
 
   const onDeleteItem = () => {
@@ -166,7 +164,6 @@ const Education = (props) => {
                 items={educations}
                 instanceContext={educationContext}
                 setKey={entityName}
-                onExposeSelectionRef={onExposeSelectionRef}
               />
             </Stack>
           </td>

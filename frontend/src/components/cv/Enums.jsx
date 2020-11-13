@@ -5,12 +5,14 @@ export const EducationTypes = [
   {
     key: "EDUCATION",
     text: "Opleiding",
-    iconProps: { iconName: "PublishCourse" }
+    iconProps: { iconName: "PublishCourse" },
+    sortIndex: 1
   },
   {
     key: "TRAINING",
     text: "Training",
-    iconProps: { iconName: "UserEvent" }
+    iconProps: { iconName: "UserEvent" },
+    sortIndex: 2
   }
 ];
 

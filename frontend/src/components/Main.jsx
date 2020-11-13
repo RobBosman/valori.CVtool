@@ -5,7 +5,6 @@ import { Fabric } from "@fluentui/react";
 import { LoginStates } from "../services/authentication/authentication-actions";
 import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
-import CvTopBar from "./widgets/CvTopBar";
 import ErrorDialog from "./ErrorDialog";
 // import "./ThemeExposer";
 
@@ -14,7 +13,6 @@ const Main = (props) => {
   return (
     <Fabric>
       <ErrorDialog />
-      <CvTopBar />
       {props.isLoggedIn ? <ContentPage /> : <LoginPage />}
     </Fabric>
   );
