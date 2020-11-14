@@ -21,24 +21,33 @@ reducerRegistry.register(
   createReducer(
     {
       adminContent: {},
-      cvContent: {}
+      adminDirty: {},
+      cvContent: {},
+      cvDirty: {}
     },
     {
       [replaceAdminContent]: (state, action) => {
         state.adminContent = action.payload ? action.payload : {};
+        state.adminDirty = {};
       },
       [replaceAdminContentInstance]: (state, action) => {
         if (!state.adminContent[action.payload.entity]) {
           state.adminContent[action.payload.entity] = {};
+        }
+        if (!state.adminDirty[action.payload.entity]) {
+          state.adminDirty[action.payload.entity] = {};
         }
         if (action.payload.instance) {
           state.adminContent[action.payload.entity][action.payload.instanceId] = action.payload.instance;
         } else {
           delete(state.adminContent[action.payload.entity][action.payload.instanceId]);
         }
+        state.adminDirty[action.payload.entity][action.payload.instanceId] = new Date();
       },
+
       [replaceCvContent]: (state, action) => {
         state.cvContent = action.payload ? action.payload : {};
+        state.cvDirty = {};
       },
       [replaceCvContentInstance]: (state, action) => {
         if (!state.cvContent[action.payload.entity]) {
@@ -59,6 +68,7 @@ reducerRegistry.register(
           state.cvContent[action.payload.entity][instance._id] = instance;
         }
       },
+
       [setLastEditedTimestamp]: (state, action) => {
         state.lastEditedTimestamp = action.payload;
       },

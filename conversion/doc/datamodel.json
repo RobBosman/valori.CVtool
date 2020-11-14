@@ -103,9 +103,10 @@
     "sortIndex": "NUMBER",
     "includeInCv": "BOOLEAN"
   },
-  "ENUM_PRIVILEGE": [
+  "ENUM_ROLE": [
     "ADMIN",
-    "CONSULTANT"
+    "SALES",
+    "EE_LEAD"
   ],
   "ENUM_EDUCATION_TYPE": [
     "EDUCATION",

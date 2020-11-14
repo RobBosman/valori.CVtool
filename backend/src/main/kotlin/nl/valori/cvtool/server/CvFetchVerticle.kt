@@ -10,8 +10,8 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.Model.composeCvInstance
 import nl.valori.cvtool.server.Model.composeEntity
 import nl.valori.cvtool.server.Model.getInstanceMap
-import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
+import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -58,10 +58,10 @@ internal class CvFetchVerticle : AbstractVerticle() {
 
   private fun fetchCvData(accountId: String): Single<JsonObject> =
       vertx.eventBus()
-          .rxRequest<JsonObject>(FETCH_ADDRESS, composeCvCriteria(accountId), deliveryOptions)
+          .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, composeCvCriteria(accountId), deliveryOptions)
           .flatMap { obtainOrCreateCvId(it.body(), accountId) }
           .map { composeCvDataCriteria(accountId, it) }
-          .flatMap { vertx.eventBus().rxRequest<JsonObject>(FETCH_ADDRESS, it, deliveryOptions) }
+          .flatMap { vertx.eventBus().rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, it, deliveryOptions) }
           .map { it.body() }
 
   private fun composeCvCriteria(accountId: String) =
@@ -84,7 +84,7 @@ internal class CvFetchVerticle : AbstractVerticle() {
       0 -> {
         val cvId = UUID.randomUUID().toString()
         vertx.eventBus()
-            .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("cv", composeCvInstance(cvId, accountId)), deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, composeEntity("cv", composeCvInstance(cvId, accountId)), deliveryOptions)
             .map { cvId }
       }
       1 -> Single.just(cvInstanceMap.keys.first())

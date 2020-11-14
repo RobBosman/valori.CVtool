@@ -22,6 +22,15 @@ object XslUtil {
       if (value.isBlank()) 0 else Integer.parseInt(value)
 
   @JvmStatic
+  fun jsonLevel(value: String) =
+      when (jsonInt(value)) {
+        1 -> 1
+        2, 3 -> 2
+        4, 5 -> 3
+        else -> 0
+      }
+
+  @JvmStatic
   fun uuid(seed: String): UUID? =
       UUID.nameUUIDFromBytes(seed.toByteArray(UTF_8))
 }

@@ -23,8 +23,8 @@ export const CvRating = (props) => {
       >{props.label}</Label>
       <Rating
         id={ratingId}
-        min={1}
-        max={5}
+        min={props.min}
+        max={props.max}
         disabled={!instance}
         rating={value}
         onChange={onChange} />
@@ -36,5 +36,7 @@ CvRating.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string,
   defaultValue: PropTypes.string,
-  label: PropTypes.string
+  label: PropTypes.string,
+  min: PropTypes.number,
+  max: PropTypes.number
 };

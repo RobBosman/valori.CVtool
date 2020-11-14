@@ -8,9 +8,7 @@
   <!-- SKILL LEVEL -->
   <xsl:template match="* | @* | text()" mode="skill-level">
     <xsl:choose>
-      <xsl:when test=". = 5"></xsl:when>
-      <xsl:when test=". = 4"></xsl:when>
-      <xsl:when test=". = 3"></xsl:when>
+      <xsl:when test=". = 3"></xsl:when>
       <xsl:when test=". = 2"></xsl:when>
       <xsl:when test=". = 1"></xsl:when>
     </xsl:choose>

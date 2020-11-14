@@ -59,12 +59,7 @@
     ,"email": "<xsl:value-of select="translate(translate(cv:name, ' ', ''), $LOWERCASE, $UPPERCASE)"/>@VALORI.NL"
     ,"dateOfBirth": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:geboortedatum"/>"
     ,"residence": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:woonplaats"/>"
-    ,"privileges": [
-    <xsl:for-each select="cv:rol/cv:naam">
-      <xsl:if test="position() > 1">,</xsl:if>
-      <xsl:apply-templates select="." mode="rol"/>
-    </xsl:for-each>
-    ]
+    ,"privileges": <xsl:apply-templates select="." mode="privileges"/>
     }
   </xsl:template>
 
@@ -120,7 +115,7 @@
     ,"cvId": "<xsl:value-of select="util:uuid(../@id)"/>"
     ,"type": "<xsl:apply-templates select="cv:soort_opleiding" mode="educationType"/>"
     ,"name": {
-      "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
+    "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
     }
     ,"institution": "<xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/>"
     ,"yearTo": <xsl:value-of select="util:jsonInt(cv:jaar_diploma)"/>
@@ -241,7 +236,7 @@
         "uk_UK": "<xsl:value-of select="$omschrijving_UK"/>"
       </xsl:if>
       }
-      ,"skillLevel": <xsl:value-of select="util:jsonInt(cv:kennisniveau)"/>
+      ,"skillLevel": <xsl:value-of select="util:jsonLevel(cv:kennisniveau)"/>
       }
     </xsl:if>
   </xsl:template>
@@ -257,7 +252,7 @@
       ,"description": {
       "nl_NL": "<xsl:value-of select="$omschrijving"/>"
       }
-      ,"skillLevel": <xsl:value-of select="util:jsonInt(cv:kennisniveau)"/>
+      ,"skillLevel": <xsl:value-of select="util:jsonLevel(cv:kennisniveau)"/>
       }
     </xsl:if>
   </xsl:template>
@@ -317,11 +312,8 @@
   </xsl:template>
 
 
-  <xsl:template match="text()" mode="rol">
-    <xsl:choose>
-      <xsl:when test=". = 'view alle CVs'">"ADMIN"</xsl:when>
-      <xsl:otherwise>"CONSULTANT"</xsl:otherwise>
-    </xsl:choose>
+  <xsl:template match="cv:_account" mode="privileges">
+    [<xsl:if test="cv:rol[cv:naam = 'view alle CVs']">"ADMIN"</xsl:if>]
   </xsl:template>
 
   <xsl:template match="text()" mode="educationType">
@@ -343,25 +335,25 @@
 
   <xsl:template match="text()" mode="languageLevel">
     <xsl:choose>
-      <xsl:when test=". = 1">5</xsl:when>
-      <xsl:when test=". = 2">5</xsl:when>
-      <xsl:when test=". = 3">4</xsl:when>
-      <xsl:when test=". = 4">3</xsl:when>
-      <xsl:when test=". = 5">2</xsl:when>
+      <xsl:when test=". = 1">3</xsl:when>
+      <xsl:when test=". = 2">3</xsl:when>
+      <xsl:when test=". = 3">2</xsl:when>
+      <xsl:when test=". = 4">2</xsl:when>
+      <xsl:when test=". = 5">1</xsl:when>
       <xsl:otherwise>1</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
   <xsl:template match="text()" mode="convertCategory">
     <xsl:choose>
-      <xsl:when test=". = 'Applicaties'">APPLICATIONS</xsl:when>
-      <xsl:when test=". = 'Databases'">DATABASES</xsl:when>
       <xsl:when test=". = 'Expertises'">EXPERTISE</xsl:when>
+      <xsl:when test=". = 'Databases'">DATABASES</xsl:when>
+      <xsl:when test=". = 'Applicaties'">APPLICATIONS</xsl:when>
+      <xsl:when test=". = 'Tools'">TOOLS</xsl:when>
+      <xsl:when test=". = 'Programmeren'">PROGRAMMING</xsl:when>
       <xsl:when test=". = 'Methodes'">METHODS</xsl:when>
       <xsl:when test=". = 'OS en Netwerken'">OS_NETWORKS</xsl:when>
-      <xsl:when test=". = 'Programmeren'">PROGRAMMING</xsl:when>
-      <xsl:when test=". = 'Tools'">TOOLS</xsl:when>
-      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise> <!-- Certificeringen -->
+      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

@@ -28,7 +28,7 @@ const Skill = (props) => {
       .sort((l, r) => {
         let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
         if (compare === 0) {
-          compare = l.skillLevel, r.skillLevel;
+          compare = (l.skillLevel || 0) - (r.skillLevel || 0);
         }
         if (compare === 0) {
           compare = compareStrings(l.description, r.description);
@@ -178,6 +178,8 @@ const Skill = (props) => {
                 label="Niveau"
                 field="skillLevel"
                 instanceContext={skillContext}
+                min={0}
+                max={3}
               />
             </Stack>
           </td>

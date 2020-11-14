@@ -20,7 +20,7 @@ export const CvCheckbox = (props) => {
   return (
     <Checkbox
       label={props.label}
-      disabled={!instance}
+      disabled={!instance || props.disabled}
       checked={value}
       onChange={onChange}
       styles={props.styles}
@@ -33,5 +33,6 @@ CvCheckbox.propTypes = {
   field: PropTypes.string.isRequired,
   defaultValue: PropTypes.bool,
   label: PropTypes.string,
+  disabled: PropTypes.bool,
   styles: PropTypes.object
 };

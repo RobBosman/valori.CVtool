@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, Checkbox } from "@fluentui/react";
+import { Text, Stack } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { fetchCvByAccountId, replaceAdminContentInstance, replaceCvContent } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
+import { AccountPrivileges } from "../cv/Enums";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const entityName = "account";
 
@@ -14,39 +16,60 @@ const Accounts = (props) => {
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
 
+  const addPrivilegesAsBooleanFields = (accountEntity) => {
+    if (!accountEntity) {
+      return undefined;
+    }
+    const convertedAccountEntity = {};
+    Object.entries(accountEntity)
+      .forEach(([accountId, account]) => {
+        const {privileges, ...convertedAccount} = account;
+        AccountPrivileges
+          .map(privilegeEnum => privilegeEnum.key)
+          .forEach(privilege => {
+            convertedAccount[privilege] = privileges.includes(privilege);
+          });
+        convertedAccountEntity[accountId] = convertedAccount;
+      });
+    return convertedAccountEntity;
+  };
+
+  const convertedAccountEntity = addPrivilegesAsBooleanFields(props.accountEntity);
+
+  const replaceAccountInstance = (accountId, convertedAccount) => {
+    const privileges = [];
+    AccountPrivileges
+      .map(privilegeEnum => privilegeEnum.key)
+      .forEach(privilege => {
+        if (convertedAccount[privilege]) {
+          privileges.push(privilege);
+        }
+        delete(convertedAccount[privilege]);
+      });
+    convertedAccount.privileges = privileges;
+    props.replaceAccountInstance(accountId, convertedAccount);
+  };
+
   // Sort {Account} records.
-  const accounts = props.accountEntity
-    && Object.values(props.accountEntity)
+  const convertedAccounts = convertedAccountEntity
+    && Object.values(convertedAccountEntity)
       .sort((l, r) => compareStrings(l.name, r.name))
     || [];
 
   const accountContext = {
     locale: props.locale,
-    entity: props.accountEntity,
+    entity: convertedAccountEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
-    replaceInstance: props.replaceAccountInstance
+    replaceInstance: replaceAccountInstance
   };
 
-  const renderAdminCheckbox = (item) => (
-    <Checkbox
-      checked={item.privileges.includes("ADMIN")}
-      onChange={() => {
-        alert("TODO: update privileges!"); // TODO: update privileges!
-        // const selectedAccount = props.accountEntity[props.selectedAccountId];
-        // console.log("selectedAccount", selectedAccount);
-        // if (selectedAccount) {
-        //   console.log("selectedAccount.privileges", selectedAccount.privileges);
-        //   const changedAccount = { ...selectedAccount };
-        //   if (selectedAccount.privileges.includes("ADMIN")) {
-        //     changedAccount.privileges = selectedAccount.privileges.filter(privilege => privilege === "ADMIN");
-        //   } else {
-        //     changedAccount.privileges.push("ADMIN");
-        //   }
-        //   props.replaceAccountInstance(props.selectedAccountId, changedAccount);
-        // }
-      }}
-    />);
+  const renderCheckbox = (field, item) =>
+    <CvCheckbox
+      field={field}
+      instanceContext={{ ...accountContext, instanceId: item._id }}
+      disabled={item._id === props.accountInfo._id}
+    />;
 
   const columns = [
     {
@@ -57,16 +80,21 @@ const Accounts = (props) => {
       isSorted: false,
       isSortedDescending: false,
       data: "string"
-    },
-    {
-      key: "privileges",
-      fieldName: "privileges",
-      name: "admin",
-      isResizable: true,
-      onRender: renderAdminCheckbox,
-      data: "string"
     }
   ];
+  AccountPrivileges
+    .forEach(privilegeEnum => {
+      columns.push({
+        key: privilegeEnum.key,
+        fieldName: privilegeEnum.key,
+        name: privilegeEnum.text,
+        onRender: (item) => renderCheckbox(privilegeEnum.key, item),
+        isResizable: false,
+        minWidth: 50,
+        maxWidth: 50,
+        data: "boolean"
+      });
+    });
 
   const { viewPaneColor } = useTheme();
   const viewStyles = {
@@ -78,6 +106,7 @@ const Accounts = (props) => {
     ]
   };
   const tdStyle = {
+    minWidth: 500,
     width: "calc(50vw - 98px)"
   };
   
@@ -108,7 +137,7 @@ const Accounts = (props) => {
               </Stack>
               <CvDetailsList
                 columns={columns}
-                items={accounts}
+                items={convertedAccounts}
                 instanceContext={accountContext}
                 setKey={entityName}
                 onItemInvoked={onSelectCv}
@@ -123,6 +152,7 @@ const Accounts = (props) => {
 
 Accounts.propTypes = {
   locale: PropTypes.string.isRequired,
+  accountInfo: PropTypes.object,
   accountEntity: PropTypes.object,
   replaceAccountInstance: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
@@ -133,6 +163,7 @@ Accounts.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
+  accountInfo: state.authentication.accountInfo,
   accountEntity: state.safe.adminContent[entityName],
   selectedAccountId: state.ui.selectedId[entityName]
 });

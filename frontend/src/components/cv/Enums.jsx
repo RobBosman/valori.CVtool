@@ -1,6 +1,21 @@
 export const getEnumData = (enumArray, key) =>
   enumArray.find(entry => entry.key === key);
 
+export const AccountPrivileges = [
+  {
+    key: "ADMIN",
+    text: "Admin"
+  },
+  {
+    key: "SALES",
+    text: "Sales"
+  },
+  {
+    key: "EE_LEAD",
+    text: "E&E"
+  }
+];
+
 export const EducationTypes = [
   {
     key: "EDUCATION",

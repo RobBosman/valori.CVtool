@@ -13,9 +13,9 @@ import org.bson.Document
 import org.slf4j.LoggerFactory
 import java.util.stream.Collectors.toList
 
-const val SAVE_ADDRESS = "save"
+const val MONGODB_SAVE_ADDRESS = "mongodb.save"
 
-internal class MongoSaveVerticle : AbstractVerticle() {
+internal class MongodbSaveVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
@@ -25,7 +25,7 @@ internal class MongoSaveVerticle : AbstractVerticle() {
         .subscribe(
             { mongoDatabase ->
               vertx.eventBus()
-                  .consumer<JsonObject>(SAVE_ADDRESS)
+                  .consumer<JsonObject>(MONGODB_SAVE_ADDRESS)
                   .toObservable()
                   .subscribe(
                       {

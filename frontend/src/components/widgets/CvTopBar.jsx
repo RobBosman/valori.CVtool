@@ -37,7 +37,6 @@ const CvTopBar = (props) => {
     {
       key: "connected",
       iconProps: { iconName: props.isConnected ? "PlugConnected" : "PlugDisconnected" },
-      disabled: true,
       commandBarButtonAs: WrappedButton,
       style: { background: props.isConnected ? "initial" : currentTheme.semanticColors.warningBackground },
       tooltipText: props.isConnected ? "Verbonden met backend" : "Geen verbinding met backend"

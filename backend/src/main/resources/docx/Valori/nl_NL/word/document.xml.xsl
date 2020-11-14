@@ -646,7 +646,9 @@
           <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
         </w:r>
       </w:p>
-      <xsl:apply-templates select="$skills"/>
+      <xsl:apply-templates select="$skills">
+        <xsl:with-param name="last" select="count($skills)"/>
+      </xsl:apply-templates>
     </xsl:if>
   </xsl:template>
 
@@ -663,12 +665,15 @@
           <w:t><xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/></w:t>
         </w:r>
       </w:p>
-      <xsl:apply-templates select="$skills"/>
+      <xsl:apply-templates select="$skills">
+        <xsl:with-param name="last" select="count($skills)"/>
+      </xsl:apply-templates>
     </xsl:if>
   </xsl:template>
 
   <!-- SKILL -->
   <xsl:template match="cv:skill">
+    <xsl:param name="last"/>
     <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
       <w:pPr>
         <w:pStyle w:val="Valori-blauw"/>
@@ -679,6 +684,10 @@
         <w:rPr>
           <w:rStyle w:val="Valori-niveau"/>
         </w:rPr>
+        <w:keepLines/>
+        <xsl:if test="position() != $last">
+          <w:keepNext/>
+        </xsl:if>
       </w:pPr>
       <w:r w:rsidRPr="00752D43">
         <w:rPr>

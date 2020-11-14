@@ -10,8 +10,8 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.Model.composeAccountInstance
 import nl.valori.cvtool.server.Model.composeEntity
 import nl.valori.cvtool.server.Model.getInstanceMap
-import nl.valori.cvtool.server.mongodb.FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.SAVE_ADDRESS
+import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.util.*
 
@@ -112,7 +112,7 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
 
   private fun fetchAccount(criteria: JsonObject): Single<Optional<JsonObject>> =
       vertx.eventBus()
-        .rxRequest<JsonObject>(FETCH_ADDRESS, criteria, deliveryOptions)
+        .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, criteria, deliveryOptions)
         .map {
           val accounts = it.body().getInstanceMap("account").values
           when (accounts.size) {
@@ -125,7 +125,7 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
   private fun createAccount(email: String, name: String): Single<JsonObject> {
     val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), email, name)
     return vertx.eventBus()
-        .rxRequest<JsonObject>(SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
+        .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
         .map { accountInstance }
   }
 }

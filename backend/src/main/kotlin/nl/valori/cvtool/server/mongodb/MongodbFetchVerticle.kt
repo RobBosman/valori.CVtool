@@ -12,9 +12,9 @@ import io.vertx.reactivex.core.eventbus.Message
 import org.bson.BsonDocument
 import org.slf4j.LoggerFactory
 
-const val FETCH_ADDRESS = "fetch"
+const val MONGODB_FETCH_ADDRESS = "mongodb.fetch"
 
-internal class MongoFetchVerticle : AbstractVerticle() {
+internal class MongodbFetchVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
 
@@ -24,7 +24,7 @@ internal class MongoFetchVerticle : AbstractVerticle() {
         .subscribe(
             { mongoDatabase ->
               vertx.eventBus()
-                  .consumer<JsonObject>(FETCH_ADDRESS)
+                  .consumer<JsonObject>(MONGODB_FETCH_ADDRESS)
                   .toObservable()
                   .subscribe(
                       {
@@ -112,21 +112,21 @@ internal class MongoFetchVerticle : AbstractVerticle() {
    *   }
    * </pre>
    */
-  private fun fetchInstancesOfEntity(entity: String, criteriaArray: Any, mongoDatabase: MongoDatabase): Single<JsonObject> {
+  private fun fetchInstancesOfEntity(entityName: String, criteriaArray: Any, mongoDatabase: MongoDatabase): Single<JsonObject> {
     if (criteriaArray !is JsonArray)
       throw IllegalArgumentException("Error fetching data: search criteria must be of type JsonArray")
-    val criteria = criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
+    val criteria = if (criteriaArray.isEmpty) "{}" else criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
     return Flowable
         .defer {
-          log.debug("Vertx fetching '$entity' documents using criteria [$criteria]...")
+          log.debug("Vertx fetching '$entityName' documents using criteria [$criteria]...")
           mongoDatabase
-              .getCollection(entity)
+              .getCollection(entityName)
               .find(BsonDocument.parse(criteria))
         }
         .reduceWith(
             { JsonObject() },
             { instanceJson, instance -> instanceJson.put(instance.getString("_id"), instance) }
         )
-        .map { JsonObject().put(entity, it) }
+        .map { JsonObject().put(entityName, it) }
   }
 }

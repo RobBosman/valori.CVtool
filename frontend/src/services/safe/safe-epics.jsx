@@ -1,6 +1,6 @@
 import { ofType } from "redux-observable";
 import { of } from "rxjs";
-import { map, switchMap, debounceTime, filter, mergeMap } from "rxjs/operators";
+import { map, switchMap, debounceTime, filter, mergeMap, ignoreElements, tap } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
@@ -11,7 +11,7 @@ export const safeEpics = [
   // Fetch all accounts from the server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchAdminContent.type),
-    switchMap(() => safeServices.fetchAccountsFromRemote(eventBusClient.sendEvent)),
+    switchMap(() => safeServices.fetchFromRemote({ "account": [] }, eventBusClient.sendEvent)),
     map((fetchedAccunts) => safeActions.replaceAdminContent(fetchedAccunts))
   ),
 
@@ -28,7 +28,7 @@ export const safeEpics = [
 
   // Register last edited timestamp.
   (action$) => action$.pipe(
-    ofType(safeActions.replaceAdminContentInstance.type, safeActions.replaceCvContentInstance.type, safeActions.replaceCvContentInstances.type),
+    ofType(safeActions.replaceCvContentInstance.type, safeActions.replaceCvContentInstances.type),
     map(() => safeActions.setLastEditedTimestamp(new Date()))
   ),
 
@@ -45,15 +45,24 @@ export const safeEpics = [
     map(() => safeActions.saveCv(false))
   ),
 
-  // Send the cvContent of the safe to the server.
+  // Send the cvContent to the server.
   (action$, state$) => action$.pipe(
     ofType(safeActions.saveCv.type),
     map((action) => action.payload),
     filter((saveEnforced) => saveEnforced || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
     switchMap(() => {
       const saveTimestamp = new Date();
-      return safeServices.saveCvToRemote(state$.value.safe.cvContent, eventBusClient.sendEvent)
+      return safeServices.saveToRemote(state$.value.safe.cvContent, eventBusClient.sendEvent)
         .then(() => safeActions.setLastSavedTimestamp(saveTimestamp));
     })
-  )
+  ),
+
+  // Send the modified adminContent data to the server.
+  (action$) => action$.pipe(
+    ofType(safeActions.replaceAdminContentInstance.type),
+    map((action) => action.payload.instance),
+    tap((account) => console.log("account", account)),
+    map((account) => safeServices.saveToRemote({ "account": { [account._id]: account } }, eventBusClient.sendEvent)),
+    ignoreElements()
+  ),
 ];

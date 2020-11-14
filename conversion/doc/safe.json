@@ -21,7 +21,8 @@
       "residence": "Leusden",
       "privileges": [
         "ADMIN",
-        "CONSULTANT"
+        "SALES",
+        "EE_LEAD"
       ]
     }
   },

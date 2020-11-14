@@ -7,8 +7,8 @@ import io.vertx.core.DeploymentOptions
 import io.vertx.core.Vertx
 import io.vertx.core.VertxOptions
 import io.vertx.core.json.JsonObject
-import nl.valori.cvtool.server.mongodb.MongoFetchVerticle
-import nl.valori.cvtool.server.mongodb.MongoSaveVerticle
+import nl.valori.cvtool.server.mongodb.MongodbFetchVerticle
+import nl.valori.cvtool.server.mongodb.MongodbSaveVerticle
 import org.slf4j.LoggerFactory
 
 fun main() = Main.run()
@@ -20,13 +20,11 @@ object Main {
       HttpRedirectVerticle::class,
       HttpsServerVerticle::class,
       AuthenticateVerticle::class,
+      MongodbFetchVerticle::class,
+      MongodbSaveVerticle::class,
       AuthInfoFetchVerticle::class,
-      MongoFetchVerticle::class,
-      MongoSaveVerticle::class,
       CvFetchVerticle::class,
-      CvSaveVerticle::class,
-      CvGenerateVerticle::class,
-      AccountsFetchVerticle::class)
+      CvGenerateVerticle::class)
 
   fun run() {
     val options = VertxOptions()
