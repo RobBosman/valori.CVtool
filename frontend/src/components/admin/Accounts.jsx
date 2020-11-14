@@ -3,7 +3,7 @@ import React from "react";
 import { Text, Stack } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { fetchCvByAccountId, replaceAdminContentInstance, replaceCvContent } from "../../services/safe/safe-actions";
+import * as safeActions from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { AccountPrivileges } from "../cv/Enums";
@@ -109,20 +109,10 @@ const Accounts = (props) => {
     minWidth: 500,
     width: "calc(50vw - 98px)"
   };
-  
-  const [currentAccountId, setCurrentAccountId] = React.useState(null);
-  React.useEffect(() => {
-    if (currentAccountId != props.selectedAccountId) {
-      if (currentAccountId) {
-        props.clearCvContent();
-      }
-      setCurrentAccountId(props.selectedAccountId);
-    }
-  });
 
   const onSelectCv = () => {
     if (props.selectedAccountId) {
-      props.fetchCv(props.selectedAccountId);
+      props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
 
@@ -139,7 +129,7 @@ const Accounts = (props) => {
                 columns={columns}
                 items={convertedAccounts}
                 instanceContext={accountContext}
-                setKey={entityName}
+                setKey="accounts"
                 onItemInvoked={onSelectCv}
               />
             </Stack>
@@ -157,22 +147,20 @@ Accounts.propTypes = {
   replaceAccountInstance: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
   setSelectedAccountId: PropTypes.func.isRequired,
-  clearCvContent: PropTypes.func.isRequired,
-  fetchCv: PropTypes.func.isRequired
+  fetchCvByAccountId: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   locale: state.ui.locale,
   accountInfo: state.authentication.accountInfo,
-  accountEntity: state.safe.adminContent[entityName],
+  accountEntity: state.safe.content[entityName],
   selectedAccountId: state.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceAccountInstance: (id, instance) => dispatch(replaceAdminContentInstance(entityName, id, instance)),
-  clearCvContent: () => dispatch(replaceCvContent(undefined)),
   setSelectedAccountId: (id) => dispatch(setSelectedId(entityName, id)),
-  fetchCv: (accountId) => dispatch(fetchCvByAccountId(accountId))
+  replaceAccountInstance: (id, instance) => dispatch(safeActions.changeInstance(entityName, id, instance)),
+  fetchCvByAccountId: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId))
 });
 
 export default connect(select, mapDispatchToProps)(Accounts);

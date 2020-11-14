@@ -1,23 +1,10 @@
 import { ofType } from "redux-observable";
-import { map, distinctUntilChanged, switchMap, ignoreElements, tap } from "rxjs/operators";
+import { map, switchMap, ignoreElements, tap } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
-import * as safeActions from "../safe/safe-actions";
-import { setSelectedId } from "../ui/ui-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
 
-const getFirstCvId = (cvEntity) =>
-  cvEntity && Object.keys(cvEntity)[0];
-
 export const cvEpics = [
-
-  // Select or reset the first available cv.
-  (action$, state$) => action$.pipe(
-    ofType(safeActions.replaceCvContent.type),
-    map(() => getFirstCvId(state$.value.safe?.cvContent?.cv)),
-    distinctUntilChanged(),
-    map((cvId) => setSelectedId("cv", cvId))
-  ),
 
   // Generate cv at the server.
   (action$) => action$.pipe(
@@ -43,7 +30,6 @@ const downloadFile = (fileName, contentB64) => {
 
   const blob = new Blob([uintArray], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
   const url = window.URL.createObjectURL(blob);
-  console.log("url", url);
   a.href = url;
   a.download = fileName;
   a.click();

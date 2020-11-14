@@ -30,14 +30,14 @@ describe("safe-services.test", () => {
     expect.assertions(1);
     return safeServices.saveToRemote({}, sendEventSuccess)
       .then((message) => expect(message)
-        .toStrictEqual({body: "cv.save_resolved"}));
+        .toStrictEqual({body: "mongodb.save_resolved"}));
   });
 
   it("should saveToRemote error", () => {
     expect.assertions(1);
     return safeServices.saveToRemote({}, sendEventError)
       .catch((error) => expect(error.message)
-        .toBe("cv.save_rejected"));
+        .toBe("mongodb.save_rejected"));
   });
 
   it("should create unique ids", () => {

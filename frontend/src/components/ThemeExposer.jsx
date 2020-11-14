@@ -137,7 +137,7 @@ const themePalettes = {
   }
 };
 
-// Expose all creatd themes.
+// Expose all created themes.
 if (createTheme instanceof Function) {
   Object.keys(themePalettes).forEach(themeName => {
     const theme = createTheme(themePalettes[themeName]);

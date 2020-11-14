@@ -3,7 +3,7 @@ import React from "react";
 import { Text, Stack, ActionButton, TeachingBubbleContent, Coachmark, DirectionalHint, Separator } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
-import { replaceCvContentInstance, replaceCvContentInstances } from "../../services/safe/safe-actions";
+import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
 import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
@@ -287,13 +287,13 @@ Experience.propTypes = {
 const select = (state) => ({
   locale: state.ui.locale,
   selectedCvId: state.ui.selectedId["cv"],
-  experienceEntity: state.safe.cvContent[entityName],
+  experienceEntity: state.safe.content[entityName],
   selectedExperienceId: state.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceExperience: (id, instance) => dispatch(replaceCvContentInstance(entityName, id, instance)),
-  replaceExperiences: (instances) => dispatch(replaceCvContentInstances(entityName, instances)),
+  replaceExperience: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
+  replaceExperiences: (instances) => dispatch(changeInstances(entityName, instances)),
   setSelectedExperienceId: (id) => dispatch(setSelectedId(entityName, id))
 });
 

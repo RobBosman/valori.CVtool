@@ -1,6 +1,6 @@
 import { ofType } from "redux-observable";
 import { of } from "rxjs";
-import { map, switchMap, debounceTime, filter, mergeMap, ignoreElements, tap } from "rxjs/operators";
+import { map, switchMap, debounceTime, filter, mergeMap, distinctUntilChanged } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
@@ -11,58 +11,58 @@ export const safeEpics = [
   // Fetch all accounts from the server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchAdminContent.type),
-    switchMap(() => safeServices.fetchFromRemote({ "account": [] }, eventBusClient.sendEvent)),
-    map((fetchedAccunts) => safeActions.replaceAdminContent(fetchedAccunts))
+    switchMap(() => safeServices.fetchFromRemote({ "account": [{}], "businessUnit": [{}] }, eventBusClient.sendEvent)),
+    map(fetchedAccunts => safeActions.resetEntities(fetchedAccunts))
   ),
 
   // Fetch cv data from the server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchCvByAccountId.type),
-    map((action) => action.payload),
-    switchMap((accountId) => safeServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
-    mergeMap((fetchedCv) => of(
-      safeActions.replaceCvContent(fetchedCv),
-      uiActions.setSelectedId("account", Object.keys(fetchedCv.account)[0])
+    map(action => action.payload),
+    switchMap(accountId => safeServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
+    mergeMap(fetchedCv => of(
+      safeActions.resetEntities(fetchedCv),
+      uiActions.setSelectedId("cv", Object.keys(fetchedCv.cv)[0])
     ))
   ),
 
-  // Register last edited timestamp.
-  (action$) => action$.pipe(
-    ofType(safeActions.replaceCvContentInstance.type, safeActions.replaceCvContentInstances.type),
-    map(() => safeActions.setLastEditedTimestamp(new Date()))
-  ),
-
-  // Update state.lastSavedTimestamp after fetching 'fresh' data from the server.
-  (action$) => action$.pipe(
-    ofType(safeActions.replaceCvContent.type),
-    map(() => safeActions.setLastSavedTimestamp(new Date()))
-  ),
-
   // Auto-save 2 seconds after the last edit.
-  (action$) => action$.pipe(
-    ofType(safeActions.setLastEditedTimestamp.type),
+  (_, state$) => state$.pipe(
+    map(state => state.safe?.lastEditedTimestamp),
+    filter(timestamp => timestamp),
+    distinctUntilChanged(),
     debounceTime(2000),
-    map(() => safeActions.saveCv(false))
+    map(() => safeActions.save(false))
   ),
 
-  // Send the cvContent to the server.
+  // Send the content to the server.
   (action$, state$) => action$.pipe(
-    ofType(safeActions.saveCv.type),
-    map((action) => action.payload),
-    filter((saveEnforced) => saveEnforced || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
+    ofType(safeActions.save.type),
+    map(action => action.payload),
+    filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
     switchMap(() => {
       const saveTimestamp = new Date();
-      return safeServices.saveToRemote(state$.value.safe.cvContent, eventBusClient.sendEvent)
+      return safeServices.saveToRemote(extractChangedData(state$.value.safe), eventBusClient.sendEvent)
         .then(() => safeActions.setLastSavedTimestamp(saveTimestamp));
     })
-  ),
-
-  // Send the modified adminContent data to the server.
-  (action$) => action$.pipe(
-    ofType(safeActions.replaceAdminContentInstance.type),
-    map((action) => action.payload.instance),
-    tap((account) => console.log("account", account)),
-    map((account) => safeServices.saveToRemote({ "account": { [account._id]: account } }, eventBusClient.sendEvent)),
-    ignoreElements()
-  ),
+  )
 ];
+
+const extractChangedData = (safe) => {
+  const content = {};
+  Object.entries(safe.dirty)
+    .forEach(([dirtyEntityName, dirtyInstanceIds]) => {
+      if (!content[dirtyEntityName]) {
+        content[dirtyEntityName] = {};
+      }
+      Object.keys(dirtyInstanceIds)
+        .forEach(instanceId => {
+          if (!safe.content[dirtyEntityName] || !safe.content[dirtyEntityName][instanceId]) {
+            content[dirtyEntityName][instanceId] = {};
+          } else {
+            content[dirtyEntityName][instanceId] = safe.content[dirtyEntityName][instanceId];
+          }
+        });
+    });
+  return content;
+};

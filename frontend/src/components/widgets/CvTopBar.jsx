@@ -46,7 +46,7 @@ const CvTopBar = (props) => {
       text: props.lastSavedTimestamp?.toLocaleTimeString() || "-",
       iconProps: { iconName: "CloudUpload" },
       disabled: !isDirty,
-      onClick: props.saveCv,
+      onClick: props.save,
       commandBarButtonAs: WrappedButton,
       style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
       tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
@@ -99,10 +99,10 @@ const CvTopBar = (props) => {
             iconProps: { iconName: "SignOut" },
             onClick: props.requestToLogout
           }
-        ].filter(Boolean)
+        ]
       }
     }
-  ].filter(Boolean);
+  ];
 
   return (
     <CommandBar
@@ -121,13 +121,13 @@ CvTopBar.propTypes = {
   lastSavedTimestamp: PropTypes.object,
   setThemeName: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
-  saveCv: PropTypes.func.isRequired
+  save: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   account: state.authentication.accountInfo,
   isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
-  hasSafeData: Object.keys(state.safe.cvContent).length > 0,
+  hasSafeData: Object.keys(state.safe.content).length > 0,
   lastEditedTimestamp: state.safe.lastEditedTimestamp,
   lastSavedTimestamp: state.safe.lastSavedTimestamp
 });
@@ -135,7 +135,7 @@ const select = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setThemeName: (themeName) => dispatch(uiActions.setThemeName(themeName)),
   requestToLogout: () => dispatch(authenticationActions.requestLogout()),
-  saveCv: () => dispatch(safeActions.saveCv(true))
+  save: () => dispatch(safeActions.save(true))
 });
 
 export default connect(select, mapDispatchToProps)(CvTopBar);

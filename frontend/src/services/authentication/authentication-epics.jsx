@@ -24,7 +24,7 @@ export const authenticationEpics = [
         )
         : merge(
           // When requested to logout then first save any changes...
-          of(safeActions.saveCv(false)),
+          of(safeActions.save(false)),
           state$.pipe(
             // ...and wait for the data to be saved.
             filter((state) => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
@@ -109,15 +109,15 @@ export const authenticationEpics = [
       if (accountInfo) {
         actions.push(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_IN),
-          safeActions.fetchCvByAccountId(accountInfo._id));
+          safeActions.fetchCvByAccountId(accountInfo._id)
+        );
         if (accountInfo.privileges.includes("ADMIN")) {
           actions.push(safeActions.fetchAdminContent());
         }
       } else {
         actions.push(
           authenticationActions.setLoginState(authenticationActions.LoginStates.LOGGED_OUT),
-          safeActions.replaceCvContent(undefined),
-          safeActions.replaceAdminContent(undefined)
+          safeActions.resetEntities(null)
         );
       }
       return of(...actions);
