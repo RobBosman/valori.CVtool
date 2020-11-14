@@ -9,56 +9,59 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { AccountPrivileges } from "../cv/Enums";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 
-const entityName = "account";
-
 const Accounts = (props) => {
 
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
 
-  const addPrivilegesAsBooleanFields = (accountEntity) => {
+  const enrich = (accountEntity, businessUnitEntity) => {
     if (!accountEntity) {
       return undefined;
     }
-    const convertedAccountEntity = {};
+    const enrichedAccountEntity = {};
     Object.entries(accountEntity)
       .forEach(([accountId, account]) => {
-        const {privileges, ...convertedAccount} = account;
+        const {privileges, ...enrichedAccount} = account;
         AccountPrivileges
           .map(privilegeEnum => privilegeEnum.key)
           .forEach(privilege => {
-            convertedAccount[privilege] = privileges.includes(privilege);
+            enrichedAccount[privilege] = privileges.includes(privilege);
           });
-        convertedAccountEntity[accountId] = convertedAccount;
+
+        const businessUnit = businessUnitEntity && Object.values(businessUnitEntity)
+          .find(businessUnit => businessUnit.accountIds.includes(accountId));
+        enrichedAccount.businessUnit = businessUnit?.name;
+
+        enrichedAccountEntity[accountId] = enrichedAccount;
       });
-    return convertedAccountEntity;
+    return enrichedAccountEntity;
   };
 
-  const convertedAccountEntity = addPrivilegesAsBooleanFields(props.accountEntity);
+  const enrichedAccountEntity = enrich(props.accountEntity, props.businessUnitEntity);
 
-  const replaceAccountInstance = (accountId, convertedAccount) => {
+  const replaceAccountInstance = (accountId, enrichedAccount) => {
     const privileges = [];
     AccountPrivileges
       .map(privilegeEnum => privilegeEnum.key)
       .forEach(privilege => {
-        if (convertedAccount[privilege]) {
+        if (enrichedAccount[privilege]) {
           privileges.push(privilege);
         }
-        delete(convertedAccount[privilege]);
+        delete(enrichedAccount[privilege]);
       });
-    convertedAccount.privileges = privileges;
-    props.replaceAccountInstance(accountId, convertedAccount);
+    enrichedAccount.privileges = privileges;
+    props.replaceAccountInstance(accountId, enrichedAccount);
   };
 
   // Sort {Account} records.
-  const convertedAccounts = convertedAccountEntity
-    && Object.values(convertedAccountEntity)
+  const enrichedAccounts = enrichedAccountEntity
+    && Object.values(enrichedAccountEntity)
       .sort((l, r) => compareStrings(l.name, r.name))
     || [];
 
   const accountContext = {
     locale: props.locale,
-    entity: convertedAccountEntity,
+    entity: enrichedAccountEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
     replaceInstance: replaceAccountInstance
@@ -68,7 +71,7 @@ const Accounts = (props) => {
     <CvCheckbox
       field={field}
       instanceContext={{ ...accountContext, instanceId: item._id }}
-      disabled={item._id === props.accountInfo._id}
+      disabled={field === "ADMIN" && item._id === props.accountInfo._id}
     />;
 
   const columns = [
@@ -79,6 +82,13 @@ const Accounts = (props) => {
       isResizable: true,
       isSorted: false,
       isSortedDescending: false,
+      data: "string"
+    },
+    {
+      key: "businessUnit",
+      fieldName: "businessUnit",
+      name: "Tribe",
+      isResizable: true,
       data: "string"
     }
   ];
@@ -106,7 +116,7 @@ const Accounts = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 500,
+    minWidth: 600,
     width: "calc(50vw - 98px)"
   };
 
@@ -127,7 +137,7 @@ const Accounts = (props) => {
               </Stack>
               <CvDetailsList
                 columns={columns}
-                items={convertedAccounts}
+                items={enrichedAccounts}
                 instanceContext={accountContext}
                 setKey="accounts"
                 onItemInvoked={onSelectCv}
@@ -144,6 +154,7 @@ Accounts.propTypes = {
   locale: PropTypes.string.isRequired,
   accountInfo: PropTypes.object,
   accountEntity: PropTypes.object,
+  businessUnitEntity: PropTypes.object,
   replaceAccountInstance: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
   setSelectedAccountId: PropTypes.func.isRequired,
@@ -153,13 +164,14 @@ Accounts.propTypes = {
 const select = (state) => ({
   locale: state.ui.locale,
   accountInfo: state.authentication.accountInfo,
-  accountEntity: state.safe.content[entityName],
-  selectedAccountId: state.ui.selectedId[entityName]
+  accountEntity: state.safe.content["account"],
+  businessUnitEntity: state.safe.content["businessUnit"],
+  selectedAccountId: state.ui.selectedId["account"]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSelectedAccountId: (id) => dispatch(setSelectedId(entityName, id)),
-  replaceAccountInstance: (id, instance) => dispatch(safeActions.changeInstance(entityName, id, instance)),
+  setSelectedAccountId: (id) => dispatch(setSelectedId("account", id)),
+  replaceAccountInstance: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
   fetchCvByAccountId: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId))
 });
 

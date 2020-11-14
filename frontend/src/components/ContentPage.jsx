@@ -130,7 +130,7 @@ const ContentPage = (props) => {
           <DefaultButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
-            disabled={!props.selectedCvId}
+            disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
           />
         </TooltipHost>

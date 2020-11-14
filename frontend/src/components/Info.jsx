@@ -18,7 +18,7 @@ const Info = () => {
     <Stack styles={viewStyles}>
       <Text variant="xxLarge">Info</Text>
       <Text>
-        <br/>Dit is de <strong>CVtool</strong> app van Valori waarmee je je curriculum vitae kunt invoeren.
+        <br/>Dit is de <strong>CVtool</strong> van Valori waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
         <ul>
           <li><u>AutoSave</u>: Alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>

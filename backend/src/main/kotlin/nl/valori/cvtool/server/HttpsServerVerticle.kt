@@ -5,7 +5,6 @@ import io.vertx.core.Promise
 import io.vertx.core.buffer.Buffer.buffer
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.http.HttpServerOptions
-import io.vertx.core.http.impl.headers.VertxHttpHeaders
 import io.vertx.core.json.JsonObject
 import io.vertx.core.net.PemKeyCertOptions
 import io.vertx.ext.bridge.BridgeEventType
@@ -172,7 +171,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
     return vertx
         .eventBus()
         .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, null,
-            deliveryOptions.setHeaders(VertxHttpHeaders().add("Auth", authHeader.encode())))
+            deliveryOptions.addHeader("Auth", authHeader.encode()))
         .map {
           val userPrivileges = it.body().getJsonArray("privileges")
           setAuthHeader(bridgeEvent, authHeader.put("privileges", userPrivileges))

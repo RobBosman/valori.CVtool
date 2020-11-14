@@ -28,7 +28,7 @@ internal object HttpsServerVerticleTest {
             .setConfig(JsonObject()
                 .put("HTTPS_CONNECTION_STRING", "https://$HOST_NAME:$port/")
             ),
-        testContext.succeeding()
+        testContext.succeedingThenComplete()
     )
     return port
   }

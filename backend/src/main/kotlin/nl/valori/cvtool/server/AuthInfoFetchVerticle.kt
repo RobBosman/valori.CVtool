@@ -62,21 +62,15 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
           .just(message)
           .flatMap {
             val authInfo = getAuthInfo(message)
-            val emailFromAuth = authInfo["email"] ?: error("Email is not defined in Auth header.")
-            val accountIdFromBody = it.body()?.getString("accountId")
-            if (accountIdFromBody != null) {
-              authorize(authInfo, accountIdFromBody)
-              fetchAccountById(accountIdFromBody)
-                  .map { accountOptional -> accountOptional.orElse(JsonObject()) }
-            } else {
-              fetchAccountByEmail(emailFromAuth)
-                  .flatMap { accountOptional ->
-                    if (accountOptional.isPresent)
-                      Single.just(accountOptional.get())
-                    else
-                      createAccount(emailFromAuth, authInfo["name"] ?: error("Name is not defined in Auth header."))
-                  }
-            }
+            val email = authInfo["email"] ?: error("Email is not defined in Auth header.")
+            val name = authInfo["name"] ?: error("Name is not defined in Auth header.")
+            fetchAccountByEmail(email)
+                .flatMap { accountOptional ->
+                  if (accountOptional.isPresent)
+                    Single.just(accountOptional.get())
+                  else
+                    createAccount(email, name)
+                }
           }
           .subscribe(
               {
@@ -98,14 +92,6 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
         "name" to auth.getString("name"),
         "privileges" to auth.getString("privileges"))
   }
-
-  private fun authorize(authInfo: Map<String, String>, accountId: String) {
-    // TODO: authorize
-    error("Not authorized!")
-  }
-
-  private fun fetchAccountById(accountId: String) =
-      fetchAccount(JsonObject("""{ "account": [{ "_id": "$accountId" }] }"""))
 
   private fun fetchAccountByEmail(email: String) =
       fetchAccount(JsonObject("""{ "account": [{ "email": "${email.toUpperCase()}" }] }"""))
