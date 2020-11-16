@@ -3,10 +3,10 @@ package nl.valori.cvtool
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import java.io.StringWriter
+import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.*
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
@@ -16,22 +16,42 @@ fun main() = XmlToJsonConverter.run()
 object XmlToJsonConverter {
 
   fun run() {
-    val targetDir = Path.of("./exported-json")
+    val targetDir = Path.of(".").resolve("exported")
+    val dataDumpDir = targetDir.resolve("dump")
+    val jsonDir = targetDir.resolve("json")
+    val accountsXml = dataDumpDir.resolve("accounts.xml")
+    val businessUnitsXml = dataDumpDir.resolve("businessUnits.xml")
 
-    if (Files.exists(targetDir)) {
-      val walkStream = Files.walk(targetDir)
-      try {
-        walkStream
-            .sorted(Comparator.reverseOrder())
-            .forEach(Files::deleteIfExists)
-      } finally {
-        walkStream.close()
-      }
+    if (true) {
+      Files.deleteIfExists(targetDir)
+      Files.createDirectory(targetDir)
+      Files.createDirectory(dataDumpDir)
+      Files.createDirectory(jsonDir)
+
+      // Make sure PHP, nginx and MariaDB are running!
+      download(
+          "http://localhost:9080/bransom/REST/cv/_account.xml?\$skipBinaries=true&\$published=false",
+          accountsXml)
+      download(
+          "http://localhost:9080/bransom/REST/cv/businessunit.xml?\$skipBinaries=true&\$published=false",
+          businessUnitsXml)
     }
-    Files.createDirectory(targetDir)
 
-    convert(javaClass.getResource("/businessunits.xml"), targetDir)
-    convert(javaClass.getResource("/accounts.xml"), targetDir)
+    convert(accountsXml.toUri().toURL(), jsonDir)
+    convert(businessUnitsXml.toUri().toURL(), jsonDir)
+  }
+
+  private fun download(url: String, targetFile: Path) {
+    val connection = URL(url).openConnection() as HttpURLConnection
+    try {
+      connection.inputStream.bufferedReader()
+          .use { reader ->
+            val xmlData = reader.readText()
+            targetFile.toFile().writeText(xmlData)
+          }
+    } finally {
+      connection.disconnect()
+    }
   }
 
   private fun convert(sourceUrl: URL, targetDir: Path) {

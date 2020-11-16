@@ -198,7 +198,8 @@
   <xsl:template match="cv:talenkennis">
     <xsl:variable name="taal_NL" select="util:jsonText(cv:taal_NL)"/>
     <xsl:variable name="taal_UK" select="util:jsonText(cv:taal_UK)"/>
-    <xsl:if test="$taal_NL or $taal_UK">
+    <xsl:variable name="mondeling" select="cv:mondeling"/>
+    <xsl:if test="($taal_NL or $taal_UK) and $mondeling">
       <xsl:if test="position() > 1">,</xsl:if>
       {
       "_id": "<xsl:value-of select="util:uuid(@id)"/>"
@@ -213,7 +214,7 @@
         "uk_UK": "<xsl:value-of select="$taal_UK"/>"
       </xsl:if>
       }
-      ,"skillLevel": <xsl:apply-templates select="cv:mondeling" mode="languageLevel"/>
+      ,"skillLevel": <xsl:apply-templates select="$mondeling" mode="languageLevel"/>
       }
     </xsl:if>
   </xsl:template>

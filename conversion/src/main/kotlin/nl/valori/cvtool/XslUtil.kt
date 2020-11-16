@@ -23,7 +23,7 @@ object XslUtil {
 
   @JvmStatic
   fun jsonLevel(value: String) =
-      when (jsonInt(value)) {
+      when (jsonInt(value ?: "0")) {
         1 -> 1
         2, 3 -> 2
         4, 5 -> 3
