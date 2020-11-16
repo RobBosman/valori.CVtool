@@ -93,7 +93,10 @@ internal class HttpsServerVerticle : AbstractVerticle() {
   private fun createRouter(): Router {
     val router = Router.router(vertx)
     router
-        .route("/.well-known/acme-challenge/*") // Used by letsencrypt to renew SSL certificates.
+        .get("/health*")
+        .handler(HealthChecker.getHandler(vertx))
+    router
+        .get("/.well-known/acme-challenge/*") // Used by letsencrypt to renew SSL certificates.
         .handler(StaticHandler.create()
             .setAllowRootFileSystemAccess(true)
             .setWebRoot("/webroot/.well-known/acme-challenge")
