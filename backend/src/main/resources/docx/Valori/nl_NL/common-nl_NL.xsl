@@ -41,11 +41,11 @@
       <xsl:when test=". = 'LANGUAGES'">Talen</xsl:when>
       <xsl:when test=". = 'BRANCHES'">Branches</xsl:when>
       <xsl:when test=". = 'EXPERTISE'">Expertises</xsl:when>
-      <xsl:when test=". = 'DATABASES'">Database</xsl:when>
+      <xsl:when test=". = 'DATABASES'">Databases</xsl:when>
       <xsl:when test=". = 'APPLICATIONS'">Applicaties</xsl:when>
       <xsl:when test=". = 'TOOLS'">Tools</xsl:when>
       <xsl:when test=". = 'PROGRAMMING'">Programmeren</xsl:when>
-      <xsl:when test=". = 'METHODS'">Methoden</xsl:when>
+      <xsl:when test=". = 'METHODS'">Methodes</xsl:when>
       <xsl:when test=". = 'OS_NETWORKS'">OS &amp; Netwerken</xsl:when>
       <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
     </xsl:choose>

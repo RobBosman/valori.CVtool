@@ -103,6 +103,7 @@ use cvtool
 db.education.updateMany({}, {$rename: {"year": "yearTo"}})
 
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool
+# FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://root:MongoPassword@127.0.0.1:27117/cvtool?authSource=admin
 # ls -1 exported\json\*.json | while read jsonfile; do --file=$jsonfile --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool; done
 
 

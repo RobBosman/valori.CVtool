@@ -14,6 +14,8 @@
 
   <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
+  <xsl:variable name="SKILL_CATEGORIES" select="'LANGUAGES BRANCHES EXPERTISE DATABASES APPLICATIONS TOOLS PROGRAMMING METHODS OS_NETWORKS'" />
+
   <xsl:template match="/">
     <xsl:apply-templates select="cv:root"/>
   </xsl:template>
@@ -248,7 +250,7 @@
               <w:pStyle w:val="Kop1"/>
             </w:pPr>
             <w:r>
-              <w:t>Opleiding</w:t>
+              <w:t>Opleidingen</w:t>
             </w:r>
           </w:p>
           <w:tbl>
@@ -322,6 +324,7 @@
             </w:tr>
             <xsl:apply-templates select="$education">
               <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
+              <xsl:sort select="cv:result" data-type="number" />
             </xsl:apply-templates>
           </w:tbl>
         </xsl:if>
@@ -402,13 +405,14 @@
                     <w:outlineLvl w:val="1"/>
                   </w:pPr>
                   <w:r>
-                    <w:t>Certificaten</w:t>
+                    <w:t>Certificaat</w:t>
                   </w:r>
                 </w:p>
               </w:tc>
             </w:tr>
             <xsl:apply-templates select="$training">
               <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
+              <xsl:sort select="cv:result" data-type="number" />
             </xsl:apply-templates>
           </w:tbl>
         </xsl:if>
@@ -648,12 +652,13 @@
       </w:p>
       <xsl:apply-templates select="$skills">
         <xsl:with-param name="last" select="count($skills)"/>
+        <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
+        <xsl:sort select="cv:description/cv:nl_NL"/>
       </xsl:apply-templates>
     </xsl:if>
   </xsl:template>
 
   <!-- SKILL SECTION OTHER -->
-  <xsl:variable name="SKILL_CATEGORIES" select="'LANGUAGES BRANCHES EXPERTISE DATABASES APPLICATIONS TOOLS PROGRAMMING METHODS OS_NETWORKS'" />
   <xsl:template name="skill-section-other">
     <xsl:variable name="skills" select="cv:skill[not(contains($SKILL_CATEGORIES, cv:category))]"/>
     <xsl:if test="$skills">
@@ -667,6 +672,8 @@
       </w:p>
       <xsl:apply-templates select="$skills">
         <xsl:with-param name="last" select="count($skills)"/>
+        <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
+        <xsl:sort select="cv:description/cv:nl_NL"/>
       </xsl:apply-templates>
     </xsl:if>
   </xsl:template>
@@ -739,7 +746,7 @@
         </w:tcPr>
         <w:p w14:paraId="35A0A5F9" w14:textId="7A864B0E" w:rsidR="00F15DA6" w:rsidRDefault="001860B4" w:rsidP="001860B4">
           <w:r>
-            <w:t><xsl:value-of select="cv:client"/></w:t>
+            <w:t><xsl:apply-templates select="." mode="client"/></w:t>
           </w:r>
         </w:p>
       </w:tc>
@@ -919,7 +926,7 @@
             <w:rPr>
               <w:rStyle w:val="Valori-geel"/>
             </w:rPr>
-            <w:t><xsl:value-of select="cv:client"/></w:t>
+            <w:t><xsl:apply-templates select="." mode="client"/></w:t>
           </w:r>
         </w:p>
       </w:tc>

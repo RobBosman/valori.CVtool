@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:cv="https://ns.bransom.nl/valori/cv/v20201022.xsd"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
     xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
     version="1.0">
@@ -11,6 +12,18 @@
       <xsl:when test=". = 3"></xsl:when>
       <xsl:when test=". = 2"></xsl:when>
       <xsl:when test=". = 1"></xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- CLIENT -->
+  <xsl:template match="cv:experience" mode="client">
+    <xsl:choose>
+      <xsl:when test="normalize-space(cv:client) != ''">
+        <xsl:value-of select="cv:client" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="cv:employer" />
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
