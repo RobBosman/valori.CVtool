@@ -17,7 +17,8 @@ reducerRegistry.register(
   createReducer(
     {
       content: {},
-      dirty: {}
+      dirty: {},
+      lastSavedTimestamp: new Date()
     },
     {
       [resetEntities]: (state, action) => {
@@ -32,7 +33,7 @@ reducerRegistry.register(
           state.content = {};
           state.dirty = {};
           state.lastEditedTimestamp = null;
-          state.lastSavedTimestamp = null;
+          state.lastSavedTimestamp = new Date();
         }
       },
       [changeInstances]: (state, action) => {
