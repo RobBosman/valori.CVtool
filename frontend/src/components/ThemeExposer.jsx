@@ -12,14 +12,15 @@ import {createTheme} from "@fluentui/react";
  *   3) save the console output to a file, e.g. localhost-1602616724710.log.
  *   4) copy the JavaScript code from the log file to scr/static/themes.js
  *   5) remove the import statement from Main.jsx.
- * This way static theme json data is generated 
+ * 
+ * This way static theme json data is generated that can be applied
  */
 
 const themePalettes = {
 // primary color: #008000
 // text color: #323130
 // backgroundColor: #ffffff
-  lightBlue: {
+  fluentUIDefault: {
     palette: {
       themePrimary: "#0078d4",
       themeLighterAlt: "#eff6fc",
@@ -45,94 +46,64 @@ const themePalettes = {
       white: "#ffffff"
     }
   },
-  
-  // primary color: #008000
-  // text color: #323130
-  // backgroundColor: #fcfcfc
-  lightGreen: {
+
+  // primary color: #211A58
+  // text color: #000000
+  // backgroundColor: #fafafa
+  valoriBlue: {
     palette: {
-      themePrimary: "#008000",
-      themeLighterAlt: "#f0faf0",
-      themeLighter: "#c5ebc5",
-      themeLight: "#98d998",
-      themeTertiary: "#47b347",
-      themeSecondary: "#118f11",
-      themeDarkAlt: "#007300",
-      themeDark: "#006100",
-      themeDarker: "#004700",
-      neutralLighterAlt: "#f6f6f6",
-      neutralLighter: "#f2f2f2",
-      neutralLight: "#e8e8e8",
-      neutralQuaternaryAlt: "#d8d8d8",
-      neutralQuaternary: "#cecece",
-      neutralTertiaryAlt: "#c6c6c6",
-      neutralTertiary: "#a19f9d",
-      neutralSecondary: "#605e5c",
-      neutralPrimaryAlt: "#3b3a39",
-      neutralPrimary: "#323130",
-      neutralDark: "#201f1e",
-      black: "#000000",
-      white: "#fcfcfc",
+      "themePrimary": "#211A58",
+      "themeLighterAlt": "#010104",
+      "themeLighter": "#05040e",
+      "themeLight": "#0a081b",
+      "themeTertiary": "#141036",
+      "themeSecondary": "#1e184f",
+      "themeDarkAlt": "#2f276a",
+      "themeDark": "#443c81",
+      "themeDarker": "#6a63a2",
+      "neutralLighterAlt": "#f3f3f3",
+      "neutralLighter": "#efefef",
+      "neutralLight": "#e5e5e5",
+      "neutralQuaternaryAlt": "#d6d6d6",
+      "neutralQuaternary": "#cccccc",
+      "neutralTertiaryAlt": "#c4c4c4",
+      "neutralTertiary": "#595959",
+      "neutralSecondary": "#373737",
+      "neutralPrimaryAlt": "#2f2f2f",
+      "neutralPrimary": "#000000",
+      "neutralDark": "#151515",
+      "black": "#0b0b0b",
+      "white": "#fafafa"
     }
   },
 
-  // primary color: #f39900
-  // text color: #fefefe
-  // backgroundColor: #1b1a19
-  darkOrange: {
+  // primary color: #F29100
+  // text color: #e2e2e2
+  // backgroundColor: #2B2B2B
+  valoriOrange: {
     palette: {
-      themePrimary: "#f39900",
-      themeLighterAlt: "#0a0600",
-      themeLighter: "#271900",
-      themeLight: "#492e00",
-      themeTertiary: "#915c00",
-      themeSecondary: "#d58700",
-      themeDarkAlt: "#f4a318",
-      themeDark: "#f5b13b",
-      themeDarker: "#f8c56d",
-      neutralLighterAlt: "#262523",
-      neutralLighter: "#2f2d2c",
-      neutralLight: "#3d3b39",
-      neutralQuaternaryAlt: "#464442",
-      neutralQuaternary: "#4d4b49",
-      neutralTertiaryAlt: "#6b6966",
-      neutralTertiary: "#c8c8c8",
-      neutralSecondary: "#d0d0d0",
-      neutralPrimaryAlt: "#dadada",
-      neutralPrimary: "#ffffff",
-      neutralDark: "#f4f4f4",
-      black: "#f8f8f8",
-      white: "#1b1a19"
-    }
-  },
-
-  // primary color: #f0d000
-  // text color: #ffffff
-  // backgroundColor: #323130
-  darkYellow: {
-    palette: {
-      themePrimary: "#f0d000",
-      themeLighterAlt: "#0a0800",
-      themeLighter: "#262100",
-      themeLight: "#483e00",
-      themeTertiary: "#907d00",
-      themeSecondary: "#d3b700",
-      themeDarkAlt: "#f1d418",
-      themeDark: "#f3db3a",
-      themeDarker: "#f6e46c",
-      neutralLighterAlt: "#323130",
-      neutralLighter: "#31302f",
-      neutralLight: "#2f2e2d",
-      neutralQuaternaryAlt: "#2c2b2a",
-      neutralQuaternary: "#2a2928",
-      neutralTertiaryAlt: "#282726",
-      neutralTertiary: "#c8c8c8",
-      neutralSecondary: "#d0d0d0",
-      neutralPrimaryAlt: "#dadada",
-      neutralPrimary: "#ffffff",
-      neutralDark: "#f4f4f4",
-      black: "#f8f8f8",
-      white: "#323130",
+      "themePrimary": "#F29100",
+      "themeLighterAlt": "#0a0600",
+      "themeLighter": "#271700",
+      "themeLight": "#492c00",
+      "themeTertiary": "#915700",
+      "themeSecondary": "#d58000",
+      "themeDarkAlt": "#f49c18",
+      "themeDark": "#f5ab3b",
+      "themeDarker": "#f8c06d",
+      "neutralLighterAlt": "#343434",
+      "neutralLighter": "#3d3d3d",
+      "neutralLight": "#4a4a4a",
+      "neutralQuaternaryAlt": "#525252",
+      "neutralQuaternary": "#595959",
+      "neutralTertiaryAlt": "#757575",
+      "neutralTertiary": "#ececec",
+      "neutralSecondary": "#efefef",
+      "neutralPrimaryAlt": "#f2f2f2",
+      "neutralPrimary": "#e2e2e2",
+      "neutralDark": "#f9f9f9",
+      "black": "#fcfcfc",
+      "white": "#2B2B2B"
     }
   }
 };

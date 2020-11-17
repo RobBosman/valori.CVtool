@@ -80,6 +80,7 @@ const Accounts = (props) => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
+      minWidth: 120,
       isSorted: false,
       isSortedDescending: false,
       data: "string"
@@ -89,6 +90,7 @@ const Accounts = (props) => {
       fieldName: "businessUnit",
       name: "Tribe",
       isResizable: true,
+      minWidth: 120,
       data: "string"
     }
   ];

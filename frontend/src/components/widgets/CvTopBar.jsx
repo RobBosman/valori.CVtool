@@ -6,10 +6,9 @@ import * as safeActions from "../../services/safe/safe-actions";
 import * as authenticationActions from "../../services/authentication/authentication-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
-import lightBlueTheme from "../../static/themes/lightBlue.json";
-import lightGreenTheme from "../../static/themes/lightGreen.json";
-import darkOrangeTheme from "../../static/themes/darkOrange.json";
-import darkYellowTheme from "../../static/themes/darkYellow.json";
+import fluentUIDefaultTheme from "../../static/themes/fluentUIDefault.json";
+import valoriBlueTheme from "../../static/themes/valoriBlue.json";
+import valoriOrangeTheme from "../../static/themes/valoriOrange.json";
 
 const CvTopBar = (props) => {
   
@@ -38,7 +37,7 @@ const CvTopBar = (props) => {
       key: "connected",
       iconProps: { iconName: props.isConnected ? "PlugConnected" : "PlugDisconnected" },
       commandBarButtonAs: WrappedButton,
-      style: { background: props.isConnected ? "initial" : currentTheme.semanticColors.warningBackground },
+      style: { background: props.isConnected ? "initial" : currentTheme.semanticColors.severeWarningBackground },
       tooltipText: props.isConnected ? "Verbonden met backend" : "Geen verbinding met backend"
     },
     {
@@ -67,10 +66,9 @@ const CvTopBar = (props) => {
             iconProps: { iconName: "Brightness" },
             subMenuProps: {
               items: [
-                createThemeItem("lightBlue", lightBlueTheme, "Licht - Blauw"),
-                createThemeItem("lightGreen", lightGreenTheme, "Licht - Groen"),
-                createThemeItem("darkOrange", darkOrangeTheme, "Donker - Oranje"),
-                createThemeItem("darkYellow", darkYellowTheme, "Donker - Geel")
+                createThemeItem("fluentUIDefault", fluentUIDefaultTheme, "Standaard"),
+                createThemeItem("valoriBlue", valoriBlueTheme, "Valori - Blauw"),
+                createThemeItem("valoriOrange", valoriOrangeTheme, "Valori - Oranje")
               ]
             }
           },
@@ -104,11 +102,19 @@ const CvTopBar = (props) => {
     }
   ];
 
+  const styles = {
+    root: {
+      paddingLeft: 0,
+      borderBottomStyle: "inset",
+      borderWidth: "2px"
+    }
+  };
+
   return (
     <CommandBar
       items={items}
       farItems={farItems}
-      styles={{ root: { paddingLeft: 0 } }}
+      styles={styles}
     />
   );
 };

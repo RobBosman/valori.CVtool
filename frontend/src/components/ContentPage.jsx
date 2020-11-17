@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { DefaultButton, Nav, Separator, Stack, TooltipHost } from "@fluentui/react";
+import { PrimaryButton, Nav, Separator, Stack, TooltipHost } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -120,14 +120,14 @@ const ContentPage = (props) => {
       <Stack>
         <CvLogo/>
         <Nav
-          styles={{ root: { width: 180, marginTop: 49 } }}
+          styles={{ root: { width: 180, marginTop: 59 } }}
           groups={navGroups}
           initialSelectedKey={props.locationHash || "#"}
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />
         <TooltipHost content="Download CV als MS-Word document">
-          <DefaultButton
+          <PrimaryButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
             disabled={!props.selectedAccountId}
