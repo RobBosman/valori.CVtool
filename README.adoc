@@ -1,18 +1,24 @@
 = CVtool 2.0
 
-== React + Redux + vert.x application
-Configure via environment variables:
+== React + Redux + vert.x + MongoDB + Docker application
 
-- HTTPS_CONNECTION_STRING=http://localhost:80/
-- MONGO_CONNECTION_STRING=mongodb://localhost:27017/cvtool
+Build and publish docker image:
 
-== Dev env setup
-see also
+ docker build -t bransom/cvtool .
+ docker push bransom/cvtool
 
-- https://reactjs.org/docs/getting-started.html
-- https://gist.github.com/eirikb/06f92fd3857063b58512
+Deploy:
+
+ docker pull bransom/cvtool
+ docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
+ docker container prune -f
+ docker image prune -f
+
+== Dev-env setup
+IDEA (Community Edition)
 
 Visual Studio Code with plugins
+
 - Beautify
 - ESLint
 - Git History
@@ -45,20 +51,20 @@ Visual Studio Code with plugins
 - [x] deal with lists of model elements in UI
 - [x] insert/update/delete data in MongoDB
 - [x] create widgets to easily connect FluentUI to Redux
-- [ ] design combined(?) overview, detail and edit screen layouts
-- [ ] extend UI with all required fields for maintaining cv
-- [ ] add auto-save
-- [ ] secure vert.x event bus
+- [x] design combined(?) overview, detail and edit screen layouts
+- [x] extend UI with all required fields for maintaining cv
+- [x] add auto-save
+- [x] secure vert.x event bus
 - [ ] handle sessions, login/out
 - [ ] store model in relational database
 - [ ] explore Web Workers?
 - [ ] apply vert.x ReactiveRead/WriteStream?
-- [ ] request Valori server (docker) and database
-- [ ] convert data from old database (directly connect to old database?)
-- [ ] add OpenID Connect authentication flow +
+- [x] request Valori server (docker) and database
+- [x] convert data from old database (directly connect to old database?)
+- [x] add OpenID Connect authentication flow +
 (client obtains code; server obtains token)
-- [ ] add auto-refresh of tokens (how exactly?)
-- [ ] add Word export
+- [x] add auto-refresh of tokens (how exactly?)
+- [x] add Word export
 - [ ] add storing in SharePoint
 - [ ] add admin role and functionality
 - [ ] add unit (integration) tests

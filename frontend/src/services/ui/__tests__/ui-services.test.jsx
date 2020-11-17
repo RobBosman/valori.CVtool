@@ -2,10 +2,9 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { loadTheme } from "@fluentui/react";
-import lightBlueTheme from "../../../static/themes/lightBlue.json";
-import lightGreenTheme from "../../../static/themes/lightGreen.json";
-import darkOrangeTheme from "../../../static/themes/darkOrange.json";
-import darkYellowTheme from "../../../static/themes/darkYellow.json";
+import fluentUIDefaultTheme from "../../../static/themes/fluentUIDefault.json";
+import valoriBlueTheme from "../../../static/themes/valoriBlue.json";
+import valoriOrangeTheme from "../../../static/themes/valoriOrange.json";
 import * as uiServices from "../ui-services";
 
 describe("ui-services.test", () => {
@@ -36,25 +35,19 @@ describe("ui-services.test", () => {
     });
     const testTarget = document.getElementById("testTarget");
     expect(testTarget.style.background)
-      .toBe(colorToRgb(lightBlueTheme.palette.neutralLighter));
+      .toBe(colorToRgb(fluentUIDefaultTheme.palette.neutralLighter));
 
     act(() => {
-      loadTheme(darkOrangeTheme);
+      loadTheme(valoriOrangeTheme);
     });
     expect(testTarget.style.background)
-      .toBe(colorToRgb(darkOrangeTheme.palette.neutralLighter));
+      .toBe(colorToRgb(valoriOrangeTheme.palette.neutralLighter));
 
     act(() => {
-      loadTheme(darkYellowTheme);
+      loadTheme(valoriBlueTheme);
     });
     expect(testTarget.style.background)
-      .toBe(colorToRgb(darkYellowTheme.palette.neutralLighter));
-
-    act(() => {
-      loadTheme(lightGreenTheme);
-    });
-    expect(testTarget.style.background)
-      .toBe(colorToRgb(lightGreenTheme.palette.neutralLighter));
+      .toBe(colorToRgb(valoriBlueTheme.palette.neutralLighter));
   });
 });
 

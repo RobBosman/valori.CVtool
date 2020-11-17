@@ -99,7 +99,7 @@
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <arguments>install --no-optional --no-audit</arguments>
+              <arguments>install --no-optional --no-audit --legacy-peer-deps</arguments>
             </configuration>
           </execution>
           <execution>
