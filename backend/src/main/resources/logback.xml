@@ -11,7 +11,7 @@
     </layout>
   </appender>
 
-  <logger name="nl.valori.cvtool" level="INFO" additivity="false">
+  <logger name="nl.valori.cvtool" level="DEBUG" additivity="false">
     <appender-ref ref="CONSOLE"/>
   </logger>
 

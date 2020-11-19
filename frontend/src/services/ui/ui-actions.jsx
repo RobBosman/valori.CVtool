@@ -14,7 +14,7 @@ reducerRegistry.register(
     {
       locationHash: document.location.hash || "",
       locale: "nl_NL",
-      themeName: "lightBlue",
+      themeName: "valoriBlue",
       selectedId: {}
     },
     {

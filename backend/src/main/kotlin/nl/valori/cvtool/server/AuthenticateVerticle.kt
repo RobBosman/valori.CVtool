@@ -32,6 +32,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setClientID(clientIdSecret[0])
             .setClientSecret(clientIdSecret[1])
         )
+        .doOnSuccess { startPromise.complete() }
         .flatMapObservable { oauth2 ->
           vertx.eventBus()
               .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
@@ -40,7 +41,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         }
         .subscribe(
             { (message, oauth2) ->
-              startPromise.tryComplete()
               handleRequest(message, oauth2)
             },
             {
@@ -51,8 +51,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
   }
 
   /**
-   * Expects message body: <pre>
-   *   { "jwt": "###########" }
+   * Expects jwt in message body: <pre>
+   *   { "jwt": "###.######.####" }
    * </pre>
    */
   private fun handleRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =

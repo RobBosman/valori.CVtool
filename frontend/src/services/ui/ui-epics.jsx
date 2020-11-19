@@ -1,7 +1,7 @@
 import { map, filter, distinctUntilChanged } from "rxjs/operators";
 import { fromEvent } from "rxjs";
 import { ofType } from "redux-observable";
-import * as authenticationActions from "../authentication/authentication-actions";
+import * as authActions from "../auth/auth-actions";
 import * as uiActions from "./ui-actions";
 
 export const uiEpics = [
@@ -12,17 +12,17 @@ export const uiEpics = [
 
   // Delete selections on logout.
   (_, state$) => state$.pipe(
-    map(state => state.authentication.loginState),
+    map(state => state.auth.loginState),
     distinctUntilChanged(),
-    filter(loginState => loginState === authenticationActions.LoginStates.LOGGED_OUT),
+    filter(loginState => loginState === authActions.LoginStates.LOGGED_OUT),
     map(() => uiActions.resetSelectedIds())
   ),
 
   // Select the account who'se AccountInfo is retrieved.
   (action$) => action$.pipe(
-    ofType(authenticationActions.setAccountInfo.type),
+    ofType(authActions.setAuthInfo.type),
     map(action => action.payload),
-    map(accountInfo => uiActions.setSelectedId("account", accountInfo?._id))
+    map(authInfo => uiActions.setSelectedId("account", authInfo?.accountId))
   ),
 
   // Reset the se;ected cvId if the selected accountId changes.

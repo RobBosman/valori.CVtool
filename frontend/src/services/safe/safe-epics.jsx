@@ -10,7 +10,7 @@ export const safeEpics = [
 
   // Fetch all accounts from the server.
   (action$) => action$.pipe(
-    ofType(safeActions.fetchAdminContent.type),
+    ofType(safeActions.fetchAccountsAndBusinessUnits.type),
     switchMap(() => safeServices.fetchFromRemote({ "account": [{}], "businessUnit": [{}] }, eventBusClient.sendEvent)),
     map(fetchedAccunts => safeActions.resetEntities(fetchedAccunts))
   ),

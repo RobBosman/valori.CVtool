@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link, PrimaryButton, Stack, Text } from "@fluentui/react";
 import CvLogo from "./widgets/CvLogo";
 import LoginDialog from "./LoginDialog";
-import * as authenticationActions from "../services/authentication/authentication-actions";
+import * as authActions from "../services/auth/auth-actions";
 
 const LoginPage = (props) => {
 
@@ -54,12 +54,12 @@ LoginPage.propTypes = {
 };
 
 const select = (state) => ({
-  isLoggingIn: state.authentication.loginState === authenticationActions.LoginStates.LOGGING_IN_OPENID
-      || state.authentication.loginState === authenticationActions.LoginStates.LOGGING_IN_BACKEND
+  isLoggingIn: state.auth.loginState === authActions.LoginStates.LOGGING_IN_OPENID
+      || state.auth.loginState === authActions.LoginStates.LOGGING_IN_BACKEND
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestToLogin: () => dispatch(authenticationActions.requestLogin())
+  requestToLogin: () => dispatch(authActions.requestLogin())
 });
 
 export default connect(select, mapDispatchToProps)(LoginPage);

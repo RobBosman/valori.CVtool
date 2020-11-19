@@ -3,7 +3,7 @@ import { map, mergeMap, ignoreElements } from "rxjs/operators";
 import { eventBusClient, ConnectionStates } from "./eventBus-services";
 import { EMPTY } from "rxjs";
 import { setEventBusConnectionState, requestEventBusConnection } from "./eventBus-actions";
-import { setAuthenticationInfo } from "../authentication/authentication-actions";
+import { setAuthenticationResult } from "../auth/auth-actions";
 
 export const eventBusEpics = [
   // Copy the EventBus connection state to Redux.
@@ -31,7 +31,7 @@ export const eventBusEpics = [
   
   // Add or delete EventBus headers.
   (action$) => action$.pipe(
-    ofType(setAuthenticationInfo.type),
+    ofType(setAuthenticationResult.type),
     map((action) => action.payload?.idToken),
     map((jwt) =>
       jwt

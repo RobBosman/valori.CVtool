@@ -84,9 +84,9 @@ internal class CvGenerateVerticle : AbstractVerticle() {
     vertx.eventBus()
         .consumer<JsonObject>(CV_GENERATE_ADDRESS)
         .toObservable()
+        .doOnSubscribe { startPromise.complete() }
         .subscribe(
             {
-              startPromise.tryComplete()
               handleRequest(it)
             },
             {

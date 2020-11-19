@@ -18,7 +18,7 @@ import CvLogo from "./widgets/CvLogo";
 
 const ContentPage = (props) => {
 
-  const isAdmin = props.accountInfo.privileges.includes("ADMIN");
+  const isAdmin = props.authInfo.roles.includes("ADMIN");
   const navGroups = [
     {
       links: [
@@ -113,7 +113,7 @@ const ContentPage = (props) => {
     (<h3>{group.name}</h3>);
 
   const onGenerateCv = () =>
-    props.generateCv(props.selectedAccountId || props.accountInfo._id);
+    props.generateCv(props.selectedAccountId || props.authInfo.accountId);
 
   return (
     <Stack horizontal>
@@ -149,7 +149,7 @@ const ContentPage = (props) => {
 
 ContentPage.propTypes = {
   navKey: PropTypes.string,
-  accountInfo: PropTypes.object,
+  authInfo: PropTypes.object,
   locationHash: PropTypes.string,
   selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
@@ -157,7 +157,7 @@ ContentPage.propTypes = {
 };
 
 const select = (state) => ({
-  accountInfo: state.authentication.accountInfo,
+  authInfo: state.auth.authInfo,
   locationHash: state.ui.locationHash,
   selectedAccountId: state.ui.selectedId["account"],
   selectedCvId: state.ui.selectedId["cv"]

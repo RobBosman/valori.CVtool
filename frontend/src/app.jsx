@@ -5,7 +5,7 @@ import { store } from "./redux/store";
 import { initializeUI } from "./services/ui/ui-services";
 import { epicRegistry } from "./redux/epicRegistry";
 import { errorEpics } from "./services/error/error-epics";
-import { authenticationEpics } from "./services/authentication/authentication-epics";
+import { authEpics } from "./services/auth/auth-epics";
 import { eventBusEpics } from "./services/eventBus/eventBus-epics";
 import { cvEpics } from "./services/cv/cv-epics";
 import { safeEpics } from "./services/safe/safe-epics";
@@ -15,7 +15,7 @@ import Main from "./components/Main";
 
 epicRegistry.register(
   ...errorEpics,
-  ...authenticationEpics,
+  ...authEpics,
   ...eventBusEpics,
   ...cvEpics,
   ...safeEpics,

@@ -26,9 +26,9 @@ internal class CvFetchVerticle : AbstractVerticle() {
     vertx.eventBus()
         .consumer<JsonObject>(CV_FETCH_ADDRESS)
         .toObservable()
+        .doOnSubscribe { startPromise.complete() }
         .subscribe(
             {
-              startPromise.tryComplete()
               handleRequest(it)
             },
             {
@@ -42,7 +42,7 @@ internal class CvFetchVerticle : AbstractVerticle() {
       Single
           .just(message)
           .map { it.body().getString("accountId", "") }
-          .doOnSuccess { if (it === "") throw IllegalArgumentException("'accountId' is not specified.") }
+          .doOnSuccess { if (it === "") error("'accountId' is not specified.") }
           .flatMap { accountId -> fetchCvData(accountId) }
           .subscribe(
               {

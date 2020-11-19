@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Fabric, loadTheme } from "@fluentui/react";
-import { LoginStates } from "../services/authentication/authentication-actions";
+import { LoginStates } from "../services/auth/auth-actions";
 import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import ErrorDialog from "./ErrorDialog";
@@ -10,7 +10,8 @@ import valoriBlueTheme from "../static/themes/valoriBlue.json";
 // import "./ThemeExposer";
 
 const Main = (props) => {
-  loadTheme(valoriBlueTheme);
+
+  React.useEffect(() => loadTheme(valoriBlueTheme)), [];
 
   return (
     <Fabric>
@@ -25,7 +26,7 @@ Main.propTypes = {
 };
 
 const select = (state) => ({
-  isLoggedIn: state.authentication.loginState === LoginStates.LOGGED_IN
+  isLoggedIn: state.auth.loginState === LoginStates.LOGGED_IN
 });
 
 export default connect(select)(Main);

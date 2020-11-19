@@ -3,11 +3,11 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
-export const fetchAuthenticationInfo = createAction("FETCH_AUTHENTICATION_INFO", () => ({}));
-export const setAuthenticationInfo = createAction("SET_AUTHENTICATION_INFO");
-export const fetchAccountInfo = createAction("FETCH_ACCOUNT_INFO", () => ({}));
+export const authenticate = createAction("AUTHENTICATE", () => ({}));
+export const setAuthenticationResult = createAction("SET_AUTHENTICATION_RESULT");
+export const fetchAuthInfo = createAction("FETCH_AUTHT_INFO", () => ({}));
 export const setLoginState = createAction("SET_LOGIN_STATE");
-export const setAccountInfo = createAction("SET_ACCOUNT_INFO");
+export const setAuthInfo = createAction("SET_AUTH_INFO");
 
 export const LoginStates = {
   LOGGED_OUT: "LOGGED_OUT",
@@ -18,7 +18,7 @@ export const LoginStates = {
 };
 
 reducerRegistry.register(
-  "authentication",
+  "auth",
   createReducer(
     {
       loginState: LoginStates.LOGGED_OUT
@@ -27,8 +27,8 @@ reducerRegistry.register(
       [setLoginState]: (state, action) => {
         state.loginState = action.payload;
       },
-      [setAccountInfo]: (state, action) => {
-        state.accountInfo = action.payload;
+      [setAuthInfo]: (state, action) => {
+        state.authInfo = action.payload;
       }
     }
   )

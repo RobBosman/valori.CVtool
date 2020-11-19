@@ -16,9 +16,9 @@ internal class HeartbeatVerticle : AbstractVerticle() {
     Flowable
         .interval(1000, TimeUnit.MILLISECONDS)
         .map { if (it % 2 == 0L) "tik" else "tik" }
+        .doOnSubscribe { startPromise.complete() }
         .subscribe(
             {
-              startPromise.tryComplete()
               vertx.eventBus().publish(SERVER_HEARTBEAT_ADDRESS, it)
             },
             {

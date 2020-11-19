@@ -21,6 +21,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
   override fun start(startPromise: Promise<Void>) {
     MongoConnection
         .mongodbConnection(config())
+        .doOnSubscribe { startPromise.complete() }
         .subscribe(
             { mongoDatabase ->
               vertx.eventBus()
@@ -28,12 +29,10 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
                   .toObservable()
                   .subscribe(
                       {
-                        startPromise.tryComplete()
                         handleRequest(it, mongoDatabase)
                       },
                       {
                         log.error("Vertx error processing MongoDB request: ${it.message}.")
-                        startPromise.fail(it)
                       }
                   )
             },

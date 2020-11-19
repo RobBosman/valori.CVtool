@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemType, TooltipHost } from "@fluentui/react";
 import * as safeActions from "../../services/safe/safe-actions";
-import * as authenticationActions from "../../services/authentication/authentication-actions";
+import * as authActions from "../../services/auth/auth-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import fluentUIDefaultTheme from "../../static/themes/fluentUIDefault.json";
@@ -27,6 +27,9 @@ const CvTopBar = (props) => {
       <CommandBarButton {...p}/>
     </TooltipHost>
   );
+
+  const onOpenEmail = () =>
+    window.open("mailto:RobBosman@valori.nl", "blank");
   
   const isDirty = props.isConnected && props.hasSafeData
     && props.lastEditedTimestamp
@@ -82,7 +85,7 @@ const CvTopBar = (props) => {
                   key: "emailMe",
                   text: "Problemen? Mail even!",
                   iconProps: { iconName: "NewMail" },
-                  // TODO: onClick: mail-link
+                  onClick: onOpenEmail
                 }
               ]
             }
@@ -131,7 +134,7 @@ CvTopBar.propTypes = {
 };
 
 const select = (state) => ({
-  account: state.authentication.accountInfo,
+  account: state.auth.authInfo,
   isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
   hasSafeData: Object.keys(state.safe.content).length > 0,
   lastEditedTimestamp: state.safe.lastEditedTimestamp,
@@ -140,7 +143,7 @@ const select = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setThemeName: (themeName) => dispatch(uiActions.setThemeName(themeName)),
-  requestToLogout: () => dispatch(authenticationActions.requestLogout()),
+  requestToLogout: () => dispatch(authActions.requestLogout()),
   save: () => dispatch(safeActions.save(true))
 });
 

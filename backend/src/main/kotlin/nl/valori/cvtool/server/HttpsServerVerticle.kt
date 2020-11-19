@@ -15,6 +15,8 @@ import io.vertx.reactivex.ext.web.Router
 import io.vertx.reactivex.ext.web.handler.StaticHandler
 import io.vertx.reactivex.ext.web.handler.sockjs.BridgeEvent
 import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
+import nl.valori.cvtool.server.AuthInfo.Companion.AUTH_INFO_HEADER_TAG
+import nl.valori.cvtool.server.Authorizer.authorize
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -126,13 +128,15 @@ internal class HttpsServerVerticle : AbstractVerticle() {
       BridgeEventType.SEND,
       BridgeEventType.PUBLISH -> {
         // Make sure we start with an empty 'Auth' header.
-        setAuthHeader(bridgeEvent, JsonObject())
+        bridgeEvent.setAuthInfoHeader("")
         Single
             .just(bridgeEvent)
             .flatMap(::authenticate)
-            .flatMap(::fetchPrivileges)
+            .flatMap(::fetchAuthInfo)
+            .doOnSuccess { bridgeEvent.authorize(it) }
             .subscribe(
                 {
+                  bridgeEvent.setAuthInfoHeader(it.asJson().encode())
                   bridgeEvent.complete(true)
                 },
                 {
@@ -146,9 +150,9 @@ internal class HttpsServerVerticle : AbstractVerticle() {
   }
 
   /**
-   * If successfully authenticated, an 'Auth' header will be added containing the user's 'name' and 'email'.
+   * When successfully authenticated, a header will be added containing the user's email and name.
    */
-  private fun authenticate(bridgeEvent: BridgeEvent): Single<BridgeEvent> {
+  private fun authenticate(bridgeEvent: BridgeEvent): Single<AuthInfo> {
     val jwt = bridgeEvent.rawMessage
         ?.getJsonObject("headers")
         ?.getString("Authorization")
@@ -157,43 +161,24 @@ internal class HttpsServerVerticle : AbstractVerticle() {
     return vertx
         .eventBus()
         .rxRequest<JsonObject>(AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
-        .map {
-          setAuthHeader(bridgeEvent, JsonObject()
-              .put("email", it.body().getString("email"))
-              .put("name", it.body().getString("name"))
-          )
-          bridgeEvent
-        }
+        .map { AuthInfo(it.body().getString("email"), it.body().getString("name")) }
   }
 
   /**
-   * If successfully authorized, the user's 'privileges' will be added to the 'Auth' header.
+   * When successfully authenticated, the user's 'privileges' will be added to the 'Auth' header.
    */
-  private fun fetchPrivileges(bridgeEvent: BridgeEvent): Single<BridgeEvent> {
-    val authHeader = getAuthHeader(bridgeEvent)
-    return vertx
-        .eventBus()
-        .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, null,
-            deliveryOptions.addHeader("Auth", authHeader.encode()))
-        .map {
-          val userPrivileges = it.body().getJsonArray("privileges")
-          setAuthHeader(bridgeEvent, authHeader.put("privileges", userPrivileges))
+  private fun fetchAuthInfo(authInfo: AuthInfo) =
+      vertx
+          .eventBus()
+          .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, null,
+              deliveryOptions.addHeader(AUTH_INFO_HEADER_TAG, authInfo.asJson().encode()))
+          .map { AuthInfo.fromJson(it.body()) }
 
-          bridgeEvent
-        }
-  }
-
-  private fun getAuthHeader(bridgeEvent: BridgeEvent) =
-      bridgeEvent.rawMessage
-          ?.getJsonObject("headers")
-          ?.getJsonObject("Auth")
-          ?: JsonObject()
-
-  private fun setAuthHeader(bridgeEvent: BridgeEvent, authJson: JsonObject) {
-    val headers = bridgeEvent.rawMessage
+  private fun BridgeEvent.setAuthInfoHeader(authInfo: String) {
+    val headers = rawMessage
         ?.getJsonObject("headers")
         ?: JsonObject()
-    bridgeEvent.rawMessage = bridgeEvent.rawMessage
-        .put("headers", headers.put("Auth", authJson))
+    rawMessage = rawMessage
+        .put("headers", headers.put(AUTH_INFO_HEADER_TAG, authInfo))
   }
 }

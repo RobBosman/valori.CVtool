@@ -56,7 +56,7 @@
     {
     "_id": "<xsl:value-of select="util:uuid(@id)"/>"
     ,"name": "<xsl:value-of select="cv:name"/>"
-    ,"email": "<xsl:value-of select="translate(translate(cv:name, ' ', ''), $LOWERCASE, $UPPERCASE)"/>@VALORI.NL"
+    ,"email": "<xsl:apply-templates select="." mode="email"/>"
     ,"dateOfBirth": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:geboortedatum"/>"
     ,"residence": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:woonplaats"/>"
     ,"privileges": <xsl:apply-templates select="." mode="privileges"/>
@@ -363,6 +363,22 @@
       <xsl:when test=". = 1">true</xsl:when>
       <xsl:otherwise>false</xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="cv:_account" mode="email">
+    <xsl:variable name="naam">
+      <xsl:choose>
+        <xsl:when test="cv:name = 'Arend-Jan Bakker'">ArendJan Bakker</xsl:when>
+        <xsl:when test="cv:name = 'Cees-Jan van Buuren'">CeesJan van Buuren</xsl:when>
+        <xsl:when test="cv:name = 'Engin Işgüzar'">Engin Isguzar</xsl:when>
+        <xsl:when test="cv:name = 'René Bouw'">Rene Bouw</xsl:when>
+        <xsl:when test="cv:name = 'Tugay Üzinli'">Tugay Uzinli</xsl:when>
+        <xsl:when test="cv:name = 'Valeria Esman-Huszak'">Valeria Huszak</xsl:when>
+        <xsl:when test="cv:name = 'Youssef Aoulad Si Amar'">Youssef Aoulad</xsl:when>
+        <xsl:otherwise><xsl:value-of select="cv:naam"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:value-of select="concat(translate(translate($naam, ' ', ''), $LOWERCASE, $UPPERCASE), '@VALORI.NL')"/>
   </xsl:template>
 
   <xsl:template match="node()|text()|@*"/>

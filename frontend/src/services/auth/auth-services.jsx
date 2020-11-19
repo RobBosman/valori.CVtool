@@ -20,7 +20,7 @@ const LOGIN_CONFIG = {
 
 const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 
-export const authorizeAtOpenIdProvider = () => {
+export const authenticateAtOpenIdProvider = () => {
   const allAccounts = msal.getAllAccounts();
   if (allAccounts?.length > 0) {
     const loginConfig = {
@@ -43,12 +43,12 @@ export const authorizeAtOpenIdProvider = () => {
   }
 };
 
-export const fetchAccountInfoFromRemote = (sendEvent) =>
+export const fetchAuthInfoFromRemote = (sendEvent) =>
   sendEvent("authInfo.fetch", {})
     .then((message) => {
-      const accountInfo = message.body;
-      if (!accountInfo) {
-        throw new Error("Authentication error: message.body contains no accountInfo");
+      const authInfo = message.body;
+      if (!authInfo) {
+        throw new Error("Authentication error: message.body contains no authInfo");
       }
-      return accountInfo;
+      return authInfo;
     });

@@ -6,7 +6,7 @@ import { setSelectedId } from "../../services/ui/ui-actions";
 import * as safeActions from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
-import { AccountPrivileges } from "../cv/Enums";
+import { AccountRoles } from "../cv/Enums";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const Accounts = (props) => {
@@ -22,10 +22,10 @@ const Accounts = (props) => {
     Object.entries(accountEntity)
       .forEach(([accountId, account]) => {
         const {privileges, ...enrichedAccount} = account;
-        AccountPrivileges
-          .map(privilegeEnum => privilegeEnum.key)
-          .forEach(privilege => {
-            enrichedAccount[privilege] = privileges.includes(privilege);
+        AccountRoles
+          .map(roleEnum => roleEnum.key)
+          .forEach(role => {
+            enrichedAccount[role] = privileges.includes(role);
           });
 
         const businessUnit = businessUnitEntity && Object.values(businessUnitEntity)
@@ -40,16 +40,16 @@ const Accounts = (props) => {
   const enrichedAccountEntity = enrich(props.accountEntity, props.businessUnitEntity);
 
   const replaceAccountInstance = (accountId, enrichedAccount) => {
-    const privileges = [];
-    AccountPrivileges
-      .map(privilegeEnum => privilegeEnum.key)
-      .forEach(privilege => {
-        if (enrichedAccount[privilege]) {
-          privileges.push(privilege);
+    const roles = [];
+    AccountRoles
+      .map(roleEnum => roleEnum.key)
+      .forEach(role => {
+        if (enrichedAccount[role]) {
+          roles.push(role);
         }
-        delete(enrichedAccount[privilege]);
+        delete(enrichedAccount[role]);
       });
-    enrichedAccount.privileges = privileges;
+    enrichedAccount.roles = roles;
     props.replaceAccountInstance(accountId, enrichedAccount);
   };
 
@@ -71,7 +71,7 @@ const Accounts = (props) => {
     <CvCheckbox
       field={field}
       instanceContext={{ ...accountContext, instanceId: item._id }}
-      disabled={field === "ADMIN" && item._id === props.accountInfo._id}
+      disabled={field === "ADMIN" && item._id === props.authInfo.accountId}
     />;
 
   const columns = [
@@ -94,13 +94,13 @@ const Accounts = (props) => {
       data: "string"
     }
   ];
-  AccountPrivileges
-    .forEach(privilegeEnum => {
+  AccountRoles
+    .forEach(roleEnum => {
       columns.push({
-        key: privilegeEnum.key,
-        fieldName: privilegeEnum.key,
-        name: privilegeEnum.text,
-        onRender: (item) => renderCheckbox(privilegeEnum.key, item),
+        key: roleEnum.key,
+        fieldName: roleEnum.key,
+        name: roleEnum.text,
+        onRender: (item) => renderCheckbox(roleEnum.key, item),
         isResizable: false,
         minWidth: 50,
         maxWidth: 50,
@@ -154,7 +154,7 @@ const Accounts = (props) => {
 
 Accounts.propTypes = {
   locale: PropTypes.string.isRequired,
-  accountInfo: PropTypes.object,
+  authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   replaceAccountInstance: PropTypes.func.isRequired,
@@ -165,7 +165,7 @@ Accounts.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.locale,
-  accountInfo: state.authentication.accountInfo,
+  authInfo: state.auth.authInfo,
   accountEntity: state.safe.content["account"],
   businessUnitEntity: state.safe.content["businessUnit"],
   selectedAccountId: state.ui.selectedId["account"]

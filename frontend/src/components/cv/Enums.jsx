@@ -1,7 +1,7 @@
 export const getEnumData = (enumArray, key) =>
   enumArray.find(entry => entry.key === key);
 
-export const AccountPrivileges = [
+export const AccountRoles = [
   {
     key: "ADMIN",
     text: "Admin"
