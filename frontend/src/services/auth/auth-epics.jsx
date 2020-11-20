@@ -49,7 +49,7 @@ export const authEpics = [
       authActions.setAuthenticationResult(authenticationResult),
       // When requested to login then fetch the authInfo data.
       authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
-      authActions.fetchAuthInfo()
+      authActions.fetchAuthInfo(authenticationResult)
     )),
     catchError((error, source$) => merge(
       of(
@@ -83,12 +83,13 @@ export const authEpics = [
   (action$) => action$.pipe(
     ofType(authActions.fetchAuthInfo.type),
     map(action => action.payload),
-    switchMap(() => eventBusServices.eventBusClient.monitorConnectionState().pipe(
+    switchMap(authenticationResult => eventBusServices.eventBusClient.monitorConnectionState().pipe(
       // Fetch the authInfo data as soon as the EventBus is connected.
       filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),
-      take(1) // Connect once; don't automatically fetch authInfo at future reconnects.
+      take(1), // Connect once; don't automatically fetch authInfo at future reconnects.
+      map(() => authenticationResult)
     )),
-    mergeMap(() => authServices.fetchAuthInfoFromRemote(eventBusServices.eventBusClient.sendEvent)),
+    mergeMap(authenticationResult => authServices.fetchAuthInfoFromRemote(authenticationResult, eventBusServices.eventBusClient.sendEvent)),
     map(authInfo => authActions.setAuthInfo(authInfo)),
     catchError((error, source$) => merge(
       of(

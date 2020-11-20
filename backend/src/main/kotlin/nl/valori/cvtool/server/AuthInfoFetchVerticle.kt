@@ -4,6 +4,7 @@ import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
@@ -39,31 +40,28 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
   }
 
   /**
-   * Expects message header
+   * Expects message body
    *   {
    *     "email": "PietjePuk@Valori.nl",
    *     "name": "Pietje Puk"
    *   }
-   *   or message body
-   *   {
-   *     "email": "PietjePuk@Valori.nl"
-   *   }
    *
    * Response:
    *   {
-   *     "_id": ""1111-2222-5555-7777,
-   *     "name": "Pietje Puk",
    *     "email": "PietjePuk@Valori.nl",
-   *     ...
+   *     "name": "Pietje Puk",
+   *     "roles": ["SALES"],
+   *     "accountId": "1111-2222-5555-7777",
+   *     "cvIds": ["2222-7777-5555-1111"]
    *   }
    */
   private fun handleRequest(message: Message<JsonObject>) =
       Single
-          .just(message)
-          .map(AuthInfo::getAuthInfo)
-          .flatMap(::fetchOrCreateAccount)
-          .flatMap(::fetchCvIds)
-          .map(AuthInfo::asJson)
+          .just(message.body())
+          .map(::createAuthInfo)
+          .flatMap(::addAccountInfo)
+          .flatMap(::addCvIds)
+          .map(AuthInfo::toJson)
           .subscribe(
               {
                 log.debug("Successfully fetched accountInfo")
@@ -75,33 +73,41 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
               }
           )
 
-  private fun fetchOrCreateAccount(authInfo: AuthInfo) =
+  private fun createAuthInfo(json: JsonObject) =
+      AuthInfo(
+          json.map["email"]?.toString() ?: error("Error creating AuthInfo: email not found."),
+          json.map["name"]?.toString() ?: error("Error creating AuthInfo: name not found."))
+
+  private fun addAccountInfo(authInfo: AuthInfo) =
+      fetchOrCreateAccount(authInfo.email, authInfo.name)
+          .map { account ->
+            authInfo
+                .withAccountId(account.getString("_id", ""))
+                .withRoles(account.map["privileges"] as JsonArray? ?: JsonArray())
+          }
+
+  private fun fetchOrCreateAccount(email: String, name: String) =
       vertx.eventBus()
           .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS,
-              JsonObject("""{ "account": [{ "email": "${authInfo.email.toUpperCase()}" }] }"""),
+              JsonObject("""{ "account": [{ "email": "${email.toUpperCase()}" }] }"""),
               deliveryOptions)
           .flatMap {
             val accounts = it.body().getInstanceMap("account").values
             when (accounts.size) {
-              0 -> createAccount(authInfo)
+              0 -> createAccount(email, name)
               1 -> Single.just(accounts.iterator().next())
-              else -> error("Found ${accounts.size} accounts for ${authInfo.email}.")
+              else -> error("Found ${accounts.size} accounts for $email.")
             }
           }
-          .map { account ->
-            authInfo.accountId = account.getString("_id")
-            authInfo.setRoles(account.getJsonArray("privileges"))
-            authInfo
-          }
 
-  private fun createAccount(authInfo: AuthInfo): Single<JsonObject> {
-    val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), authInfo.email, authInfo.name)
+  private fun createAccount(email: String, name: String): Single<JsonObject> {
+    val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), email, name)
     return vertx.eventBus()
         .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
         .map { accountInstance }
   }
 
-  private fun fetchCvIds(authInfo: AuthInfo) =
+  private fun addCvIds(authInfo: AuthInfo) =
       vertx.eventBus()
           .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS,
               JsonObject("""{ "cv": [{ "accountId": "${authInfo.accountId}" }] }"""),

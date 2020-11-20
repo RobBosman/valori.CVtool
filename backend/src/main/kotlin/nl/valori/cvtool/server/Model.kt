@@ -37,14 +37,13 @@ object Model {
               .put(instance.getString("_id"), instance))
 
   fun JsonObject.getInstanceMap(entity: String) =
-      getJsonObject(entity, null)
-          ?.map
-          ?.mapValues {
+      getJsonObject(entity, JsonObject())
+          .map
+          .mapValues {
             if (it.value !is JsonObject)
               throw IllegalStateException("Expected 'instance' of type JsonObject here, not ${it.value.javaClass.name}.")
             it.value as JsonObject
           }
-          ?: emptyMap()
 
   fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter, defaultNamespaceURI: String) {
     xmlWriter.writeStartDocument()
