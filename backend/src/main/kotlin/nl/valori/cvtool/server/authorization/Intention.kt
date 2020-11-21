@@ -4,5 +4,5 @@ import nl.valori.cvtool.server.AuthInfo
 
 internal interface Intention {
 
-  fun match(address: String, body: Any, authInfo: AuthInfo): Boolean
+  fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean
 }

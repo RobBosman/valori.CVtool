@@ -3,10 +3,12 @@ package nl.valori.cvtool.server
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.authorization.AuthorizationRoles
+import nl.valori.cvtool.server.authorization.AuthorizationRoles.CONSULTANT
 
 internal class AuthInfo(val email: String, val name: String) {
 
-  private var roles: Set<AuthorizationRoles> = emptySet()
+  var roles: Set<AuthorizationRoles> = setOf(CONSULTANT)
+    private set
   var accountId: String = ""
   var cvIds: Set<String> = emptySet()
 
@@ -29,6 +31,7 @@ internal class AuthInfo(val email: String, val name: String) {
           .put("roles", JsonArray(roles.toList()))
 
   fun withRoles(json: JsonArray): AuthInfo {
+    json.add(CONSULTANT.name)
     roles = json.map { AuthorizationRoles.valueOf(it.toString()) }.toSet()
     return this
   }

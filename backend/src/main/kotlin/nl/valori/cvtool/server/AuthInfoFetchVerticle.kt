@@ -10,7 +10,7 @@ import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.Model.composeAccountInstance
 import nl.valori.cvtool.server.Model.composeEntity
-import nl.valori.cvtool.server.Model.getInstanceMap
+import nl.valori.cvtool.server.Model.getInstanceIds
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -92,10 +92,11 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
               JsonObject("""{ "account": [{ "email": "${email.toUpperCase()}" }] }"""),
               deliveryOptions)
           .flatMap {
-            val accounts = it.body().getInstanceMap("account").values
+            val accounts = it.body().getJsonObject("account", JsonObject()).map.values
+
             when (accounts.size) {
               0 -> createAccount(email, name)
-              1 -> Single.just(accounts.iterator().next())
+              1 -> Single.just(accounts.iterator().next() as JsonObject)
               else -> error("Found ${accounts.size} accounts for $email.")
             }
           }
@@ -113,7 +114,7 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
               JsonObject("""{ "cv": [{ "accountId": "${authInfo.accountId}" }] }"""),
               deliveryOptions)
           .map {
-            authInfo.cvIds = it.body().getInstanceMap("cv").keys
+            authInfo.cvIds = it.body().getInstanceIds("cv")
             authInfo
           }
 }

@@ -36,14 +36,11 @@ object Model {
           .put(entity, JsonObject()
               .put(instance.getString("_id"), instance))
 
-  fun JsonObject.getInstanceMap(entity: String) =
-      getJsonObject(entity, JsonObject())
-          .map
-          .mapValues {
-            if (it.value !is JsonObject)
-              throw IllegalStateException("Expected 'instance' of type JsonObject here, not ${it.value.javaClass.name}.")
-            it.value as JsonObject
-          }
+  fun JsonObject.getInstanceIds(entityName: String) =
+      when (val entity = getValue(entityName)) {
+        is JsonObject -> entity.map.keys
+        else -> emptySet()
+      }
 
   fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter, defaultNamespaceURI: String) {
     xmlWriter.writeStartDocument()
@@ -80,7 +77,8 @@ object Model {
 
   private fun writeJsonKeyValue(xmlWriter: XMLStreamWriter, localName: String, value: Any?, cdata: Boolean = false) {
     when (value) {
-      null -> { }
+      null -> {
+      }
       is JsonArray -> value.forEach { writeJsonKeyValue(xmlWriter, localName, it) }
       is List<*> -> value.forEach { writeJsonKeyValue(xmlWriter, localName, it) }
       is JsonObject -> {

@@ -9,7 +9,7 @@ import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.Model.composeCvInstance
 import nl.valori.cvtool.server.Model.composeEntity
-import nl.valori.cvtool.server.Model.getInstanceMap
+import nl.valori.cvtool.server.Model.getInstanceIds
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -79,16 +79,16 @@ internal class CvFetchVerticle : AbstractVerticle() {
         }""".trimIndent())
 
   private fun obtainOrCreateCvId(cvEntity: JsonObject, accountId: String): Single<String> {
-    val cvInstanceMap = cvEntity.getInstanceMap("cv")
-    return when (cvInstanceMap.size) {
+    val cvIds = cvEntity.getInstanceIds("cv")
+    return when (cvIds.size) {
       0 -> {
         val cvId = UUID.randomUUID().toString()
         vertx.eventBus()
             .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, composeEntity("cv", composeCvInstance(cvId, accountId)), deliveryOptions)
             .map { cvId }
       }
-      1 -> Single.just(cvInstanceMap.keys.first())
-      else -> throw IllegalStateException("Found ${cvInstanceMap.size} cv records with accountId $accountId.")
+      1 -> Single.just(cvIds.first())
+      else -> throw IllegalStateException("Found ${cvIds.size} cv records with accountId $accountId.")
     }
   }
 }

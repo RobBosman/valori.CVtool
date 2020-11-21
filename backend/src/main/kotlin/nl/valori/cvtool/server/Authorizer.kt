@@ -10,13 +10,14 @@ internal object Authorizer {
   private val log = LoggerFactory.getLogger(Authorizer::class.java)
 
   private val ROLES_MAP = mapOf(
-      ReadOwnAuthInfoIntention to setOf(),
-      ReadOwnCvIntention to setOf(),
-      UpdateOwnCvIntention to setOf(),
-      ReadAllAccountsIntention to setOf(ADMIN, EE_LEAD, SALES),
-      ReadOthersCvIntention to setOf(ADMIN, EE_LEAD, SALES),
-      UpdateOthersCvIntention to setOf(ADMIN, EE_LEAD),
-      UpdateRolesIntention to setOf(ADMIN)
+      IntentionReadOwnAuthInfo to setOf(CONSULTANT),
+      IntentionReadOwnCv to setOf(CONSULTANT),
+      IntentionUpdateOwnCv to setOf(CONSULTANT),
+      IntentionReadAccountAll to setOf(ADMIN, EE_LEAD, SALES),
+      IntentionReadBusinessUnitAll to setOf(ADMIN, EE_LEAD, SALES),
+      IntentionReadOtherCv to setOf(ADMIN, EE_LEAD, SALES),
+      IntentionUpdateOtherCv to setOf(ADMIN, EE_LEAD),
+      IntentionUpdateRoles to setOf(ADMIN)
   )
 
   internal fun BridgeEvent.authorize(authInfo: AuthInfo) {
@@ -24,12 +25,14 @@ internal object Authorizer {
     val body = rawMessage.getValue("body")
     val authorizedRoles = ROLES_MAP.entries.stream()
         .filter { (intention, _) -> intention.match(address, body, authInfo) }
-        .map { (intention, roles) ->
-          log.debug("Intention: ${intention.javaClass.simpleName}")
-          roles
+        .flatMap { (intention, roles) ->
+          log.debug("================== ${intention.javaClass.simpleName}")
+          roles.stream()
         }
-        .findAny()
-        .orElseThrow { error("No matching intention found for address '$address'.") }
+        .reduce(HashSet<AuthorizationRoles>(), { acc, next -> acc.add(next); acc}, { x, _ -> x})
+    if (authorizedRoles.isEmpty()) {
+      error("No matching intention found for address '$address'.")
+    }
     if (!authInfo.isAuthorized(authorizedRoles)) {
       throw IllegalAccessException("Insufficient rights")
     }

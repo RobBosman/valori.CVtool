@@ -72,9 +72,7 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
           .fromIterable(message.body().map.entries)
           .flatMap {
             val entity = it.key
-            val instances = it.value
-            if (instances !is JsonObject)
-              throw IllegalArgumentException("Error saving data: expected 'JsonObject' but found '${instances.javaClass.name}'")
+            val instances = validateInstances(it.value)
             when (instances.isEmpty) {
               true -> FlowableEmpty.empty()
               else -> {
@@ -97,6 +95,18 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
                 message.reply(JsonObject().put("result", "Successfully saved data"))
               }
           )
+
+  private fun validateInstances(instances: Any?): JsonObject {
+    if (instances !is JsonObject)
+      error("Expected instances to be a 'JsonObject' but found '${instances?.javaClass?.name}'")
+    instances.forEach { (id, instance) ->
+      if (instance !is JsonObject)
+        error("Expected instance to be a 'JsonObject' but found '${instance?.javaClass?.name}'")
+      if (instance.getString("_id", "") != id)
+        error("Expected instance id ${instance.getString("_id", "")} to match '$id'")
+    }
+    return instances
+  }
 
   /**
    * TODO: CRUD
