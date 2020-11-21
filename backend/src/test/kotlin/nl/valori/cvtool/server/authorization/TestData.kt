@@ -13,9 +13,17 @@ internal object TestData {
       "cvIds": ["cv-id-of-tom"]
     }""".trimIndent()))
 
-  val bodyFetchAccountsAndBusinessUnits = JsonObject("""{
-      "account": [{}],
+  val bodyFetchAllAccounts = JsonObject("""{
+      "account": [{}]
+    }""".trimIndent())
+
+  val bodyFetchAllBusinessUnits = JsonObject("""{
       "businessUnit": [{}]
+    }""".trimIndent())
+
+  val bodyFetchAuthInfoTom = JsonObject("""{
+      "email": "tom@vrt.be",
+      "name": "Tom Testerom"
     }""".trimIndent())
 
   val bodyGenerateCvTom = JsonObject("""{
@@ -34,11 +42,11 @@ internal object TestData {
       "cv": [{ "accountId": "account-id-of-pascal" }]
     }""".trimIndent())
 
-  val bodyFetchCvTom = JsonObject("""{
+  val bodyFetchCvByCvIdTom = JsonObject("""{
       "cv": [{ "_id": "cv-id-of-tom" }]
     }""".trimIndent())
 
-  val bodyFetchCvPascal = JsonObject("""{
+  val bodyFetchCvByCvIdPascal = JsonObject("""{
       "cv": [{ "_id": "cv-id-of-pascal" }]
     }""".trimIndent())
 

@@ -3,6 +3,7 @@ package nl.valori.cvtool.server.authorization
 import nl.valori.cvtool.server.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.server.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.authorization.TestData.authInfoTom
+import nl.valori.cvtool.server.authorization.TestData.bodyFetchAuthInfoTom
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchCvByAccountIdPascal
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchCvByAccountIdTom
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchCvByCvIdPascal
@@ -23,9 +24,9 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal object IntentionUpdateOwnCvTest {
+internal object IntentionReadOwnAuthInfoTest {
 
-  private val intentionToTest = IntentionUpdateOwnCv
+  private val intentionToTest = IntentionReadOwnAuthInfo
 
   @Test
   fun testNoBody() {
@@ -50,10 +51,10 @@ internal object IntentionUpdateOwnCvTest {
 
   @Test
   fun testFetchOwnAuthInfo() {
-    assertFalse(intentionToTest.match(AUTH_INFO_FETCH_ADDRESS, TestData.bodyFetchAuthInfoTom, authInfoTom))
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.bodyFetchAuthInfoTom, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.bodyFetchAuthInfoTom, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.bodyFetchAuthInfoTom, authInfoTom))
+    assertTrue(intentionToTest.match(AUTH_INFO_FETCH_ADDRESS, bodyFetchAuthInfoTom, authInfoTom))
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyFetchAuthInfoTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchAuthInfoTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodyFetchAuthInfoTom, authInfoTom))
   }
 
   @Test
@@ -88,14 +89,14 @@ internal object IntentionUpdateOwnCvTest {
   fun testSaveOwnCv() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveCvTom, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveCvTom, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveCvTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveCvTom, authInfoTom))
   }
 
   @Test
   fun testSaveOwnSkill() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveSkillTom, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveSkillTom, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveSkillTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveSkillTom, authInfoTom))
   }
 
   @Test

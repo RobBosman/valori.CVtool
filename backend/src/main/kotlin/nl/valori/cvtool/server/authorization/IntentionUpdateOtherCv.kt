@@ -26,10 +26,11 @@ internal object IntentionUpdateOtherCv : Intention {
           // Referring to 'other' accountIds?
           if (!listOf(authInfo.accountId).containsAll(instances.keys))
             updatesOtherAccount = true
-          // Don't allow changing account roles.
           instances.values.forEach { instance ->
             if (instance !is Map<*, *>)
               return false
+            // Ignore queries that change account roles.
+            // TODO: verify role changes when storing the account of 'others'.
             val roles = instance["privileges"]
             if (roles !is List<*> || !ownRoleNames.containsAll(roles) || !roles.containsAll(ownRoleNames))
               return false
@@ -46,10 +47,10 @@ internal object IntentionUpdateOtherCv : Intention {
               return false
             val accountId = instance["accountId"]
             val cvId = instance["cvId"]
-            // Only accept instances that are related to an account or a cv instance.
+            // Only consider instances that are related to an account or a cv instance.
             if (accountId == null && cvId == null)
               return false
-            // Only allow 'own' accountId.
+            // Only consider 'own' accountId.
             if (accountId != null && accountId != authInfo.accountId)
               updatesOtherAccount = true
             // Only allow 'own' cvIds.

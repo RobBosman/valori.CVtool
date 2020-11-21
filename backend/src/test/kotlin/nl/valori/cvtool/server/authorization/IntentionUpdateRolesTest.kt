@@ -23,9 +23,9 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal object IntentionUpdateOwnCvTest {
+internal object IntentionUpdateRolesTest {
 
-  private val intentionToTest = IntentionUpdateOwnCv
+  private val intentionToTest = IntentionUpdateRoles
 
   @Test
   fun testNoBody() {
@@ -88,21 +88,21 @@ internal object IntentionUpdateOwnCvTest {
   fun testSaveOwnCv() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveCvTom, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveCvTom, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveCvTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveCvTom, authInfoTom))
   }
 
   @Test
   fun testSaveOwnSkill() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveSkillTom, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveSkillTom, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveSkillTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveSkillTom, authInfoTom))
   }
 
   @Test
   fun testSaveOwnAccountRole() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveAccountRoleTom, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveAccountRoleTom, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAccountRoleTom, authInfoTom))
+    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAccountRoleTom, authInfoTom))
   }
 
   @Test
@@ -151,6 +151,6 @@ internal object IntentionUpdateOwnCvTest {
   fun testSaveOtherAccountRole() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveAccountRolePascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveAccountRolePascal, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAccountRolePascal, authInfoTom))
+    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAccountRolePascal, authInfoTom))
   }
 }

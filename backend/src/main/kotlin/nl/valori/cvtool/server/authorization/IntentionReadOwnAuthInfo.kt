@@ -6,8 +6,15 @@ import nl.valori.cvtool.server.AuthInfo
 
 internal object IntentionReadOwnAuthInfo: Intention {
 
-  override fun match(address: String, body: Any?, authInfo: AuthInfo) =
-      address == AUTH_INFO_FETCH_ADDRESS
-          && body is JsonObject
-          && body.getString("email", "") == authInfo.email
+  override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
+
+    if (address != AUTH_INFO_FETCH_ADDRESS || body !is JsonObject)
+      return false
+
+    // Only consider fetching own account info.
+    if (body.map["email"] != authInfo.email || body.map["name"] != authInfo.name)
+      return false
+
+    return true
+  }
 }

@@ -13,8 +13,8 @@ internal object Authorizer {
       IntentionReadOwnAuthInfo to setOf(CONSULTANT),
       IntentionReadOwnCv to setOf(CONSULTANT),
       IntentionUpdateOwnCv to setOf(CONSULTANT),
-      IntentionReadAccountAll to setOf(ADMIN, EE_LEAD, SALES),
-      IntentionReadBusinessUnitAll to setOf(ADMIN, EE_LEAD, SALES),
+      IntentionReadAllAccounts to setOf(ADMIN, EE_LEAD, SALES),
+      IntentionReadAllBusinessUnits to setOf(ADMIN, EE_LEAD, SALES),
       IntentionReadOtherCv to setOf(ADMIN, EE_LEAD, SALES),
       IntentionUpdateOtherCv to setOf(ADMIN, EE_LEAD),
       IntentionUpdateRoles to setOf(ADMIN)
