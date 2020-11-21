@@ -124,3 +124,8 @@ lftp -c '\
         " \
     157.97.115.138 \
     '
+
+
+mongo shell:
+use cvtool
+db.account.updateMany({}, {$rename: {"privileges": "roles"}})

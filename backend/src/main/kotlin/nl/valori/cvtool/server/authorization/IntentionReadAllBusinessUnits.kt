@@ -1,7 +1,6 @@
 package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
-import nl.valori.cvtool.server.AuthInfo
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadAllBusinessUnits : Intention {

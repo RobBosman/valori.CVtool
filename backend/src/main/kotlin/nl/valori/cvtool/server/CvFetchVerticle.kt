@@ -7,13 +7,13 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
-import nl.valori.cvtool.server.Model.composeCvInstance
-import nl.valori.cvtool.server.Model.composeEntity
-import nl.valori.cvtool.server.Model.getInstanceIds
+import nl.valori.cvtool.server.ModelUtils.composeCvInstance
+import nl.valori.cvtool.server.ModelUtils.composeEntity
+import nl.valori.cvtool.server.ModelUtils.getInstanceIds
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.UUID
 
 const val CV_FETCH_ADDRESS = "cv.fetch"
 

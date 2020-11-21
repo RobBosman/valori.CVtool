@@ -11,8 +11,8 @@ export const safeEpics = [
   // Fetch all accounts from the server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchAccountsAndBusinessUnits.type),
-    switchMap(() => safeServices.fetchFromRemote({ "account": [{}], "businessUnit": [{}] }, eventBusClient.sendEvent)),
-    map(fetchedAccunts => safeActions.resetEntities(fetchedAccunts))
+    switchMap(() => safeServices.fetchFromRemote({ "account": [{}], "businessUnit": [{}], "role": [{}] }, eventBusClient.sendEvent)),
+    map(fetchedData => safeActions.resetEntities(fetchedData))
   ),
 
   // Fetch cv data from the server.

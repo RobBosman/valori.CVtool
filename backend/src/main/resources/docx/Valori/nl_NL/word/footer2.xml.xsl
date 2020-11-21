@@ -8,7 +8,7 @@
     exclude-result-prefixes="cv"
     version="1.0">
 
-  <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no" />
+  <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
   <xsl:template match="/">
     <xsl:apply-templates select="cv:root/cv:account"/>
@@ -33,13 +33,16 @@
           </w:rPr>
         </w:sdtEndPr>
         <w:sdtContent>
-          <w:p w14:paraId="422E78FA" w14:textId="0108B5FC" w:rsidR="00940ACC" w:rsidRPr="00C0691A" w:rsidRDefault="00C97881" w:rsidP="000A5FCA">
+          <w:p w14:paraId="422E78FA" w14:textId="0108B5FC" w:rsidR="00940ACC" w:rsidRPr="00C0691A"
+               w:rsidRDefault="00C97881" w:rsidP="000A5FCA">
             <w:pPr>
               <w:pStyle w:val="Voettekst"/>
               <w:jc w:val="center"/>
             </w:pPr>
             <w:r w:rsidRPr="00C0691A">
-              <w:t>Curriculum vitae van <xsl:value-of select="cv:name"/></w:t>
+              <w:t>Curriculum vitae van
+                <xsl:value-of select="cv:name"/>
+              </w:t>
             </w:r>
             <w:r w:rsidRPr="00C0691A">
               <w:rPr>

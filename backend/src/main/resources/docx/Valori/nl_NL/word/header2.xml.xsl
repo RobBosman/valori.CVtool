@@ -158,7 +158,9 @@
           </w:drawing>
         </w:r>
         <w:r w:rsidR="00D94787" w:rsidRPr="00FD53E1">
-          <w:t><xsl:value-of select="cv:account/cv:name"/></w:t>
+          <w:t>
+            <xsl:value-of select="cv:account/cv:name"/>
+          </w:t>
         </w:r>
       </w:p>
       <w:p w14:paraId="3EE983D6" w14:textId="01CA2A7A" w:rsidR="007C6954" w:rsidRPr="007C6954" w:rsidRDefault="007C6954"
@@ -168,7 +170,9 @@
           <w:jc w:val="right"/>
         </w:pPr>
         <w:r>
-          <w:t><xsl:value-of select="cv:cv/cv:role/cv:nl_NL"/></w:t>
+          <w:t>
+            <xsl:value-of select="cv:cv/cv:role/cv:nl_NL"/>
+          </w:t>
         </w:r>
         <w:r w:rsidRPr="007C6954">
           <w:rPr>
@@ -177,7 +181,9 @@
           <w:t xml:space="preserve"> // </w:t>
         </w:r>
         <w:r>
-          <w:t><xsl:apply-templates select="cv:account/cv:dateOfBirth" mode="date-numeric"/></w:t>
+          <w:t>
+            <xsl:apply-templates select="cv:account/cv:dateOfBirth" mode="date-numeric"/>
+          </w:t>
         </w:r>
         <w:r w:rsidRPr="007C6954">
           <w:rPr>
@@ -186,7 +192,9 @@
           <w:t xml:space="preserve"> // </w:t>
         </w:r>
         <w:r>
-          <w:t><xsl:value-of select="cv:account/cv:residence"/></w:t>
+          <w:t>
+            <xsl:value-of select="cv:account/cv:residence"/>
+          </w:t>
         </w:r>
         <w:r w:rsidRPr="007C6954">
           <w:rPr>

@@ -5,18 +5,18 @@
 
   <!-- DATE - NUMERIC -->
   <xsl:template match="* | @* | text()" mode="date-numeric">
-    <xsl:value-of select="substring(., 9, 2)" />
+    <xsl:value-of select="substring(., 9, 2)"/>
     <xsl:text>-</xsl:text>
-    <xsl:value-of select="substring(., 6, 2)" />
+    <xsl:value-of select="substring(., 6, 2)"/>
     <xsl:text>-</xsl:text>
-    <xsl:value-of select="substring(., 1, 4)" />
+    <xsl:value-of select="substring(., 1, 4)"/>
   </xsl:template>
 
   <!-- DATE - PERIOD -->
   <xsl:template match="* | @* | text()" mode="date-period">
-    <xsl:value-of select="substring(., 6, 2)" />
+    <xsl:value-of select="substring(., 6, 2)"/>
     <xsl:text>-</xsl:text>
-    <xsl:value-of select="substring(., 1, 4)" />
+    <xsl:value-of select="substring(., 1, 4)"/>
   </xsl:template>
 
   <!-- PERIOD - BEGIN / END -->
@@ -47,7 +47,9 @@
       <xsl:when test=". = 'PROGRAMMING'">Programmeren</xsl:when>
       <xsl:when test=". = 'METHODS'">Methodes</xsl:when>
       <xsl:when test=". = 'OS_NETWORKS'">OS &amp; Netwerken</xsl:when>
-      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+      <xsl:otherwise>
+        <xsl:value-of select="."/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -59,7 +61,9 @@
       <xsl:when test=". = 'ONGOING'">bezig</xsl:when>
       <xsl:when test=". = 'CANCELED'">afgebroken</xsl:when>
       <xsl:when test=". = 'NOT_APPLICABLE'">nvt</xsl:when>
-      <xsl:otherwise><xsl:value-of select="." /></xsl:otherwise>
+      <xsl:otherwise>
+        <xsl:value-of select="."/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

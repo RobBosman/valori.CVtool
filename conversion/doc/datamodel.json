@@ -1,6 +1,6 @@
 {
   "businessUnit": {
-    "id": "ID",
+    "_id": "ID",
     "name": "STRING",
     "contactName": "STRING",
     "contactEmail": "STRING",
@@ -8,17 +8,19 @@
     "accountIds": []
   },
   "account": {
-    "id": "ID",
+    "_id": "ID",
     "name": "STRING",
     "email": "STRING",
     "dateOfBirth": "DATE",
-    "residence": "STRING",
-    "privileges": [
-      "ENUM_PRIVILEGE"
-    ]
+    "residence": "STRING"
+  },
+  "role": {
+    "_id": "ID",
+    "accountId": "ID",
+    "name": "ROLE_NAME"
   },
   "cv": {
-    "id": "ID",
+    "_id": "ID",
     "accountId": "ID",
     "role": {
       "[locale]": "STRING"
@@ -33,7 +35,7 @@
     "inItSince": "YEAR"
   },
   "education": {
-    "id": "ID",
+    "_id": "ID",
     "cvId": "ID",
     "type": "ENUM_EDUCATION_TYPE",
     "name": {
@@ -45,7 +47,7 @@
     "result": "ENUM_EDUCATION_RESULT"
   },
   "skill": {
-    "id": "ID",
+    "_id": "ID",
     "cvId": "ID",
     "category": "ENUM_SKILL_CATEGORY",
     "description": {
@@ -54,7 +56,7 @@
     "skillLevel": "NUMBER"
   },
   "publication": {
-    "id": "ID",
+    "_id": "ID",
     "cvId": "ID",
     "year": "YEAR",
     "media": "STRING",
@@ -67,7 +69,7 @@
     "includeInCv": "BOOLEAN"
   },
   "reference": {
-    "id": "ID",
+    "_id": "ID",
     "cvId": "ID",
     "referentName": "STRING",
     "referentFunction": {
@@ -79,7 +81,7 @@
     "includeInCv": "BOOLEAN"
   },
   "experience": {
-    "id": "ID",
+    "_id": "ID",
     "cvId": "ID",
     "periodBegin": "DATE",
     "periodEnd": "DATE",

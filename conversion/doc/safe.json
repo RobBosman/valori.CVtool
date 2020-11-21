@@ -18,12 +18,14 @@
       "name": "Rob Bosman",
       "email": "RobBosman@valori.nl",
       "dateOfBirth": "1965-09-06",
-      "residence": "Leusden",
-      "privileges": [
-        "ADMIN",
-        "SALES",
-        "EE_LEAD"
-      ]
+      "residence": "Leusden"
+    }
+  },
+  "role": {
+    "uuid-role-1": {
+      "_id": "uuid-role-1",
+      "accountId": "uuid-account-1",
+      "name": "ADMIN"
     }
   },
   "cv": {

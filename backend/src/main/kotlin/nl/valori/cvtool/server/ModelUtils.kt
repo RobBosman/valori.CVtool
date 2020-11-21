@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import javax.xml.stream.XMLStreamWriter
 
-object Model {
+object ModelUtils {
 
   fun composeAccountInstance(id: String, email: String, name: String) =
       JsonObject("""
@@ -13,7 +13,7 @@ object Model {
           "email": "${email.toUpperCase()}",
           "name": "$name",
           "businessUnitIds": [],
-          "privileges": [],
+          "roles": [],
           "dateOfBirth": "",
           "residence": ""
         }
@@ -40,6 +40,12 @@ object Model {
       when (val entity = getValue(entityName)) {
         is JsonObject -> entity.map.keys
         else -> emptySet()
+      }
+
+  fun JsonObject.getInstances(entityName: String) =
+      when (val entity = getValue(entityName)) {
+        is JsonObject -> entity.map.values.filterIsInstance<JsonObject>()
+        else -> emptyList()
       }
 
   fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter, defaultNamespaceURI: String) {

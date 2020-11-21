@@ -38,6 +38,7 @@
   <xsl:template match="cv:set_of__account">
     {
     "account": [<xsl:apply-templates select="cv:_account"/>]
+    ,"role": [<xsl:apply-templates select="cv:_account/cv:rol[cv:naam = 'view alle CVs']"/>]
     ,"cv": [<xsl:apply-templates select="*/cv:cv"/>]
     ,"education": [<xsl:apply-templates select="*/cv:cv/cv:opleiding"/>]
     ,"publication": [<xsl:apply-templates select="*/cv:cv/cv:publicatie[cv:titel or cv:media]"/>]
@@ -59,7 +60,15 @@
     ,"email": "<xsl:apply-templates select="." mode="email"/>"
     ,"dateOfBirth": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:geboortedatum"/>"
     ,"residence": "<xsl:value-of select="cv:cv/cv:persoonsgegevens/cv:woonplaats"/>"
-    ,"privileges": <xsl:apply-templates select="." mode="privileges"/>
+    }
+  </xsl:template>
+
+  <xsl:template match="cv:rol">
+    <xsl:if test="position() > 1">,</xsl:if>
+    {
+    "_id": "<xsl:value-of select="util:uuid(concat('role', position(), ../@id))"/>"
+    ,"accountId": "<xsl:value-of select="util:uuid(../@id)"/>"
+    ,"name": "ADMIN"
     }
   </xsl:template>
 
@@ -313,10 +322,6 @@
   </xsl:template>
 
 
-  <xsl:template match="cv:_account" mode="privileges">
-    [<xsl:if test="cv:rol[cv:naam = 'view alle CVs']">"ADMIN"</xsl:if>]
-  </xsl:template>
-
   <xsl:template match="text()" mode="educationType">
     <xsl:choose>
       <xsl:when test=". = 1">TRAINING</xsl:when>
@@ -375,7 +380,7 @@
         <xsl:when test="cv:name = 'Tugay Üzinli'">Tugay Uzinli</xsl:when>
         <xsl:when test="cv:name = 'Valeria Esman-Huszak'">Valeria Huszak</xsl:when>
         <xsl:when test="cv:name = 'Youssef Aoulad Si Amar'">Youssef Aoulad</xsl:when>
-        <xsl:otherwise><xsl:value-of select="cv:naam"/></xsl:otherwise>
+        <xsl:otherwise><xsl:value-of select="cv:name"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:value-of select="concat(translate(translate($naam, ' ', ''), $LOWERCASE, $UPPERCASE), '@VALORI.NL')"/>

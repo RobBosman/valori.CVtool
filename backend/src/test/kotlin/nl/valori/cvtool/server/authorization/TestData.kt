@@ -1,7 +1,6 @@
 package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
-import nl.valori.cvtool.server.AuthInfo
 
 internal object TestData {
 
@@ -57,7 +56,7 @@ internal object TestData {
   val bodyFetchSkillPascal = JsonObject("""{
       "skill": [{ "cvId": "cv-id-of-pascal" }]
     }""".trimIndent())
-  
+
   val bodySaveCvTom = JsonObject("""{
       "cv": {
         "cv-id-of-tom": {
@@ -77,7 +76,7 @@ internal object TestData {
         }
       }
     }""".trimIndent())
-  
+
   val bodySaveSkillTom = JsonObject("""{
       "skill": {
         "skill-id": {
@@ -98,22 +97,12 @@ internal object TestData {
       }
     }""".trimIndent())
 
-  val bodySaveAccountRoleTom = JsonObject("""{
-      "account": {
-        "account-id-of-tom": {
-          "_id": "account-id-of-tom",
-          "privileges": ["ADMIN"],
-          "key": "value"
-        }
-      }
-    }""".trimIndent())
-
   val bodySaveAccountRolePascal = JsonObject("""{
-      "account": {
-        "account-id-of-pascal": {
-          "_id": "account-id-of-pascal",
-          "privileges": ["ADMIN"],
-          "key": "value"
+      "role": {
+        "role-id-of-pascal": {
+          "_id": "role-id-of-pascal",
+          "accountId": "account-id-of-pascal",
+          "name": "ADMIN"
         }
       }
     }""".trimIndent())

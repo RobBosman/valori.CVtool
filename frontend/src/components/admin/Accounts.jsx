@@ -8,24 +8,25 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { AccountRoles } from "../cv/Enums";
 import { CvCheckbox } from "../widgets/CvCheckbox";
+import { createUuid } from "../../services/safe/safe-services";
 
 const Accounts = (props) => {
 
-  const compareStrings = (l, r) =>
-    l < r ? -1 : l > r ? 1 : 0;
-
-  const enrich = (accountEntity, businessUnitEntity) => {
+  const enrichAccountEntity = (accountEntity, roleEntity, businessUnitEntity) => {
     if (!accountEntity) {
       return undefined;
     }
     const enrichedAccountEntity = {};
     Object.entries(accountEntity)
       .forEach(([accountId, account]) => {
-        const {privileges, ...enrichedAccount} = account;
+
+        const roles = roleEntity && Object.values(roleEntity)
+          .filter(role => role.accountId === accountId);
+        const enrichedAccount = {...account, roles};
         AccountRoles
           .map(roleEnum => roleEnum.key)
-          .forEach(role => {
-            enrichedAccount[role] = privileges.includes(role);
+          .forEach(roleName => {
+            enrichedAccount[roleName] = roles?.find(role => role.name === roleName);
           });
 
         const businessUnit = businessUnitEntity && Object.values(businessUnitEntity)
@@ -37,21 +38,35 @@ const Accounts = (props) => {
     return enrichedAccountEntity;
   };
 
-  const enrichedAccountEntity = enrich(props.accountEntity, props.businessUnitEntity);
-
-  const replaceAccountInstance = (accountId, enrichedAccount) => {
-    const roles = [];
+  const replaceEnrichedAccount = (accountId, enrichedAccount) => {
+    const {roles, ...account} = enrichedAccount;
     AccountRoles
       .map(roleEnum => roleEnum.key)
-      .forEach(role => {
-        if (enrichedAccount[role]) {
-          roles.push(role);
+      .forEach(roleName => {
+        const role = roles?.find(role => role.name === roleName);
+        if (enrichedAccount[roleName]) {
+          if (!role) {
+            // Create new role.
+            const id = createUuid();
+            props.replaceRole(id, {
+              _id: id,
+              accountId: enrichedAccount._id,
+              name: roleName
+            });
+          }
+        } else if (role) {
+          // Delete role.
+          props.replaceRole(role._id, {});
         }
-        delete(enrichedAccount[role]);
+        delete(account[roleName]);
       });
-    enrichedAccount.roles = roles;
-    props.replaceAccountInstance(accountId, enrichedAccount);
+    // props.replaceAccount(accountId, account); // TODO - not needed?
   };
+
+  const enrichedAccountEntity = enrichAccountEntity(props.accountEntity, props.roleEntity, props.businessUnitEntity);
+
+  const compareStrings = (l, r) =>
+    l < r ? -1 : l > r ? 1 : 0;
 
   // Sort {Account} records.
   const enrichedAccounts = enrichedAccountEntity
@@ -64,13 +79,13 @@ const Accounts = (props) => {
     entity: enrichedAccountEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
-    replaceInstance: replaceAccountInstance
+    replaceInstance: replaceEnrichedAccount
   };
 
   const renderCheckbox = (field, item) =>
     <CvCheckbox
       field={field}
-      instanceContext={{ ...accountContext, instanceId: item._id }}
+      instanceContext={{ ...accountContext,  instanceId: item._id }}
       disabled={field === "ADMIN" && item._id === props.authInfo.accountId}
     />;
 
@@ -156,8 +171,10 @@ Accounts.propTypes = {
   locale: PropTypes.string.isRequired,
   authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
+  roleEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
-  replaceAccountInstance: PropTypes.func.isRequired,
+  replaceAccount: PropTypes.func.isRequired,
+  replaceRole: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
   setSelectedAccountId: PropTypes.func.isRequired,
   fetchCvByAccountId: PropTypes.func.isRequired
@@ -167,13 +184,15 @@ const select = (state) => ({
   locale: state.ui.locale,
   authInfo: state.auth.authInfo,
   accountEntity: state.safe.content["account"],
+  roleEntity: state.safe.content["role"],
   businessUnitEntity: state.safe.content["businessUnit"],
   selectedAccountId: state.ui.selectedId["account"]
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setSelectedAccountId: (id) => dispatch(setSelectedId("account", id)),
-  replaceAccountInstance: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
+  replaceAccount: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
+  replaceRole: (id, instance) => dispatch(safeActions.changeInstance("role", id, instance)),
   fetchCvByAccountId: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId))
 });
 

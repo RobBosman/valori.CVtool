@@ -58,6 +58,23 @@ internal class XslUtilTest {
   }
 
   @Test
+  fun jsonLevel_valid() {
+    assertEquals(1, XslUtil.jsonLevel("1"))
+    assertEquals(2, XslUtil.jsonLevel("2"))
+    assertEquals(2, XslUtil.jsonLevel("3"))
+    assertEquals(3, XslUtil.jsonLevel("4"))
+    assertEquals(3, XslUtil.jsonLevel("5"))
+  }
+
+  @Test
+  fun jsonLevel_invalid() {
+    assertEquals(0, XslUtil.jsonLevel(""))
+    assertEquals(0, XslUtil.jsonLevel("   "))
+    assertEquals(0, XslUtil.jsonLevel("0000"))
+    assertEquals(0, XslUtil.jsonLevel("0"))
+  }
+
+  @Test
   fun uuid() {
     val uuid1 = XslUtil.uuid("one")
     val uuid2 = XslUtil.uuid("two")

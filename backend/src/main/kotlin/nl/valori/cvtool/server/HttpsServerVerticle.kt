@@ -16,7 +16,10 @@ import io.vertx.reactivex.ext.web.Router
 import io.vertx.reactivex.ext.web.handler.StaticHandler
 import io.vertx.reactivex.ext.web.handler.sockjs.BridgeEvent
 import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
-import nl.valori.cvtool.server.Authorizer.authorize
+import nl.valori.cvtool.server.authorization.AUTHENTICATE_ADDRESS
+import nl.valori.cvtool.server.authorization.AUTH_INFO_FETCH_ADDRESS
+import nl.valori.cvtool.server.authorization.AuthInfo
+import nl.valori.cvtool.server.authorization.Authorizer.authorize
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -136,7 +139,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                   bridgeEvent.complete(true)
                 },
                 {
-                  log.debug("Error authenticating event bridge message.", it)
+                  log.debug("Event bridge message was not authenticated.", it)
                   bridgeEvent.complete(false)
                 }
             )
@@ -165,7 +168,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
   }
 
   /**
-   * When successfully authenticated, the user's 'privileges' will be added to the 'Auth' header.
+   * When successfully authenticated, the user's roles will be added to the 'Auth' header.
    */
   private fun addAuthInfo(authInfo: AuthInfo) =
       vertx

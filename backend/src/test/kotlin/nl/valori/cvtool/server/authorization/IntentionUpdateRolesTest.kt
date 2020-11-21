@@ -1,6 +1,5 @@
 package nl.valori.cvtool.server.authorization
 
-import nl.valori.cvtool.server.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.server.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.authorization.TestData.authInfoTom
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchCvByAccountIdPascal
@@ -12,7 +11,6 @@ import nl.valori.cvtool.server.authorization.TestData.bodyFetchSkillTom
 import nl.valori.cvtool.server.authorization.TestData.bodyGenerateCvPascal
 import nl.valori.cvtool.server.authorization.TestData.bodyGenerateCvTom
 import nl.valori.cvtool.server.authorization.TestData.bodySaveAccountRolePascal
-import nl.valori.cvtool.server.authorization.TestData.bodySaveAccountRoleTom
 import nl.valori.cvtool.server.authorization.TestData.bodySaveCvPascal
 import nl.valori.cvtool.server.authorization.TestData.bodySaveCvTom
 import nl.valori.cvtool.server.authorization.TestData.bodySaveSkillPascal
@@ -99,13 +97,6 @@ internal object IntentionUpdateRolesTest {
   }
 
   @Test
-  fun testSaveOwnAccountRole() {
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveAccountRoleTom, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveAccountRoleTom, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAccountRoleTom, authInfoTom))
-  }
-
-  @Test
   fun testGenerateOtherCv() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyGenerateCvPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyGenerateCvPascal, authInfoTom))
@@ -148,7 +139,7 @@ internal object IntentionUpdateRolesTest {
   }
 
   @Test
-  fun testSaveOtherAccountRole() {
+  fun testSaveAccountRole() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodySaveAccountRolePascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodySaveAccountRolePascal, authInfoTom))
     assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAccountRolePascal, authInfoTom))

@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server
+package nl.valori.cvtool.server.authorization
 
 import io.reactivex.Single
 import io.vertx.core.Promise

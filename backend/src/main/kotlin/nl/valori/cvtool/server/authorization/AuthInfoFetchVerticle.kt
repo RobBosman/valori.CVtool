@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server
+package nl.valori.cvtool.server.authorization
 
 import io.reactivex.Single
 import io.vertx.core.Promise
@@ -8,13 +8,14 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
-import nl.valori.cvtool.server.Model.composeAccountInstance
-import nl.valori.cvtool.server.Model.composeEntity
-import nl.valori.cvtool.server.Model.getInstanceIds
+import nl.valori.cvtool.server.ModelUtils.composeAccountInstance
+import nl.valori.cvtool.server.ModelUtils.composeEntity
+import nl.valori.cvtool.server.ModelUtils.getInstanceIds
+import nl.valori.cvtool.server.ModelUtils.getInstances
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.UUID
 
 const val AUTH_INFO_FETCH_ADDRESS = "authInfo.fetch"
 
@@ -60,7 +61,7 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
           .just(message.body())
           .map(::createAuthInfo)
           .flatMap(::addAccountInfo)
-          .flatMap(::addCvIds)
+          .flatMap(::addRolesAndCvIds)
           .map(AuthInfo::toJson)
           .subscribe(
               {
@@ -83,7 +84,7 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
           .map { account ->
             authInfo
                 .withAccountId(account.getString("_id", ""))
-                .withRoles(account.map["privileges"] as JsonArray? ?: JsonArray())
+                .withRoles(account.map["roles"] as JsonArray? ?: JsonArray())
           }
 
   private fun fetchOrCreateAccount(email: String, name: String) =
@@ -108,13 +109,19 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
         .map { accountInstance }
   }
 
-  private fun addCvIds(authInfo: AuthInfo) =
+  private fun addRolesAndCvIds(authInfo: AuthInfo) =
       vertx.eventBus()
           .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS,
-              JsonObject("""{ "cv": [{ "accountId": "${authInfo.accountId}" }] }"""),
+              JsonObject("""{
+                "role": [{ "accountId": "${authInfo.accountId}" }],
+                "cv": [{ "accountId": "${authInfo.accountId}" }]
+              }""".trimIndent()),
               deliveryOptions)
           .map {
-            authInfo.cvIds = it.body().getInstanceIds("cv")
             authInfo
+                .withRoles(JsonArray(it.body().getInstances("role")
+                    .map { role -> role.getString("name", "") })
+                )
+                .withCvIds(it.body().getInstanceIds("cv"))
           }
 }

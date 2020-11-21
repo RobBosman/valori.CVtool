@@ -6,14 +6,17 @@
     exclude-result-prefixes="cv"
     version="1.0">
 
-  <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no" />
+  <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
   <xsl:template match="/">
     <xsl:apply-templates select="cv:root/cv:account"/>
   </xsl:template>
 
   <xsl:template match="cv:account">
-    <w:t>Curriculum vitae van <xsl:value-of select="cv:name"/></w:t>
+    <w:t>
+      <xsl:text>Curriculum vitae van </xsl:text>
+      <xsl:value-of select="cv:name"/>
+    </w:t>
   </xsl:template>
 
 </xsl:stylesheet>

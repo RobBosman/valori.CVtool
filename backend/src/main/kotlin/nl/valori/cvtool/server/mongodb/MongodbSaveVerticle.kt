@@ -1,6 +1,10 @@
 package nl.valori.cvtool.server.mongodb
 
-import com.mongodb.client.model.*
+import com.mongodb.client.model.DeleteOneModel
+import com.mongodb.client.model.Filters
+import com.mongodb.client.model.ReplaceOneModel
+import com.mongodb.client.model.ReplaceOptions
+import com.mongodb.client.model.WriteModel
 import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable
 import io.reactivex.internal.operators.flowable.FlowableEmpty
@@ -102,21 +106,13 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
     instances.forEach { (id, instance) ->
       if (instance !is JsonObject)
         error("Expected instance to be a 'JsonObject' but found '${instance?.javaClass?.name}'")
-      if (instance.getString("_id", "") != id)
-        error("Expected instance id ${instance.getString("_id", "")} to match '$id'")
+      if (!instance.isEmpty && instance.getString("_id", "") != id)
+        error("Expected instance id '${instance.getString("_id", "")}' to match '$id'")
     }
     return instances
   }
 
   /**
-   * TODO: CRUD
-   * CRUD-state:
-   *   C = create
-   *   R = read (will be ignored here)
-   *   U = update
-   *   D = delete
-   * CRUD-states C and U are combined to a replace-with-upsert action
-   *
    * <pre>
    *   {
    *     "XXX": {
