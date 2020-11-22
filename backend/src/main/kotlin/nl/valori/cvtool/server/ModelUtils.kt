@@ -48,6 +48,23 @@ object ModelUtils {
         else -> emptyList()
       }
 
+  fun JsonObject.getCriteria(entityName: String): List<JsonObject> {
+    return when (val criteria = getValue(entityName)) {
+      is JsonArray -> {
+        criteria.list
+            .map { criterion ->
+              when (criterion) {
+                is JsonObject -> criterion
+                is Map<*, *> -> JsonObject(criterion.mapKeys { key -> "$key" } )
+                else -> null
+              }
+            }
+            .filterNotNull()
+      }
+      else -> emptyList()
+    }
+  }
+
   fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter, defaultNamespaceURI: String) {
     xmlWriter.writeStartDocument()
     xmlWriter.writeStartElement("root")

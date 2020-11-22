@@ -38,7 +38,12 @@
   <xsl:template match="cv:set_of__account">
     {
     "account": [<xsl:apply-templates select="cv:_account"/>]
-    ,"role": [<xsl:apply-templates select="cv:_account/cv:rol[cv:naam = 'view alle CVs']"/>]
+    ,"role": [
+    <xsl:for-each select="cv:_account/cv:rol[cv:naam = 'view alle CVs']">
+      <xsl:sort select="../cv:email" />
+      <xsl:apply-templates select="."/>
+    </xsl:for-each>
+    ]
     ,"cv": [<xsl:apply-templates select="*/cv:cv"/>]
     ,"education": [<xsl:apply-templates select="*/cv:cv/cv:opleiding"/>]
     ,"publication": [<xsl:apply-templates select="*/cv:cv/cv:publicatie[cv:titel or cv:media]"/>]

@@ -48,6 +48,13 @@ internal object IntentionReadOwnAuthInfoTest {
   }
 
   @Test
+  fun testFetchAllRoles() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.bodyFetchAllRoles, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.bodyFetchAllRoles, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.bodyFetchAllRoles, authInfoTom))
+  }
+
+  @Test
   fun testFetchOwnAuthInfo() {
     assertTrue(intentionToTest.match(AUTH_INFO_FETCH_ADDRESS, bodyFetchAuthInfoTom, authInfoTom))
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyFetchAuthInfoTom, authInfoTom))

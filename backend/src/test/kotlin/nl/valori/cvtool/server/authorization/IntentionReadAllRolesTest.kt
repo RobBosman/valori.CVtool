@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal object IntentionReadOtherCvTest {
+internal object IntentionReadAllRolesTest {
 
-  private val intentionToTest = IntentionReadOtherCv
+  private val intentionToTest = IntentionReadAllRoles
 
   @Test
   fun testNoBody() {
@@ -35,7 +35,7 @@ internal object IntentionReadOtherCvTest {
   @Test
   fun testFetchAllAccounts() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.bodyFetchAllAccounts, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.bodyFetchAllAccounts, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.bodyFetchAllAccounts, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.bodyFetchAllAccounts, authInfoTom))
   }
 
@@ -49,7 +49,7 @@ internal object IntentionReadOtherCvTest {
   @Test
   fun testFetchAllRoles() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.bodyFetchAllRoles, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.bodyFetchAllRoles, authInfoTom))
+    assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.bodyFetchAllRoles, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.bodyFetchAllRoles, authInfoTom))
   }
 
@@ -105,7 +105,7 @@ internal object IntentionReadOtherCvTest {
 
   @Test
   fun testGenerateOtherCv() {
-    assertTrue(intentionToTest.match(CV_FETCH_ADDRESS, bodyGenerateCvPascal, authInfoTom))
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyGenerateCvPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyGenerateCvPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodyGenerateCvPascal, authInfoTom))
   }
@@ -113,21 +113,21 @@ internal object IntentionReadOtherCvTest {
   @Test
   fun testFetchOtherCvByCvId() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyFetchCvByCvIdPascal, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchCvByCvIdPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchCvByCvIdPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodyFetchCvByCvIdPascal, authInfoTom))
   }
 
   @Test
   fun testFetchOtherCvByAccountId() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyFetchCvByAccountIdPascal, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchCvByAccountIdPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchCvByAccountIdPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodyFetchCvByAccountIdPascal, authInfoTom))
   }
 
   @Test
   fun testFetchOtherSkill() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyFetchSkillPascal, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchSkillPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchSkillPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodyFetchSkillPascal, authInfoTom))
   }
 

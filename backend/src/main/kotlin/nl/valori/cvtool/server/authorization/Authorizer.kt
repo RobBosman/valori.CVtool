@@ -11,14 +11,14 @@ internal object Authorizer {
 
   private val log = LoggerFactory.getLogger(Authorizer::class.java)
 
-  private val ROLES_MAP = mapOf(
+  internal val ROLES_MAP = mapOf(
       IntentionReadOwnAuthInfo to setOf(CONSULTANT),
       IntentionReadOwnCv to setOf(CONSULTANT),
-      IntentionUpdateOwnCv to setOf(CONSULTANT),
+      IntentionReadOtherCv to setOf(ADMIN, EE_LEAD, SALES),
       IntentionReadAllAccounts to setOf(ADMIN, EE_LEAD, SALES),
       IntentionReadAllBusinessUnits to setOf(ADMIN, EE_LEAD, SALES),
       IntentionReadAllRoles to setOf(ADMIN, EE_LEAD, SALES),
-      IntentionReadOtherCv to setOf(ADMIN, EE_LEAD, SALES),
+      IntentionUpdateOwnCv to setOf(CONSULTANT),
       IntentionUpdateOtherCv to setOf(ADMIN, EE_LEAD),
       IntentionUpdateRoles to setOf(ADMIN)
   )

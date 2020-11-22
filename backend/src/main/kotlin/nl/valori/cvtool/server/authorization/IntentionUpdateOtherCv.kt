@@ -10,63 +10,49 @@ internal object IntentionUpdateOtherCv : Intention {
     if (address != MONGODB_SAVE_ADDRESS || body !is JsonObject)
       return false
 
-    var updatesOtherAccount = false
-    var updatesOtherCv = false
-
     body.map.entries
+        .filter { (_, instances) -> instances is Map<*, *> } // Ignore 'criteria' and only consider 'instances'.
         .forEach { (entityName, instances) ->
-          // Ignore 'criteria' and only consider 'instances'.
-          if (instances !is Map<*, *>) {
-            return false
-          }
+          if (instances !is Map<*, *>)
+            error("Expected instances to be of type Map<>, not '${instances.javaClass.name}'.")
 
           when (entityName) {
             "account" -> {
-              // Referring to 'other' accountIds?
-              if (!listOf(authInfo.accountId).containsAll(instances.keys))
-                updatesOtherAccount = true
-              instances.values
-                  .forEach { instance ->
-                    // Ignore 'criteria' and only consider 'instances'.
-                    if (instance !is Map<*, *>)
-                      return false
-                  }
+              // Referring to 'other' accountId(s)?
+              when (instances.keys.size) {
+                0 -> {}
+                1 -> if (!instances.keys.contains(authInfo.accountId))
+                  return true
+                else -> return true
+              }
             }
-            "role" -> {
-              // Ignore queries that change account roles.
-              instances.values
-                  .forEach { instance ->
-                    // Only consider 'instances', ignore 'criteria'.
-                    if (instance is Map<*, *>)
-                      return false
-                  }
-            }
+            "role" -> {}
+            "businessUnit" -> {}
             "cv" -> {
               // Referring to 'other' cvIds?
               if (!authInfo.cvIds.containsAll(instances.keys))
-                updatesOtherCv = true
+                return true
             }
             else -> {
               instances.values
+                  .filterIsInstance<Map<*, *>>() // Ignore 'criteria' and only consider 'instances'.
                   .forEach { instance ->
-                    // Ignore 'criteria' and only consider 'instances'.
-                    if (instance !is Map<*, *>)
-                      return false
                     val accountId = instance["accountId"]
                     val cvId = instance["cvId"]
-                    // Only consider instances that are related to an account or a cv instance.
+                    // Queries that fetch all data also count here.
                     if (accountId == null && cvId == null)
-                      return false
+                      return true
                     // Only consider 'own' accountId.
                     if (accountId != null && accountId != authInfo.accountId)
-                      updatesOtherAccount = true
+                      return true
                     // Only allow 'own' cvIds.
                     if (cvId != null && !authInfo.cvIds.contains(cvId))
-                      updatesOtherCv = true
+                      return true
                   }
             }
           }
         }
-    return updatesOtherAccount || updatesOtherCv
+
+    return false
   }
 }

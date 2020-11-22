@@ -17,58 +17,38 @@ internal object IntentionReadOwnCv : Intention {
     if (address != MONGODB_FETCH_ADDRESS)
       return false
 
-    var readsOwnCv = false
-
     body.map.entries
         .filter { (_, criteria) -> criteria is List<*> } // Ignore 'instances' and only consider 'criteria'.
         .forEach { (entityName, criteria) ->
           (criteria as List<*>)
               .filterIsInstance<Map<*, *>>() // Only consider criteria that contain query objects.
               .forEach { criterion ->
-                // Queries that fetch all instances don't match.
-                if (criterion.isEmpty())
-                  return false
-
                 when (entityName) {
                   "account" -> {
-                    // Ignore queries for all accounts.
-                    val accountIdCriterion = criterion["_id"]
-                        ?: return false
                     // Only consider 'own' account.
-                    if (authInfo.accountId != accountIdCriterion)
-                      return false
+                    if (authInfo.accountId == criterion["_id"])
+                      return true
                   }
                   "cv" -> {
-                    val accountIdCriterion = criterion["accountId"]
-                    val cvIdCriterion = criterion["_id"]
-                    // Only consider queries that explicitly refer to an account or cv.
-                    if (accountIdCriterion == null && cvIdCriterion == null)
-                      return false
                     // Only consider 'own' accountId.
-                    if (accountIdCriterion != null && authInfo.accountId != accountIdCriterion)
-                      return false
+                    if (authInfo.accountId == criterion["accountId"])
+                      return true
                     // Only consider 'own' cv.
-                    if (cvIdCriterion != null && !authInfo.cvIds.contains(cvIdCriterion))
-                      return false
+                    if (authInfo.cvIds.contains(criterion["_id"]))
+                      return true
                   }
                   else -> {
-                    val accountIdCriterion = criterion["accountId"]
-                    val cvIdCriterion = criterion["cvId"]
-                    // Only consider queries that explicitly refer to an account or cv.
-                    if (accountIdCriterion == null && cvIdCriterion == null)
-                      return false
                     // Only consider 'own' accountId.
-                    if (accountIdCriterion != null && authInfo.accountId != accountIdCriterion)
-                      return false
+                    if (authInfo.accountId == criterion["accountId"])
+                      return true
                     // Only consider 'own' cvIds.
-                    if (cvIdCriterion != null && !authInfo.cvIds.contains(cvIdCriterion))
-                      return false
+                    if (authInfo.cvIds.contains(criterion["cvId"]))
+                      return true
                   }
                 }
-                readsOwnCv = true
               }
         }
 
-    return readsOwnCv
+    return false
   }
 }

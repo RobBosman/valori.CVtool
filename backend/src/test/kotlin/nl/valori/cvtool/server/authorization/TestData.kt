@@ -20,6 +20,10 @@ internal object TestData {
       "businessUnit": [{}]
     }""".trimIndent())
 
+  val bodyFetchAllRoles = JsonObject("""{
+      "role": [{}]
+    }""".trimIndent())
+
   val bodyFetchAuthInfoTom = JsonObject("""{
       "email": "tom@vrt.be",
       "name": "Tom Testerom"

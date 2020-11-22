@@ -1,6 +1,7 @@
 package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
+import nl.valori.cvtool.server.ModelUtils.getCriteria
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadAllBusinessUnits : Intention {
@@ -10,11 +11,8 @@ internal object IntentionReadAllBusinessUnits : Intention {
     if (address != MONGODB_FETCH_ADDRESS || body !is JsonObject)
       return false
 
-    // Only consider account queries.
-    val accountCriteria = body.map["businessUnit"]
-        ?: return false
-
-    // Only consider queries without criteria.
-    return accountCriteria.toString() == "[{}]"
+    return body
+        .getCriteria("businessUnit")
+        .any { criterion -> criterion.map.isEmpty() }
   }
 }

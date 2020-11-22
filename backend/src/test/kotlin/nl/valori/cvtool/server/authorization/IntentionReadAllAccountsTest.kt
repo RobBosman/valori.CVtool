@@ -4,6 +4,7 @@ import nl.valori.cvtool.server.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.authorization.TestData.authInfoTom
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchAllAccounts
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchAllBusinessUnits
+import nl.valori.cvtool.server.authorization.TestData.bodyFetchAllRoles
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchCvByAccountIdPascal
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchCvByAccountIdTom
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchCvByCvIdPascal
@@ -46,6 +47,13 @@ internal object IntentionReadAllAccountsTest {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyFetchAllBusinessUnits, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchAllBusinessUnits, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodyFetchAllBusinessUnits, authInfoTom))
+  }
+
+  @Test
+  fun testFetchAllRoles() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, bodyFetchAllRoles, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchAllRoles, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodyFetchAllRoles, authInfoTom))
   }
 
   @Test
