@@ -1,7 +1,7 @@
 import { ofType } from "redux-observable";
 import { of } from "rxjs";
 import { map, switchMap, debounceTime, filter, mergeMap, distinctUntilChanged } from "rxjs/operators";
-import { eventBusClient } from "../eventBus/eventBus-services";
+import * as eventBusServices from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
 import * as uiActions from "../ui/ui-actions";
@@ -11,7 +11,7 @@ export const safeEpics = [
   // Fetch all accounts from the server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchAccountsAndBusinessUnits.type),
-    switchMap(() => safeServices.fetchFromRemote({ "account": [{}], "businessUnit": [{}], "role": [{}] }, eventBusClient.sendEvent)),
+    switchMap(() => safeServices.fetchFromRemote({ "account": [{}], "businessUnit": [{}], "role": [{}] }, eventBusServices.eventBusClient.sendEvent)),
     map(fetchedData => safeActions.resetEntities(fetchedData))
   ),
 
@@ -19,7 +19,7 @@ export const safeEpics = [
   (action$) => action$.pipe(
     ofType(safeActions.fetchCvByAccountId.type),
     map(action => action.payload),
-    switchMap(accountId => safeServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
+    switchMap(accountId => safeServices.fetchCvFromRemote(accountId, eventBusServices.eventBusClient.sendEvent)),
     mergeMap(fetchedCv => of(
       safeActions.resetEntities(fetchedCv),
       uiActions.setSelectedId("cv", Object.keys(fetchedCv.cv)[0])
@@ -35,14 +35,23 @@ export const safeEpics = [
     map(() => safeActions.save(false))
   ),
 
+  // Auto-save when the eventBus reconnects.
+  (_, state$) => state$.pipe(
+    map(state => state?.eventBus?.connectionState),
+    distinctUntilChanged(),
+    filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),
+    map(() => safeActions.save(false))
+  ),
+
   // Send the content to the server.
   (action$, state$) => action$.pipe(
     ofType(safeActions.save.type),
     map(action => action.payload),
+    filter(saveEnforced => saveEnforced || state$.value.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
     filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
     switchMap(() => {
       const saveTimestamp = new Date();
-      return safeServices.saveToRemote(extractChangedData(state$.value.safe), eventBusClient.sendEvent)
+      return safeServices.saveToRemote(extractChangedData(state$.value.safe), eventBusServices.eventBusClient.sendEvent)
         .then(() => safeActions.setLastSavedTimestamp(saveTimestamp));
     })
   )

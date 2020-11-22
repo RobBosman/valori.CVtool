@@ -52,14 +52,13 @@ object ModelUtils {
     return when (val criteria = getValue(entityName)) {
       is JsonArray -> {
         criteria.list
-            .map { criterion ->
+            .mapNotNull { criterion ->
               when (criterion) {
                 is JsonObject -> criterion
                 is Map<*, *> -> JsonObject(criterion.mapKeys { key -> "$key" } )
                 else -> null
               }
             }
-            .filterNotNull()
       }
       else -> emptyList()
     }

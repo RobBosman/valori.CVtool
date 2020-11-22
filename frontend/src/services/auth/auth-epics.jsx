@@ -53,7 +53,7 @@ export const authEpics = [
     )),
     catchError((error, source$) => merge(
       of(
-        errorActions.setLastError(`Error authenticating: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+        errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
         authActions.requestLogout()
       ),
       source$
@@ -71,7 +71,7 @@ export const authEpics = [
       map(refreshedAuthenticationResult => authActions.setAuthenticationResult(refreshedAuthenticationResult)),
       catchError((error, source$) => merge(
         of(
-          errorActions.setLastError(`Error authenticating: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+          errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
           authActions.requestLogout()
         ),
         source$
@@ -93,7 +93,7 @@ export const authEpics = [
     map(authInfo => authActions.setAuthInfo(authInfo)),
     catchError((error, source$) => merge(
       of(
-        errorActions.setLastError(`Error fetching authInfo: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+        errorActions.setLastError(`Fout bij ophalen accountgegevens: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
         authActions.requestLogout()
       ),
       source$

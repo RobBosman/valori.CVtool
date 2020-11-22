@@ -11,7 +11,7 @@ internal object Authorizer {
 
   private val log = LoggerFactory.getLogger(Authorizer::class.java)
 
-  internal val ROLES_MAP = mapOf(
+  private val ROLES_MAP = mapOf(
       IntentionReadOwnAuthInfo to setOf(CONSULTANT),
       IntentionReadOwnCv to setOf(CONSULTANT),
       IntentionReadOtherCv to setOf(ADMIN, EE_LEAD, SALES),
@@ -28,12 +28,10 @@ internal object Authorizer {
     val body = rawMessage.getValue("body")
     val authorizedRoles = ROLES_MAP.entries.stream()
         .filter { (intention, _) -> intention.match(address, body, authInfo) }
-        .flatMap { (intention, roles) ->
-          log.info("============================================================== ${intention.javaClass.simpleName}")
-          roles.stream()
-        }
+        .flatMap { (_, roles) -> roles.stream() }
         .reduce(HashSet<AuthorizationRoles>(), { acc, next -> acc.add(next); acc }, { x, _ -> x })
     if (authorizedRoles.isEmpty()) {
+      log.error("No matching intention found for address '$address'.")
       error("No matching intention found for address '$address'.")
     }
     if (!authInfo.isAuthorized(authorizedRoles)) {

@@ -7,6 +7,6 @@ export const errorEpics = [
   () => fromEvent(window, "error").pipe(
     map((event) => event.error?.message),
     filter((errorMessage) => errorMessage),
-    map((errorMessage) => setLastError(errorMessage, ErrorSources.windowErrorEvent))
+    map((errorMessage) => setLastError(`Onbekende fout: ${errorMessage}`, ErrorSources.windowErrorEvent))
   )
 ];

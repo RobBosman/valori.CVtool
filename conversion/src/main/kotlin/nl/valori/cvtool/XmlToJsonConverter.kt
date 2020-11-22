@@ -16,15 +16,15 @@ fun main() = XmlToJsonConverter.run()
 object XmlToJsonConverter {
 
   fun run() {
-    val targetDir = Path.of(".").resolve("exported")
-    val dataDumpDir = targetDir.resolve("dump")
-    val jsonDir = targetDir.resolve("json")
+    val exportedDir = Path.of(".").resolve("exported")
+    val dataDumpDir = exportedDir.resolve("dump")
+    val jsonDir = exportedDir.resolve("json")
     val accountsXml = dataDumpDir.resolve("accounts.xml")
     val businessUnitsXml = dataDumpDir.resolve("businessUnits.xml")
 
     if (true) {
-      Files.deleteIfExists(targetDir)
-      Files.createDirectory(targetDir)
+      Files.deleteIfExists(exportedDir)
+      Files.createDirectory(exportedDir)
       Files.createDirectory(dataDumpDir)
       Files.createDirectory(jsonDir)
 

@@ -2,6 +2,7 @@ package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.CV_FETCH_ADDRESS
+import nl.valori.cvtool.server.CV_GENERATE_ADDRESS
 import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadOwnCv : Intention {
@@ -10,7 +11,7 @@ internal object IntentionReadOwnCv : Intention {
     if (body !is JsonObject)
       return false
 
-    if (address == CV_FETCH_ADDRESS
+    if ((address == CV_FETCH_ADDRESS || address == CV_GENERATE_ADDRESS)
         && body.map["accountId"] == authInfo.accountId)
       return true
 

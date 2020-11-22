@@ -89,6 +89,7 @@ docker run -it --rm ^
 # MongoDB collections:
 #   businessUnit
 #   account
+#   role
 #   cv
 #   education
 #   skill
@@ -101,6 +102,8 @@ mongoexport --uri mongodb://localhost:27017/cvtool --jsonArray --collection=skil
 # MongoSH:
 use cvtool
 db.education.updateMany({}, {$rename: {"year": "yearTo"}})
+db.account.updateMany({}, {$unset: {"privileges": ""}})
+
 
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://root:MongoPassword@127.0.0.1:27117/cvtool?authSource=admin
@@ -124,8 +127,3 @@ lftp -c '\
         " \
     157.97.115.138 \
     '
-
-
-mongo shell:
-use cvtool
-db.account.updateMany({}, {$rename: {"privileges": "roles"}})

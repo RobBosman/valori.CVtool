@@ -7,8 +7,7 @@ import nl.valori.cvtool.server.authorization.AuthorizationRoles.CONSULTANT
 internal class AuthInfo(val email: String, val name: String) {
 
   var accountId: String = ""
-  var roles: Set<AuthorizationRoles> = setOf(CONSULTANT)
-    private set
+  private var roles: Set<AuthorizationRoles> = setOf(CONSULTANT)
   var cvIds: Set<String> = emptySet()
     private set
 

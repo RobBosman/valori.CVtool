@@ -24,6 +24,7 @@ export class EventBusClient {
     this._eventBus = null;
     this._handlers = new Set();
     this._connectionStateSubject = new BehaviorSubject(ConnectionStates.DISCONNECTED);
+    this._errorMessagesSubject = new BehaviorSubject("");
     this._defaultHeaders = {};
   }
 
@@ -34,6 +35,9 @@ export class EventBusClient {
     this._connectionStateSubject.asObservable().pipe(
       distinctUntilChanged()
     );
+
+  monitorErrorMessages = () =>
+    this._errorMessagesSubject.asObservable();
 
   connectEventBus = () => {
     if (this._eventBus?.sockJSConn) {
@@ -63,8 +67,11 @@ export class EventBusClient {
     };
 
     this._eventBus.onerror = (error) => {
-      console.error("An error occurred on the vert.x EventBus.", error);
-      // throw error;
+      if (error.body === "rejected") {
+        this._errorMessagesSubject.next("Je hebt onvoldoende rechten voor deze actie.");
+      } else {
+        console.error("An error occurred on the vert.x EventBus.", error);
+      }
     };
   }
   
@@ -99,10 +106,12 @@ export class EventBusClient {
       if (this._eventBus?.state === EventBus.OPEN) {
         console.debug(`Sending event '${address}'`);
         this._eventBus.send(address, requestData, this.mergeHeaders(headers),
-          (error, message) => error ? _reject(error) : _resolve(message)
+          (error, message) => error
+            ? _reject(`Onbekende fout in de backend: ${error} ${message}`)
+            : _resolve(message)
         );
       } else {
-        _reject(new Error(`Error sending '${address}' event; the EventBus is not connected.`));
+        _reject(new Error("De verbinding met de backend is verbroken. Probeer het later nog eens."));
       }
     });
 

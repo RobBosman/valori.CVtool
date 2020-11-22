@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner } from "@fluentui/react";
-import { requestLogout, LoginStates } from "../services/auth/auth-actions";
+import * as authActions from "../services/auth/auth-actions";
 
 const LoginDialog = (props) => {
 
@@ -47,12 +47,12 @@ LoginDialog.propTypes = {
 };
 
 const select = (state) => ({
-  isLoggingInOpenId: state.auth.loginState === LoginStates.LOGGING_IN_OPENID,
-  isLoggingInBackend: state.auth.loginState === LoginStates.LOGGING_IN_BACKEND
+  isLoggingInOpenId: state.auth.loginState === authActions.LoginStates.LOGGING_IN_OPENID,
+  isLoggingInBackend: state.auth.loginState === authActions.LoginStates.LOGGING_IN_BACKEND
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestToLogout: () => dispatch(requestLogout())
+  requestToLogout: () => dispatch(authActions.requestLogout())
 });
 
 export default connect(select, mapDispatchToProps)(LoginDialog);

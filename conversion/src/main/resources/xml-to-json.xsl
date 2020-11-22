@@ -41,6 +41,7 @@
     ,"role": [
     <xsl:for-each select="cv:_account/cv:rol[cv:naam = 'view alle CVs']">
       <xsl:sort select="../cv:email" />
+      <xsl:if test="position() > 1">,</xsl:if>
       <xsl:apply-templates select="."/>
     </xsl:for-each>
     ]
@@ -69,9 +70,8 @@
   </xsl:template>
 
   <xsl:template match="cv:rol">
-    <xsl:if test="position() > 1">,</xsl:if>
     {
-    "_id": "<xsl:value-of select="util:uuid(concat('role', position(), ../@id))"/>"
+    "_id": "<xsl:value-of select="util:uuid(concat('role', ../@id))"/>"
     ,"accountId": "<xsl:value-of select="util:uuid(../@id)"/>"
     ,"name": "ADMIN"
     }

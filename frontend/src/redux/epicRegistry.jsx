@@ -17,7 +17,7 @@ export class EpicRegistry {
         catchError((error, source$) => {
           console.error("REDUX_MIDDLEWARE ERROR", error);
           return merge(
-            of(setLastError(error.stack || error.error?.stack || error.message, ErrorSources.reduxMiddleware)),
+            of(setLastError(`${error}`.replace(/^Error: /, ""), ErrorSources.reduxMiddleware)),
             source$
           );
         })
