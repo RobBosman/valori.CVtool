@@ -28,8 +28,8 @@ const LoginPage = (props) => {
           <p>Om de CVtool te gebruiken moet je je aanmelden met je <b>Valori</b> account.
             <br/>Tijdens het inlogproces controleert de CVtool je account, je moet daar eenmalig een machtiging voor geven.
             <br/>
-            <br/>Je kunt die machtiging te allen tijde weer intrekken via &quot;<em>Apps beheren</em>&quot;.
-            <br/>Als je de machtigingen voor de <em>Valori CVtool</em> intrekt blijven je cv-gegevens bewaard.
+            <br/>Je kunt die machtiging te allen tijde weer intrekken via <em>Apps beheren</em>.
+            <br/>Als je de machtiging voor de <em>Valori CVtool</em> intrekt blijven je cv-gegevens bewaard.
             <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
           </p>
         </Text>
