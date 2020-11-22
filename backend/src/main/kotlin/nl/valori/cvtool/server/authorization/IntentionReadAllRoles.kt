@@ -2,7 +2,7 @@ package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.ModelUtils.getCriteria
-import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadAllRoles : Intention {
 

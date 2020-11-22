@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner } from "@fluentui/react";
+import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner, SpinnerSize } from "@fluentui/react";
 import * as authActions from "../services/auth/auth-actions";
 
 const LoginDialog = (props) => {
@@ -18,12 +18,12 @@ const LoginDialog = (props) => {
       <table>
         <tbody>
           <tr>
-            <td>{props.isLoggingInOpenId ? <Spinner /> : <Icon iconName="Accept" />}</td>
+            <td>{props.isLoggingInOpenId ? <Spinner size={SpinnerSize.small} /> : <Icon iconName="Accept" />}</td>
             <td>&nbsp;</td>
             <td><Label>Inloggen met Valori account</Label></td>
           </tr>
           <tr>
-            <td>{props.isLoggingInBackend ? <Spinner /> : undefined}</td>
+            <td>{props.isLoggingInBackend ? <Spinner size={SpinnerSize.small} /> : undefined}</td>
             <td>&nbsp;</td>
             <td><Label
               disabled={!props.isLoggingInBackend}

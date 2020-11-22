@@ -12,6 +12,9 @@ import { createUuid } from "../../services/safe/safe-services";
 
 const Accounts = (props) => {
 
+  const isAdmin = props.authInfo.roles.includes("ADMIN");
+  const isEELead = props.authInfo.roles.includes("EE_LEAD");
+
   const enrichAccountEntity = (accountEntity, roleEntity, businessUnitEntity) => {
     if (!accountEntity) {
       return undefined;
@@ -19,15 +22,18 @@ const Accounts = (props) => {
     const enrichedAccountEntity = {};
     Object.entries(accountEntity)
       .forEach(([accountId, account]) => {
+        const enrichedAccount = {...account};
 
-        const roles = roleEntity && Object.values(roleEntity)
-          .filter(role => role.accountId === accountId);
-        const enrichedAccount = {...account, roles};
-        AccountRoles
-          .map(roleEnum => roleEnum.key)
-          .forEach(roleName => {
-            enrichedAccount[roleName] = roles?.find(role => role.name === roleName);
-          });
+        if (isAdmin) {
+          const roles = roleEntity && Object.values(roleEntity)
+            .filter(role => role.accountId === accountId);
+          enrichedAccount.roles = roles;
+          AccountRoles
+            .map(roleEnum => roleEnum.key)
+            .forEach(roleName => {
+              enrichedAccount[roleName] = roles?.find(role => role.name === roleName);
+            });
+        }
 
         const businessUnit = businessUnitEntity && Object.values(businessUnitEntity)
           .find(businessUnit => businessUnit.accountIds.includes(accountId));
@@ -109,19 +115,21 @@ const Accounts = (props) => {
       data: "string"
     }
   ];
-  AccountRoles
-    .forEach(roleEnum => {
-      columns.push({
-        key: roleEnum.key,
-        fieldName: roleEnum.key,
-        name: roleEnum.text,
-        onRender: (item) => renderCheckbox(roleEnum.key, item),
-        isResizable: false,
-        minWidth: 50,
-        maxWidth: 50,
-        data: "boolean"
+  if (isAdmin) {
+    AccountRoles
+      .forEach(roleEnum => {
+        columns.push({
+          key: roleEnum.key,
+          fieldName: roleEnum.key,
+          name: roleEnum.text,
+          onRender: (item) => renderCheckbox(roleEnum.key, item),
+          isResizable: false,
+          minWidth: 50,
+          maxWidth: 50,
+          data: "boolean"
+        });
       });
-    });
+  }
 
   const { viewPaneColor } = useTheme();
   const viewStyles = {
@@ -133,12 +141,12 @@ const Accounts = (props) => {
     ]
   };
   const tdStyle = {
-    minWidth: 600,
+    minWidth: isAdmin ? 600 : 400,
     width: "calc(50vw - 98px)"
   };
 
   const onSelectCv = () => {
-    if (props.selectedAccountId) {
+    if ((isAdmin || isEELead) && props.selectedAccountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };

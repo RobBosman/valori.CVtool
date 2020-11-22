@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server
+package nl.valori.cvtool.server.cv
 
 import io.reactivex.Single
 import io.vertx.core.Promise
@@ -10,8 +10,8 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.ModelUtils.composeCvInstance
 import nl.valori.cvtool.server.ModelUtils.composeEntity
 import nl.valori.cvtool.server.ModelUtils.getInstanceIds
-import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.util.UUID
 

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Link, PrimaryButton, Stack, Text } from "@fluentui/react";
+import { DefaultButton, Link, PrimaryButton, Stack, Text } from "@fluentui/react";
 import CvLogo from "./widgets/CvLogo";
 import LoginDialog from "./LoginDialog";
 import * as authActions from "../services/auth/auth-actions";
@@ -16,6 +16,9 @@ const LoginPage = (props) => {
     textAlign: "center"
   };
 
+  const onOpenAppsPage = () =>
+    window.open("https://account.activedirectory.windowsazure.com/r/#/applications", "blank");
+
   return (
     <Stack>
       <CvLogo/>
@@ -23,23 +26,30 @@ const LoginPage = (props) => {
         <Text variant="xxLarge">Welkom bij de <span style={{ color: "#999999" }}><b>CVtool</b></span></Text>
         <Text>
           <p>Om de CVtool te gebruiken moet je je aanmelden met je <b>Valori</b> account.
-            <br/>Tijdens het inlogproces controleert de CVtool je account, je moet daar eenmalig toestemming voor geven.
+            <br/>Tijdens het inlogproces controleert de CVtool je account, je moet daar eenmalig een machtiging voor geven.
             <br/>
-            <br/><Link href="https://account.activedirectory.windowsazure.com/r/#/applications"
-              target="blank">Hier</Link> kun je die toestemming bekijken en eventueel weer intrekken.
+            <br/>Je kunt die machtiging te allen tijde weer intrekken via &quot;<em>Apps beheren</em>&quot;.
             <br/>Als je de machtigingen voor de <em>Valori CVtool</em> intrekt blijven je cv-gegevens bewaard.
             <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
-            <br/>
-            <br/>Problemen? <Link href="mailto:RobBosman@valori.nl" target="blank">Mail</Link> even!
           </p>
         </Text>
         <Stack.Item align="center">
-          <PrimaryButton
-            text="Inloggen"
-            iconProps={{ iconName: "Signin" }}
-            onClick={props.requestToLogin}
-          />
+          <Stack horizontal
+            tokens={{ childrenGap: "l1" }}>
+            <PrimaryButton
+              text="Inloggen"
+              iconProps={{ iconName: "Signin" }}
+              onClick={props.requestToLogin}
+            />
+            <DefaultButton
+              text="Apps beheren"
+              iconProps={{ iconName: "AllApps" }}
+              onClick={onOpenAppsPage}/>
+          </Stack>
         </Stack.Item>
+        <Text>
+          <p>Problemen? <Link href="mailto:RobBosman@valori.nl" target="blank">Mail</Link> even!</p>
+        </Text>
       </Stack>
       {props.isLoggingIn
         ? <LoginDialog />

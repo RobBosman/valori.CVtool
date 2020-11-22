@@ -6,10 +6,10 @@ import { Stack, Text } from "@fluentui/react";
 const CvTitle = (props) => {
   
   const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const account = props.accountEntity && props.accountEntity[cv?.accountId];
+  const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
   const titleFields = {
     name: account?.name || "<NAAM>",
-    role: cv?.role && cv.role[props.locale] || "<ROL>",
+    role: cv?.role && cv.role[props.locale] || "",
     dateOfBirth: account?.dateOfBirth && new Date(account.dateOfBirth).toLocaleDateString(props.locale.substr(0, 2)) || "<GEBOORTEDATUM>",
     residence: account?.residence || "<WOONPLAATS>"
   };
@@ -32,6 +32,7 @@ const CvTitle = (props) => {
 CvTitle.propTypes = {
   locale: PropTypes.string.isRequired,
   cvEntity: PropTypes.object,
+  selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
   accountEntity: PropTypes.object
 };
@@ -39,6 +40,7 @@ CvTitle.propTypes = {
 const select = (state) => ({
   locale: state.ui.locale,
   cvEntity: state.safe.content.cv,
+  selectedAccountId: state.ui.selectedId["account"],
   selectedCvId: state.ui.selectedId["cv"],
   accountEntity: state.safe.content.account
 });

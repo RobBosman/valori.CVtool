@@ -112,8 +112,11 @@ export const authEpics = [
           authActions.setLoginState(authActions.LoginStates.LOGGED_IN),
           safeActions.fetchCvByAccountId(authInfo.accountId)
         );
+        if (authInfo.roles.includes("ADMIN") || authInfo.roles.includes("EE_LEAD") || authInfo.roles.includes("SALES")) {
+          actions.push(safeActions.fetchAllAccountData());
+        }
         if (authInfo.roles.includes("ADMIN")) {
-          actions.push(safeActions.fetchAccountsAndBusinessUnits());
+          actions.push(safeActions.fetchAllRoles());
         }
       } else {
         actions.push(

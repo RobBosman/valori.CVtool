@@ -1,7 +1,8 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
-export const fetchAccountsAndBusinessUnits = createAction("FECTH_ACCOUNTS_AND_BUSINESS_UNITS", () => ({}));
+export const fetchAllAccountData = createAction("FECTH_ALL_ACCOUNT_DATA", () => ({}));
+export const fetchAllRoles = createAction("FECTH_ALL_ROLES", () => ({}));
 export const fetchCvByAccountId = createAction("FECTH_CV_BY_ACCOUNT_ID");
 export const save = createAction("SAVE");
 

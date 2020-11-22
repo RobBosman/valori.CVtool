@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server.mongodb
+package nl.valori.cvtool.server.persistence
 
 import com.mongodb.client.model.DeleteOneModel
 import com.mongodb.client.model.Filters

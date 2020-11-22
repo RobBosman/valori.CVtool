@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server.mongodb
+package nl.valori.cvtool.server.persistence
 
 import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable

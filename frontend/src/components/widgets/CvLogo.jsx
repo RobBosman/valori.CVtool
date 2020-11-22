@@ -24,7 +24,7 @@ const CvLogo = () => (
     styles={logoStyles}>
     <img src={valorLogoSvg} alt="Valori" width="70em" height="70em"/>
     <img src={cvtoolTextSvg} alt="CVtool" width="70em" height="70em"/>
-    <div style={versionStyle}><em>versie 2020-11-18</em></div>
+    <div style={versionStyle}><em>versie 2020-11-22</em></div>
   </Stack>
 );
 

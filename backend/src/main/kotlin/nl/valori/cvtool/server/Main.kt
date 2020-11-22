@@ -9,8 +9,10 @@ import io.vertx.core.VertxOptions
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.authorization.AuthInfoFetchVerticle
 import nl.valori.cvtool.server.authorization.AuthenticateVerticle
-import nl.valori.cvtool.server.mongodb.MongodbFetchVerticle
-import nl.valori.cvtool.server.mongodb.MongodbSaveVerticle
+import nl.valori.cvtool.server.cv.CvFetchVerticle
+import nl.valori.cvtool.server.cv.CvGenerateVerticle
+import nl.valori.cvtool.server.persistence.MongodbFetchVerticle
+import nl.valori.cvtool.server.persistence.MongodbSaveVerticle
 import org.slf4j.LoggerFactory
 
 fun main() = Main.run()

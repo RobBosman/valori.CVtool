@@ -1,6 +1,7 @@
 package nl.valori.cvtool.server
 
 import io.vertx.core.json.JsonObject
+import nl.valori.cvtool.server.cv.CvGenerateVerticle
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
 import java.util.stream.IntStream

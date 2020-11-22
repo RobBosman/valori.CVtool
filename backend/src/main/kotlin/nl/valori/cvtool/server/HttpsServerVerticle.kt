@@ -20,8 +20,10 @@ import nl.valori.cvtool.server.authorization.AUTHENTICATE_ADDRESS
 import nl.valori.cvtool.server.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.server.authorization.AuthInfo
 import nl.valori.cvtool.server.authorization.Authorizer.authorize
-import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
+import nl.valori.cvtool.server.cv.CV_FETCH_ADDRESS
+import nl.valori.cvtool.server.cv.CV_GENERATE_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.net.URL
 

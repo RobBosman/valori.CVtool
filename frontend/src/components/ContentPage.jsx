@@ -19,6 +19,9 @@ import CvLogo from "./widgets/CvLogo";
 const ContentPage = (props) => {
 
   const isAdmin = props.authInfo.roles.includes("ADMIN");
+  const isEELead = props.authInfo.roles.includes("EE_LEAD");
+  const isSales = props.authInfo.roles.includes("SALES");
+
   const navGroups = [
     {
       links: [
@@ -31,8 +34,8 @@ const ContentPage = (props) => {
         },
       ]
     },
-    isAdmin && {
-      name: "Admin",
+    (isAdmin || isSales || isEELead) && {
+      name: isAdmin ? "Admin" : isEELead ? "E&E Lead" : "Sales",
       links: [
         {
           key: "#accounts",

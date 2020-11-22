@@ -1,9 +1,9 @@
 package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
-import nl.valori.cvtool.server.CV_FETCH_ADDRESS
-import nl.valori.cvtool.server.CV_GENERATE_ADDRESS
-import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.cv.CV_FETCH_ADDRESS
+import nl.valori.cvtool.server.cv.CV_GENERATE_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadOtherCv : Intention {
 

@@ -1,6 +1,5 @@
 package nl.valori.cvtool.server.authorization
 
-import nl.valori.cvtool.server.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.authorization.TestData.authInfoTom
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchAllAccounts
 import nl.valori.cvtool.server.authorization.TestData.bodyFetchAllBusinessUnits
@@ -18,8 +17,9 @@ import nl.valori.cvtool.server.authorization.TestData.bodySaveCvPascal
 import nl.valori.cvtool.server.authorization.TestData.bodySaveCvTom
 import nl.valori.cvtool.server.authorization.TestData.bodySaveSkillPascal
 import nl.valori.cvtool.server.authorization.TestData.bodySaveSkillTom
-import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
+import nl.valori.cvtool.server.cv.CV_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

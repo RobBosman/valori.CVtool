@@ -1,4 +1,4 @@
-package nl.valori.cvtool.server
+package nl.valori.cvtool.server.cv
 
 import io.reactivex.Flowable
 import io.reactivex.Single

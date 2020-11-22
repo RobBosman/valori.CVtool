@@ -1,7 +1,7 @@
 package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
-import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 
 internal object IntentionUpdateRoles : Intention {
 

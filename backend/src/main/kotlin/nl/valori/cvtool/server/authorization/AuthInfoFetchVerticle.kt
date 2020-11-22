@@ -12,8 +12,8 @@ import nl.valori.cvtool.server.ModelUtils.composeAccountInstance
 import nl.valori.cvtool.server.ModelUtils.composeEntity
 import nl.valori.cvtool.server.ModelUtils.getInstanceIds
 import nl.valori.cvtool.server.ModelUtils.getInstances
-import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.util.UUID
 

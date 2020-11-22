@@ -2,8 +2,8 @@ package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.authorization.TestData.authInfoTom
-import nl.valori.cvtool.server.mongodb.MONGODB_FETCH_ADDRESS
-import nl.valori.cvtool.server.mongodb.MONGODB_SAVE_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
 
