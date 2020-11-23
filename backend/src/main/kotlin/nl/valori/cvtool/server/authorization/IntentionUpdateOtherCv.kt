@@ -1,54 +1,53 @@
 package nl.valori.cvtool.server.authorization
 
-import io.vertx.core.json.JsonObject
+import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 
 internal object IntentionUpdateOtherCv : Intention {
 
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
     // Only consider 'saving' messages.
-    if (address != MONGODB_SAVE_ADDRESS || body !is JsonObject)
+    if (address != MONGODB_SAVE_ADDRESS)
       return false
 
-    body.map.entries
-        .filter { (_, instances) -> instances is Map<*, *> } // Ignore 'criteria' and only consider 'instances'.
-        .forEach { (entityName, instances) ->
-          if (instances !is Map<*, *>)
-            error("Expected instances to be of type Map<>, not '${instances.javaClass.name}'.")
+    val bodyJson = toJsonObject(body)
+        ?: return false
 
-          when (entityName) {
-            "account" -> {
-              // Referring to 'other' accountId(s)?
-              when (instances.keys.size) {
-                0 -> {}
-                1 -> if (!instances.keys.contains(authInfo.accountId))
-                  return true
-                else -> return true
+    bodyJson.map.entries
+        .forEach { (entityName, instances) ->
+          val instancesMap = toJsonObject(instances)?.map
+          if (instancesMap != null) { // Ignore 'criteria' and only consider 'instances'.
+            when (entityName) {
+              "account" -> {
+                // Referring to 'other' accountId(s)?
+                when (instancesMap.keys.size) {
+                  0 -> {}
+                  1 -> if (!instancesMap.keys.contains(authInfo.accountId))
+                    return true
+                  else -> return true
+                }
               }
-            }
-            "role" -> {}
-            "businessUnit" -> {}
-            "cv" -> {
-              // Referring to 'other' cvIds?
-              if (!authInfo.cvIds.containsAll(instances.keys))
-                return true
-            }
-            else -> {
-              instances.values
-                  .filterIsInstance<Map<*, *>>() // Ignore 'criteria' and only consider 'instances'.
-                  .forEach { instance ->
-                    val accountId = instance["accountId"]
-                    val cvId = instance["cvId"]
-                    // Queries that fetch all data also count here.
-                    if (accountId == null && cvId == null)
-                      return true
-                    // Only consider 'own' accountId.
-                    if (accountId != null && accountId != authInfo.accountId)
-                      return true
-                    // Only allow 'own' cvIds.
-                    if (cvId != null && !authInfo.cvIds.contains(cvId))
-                      return true
-                  }
+              "role" -> {}
+              "businessUnit" -> {}
+              "cv" -> {
+                // Referring to 'other' cvIds?
+                if (!authInfo.cvIds.containsAll(instancesMap.keys))
+                  return true
+              }
+              else -> {
+                instancesMap.values
+                    .mapNotNull { toJsonObject(it) } // Ignore 'criteria' and only consider 'instances'.
+                    .forEach { instance ->
+                      val accountId = instance.map["accountId"]
+                      val cvId = instance.map["cvId"]
+                      // Only consider 'own' accountId.
+                      if (accountId != null && accountId != authInfo.accountId)
+                        return true
+                      // Only allow 'own' cvIds.
+                      if (cvId != null && !authInfo.cvIds.contains(cvId))
+                        return true
+                    }
+              }
             }
           }
         }

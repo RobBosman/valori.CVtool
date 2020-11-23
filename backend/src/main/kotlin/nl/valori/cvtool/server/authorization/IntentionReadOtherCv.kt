@@ -1,6 +1,7 @@
 package nl.valori.cvtool.server.authorization
 
-import io.vertx.core.json.JsonObject
+import io.vertx.core.json.JsonArray
+import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.cv.CV_GENERATE_ADDRESS
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
@@ -8,11 +9,11 @@ import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 internal object IntentionReadOtherCv : Intention {
 
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
-    if (body !is JsonObject)
-      return false
+    val bodyJson = toJsonObject(body)
+        ?: return false
 
     if (address == CV_FETCH_ADDRESS || address == CV_GENERATE_ADDRESS) {
-      val accountId = body.map["accountId"]
+      val accountId = bodyJson.map["accountId"]
       if (accountId != null && accountId != authInfo.accountId)
         return true
     }
@@ -20,44 +21,48 @@ internal object IntentionReadOtherCv : Intention {
     if (address != MONGODB_FETCH_ADDRESS)
       return false
 
-    body.map.entries
-        .filter { (_, criteria) -> criteria is List<*> } // Ignore 'instances' and only consider 'criteria'.
+    bodyJson.map.entries
         .forEach { (entityName, criteria) ->
-          (criteria as List<*>)
-              .filterIsInstance<Map<*, *>>() // Only consider criteria that contain query objects.
-              .forEach { criterion ->
+          val criteriaList = when (criteria) {
+            is List<*> -> criteria
+            is JsonArray -> criteria.list
+            else -> null // Ignore 'instances' and only consider 'criteria'.
+          }
+          criteriaList
+              ?.mapNotNull { toJsonObject(it) } // Only consider criteria that contain query objects.
+              ?.forEach { criterion ->
                 when (entityName) {
                   "account" -> {
                     // Only consider 'other' account.
-                    if (authInfo.accountId != criterion["_id"])
+                    if (authInfo.accountId != criterion.map["_id"])
                       return true
                   }
                   "role" -> {}
                   "businessUnit" -> {}
                   "cv" -> {
-                    val accountIdCriterion = criterion["accountId"]
-                    val cvIdCriterion = criterion["_id"]
+                    val accountId = criterion.map["accountId"]
+                    val cvId = criterion.map["_id"]
                     // 'Read all' queries also match here.
-                    if (accountIdCriterion == null && cvIdCriterion == null)
+                    if (accountId == null && cvId == null)
                       return true
                     // Only consider 'other' accountId.
-                    if (accountIdCriterion != null && authInfo.accountId != accountIdCriterion)
+                    if (accountId != null && authInfo.accountId != accountId)
                       return true
                     // Only consider 'other' cv.
-                    if (cvIdCriterion != null && !authInfo.cvIds.contains(cvIdCriterion))
+                    if (cvId != null && !authInfo.cvIds.contains(cvId))
                       return true
                   }
                   else -> {
-                    val accountIdCriterion = criterion["accountId"]
-                    val cvIdCriterion = criterion["cvId"]
+                    val accountId = criterion.map["accountId"]
+                    val cvId = criterion.map["cvId"]
                     // 'Read all' queries also match here.
-                    if (accountIdCriterion == null && cvIdCriterion == null)
+                    if (accountId == null && cvId == null)
                       return true
                     // Only consider 'other' accountId.
-                    if (accountIdCriterion != null && authInfo.accountId != accountIdCriterion)
+                    if (accountId != null && authInfo.accountId != accountId)
                       return true
                     // Only consider 'other' cvIds.
-                    if (cvIdCriterion != null && !authInfo.cvIds.contains(cvIdCriterion))
+                    if (cvId != null && !authInfo.cvIds.contains(cvId))
                       return true
                   }
                 }

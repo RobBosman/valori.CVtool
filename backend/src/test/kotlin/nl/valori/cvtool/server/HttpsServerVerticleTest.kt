@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.ServerSocket
 import java.util.concurrent.TimeUnit.SECONDS
+import kotlin.test.assertEquals
 
 @ExtendWith(VertxExtension::class)
 internal object HttpsServerVerticleTest {
@@ -54,5 +55,75 @@ internal object HttpsServerVerticleTest {
     assertTrue(testContext.awaitCompletion(2, SECONDS))
     if (testContext.failed())
       throw testContext.causeOfFailure()
+  }
+
+  @Test
+  fun testReplaceEntityInstances() {
+    val sourceJson = JsonObject("""{
+      "cv": {
+        "cv-id-of-tom": {
+          "_id": "cv-id-of-tom",
+          "accountId": "account-id-of-tom",
+          "key": "value"
+        },
+        "cv-id-of-pascal": {}
+      },
+      "skill": {
+        "skill-id-of-tom": {},
+        "skill-id-of-pascal": {
+          "_id": "skill-id-of-pascal",
+          "cvId": "cv-id-of-pascal",
+          "key": "value"
+        }
+      }
+    }""")
+    val replacementJson = JsonObject("""{
+      "cv": {
+         "cv-id-of-pascal": {
+           "_id": "cv-id-of-pascal",
+          "accountId": "account-id-of-pascal",
+          "key": "value"
+         }
+      },
+      "skill": {
+        "skill-id-of-tom": {
+          "_id": "skill-id-of-tom",
+          "cvId": "cv-id-of-tom",
+          "key": "value"
+        }
+      }
+    }""")
+    val resultJson = JsonObject("""{
+      "cv": {
+        "cv-id-of-tom": {
+          "_id": "cv-id-of-tom",
+          "accountId": "account-id-of-tom",
+          "key": "value"
+        },
+        "cv-id-of-pascal": {
+          "_id": "cv-id-of-pascal",
+          "accountId": "account-id-of-pascal",
+          "key": "value"
+        }
+      },
+      "skill": {
+        "skill-id-of-tom": {
+          "_id": "skill-id-of-tom",
+          "cvId": "cv-id-of-tom",
+          "key": "value"
+        },
+        "skill-id-of-pascal": {
+          "_id": "skill-id-of-pascal",
+          "cvId": "cv-id-of-pascal",
+          "key": "value"
+        }
+      }
+    }""")
+
+    val orgSource = sourceJson.encodePrettily()
+
+    assertEquals(resultJson.encodePrettily(),
+        HttpsServerVerticle().replaceEntityInstances(sourceJson, replacementJson).encodePrettily())
+    assertEquals(orgSource, sourceJson.encodePrettily())
   }
 }

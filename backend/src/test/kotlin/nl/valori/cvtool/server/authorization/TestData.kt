@@ -10,58 +10,58 @@ internal object TestData {
       "roles": [],
       "accountId": "account-id-of-tom",
       "cvIds": ["cv-id-of-tom"]
-    }""".trimIndent()))
+    }"""))
 
-  val bodyFetchAllAccounts = JsonObject("""{
+  val messageFetchAllAccounts = JsonObject("""{
       "account": [{}]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchAllBusinessUnits = JsonObject("""{
+  val messageFetchAllBusinessUnits = JsonObject("""{
       "businessUnit": [{}]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchAllRoles = JsonObject("""{
+  val messageFetchAllRoles = JsonObject("""{
       "role": [{}]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchAuthInfoTom = JsonObject("""{
+  val messageFetchAuthInfoTom = JsonObject("""{
       "email": "tom@vrt.be",
       "name": "Tom Testerom"
-    }""".trimIndent())
+    }""")
 
-  val bodyGenerateCvTom = JsonObject("""{
+  val messageGenerateCvTom = JsonObject("""{
       "accountId": "account-id-of-tom"
-    }""".trimIndent())
+    }""")
 
-  val bodyGenerateCvPascal = JsonObject("""{
+  val messageGenerateCvPascal = JsonObject("""{
       "accountId": "account-id-of-pascal"
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchCvByAccountIdTom = JsonObject("""{
+  val messageFetchCvByAccountIdTom = JsonObject("""{
       "cv": [{ "accountId": "account-id-of-tom" }]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchCvByAccountIdPascal = JsonObject("""{
+  val messageFetchCvByAccountIdPascal = JsonObject("""{
       "cv": [{ "accountId": "account-id-of-pascal" }]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchCvByCvIdTom = JsonObject("""{
+  val messageFetchCvByCvIdTom = JsonObject("""{
       "cv": [{ "_id": "cv-id-of-tom" }]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchCvByCvIdPascal = JsonObject("""{
+  val messageFetchCvByCvIdPascal = JsonObject("""{
       "cv": [{ "_id": "cv-id-of-pascal" }]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchSkillTom = JsonObject("""{
+  val messageFetchSkillTom = JsonObject("""{
       "skill": [{ "cvId": "cv-id-of-tom" }]
-    }""".trimIndent())
+    }""")
 
-  val bodyFetchSkillPascal = JsonObject("""{
+  val messageFetchSkillPascal = JsonObject("""{
       "skill": [{ "cvId": "cv-id-of-pascal" }]
-    }""".trimIndent())
+    }""")
 
-  val bodySaveCvTom = JsonObject("""{
+  val messageSaveCvTom = JsonObject("""{
       "cv": {
         "cv-id-of-tom": {
           "_id": "cv-id-of-tom",
@@ -69,9 +69,9 @@ internal object TestData {
           "key": "value"
         }
       }
-    }""".trimIndent())
+    }""")
 
-  val bodySaveCvPascal = JsonObject("""{
+  val messageSaveCvPascal = JsonObject("""{
       "cv": {
         "cv-id-of-pascal": {
           "_id": "cv-id-of-pascal",
@@ -79,29 +79,29 @@ internal object TestData {
           "key": "value"
         }
       }
-    }""".trimIndent())
+    }""")
 
-  val bodySaveSkillTom = JsonObject("""{
+  val messageSaveSkillTom = JsonObject("""{
       "skill": {
-        "skill-id": {
-          "_id": "skill-id",
+        "skill-id-of-tom": {
+          "_id": "skill-id-of-tom",
           "cvId": "cv-id-of-tom",
           "key": "value"
         }
       }
-    }""".trimIndent())
+    }""")
 
-  val bodySaveSkillPascal = JsonObject("""{
+  val messageSaveSkillPascal = JsonObject("""{
       "skill": {
-        "skill-id": {
-          "_id": "skill-id",
+        "skill-id-of-pascal": {
+          "_id": "skill-id-of-pascal",
           "cvId": "cv-id-of-pascal",
           "key": "value"
         }
       }
-    }""".trimIndent())
+    }""")
 
-  val bodySaveAccountRolePascal = JsonObject("""{
+  val messageSaveAccountRolePascal = JsonObject("""{
       "role": {
         "role-id-of-pascal": {
           "_id": "role-id-of-pascal",
@@ -109,5 +109,5 @@ internal object TestData {
           "name": "ADMIN"
         }
       }
-    }""".trimIndent())
+    }""")
 }

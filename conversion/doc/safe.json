@@ -72,7 +72,8 @@
       "description": {
         "nl_NL": "kindertekening",
         "uk_UK": "grand design"
-      }
+      },
+      "includeInCv": true
     }
   },
   "reference": {

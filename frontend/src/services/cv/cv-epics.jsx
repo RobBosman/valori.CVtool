@@ -1,18 +1,31 @@
 import { ofType } from "redux-observable";
-import { map, switchMap, ignoreElements, tap } from "rxjs/operators";
+import { merge, of } from "rxjs";
+import { map, switchMap, ignoreElements, tap, mergeMap, filter, take } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
+import * as safeActions from "../safe/safe-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
 
 export const cvEpics = [
 
   // Generate cv at the server.
-  (action$) => action$.pipe(
+  (action$, state$) => action$.pipe(
     ofType(cvActions.generateCv.type),
-    map((action) => action.payload),
-    switchMap((accountId) => cvServices.generateCvAtRemote(accountId, eventBusClient.sendEvent)),
-    tap((generatedCv) => downloadFile(generatedCv.fileName, generatedCv.contentB64)),
-    ignoreElements()
+    map(action => action.payload),
+    switchMap(accountId =>
+      // When requested to download a cv then first save any changes...
+      merge(
+        of(safeActions.save(false)),
+        state$.pipe(
+          // ...and wait for the data to be saved.
+          filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
+          take(1),
+          mergeMap(() => cvServices.generateCvAtRemote(accountId, eventBusClient.sendEvent)),
+          tap(generatedCv => downloadFile(generatedCv.fileName, generatedCv.contentB64)),
+          ignoreElements()
+        )
+      )
+    )
   )
 ];
 

@@ -8,6 +8,7 @@ import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const entityName = "publication";
 
@@ -27,6 +28,12 @@ const Publication = (props) => {
     setSelectedInstance: props.setSelectedPublicationId,
     replaceInstance: props.replacePublication
   };
+
+  const renderInCvCheckbox = (item) =>
+    <CvCheckbox
+      field="includeInCv"
+      instanceContext={{ ...publicationContext, instanceId: item._id }}
+    />;
 
   const columns = [
     {
@@ -58,6 +65,15 @@ const Publication = (props) => {
       name: "Omschrijving",
       isResizable: true,
       data: "string"
+    },
+    {
+      key: "includeInCv",
+      fieldName: "includeInCv",
+      name: "In cv",
+      onRender: renderInCvCheckbox,
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40
     }
   ];
 

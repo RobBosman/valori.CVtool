@@ -44,25 +44,23 @@ object ModelUtils {
 
   fun JsonObject.getInstances(entityName: String) =
       when (val entity = getValue(entityName)) {
-        is JsonObject -> entity.map.values.filterIsInstance<JsonObject>()
+        is JsonObject -> entity.map.values.mapNotNull(::toJsonObject)
         else -> emptyList()
       }
 
   fun JsonObject.getCriteria(entityName: String): List<JsonObject> {
     return when (val criteria = getValue(entityName)) {
-      is JsonArray -> {
-        criteria.list
-            .mapNotNull { criterion ->
-              when (criterion) {
-                is JsonObject -> criterion
-                is Map<*, *> -> JsonObject(criterion.mapKeys { key -> "$key" } )
-                else -> null
-              }
-            }
-      }
+      is JsonArray -> { criteria.list.mapNotNull(::toJsonObject) }
       else -> emptyList()
     }
   }
+
+  fun toJsonObject(value: Any?) =
+      when (value) {
+        is JsonObject -> value
+        is Map<*, *> -> JsonObject(value.mapKeys { "${it.key}" })
+        else -> null
+      }
 
   fun jsonToXml(json: JsonObject, xmlWriter: XMLStreamWriter, defaultNamespaceURI: String) {
     xmlWriter.writeStartDocument()

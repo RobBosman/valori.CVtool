@@ -4,13 +4,18 @@ import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
 
 const CvTitle = (props) => {
+
+  const formatDate = (date) => {
+    const isoDate = date.toISOString();
+    return `${isoDate.substr(8, 2)}-${isoDate.substr(5, 2)}-${isoDate.substr(0, 4)}`; // yyyy-mm-dd
+  };
   
   const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
   const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
   const titleFields = {
     name: account?.name || "<NAAM>",
     role: cv?.role && cv.role[props.locale] || "",
-    dateOfBirth: account?.dateOfBirth && new Date(account.dateOfBirth).toLocaleDateString(props.locale.substr(0, 2)) || "<GEBOORTEDATUM>",
+    dateOfBirth: account?.dateOfBirth && formatDate(new Date(account.dateOfBirth)) || "<GEBOORTEDATUM>",
     residence: account?.residence || "<WOONPLAATS>"
   };
 

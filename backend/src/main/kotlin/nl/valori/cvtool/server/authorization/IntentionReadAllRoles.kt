@@ -1,17 +1,20 @@
 package nl.valori.cvtool.server.authorization
 
-import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.ModelUtils.getCriteria
+import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadAllRoles : Intention {
 
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
     // Only consider fetch queries.
-    if (address != MONGODB_FETCH_ADDRESS || body !is JsonObject)
+    if (address != MONGODB_FETCH_ADDRESS)
       return false
 
-    return body
+    val bodyJson = toJsonObject(body)
+        ?: return false
+
+    return bodyJson
         .getCriteria("role")
         .any { criterion -> criterion.map.isEmpty() }
   }

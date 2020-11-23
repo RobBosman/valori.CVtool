@@ -136,6 +136,25 @@ const Education = (props) => {
     }
   };
 
+  const isTrainingSelected = educations && educations.find(education => education._id === props.selectedEducationId)?.type === "TRAINING";
+  const yearFromField = isTrainingSelected
+    ? null
+    : <CvTextField
+      label="Jaar van"
+      field="yearFrom"
+      instanceContext={educationContext}
+      placeholder='yyyy'
+      styles={{ fieldGroup: { width: 80 } }}
+    />;
+  const yearToField =
+    <CvTextField
+      label={isTrainingSelected ? "Jaar" : "Jaar tot"}
+      field="yearTo"
+      instanceContext={educationContext}
+      placeholder='yyyy'
+      styles={{ fieldGroup: { width: 80 } }}
+    />;
+
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -185,20 +204,8 @@ const Education = (props) => {
                 instanceContext={educationContext} />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
-                <CvTextField
-                  label="Periode van"
-                  field="yearFrom"
-                  instanceContext={educationContext}
-                  placeholder='yyyy'
-                  styles={{ fieldGroup: { width: 80 } }}
-                />
-                <CvTextField
-                  label="tot jaar"
-                  field="yearTo"
-                  instanceContext={educationContext}
-                  placeholder='yyyy'
-                  styles={{ fieldGroup: { width: 80 } }}
-                />
+                {yearFromField}
+                {yearToField}
                 <CvDropdown
                   label='Resultaat'
                   field="result"

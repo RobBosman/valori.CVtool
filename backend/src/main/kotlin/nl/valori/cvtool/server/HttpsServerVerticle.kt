@@ -16,10 +16,12 @@ import io.vertx.reactivex.ext.web.Router
 import io.vertx.reactivex.ext.web.handler.StaticHandler
 import io.vertx.reactivex.ext.web.handler.sockjs.BridgeEvent
 import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
+import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.authorization.AUTHENTICATE_ADDRESS
 import nl.valori.cvtool.server.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.server.authorization.AuthInfo
-import nl.valori.cvtool.server.authorization.Authorizer.authorize
+import nl.valori.cvtool.server.authorization.Authorizer
+import nl.valori.cvtool.server.authorization.Authorizer.createQueryForDataToBeDeleted
 import nl.valori.cvtool.server.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.cv.CV_GENERATE_ADDRESS
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
@@ -135,7 +137,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
             .just(bridgeEvent)
             .flatMap(::authenticate)
             .flatMap(::addAuthInfo)
-            .doOnSuccess { bridgeEvent.authorize(it) }
+            .flatMap { authorize(bridgeEvent, it) }
             .subscribe(
                 {
                   bridgeEvent.complete(true)
@@ -179,4 +181,43 @@ internal class HttpsServerVerticle : AbstractVerticle() {
           .map {
             AuthInfo.fromJson(it.body())
           }
+
+  private fun authorize(bridgeEvent: BridgeEvent, authInfo: AuthInfo): Single<AuthInfo> {
+    val address = bridgeEvent.rawMessage.getString("address")
+    val messageBody = bridgeEvent.rawMessage.getValue("body")
+    // Check if this message intends to delete any data.
+    var single = Single.just(messageBody)
+    if (address == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
+      val query = createQueryForDataToBeDeleted(messageBody)
+      if (query.isNotEmpty()) {
+        // If so, then fetch dat data-to-be-deleted and add that to the messageBody that is used for authorization.
+        // NB: The original message body remains untouched!
+        single = fetchToBeDeletedData(JsonObject(query))
+            .map { replaceEntityInstances(messageBody, it) }
+      }
+    }
+    return single
+        .doOnSuccess { Authorizer.authorize(address, it, authInfo) }
+        .map { authInfo }
+  }
+
+  private fun fetchToBeDeletedData(queryForDataToBeDeleted: JsonObject) =
+      vertx
+          .eventBus()
+          .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, queryForDataToBeDeleted, deliveryOptions)
+          .map { it.body() }
+
+  internal fun replaceEntityInstances(sourceEntities: JsonObject, replacementEntities: JsonObject): JsonObject {
+    if (replacementEntities.map.isEmpty())
+      return sourceEntities
+
+    val resultEntities = JsonObject(sourceEntities.encode())
+    replacementEntities.map.entries
+        .forEach { (entityName, instances) ->
+          val resultEntity = resultEntities.getJsonObject(entityName)
+          toJsonObject(instances)
+              ?.forEach { (instanceId, instance) -> resultEntity.put(instanceId, instance) }
+        }
+    return resultEntities
+  }
 }

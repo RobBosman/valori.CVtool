@@ -28,7 +28,7 @@ internal object IntentionAllTest {
         { "cvId": "cv-id-of-tom" },
         { "cvId": "cv-id-of-pascal" }
       ]
-  }""".trimIndent())
+  }""")
 
   private val bodySaveAll = JsonObject("""{
       "cv": {
@@ -62,7 +62,7 @@ internal object IntentionAllTest {
           "name": "ADMIN"
         }
       }
-  }""".trimIndent())
+  }""")
 
   @Test
   fun testReadAll() {

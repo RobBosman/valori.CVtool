@@ -443,7 +443,7 @@
         PUBLICATIONS
 
         -->
-        <xsl:variable name="publications" select="cv:publication"/>
+        <xsl:variable name="publications" select="cv:publication[cv:includeInCv = 'true']"/>
         <xsl:if test="$publications">
           <w:p w14:paraId="409CC56D" w14:textId="55003D82" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                w:rsidP="001860B4">
