@@ -126,7 +126,8 @@ const Publication = (props) => {
         <tr>
           <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
-              <Stack horizontal horizontalAlign="space-between">
+              <Stack horizontal horizontalAlign="space-between"
+                tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Publicaties</Text>
                 <Stack horizontal
                   tokens={{ childrenGap: "l1" }}>

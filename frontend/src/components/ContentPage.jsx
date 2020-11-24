@@ -70,7 +70,7 @@ const ContentPage = (props) => {
         {
           key: "#education",
           url: "#education",
-          name: "Opleiding",
+          name: "Opleidingen",
           icon: "PublishCourse",
           disabled: !props.selectedCvId,
           content: <Education />
@@ -78,7 +78,7 @@ const ContentPage = (props) => {
         {
           key: "#training",
           url: "#training",
-          name: "Training",
+          name: "Trainingen",
           icon: "UserEvent",
           disabled: !props.selectedCvId,
           content: <Training />
@@ -110,7 +110,7 @@ const ContentPage = (props) => {
         {
           key: "#experience",
           url: "#experience",
-          name: "Ervaring",
+          name: "Werkervaring",
           icon: "TaskLogo",
           disabled: !props.selectedCvId,
           content: <Experience />

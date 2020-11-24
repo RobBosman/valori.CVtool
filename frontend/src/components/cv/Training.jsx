@@ -130,8 +130,9 @@ const Education = (props) => {
         <tr>
           <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
-              <Stack horizontal horizontalAlign="space-between">
-                <Text variant="xxLarge">Training</Text>
+              <Stack horizontal horizontalAlign="space-between"
+                tokens={{ childrenGap: "l1" }}>
+                <Text variant="xxLarge">Trainingen</Text>
                 <Stack horizontal
                   tokens={{ childrenGap: "l1" }}>
                   <DefaultButton

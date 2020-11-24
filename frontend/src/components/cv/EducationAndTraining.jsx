@@ -167,7 +167,8 @@ const Education = (props) => {
         <tr>
           <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
-              <Stack horizontal horizontalAlign="space-between">
+              <Stack horizontal horizontalAlign="space-between"
+                tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Opleiding en trainingen</Text>
                 <Stack horizontal
                   tokens={{ childrenGap: "l1" }}>

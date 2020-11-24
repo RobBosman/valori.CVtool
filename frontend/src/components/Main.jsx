@@ -9,8 +9,6 @@ import ErrorDialog from "./ErrorDialog";
 import valoriBlueTheme from "../static/themes/valoriBlue.json";
 // import "./ThemeExposer";
 
-export const APP_VERSION = "2020-11-25";
-
 const Main = (props) => {
 
   React.useEffect(() => loadTheme(valoriBlueTheme)), [];

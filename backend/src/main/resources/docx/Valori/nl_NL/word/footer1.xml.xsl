@@ -37,7 +37,7 @@
             </w:pPr>
             <w:r w:rsidRPr="006A76DB">
               <w:t>
-                <xsl:text>Curriculum vitae van</xsl:text>
+                <xsl:text>Curriculum vitae van </xsl:text>
                 <xsl:value-of select="cv:name"/>
               </w:t>
             </w:r>
