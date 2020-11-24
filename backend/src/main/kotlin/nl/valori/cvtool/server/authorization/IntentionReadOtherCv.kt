@@ -8,6 +8,8 @@ import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadOtherCv : Intention {
 
+  override fun name() = "read other's cv"
+
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
     val bodyJson = toJsonObject(body)
         ?: return false

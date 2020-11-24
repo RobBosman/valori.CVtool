@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, ActionButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -28,6 +28,11 @@ const Publication = (props) => {
     setSelectedInstance: props.setSelectedPublicationId,
     replaceInstance: props.replacePublication
   };
+
+  const isValidText = (value) =>
+    value.length > 120 ? "Maximaal 120 tekens" : "";
+  const isValidYear = (value) =>
+    isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -123,20 +128,21 @@ const Publication = (props) => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Publicaties</Text>
-                <div>
-                  <ActionButton
+                <Stack horizontal
+                  tokens={{ childrenGap: "l1" }}>
+                  <DefaultButton
                     text="Toevoegen"
                     iconProps={{ iconName: "Add" }}
                     disabled={!props.selectedCvId}
                     onClick={onAddItem}
                   />
-                  <ActionButton
+                  <DefaultButton
                     text="Verwijderen"
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedPublicationId}
                     onClick={onDeleteItem}
                   />
-                </div>
+                </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}
@@ -163,6 +169,7 @@ const Publication = (props) => {
                 label="Jaar"
                 field="year"
                 instanceContext={publicationContext}
+                validateInput={isValidYear}
                 placeholder='yyyy'
                 styles={{ fieldGroup: { width: 80 } }}
               />
@@ -170,6 +177,7 @@ const Publication = (props) => {
                 label="Omschrijving"
                 localeField="description"
                 instanceContext={publicationContext}
+                validateInput={isValidText}
               />
             </Stack>
           </td>

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, ActionButton, TeachingBubbleContent, Coachmark, DirectionalHint, Separator } from "@fluentui/react";
+import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, Separator, DefaultButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -161,20 +161,21 @@ const Experience = (props) => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Werkervaring</Text>
-                <div>
-                  <ActionButton
+                <Stack horizontal
+                  tokens={{ childrenGap: "l1" }}>
+                  <DefaultButton
                     text="Toevoegen"
                     iconProps={{ iconName: "Add" }}
                     disabled={!props.selectedCvId}
                     onClick={onAddItem}
                   />
-                  <ActionButton
+                  <DefaultButton
                     text="Verwijderen"
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedExperienceId}
                     onClick={onDeleteItem}
                   />
-                </div>
+                </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}

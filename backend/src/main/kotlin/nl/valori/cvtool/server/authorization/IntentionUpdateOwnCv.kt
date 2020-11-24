@@ -5,6 +5,8 @@ import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 
 internal object IntentionUpdateOwnCv : Intention {
 
+  override fun name() = "change own cv"
+
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
     // Only consider 'save' messages.
     if (address != MONGODB_SAVE_ADDRESS)

@@ -143,7 +143,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                   bridgeEvent.complete(true)
                 },
                 {
-                  log.debug("Event bridge message was not authenticated.", it)
+                  log.debug("Event bridge message was not authenticated: ${it.message}")
                   bridgeEvent.complete(false)
                 }
             )

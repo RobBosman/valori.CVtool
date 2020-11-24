@@ -3,6 +3,12 @@ import React from "react";
 import { TextField } from "@fluentui/react";
 
 export const CvTextField = (props) => {
+
+  const [errorMessage, setErrorMessage] = React.useState("");
+  React.useEffect(() => {
+    const timeoutId = setTimeout(() => setErrorMessage(""), 3000);
+    return () => clearTimeout(timeoutId);
+  }, [errorMessage]);
   
   const { entity, instanceId, locale, replaceInstance } = props.instanceContext;
   const instance = entity && entity[instanceId];
@@ -17,7 +23,16 @@ export const CvTextField = (props) => {
     value = value || props.defaultValue || "";
   }
 
-  const onChange = (event) =>
+  const onChange = (event) => {
+    if (props.validateInput) {
+      const validationMessage = props.validateInput(event.target.value);
+      if (validationMessage) {
+        setErrorMessage(validationMessage);
+        return;
+      }
+    }
+
+    setErrorMessage("");
     replaceInstance && replaceInstance(instanceId, props.localeField
       ? {
         ...instance,
@@ -31,6 +46,7 @@ export const CvTextField = (props) => {
         [props.field]: event.target.value
       }
     );
+  };
 
   return (
     <TextField
@@ -42,6 +58,7 @@ export const CvTextField = (props) => {
       value={value}
       styles={props.styles}
       onChange={onChange}
+      errorMessage={errorMessage}
     />
   );
 };
@@ -55,5 +72,6 @@ CvTextField.propTypes = {
   placeholder: PropTypes.string,
   multiline: PropTypes.bool,
   autoAdjustHeight: PropTypes.bool,
-  styles: PropTypes.object
+  styles: PropTypes.object,
+  validateInput: PropTypes.func
 };

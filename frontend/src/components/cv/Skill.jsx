@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, ActionButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -135,20 +135,21 @@ const Skill = (props) => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Vaardigheden</Text>
-                <div>
-                  <ActionButton
+                <Stack horizontal
+                  tokens={{ childrenGap: "l1" }}>
+                  <DefaultButton
                     text="Toevoegen"
                     iconProps={{ iconName: "Add" }}
                     disabled={!props.selectedCvId}
                     onClick={onAddItem}
                   />
-                  <ActionButton
+                  <DefaultButton
                     text="Verwijderen"
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedSkillId}
                     onClick={onDeleteItem}
                   />
-                </div>
+                </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}

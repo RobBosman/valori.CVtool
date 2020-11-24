@@ -6,6 +6,8 @@ import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 
 internal object IntentionUpdateRoles : Intention {
 
+  override fun name() = "change account roles"
+
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
     // Only consider save queries.
     if (address != MONGODB_SAVE_ADDRESS)

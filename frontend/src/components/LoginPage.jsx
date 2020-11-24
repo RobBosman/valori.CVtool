@@ -48,7 +48,7 @@ const LoginPage = (props) => {
           </Stack>
         </Stack.Item>
         <Text>
-          <p>Problemen? <Link href="mailto:RobBosman@valori.nl" target="blank">Mail</Link> even!</p>
+          <p>Problemen? <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!</p>
         </Text>
       </Stack>
       {props.isLoggingIn

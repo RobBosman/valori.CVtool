@@ -43,10 +43,11 @@ internal object Authorizer {
   internal fun authorize(address: String, messageData: Any?, authInfo: AuthInfo) {
     val authorizedRoles = ROLES_MAP.entries.stream()
         .filter { (intention, _) -> intention.match(address, messageData, authInfo) }
-        .flatMap { (_, authorizedRoles) ->
+        .flatMap { (intention, authorizedRoles) ->
           if (!authInfo.isAuthorized(authorizedRoles)) {
-            throw IllegalAccessException("Insufficient rights")
+            throw IllegalAccessException("User ${authInfo.name} is not authorized to ${intention.name()}")
           }
+          log.debug("User ${authInfo.name} is authorized to ${intention.name()}")
           authorizedRoles.stream()
         }
         .reduce(HashSet<AuthorizationRoles>(), { acc, next -> acc.add(next); acc }, { x, _ -> x })

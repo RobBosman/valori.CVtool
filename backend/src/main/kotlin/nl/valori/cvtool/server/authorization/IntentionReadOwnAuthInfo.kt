@@ -4,6 +4,8 @@ import nl.valori.cvtool.server.ModelUtils.toJsonObject
 
 internal object IntentionReadOwnAuthInfo : Intention {
 
+  override fun name() = "read auth-info"
+
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
     if (address != AUTH_INFO_FETCH_ADDRESS)
       return false

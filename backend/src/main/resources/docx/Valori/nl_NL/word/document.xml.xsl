@@ -960,7 +960,7 @@
           <w:proofErr w:type="spellStart"/>
           <w:r>
             <w:t>
-              <xsl:value-of select="cv:description/cv:nl_NL"/>
+              <xsl:apply-templates select="cv:description/cv:nl_NL" mode="markdown"/>
             </w:t>
           </w:r>
         </w:p>

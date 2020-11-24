@@ -32,7 +32,7 @@ const Info = () => {
             <br/>Je kunt de volgorde van werkervaringen met drag&amp;drop aanpassen.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
-        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <a href="mailto:RobBosman@Valori.nl" target="blank">RobBosman@Valori.nl</a>.
+        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <a href="mailto:RobBosman@Valori.nl?subject=CVtool" target="blank">RobBosman@Valori.nl</a>.
         <br/>
         <br/>Enjoy!
         <br/>Rob

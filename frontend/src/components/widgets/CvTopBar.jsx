@@ -29,7 +29,7 @@ const CvTopBar = (props) => {
   );
 
   const onOpenEmail = () =>
-    window.open("mailto:RobBosman@valori.nl", "blank");
+    window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank");
   
   const isDirty = props.isConnected && props.hasSafeData
     && props.lastEditedTimestamp

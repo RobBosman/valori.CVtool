@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton } from "@fluentui/react";
+import { Text, Stack, FontIcon, DefaultButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -9,7 +9,8 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
-import { EducationResultTypes, getEnumData } from "./Enums";
+import { CvChoiceGroup } from "../widgets/CvChoiceGroup";
+import { EducationTypes, EducationResultTypes, getEnumData } from "./Enums";
 
 const entityName = "education";
 
@@ -24,11 +25,12 @@ const Education = (props) => {
   // Find all {Education} of the selected {cv}.
   const educations = props.educationEntity
     && props.selectedCvId
-    && Object.values(props.educationEntity)
-      .filter(instance => instance.cvId === props.selectedCvId)
-      .filter(instance => instance.type === "EDUCATION")
+    && Object.values(props.educationEntity).filter((instance) => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = compareStrings(composePeriod(r), composePeriod(l));
+        let compare = (getEnumData(EducationTypes, l.type)?.sortIndex || 0) - (getEnumData(EducationTypes, r.type)?.sortIndex || 0);
+        if (compare === 0) {
+          compare = compareStrings(composePeriod(r), composePeriod(l));
+        }
         if (compare === 0) {
           compare = compareStrings(l.name || "", r.name || "");
         }
@@ -47,7 +49,21 @@ const Education = (props) => {
   const isValidYear = (value) =>
     isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
 
+  const showIcon = (educationType) =>
+    <FontIcon iconName={educationType?.iconProps?.iconName || "Remove"} />;
+
   const columns = [
+    {
+      key: "type",
+      fieldName: "type",
+      name: "Soort opleiding",
+      iconName: "Certificate",
+      isIconOnly: true,
+      onRender: (item) => showIcon(getEnumData(EducationTypes, item.type)),
+      isResizable: false,
+      minWidth: 20,
+      maxWidth: 20
+    },
     {
       key: "name",
       localeFieldName: "name",
@@ -111,7 +127,7 @@ const Education = (props) => {
     props.replaceEducation(id, {
       _id: id,
       cvId: props.selectedCvId,
-      type: "EDUCATION",
+      type: "TRAINING",
       includeInCv: true
     });
     props.setSelectedEducationId(id);
@@ -124,6 +140,27 @@ const Education = (props) => {
     }
   };
 
+  const isTrainingSelected = educations && educations.find(education => education._id === props.selectedEducationId)?.type === "TRAINING";
+  const yearFromField = isTrainingSelected
+    ? null
+    : <CvTextField
+      label="Jaar van"
+      field="yearFrom"
+      instanceContext={educationContext}
+      validateInput={isValidYear}
+      placeholder='yyyy'
+      styles={{ fieldGroup: { width: 80 } }}
+    />;
+  const yearToField =
+    <CvTextField
+      label={isTrainingSelected ? "Jaar" : "Jaar tot"}
+      field="yearTo"
+      instanceContext={educationContext}
+      validateInput={isValidYear}
+      placeholder='yyyy'
+      styles={{ fieldGroup: { width: 80 } }}
+    />;
+
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -131,7 +168,7 @@ const Education = (props) => {
           <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
-                <Text variant="xxLarge">Opleiding</Text>
+                <Text variant="xxLarge">Opleiding en trainingen</Text>
                 <Stack horizontal
                   tokens={{ childrenGap: "l1" }}>
                   <DefaultButton
@@ -159,6 +196,11 @@ const Education = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
+              <CvChoiceGroup
+                label="Soort opleiding"
+                field="type"
+                instanceContext={educationContext}
+                options={EducationTypes} />
               <CvTextField
                 label="Opleiding"
                 localeField="name"
@@ -169,22 +211,8 @@ const Education = (props) => {
                 instanceContext={educationContext} />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
-                <CvTextField
-                  label="Jaar van"
-                  field="yearFrom"
-                  instanceContext={educationContext}
-                  validateInput={isValidYear}
-                  placeholder='yyyy'
-                  styles={{ fieldGroup: { width: 80 } }}
-                />
-                <CvTextField
-                  label="Jaar tot"
-                  field="yearTo"
-                  instanceContext={educationContext}
-                  validateInput={isValidYear}
-                  placeholder='yyyy'
-                  styles={{ fieldGroup: { width: 80 } }}
-                />
+                {yearFromField}
+                {yearToField}
                 <CvDropdown
                   label='Resultaat'
                   field="result"

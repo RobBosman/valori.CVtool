@@ -36,7 +36,8 @@
               <w:jc w:val="center"/>
             </w:pPr>
             <w:r w:rsidRPr="006A76DB">
-              <w:t>Curriculum vitae van
+              <w:t>
+                <xsl:text>Curriculum vitae van</xsl:text>
                 <xsl:value-of select="cv:name"/>
               </w:t>
             </w:r>

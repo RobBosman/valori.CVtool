@@ -25,8 +25,8 @@ const Education = (props) => {
   const educations = props.educationEntity
     && props.selectedCvId
     && Object.values(props.educationEntity)
-      .filter(instance => instance.cvId === props.selectedCvId)
-      .filter(instance => instance.type === "EDUCATION")
+      .filter((instance) => instance.cvId === props.selectedCvId)
+      .filter((instance) => instance.type === "TRAINING")
       .sort((l, r) => {
         let compare = compareStrings(composePeriod(r), composePeriod(l));
         if (compare === 0) {
@@ -51,7 +51,7 @@ const Education = (props) => {
     {
       key: "name",
       localeFieldName: "name",
-      name: "Opleiding",
+      name: "Training",
       isResizable: true,
       minWidth: 150,
       data: "string"
@@ -111,7 +111,7 @@ const Education = (props) => {
     props.replaceEducation(id, {
       _id: id,
       cvId: props.selectedCvId,
-      type: "EDUCATION",
+      type: "TRAINING",
       includeInCv: true
     });
     props.setSelectedEducationId(id);
@@ -131,7 +131,7 @@ const Education = (props) => {
           <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
-                <Text variant="xxLarge">Opleiding</Text>
+                <Text variant="xxLarge">Training</Text>
                 <Stack horizontal
                   tokens={{ childrenGap: "l1" }}>
                   <DefaultButton
@@ -170,15 +170,7 @@ const Education = (props) => {
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
                 <CvTextField
-                  label="Jaar van"
-                  field="yearFrom"
-                  instanceContext={educationContext}
-                  validateInput={isValidYear}
-                  placeholder='yyyy'
-                  styles={{ fieldGroup: { width: 80 } }}
-                />
-                <CvTextField
-                  label="Jaar tot"
+                  label="Jaar"
                   field="yearTo"
                   instanceContext={educationContext}
                   validateInput={isValidYear}
