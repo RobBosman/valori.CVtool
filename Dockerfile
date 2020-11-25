@@ -41,4 +41,6 @@ COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
 
 # Run the CVtool app.
-CMD exec /java/bin/java -jar /cvtool-fat.jar
+CMD exec /java/bin/java \
+    -Dhttps.protocols="TLSv1.2" \
+    -jar /cvtool-fat.jar

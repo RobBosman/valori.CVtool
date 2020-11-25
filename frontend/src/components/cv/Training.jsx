@@ -161,7 +161,7 @@ const Education = (props) => {
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvTextField
-                label="Opleiding"
+                label="Training"
                 localeField="name"
                 instanceContext={educationContext} />
               <CvTextField

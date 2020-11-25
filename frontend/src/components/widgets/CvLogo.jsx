@@ -14,8 +14,9 @@ const logoStyles = {
 };
 const versionStyle = {
   position: "fixed",
-  left: 0,
-  bottom: 8,
+  right: 8,
+  top: 5,
+  fontSize: "small",
   color: "#999999"
 };
 

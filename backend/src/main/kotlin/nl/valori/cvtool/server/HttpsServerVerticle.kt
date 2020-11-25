@@ -52,7 +52,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
       throw IllegalArgumentException("Invalid protocol: expected 'https' but found '${httpsConfig.protocol}'.")
     val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
 
-    getSslOptions(httpsConfig)
+    getPemKeyCertOptions(httpsConfig)
         .subscribe(
             { pemKeyCertOptions ->
               vertx
@@ -80,7 +80,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
         )
   }
 
-  private fun getSslOptions(httpsConfig: URL): Single<PemKeyCertOptions> {
+  private fun getPemKeyCertOptions(httpsConfig: URL): Single<PemKeyCertOptions> {
     val pemSslPaths = (httpsConfig.query ?: ":").split(":")
     val keyPath = pemSslPaths[0]
     val certPath = pemSslPaths[1]

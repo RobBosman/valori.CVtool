@@ -16,7 +16,6 @@ import * as cvActions from "../services/cv/cv-actions";
 import CvTopBar from "./widgets/CvTopBar";
 import CvLogo from "./widgets/CvLogo";
 import Training from "./cv/Training";
-import EducationAndTraining from "./cv/EducationAndTraining";
 
 const ContentPage = (props) => {
 
@@ -60,18 +59,10 @@ const ContentPage = (props) => {
           content: <Profile />
         },
         {
-          key: "#educationAndTraining",
-          url: "#educationAndTraining",
-          name: "Opleiding en training",
-          icon: "D365TalentLearn",
-          disabled: !props.selectedCvId,
-          content: <EducationAndTraining />
-        },
-        {
           key: "#education",
           url: "#education",
           name: "Opleidingen",
-          icon: "PublishCourse",
+          icon: "D365TalentLearn",
           disabled: !props.selectedCvId,
           content: <Education />
         },

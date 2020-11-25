@@ -12,8 +12,6 @@ object ModelUtils {
           "_id": "$id",
           "email": "${email.toUpperCase()}",
           "name": "$name",
-          "businessUnitIds": [],
-          "roles": [],
           "dateOfBirth": "",
           "residence": ""
         }
@@ -25,10 +23,8 @@ object ModelUtils {
           "_id": "$id",
           "accountId": "$accountId",
           "role": {},
-          "personalProfile": {},
-          "interests": {},
-          "workingSince": "",
-          "inItSince": ""
+          "profile": {},
+          "interests": {}
         }""".trimIndent())
 
   fun composeEntity(entity: String, instance: JsonObject): JsonObject =
