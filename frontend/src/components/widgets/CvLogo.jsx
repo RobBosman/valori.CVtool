@@ -15,7 +15,7 @@ const logoStyles = {
 const versionStyle = {
   position: "fixed",
   right: 8,
-  top: 5,
+  bottom: 5,
   fontSize: "small",
   color: "#999999"
 };
@@ -26,7 +26,7 @@ const CvLogo = () => (
     styles={logoStyles}>
     <img src={valorLogoSvg} alt="Valori" width="70em" height="70em"/>
     <img src={cvtoolTextSvg} alt="CVtool" width="70em" height="70em"/>
-    <div style={versionStyle}><em>versie {appVersion()}</em></div>
+    <div style={versionStyle}><em>v{appVersion()}</em></div>
   </Stack>
 );
 

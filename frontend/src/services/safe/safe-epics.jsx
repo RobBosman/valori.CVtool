@@ -8,17 +8,11 @@ import * as uiActions from "../ui/ui-actions";
 
 export const safeEpics = [
 
-  // Fetch all accounts and businessUnits from the server.
+  // Fetch all instances of the requested entity from the server.
   (action$) => action$.pipe(
-    ofType(safeActions.fetchAllAccountData.type),
-    switchMap(() => safeServices.fetchFromRemote({ "account": [{}], "businessUnit": [{}] }, eventBusServices.eventBusClient.sendEvent)),
-    map(fetchedData => safeActions.resetEntities(fetchedData))
-  ),
-
-  // Fetch all roles from the server.
-  (action$) => action$.pipe(
-    ofType(safeActions.fetchAllRoles.type),
-    switchMap(() => safeServices.fetchFromRemote({ "role": [{}] }, eventBusServices.eventBusClient.sendEvent)),
+    ofType(safeActions.fetchAllInstances.type),
+    map(action => action.payload),
+    mergeMap(entityName => safeServices.fetchFromRemote({ [entityName]: [{}] }, eventBusServices.eventBusClient.sendEvent)),
     map(fetchedData => safeActions.resetEntities(fetchedData))
   ),
 

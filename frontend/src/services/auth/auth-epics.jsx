@@ -113,10 +113,13 @@ export const authEpics = [
           safeActions.fetchCvByAccountId(authInfo.accountId)
         );
         if (authInfo.roles.includes("ADMIN") || authInfo.roles.includes("EE_LEAD") || authInfo.roles.includes("SALES")) {
-          actions.push(safeActions.fetchAllAccountData());
+          actions.push(
+            safeActions.fetchAllInstances("account"),
+            safeActions.fetchAllInstances("businessUnit")
+          );
         }
         if (authInfo.roles.includes("ADMIN")) {
-          actions.push(safeActions.fetchAllRoles());
+          actions.push(safeActions.fetchAllInstances("role"));
         }
       } else {
         actions.push(

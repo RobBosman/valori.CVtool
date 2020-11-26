@@ -18,7 +18,7 @@ const CvTitle = (props) => {
   const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
   const titleFields = {
     name: account?.name || "<NAAM>",
-    role: cv?.role && cv.role[props.locale] || "",
+    role: cv?.role && cv.role[props.locale] || "<ROL>",
     dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
     residence: account?.residence || "<WOONPLAATS>"
   };

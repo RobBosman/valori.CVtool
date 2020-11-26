@@ -27,6 +27,13 @@ RUN jlink --compress 2 --strip-debug --no-header-files --no-man-pages \
     --add-modules $(cat java.modules) \
     --output java/
 
+# Only allow TLSv1.2.
+find /java -name "java.security" \
+    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1TLSv1, TLSv1.1, \2/g' {} +
+# Only allow DH keysize of at least 2048.
+find /java -name "java.security" \
+    -exec sed -i -e 's/DH keySize\s*<\s*1024/DH keySize < 2048/g' {} +
+
 WORKDIR /
 
 
@@ -42,6 +49,4 @@ COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
 
 # Run the CVtool app.
 CMD exec /java/bin/java \
-    -Dhttps.protocols="TLSv1.2" \
-    -Djdk.tls.client.protocols="TLSv1.2" \
     -jar /cvtool-fat.jar
