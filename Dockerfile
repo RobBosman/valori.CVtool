@@ -28,10 +28,10 @@ RUN jlink --compress 2 --strip-debug --no-header-files --no-man-pages \
     --output java/
 
 # Only allow TLSv1.2.
-find /java -name "java.security" \
+RUN find /java -name "java.security" \
     -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1TLSv1, TLSv1.1, \2/g' {} +
 # Only allow DH keysize of at least 2048.
-find /java -name "java.security" \
+RUN find /java -name "java.security" \
     -exec sed -i -e 's/DH keySize\s*<\s*1024/DH keySize < 2048/g' {} +
 
 WORKDIR /
