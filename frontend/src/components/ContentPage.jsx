@@ -5,17 +5,17 @@ import { PrimaryButton, Nav, Separator, Stack, TooltipHost } from "@fluentui/rea
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
-import Accounts from "./admin/Accounts";
 import Education from "./cv/Education";
 import Experience from "./cv/Experience";
 import Profile from "./cv/Profile";
 import Publication from "./cv/Publication";
 import Reference from "./cv/Reference";
 import Skill from "./cv/Skill";
-import * as cvActions from "../services/cv/cv-actions";
 import CvTopBar from "./widgets/CvTopBar";
 import CvLogo from "./widgets/CvLogo";
 import Training from "./cv/Training";
+import Accounts from "./admin/Accounts";
+import * as cvActions from "../services/cv/cv-actions";
 
 const ContentPage = (props) => {
 

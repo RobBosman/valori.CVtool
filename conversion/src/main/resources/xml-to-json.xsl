@@ -357,14 +357,13 @@
 
   <xsl:template match="text()" mode="convertCategory">
     <xsl:choose>
-      <xsl:when test=". = 'Expertises'">EXPERTISE</xsl:when>
       <xsl:when test=". = 'Databases'">DATABASES</xsl:when>
       <xsl:when test=". = 'Applicaties'">APPLICATIONS</xsl:when>
       <xsl:when test=". = 'Tools'">TOOLS</xsl:when>
       <xsl:when test=". = 'Programmeren'">PROGRAMMING</xsl:when>
       <xsl:when test=". = 'Methodes'">METHODS</xsl:when>
       <xsl:when test=". = 'OS en Netwerken'">OS_NETWORKS</xsl:when>
-      <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+      <xsl:otherwise>EXPERTISE</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

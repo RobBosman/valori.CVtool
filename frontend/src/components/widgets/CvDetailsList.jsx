@@ -33,11 +33,9 @@ export const CvDetailsList = (props) => {
   const scrollStyle = {
     position: "relative",
     overflowY: "auto",
-    // width: "calc(50vw - 98px)",
     height: "calc(100vh - 250px)",
     ...props.scrollStyle
   };
-
   
   const onRenderDetailsHeader = (props, defaultRender) => {
     if (!props) {
@@ -71,6 +69,7 @@ export const CvDetailsList = (props) => {
           selectionPreservedOnEmptyClick={true}
           onRenderDetailsHeader={onRenderDetailsHeader}
           onRenderItemColumn={props.onRenderItemColumn}
+          onColumnC
           dragDropEvents={props.dragDropEvents}
           onItemInvoked={props.onItemInvoked}
           styles={props.styles}

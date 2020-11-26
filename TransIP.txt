@@ -103,6 +103,7 @@ mongoexport --uri mongodb://localhost:27017/cvtool --jsonArray --collection=skil
 use cvtool
 db.education.updateMany({}, {$rename: {"year": "yearTo"}})
 db.account.updateMany({}, {$unset: {"privileges": ""}})
+db.skill.updateMany({ category:  {$nin: ["LANGUAGES", "BRANCHES", "EXPERTISE", "PROGRAMMING", "TOOLS", "METHODS", "DATABASES", "APPLICATIONS", "OS_NETWORKS"] } }, { $set: { category: "EXPERTISE" } })
 
 
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool

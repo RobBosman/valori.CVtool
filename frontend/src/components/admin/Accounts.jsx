@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack } from "@fluentui/react";
+import { Text, Stack, TextField } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import * as safeActions from "../../services/safe/safe-actions";
@@ -10,7 +10,7 @@ import { AccountRoles } from "../cv/Enums";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { createUuid } from "../../services/safe/safe-services";
 
-const Accounts = (props) => {
+const AccountManagement = (props) => {
 
   const isAdmin = props.authInfo.roles.includes("ADMIN");
   const isEELead = props.authInfo.roles.includes("EE_LEAD");
@@ -66,7 +66,6 @@ const Accounts = (props) => {
         }
         delete(account[roleName]);
       });
-    // props.replaceAccount(accountId, account); // TODO - not needed?
   };
 
   const enrichedAccountEntity = enrichAccountEntity(props.accountEntity, props.roleEntity, props.businessUnitEntity);
@@ -74,26 +73,18 @@ const Accounts = (props) => {
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
 
-  // Sort {Account} records.
-  const enrichedAccounts = enrichedAccountEntity
-    && Object.values(enrichedAccountEntity)
-      .sort((l, r) => compareStrings(l.name, r.name))
+  // Sort {EnrichedAccount} records.
+  const enrichedAccounts = enrichedAccountEntity && Object.values(enrichedAccountEntity)
+    .sort((l, r) => compareStrings(l.name, r.name))
     || [];
 
-  const accountContext = {
+  const enrichedAccountContext = {
     locale: props.locale,
     entity: enrichedAccountEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
     replaceInstance: replaceEnrichedAccount
   };
-
-  const renderCheckbox = (field, item) =>
-    <CvCheckbox
-      field={field}
-      instanceContext={{ ...accountContext,  instanceId: item._id }}
-      disabled={field === "ADMIN" && item._id === props.authInfo.accountId}
-    />;
 
   const columns = [
     {
@@ -116,6 +107,13 @@ const Accounts = (props) => {
     }
   ];
   if (isAdmin) {
+    const renderCheckbox = (field, item) =>
+      <CvCheckbox
+        field={field}
+        instanceContext={{ ...enrichedAccountContext,  instanceId: item._id }}
+        disabled={field === "ADMIN" && item._id === props.authInfo.accountId}
+      />;
+
     AccountRoles
       .forEach(roleEnum => {
         columns.push({
@@ -145,6 +143,23 @@ const Accounts = (props) => {
     width: "calc(50vw - 98px)"
   };
 
+  const [listItems, setListItems] = React.useState(enrichedAccounts);
+  const [filterText, setFilterText] = React.useState("");
+  // Refresh the list if necessary.
+  if (filterText === "" && enrichedAccounts.length !== listItems.length) {
+    setListItems(enrichedAccounts);
+  }
+
+  const onFilter = (_, filterText) => {
+    if (filterText) {
+      setFilterText(filterText);
+      const lowerCaseFilterText = filterText.toLowerCase();
+      setListItems(enrichedAccounts.filter(ea => `${ea.name}\n${ea.businessUnit}`.toLowerCase().indexOf(lowerCaseFilterText) >= 0));
+    } else {
+      setListItems(enrichedAccounts);
+    }
+  };
+
   const onSelectCv = () => {
     if ((isAdmin || isEELead) && props.selectedAccountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
@@ -159,12 +174,17 @@ const Accounts = (props) => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Accounts</Text>
+                <TextField
+                  label="Filter"
+                  underlined
+                  onChange={onFilter}
+                />
               </Stack>
               <CvDetailsList
                 columns={columns}
-                items={enrichedAccounts}
-                instanceContext={accountContext}
-                setKey="accounts"
+                items={listItems}
+                instanceContext={enrichedAccountContext}
+                setKey="enrichedAccount"
                 onItemInvoked={onSelectCv}
               />
             </Stack>
@@ -175,7 +195,7 @@ const Accounts = (props) => {
   );
 };
 
-Accounts.propTypes = {
+AccountManagement.propTypes = {
   locale: PropTypes.string.isRequired,
   authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
@@ -204,4 +224,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchCvByAccountId: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId))
 });
 
-export default connect(select, mapDispatchToProps)(Accounts);
+export default connect(select, mapDispatchToProps)(AccountManagement);

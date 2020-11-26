@@ -26,7 +26,8 @@ const Skill = (props) => {
     && Object.values(props.skillEntity)
       .filter((instance) => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
+        const defaultSortIndex = 3; // "EXPERTISES"
+        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || defaultSortIndex) - (getEnumData(SkillCategories, r.category)?.sortIndex || defaultSortIndex);
         if (compare === 0) {
           compare = (r.skillLevel || 0) - (l.skillLevel || 0);
         }
@@ -50,7 +51,7 @@ const Skill = (props) => {
       key: "category",
       fieldName: "category",
       name: "Categorie",
-      onRender: (item) => getEnumData(SkillCategories, item.category)?.text || item.category,
+      onRender: (item) => getEnumData(SkillCategories, item.category)?.text || "Expertises",
       isResizable: false,
       minWidth: 120,
       maxWidth: 120,
@@ -169,7 +170,6 @@ const Skill = (props) => {
                 field="category"
                 instanceContext={skillContext}
                 options={SkillCategories}
-                allowFreeform={true}
               />
               <CvTextField
                 label="Omschrijving"
@@ -182,6 +182,13 @@ const Skill = (props) => {
                 instanceContext={skillContext}
                 min={0}
                 max={3}
+              />
+              <CvTextField
+                label="Toelichting"
+                localeField="explanation"
+                instanceContext={skillContext}
+                multiline
+                autoAdjustHeight
               />
             </Stack>
           </td>

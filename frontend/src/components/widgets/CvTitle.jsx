@@ -5,9 +5,13 @@ import { Stack, Text } from "@fluentui/react";
 
 const CvTitle = (props) => {
 
-  const formatDate = (date) => {
-    const isoDate = date.toISOString();
-    return `${isoDate.substr(8, 2)}-${isoDate.substr(5, 2)}-${isoDate.substr(0, 4)}`; // yyyy-mm-dd
+  const formatDate = (dateText) => {
+    try {
+      const isoDate = new Date(dateText).toISOString();
+      return `${isoDate.substr(8, 2)}-${isoDate.substr(5, 2)}-${isoDate.substr(0, 4)}`; // yyyy-mm-dd
+    } catch (error) {
+      return dateText;
+    }
   };
   
   const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
@@ -15,7 +19,7 @@ const CvTitle = (props) => {
   const titleFields = {
     name: account?.name || "<NAAM>",
     role: cv?.role && cv.role[props.locale] || "",
-    dateOfBirth: account?.dateOfBirth && formatDate(new Date(account.dateOfBirth)) || "<GEBOORTEDATUM>",
+    dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
     residence: account?.residence || "<WOONPLAATS>"
   };
 
