@@ -174,11 +174,15 @@ const AccountManagement = (props) => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Accounts</Text>
-                <TextField
-                  label="Filter"
-                  underlined
-                  onChange={onFilter}
-                />
+                <Stack horizontal
+                  tokens={{ childrenGap: "l1" }}l>
+                  <TextField
+                    label="Filter"
+                    underlined
+                    onChange={onFilter}
+                  />
+                  <Text variant="xSmall">{listItems.length} / {enrichedAccounts.length}</Text>
+                </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}

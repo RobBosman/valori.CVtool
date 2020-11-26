@@ -27,13 +27,6 @@ RUN jlink --compress 2 --strip-debug --no-header-files --no-man-pages \
     --add-modules $(cat java.modules) \
     --output java/
 
-# Only allow TLSv1.2.
-RUN find /java -name "java.security" \
-    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1TLSv1, TLSv1.1, \2/g' {} +
-# Only allow DH keysize of at least 2048.
-RUN find /java -name "java.security" \
-    -exec sed -i -e 's/DH keySize\s*<\s*1024/DH keySize < 2048/g' {} +
-
 WORKDIR /
 
 
@@ -46,6 +39,13 @@ MAINTAINER RobBosman@valori.nl
 # Copy the executable code.
 COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
+
+# Only allow TLSv1.2.
+RUN find /java -name "java.security" \
+    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1TLSv1, TLSv1.1, \2/g' {} +
+# Only allow DH keysize of at least 2048.
+RUN find /java -name "java.security" \
+    -exec sed -i -e 's/DH keySize\s*<\s*1024/DH keySize < 2048/g' {} +
 
 # Run the CVtool app.
 CMD exec /java/bin/java \

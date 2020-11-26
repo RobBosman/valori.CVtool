@@ -170,6 +170,7 @@ const Skill = (props) => {
                 field="category"
                 instanceContext={skillContext}
                 options={SkillCategories}
+                styles={{ root: { width: 160 } }}
               />
               <CvTextField
                 label="Omschrijving"
