@@ -40,9 +40,9 @@ MAINTAINER RobBosman@valori.nl
 COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
 
-# Only allow TLSv1.2.
+# Only allow TLSv1.2 and disable cipher suites that don't support PFS, i.e. that are not ECDHE.
 RUN find /java -name "java.security" \
-    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1TLSv1, TLSv1.1, \2/g' {} +
+    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1TLSv1, TLSv1.1, TLS_DHE_RSA_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, \2/g' {} +
 # Only allow DH keysize of at least 2048 bis.
 RUN find /java -name "java.security" \
     -exec sed -i -e 's/DH keySize\s*<\s*1024/DH keySize < 2048/g' {} +
@@ -50,4 +50,5 @@ RUN find /java -name "java.security" \
 # Run the CVtool app.
 CMD exec /java/bin/java \
     -Djdk.tls.ephemeralDHKeySize=2048 \
+    -Djdk.tls.rejectClientInitiatedRenegotiation=true \
     -jar /cvtool-fat.jar
