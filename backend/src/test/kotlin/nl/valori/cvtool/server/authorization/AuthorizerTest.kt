@@ -39,23 +39,23 @@ internal object AuthorizerTest {
 
   private val expectedQuery = JsonObject("""{
       "cv": [
-        { "_id": "cv-id-of-tom" },
-        { "_id": "cv-id-of-pascal" }
+        "cv-id-of-tom",
+        "cv-id-of-pascal"
       ],
       "skill": [
-        { "_id": "skill-id-of-tom" },
-        { "_id": "skill-id-of-pascal" }
+        "skill-id-of-tom",
+        "skill-id-of-pascal"
       ]
     }""")
 
   @Test
   fun testDeleteNothing() {
-    assertTrue(Authorizer.createQueryForDataToBeDeleted(messageDeleteNothing).isEmpty())
+    assertTrue(Authorizer.determineDataToBeDeleted(messageDeleteNothing).isEmpty())
   }
 
   @Test
   fun testDeleteAll() {
     assertEquals(expectedQuery.encodePrettily(),
-        JsonObject(Authorizer.createQueryForDataToBeDeleted(messageDeleteAll)).encodePrettily())
+        JsonObject(Authorizer.determineDataToBeDeleted(messageDeleteAll)).encodePrettily())
   }
 }

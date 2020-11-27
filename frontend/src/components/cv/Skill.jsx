@@ -27,13 +27,12 @@ const Skill = (props) => {
     && Object.values(props.skillEntity)
       .filter((instance) => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        const defaultSortIndex = 3; // "EXPERTISES"
-        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || defaultSortIndex) - (getEnumData(SkillCategories, r.category)?.sortIndex || defaultSortIndex);
+        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
         if (compare === 0) {
           compare = (r.skillLevel || 0) - (l.skillLevel || 0);
         }
         if (compare === 0) {
-          compare = compareStrings(l.description, r.description);
+          compare = compareStrings(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
         }
         return compare;
       })
@@ -48,7 +47,7 @@ const Skill = (props) => {
   };
 
   const renderSkill = (item) =>
-    getEnumData(SkillCategories, item.category)?.text || "Expertises";
+    getEnumData(SkillCategories, item.category)?.text || "";
 
   const columns = [
     {
@@ -136,6 +135,7 @@ const Skill = (props) => {
     props.replaceSkill(id, {
       _id: id,
       cvId: props.selectedCvId,
+      skillLevel: 1,
       includeInCv: true
     });
     props.setSelectedSkillId(id);

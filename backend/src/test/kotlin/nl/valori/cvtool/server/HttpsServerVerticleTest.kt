@@ -123,7 +123,7 @@ internal object HttpsServerVerticleTest {
     val orgSource = sourceJson.encodePrettily()
 
     assertEquals(resultJson.encodePrettily(),
-        HttpsServerVerticle().replaceEntityInstances(sourceJson, replacementJson).encodePrettily())
+        HttpsServerVerticle().replaceEntityInstances(sourceJson, emptyMap(), replacementJson).encodePrettily())
     assertEquals(orgSource, sourceJson.encodePrettily())
   }
 }

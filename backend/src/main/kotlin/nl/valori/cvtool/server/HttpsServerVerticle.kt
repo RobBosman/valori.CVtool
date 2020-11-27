@@ -5,6 +5,7 @@ import io.vertx.core.Promise
 import io.vertx.core.buffer.Buffer.buffer
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.http.HttpServerOptions
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.core.net.PemKeyCertOptions
 import io.vertx.ext.bridge.BridgeEventType.PUBLISH
@@ -21,7 +22,7 @@ import nl.valori.cvtool.server.authorization.AUTHENTICATE_ADDRESS
 import nl.valori.cvtool.server.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.server.authorization.AuthInfo
 import nl.valori.cvtool.server.authorization.Authorizer
-import nl.valori.cvtool.server.authorization.Authorizer.createQueryForDataToBeDeleted
+import nl.valori.cvtool.server.authorization.Authorizer.determineDataToBeDeleted
 import nl.valori.cvtool.server.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.cv.CV_GENERATE_ADDRESS
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
@@ -187,13 +188,20 @@ internal class HttpsServerVerticle : AbstractVerticle() {
     val messageBody = bridgeEvent.rawMessage.getValue("body")
     // Check if this message intends to delete any data.
     if (address == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
-      val query = createQueryForDataToBeDeleted(messageBody)
-      if (query.isNotEmpty()) {
+      val dataToBeDeleted = determineDataToBeDeleted(messageBody)
+      if (dataToBeDeleted.isNotEmpty()) {
         // If so, then fetch dat data-to-be-deleted and add it to the message that is used for authorization.
         // NB: The original message body remains untouched!
-        return fetchToBeDeletedData(JsonObject(query))
-            .map { replaceEntityInstances(messageBody, it) }
-            .doOnSuccess { Authorizer.authorize(address, it, authInfo) }
+        return fetchToBeDeletedData(dataToBeDeleted)
+            .map { replaceEntityInstances(messageBody, dataToBeDeleted, it) }
+            .doOnSuccess { toBeAuthorizedMessage ->
+              // Only authorize if the message still contains anything to save.
+              if (toBeAuthorizedMessage.map.values
+                      .filterIsInstance<Map<*, *>>()
+                      .any { it.isNotEmpty() }) {
+                Authorizer.authorize(address, toBeAuthorizedMessage, authInfo)
+              }
+            }
             .map { authInfo }
       }
     }
@@ -202,17 +210,53 @@ internal class HttpsServerVerticle : AbstractVerticle() {
         .map { authInfo }
   }
 
-  private fun fetchToBeDeletedData(queryForDataToBeDeleted: JsonObject) =
-      vertx
-          .eventBus()
-          .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, queryForDataToBeDeleted, deliveryOptions)
-          .map { it.body() }
+  /**
+   * input
+   * {
+   *   skill: {
+   *     skill-1-to-be-deleted: {},
+   *     skill-2: {
+   *       _id: skill-2,
+   *       cvId: cd-id-of-skill
+   *       key: value
+   *     }
+   *   }
+   * }
+   *
+   * results in
+   *
+   * {
+   *   skill: [{ _id: skill-1-to-be-deleted }]
+   * }
+   */
+  private fun fetchToBeDeletedData(dataToBeDeleted: Map<String, List<String>>): Single<JsonObject> {
+    val queryForDataToBeDeleted = dataToBeDeleted
+        .map { (entityName, instanceIds) ->
+          entityName to JsonArray(instanceIds.map { JsonObject().put("_id", it) })
+        }
+        .toMap()
+    return vertx
+        .eventBus()
+        .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, JsonObject(queryForDataToBeDeleted), deliveryOptions)
+        .map { it.body() }
+  }
 
-  internal fun replaceEntityInstances(sourceEntities: JsonObject, replacementEntities: JsonObject): JsonObject {
-    if (replacementEntities.map.isEmpty())
-      return sourceEntities
+  internal fun replaceEntityInstances(
+      sourceEntities: JsonObject,
+      dataToBeDeleted: Map<String, List<String>>,
+      replacementEntities: JsonObject): JsonObject {
 
+    // Compose a message body without the instances-to-be-removed and then add the fetched instances to that message.
+    // First remove all references to data that must be deleted.
     val resultEntities = JsonObject(sourceEntities.encode())
+    dataToBeDeleted.entries
+        .forEach { (entityName, instanceIdsToBeDeleted) ->
+          val resultEntity = resultEntities.getJsonObject(entityName)
+          instanceIdsToBeDeleted
+              .forEach { instanceIdToBeDeleted -> resultEntity.remove(instanceIdToBeDeleted) }
+        }
+
+    // Now add the fetched (to-be-deleted) instances.
     replacementEntities.map.entries
         .forEach { (entityName, instances) ->
           val resultEntity = resultEntities.getJsonObject(entityName)

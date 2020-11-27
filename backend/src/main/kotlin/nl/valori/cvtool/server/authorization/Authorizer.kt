@@ -1,6 +1,5 @@
 package nl.valori.cvtool.server.authorization
 
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.authorization.AuthorizationRoles.ADMIN
@@ -25,7 +24,7 @@ internal object Authorizer {
       IntentionUpdateRoles to setOf(ADMIN)
   )
 
-  internal fun createQueryForDataToBeDeleted(messageBody: JsonObject) =
+  internal fun determineDataToBeDeleted(messageBody: JsonObject) =
       messageBody.map.entries.asSequence()
           .map { (entityName, instances) ->
             val instanceIds = toJsonObject(instances) // Ignore 'criteria' and only consider 'instances'.
@@ -35,9 +34,6 @@ internal object Authorizer {
             entityName to instanceIds
           }
           .filter { (_, instanceIds) -> instanceIds.isNotEmpty() } // Skip if there is nothing to be deleted.
-          .map { (entityName, instanceIds) ->
-            entityName to JsonArray(instanceIds.map { JsonObject().put("_id", it) })
-          }
           .toMap()
 
   internal fun authorize(address: String, messageData: Any?, authInfo: AuthInfo) {

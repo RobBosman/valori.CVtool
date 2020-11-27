@@ -35,7 +35,7 @@ export const CvDatePicker = (props) => {
 
   const formatDateForStorage = (date) => {
     try {
-      return correctDateForTimezone(date).toISOString(0, 10); // yyyy-mm-dd
+      return correctDateForTimezone(date).toISOString().substr(0, 10); // yyyy-mm-dd
     } catch (error) {
       return "";
     }

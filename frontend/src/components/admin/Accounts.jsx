@@ -145,7 +145,7 @@ const AccountManagement = (props) => {
   const [listItems, setListItems] = React.useState(enrichedAccounts);
   const [filterText, setFilterText] = React.useState("");
   // Refresh the list if necessary.
-  if (filterText === "" && enrichedAccounts.length !== listItems.length) {
+  if (filterText === "" && listItems.length !== enrichedAccounts.length) {
     setListItems(enrichedAccounts);
   }
 
