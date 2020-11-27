@@ -42,9 +42,9 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                       .setPemKeyCertOptions(pemKeyCertOptions)
                       .setSsl(true)
                       .setCompressionSupported(true)
-                      .setUseAlpn(true)
-//                      .removeEnabledSecureTransportProtocol("TLSv1")
-//                      .removeEnabledSecureTransportProtocol("TLSv1.1")
+//                      .setUseAlpn(true) // dit is de boosdoeneur
+                      .removeEnabledSecureTransportProtocol("TLSv1")
+                      .removeEnabledSecureTransportProtocol("TLSv1.1")
 //                      .addEnabledSecureTransportProtocol("TLSv1.3") // dit is de boosdoeneur
                   )
                   .requestHandler(createRouter())
