@@ -135,12 +135,11 @@ const AccountManagement = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
+        minWidth: isAdmin ? 600 : 400,
+        width: "calc(50vw - 98px)",
+        height: "calc(100vh - 170px)"
       }
     ]
-  };
-  const tdStyle = {
-    minWidth: isAdmin ? 600 : 400,
-    width: "calc(50vw - 98px)"
   };
 
   const [listItems, setListItems] = React.useState(enrichedAccounts);
@@ -170,7 +169,7 @@ const AccountManagement = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <td valign="top">
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Accounts</Text>

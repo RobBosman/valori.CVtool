@@ -10,6 +10,7 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { EducationResultTypes, getEnumData } from "./Enums";
+import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "education";
 
@@ -90,7 +91,8 @@ const Education = (props) => {
     root: [
       {
         background: viewPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
@@ -98,13 +100,28 @@ const Education = (props) => {
     root: [
       {
         background: editPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
+
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const selectedEducation = educations.find(experience => experience._id === props.selectedEducationId);
+  const renderSelectedItem = selectedEducation &&
+    <table>
+      <tbody>
+        <tr>
+          <td><em>Opleiding</em>:</td><td>{selectedEducation.name && selectedEducation.name[props.locale] || ""}</td>
+        </tr>
+        <tr>
+          <td><em>Opleidingsinstituut</em>:</td><td>{selectedEducation.institution || ""}</td>
+        </tr>
+      </tbody>
+    </table>;
 
   const onAddItem = () => {
     const id = createUuid();
@@ -119,10 +136,18 @@ const Education = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedEducationId) {
+      setConfirmDialogVisible(true);
+    }
+  };
+  const onDeleteConfirmed = () => {
+    if (props.selectedEducationId) {
       props.replaceEducation(props.selectedEducationId, {});
       props.setSelectedEducationId(undefined);
     }
+    setConfirmDialogVisible(false);
   };
+  const onDeleteCancelled = () =>
+    setConfirmDialogVisible(false);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -146,6 +171,13 @@ const Education = (props) => {
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedEducationId}
                     onClick={onDeleteItem}
+                  />
+                  <ConfirmDialog
+                    title="Definitief verwijderen?"
+                    itemFields={renderSelectedItem}
+                    isVisible={isConfirmDialogVisible}
+                    onProceed={onDeleteConfirmed}
+                    onCancel={onDeleteCancelled}
                   />
                 </Stack>
               </Stack>

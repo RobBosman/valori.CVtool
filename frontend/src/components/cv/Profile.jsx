@@ -27,7 +27,8 @@ const Profile = (props) => {
       {
         background: editPaneColor,
         padding: 20,
-        maxWidth: "calc(100vw - 200px)"
+        maxWidth: "calc(100vw - 200px)",
+        height: "calc(100vh - 170px)"
       }
     ]
   };
@@ -55,7 +56,7 @@ const Profile = (props) => {
               label="Geboortedatum"
               field="dateOfBirth"
               instanceContext={accountContext}
-              styles={{ root: { width: 140 } }}
+              styles={{ root: { minWidth: 120 } }}
             />
             <CvTextField
               label="Woonplaats"

@@ -9,6 +9,7 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
+import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "reference";
 
@@ -79,7 +80,8 @@ const Reference = (props) => {
     root: [
       {
         background: viewPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
@@ -87,13 +89,28 @@ const Reference = (props) => {
     root: [
       {
         background: editPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
+
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const selectedReference = references.find(experience => experience._id === props.selectedReferenceId);
+  const renderSelectedItem = selectedReference &&
+    <table>
+      <tbody>
+        <tr>
+          <td><em>Naam</em>:</td><td>{selectedReference.referentName || ""}</td>
+        </tr>
+        <tr>
+          <td><em>Functie</em>:</td><td>{selectedReference.referentFunction && selectedReference.referentFunction[props.locale] || ""}</td>
+        </tr>
+      </tbody>
+    </table>;
 
   const onAddItem = () => {
     const id = createUuid();
@@ -107,10 +124,18 @@ const Reference = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedReferenceId) {
+      setConfirmDialogVisible(true);
+    }
+  };
+  const onDeleteConfirmed = () => {
+    if (props.selectedReferenceId) {
       props.replaceReference(props.selectedReferenceId, {});
       props.setSelectedReferenceId(undefined);
     }
+    setConfirmDialogVisible(false);
   };
+  const onDeleteCancelled = () =>
+    setConfirmDialogVisible(false);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -134,6 +159,13 @@ const Reference = (props) => {
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedReferenceId}
                     onClick={onDeleteItem}
+                  />
+                  <ConfirmDialog
+                    title="Definitief verwijderen?"
+                    itemFields={renderSelectedItem}
+                    isVisible={isConfirmDialogVisible}
+                    onProceed={onDeleteConfirmed}
+                    onCancel={onDeleteCancelled}
                   />
                 </Stack>
               </Stack>

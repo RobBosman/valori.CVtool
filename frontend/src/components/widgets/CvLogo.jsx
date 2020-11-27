@@ -14,10 +14,10 @@ const logoStyles = {
 };
 const versionStyle = {
   position: "fixed",
-  right: 8,
-  bottom: 5,
+  right: 10,
+  bottom: 10,
   fontSize: "small",
-  color: "#999999"
+  color: "#888888"
 };
 
 const CvLogo = () => (

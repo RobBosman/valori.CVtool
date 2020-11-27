@@ -10,6 +10,7 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDatePicker } from "../widgets/CvDatePicker";
+import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "experience";
 
@@ -85,7 +86,8 @@ const Experience = (props) => {
     root: [
       {
         background: viewPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
@@ -93,13 +95,28 @@ const Experience = (props) => {
     root: [
       {
         background: editPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
+
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const selectedExperience = experiences.find(experience => experience._id === props.selectedExperienceId);
+  const renderSelectedItem = selectedExperience &&
+    <table>
+      <tbody>
+        <tr>
+          <td><em>Periode</em>:</td><td>{composePeriod(selectedExperience)}</td>
+        </tr>
+        <tr>
+          <td><em>Opdrachtgever</em>:</td><td>{selectedExperience.client || ""}</td>
+        </tr>
+      </tbody>
+    </table>;
 
   const onAddItem = () => {
     const id = createUuid();
@@ -114,10 +131,18 @@ const Experience = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedExperienceId) {
+      setConfirmDialogVisible(true);
+    }
+  };
+  const onDeleteConfirmed = () => {
+    if (props.selectedExperienceId) {
       props.replaceExperience(props.selectedExperienceId, {});
       props.setSelectedExperienceId(undefined);
     }
+    setConfirmDialogVisible(false);
   };
+  const onDeleteCancelled = () =>
+    setConfirmDialogVisible(false);
   
   // Keep hold of the dragged item.
   const [draggedItem, setDraggedItem] = React.useState(undefined);
@@ -175,6 +200,13 @@ const Experience = (props) => {
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedExperienceId}
                     onClick={onDeleteItem}
+                  />
+                  <ConfirmDialog
+                    title="Definitief verwijderen?"
+                    itemFields={renderSelectedItem}
+                    isVisible={isConfirmDialogVisible}
+                    onProceed={onDeleteConfirmed}
+                    onCancel={onDeleteCancelled}
                   />
                 </Stack>
               </Stack>

@@ -9,6 +9,7 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
+import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "publication";
 
@@ -87,7 +88,8 @@ const Publication = (props) => {
     root: [
       {
         background: viewPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
@@ -95,13 +97,28 @@ const Publication = (props) => {
     root: [
       {
         background: editPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
+
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const selectedPublication = publications.find(experience => experience._id === props.selectedPublicationId);
+  const renderSelectedItem = selectedPublication &&
+    <table>
+      <tbody>
+        <tr>
+          <td><em>Titel</em>:</td><td>{selectedPublication.title && selectedPublication.title[props.locale] || ""}</td>
+        </tr>
+        <tr>
+          <td><em>Media</em>:</td><td>{selectedPublication.media || ""}</td>
+        </tr>
+      </tbody>
+    </table>;
 
   const onAddItem = () => {
     const id = createUuid();
@@ -115,10 +132,18 @@ const Publication = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedPublicationId) {
+      setConfirmDialogVisible(true);
+    }
+  };
+  const onDeleteConfirmed = () => {
+    if (props.selectedPublicationId) {
       props.replacePublication(props.selectedPublicationId, {});
       props.setSelectedPublicationId(undefined);
     }
+    setConfirmDialogVisible(false);
   };
+  const onDeleteCancelled = () =>
+    setConfirmDialogVisible(false);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -142,6 +167,13 @@ const Publication = (props) => {
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedPublicationId}
                     onClick={onDeleteItem}
+                  />
+                  <ConfirmDialog
+                    title="Definitief verwijderen?"
+                    itemFields={renderSelectedItem}
+                    isVisible={isConfirmDialogVisible}
+                    onProceed={onDeleteConfirmed}
+                    onCancel={onDeleteCancelled}
                   />
                 </Stack>
               </Stack>

@@ -33,7 +33,7 @@ export const CvDetailsList = (props) => {
   const scrollStyle = {
     position: "relative",
     overflowY: "auto",
-    height: "calc(100vh - 250px)",
+    height: "calc(100vh - 248px)",
     ...props.scrollStyle
   };
   

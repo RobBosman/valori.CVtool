@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner, SpinnerSize } from "@fluentui/react";
+import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner, SpinnerSize, ContextualMenu } from "@fluentui/react";
 import * as authActions from "../services/auth/auth-actions";
 
 const LoginDialog = (props) => {
@@ -10,11 +10,21 @@ const LoginDialog = (props) => {
     type: DialogType.normal,
     title: "Bezig met inloggen..."
   };
+  const modalProps = {
+    isBlocking: true,
+    dragOptions: {
+      moveMenuItemText: "Move",
+      closeMenuItemText: "Close",
+      menu: ContextualMenu
+    }
+  };
   
   return (
     <Dialog
       dialogContentProps={dialogContentProps}
-      hidden={!(props.isLoggingInOpenId || props.isLoggingInBackend)}>
+      modalProps={modalProps}
+      hidden={!(props.isLoggingInOpenId || props.isLoggingInBackend)}
+      onDismiss={props.requestToLogout}>
       <table>
         <tbody>
           <tr>
@@ -33,7 +43,7 @@ const LoginDialog = (props) => {
       </table>
       <DialogFooter>
         <DefaultButton
-          text="Cancel"
+          text="Annuleren"
           onClick={props.requestToLogout} />
       </DialogFooter>
     </Dialog>

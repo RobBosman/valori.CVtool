@@ -12,6 +12,7 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 import { getEnumData, SkillCategories } from "./Enums";
 import { CvRating } from "../widgets/CvRating";
 import { CvComboBox } from "../widgets/CvComboBox";
+import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "skill";
 
@@ -46,12 +47,15 @@ const Skill = (props) => {
     replaceInstance: props.replaceSkill
   };
 
+  const renderSkill = (item) =>
+    getEnumData(SkillCategories, item.category)?.text || "Expertises";
+
   const columns = [
     {
       key: "category",
       fieldName: "category",
       name: "Categorie",
-      onRender: (item) => getEnumData(SkillCategories, item.category)?.text || "Expertises",
+      onRender: renderSkill,
       isResizable: false,
       minWidth: 120,
       maxWidth: 120,
@@ -83,7 +87,8 @@ const Skill = (props) => {
     root: [
       {
         background: viewPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
@@ -91,7 +96,8 @@ const Skill = (props) => {
     root: [
       {
         background: editPaneColor,
-        padding: 20
+        padding: 20,
+        height: "calc(100vh - 170px)"
       }
     ]
   };
@@ -111,6 +117,20 @@ const Skill = (props) => {
     }
   };
 
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const selectedSkill = skills.find(experience => experience._id === props.selectedSkillId);
+  const renderSelectedItem = selectedSkill &&
+    <table>
+      <tbody>
+        <tr>
+          <td><em>Categorie</em>:</td><td>{renderSkill(selectedSkill)}</td>
+        </tr>
+        <tr>
+          <td><em>Omschrijving</em>:</td><td>{selectedSkill.description && selectedSkill.description[props.locale] || ""}</td>
+        </tr>
+      </tbody>
+    </table>;
+
   const onAddItem = () => {
     const id = createUuid();
     props.replaceSkill(id, {
@@ -123,10 +143,18 @@ const Skill = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedSkillId) {
+      setConfirmDialogVisible(true);
+    }
+  };
+  const onDeleteConfirmed = () => {
+    if (props.selectedSkillId) {
       props.replaceSkill(props.selectedSkillId, {});
       props.setSelectedSkillId(undefined);
     }
+    setConfirmDialogVisible(false);
   };
+  const onDeleteCancelled = () =>
+    setConfirmDialogVisible(false);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -150,6 +178,13 @@ const Skill = (props) => {
                     iconProps={{ iconName: "Delete" }}
                     disabled={!props.selectedSkillId}
                     onClick={onDeleteItem}
+                  />
+                  <ConfirmDialog
+                    title="Definitief verwijderen?"
+                    itemFields={renderSelectedItem}
+                    isVisible={isConfirmDialogVisible}
+                    onProceed={onDeleteConfirmed}
+                    onCancel={onDeleteCancelled}
                   />
                 </Stack>
               </Stack>

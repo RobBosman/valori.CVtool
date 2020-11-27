@@ -186,17 +186,18 @@ internal class HttpsServerVerticle : AbstractVerticle() {
     val address = bridgeEvent.rawMessage.getString("address")
     val messageBody = bridgeEvent.rawMessage.getValue("body")
     // Check if this message intends to delete any data.
-    var single = Single.just(messageBody)
     if (address == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
       val query = createQueryForDataToBeDeleted(messageBody)
       if (query.isNotEmpty()) {
-        // If so, then fetch dat data-to-be-deleted and add that to the messageBody that is used for authorization.
+        // If so, then fetch dat data-to-be-deleted and add it to the message that is used for authorization.
         // NB: The original message body remains untouched!
-        single = fetchToBeDeletedData(JsonObject(query))
+        return fetchToBeDeletedData(JsonObject(query))
             .map { replaceEntityInstances(messageBody, it) }
+            .doOnSuccess { Authorizer.authorize(address, it, authInfo) }
+            .map { authInfo }
       }
     }
-    return single
+    return Single.just(messageBody)
         .doOnSuccess { Authorizer.authorize(address, it, authInfo) }
         .map { authInfo }
   }

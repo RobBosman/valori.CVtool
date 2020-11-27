@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Dialog, DialogFooter, DefaultButton, DialogType } from "@fluentui/react";
+import { Dialog, DialogFooter, DefaultButton, DialogType, ContextualMenu } from "@fluentui/react";
 
 const ErrorDialog = (props) => {
 
@@ -17,15 +17,29 @@ const ErrorDialog = (props) => {
     title: "Error",
     subText: <span>{props.lastError?.message}</span>
   };
+  const modalProps = {
+    isBlocking: true,
+    dragOptions: {
+      moveMenuItemText: "Move",
+      closeMenuItemText: "Close",
+      menu: ContextualMenu
+    }
+  };
+  
+  const dismissDialog = () =>
+    setShowDialog(false);
   
   return (
     <Dialog
       dialogContentProps={dialogContentProps}
-      hidden={!showDialog}>
+      modalProps={modalProps}
+      hidden={!showDialog}
+      onDismiss={dismissDialog}>
       <DialogFooter>
         <DefaultButton
-          text="Close"
-          onClick={() => setShowDialog(false)} />
+          text="Sluiten"
+          onClick={dismissDialog}
+        />
       </DialogFooter>
     </Dialog>
   );
