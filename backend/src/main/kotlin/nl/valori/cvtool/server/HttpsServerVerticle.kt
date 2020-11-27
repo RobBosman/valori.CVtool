@@ -42,9 +42,8 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                       .setPort(httpsPort)
                       .setSsl(true)
                       .setPemKeyCertOptions(pemKeyCertOptions)
-//                      .setSslEngineOptions(OpenSSLEngineOptions())
-//                      .addEnabledSecureTransportProtocol("TLSv1.3")
-//                      .setUseAlpn(true)
+                      .addEnabledSecureTransportProtocol("TLSv1.3")
+                      .setUseAlpn(true)
                   )
                   .requestHandler(createRouter())
                   .listen { result ->
