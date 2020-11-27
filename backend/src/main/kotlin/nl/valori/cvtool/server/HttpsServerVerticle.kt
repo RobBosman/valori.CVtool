@@ -42,6 +42,8 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                       .setPort(httpsPort)
                       .setSsl(true)
                       .setPemKeyCertOptions(pemKeyCertOptions)
+                      .removeEnabledSecureTransportProtocol("TLSv1")
+                      .removeEnabledSecureTransportProtocol("TLSv1.1")
                       .addEnabledSecureTransportProtocol("TLSv1.3")
                       .setUseAlpn(true)
                   )
