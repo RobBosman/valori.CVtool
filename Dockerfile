@@ -41,18 +41,19 @@ COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
 
 # Disable TLSv1 and TLSv1.1 and also disable cipher suites that don't support PFS, see https://www.ssllabs.com/.
+# Note: 'weak' cipher TLS_RSA_WITH_AES_256_GCM_SHA384 is still vailable for the AuthVerticle to access the Microsoft OpenID provider URL.
 RUN find /java -name "java.security" \
-    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1\\\
-    TLSv1, TLSv1.1, \\\
-    TLS_DHE_RSA_WITH_AES_256_CBC_SHA256, \\\
-    TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, \\\
-    TLS_DHE_RSA_WITH_AES_256_CBC_SHA, \\\
-    TLS_DHE_RSA_WITH_AES_128_CBC_SHA, \\\
-    TLS_RSA_WITH_AES_128_GCM_SHA256, \\\
-    TLS_RSA_WITH_AES_256_CBC_SHA256, \\\
-    TLS_RSA_WITH_AES_128_CBC_SHA256, \\\
-    TLS_RSA_WITH_AES_256_CBC_SHA, \\\
-    TLS_RSA_WITH_AES_128_CBC_SHA, \\\
+    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1\
+    TLSv1, TLSv1.1, \
+    TLS_DHE_RSA_WITH_AES_256_CBC_SHA256, \
+    TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, \
+    TLS_DHE_RSA_WITH_AES_256_CBC_SHA, \
+    TLS_DHE_RSA_WITH_AES_128_CBC_SHA, \
+    TLS_RSA_WITH_AES_128_GCM_SHA256, \
+    TLS_RSA_WITH_AES_256_CBC_SHA256, \
+    TLS_RSA_WITH_AES_128_CBC_SHA256, \
+    TLS_RSA_WITH_AES_256_CBC_SHA, \
+    TLS_RSA_WITH_AES_128_CBC_SHA, \
     \2/g' {} +
 
 # Run the CVtool app, accepting DH keysize of at least 2048 bis only.
