@@ -40,6 +40,10 @@ MAINTAINER RobBosman@valori.nl
 COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
 
+# Disable TLSv1 and TLSv1.1.
+RUN find /java -name "java.security" \
+    -exec sed -i -e 's/^\(jdk\.tls\.disabledAlgorithms=\)\(.*\)$/\1TLSv1,TLSv1.1,\2/g' {} +
+
 # Run the CVtool app, accepting DH keysize of at least 2048 bis only.
 CMD exec /java/bin/java \
     -Djdk.tls.ephemeralDHKeySize=2048 \
