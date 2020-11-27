@@ -50,5 +50,4 @@ RUN find /java -name "java.security" \
 # Run the CVtool app.
 CMD exec /java/bin/java \
     -Djdk.tls.ephemeralDHKeySize=2048 \
-    -Djdk.tls.rejectClientInitiatedRenegotiation=true \
     -jar /cvtool-fat.jar

@@ -54,6 +54,12 @@ docker build -t bransom/cvtool .
 docker push bransom/cvtool
 
 
+# Deploy docker image locally.
+docker-compose -f docker-compose.yaml --env-file=secret/.env up -d
+docker container prune -f
+docker image prune -f
+
+
 # Install MongoDB and CVtool and run letsencrypt to obtain SSL certs. (You must restart CVtool afterward.)
 docker pull bransom/cvtool
 docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
