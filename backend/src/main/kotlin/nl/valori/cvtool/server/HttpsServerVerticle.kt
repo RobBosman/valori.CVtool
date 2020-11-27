@@ -4,7 +4,6 @@ import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.buffer.Buffer.buffer
 import io.vertx.core.http.HttpServerOptions
-import io.vertx.core.net.OpenSSLEngineOptions
 import io.vertx.core.net.PemKeyCertOptions
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
@@ -43,9 +42,9 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                       .setPort(httpsPort)
                       .setSsl(true)
                       .setPemKeyCertOptions(pemKeyCertOptions)
-                      .setSslEngineOptions(OpenSSLEngineOptions())
-                      .addEnabledSecureTransportProtocol("TLSv1.3")
-                      .setUseAlpn(true)
+//                      .setSslEngineOptions(OpenSSLEngineOptions())
+//                      .addEnabledSecureTransportProtocol("TLSv1.3")
+//                      .setUseAlpn(true)
                   )
                   .requestHandler(createRouter())
                   .listen { result ->
