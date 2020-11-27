@@ -38,14 +38,13 @@ internal class HttpsServerVerticle : AbstractVerticle() {
             { pemKeyCertOptions ->
               vertx
                   .createHttpServer(HttpServerOptions()
-                      .setCompressionSupported(true)
                       .setPort(httpsPort)
-                      .setSsl(true)
                       .setPemKeyCertOptions(pemKeyCertOptions)
+                      .setSsl(true)
+                      .setCompressionSupported(true)
+                      .setUseAlpn(true)
                       .removeEnabledSecureTransportProtocol("TLSv1")
                       .removeEnabledSecureTransportProtocol("TLSv1.1")
-                      .addEnabledSecureTransportProtocol("TLSv1.3")
-                      .setUseAlpn(true)
                   )
                   .requestHandler(createRouter())
                   .listen { result ->
@@ -87,14 +86,14 @@ internal class HttpsServerVerticle : AbstractVerticle() {
   private fun createRouter(): Router {
     val router = Router.router(vertx)
     router
-        .get("/health*")
-        .handler(HealthChecker.getHandler(vertx))
-    router
         .get("/.well-known/acme-challenge/*") // Used by letsencrypt to renew SSL certificates.
         .handler(StaticHandler.create()
             .setAllowRootFileSystemAccess(true)
             .setWebRoot("/webroot/.well-known/acme-challenge")
         )
+    router
+        .get("/health*")
+        .handler(HealthChecker.getHandler(vertx))
     router
         .mountSubRouter("/eventbus",
             EventBusMessageHandler.create(vertx)

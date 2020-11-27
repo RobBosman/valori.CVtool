@@ -47,6 +47,8 @@ const Publication = (props) => {
       localeFieldName: "title",
       name: "Titel",
       isResizable: true,
+      minWidth: 150,
+      maxWidth: 300,
       data: "string"
     },
     {
@@ -54,6 +56,8 @@ const Publication = (props) => {
       fieldName: "media",
       name: "Media",
       isResizable: true,
+      minWidth: 150,
+      maxWidth: 400,
       data: "string"
     },
     {
@@ -64,13 +68,6 @@ const Publication = (props) => {
       minWidth: 30,
       maxWidth: 30,
       data: "number"
-    },
-    {
-      key: "description",
-      localeFieldName: "description",
-      name: "Omschrijving",
-      isResizable: true,
-      data: "string"
     },
     {
       key: "includeInCv",

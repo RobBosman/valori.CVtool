@@ -51,8 +51,8 @@ const Experience = (props) => {
       name: "Periode *",
       onRender: composePeriod,
       isResizable: false,
-      minWidth: 120,
-      maxWidth: 120,
+      minWidth: 110,
+      maxWidth: 110,
       data: "string",
       onColumnClick: (e) => setCoachmarkTarget(e.target),
     },
@@ -61,6 +61,8 @@ const Experience = (props) => {
       fieldName: "client",
       name: "Opdrachtgever",
       isResizable: true,
+      minWidth: 100,
+      maxWidth: 250,
       data: "string"
     },
     {
@@ -68,6 +70,8 @@ const Experience = (props) => {
       localeFieldName: "role",
       name: "Rol",
       isResizable: true,
+      minWidth: 100,
+      maxWidth: 400,
       data: "string"
     },
     {

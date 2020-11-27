@@ -49,6 +49,8 @@ const Skill = (props) => {
   const renderSkill = (item) =>
     getEnumData(SkillCategories, item.category)?.text || "";
 
+  const renderSkillLevel = (item) => "* ".repeat(item.skillLevel);
+
   const columns = [
     {
       key: "category",
@@ -56,8 +58,8 @@ const Skill = (props) => {
       name: "Categorie",
       onRender: renderSkill,
       isResizable: false,
-      minWidth: 120,
-      maxWidth: 120,
+      minWidth: 110,
+      maxWidth: 110,
       data: "string"
     },
     {
@@ -65,6 +67,8 @@ const Skill = (props) => {
       localeFieldName: "description",
       name: "Omschrijving",
       isResizable: true,
+      minWidth: 150,
+      maxWidth: 400,
       isSorted: false,
       isSortedDescending: false,
       data: "string"
@@ -73,7 +77,7 @@ const Skill = (props) => {
       key: "skillLevel",
       fieldName: "skillLevel",
       name: "Niveau",
-      onRender: (item) => "* ".repeat(item.skillLevel),
+      onRender: renderSkillLevel,
       isResizable: false,
       minWidth: 60,
       maxWidth: 60,

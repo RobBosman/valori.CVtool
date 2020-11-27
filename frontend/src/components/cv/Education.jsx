@@ -54,7 +54,7 @@ const Education = (props) => {
       localeFieldName: "name",
       name: "Opleiding",
       isResizable: true,
-      minWidth: 150,
+      minWidth: 180,
       data: "string"
     },
     {
@@ -62,7 +62,7 @@ const Education = (props) => {
       fieldName: "institution",
       name: "Opleidingsinstituut",
       isResizable: true,
-      minWidth: 150,
+      minWidth: 250,
       data: "string"
     },
     {

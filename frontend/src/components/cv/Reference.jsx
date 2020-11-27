@@ -48,6 +48,8 @@ const Reference = (props) => {
       fieldName: "referentName",
       name: "Naam",
       isResizable: true,
+      minWidth: 100,
+      maxWidth: 300,
       data: "string"
     },
     {
@@ -55,13 +57,8 @@ const Reference = (props) => {
       localeFieldName: "referentFunction",
       name: "Functie",
       isResizable: true,
-      data: "string"
-    },
-    {
-      key: "description",
-      localeFieldName: "description",
-      name: "Omschrijving",
-      isResizable: true,
+      minWidth: 200,
+      maxWidth: 400,
       data: "string"
     },
     {
