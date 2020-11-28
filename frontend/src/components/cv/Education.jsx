@@ -244,7 +244,7 @@ Education.propTypes = {
 };
 
 const select = (state) => ({
-  locale: state.ui.locale,
+  locale: state.ui.userPrefs.locale,
   selectedCvId: state.ui.selectedId["cv"],
   educationEntity: state.safe.content[entityName],
   selectedEducationId: state.ui.selectedId[entityName]

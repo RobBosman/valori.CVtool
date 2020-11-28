@@ -248,7 +248,7 @@ Skill.propTypes = {
 };
 
 const select = (state) => ({
-  locale: state.ui.locale,
+  locale: state.ui.userPrefs.locale,
   selectedCvId: state.ui.selectedId["cv"],
   skillEntity: state.safe.content[entityName],
   selectedSkillId: state.ui.selectedId[entityName]

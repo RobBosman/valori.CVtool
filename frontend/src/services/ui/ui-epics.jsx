@@ -1,8 +1,9 @@
-import { map, filter, distinctUntilChanged } from "rxjs/operators";
-import { fromEvent } from "rxjs";
+import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap } from "rxjs/operators";
+import { fromEvent, of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as authActions from "../auth/auth-actions";
 import * as uiActions from "./ui-actions";
+import * as uiServices from "./ui-services";
 
 export const uiEpics = [
   // Keep track of location (address bar) changes.
@@ -25,7 +26,7 @@ export const uiEpics = [
     map(authInfo => uiActions.setSelectedId("account", authInfo?.accountId))
   ),
 
-  // Reset the se;ected cvId if the selected accountId changes.
+  // Reset the selected cvId if the selected accountId changes.
   (action$, state$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
     map(action => action.payload),
@@ -37,6 +38,30 @@ export const uiEpics = [
       const cvInstance = cvEntity && Object.values(cvEntity)
         .find(cvInstance => cvInstance.accountId === accountId);
       return uiActions.setSelectedId("cv", cvInstance?._id);
+    })
+  ),
+
+  // Apply the selected theme and store it in a cookie.
+  (action$) => action$.pipe(
+    ofType(uiActions.setTheme.type),
+    map(action => action.payload),
+    map(themeName => {
+      uiServices.loadThemeByName(themeName);
+      document.cookie = `theme=${themeName}`;
+    }),
+    ignoreElements()
+  ),
+
+  // Read the preferred theme from a cookie. This is done only once, when the app starts.
+  // NOTE - this epic must be added last, otherwise the returned actions may not be noticed by other epics.
+  (_, state$) => state$.pipe(
+    take(1),
+    mergeMap(state => {
+      const userPrefs = uiServices.initializeUI(state.ui.userPrefs);
+      return of(
+        uiActions.setLocale(userPrefs.locale),
+        uiActions.setTheme(userPrefs.theme)
+      );
     })
   )
 ];

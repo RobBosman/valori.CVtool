@@ -212,7 +212,7 @@ AccountManagement.propTypes = {
 };
 
 const select = (state) => ({
-  locale: state.ui.locale,
+  locale: state.ui.userPrefs.locale,
   authInfo: state.auth.authInfo,
   accountEntity: state.safe.content["account"],
   roleEntity: state.safe.content["role"],

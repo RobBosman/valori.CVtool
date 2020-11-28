@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { loadTheme } from "@fluentui/react";
-import fluentUIDefaultTheme from "../../../static/themes/fluentUIDefault.json";
+import fluentUITheme from "../../../static/themes/fluentUIt.json";
 import valoriBlueTheme from "../../../static/themes/valoriBlue.json";
 import valoriOrangeTheme from "../../../static/themes/valoriOrange.json";
 import * as uiServices from "../ui-services";
@@ -35,7 +35,7 @@ describe("ui-services.test", () => {
     });
     const testTarget = document.getElementById("testTarget");
     expect(testTarget.style.background)
-      .toBe(colorToRgb(fluentUIDefaultTheme.palette.neutralLighter));
+      .toBe(colorToRgb(fluentUITheme.palette.neutralLighter));
 
     act(() => {
       loadTheme(valoriOrangeTheme);

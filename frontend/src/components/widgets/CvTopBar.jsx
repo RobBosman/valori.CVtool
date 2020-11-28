@@ -5,21 +5,19 @@ import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemTy
 import * as safeActions from "../../services/safe/safe-actions";
 import * as authActions from "../../services/auth/auth-actions";
 import * as uiActions from "../../services/ui/ui-actions";
+import * as uiServices from "../../services/ui/ui-services";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
-import fluentUIDefaultTheme from "../../static/themes/fluentUIDefault.json";
-import valoriBlueTheme from "../../static/themes/valoriBlue.json";
-import valoriOrangeTheme from "../../static/themes/valoriOrange.json";
 
 const CvTopBar = (props) => {
   
   const currentTheme = getTheme();
 
-  const createThemeItem = (themeName, theme, label) => ({
-    key: themeName,
+  const createThemeItem = (theme, label) => ({
+    key: theme,
     text: label,
-    onMouseOver: () => loadTheme(theme),
+    onMouseOver: () => uiServices.loadThemeByName(theme),
     onMouseOut: () => loadTheme(currentTheme),
-    onClick: () => props.setThemeName(themeName)
+    onClick: () => props.setTheme(theme)
   });
 
   const WrappedButton = (p) => (
@@ -69,9 +67,9 @@ const CvTopBar = (props) => {
             iconProps: { iconName: "Brightness" },
             subMenuProps: {
               items: [
-                createThemeItem("fluentUIDefault", fluentUIDefaultTheme, "Standaard"),
-                createThemeItem("valoriBlue", valoriBlueTheme, "Valori - Blauw"),
-                createThemeItem("valoriOrange", valoriOrangeTheme, "Valori - Oranje")
+                createThemeItem("default", "Standaard"),
+                createThemeItem("valoriBlue", "Valori - Blauw"),
+                createThemeItem("valoriOrange", "Valori - Oranje")
               ]
             }
           },
@@ -128,7 +126,7 @@ CvTopBar.propTypes = {
   hasSafeData: PropTypes.bool.isRequired,
   lastEditedTimestamp: PropTypes.object,
   lastSavedTimestamp: PropTypes.object,
-  setThemeName: PropTypes.func.isRequired,
+  setTheme: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired
 };
@@ -142,7 +140,7 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setThemeName: (themeName) => dispatch(uiActions.setThemeName(themeName)),
+  setTheme: (theme) => dispatch(uiActions.setTheme(theme)),
   requestToLogout: () => dispatch(authActions.requestLogout()),
   save: () => dispatch(safeActions.save(true))
 });

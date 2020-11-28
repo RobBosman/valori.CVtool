@@ -20,7 +20,7 @@ const themePalettes = {
 // primary color: #008000
 // text color: #323130
 // backgroundColor: #ffffff
-  fluentUIDefault: {
+  fluentUI: {
     palette: {
       themePrimary: "#0078d4",
       themeLighterAlt: "#eff6fc",
@@ -110,9 +110,9 @@ const themePalettes = {
 
 // Expose all created themes.
 if (createTheme instanceof Function) {
-  Object.keys(themePalettes).forEach(themeName => {
-    const theme = createTheme(themePalettes[themeName]);
-    console.log(`\n${themeName}:\n${JSON.stringify(theme)}\n`);
+  Object.keys(themePalettes).forEach(theme => {
+    const theme = createTheme(themePalettes[theme]);
+    console.log(`\n${theme}:\n${JSON.stringify(theme)}\n`);
   });
 } else {
   throw Error("Cannot create themes in 'production' mode. Please don't import 'ThemeExposer'.");

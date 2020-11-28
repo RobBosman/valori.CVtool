@@ -13,13 +13,13 @@ describe("ui-actions.test", () => {
 
   it("should reduce setLocale", () => {
     const state = reducer(undefined, uiActions.setLocale("de_DE"));
-    expect(state.ui.locale)
+    expect(state.ui.userPrefs.locale)
       .toBe("de_DE");
   });
 
-  it("should reduce setThemeName", () => {
-    const state = reducer(undefined, uiActions.setThemeName("darkOrange"));
-    expect(state.ui.themeName)
+  it("should reduce setTheme", () => {
+    const state = reducer(undefined, uiActions.setTheme("darkOrange"));
+    expect(state.ui.userPrefs.theme)
       .toBe("darkOrange");
   });
 

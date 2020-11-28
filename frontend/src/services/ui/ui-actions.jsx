@@ -3,7 +3,7 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const setLocationHash = createAction("SET_LOCATION_HASH");
 export const setLocale = createAction("SET_LOCALE");
-export const setThemeName = createAction("SET_THEME_NAME");
+export const setTheme = createAction("SET_THEME");
 export const setSelectedId = createAction("SET_SELECTED_ID",
   (entityName, selectedId) => ({payload: {entityName, selectedId}}));
 export const resetSelectedIds = createAction("RESET_SELECTED_IDS", () => ({}));
@@ -13,8 +13,10 @@ reducerRegistry.register(
   createReducer(
     {
       locationHash: document.location.hash || "",
-      locale: "nl_NL",
-      themeName: "valoriBlue",
+      userPrefs: {
+        locale: "nl_NL",
+        theme: "valoriBlue"
+      },
       selectedId: {}
     },
     {
@@ -22,10 +24,10 @@ reducerRegistry.register(
         state.locationHash = action.payload;
       },
       [setLocale]: (state, action) => {
-        state.locale = action.payload;
+        state.userPrefs.locale = action.payload;
       },
-      [setThemeName]: (state, action) => {
-        state.themeName = action.payload;
+      [setTheme]: (state, action) => {
+        state.userPrefs.theme = action.payload;
       },
       [setSelectedId]: (state, action) => {
         state.selectedId[action.payload.entityName] = action.payload.selectedId;

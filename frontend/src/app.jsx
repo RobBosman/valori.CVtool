@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import { initializeUI } from "./services/ui/ui-services";
 import { epicRegistry } from "./redux/epicRegistry";
 import { errorEpics } from "./services/error/error-epics";
 import { authEpics } from "./services/auth/auth-epics";
@@ -13,7 +12,7 @@ import { uiEpics } from "./services/ui/ui-epics";
 import { ErrorBoundary } from "./utils/ErrorBoundary";
 import Main from "./components/Main";
 
-export const appVersion = () => "20201127";
+export const appVersion = () => "20201128";
 
 epicRegistry.register(
   ...errorEpics,
@@ -23,8 +22,6 @@ epicRegistry.register(
   ...safeEpics,
   ...uiEpics
 );
-
-initializeUI();
 
 ReactDOM.render(
   <Provider store={store}>
