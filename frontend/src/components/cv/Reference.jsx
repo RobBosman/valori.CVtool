@@ -97,17 +97,10 @@ const Reference = (props) => {
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedReference = references.find(experience => experience._id === props.selectedReferenceId);
-  const renderSelectedItem = selectedReference &&
-    <table>
-      <tbody>
-        <tr>
-          <td><em>Naam</em>:</td><td>{selectedReference.referentName || ""}</td>
-        </tr>
-        <tr>
-          <td><em>Functie</em>:</td><td>{selectedReference.referentFunction && selectedReference.referentFunction[props.locale] || ""}</td>
-        </tr>
-      </tbody>
-    </table>;
+  const selectedItemFields = selectedReference && {
+    Naam: selectedReference.referentName,
+    Functie: selectedReference.referentFunction && selectedReference.referentFunction[props.locale]
+  };
 
   const onAddItem = () => {
     const id = createUuid();
@@ -159,7 +152,8 @@ const Reference = (props) => {
                   />
                   <ConfirmDialog
                     title="Definitief verwijderen?"
-                    itemFields={renderSelectedItem}
+                    primaryButtonText="Verwijderen"
+                    itemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

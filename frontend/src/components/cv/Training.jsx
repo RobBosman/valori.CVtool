@@ -40,8 +40,8 @@ const Education = (props) => {
   const educationContext = {
     locale: props.locale,
     entity: props.educationEntity,
-    instanceId: props.selectedEducationId,
-    setSelectedInstance: props.setSelectedEducationId,
+    instanceId: props.selectedTrainingId,
+    setSelectedInstance: props.setSelectedTrainingId,
     replaceInstance: props.replaceEducation
   };
   
@@ -110,18 +110,11 @@ const Education = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedEducation = educations.find(experience => experience._id === props.selectedEducationId);
-  const renderSelectedItem = selectedEducation &&
-    <table>
-      <tbody>
-        <tr>
-          <td><em>Opleiding</em>:</td><td>{selectedEducation.name && selectedEducation.name[props.locale] || ""}</td>
-        </tr>
-        <tr>
-          <td><em>Opleidingsinstituut</em>:</td><td>{selectedEducation.institution || ""}</td>
-        </tr>
-      </tbody>
-    </table>;
+  const selectedTraining = educations.find(experience => experience._id === props.selectedTrainingId);
+  const selectedItemFields = selectedTraining && {
+    Opleiding: selectedTraining.name && selectedTraining.name[props.locale],
+    Opleidingsinstituut: selectedTraining.institution
+  };
 
   const onAddItem = () => {
     const id = createUuid();
@@ -131,18 +124,18 @@ const Education = (props) => {
       type: "TRAINING",
       includeInCv: true
     });
-    props.setSelectedEducationId(id);
+    props.setSelectedTrainingId(id);
   };
 
   const onDeleteItem = () => {
-    if (props.selectedEducationId) {
+    if (props.selectedTrainingId) {
       setConfirmDialogVisible(true);
     }
   };
   const onDeleteConfirmed = () => {
-    if (props.selectedEducationId) {
-      props.replaceEducation(props.selectedEducationId, {});
-      props.setSelectedEducationId(undefined);
+    if (props.selectedTrainingId) {
+      props.replaceEducation(props.selectedTrainingId, {});
+      props.setSelectedTrainingId(undefined);
     }
     setConfirmDialogVisible(false);
   };
@@ -169,12 +162,13 @@ const Education = (props) => {
                   <DefaultButton
                     text="Verwijderen"
                     iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedEducationId}
+                    disabled={!props.selectedTrainingId}
                     onClick={onDeleteItem}
                   />
                   <ConfirmDialog
                     title="Definitief verwijderen?"
-                    itemFields={renderSelectedItem}
+                    primaryButtonText="Verwijderen"
+                    itemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}
@@ -231,20 +225,20 @@ Education.propTypes = {
   selectedCvId: PropTypes.string,
   educationEntity: PropTypes.object,
   replaceEducation: PropTypes.func.isRequired,
-  selectedEducationId: PropTypes.string,
-  setSelectedEducationId: PropTypes.func.isRequired
+  selectedTrainingId: PropTypes.string,
+  setSelectedTrainingId: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
   locale: state.ui.userPrefs.locale,
   selectedCvId: state.ui.selectedId["cv"],
   educationEntity: state.safe.content[entityName],
-  selectedEducationId: state.ui.selectedId[entityName]
+  selectedTrainingId: state.ui.selectedId["training"]
 });
 
 const mapDispatchToProps = (dispatch) => ({
   replaceEducation: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
-  setSelectedEducationId: (id) => dispatch(setSelectedId(entityName, id))
+  setSelectedTrainingId: (id) => dispatch(setSelectedId("training", id))
 });
 
 export default connect(select, mapDispatchToProps)(Education);

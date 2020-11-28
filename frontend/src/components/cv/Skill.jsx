@@ -122,17 +122,10 @@ const Skill = (props) => {
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedSkill = skills.find(experience => experience._id === props.selectedSkillId);
-  const renderSelectedItem = selectedSkill &&
-    <table>
-      <tbody>
-        <tr>
-          <td><em>Categorie</em>:</td><td>{renderSkill(selectedSkill)}</td>
-        </tr>
-        <tr>
-          <td><em>Omschrijving</em>:</td><td>{selectedSkill.description && selectedSkill.description[props.locale] || ""}</td>
-        </tr>
-      </tbody>
-    </table>;
+  const selectedItemFields = selectedSkill && {
+    Categorie: renderSkill(selectedSkill),
+    Omschrijving: selectedSkill.description && selectedSkill.description[props.locale]
+  };
 
   const onAddItem = () => {
     const id = createUuid();
@@ -185,7 +178,8 @@ const Skill = (props) => {
                   />
                   <ConfirmDialog
                     title="Definitief verwijderen?"
-                    itemFields={renderSelectedItem}
+                    primaryButtonText="Verwijderen"
+                    itemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

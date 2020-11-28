@@ -2,7 +2,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import { loadTheme } from "@fluentui/react";
-import fluentUITheme from "../../../static/themes/fluentUIt.json";
+import fluentUITheme from "../../../static/themes/fluentUI.json";
 import valoriBlueTheme from "../../../static/themes/valoriBlue.json";
 import valoriOrangeTheme from "../../../static/themes/valoriOrange.json";
 import * as uiServices from "../ui-services";

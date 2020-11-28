@@ -16,11 +16,16 @@ export const loadThemeByName = (themeName) => {
   }
 };
 
-export const initializeUI = (defaultPrefs) => {
+const defaultUserPrefs = {
+  locale: "nl_NL",
+  theme: "valoriBlue"
+};
+
+export const initializeUI = () => {
   initializeIcons();
   registerOnThemeChangeCallback((theme) => document.documentElement.style.background = theme.semanticColors.bodyBackground);
 
-  const userPrefs = {...defaultPrefs};
+  const userPrefs = {...defaultUserPrefs};
   decodeURIComponent(document.cookie)
     .split(";")
     .map(kvString => kvString.trim().split("="))

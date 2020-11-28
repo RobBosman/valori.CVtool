@@ -105,17 +105,10 @@ const Publication = (props) => {
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedPublication = publications.find(experience => experience._id === props.selectedPublicationId);
-  const renderSelectedItem = selectedPublication &&
-    <table>
-      <tbody>
-        <tr>
-          <td><em>Titel</em>:</td><td>{selectedPublication.title && selectedPublication.title[props.locale] || ""}</td>
-        </tr>
-        <tr>
-          <td><em>Media</em>:</td><td>{selectedPublication.media || ""}</td>
-        </tr>
-      </tbody>
-    </table>;
+  const selectedItemFields = selectedPublication && {
+    Titel: selectedPublication.title && selectedPublication.title[props.locale],
+    Media: selectedPublication.media
+  };
 
   const onAddItem = () => {
     const id = createUuid();
@@ -167,7 +160,8 @@ const Publication = (props) => {
                   />
                   <ConfirmDialog
                     title="Definitief verwijderen?"
-                    itemFields={renderSelectedItem}
+                    primaryButtonText="Verwijderen"
+                    itemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

@@ -111,17 +111,10 @@ const Education = (props) => {
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedEducation = educations.find(education => education._id === props.selectedEducationId);
-  const renderSelectedItem = selectedEducation &&
-    <table>
-      <tbody>
-        <tr>
-          <td><em>Opleiding</em>:</td><td>{selectedEducation.name && selectedEducation.name[props.locale] || ""}</td>
-        </tr>
-        <tr>
-          <td><em>Opleidingsinstituut</em>:</td><td>{selectedEducation.institution || ""}</td>
-        </tr>
-      </tbody>
-    </table>;
+  const selectedItemFields = selectedEducation && {
+    Opleiding: selectedEducation.name && selectedEducation.name[props.locale],
+    Opleidingsinstituut: selectedEducation.institution
+  };
 
   const onAddItem = () => {
     const id = createUuid();
@@ -174,7 +167,8 @@ const Education = (props) => {
                   />
                   <ConfirmDialog
                     title="Definitief verwijderen?"
-                    itemFields={renderSelectedItem}
+                    primaryButtonText="Verwijderen"
+                    itemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

@@ -110,17 +110,10 @@ const Experience = (props) => {
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedExperience = experiences.find(experience => experience._id === props.selectedExperienceId);
-  const renderSelectedItem = selectedExperience &&
-    <table>
-      <tbody>
-        <tr>
-          <td><em>Periode</em>:</td><td>{composePeriod(selectedExperience)}</td>
-        </tr>
-        <tr>
-          <td><em>Opdrachtgever</em>:</td><td>{selectedExperience.client || ""}</td>
-        </tr>
-      </tbody>
-    </table>;
+  const selectedItemFields = selectedExperience && {
+    Periode: composePeriod(selectedExperience),
+    Opdrachtgever: selectedExperience.client
+  };
 
   const onAddItem = () => {
     const id = createUuid();
@@ -207,7 +200,8 @@ const Experience = (props) => {
                   />
                   <ConfirmDialog
                     title="Definitief verwijderen?"
-                    itemFields={renderSelectedItem}
+                    primaryButtonText="Verwijderen"
+                    itemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

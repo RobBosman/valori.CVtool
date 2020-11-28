@@ -20,7 +20,7 @@ internal object Authorizer {
       IntentionReadAllBusinessUnits to setOf(ADMIN, EE_LEAD, SALES),
       IntentionReadAllRoles to setOf(ADMIN, EE_LEAD, SALES),
       IntentionUpdateOwnCv to setOf(CONSULTANT),
-      IntentionUpdateOtherCv to setOf(ADMIN, EE_LEAD),
+      IntentionUpdateOtherCv to setOf(ADMIN, EE_LEAD, SALES),
       IntentionUpdateRoles to setOf(ADMIN)
   )
 

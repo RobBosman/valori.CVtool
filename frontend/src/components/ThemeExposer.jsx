@@ -110,8 +110,8 @@ const themePalettes = {
 
 // Expose all created themes.
 if (createTheme instanceof Function) {
-  Object.keys(themePalettes).forEach(theme => {
-    const theme = createTheme(themePalettes[theme]);
+  Object.keys(themePalettes).forEach(themeName => {
+    const theme = createTheme(themePalettes[themeName]);
     console.log(`\n${theme}:\n${JSON.stringify(theme)}\n`);
   });
 } else {

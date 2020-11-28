@@ -56,8 +56,8 @@ export const uiEpics = [
   // NOTE - this epic must be added last, otherwise the returned actions may not be noticed by other epics.
   (_, state$) => state$.pipe(
     take(1),
-    mergeMap(state => {
-      const userPrefs = uiServices.initializeUI(state.ui.userPrefs);
+    mergeMap(() => {
+      const userPrefs = uiServices.initializeUI();
       return of(
         uiActions.setLocale(userPrefs.locale),
         uiActions.setTheme(userPrefs.theme)

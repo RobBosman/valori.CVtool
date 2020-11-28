@@ -17,16 +17,27 @@ const ConfirmDialog = (props) => {
     }
   };
 
+  const renderField = (key, label, value) =>
+    <tr key={key}>
+      <td><strong>{label || ""}</strong></td><td>&nbsp;</td><td>{value || ""}</td>
+    </tr>;
+
   return (
     <Dialog
       dialogContentProps={dialogContentProps}
       modalProps={modalProps}
       hidden={!props.isVisible}
       onDismiss={props.onCancel}>
-      {props.itemFields}
+      <table>
+        <tbody>
+          {props.itemFields && Object.entries(props.itemFields)
+            .map(([label, value], index) => renderField(index, label, value))
+          }
+        </tbody>
+      </table>
       <DialogFooter>
         <PrimaryButton
-          text="Verwijderen"
+          text={props.primaryButtonText}
           onClick={props.onProceed}
         />
         <DefaultButton
@@ -39,8 +50,9 @@ const ConfirmDialog = (props) => {
 };
 
 ConfirmDialog.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
+  primaryButtonText: PropTypes.string.isRequired,
+  isVisible: PropTypes.bool.isRequired,
   itemFields: PropTypes.object,
   onProceed: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired

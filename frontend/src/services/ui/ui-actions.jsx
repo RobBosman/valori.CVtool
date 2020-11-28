@@ -13,10 +13,7 @@ reducerRegistry.register(
   createReducer(
     {
       locationHash: document.location.hash || "",
-      userPrefs: {
-        locale: "nl_NL",
-        theme: "valoriBlue"
-      },
+      userPrefs: {},
       selectedId: {}
     },
     {

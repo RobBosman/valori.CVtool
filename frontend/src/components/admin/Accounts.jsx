@@ -14,6 +14,7 @@ const AccountManagement = (props) => {
 
   const isAdmin = props.authInfo.roles.includes("ADMIN");
   const isEELead = props.authInfo.roles.includes("EE_LEAD");
+  const isSales = props.authInfo.roles.includes("SALES");
 
   const enrichAccountEntity = (accountEntity, roleEntity, businessUnitEntity) => {
     if (!accountEntity) {
@@ -160,7 +161,7 @@ const AccountManagement = (props) => {
   };
 
   const onSelectCv = () => {
-    if ((isAdmin || isEELead) && props.selectedAccountId) {
+    if ((isAdmin || isEELead || isSales) && props.selectedAccountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
