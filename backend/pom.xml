@@ -21,7 +21,6 @@
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     <mongodb-driver-reactivestreams.version>4.1.1</mongodb-driver-reactivestreams.version>
-    <netty-tcnative.version>2.0.34.Final</netty-tcnative.version>
     <vertx.version>4.0.0.CR1</vertx.version>
   </properties>
 
@@ -131,11 +130,6 @@
       <groupId>io.vertx</groupId>
       <artifactId>vertx-auth-oauth2</artifactId>
       <version>${vertx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-tcnative</artifactId>
-      <version>${netty-tcnative.version}</version>
     </dependency>
     <!-- database -->
     <dependency>
