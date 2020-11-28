@@ -46,8 +46,8 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                       .setSslEngineOptions(OpenSSLEngineOptions())
                       .removeEnabledSecureTransportProtocol("TLSv1")
                       .removeEnabledSecureTransportProtocol("TLSv1.1")
-                      .addEnabledSecureTransportProtocol("TLSv1.3")
-                      .setUseAlpn(true)
+//                      .addEnabledSecureTransportProtocol("TLSv1.3")
+//                      .setUseAlpn(true)
                   )
                   .requestHandler(createRouter())
                   .listen { result ->
