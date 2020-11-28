@@ -1,10 +1,12 @@
 package nl.valori.cvtool.server
 
+import io.netty.handler.ssl.OpenSsl
 import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.buffer.Buffer.buffer
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.net.JdkSSLEngineOptions
+import io.vertx.core.net.OpenSSLEngineOptions
 import io.vertx.core.net.PemKeyCertOptions
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
@@ -34,6 +36,9 @@ internal class HttpsServerVerticle : AbstractVerticle() {
       throw IllegalArgumentException("Invalid protocol: expected 'https' but found '${httpsConfig.protocol}'.")
     val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
 
+    val sslEngineOptions = if (OpenSsl.isAvailable()) OpenSSLEngineOptions() else JdkSSLEngineOptions()
+    log.info("Using ${sslEngineOptions.javaClass.name} for SSL.")
+
     getPemKeyCertOptions(httpsConfig)
         .subscribe(
             { pemKeyCertOptions ->
@@ -43,7 +48,7 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                       .setPemKeyCertOptions(pemKeyCertOptions)
                       .setSsl(true)
                       .setCompressionSupported(true)
-                      .setSslEngineOptions(JdkSSLEngineOptions())
+                      .setSslEngineOptions(sslEngineOptions)
                       .removeEnabledSecureTransportProtocol("TLSv1")
                       .removeEnabledSecureTransportProtocol("TLSv1.1")
                       .addEnabledSecureTransportProtocol("TLSv1.3")
