@@ -14,7 +14,7 @@ import { Authorizations, getEnumData } from "../cv/Enums";
 const AccountManagement = (props) => {
 
   const [combinedEntity, setCombinedEntity] = React.useState({});
-
+  
   React.useEffect(() => {
     if (props.accountEntity && props.authorizationEntity && props.businessUnitEntity) {
       const combinedEntity = {};
@@ -189,7 +189,7 @@ const AccountManagement = (props) => {
                 label="Autorisatie"
                 field="authorization.level"
                 instanceContext={combinedInstanceContext}
-                disabled={props.authInfo.authorizationLevel !== "ADMIN"}
+                disabled={props.authInfo.authorizationLevel !== "ADMIN" || props.authInfo.accountId === props.selectedAccountId}
                 options={Authorizations}
                 styles={{ dropdown: { width: 120 } }}
               />

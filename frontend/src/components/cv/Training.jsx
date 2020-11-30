@@ -15,27 +15,32 @@ import ConfirmDialog from "../ConfirmDialog";
 const entityName = "education";
 
 const Education = (props) => {
+  
+  const [trainings, setTrainings] = React.useState([]);
 
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
 
-  const composePeriod = (education) => 
-    `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || "heden"}`;
+  const composePeriod = (training) => 
+    `${training.yearFrom ? training.yearFrom + " - " : ""}${training.yearTo || "heden"}`;
 
   // Find all {Education} of the selected {cv}.
-  const educations = props.educationEntity
-    && props.selectedCvId
-    && Object.values(props.educationEntity)
-      .filter((instance) => instance.cvId === props.selectedCvId)
-      .filter((instance) => instance.type === "TRAINING")
-      .sort((l, r) => {
-        let compare = compareStrings(composePeriod(r), composePeriod(l));
-        if (compare === 0) {
-          compare = compareStrings(l.name || "", r.name || "");
-        }
-        return compare;
-      })
-    || [];
+  React.useEffect(() => {
+    if (props.educationEntity && props.selectedCvId) {
+      setTrainings(
+        Object.values(props.educationEntity)
+          .filter((instance) => instance.cvId === props.selectedCvId)
+          .filter((instance) => instance.type === "TRAINING")
+          .sort((l, r) => {
+            let compare = compareStrings(composePeriod(r), composePeriod(l));
+            if (compare === 0) {
+              compare = compareStrings(l.name || "", r.name || "");
+            }
+            return compare;
+          })
+      );
+    }
+  }, [props.educationEntity, props.selectedCvId]);
 
   const educationContext = {
     entity: props.educationEntity,
@@ -109,7 +114,7 @@ const Education = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedTraining = educations.find(experience => experience._id === props.selectedTrainingId);
+  const selectedTraining = trainings.find(experience => experience._id === props.selectedTrainingId);
   const selectedItemFields = selectedTraining && {
     Opleiding: selectedTraining.name && selectedTraining.name[props.locale],
     Opleidingsinstituut: selectedTraining.institution
@@ -176,7 +181,7 @@ const Education = (props) => {
               </Stack>
               <CvDetailsList
                 columns={columns}
-                items={educations}
+                items={trainings}
                 instanceContext={educationContext}
                 setKey={entityName}
               />

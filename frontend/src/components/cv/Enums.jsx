@@ -3,6 +3,10 @@ export const getEnumData = (enumArray, key) =>
 
 export const Authorizations = [
   {
+    key: "CONSULTANT",
+    text: "-"
+  },
+  {
     key: "ADMIN",
     text: "Admin"
   },
@@ -13,10 +17,6 @@ export const Authorizations = [
   {
     key: "SALES",
     text: "Sales"
-  },
-  {
-    key: "CONSULTANT",
-    text: "Consultant"
   }
 ];
 

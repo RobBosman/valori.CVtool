@@ -15,17 +15,22 @@ import ConfirmDialog from "../ConfirmDialog";
 const entityName = "experience";
 
 const Experience = (props) => {
+  
+  const [experiences, setExperiences] = React.useState([]);
 
   const composePeriod = (experience) =>
     `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
 
   // Find all {Experiences} of the selected {cv}.
-  const experiences = props.experienceEntity
-    && props.selectedCvId
-    && Object.values(props.experienceEntity)
-      .filter((instance) => instance.cvId === props.selectedCvId)
-      .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
-    || [];
+  React.useEffect(() => {
+    if (props.experienceEntity && props.selectedCvId) {
+      setExperiences(
+        Object.values(props.experienceEntity)
+          .filter((instance) => instance.cvId === props.selectedCvId)
+          .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
+      );
+    }
+  }, [props.experienceEntity, props.selectedCvId]);
 
   const experienceContext = {
     locale: props.locale,

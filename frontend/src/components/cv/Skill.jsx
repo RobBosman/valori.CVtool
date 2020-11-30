@@ -17,26 +17,30 @@ import ConfirmDialog from "../ConfirmDialog";
 const entityName = "skill";
 
 const Skill = (props) => {
+  
+  const [skills, setSkills] = React.useState([]);
 
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
 
   // Find all {Skill} of the selected {cv}.
-  const skills = props.skillEntity
-    && props.selectedCvId
-    && Object.values(props.skillEntity)
-      .filter((instance) => instance.cvId === props.selectedCvId)
-      .sort((l, r) => {
-        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
-        if (compare === 0) {
-          compare = (r.skillLevel || 0) - (l.skillLevel || 0);
-        }
-        if (compare === 0) {
-          compare = compareStrings(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
-        }
-        return compare;
-      })
-    || [];
+  React.useEffect(() => {
+    if (props.skillEntity && props.selectedCvId) {
+      setSkills(Object.values(props.skillEntity)
+        .filter((instance) => instance.cvId === props.selectedCvId)
+        .sort((l, r) => {
+          let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
+          if (compare === 0) {
+            compare = (r.skillLevel || 0) - (l.skillLevel || 0);
+          }
+          if (compare === 0) {
+            compare = compareStrings(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
+          }
+          return compare;
+        })
+      );
+    }
+  }, [props.skillEntity, props.selectedCvId]);
 
   const skillContext = {
     entity: props.skillEntity,

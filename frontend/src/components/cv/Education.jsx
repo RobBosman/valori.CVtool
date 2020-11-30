@@ -15,6 +15,8 @@ import ConfirmDialog from "../ConfirmDialog";
 const entityName = "education";
 
 const Education = (props) => {
+  
+  const [educations, setEducations] = React.useState([]);
 
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
@@ -23,20 +25,22 @@ const Education = (props) => {
     `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || "heden"}`;
 
   // Find all {Education} of the selected {cv}.
-  const educations = props.educationEntity
-    && props.selectedCvId
-    && Object.values(props.educationEntity)
-      .filter(instance => instance.cvId === props.selectedCvId)
-      .filter(instance => instance.type === "EDUCATION")
-      .sort((l, r) => {
-        let compare = compareStrings(composePeriod(r), composePeriod(l));
-        if (compare === 0) {
-          compare = compareStrings(l.name || "", r.name || "");
-        }
-        return compare;
-      })
-    || [];
-
+  React.useEffect(() => {
+    if (props.educationEntity && props.selectedCvId) {
+      setEducations(Object.values(props.educationEntity)
+        .filter(instance => instance.cvId === props.selectedCvId)
+        .filter(instance => instance.type === "EDUCATION")
+        .sort((l, r) => {
+          let compare = compareStrings(composePeriod(r), composePeriod(l));
+          if (compare === 0) {
+            compare = compareStrings(l.name || "", r.name || "");
+          }
+          return compare;
+        })
+      );
+    }
+  }, [props.educationEntity, props.selectedCvId]);
+  
   const educationContext = {
     entity: props.educationEntity,
     instanceId: props.selectedEducationId,
