@@ -3,7 +3,7 @@ package nl.valori.cvtool.server.authorization
 import nl.valori.cvtool.server.authorization.TestData.authInfoTom
 import nl.valori.cvtool.server.authorization.TestData.messageFetchAllAccounts
 import nl.valori.cvtool.server.authorization.TestData.messageFetchAllBusinessUnits
-import nl.valori.cvtool.server.authorization.TestData.messageFetchAllRoles
+import nl.valori.cvtool.server.authorization.TestData.messageFetchAllAuthorizations
 import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByAccountIdPascal
 import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByAccountIdTom
 import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByCvIdPascal
@@ -12,7 +12,7 @@ import nl.valori.cvtool.server.authorization.TestData.messageFetchSkillPascal
 import nl.valori.cvtool.server.authorization.TestData.messageFetchSkillTom
 import nl.valori.cvtool.server.authorization.TestData.messageGenerateCvPascal
 import nl.valori.cvtool.server.authorization.TestData.messageGenerateCvTom
-import nl.valori.cvtool.server.authorization.TestData.messageSaveAccountRolePascal
+import nl.valori.cvtool.server.authorization.TestData.messageSaveAuthorizationPascal
 import nl.valori.cvtool.server.authorization.TestData.messageSaveCvPascal
 import nl.valori.cvtool.server.authorization.TestData.messageSaveCvTom
 import nl.valori.cvtool.server.authorization.TestData.messageSaveSkillPascal
@@ -50,10 +50,10 @@ internal object IntentionReadAllAccountsTest {
   }
 
   @Test
-  fun testFetchAllRoles() {
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchAllRoles, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchAllRoles, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchAllRoles, authInfoTom))
+  fun testFetchAllAuthorizations() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchAllAuthorizations, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchAllAuthorizations, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchAllAuthorizations, authInfoTom))
   }
 
   @Test
@@ -149,9 +149,9 @@ internal object IntentionReadAllAccountsTest {
   }
 
   @Test
-  fun testSaveAccountRole() {
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveAccountRolePascal, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveAccountRolePascal, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveAccountRolePascal, authInfoTom))
+  fun testSaveAuthorization() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
   }
 }

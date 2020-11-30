@@ -47,7 +47,7 @@ const Profile = (props) => {
           />
           <CvTextField
             label="Rol"
-            localeField='role'
+            field={`role.${props.locale}`}
             instanceContext={cvContext}
           />
           <Stack horizontal
@@ -67,7 +67,7 @@ const Profile = (props) => {
           </Stack>
           <CvTextField
             label="Interesses"
-            localeField='interests'
+            field={`interests.${props.locale}`}
             instanceContext={cvContext}
             multiline
             autoAdjustHeight
@@ -75,7 +75,7 @@ const Profile = (props) => {
         </Stack>
         <CvTextField
           label="Profielschets"
-          localeField='profile'
+          field={`profile.${props.locale}`}
           instanceContext={cvContext}
           multiline
           autoAdjustHeight

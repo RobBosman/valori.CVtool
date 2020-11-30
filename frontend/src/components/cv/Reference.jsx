@@ -26,7 +26,6 @@ const Reference = (props) => {
     || [];
 
   const referenceContext = {
-    locale: props.locale,
     entity: props.referenceEntity,
     instanceId: props.selectedReferenceId,
     setSelectedInstance: props.setSelectedReferenceId,
@@ -54,7 +53,7 @@ const Reference = (props) => {
     },
     {
       key: "referentFunction",
-      localeFieldName: "referentFunction",
+      fieldName: `referentFunction.${props.locale}`,
       name: "Functie",
       isResizable: true,
       minWidth: 200,
@@ -178,12 +177,12 @@ const Reference = (props) => {
               />
               <CvTextField
                 label="Functie"
-                localeField="referentFunction"
+                field={`referentFunction.${props.locale}`}
                 instanceContext={referenceContext}
               />
               <CvTextField
                 label="Omschrijving"
-                localeField="description"
+                field={`description.${props.locale}`}
                 instanceContext={referenceContext}
                 multiline
                 autoAdjustHeight

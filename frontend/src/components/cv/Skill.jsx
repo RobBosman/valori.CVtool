@@ -39,7 +39,6 @@ const Skill = (props) => {
     || [];
 
   const skillContext = {
-    locale: props.locale,
     entity: props.skillEntity,
     instanceId: props.selectedSkillId,
     setSelectedInstance: props.setSelectedSkillId,
@@ -49,7 +48,7 @@ const Skill = (props) => {
   const renderSkill = (item) =>
     getEnumData(SkillCategories, item.category)?.text || "";
 
-  const renderSkillLevel = (item) => "* ".repeat(item.skillLevel);
+  const renderSkillLevel = (item) => "* ".repeat(item.skillLevel).trim();
 
   const columns = [
     {
@@ -64,7 +63,7 @@ const Skill = (props) => {
     },
     {
       key: "description",
-      localeFieldName: "description",
+      fieldName: `description.${props.locale}`,
       name: "Omschrijving",
       isResizable: true,
       minWidth: 150,
@@ -207,7 +206,7 @@ const Skill = (props) => {
               />
               <CvTextField
                 label="Omschrijving"
-                localeField="description"
+                field={`description.${props.locale}`}
                 instanceContext={skillContext}
               />
               <CvRating
@@ -219,7 +218,7 @@ const Skill = (props) => {
               />
               <CvTextField
                 label="Toelichting"
-                localeField="explanation"
+                field={`explanation.${props.locale}`}
                 instanceContext={skillContext}
                 multiline
                 autoAdjustHeight

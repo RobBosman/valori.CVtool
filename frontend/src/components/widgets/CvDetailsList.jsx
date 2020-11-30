@@ -4,7 +4,7 @@ import { DetailsList, DetailsListLayoutMode, ScrollablePane, Selection, Sticky, 
 
 export const CvDetailsList = (props) => {
 
-  const { instanceId, setSelectedInstance, locale } = props.instanceContext;
+  const { instanceId, setSelectedInstance } = props.instanceContext;
   const getKey = (item) => item._id;
 
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
@@ -18,17 +18,18 @@ export const CvDetailsList = (props) => {
   React.useEffect(() => {
     selection.setAllSelected(false);
     selection.setKeySelected(instanceId, true, false);
-  }, [instanceId]);
+  }, [props.items, instanceId]);
 
-  const mapLocaleFields = props.columns.map((column) =>
-    column.localeFieldName
-      ? {
+  const mapLocaleFields = props.columns.map((column) => {
+    const fieldPath = (column.fieldName || "").split(".");
+    if (fieldPath.length === 2) {
+      return {
         ...column,
-        fieldName: column.localeFieldName,
-        onRender: (instance) => instance[column.localeFieldName] && instance[column.localeFieldName][locale]
-      }
-      : column
-  );
+        onRender: (instance) => instance[fieldPath[0]] && instance[fieldPath[0]][fieldPath[1]]
+      };
+    }
+    return column;
+  });
 
   const scrollStyle = {
     position: "relative",

@@ -2,7 +2,6 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const fetchAllInstances = createAction("FECTH_ALL_INSTANCES");
-export const fetchCvByAccountId = createAction("FECTH_CV_BY_ACCOUNT_ID");
 export const save = createAction("SAVE");
 
 export const resetEntities = createAction("RESET_ENTITIES");

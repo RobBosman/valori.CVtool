@@ -25,10 +25,8 @@ internal object IntentionUpdateOwnCv : Intention {
                 if (instancesMap.keys.contains(authInfo.accountId))
                   return true
               }
-              "businessUnit" -> {
-              }
-              "role" -> {
-              }
+              "businessUnit" -> {}
+              "authorization" -> {}
               "cv" -> {
                 // Only consider 'own' cvIds.
                 if (instancesMap.keys.any(authInfo.cvIds::contains))

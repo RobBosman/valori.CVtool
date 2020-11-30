@@ -78,7 +78,7 @@ internal object EventBusMessageHandler {
   }
 
   /**
-   * When successfully authenticated, the user's roles will be added to the 'Auth' header.
+   * When successfully authenticated, the user's authorization.level will be added to {@code authInfo}.
    */
   private fun addAuthInfo(vertx: Vertx, authInfo: AuthInfo) =
       vertx

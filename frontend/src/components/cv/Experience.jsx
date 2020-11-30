@@ -67,7 +67,7 @@ const Experience = (props) => {
     },
     {
       key: "role",
-      localeFieldName: "role",
+      fieldName: `role.${props.locale}`,
       name: "Rol",
       isResizable: true,
       minWidth: 100,
@@ -253,7 +253,7 @@ const Experience = (props) => {
               </Stack>
               <CvTextField
                 label="Rol"
-                localeField="role"
+                field={`role.${props.locale}`}
                 instanceContext={experienceContext}
               />
               <Stack horizontal
@@ -272,28 +272,28 @@ const Experience = (props) => {
               <Separator/>
               <CvTextField
                 label="Opdracht"
-                localeField="assignment"
+                field={`assignment.${props.locale}`}
                 instanceContext={experienceContext}
                 multiline
                 autoAdjustHeight
               />
               <CvTextField
                 label="Activiteiten"
-                localeField="activities"
+                field={`activities.${props.locale}`}
                 instanceContext={experienceContext}
                 multiline
                 autoAdjustHeight
               />
               <CvTextField
                 label="Resultaten"
-                localeField="results"
+                field={`results.${props.locale}`}
                 instanceContext={experienceContext}
                 multiline
                 autoAdjustHeight
               />
               <CvTextField
                 label="Werkomgeving"
-                localeField="keywords"
+                field={`keywords.${props.locale}`}
                 instanceContext={experienceContext}
                 multiline
                 autoAdjustHeight

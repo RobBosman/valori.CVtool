@@ -39,7 +39,7 @@ internal object IntentionReadOtherCv : Intention {
                     if (authInfo.accountId != criterion.map["_id"])
                       return true
                   }
-                  "role" -> {}
+                  "authorization" -> {}
                   "businessUnit" -> {}
                   "cv" -> {
                     val accountId = criterion.map["accountId"]

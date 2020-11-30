@@ -7,8 +7,8 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
+import nl.valori.cvtool.server.ModelUtils.addEntity
 import nl.valori.cvtool.server.ModelUtils.composeCvInstance
-import nl.valori.cvtool.server.ModelUtils.composeEntity
 import nl.valori.cvtool.server.ModelUtils.getInstanceIds
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
@@ -83,8 +83,9 @@ internal class CvFetchVerticle : AbstractVerticle() {
     return when (cvIds.size) {
       0 -> {
         val cvId = UUID.randomUUID().toString()
+        val saveRequest = JsonObject().addEntity("cv", composeCvInstance(cvId, accountId))
         vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, composeEntity("cv", composeCvInstance(cvId, accountId)), deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
             .map { cvId }
       }
       1 -> Single.just(cvIds.first())

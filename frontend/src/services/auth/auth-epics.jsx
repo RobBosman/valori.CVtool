@@ -4,6 +4,7 @@ import { ofType } from "redux-observable";
 import * as errorActions from "../error/error-actions";
 import * as eventBusActions from "../eventBus/eventBus-actions";
 import * as eventBusServices from "../eventBus/eventBus-services";
+import * as cvActions from "../cv/cv-actions";
 import * as safeActions from "../safe/safe-actions";
 import * as authActions from "./auth-actions";
 import * as authServices from "./auth-services";
@@ -105,21 +106,19 @@ export const authEpics = [
     ofType(authActions.setAuthInfo.type),
     map(action => action.payload),
     switchMap(authInfo => {
-      // When authInfo is available, then fetch the cv data (and also the admin data if applicable), otherwise erase everything.
+      // When authInfo is available, then fetch the cv data (and also additional data if applicable), otherwise erase everything.
       const actions = [];
       if (authInfo) {
         actions.push(
           authActions.setLoginState(authActions.LoginStates.LOGGED_IN),
-          safeActions.fetchCvByAccountId(authInfo.accountId)
+          cvActions.fetchCvByAccountId(authInfo.accountId)
         );
-        if (authInfo.roles.includes("ADMIN") || authInfo.roles.includes("EE_LEAD") || authInfo.roles.includes("SALES")) {
+        if (["ADMIN", "EE_LEAD", "SALES"].includes(authInfo.authorizationLevel)) {
           actions.push(
             safeActions.fetchAllInstances("account"),
+            safeActions.fetchAllInstances("authorization"),
             safeActions.fetchAllInstances("businessUnit")
           );
-        }
-        if (authInfo.roles.includes("ADMIN")) {
-          actions.push(safeActions.fetchAllInstances("role"));
         }
       } else {
         actions.push(

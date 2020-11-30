@@ -28,7 +28,7 @@ const val CV_GENERATE_ADDRESS = "cv.generate"
 internal class CvGenerateVerticle : AbstractVerticle() {
 
   companion object {
-    internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20201022.xsd"
+    internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20201130.xsd"
 
     private val log = LoggerFactory.getLogger(CvGenerateVerticle::class.java)
     private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)

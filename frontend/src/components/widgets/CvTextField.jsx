@@ -10,18 +10,15 @@ export const CvTextField = (props) => {
     return () => clearTimeout(timeoutId);
   }, [errorMessage]);
   
-  const { entity, instanceId, locale, replaceInstance } = props.instanceContext;
+  const { entity, instanceId, replaceInstance } = props.instanceContext;
   const instance = entity && entity[instanceId];
 
-  let value = "";
-  if (instance) {
-    if (props.localeField) {
-      value = instance[props.localeField] && instance[props.localeField][locale];
-    } else {
-      value = instance[props.field];
-    }
-    value = value || props.defaultValue || "";
-  }
+  let value = instance;
+  props.field.split(".")
+    .forEach(field => {
+      value = value && value[field];
+    });
+  value = value || props.defaultValue || "";
 
   const onChange = (event) => {
     if (props.validateInput) {
@@ -33,19 +30,26 @@ export const CvTextField = (props) => {
     }
 
     setErrorMessage("");
-    replaceInstance && replaceInstance(instanceId, props.localeField
-      ? {
+
+    let instanceToBeSaved;
+    const fieldPath = props.field.split(".");
+    if (fieldPath.length === 2) {
+      let subInstance = instance[fieldPath[0]] || {};
+      instanceToBeSaved = {
         ...instance,
-        [props.localeField]: {
-          ...instance[props.localeField],
-          [locale]: event.target.value
+        [fieldPath[0]]: {
+          ...subInstance,
+          [fieldPath[1]]: event.target.value
         }
-      }
-      : {
+      };
+    } else {
+      instanceToBeSaved = {
         ...instance,
-        [props.field]: event.target.value
-      }
-    );
+        [fieldPath[0]]: event.target.value
+      };
+    }
+
+    replaceInstance && replaceInstance(instanceId, instanceToBeSaved);
   };
 
   return (
@@ -54,7 +58,7 @@ export const CvTextField = (props) => {
       placeholder={props.placeholder}
       multiline={props.multiline}
       autoAdjustHeight={props.autoAdjustHeight}
-      disabled={!instance}
+      disabled={props.disabled || !instance}
       value={value}
       styles={props.styles}
       onChange={onChange}
@@ -65,10 +69,10 @@ export const CvTextField = (props) => {
 
 CvTextField.propTypes = {
   instanceContext: PropTypes.object.isRequired,
-  field: PropTypes.string,
-  localeField: PropTypes.string,
+  field: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,
   label: PropTypes.string,
+  disabled: PropTypes.bool,
   placeholder: PropTypes.string,
   multiline: PropTypes.bool,
   autoAdjustHeight: PropTypes.bool,

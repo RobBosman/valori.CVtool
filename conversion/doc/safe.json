@@ -21,11 +21,11 @@
       "residence": "Leusden"
     }
   },
-  "role": {
+  "authorization": {
     "uuid-role-1": {
-      "_id": "uuid-role-1",
+      "_id": "uuid-authorization-1",
       "accountId": "uuid-account-1",
-      "name": "ADMIN"
+      "level": "ADMIN"
     }
   },
   "cv": {
@@ -168,6 +168,8 @@
   },
   "ENUM_ROLE": [
     "ADMIN",
+    "EE_LEAD",
+    "SALES",
     "CONSULTANT"
   ],
   "ENUM_EDUCATION_TYPE": [

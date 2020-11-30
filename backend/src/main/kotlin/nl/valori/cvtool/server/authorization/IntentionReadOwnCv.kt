@@ -45,7 +45,7 @@ internal object IntentionReadOwnCv : Intention {
                     if (authInfo.cvIds.contains(criterion.map["_id"]))
                       return true
                   }
-                  "role" -> {}
+                  "authorization" -> {}
                   "businessUnit" -> {}
                   else -> {
                     // Only consider 'own' accountId.

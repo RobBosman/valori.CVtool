@@ -6,16 +6,11 @@
       "_id": "14bfa6bb-1487-3e45-bba0-28a21ed38046"
     }
   },
-  "role": {
+  "authorization": {
     "517d43ec-b668-d33d-815b-11367b3edc9a": {
       "accountId": "14bfa6bb-1487-3e45-bba0-28a21ed38046",
-      "name": "ADMIN",
+      "level": "ADMIN",
       "_id": "517d43ec-b668-d33d-815b-11367b3edc9a"
-    },
-    "3e45-bba0-14bfa6bb-1487-28a21ed38046": {
-      "accountId": "14bfa6bb-1487-3e45-bba0-28a21ed38046",
-      "name": "CONSULTANT",
-      "_id": "3e45-bba0-14bfa6bb-1487-28a21ed38046"
     }
   },
   "cv": {

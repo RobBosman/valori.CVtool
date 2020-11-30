@@ -23,7 +23,6 @@ const Publication = (props) => {
     || [];
 
   const publicationContext = {
-    locale: props.locale,
     entity: props.publicationEntity,
     instanceId: props.selectedPublicationId,
     setSelectedInstance: props.setSelectedPublicationId,
@@ -44,7 +43,7 @@ const Publication = (props) => {
   const columns = [
     {
       key: "title",
-      localeFieldName: "title",
+      fieldName: `title.${props.locale}`,
       name: "Titel",
       isResizable: true,
       minWidth: 150,
@@ -181,7 +180,7 @@ const Publication = (props) => {
             <Stack styles={editStyles}>
               <CvTextField
                 label="Titel"
-                localeField="title"
+                field={`title.${props.locale}`}
                 instanceContext={publicationContext}
               />
               <CvTextField
@@ -199,7 +198,7 @@ const Publication = (props) => {
               />
               <CvTextField
                 label="Omschrijving"
-                localeField="description"
+                field={`description.${props.locale}`}
                 instanceContext={publicationContext}
                 validateInput={isValidText}
               />

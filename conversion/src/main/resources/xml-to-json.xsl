@@ -38,13 +38,7 @@
   <xsl:template match="cv:set_of__account">
     {
     "account": [<xsl:apply-templates select="cv:_account"/>]
-    ,"role": [
-    <xsl:for-each select="cv:_account/cv:rol[cv:naam = 'view alle CVs']">
-      <xsl:sort select="../cv:email" />
-      <xsl:if test="position() > 1">,</xsl:if>
-      <xsl:apply-templates select="."/>
-    </xsl:for-each>
-    ]
+    ,"authorization": [<xsl:apply-templates select="cv:_account/cv:rol"/>]
     ,"cv": [<xsl:apply-templates select="*/cv:cv"/>]
     ,"education": [<xsl:apply-templates select="*/cv:cv/cv:opleiding"/>]
     ,"publication": [<xsl:apply-templates select="*/cv:cv/cv:publicatie[cv:titel or cv:media]"/>]
@@ -70,10 +64,15 @@
   </xsl:template>
 
   <xsl:template match="cv:rol">
+    <xsl:if test="position() > 1">,</xsl:if>
     {
-    "_id": "<xsl:value-of select="util:uuid(concat('role', ../@id))"/>"
+    "_id": "<xsl:value-of select="util:uuid(concat('authorization', ../@id))"/>"
     ,"accountId": "<xsl:value-of select="util:uuid(../@id)"/>"
-    ,"name": "ADMIN"
+    ,"level":
+    <xsl:choose>
+      <xsl:when test="cv:naam = 'view alle CVs'">ADMIN</xsl:when>
+      <xsl:otherwise>CONSULTANT</xsl:otherwise>
+    </xsl:choose>
     }
   </xsl:template>
 

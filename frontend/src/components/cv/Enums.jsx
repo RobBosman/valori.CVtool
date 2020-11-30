@@ -1,18 +1,22 @@
 export const getEnumData = (enumArray, key) =>
   enumArray.find(entry => entry.key === key);
 
-export const AccountRoles = [
+export const Authorizations = [
   {
     key: "ADMIN",
     text: "Admin"
+  },
+  {
+    key: "EE_LEAD",
+    text: "E&E"
   },
   {
     key: "SALES",
     text: "Sales"
   },
   {
-    key: "EE_LEAD",
-    text: "E&E"
+    key: "CONSULTANT",
+    text: "Consultant"
   }
 ];
 

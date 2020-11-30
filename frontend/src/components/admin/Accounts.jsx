@@ -4,87 +4,60 @@ import { Text, Stack, TextField } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import * as safeActions from "../../services/safe/safe-actions";
+import * as cvActions from "../../services/cv/cv-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
-import { AccountRoles } from "../cv/Enums";
-import { CvCheckbox } from "../widgets/CvCheckbox";
-import { createUuid } from "../../services/safe/safe-services";
+import { CvDropdown } from "../widgets/CvDropdown";
+import { CvTextField } from "../widgets/CvTextField";
+import { Authorizations, getEnumData } from "../cv/Enums";
 
 const AccountManagement = (props) => {
 
-  const isAdmin = props.authInfo.roles.includes("ADMIN");
-  const isEELead = props.authInfo.roles.includes("EE_LEAD");
-  const isSales = props.authInfo.roles.includes("SALES");
+  const [combinedEntity, setCombinedEntity] = React.useState({});
 
-  const enrichAccountEntity = (accountEntity, roleEntity, businessUnitEntity) => {
-    if (!accountEntity) {
-      return undefined;
+  React.useEffect(() => {
+    if (props.accountEntity && props.authorizationEntity && props.businessUnitEntity) {
+      const combinedEntity = {};
+      Object.entries(props.accountEntity)
+        .forEach(([accountId, account]) => {
+          const authorization = props.authorizationEntity && Object.values(props.authorizationEntity)
+            .find(authorizationInstance => authorizationInstance.accountId === accountId);
+
+          const businessUnit = props.businessUnitEntity && Object.values(props.businessUnitEntity)
+            .find(businessUnit => businessUnit.accountIds.includes(accountId));
+
+          combinedEntity[accountId] = {
+            ...account,
+            authorization: authorization,
+            businessUnit: businessUnit
+          };
+        });
+      setCombinedEntity(combinedEntity);
     }
-    const enrichedAccountEntity = {};
-    Object.entries(accountEntity)
-      .forEach(([accountId, account]) => {
-        const enrichedAccount = {...account};
+  }, [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
 
-        if (isAdmin) {
-          const roles = roleEntity && Object.values(roleEntity)
-            .filter(role => role.accountId === accountId);
-          enrichedAccount.roles = roles;
-          AccountRoles
-            .map(roleEnum => roleEnum.key)
-            .forEach(roleName => {
-              enrichedAccount[roleName] = roles?.find(role => role.name === roleName);
-            });
-        }
-
-        const businessUnit = businessUnitEntity && Object.values(businessUnitEntity)
-          .find(businessUnit => businessUnit.accountIds.includes(accountId));
-        enrichedAccount.businessUnit = businessUnit?.name;
-
-        enrichedAccountEntity[accountId] = enrichedAccount;
-      });
-    return enrichedAccountEntity;
+  const replaceCombinedInstance = (accountId, combinedInstance) => {
+    const authorization = props.authorizationEntity && Object.values(props.authorizationEntity)
+      .find(authorizationInstance => authorizationInstance.accountId === accountId);
+    props.replaceAuthorization(authorization._id, {
+      ...authorization,
+      level: combinedInstance.authorization.level
+    });
   };
-
-  const replaceEnrichedAccount = (accountId, enrichedAccount) => {
-    const {roles, ...account} = enrichedAccount;
-    AccountRoles
-      .map(roleEnum => roleEnum.key)
-      .forEach(roleName => {
-        const role = roles?.find(role => role.name === roleName);
-        if (enrichedAccount[roleName]) {
-          if (!role) {
-            // Create new role.
-            const id = createUuid();
-            props.replaceRole(id, {
-              _id: id,
-              accountId: enrichedAccount._id,
-              name: roleName
-            });
-          }
-        } else if (role) {
-          // Delete role.
-          props.replaceRole(role._id, {});
-        }
-        delete(account[roleName]);
-      });
-  };
-
-  const enrichedAccountEntity = enrichAccountEntity(props.accountEntity, props.roleEntity, props.businessUnitEntity);
 
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
 
-  // Sort {EnrichedAccount} records.
-  const enrichedAccounts = enrichedAccountEntity && Object.values(enrichedAccountEntity)
+  // Sort {CombinedInstance} records.
+  const combinedInstances = combinedEntity && Object.values(combinedEntity)
     .sort((l, r) => compareStrings(l.name, r.name))
     || [];
 
-  const enrichedAccountContext = {
-    locale: props.locale,
-    entity: enrichedAccountEntity,
+  const combinedInstanceContext = {
+    entity: combinedEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
-    replaceInstance: replaceEnrichedAccount
+    replaceInstance: replaceCombinedInstance
   };
 
   const columns = [
@@ -93,75 +66,79 @@ const AccountManagement = (props) => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
-      minWidth: 120,
+      minWidth: 130,
       isSorted: false,
       isSortedDescending: false,
       data: "string"
     },
     {
-      key: "businessUnit",
-      fieldName: "businessUnit",
+      key: "businessUnit.name",
+      fieldName: "businessUnit.name",
       name: "Tribe",
       isResizable: true,
       minWidth: 120,
       data: "string"
+    },
+    {
+      key: "authorization.level",
+      fieldName: "onRender",
+      name: "Autorisatie",
+      onRender: (item) => {
+        const authorizationLevel = props.authorizationEntity && Object.values(props.authorizationEntity)
+          .find(authorization => authorization.accountId === item._id)
+          ?.level;
+        return getEnumData(Authorizations, authorizationLevel)?.text || "";
+      },
+      isResizable: false,
+      minWidth: 80,
+      maxWidth: 80,
+      data: "string"
     }
   ];
-  if (isAdmin) {
-    const renderCheckbox = (field, item) =>
-      <CvCheckbox
-        field={field}
-        instanceContext={{ ...enrichedAccountContext,  instanceId: item._id }}
-        disabled={field === "ADMIN" && item._id === props.authInfo.accountId}
-      />;
 
-    AccountRoles
-      .forEach(roleEnum => {
-        columns.push({
-          key: roleEnum.key,
-          fieldName: roleEnum.key,
-          name: roleEnum.text,
-          onRender: (item) => renderCheckbox(roleEnum.key, item),
-          isResizable: false,
-          minWidth: 50,
-          maxWidth: 50,
-          data: "boolean"
-        });
-      });
-  }
-
-  const { viewPaneColor } = useTheme();
+  const { editPaneColor, viewPaneColor } = useTheme();
   const viewStyles = {
     root: [
       {
         background: viewPaneColor,
         padding: 20,
-        minWidth: isAdmin ? 600 : 400,
-        width: "calc(50vw - 98px)",
+        minWidth: 500,
         height: "calc(100vh - 170px)"
       }
     ]
   };
+  const editStyles = {
+    root: [
+      {
+        background: editPaneColor,
+        padding: 20,
+        height: "calc(100vh - 170px)"
+      }
+    ]
+  };
+  const tdStyle = {
+    width: "calc(50vw - 98px)"
+  };
 
-  const [listItems, setListItems] = React.useState(enrichedAccounts);
+  const [listItems, setListItems] = React.useState(combinedInstances);
   const [filterText, setFilterText] = React.useState("");
   // Refresh the list if necessary.
-  if (filterText === "" && listItems.length !== enrichedAccounts.length) {
-    setListItems(enrichedAccounts);
+  if (filterText === "" && listItems.length !== combinedInstances.length) {
+    setListItems(combinedInstances);
   }
 
   const onFilter = (_, filterText) => {
     if (filterText) {
       setFilterText(filterText);
       const lowerCaseFilterText = filterText.toLowerCase();
-      setListItems(enrichedAccounts.filter(ea => `${ea.name}\n${ea.businessUnit}`.toLowerCase().indexOf(lowerCaseFilterText) >= 0));
+      setListItems(combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit}`.toLowerCase().indexOf(lowerCaseFilterText) >= 0));
     } else {
-      setListItems(enrichedAccounts);
+      setListItems(combinedInstances);
     }
   };
 
-  const onSelectCv = () => {
-    if ((isAdmin || isEELead || isSales) && props.selectedAccountId) {
+  const onEditCv = () => {
+    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel) && props.selectedAccountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
@@ -170,7 +147,7 @@ const AccountManagement = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top">
+          <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Accounts</Text>
@@ -181,15 +158,40 @@ const AccountManagement = (props) => {
                     underlined
                     onChange={onFilter}
                   />
-                  <Text variant="xSmall">{listItems.length} / {enrichedAccounts.length}</Text>
+                  <Text variant="xSmall">{listItems.length} / {combinedInstances.length}</Text>
                 </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}
                 items={listItems}
-                instanceContext={enrichedAccountContext}
-                setKey="enrichedAccount"
-                onItemInvoked={onSelectCv}
+                instanceContext={combinedInstanceContext}
+                setKey="combinedInstances"
+                onItemInvoked={onEditCv}
+              />
+            </Stack>
+          </td>
+
+          <td valign="top" style={tdStyle}>
+            <Stack styles={editStyles}>
+              <CvTextField
+                label="Naam"
+                field="name"
+                instanceContext={combinedInstanceContext}
+                disabled={true}
+              />
+              <CvTextField
+                label="Tribe"
+                field="businessUnit.name"
+                instanceContext={combinedInstanceContext}
+                disabled={true}
+              />
+              <CvDropdown
+                label="Autorisatie"
+                field="authorization.level"
+                instanceContext={combinedInstanceContext}
+                disabled={props.authInfo.authorizationLevel !== "ADMIN"}
+                options={Authorizations}
+                styles={{ dropdown: { width: 120 } }}
               />
             </Stack>
           </td>
@@ -203,10 +205,10 @@ AccountManagement.propTypes = {
   locale: PropTypes.string.isRequired,
   authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
-  roleEntity: PropTypes.object,
+  authorizationEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   replaceAccount: PropTypes.func.isRequired,
-  replaceRole: PropTypes.func.isRequired,
+  replaceAuthorization: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
   setSelectedAccountId: PropTypes.func.isRequired,
   fetchCvByAccountId: PropTypes.func.isRequired
@@ -216,7 +218,7 @@ const select = (state) => ({
   locale: state.ui.userPrefs.locale,
   authInfo: state.auth.authInfo,
   accountEntity: state.safe.content["account"],
-  roleEntity: state.safe.content["role"],
+  authorizationEntity: state.safe.content["authorization"],
   businessUnitEntity: state.safe.content["businessUnit"],
   selectedAccountId: state.ui.selectedId["account"]
 });
@@ -224,8 +226,8 @@ const select = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setSelectedAccountId: (id) => dispatch(setSelectedId("account", id)),
   replaceAccount: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
-  replaceRole: (id, instance) => dispatch(safeActions.changeInstance("role", id, instance)),
-  fetchCvByAccountId: (accountId) => dispatch(safeActions.fetchCvByAccountId(accountId))
+  replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
+  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
 });
 
 export default connect(select, mapDispatchToProps)(AccountManagement);

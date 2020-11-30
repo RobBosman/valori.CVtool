@@ -14,10 +14,10 @@
     "dateOfBirth": "DATE",
     "residence": "STRING"
   },
-  "role": {
+  "authorization": {
     "_id": "ID",
     "accountId": "ID",
-    "name": "ROLE_NAME"
+    "level": "ENUM_AUTHORIZATION_LEVEL"
   },
   "cv": {
     "_id": "ID",
@@ -105,10 +105,11 @@
     "sortIndex": "NUMBER",
     "includeInCv": "BOOLEAN"
   },
-  "ENUM_ROLE": [
+  "ENUM_AUTHORIZATION_LEVEL": [
     "ADMIN",
     "SALES",
-    "EE_LEAD"
+    "EE_LEAD",
+    "CONSULTANT"
   ],
   "ENUM_EDUCATION_TYPE": [
     "EDUCATION",

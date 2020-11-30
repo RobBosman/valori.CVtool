@@ -38,7 +38,6 @@ const Education = (props) => {
     || [];
 
   const educationContext = {
-    locale: props.locale,
     entity: props.educationEntity,
     instanceId: props.selectedEducationId,
     setSelectedInstance: props.setSelectedEducationId,
@@ -51,7 +50,7 @@ const Education = (props) => {
   const columns = [
     {
       key: "name",
-      localeFieldName: "name",
+      fieldName: `name.${props.locale}`,
       name: "Opleiding",
       isResizable: true,
       minWidth: 180,
@@ -188,12 +187,14 @@ const Education = (props) => {
             <Stack styles={editStyles}>
               <CvTextField
                 label="Opleiding"
-                localeField="name"
-                instanceContext={educationContext} />
+                field={`name.${props.locale}`}
+                instanceContext={educationContext}
+              />
               <CvTextField
                 label="Opleidingsinstituut"
                 field="institution"
-                instanceContext={educationContext} />
+                instanceContext={educationContext}
+              />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
                 <CvTextField

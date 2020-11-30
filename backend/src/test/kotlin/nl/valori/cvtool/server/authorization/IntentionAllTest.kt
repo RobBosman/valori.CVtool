@@ -16,8 +16,8 @@ internal object IntentionAllTest {
         {},
         { "_id": "account-id-of-tom" }
       ],
+      "authorization": [{}],
       "businessUnit": [{}],
-      "role": [{}],
       "cv": [
         { "accountId": "account-id-of-tom" },
         { "accountId": "account-id-of-pascal" },
@@ -55,9 +55,9 @@ internal object IntentionAllTest {
           "key": "value"
         }
       },
-      "role": {
-        "role-id-of-pascal": {
-          "_id": "role-id-of-pascal",
+      "authorization": {
+        "authorization-id-of-pascal": {
+          "_id": "authorization-id-of-pascal",
           "accountId": "account-id-of-pascal",
           "name": "ADMIN"
         }
@@ -71,7 +71,7 @@ internal object IntentionAllTest {
         IntentionReadOtherCv,
         IntentionReadAllAccounts,
         IntentionReadAllBusinessUnits,
-        IntentionReadAllRoles)
+        IntentionReadAllAuthorizations)
         .forEach { intentionToTest ->
           assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, bodyFetchAll, authInfoTom),
               "Testing class ${intentionToTest.javaClass.simpleName}")
@@ -83,7 +83,7 @@ internal object IntentionAllTest {
     listOf(
         IntentionUpdateOwnCv,
         IntentionUpdateOtherCv,
-        IntentionUpdateRoles)
+        IntentionUpdateAuthorizations)
         .forEach { intentionToTest ->
           assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAll, authInfoTom),
               "Testing class ${intentionToTest.javaClass.simpleName}")

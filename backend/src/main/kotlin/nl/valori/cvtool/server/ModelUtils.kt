@@ -17,6 +17,15 @@ object ModelUtils {
         }
         """.trimIndent())
 
+  fun composeAuthorizationInstance(id: String, accountId: String, level: String) =
+      JsonObject("""
+        {
+          "_id": "$id",
+          "accountId": "$accountId",
+          "level": "$level"
+        }
+        """.trimIndent())
+
   fun composeCvInstance(id: String, accountId: String) =
       JsonObject("""
         {
@@ -27,10 +36,9 @@ object ModelUtils {
           "interests": {}
         }""".trimIndent())
 
-  fun composeEntity(entity: String, instance: JsonObject): JsonObject =
-      JsonObject()
-          .put(entity, JsonObject()
-              .put(instance.getString("_id"), instance))
+  fun JsonObject.addEntity(entity: String, instance: JsonObject): JsonObject =
+      put(entity, JsonObject()
+          .put(instance.getString("_id"), instance))
 
   fun JsonObject.getInstanceIds(entityName: String) =
       when (val entity = getValue(entityName)) {
@@ -46,7 +54,9 @@ object ModelUtils {
 
   fun JsonObject.getCriteria(entityName: String): List<JsonObject> {
     return when (val criteria = getValue(entityName)) {
-      is JsonArray -> { criteria.list.mapNotNull(::toJsonObject) }
+      is JsonArray -> {
+        criteria.list.mapNotNull(::toJsonObject)
+      }
       else -> emptyList()
     }
   }

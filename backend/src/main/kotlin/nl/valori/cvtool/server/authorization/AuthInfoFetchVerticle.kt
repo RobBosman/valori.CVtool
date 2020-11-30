@@ -4,14 +4,15 @@ import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
+import nl.valori.cvtool.server.ModelUtils.addEntity
 import nl.valori.cvtool.server.ModelUtils.composeAccountInstance
-import nl.valori.cvtool.server.ModelUtils.composeEntity
+import nl.valori.cvtool.server.ModelUtils.composeAuthorizationInstance
 import nl.valori.cvtool.server.ModelUtils.getInstanceIds
 import nl.valori.cvtool.server.ModelUtils.getInstances
+import nl.valori.cvtool.server.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -51,7 +52,7 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
    *   {
    *     "email": "PietjePuk@Valori.nl",
    *     "name": "Pietje Puk",
-   *     "roles": ["SALES"],
+   *     "authorizationLevel": "SALES",
    *     "accountId": "1111-2222-5555-7777",
    *     "cvIds": ["2222-7777-5555-1111"]
    *   }
@@ -61,7 +62,7 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
           .just(message.body())
           .map(::createAuthInfo)
           .flatMap(::addAccountInfo)
-          .flatMap(::addRolesAndCvIds)
+          .flatMap(::addAuthorizationLevelAndCvIds)
           .map(AuthInfo::toJson)
           .subscribe(
               {
@@ -84,7 +85,6 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
           .map { account ->
             authInfo
                 .withAccountId(account.getString("_id", ""))
-                .withRoles(account.map["roles"] as JsonArray? ?: JsonArray())
           }
 
   private fun fetchOrCreateAccount(email: String, name: String) =
@@ -103,24 +103,30 @@ internal class AuthInfoFetchVerticle : AbstractVerticle() {
           }
 
   private fun createAccount(email: String, name: String): Single<JsonObject> {
-    val accountInstance = composeAccountInstance(UUID.randomUUID().toString(), email, name)
+    val accountId = UUID.randomUUID().toString()
+    val accountInstance = composeAccountInstance(accountId, email, name)
+    val authorization = composeAuthorizationInstance(UUID.randomUUID().toString(), accountId, CONSULTANT.name)
+    val saveRequest = JsonObject()
+        .addEntity("account", accountInstance)
+        .addEntity("authorization", authorization)
     return vertx.eventBus()
-        .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, composeEntity("account", accountInstance), deliveryOptions)
+        .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
         .map { accountInstance }
   }
 
-  private fun addRolesAndCvIds(authInfo: AuthInfo) =
+  private fun addAuthorizationLevelAndCvIds(authInfo: AuthInfo) =
       vertx.eventBus()
           .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS,
               JsonObject("""{
-                "role": [{ "accountId": "${authInfo.accountId}" }],
+                "authorization": [{ "accountId": "${authInfo.accountId}" }],
                 "cv": [{ "accountId": "${authInfo.accountId}" }]
               }""".trimIndent()),
               deliveryOptions)
           .map {
             authInfo
-                .withRoles(JsonArray(it.body().getInstances("role")
-                    .map { role -> role.getString("name", "") })
+                .withAuthorizationLevel(it.body().getInstances("authorization")
+                    .map { authorizationLevel -> authorizationLevel.getString("level", "") }
+                    .first()
                 )
                 .withCvIds(it.body().getInstanceIds("cv"))
           }

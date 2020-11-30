@@ -10,7 +10,7 @@ import nl.valori.cvtool.server.authorization.TestData.messageFetchSkillPascal
 import nl.valori.cvtool.server.authorization.TestData.messageFetchSkillTom
 import nl.valori.cvtool.server.authorization.TestData.messageGenerateCvPascal
 import nl.valori.cvtool.server.authorization.TestData.messageGenerateCvTom
-import nl.valori.cvtool.server.authorization.TestData.messageSaveAccountRolePascal
+import nl.valori.cvtool.server.authorization.TestData.messageSaveAuthorizationPascal
 import nl.valori.cvtool.server.authorization.TestData.messageSaveCvPascal
 import nl.valori.cvtool.server.authorization.TestData.messageSaveCvTom
 import nl.valori.cvtool.server.authorization.TestData.messageSaveSkillPascal
@@ -48,10 +48,10 @@ internal object IntentionReadOwnAuthInfoTest {
   }
 
   @Test
-  fun testFetchAllRoles() {
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.messageFetchAllRoles, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.messageFetchAllRoles, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.messageFetchAllRoles, authInfoTom))
+  fun testFetchAllAuthorizations() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.messageFetchAllAuthorizations, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.messageFetchAllAuthorizations, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.messageFetchAllAuthorizations, authInfoTom))
   }
 
   @Test
@@ -147,9 +147,9 @@ internal object IntentionReadOwnAuthInfoTest {
   }
 
   @Test
-  fun testSaveAccountRole() {
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveAccountRolePascal, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveAccountRolePascal, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveAccountRolePascal, authInfoTom))
+  fun testSaveAuthorization() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
   }
 }

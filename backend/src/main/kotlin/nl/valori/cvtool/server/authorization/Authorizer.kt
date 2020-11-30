@@ -2,26 +2,25 @@ package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.ModelUtils.toJsonObject
-import nl.valori.cvtool.server.authorization.AuthorizationRoles.ADMIN
-import nl.valori.cvtool.server.authorization.AuthorizationRoles.CONSULTANT
-import nl.valori.cvtool.server.authorization.AuthorizationRoles.EE_LEAD
-import nl.valori.cvtool.server.authorization.AuthorizationRoles.SALES
+import nl.valori.cvtool.server.authorization.AuthorizationLevel.ADMIN
+import nl.valori.cvtool.server.authorization.AuthorizationLevel.CONSULTANT
+import nl.valori.cvtool.server.authorization.AuthorizationLevel.SALES
 import org.slf4j.LoggerFactory
 
 internal object Authorizer {
 
   private val log = LoggerFactory.getLogger(Authorizer::class.java)
 
-  private val ROLES_MAP = mapOf(
-      IntentionReadOwnAuthInfo to setOf(CONSULTANT),
-      IntentionReadOwnCv to setOf(CONSULTANT),
-      IntentionReadOtherCv to setOf(ADMIN, EE_LEAD, SALES),
-      IntentionReadAllAccounts to setOf(ADMIN, EE_LEAD, SALES),
-      IntentionReadAllBusinessUnits to setOf(ADMIN, EE_LEAD, SALES),
-      IntentionReadAllRoles to setOf(ADMIN, EE_LEAD, SALES),
-      IntentionUpdateOwnCv to setOf(CONSULTANT),
-      IntentionUpdateOtherCv to setOf(ADMIN, EE_LEAD, SALES),
-      IntentionUpdateRoles to setOf(ADMIN)
+  private val REQUIRED_AUTHORIZATION_LEVELS = mapOf(
+      IntentionReadOwnAuthInfo to CONSULTANT,
+      IntentionReadOwnCv to CONSULTANT,
+      IntentionReadOtherCv to SALES,
+      IntentionReadAllAccounts to SALES,
+      IntentionReadAllBusinessUnits to SALES,
+      IntentionReadAllAuthorizations to SALES,
+      IntentionUpdateOwnCv to CONSULTANT,
+      IntentionUpdateOtherCv to SALES,
+      IntentionUpdateAuthorizations to ADMIN
   )
 
   internal fun determineDataToBeDeleted(messageBody: JsonObject) =
@@ -37,19 +36,23 @@ internal object Authorizer {
           .toMap()
 
   internal fun authorize(address: String, messageData: Any?, authInfo: AuthInfo) {
-    val authorizedRoles = ROLES_MAP.entries.stream()
-        .filter { (intention, _) -> intention.match(address, messageData, authInfo) }
-        .flatMap { (intention, authorizedRoles) ->
-          if (!authInfo.isAuthorized(authorizedRoles)) {
-            throw IllegalAccessException("User ${authInfo.name} is not authorized to ${intention.name()}")
-          }
-          log.debug("User ${authInfo.name} is authorized to ${intention.name()}")
-          authorizedRoles.stream()
-        }
-        .reduce(HashSet<AuthorizationRoles>(), { acc, next -> acc.add(next); acc }, { x, _ -> x })
-    if (authorizedRoles.isEmpty()) {
+    val matchedIntentions = REQUIRED_AUTHORIZATION_LEVELS.keys
+        .filter { it.match(address, messageData, authInfo) }
+        .toSet()
+    if (matchedIntentions.isEmpty()) {
       log.error("No matching intention found for address '$address'.")
       error("No matching intention found for address '$address'.")
+    }
+
+    val prohibitedIntentions = REQUIRED_AUTHORIZATION_LEVELS.entries
+        .filter { (intention, _) -> matchedIntentions.contains(intention) }
+        .filter { (_, requiredAuthorizationLevel) -> !authInfo.isAuthorized(requiredAuthorizationLevel) }
+        .map { (intention, _) -> intention }
+        .toSet()
+    if (prohibitedIntentions.isNotEmpty()) {
+      val prohibitedText = prohibitedIntentions.joinToString(" and to ", transform = Intention::name)
+      log.debug("User ${authInfo.name} is prohibited to $prohibitedText.")
+      throw IllegalAccessException("User ${authInfo.name} is prohibited to $prohibitedText.")
     }
   }
 }

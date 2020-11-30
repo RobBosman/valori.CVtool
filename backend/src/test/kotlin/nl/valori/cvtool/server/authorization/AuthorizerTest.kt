@@ -1,9 +1,17 @@
 package nl.valori.cvtool.server.authorization
 
 import io.vertx.core.json.JsonObject
+import nl.valori.cvtool.server.authorization.TestData.authInfoTom
+import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByCvIdPascal
+import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByCvIdTom
+import nl.valori.cvtool.server.authorization.TestData.messageSaveCvPascal
+import nl.valori.cvtool.server.authorization.TestData.messageSaveCvTom
+import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
+import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 internal object AuthorizerTest {
 
@@ -57,5 +65,26 @@ internal object AuthorizerTest {
   fun testDeleteAll() {
     assertEquals(expectedQuery.encodePrettily(),
         JsonObject(Authorizer.determineDataToBeDeleted(messageDeleteAll)).encodePrettily())
+  }
+
+  @Test
+  fun testAuthorize() {
+    assertAllowed(MONGODB_FETCH_ADDRESS, messageFetchCvByCvIdTom, authInfoTom)
+    assertAllowed(MONGODB_SAVE_ADDRESS, messageSaveCvTom, authInfoTom)
+    assertProhibited(MONGODB_FETCH_ADDRESS, messageFetchCvByCvIdPascal, authInfoTom)
+    assertProhibited(MONGODB_SAVE_ADDRESS, messageSaveCvPascal, authInfoTom)
+  }
+
+  private fun assertAllowed(address: String, messageData: Any?, authInfo: AuthInfo) {
+    Authorizer.authorize(address, messageData, authInfo)
+  }
+
+  private fun assertProhibited(address: String, messageData: Any?, authInfo: AuthInfo) {
+    try {
+      Authorizer.authorize(address, messageData, authInfo)
+      fail("Expected IllegalAccessException is not thrown.")
+    } catch (_: IllegalAccessException) {
+      // ok
+    }
   }
 }

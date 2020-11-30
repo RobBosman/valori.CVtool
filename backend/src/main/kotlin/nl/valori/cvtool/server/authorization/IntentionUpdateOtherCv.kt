@@ -29,7 +29,7 @@ internal object IntentionUpdateOtherCv : Intention {
                   else -> return true
                 }
               }
-              "role" -> {}
+              "authorization" -> {}
               "businessUnit" -> {}
               "cv" -> {
                 // Referring to 'other' cvIds?

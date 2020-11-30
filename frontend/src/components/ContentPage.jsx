@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { PrimaryButton, Nav, Separator, Stack, TooltipHost } from "@fluentui/react";
+import { PrimaryButton, Nav, Separator, Stack, TooltipHost, DefaultButton } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -19,10 +19,6 @@ import * as cvActions from "../services/cv/cv-actions";
 
 const ContentPage = (props) => {
 
-  const isAdmin = props.authInfo.roles.includes("ADMIN");
-  const isEELead = props.authInfo.roles.includes("EE_LEAD");
-  const isSales = props.authInfo.roles.includes("SALES");
-
   const navGroups = [
     {
       links: [
@@ -35,8 +31,9 @@ const ContentPage = (props) => {
         },
       ]
     },
-    (isAdmin || isSales || isEELead) && {
-      name: isAdmin ? "Admin" : isEELead ? "E&E Lead" : "Sales",
+    ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+    && {
+      name: props.authInfo.authorizationLevel === "ADMIN" ? "Admin" : props.authInfo.authorizationLevel === "EE_LEAD" ? "E&E Lead" : "Sales",
       links: [
         {
           key: "#accounts",
@@ -127,6 +124,22 @@ const ContentPage = (props) => {
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId);
 
+  const onEditCv = () => {
+    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel) && props.selectedAccountId) {
+      props.fetchCvByAccountId(props.selectedAccountId);
+    }
+  };
+
+  const editCvButton = ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+    ? <DefaultButton
+      text="Bewerk CV"
+      iconProps={{ iconName: "PageEdit" }}
+      disabled={!props.selectedAccountId || props.selectedCvId}
+      onClick={onEditCv}
+      styles={{ root: { width: 180 } }}
+    />
+    : null;
+
   return (
     <Stack horizontal>
       <Stack>
@@ -138,14 +151,19 @@ const ContentPage = (props) => {
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />
-        <TooltipHost content="Download CV als MS-Word document">
-          <PrimaryButton
-            text="Download CV"
-            iconProps={{ iconName: "DownloadDocument" }}
-            disabled={!props.selectedAccountId}
-            onClick={onGenerateCv}
-          />
-        </TooltipHost>
+        <Stack
+          tokens={{ childrenGap: "l1" }}>
+          <TooltipHost content="Download CV als MS-Word document">
+            <PrimaryButton
+              text="Download CV"
+              iconProps={{ iconName: "DownloadDocument" }}
+              disabled={!props.selectedAccountId}
+              onClick={onGenerateCv}
+              styles={{ root: { width: 180 } }}
+            />
+          </TooltipHost>
+          {editCvButton}
+        </Stack>
       </Stack>
       <Separator vertical />
       <Stack.Item grow>
@@ -165,7 +183,8 @@ ContentPage.propTypes = {
   locationHash: PropTypes.string,
   selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
-  generateCv: PropTypes.func.isRequired
+  generateCv: PropTypes.func.isRequired,
+  fetchCvByAccountId: PropTypes.func.isRequired
 };
 
 const select = (state) => ({
@@ -176,7 +195,8 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  generateCv: (accountId) => dispatch(cvActions.generateCv(accountId))
+  generateCv: (accountId) => dispatch(cvActions.generateCv(accountId)),
+  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
 });
 
 export default connect(select, mapDispatchToProps)(ContentPage);
