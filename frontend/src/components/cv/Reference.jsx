@@ -9,27 +9,12 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
+import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "reference";
 
 const Reference = (props) => {
-  
-  const [references, setReferences] = React.useState([]);
-
-  const compareStrings = (l, r) =>
-    l < r ? -1 : l > r ? 1 : 0;
-
-  // Find all {references} of the selected {cv}.
-  React.useEffect(() => {
-    if (props.referenceEntity && props.selectedCvId) {
-      setReferences(
-        Object.values(props.referenceEntity)
-          .filter(instance => instance.cvId === props.selectedCvId)
-          .sort((l, r) => compareStrings(l.referentName, r.referentName))
-      );
-    }
-  }, [props.referenceEntity, props.selectedCvId]);
 
   const referenceContext = {
     entity: props.referenceEntity,
@@ -37,9 +22,14 @@ const Reference = (props) => {
     setSelectedInstance: props.setSelectedReferenceId,
     replaceInstance: props.replaceReference
   };
-
-  const isValidText = (value) =>
-    value.length > 120 ? "Maximaal 120 tekens" : "";
+  
+  // Find all {references} of the selected {cv}.
+  const references = React.useCallback(
+    props.referenceEntity && props.selectedCvId && Object.values(props.referenceEntity)
+      .filter(instance => instance.cvId === props.selectedCvId)
+      .sort((l, r) => commonUtils.compareStrings(l.referentName, r.referentName))
+      || [],
+    [props.referenceEntity, props.selectedCvId]);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -107,14 +97,20 @@ const Reference = (props) => {
     Functie: selectedReference.referentFunction && selectedReference.referentFunction[props.locale]
   };
 
+  const isFilledReference = (reference) =>
+    reference.referentName || commonUtils.isFilledLocaleField(reference.referentFunction);
+
   const onAddItem = () => {
-    const id = createUuid();
-    props.replaceReference(id, {
-      _id: id,
-      cvId: props.selectedCvId,
-      includeInCv: true
-    });
-    props.setSelectedReferenceId(id);
+    let newReference = references.find(publication => !isFilledReference(publication));
+    if (!newReference) {
+      newReference = {
+        _id: createUuid(),
+        cvId: props.selectedCvId,
+        includeInCv: true
+      };
+      props.replaceReference(newReference._id, newReference);
+    }
+    props.setSelectedReferenceId(newReference._id);
   };
 
   const onDeleteItem = () => {
@@ -192,7 +188,7 @@ const Reference = (props) => {
                 instanceContext={referenceContext}
                 multiline
                 autoAdjustHeight
-                validateInput={isValidText}
+                validateInput={commonUtils.isValidText(120)}
               />
             </Stack>
           </td>

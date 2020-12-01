@@ -11,12 +11,12 @@ export const uiEpics = [
     map(() => uiActions.setLocationHash(document.location.hash || ""))
   ),
 
-  // Delete selections on logout.
+  // Delete all selections on logout.
   (_, state$) => state$.pipe(
     map(state => state.auth.loginState),
     distinctUntilChanged(),
     filter(loginState => loginState === authActions.LoginStates.LOGGED_OUT),
-    map(() => uiActions.resetSelectedIds())
+    map(() => uiActions.resetSelectedIds({}))
   ),
 
   // Select the account who'se AccountInfo is retrieved.
@@ -26,7 +26,7 @@ export const uiEpics = [
     map(authInfo => uiActions.setSelectedId("account", authInfo?.accountId))
   ),
 
-  // Reset the selected cvId if the selected accountId changes.
+  // Reset all selected ids if the selected accountId changes.
   (action$, state$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
     map(action => action.payload),
@@ -37,7 +37,7 @@ export const uiEpics = [
       const cvEntity = state$.value.safe?.content?.cv;
       const cvInstance = cvEntity && Object.values(cvEntity)
         .find(cvInstance => cvInstance.accountId === accountId);
-      return uiActions.setSelectedId("cv", cvInstance?._id);
+      return uiActions.resetSelectedIds({ account: accountId, cv: cvInstance?._id });
     })
   ),
 

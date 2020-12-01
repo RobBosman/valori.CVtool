@@ -6,7 +6,7 @@ export const setLocale = createAction("SET_LOCALE");
 export const setTheme = createAction("SET_THEME");
 export const setSelectedId = createAction("SET_SELECTED_ID",
   (entityName, selectedId) => ({payload: {entityName, selectedId}}));
-export const resetSelectedIds = createAction("RESET_SELECTED_IDS", () => ({}));
+export const resetSelectedIds = createAction("RESET_SELECTED_IDS");
 
 reducerRegistry.register(
   "ui", 
@@ -29,8 +29,8 @@ reducerRegistry.register(
       [setSelectedId]: (state, action) => {
         state.selectedId[action.payload.entityName] = action.payload.selectedId;
       },
-      [resetSelectedIds]: (state) => {
-        state.selectedId = {};
+      [resetSelectedIds]: (state, action) => {
+        state.selectedId = action.payload;
       }
     }
   )

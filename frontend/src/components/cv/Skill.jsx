@@ -9,38 +9,15 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
-import { getEnumData, SkillCategories } from "./Enums";
 import { CvRating } from "../widgets/CvRating";
 import { CvComboBox } from "../widgets/CvComboBox";
+import { getEnumData, SkillCategories } from "./Enums";
+import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "skill";
 
 const Skill = (props) => {
-  
-  const [skills, setSkills] = React.useState([]);
-
-  const compareStrings = (l, r) =>
-    l < r ? -1 : l > r ? 1 : 0;
-
-  // Find all {Skill} of the selected {cv}.
-  React.useEffect(() => {
-    if (props.skillEntity && props.selectedCvId) {
-      setSkills(Object.values(props.skillEntity)
-        .filter(instance => instance.cvId === props.selectedCvId)
-        .sort((l, r) => {
-          let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
-          if (compare === 0) {
-            compare = (r.skillLevel || 0) - (l.skillLevel || 0);
-          }
-          if (compare === 0) {
-            compare = compareStrings(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
-          }
-          return compare;
-        })
-      );
-    }
-  }, [props.skillEntity, props.selectedCvId]);
 
   const skillContext = {
     entity: props.skillEntity,
@@ -48,6 +25,23 @@ const Skill = (props) => {
     setSelectedInstance: props.setSelectedSkillId,
     replaceInstance: props.replaceSkill
   };
+  
+  // Find all {Skill} of the selected {cv}.
+  const skills = React.useCallback(
+    props.skillEntity && props.selectedCvId && Object.values(props.skillEntity)
+      .filter(instance => instance.cvId === props.selectedCvId)
+      .sort((l, r) => {
+        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
+        if (compare === 0) {
+          compare = (r.skillLevel || 0) - (l.skillLevel || 0);
+        }
+        if (compare === 0) {
+          compare = commonUtils.compareStrings(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
+        }
+        return compare;
+      })
+      || [],
+    [props.skillEntity, props.selectedCvId]);
 
   const renderSkill = (item) =>
     getEnumData(SkillCategories, item.category)?.text || "";
@@ -130,15 +124,21 @@ const Skill = (props) => {
     Omschrijving: selectedSkill.description && selectedSkill.description[props.locale]
   };
 
+  const isFilledSkill = (skill) =>
+    skill.category || commonUtils.isFilledLocaleField(skill.description);
+
   const onAddItem = () => {
-    const id = createUuid();
-    props.replaceSkill(id, {
-      _id: id,
-      cvId: props.selectedCvId,
-      skillLevel: 1,
-      includeInCv: true
-    });
-    props.setSelectedSkillId(id);
+    let newSkill = skills.find(publication => !isFilledSkill(publication));
+    if (!newSkill) {
+      newSkill = {
+        _id: createUuid(),
+        cvId: props.selectedCvId,
+        skillLevel: 1,
+        includeInCv: true
+      };
+      props.replaceSkill(newSkill._id, newSkill);
+    }
+    props.setSelectedSkillId(newSkill._id);
   };
 
   const onDeleteItem = () => {

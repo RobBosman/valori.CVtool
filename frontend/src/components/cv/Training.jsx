@@ -9,37 +9,13 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
+import { compareStrings, isValidYear } from "../../utils/CommonUtils";
 import { EducationResultTypes, getEnumData } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "training";
 
 const Training = (props) => {
-  
-  const [trainings, setTrainings] = React.useState([]);
-
-  const compareStrings = (l, r) =>
-    l < r ? -1 : l > r ? 1 : 0;
-
-  const composePeriod = (training) =>
-    `${training.year || "heden"}`;
-
-  // Find all {Training} of the selected {cv}.
-  React.useEffect(() => {
-    if (props.trainingEntity && props.selectedCvId) {
-      setTrainings(
-        Object.values(props.trainingEntity)
-          .filter(instance => instance.cvId === props.selectedCvId)
-          .sort((l, r) => {
-            let compare = compareStrings(composePeriod(r), composePeriod(l));
-            if (compare === 0) {
-              compare = compareStrings(l.name || "", r.name || "");
-            }
-            return compare;
-          })
-      );
-    }
-  }, [props.trainingEntity, props.selectedCvId]);
 
   const trainingContext = {
     entity: props.trainingEntity,
@@ -47,10 +23,24 @@ const Training = (props) => {
     setSelectedInstance: props.setSelectedTrainingId,
     replaceInstance: props.replaceTraining
   };
-  
-  const isValidYear = (value) =>
-    isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
 
+  const composePeriod = (training) =>
+    `${training.year || "heden"}`;
+  
+  // Find all {Training} of the selected {cv}.
+  const trainings = React.useCallback(
+    props.trainingEntity && props.selectedCvId && Object.values(props.trainingEntity)
+      .filter(instance => instance.cvId === props.selectedCvId)
+      .sort((l, r) => {
+        let compare = compareStrings(composePeriod(r), composePeriod(l));
+        if (compare === 0) {
+          compare = compareStrings(l.name || "", r.name || "");
+        }
+        return compare;
+      })
+      || [],
+    [props.trainingEntity, props.selectedCvId]);
+  
   const columns = [
     {
       key: "name",
@@ -119,14 +109,20 @@ const Training = (props) => {
     Opleidingsinstituut: selectedTraining.institution
   };
 
+  const isFilledTraining = (training) =>
+    training.name || training.institution;
+
   const onAddItem = () => {
-    const id = createUuid();
-    props.replaceTraining(id, {
-      _id: id,
-      cvId: props.selectedCvId,
-      includeInCv: true
-    });
-    props.setSelectedTrainingId(id);
+    let newEducation = trainings.find(education => !isFilledTraining(education));
+    if (!newEducation) {
+      newEducation = {
+        _id: createUuid(),
+        cvId: props.selectedCvId,
+        includeInCv: true
+      };
+      props.replaceTraining(newEducation._id, newEducation);
+    }
+    props.setSelectedTrainingId(newEducation._id);
   };
 
   const onDeleteItem = () => {

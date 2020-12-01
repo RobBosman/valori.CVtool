@@ -9,6 +9,7 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
+import { compareStrings } from "../../utils/CommonUtils";
 import { Authorizations, getEnumData } from "../cv/Enums";
 
 const AccountManagement = (props) => {
@@ -44,9 +45,6 @@ const AccountManagement = (props) => {
       level: combinedInstance.authorization.level
     });
   };
-
-  const compareStrings = (l, r) =>
-    l < r ? -1 : l > r ? 1 : 0;
 
   // Sort {CombinedInstance} records.
   const combinedInstances = combinedEntity && Object.values(combinedEntity)

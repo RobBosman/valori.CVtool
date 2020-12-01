@@ -28,9 +28,7 @@ export const CvTextField = (props) => {
         return;
       }
     }
-
     setErrorMessage("");
-
     let instanceToBeSaved;
     const fieldPath = props.field.split(".");
     if (fieldPath.length === 2) {
@@ -48,7 +46,6 @@ export const CvTextField = (props) => {
         [fieldPath[0]]: event.target.value
       };
     }
-
     replaceInstance && replaceInstance(instanceId, instanceToBeSaved);
   };
 

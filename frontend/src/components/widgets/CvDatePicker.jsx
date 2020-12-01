@@ -21,7 +21,7 @@ export const CvDatePicker = (props) => {
 
   const { entity, instanceId, replaceInstance, locale } = props.instanceContext;
   const instance = entity && entity[instanceId];
-  const localeForDate = locale.substr(0, 2);
+  const localeForDate = locale?.substr(0, 2);
 
   const correctDateForTimezone = (date) => {
     if (date) {

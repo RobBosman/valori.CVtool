@@ -9,6 +9,7 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
+import { compareStrings, isValidYear } from "../../utils/CommonUtils";
 import { EducationResultTypes, getEnumData } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 
@@ -16,39 +17,29 @@ const entityName = "education";
 
 const Education = (props) => {
   
-  const [educations, setEducations] = React.useState([]);
-
-  const compareStrings = (l, r) =>
-    l < r ? -1 : l > r ? 1 : 0;
-
-  const composePeriod = (education) => 
-    `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || "heden"}`;
-
-  // Find all {Education} of the selected {cv}.
-  React.useEffect(() => {
-    if (props.educationEntity && props.selectedCvId) {
-      setEducations(Object.values(props.educationEntity)
-        .filter(instance => instance.cvId === props.selectedCvId)
-        .sort((l, r) => {
-          let compare = compareStrings(composePeriod(r), composePeriod(l));
-          if (compare === 0) {
-            compare = compareStrings(l.name || "", r.name || "");
-          }
-          return compare;
-        })
-      );
-    }
-  }, [props.educationEntity, props.selectedCvId]);
-  
   const educationContext = {
     entity: props.educationEntity,
     instanceId: props.selectedEducationId,
     setSelectedInstance: props.setSelectedEducationId,
     replaceInstance: props.replaceEducation
   };
+
+  const composePeriod = (education) => 
+    `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || "heden"}`;
   
-  const isValidYear = (value) =>
-    isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
+  // Find all {Education} of the selected {cv}.
+  const educations = React.useCallback(
+    props.educationEntity && props.selectedCvId && Object.values(props.educationEntity)
+      .filter(instance => instance.cvId === props.selectedCvId)
+      .sort((l, r) => {
+        let compare = compareStrings(composePeriod(r), composePeriod(l));
+        if (compare === 0) {
+          compare = compareStrings(l.name || "", r.name || "");
+        }
+        return compare;
+      })
+      || [],
+    [props.educationEntity, props.selectedCvId]);
 
   const columns = [
     {
@@ -118,14 +109,20 @@ const Education = (props) => {
     Opleidingsinstituut: selectedEducation.institution
   };
 
+  const isFilledEducation = (education) =>
+    education.name || education.institution;
+
   const onAddItem = () => {
-    const id = createUuid();
-    props.replaceEducation(id, {
-      _id: id,
-      cvId: props.selectedCvId,
-      includeInCv: true
-    });
-    props.setSelectedEducationId(id);
+    let newEducation = educations.find(education => !isFilledEducation(education));
+    if (!newEducation) {
+      newEducation = {
+        _id: createUuid(),
+        cvId: props.selectedCvId,
+        includeInCv: true
+      };
+      props.replaceEducation(newEducation._id, newEducation);
+    }
+    props.setSelectedEducationId(newEducation._id);
   };
 
   const onDeleteItem = () => {

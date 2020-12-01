@@ -11,26 +11,11 @@ import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import ConfirmDialog from "../ConfirmDialog";
+import { isFilledLocaleField } from "../../utils/CommonUtils";
 
 const entityName = "experience";
 
 const Experience = (props) => {
-  
-  const [experiences, setExperiences] = React.useState([]);
-
-  const composePeriod = (experience) =>
-    `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
-
-  // Find all {Experiences} of the selected {cv}.
-  React.useEffect(() => {
-    if (props.experienceEntity && props.selectedCvId) {
-      setExperiences(
-        Object.values(props.experienceEntity)
-          .filter(instance => instance.cvId === props.selectedCvId)
-          .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
-      );
-    }
-  }, [props.experienceEntity, props.selectedCvId]);
 
   const experienceContext = {
     locale: props.locale,
@@ -40,8 +25,19 @@ const Experience = (props) => {
     replaceInstance: props.replaceExperience
   };
   
+  // Find all {Experiences} of the selected {cv}.
+  const experiences = React.useCallback(
+    props.experienceEntity && props.selectedCvId && Object.values(props.experienceEntity)
+      .filter(instance => instance.cvId === props.selectedCvId)
+      .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
+      || [],
+    [props.experienceEntity, props.selectedCvId]);
+  
   const [coachmarkTarget, setCoachmarkTarget] = React.useState(undefined);
   const hideCoachmark = () => setCoachmarkTarget(undefined);
+
+  const composePeriod = (experience) =>
+    `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -120,15 +116,20 @@ const Experience = (props) => {
     Opdrachtgever: selectedExperience.client
   };
 
+  const isFilledExperience = (experience) =>
+    experience.periodBegin || experience.client || isFilledLocaleField(experience.assignment, experience.activities, experience.results, experience.keywords);
+
   const onAddItem = () => {
-    const id = createUuid();
-    props.replaceExperience(id, {
-      _id: id,
-      cvId: props.selectedCvId,
-      includeInCv: true,
-      sortIndex: 0
-    });
-    props.setSelectedExperienceId(id);
+    let newExperience = experiences.find(experience => !isFilledExperience(experience));
+    if (!newExperience) {
+      newExperience = {
+        _id: createUuid(),
+        cvId: props.selectedCvId,
+        includeInCv: true
+      };
+      props.replaceExperience(newExperience._id, newExperience);
+    }
+    props.setSelectedExperienceId(newExperience._id);
   };
 
   const onDeleteItem = () => {

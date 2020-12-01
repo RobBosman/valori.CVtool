@@ -10,23 +10,11 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import ConfirmDialog from "../ConfirmDialog";
+import * as commonUtils from "../../utils/CommonUtils";
 
 const entityName = "publication";
 
 const Publication = (props) => {
-  
-  const [publications, setPublications] = React.useState([]);
-
-  // Find all {Publication} of the selected {cv}.
-  React.useEffect(() => {
-    if (props.publicationEntity && props.selectedCvId) {
-      setPublications(
-        Object.values(props.publicationEntity)
-          .filter(instance => instance.cvId === props.selectedCvId)
-          .sort((l, r) => r.year - l.year)
-      );
-    }
-  }, [props.publicationEntity, props.selectedCvId]);
 
   const publicationContext = {
     entity: props.publicationEntity,
@@ -34,11 +22,14 @@ const Publication = (props) => {
     setSelectedInstance: props.setSelectedPublicationId,
     replaceInstance: props.replacePublication
   };
-
-  const isValidText = (value) =>
-    value.length > 120 ? "Maximaal 120 tekens" : "";
-  const isValidYear = (value) =>
-    isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
+  
+  // Find all {Publication} of the selected {cv}.
+  const publications = React.useCallback(
+    props.publicationEntity && props.selectedCvId && Object.values(props.publicationEntity)
+      .filter(instance => instance.cvId === props.selectedCvId)
+      .sort((l, r) => r.year - l.year)
+      || [],
+    [props.publicationEntity, props.selectedCvId]);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -115,14 +106,20 @@ const Publication = (props) => {
     Media: selectedPublication.media
   };
 
+  const isFilledPublication = (publication) =>
+    publication.media || commonUtils.isFilledLocaleField(publication.title);
+
   const onAddItem = () => {
-    const id = createUuid();
-    props.replacePublication(id, {
-      _id: id,
-      cvId: props.selectedCvId,
-      includeInCv: true
-    });
-    props.setSelectedPublicationId(id);
+    let newPublication = publications.find(publication => !isFilledPublication(publication));
+    if (!newPublication) {
+      newPublication = {
+        _id: createUuid(),
+        cvId: props.selectedCvId,
+        includeInCv: true
+      };
+      props.replacePublication(newPublication._id, newPublication);
+    }
+    props.setSelectedPublicationId(newPublication._id);
   };
 
   const onDeleteItem = () => {
@@ -198,7 +195,7 @@ const Publication = (props) => {
                 label="Jaar"
                 field="year"
                 instanceContext={publicationContext}
-                validateInput={isValidYear}
+                validateInput={commonUtils.isValidYear}
                 placeholder='yyyy'
                 styles={{ fieldGroup: { width: 80 } }}
               />
@@ -206,7 +203,7 @@ const Publication = (props) => {
                 label="Omschrijving"
                 field={`description.${props.locale}`}
                 instanceContext={publicationContext}
-                validateInput={isValidText}
+                validateInput={commonUtils.isValidText(120)}
               />
             </Stack>
           </td>
