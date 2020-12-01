@@ -12,25 +12,24 @@ import { CvDropdown } from "../widgets/CvDropdown";
 import { EducationResultTypes, getEnumData } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 
-const entityName = "education";
+const entityName = "training";
 
-const Education = (props) => {
+const Training = (props) => {
   
   const [trainings, setTrainings] = React.useState([]);
 
   const compareStrings = (l, r) =>
     l < r ? -1 : l > r ? 1 : 0;
 
-  const composePeriod = (training) => 
-    `${training.yearFrom ? training.yearFrom + " - " : ""}${training.yearTo || "heden"}`;
+  const composePeriod = (training) =>
+    `${training.year || "heden"}`;
 
-  // Find all {Education} of the selected {cv}.
+  // Find all {Training} of the selected {cv}.
   React.useEffect(() => {
-    if (props.educationEntity && props.selectedCvId) {
+    if (props.trainingEntity && props.selectedCvId) {
       setTrainings(
-        Object.values(props.educationEntity)
+        Object.values(props.trainingEntity)
           .filter((instance) => instance.cvId === props.selectedCvId)
-          .filter((instance) => instance.type === "TRAINING")
           .sort((l, r) => {
             let compare = compareStrings(composePeriod(r), composePeriod(l));
             if (compare === 0) {
@@ -40,13 +39,13 @@ const Education = (props) => {
           })
       );
     }
-  }, [props.educationEntity, props.selectedCvId]);
+  }, [props.trainingEntity, props.selectedCvId]);
 
-  const educationContext = {
-    entity: props.educationEntity,
+  const trainingContext = {
+    entity: props.trainingEntity,
     instanceId: props.selectedTrainingId,
     setSelectedInstance: props.setSelectedTrainingId,
-    replaceInstance: props.replaceEducation
+    replaceInstance: props.replaceTraining
   };
   
   const isValidYear = (value) =>
@@ -66,7 +65,7 @@ const Education = (props) => {
       fieldName: "institution",
       name: "Opleidingsinstituut",
       isResizable: true,
-      minWidth: 250,
+      minWidth: 220,
       data: "string"
     },
     {
@@ -122,10 +121,9 @@ const Education = (props) => {
 
   const onAddItem = () => {
     const id = createUuid();
-    props.replaceEducation(id, {
+    props.replaceTraining(id, {
       _id: id,
       cvId: props.selectedCvId,
-      type: "TRAINING",
       includeInCv: true
     });
     props.setSelectedTrainingId(id);
@@ -138,7 +136,7 @@ const Education = (props) => {
   };
   const onDeleteConfirmed = () => {
     if (props.selectedTrainingId) {
-      props.replaceEducation(props.selectedTrainingId, {});
+      props.replaceTraining(props.selectedTrainingId, {});
       props.setSelectedTrainingId(undefined);
     }
     setConfirmDialogVisible(false);
@@ -182,7 +180,7 @@ const Education = (props) => {
               <CvDetailsList
                 columns={columns}
                 items={trainings}
-                instanceContext={educationContext}
+                instanceContext={trainingContext}
                 setKey={entityName}
               />
             </Stack>
@@ -193,17 +191,17 @@ const Education = (props) => {
               <CvTextField
                 label="Training"
                 field={`name.${props.locale}`}
-                instanceContext={educationContext} />
+                instanceContext={trainingContext} />
               <CvTextField
                 label="Opleidingsinstituut"
                 field="institution"
-                instanceContext={educationContext} />
+                instanceContext={trainingContext} />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
                 <CvTextField
                   label="Jaar"
-                  field="yearTo"
-                  instanceContext={educationContext}
+                  field="year"
+                  instanceContext={trainingContext}
                   validateInput={isValidYear}
                   placeholder='yyyy'
                   styles={{ fieldGroup: { width: 80 } }}
@@ -211,7 +209,7 @@ const Education = (props) => {
                 <CvDropdown
                   label='Resultaat'
                   field="result"
-                  instanceContext={educationContext}
+                  instanceContext={trainingContext}
                   options={EducationResultTypes}
                   styles={{ dropdown: { width: 120 } }}
                 />
@@ -224,11 +222,11 @@ const Education = (props) => {
   );
 };
 
-Education.propTypes = {
+Training.propTypes = {
   locale: PropTypes.string.isRequired,
   selectedCvId: PropTypes.string,
-  educationEntity: PropTypes.object,
-  replaceEducation: PropTypes.func.isRequired,
+  trainingEntity: PropTypes.object,
+  replaceTraining: PropTypes.func.isRequired,
   selectedTrainingId: PropTypes.string,
   setSelectedTrainingId: PropTypes.func.isRequired
 };
@@ -236,13 +234,13 @@ Education.propTypes = {
 const select = (state) => ({
   locale: state.ui.userPrefs.locale,
   selectedCvId: state.ui.selectedId["cv"],
-  educationEntity: state.safe.content[entityName],
-  selectedTrainingId: state.ui.selectedId["training"]
+  trainingEntity: state.safe.content[entityName],
+  selectedTrainingId: state.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceEducation: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
-  setSelectedTrainingId: (id) => dispatch(setSelectedId("training", id))
+  replaceTraining: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
+  setSelectedTrainingId: (id) => dispatch(setSelectedId(entityName, id))
 });
 
-export default connect(select, mapDispatchToProps)(Education);
+export default connect(select, mapDispatchToProps)(Training);

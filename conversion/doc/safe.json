@@ -49,13 +49,24 @@
     "uuid-education-1": {
       "_id": "uuid-education-1",
       "cvId": "uuid-cv-1",
-      "type": "EDUCATION",
       "name": {
         "nl_NL": "Atheneum-B"
       },
       "institution": "Bataafse Kamp",
       "yearFrom": 1984,
       "yearTo": 1988,
+      "result": "DIPLOMA"
+    }
+  },
+  "training": {
+    "uuid-education-1": {
+      "_id": "uuid-education-1",
+      "cvId": "uuid-cv-1",
+      "name": {
+        "nl_NL": "Atheneum-B"
+      },
+      "institution": "Bataafse Kamp",
+      "year": 1988,
       "result": "DIPLOMA"
     }
   },
@@ -171,10 +182,6 @@
     "EE_LEAD",
     "SALES",
     "CONSULTANT"
-  ],
-  "ENUM_EDUCATION_TYPE": [
-    "EDUCATION",
-    "TRAINING"
   ],
   "ENUM_EDUCATION_RESULT": [
     "DIPLOMA",

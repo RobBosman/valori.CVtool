@@ -72,6 +72,7 @@ internal class CvFetchVerticle : AbstractVerticle() {
           "cv": [{ "_id": "$cvId" }],
           "account": [{ "_id": "$accountId" }],
           "education": [{ "cvId": "$cvId" }],
+          "training": [{ "cvId": "$cvId" }],
           "skill": [{ "cvId": "$cvId" }],
           "publication": [{ "cvId": "$cvId" }],
           "reference": [{ "cvId": "$cvId" }],

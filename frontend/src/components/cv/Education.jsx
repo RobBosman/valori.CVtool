@@ -29,7 +29,6 @@ const Education = (props) => {
     if (props.educationEntity && props.selectedCvId) {
       setEducations(Object.values(props.educationEntity)
         .filter(instance => instance.cvId === props.selectedCvId)
-        .filter(instance => instance.type === "EDUCATION")
         .sort((l, r) => {
           let compare = compareStrings(composePeriod(r), composePeriod(l));
           if (compare === 0) {
@@ -63,9 +62,9 @@ const Education = (props) => {
     {
       key: "institution",
       fieldName: "institution",
-      name: "Opleidingsinstituut",
+      name: "Onderwijsinstelling",
       isResizable: true,
-      minWidth: 250,
+      minWidth: 220,
       data: "string"
     },
     {
@@ -124,7 +123,6 @@ const Education = (props) => {
     props.replaceEducation(id, {
       _id: id,
       cvId: props.selectedCvId,
-      type: "EDUCATION",
       includeInCv: true
     });
     props.setSelectedEducationId(id);
@@ -195,7 +193,7 @@ const Education = (props) => {
                 instanceContext={educationContext}
               />
               <CvTextField
-                label="Opleidingsinstituut"
+                label="Onderwijsinstelling"
                 field="institution"
                 instanceContext={educationContext}
               />

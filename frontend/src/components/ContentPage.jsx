@@ -131,13 +131,15 @@ const ContentPage = (props) => {
   };
 
   const editCvButton = ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
-    ? <DefaultButton
-      text="Bewerk CV"
-      iconProps={{ iconName: "PageEdit" }}
-      disabled={!props.selectedAccountId || props.selectedCvId}
-      onClick={onEditCv}
-      styles={{ root: { width: 180 } }}
-    />
+    ? <TooltipHost content="Haal de gegevens op om het CV te bewerken">
+      <DefaultButton
+        text="Bewerk CV"
+        iconProps={{ iconName: "PageEdit" }}
+        disabled={!props.selectedAccountId || props.selectedCvId}
+        onClick={onEditCv}
+        styles={{ root: { width: 180 } }}
+      />
+    </TooltipHost>
     : null;
 
   return (
@@ -153,6 +155,7 @@ const ContentPage = (props) => {
         />
         <Stack
           tokens={{ childrenGap: "l1" }}>
+          {editCvButton}
           <TooltipHost content="Download CV als MS-Word document">
             <PrimaryButton
               text="Download CV"
@@ -162,7 +165,6 @@ const ContentPage = (props) => {
               styles={{ root: { width: 180 } }}
             />
           </TooltipHost>
-          {editCvButton}
         </Stack>
       </Stack>
       <Separator vertical />

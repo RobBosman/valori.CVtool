@@ -20,21 +20,6 @@ export const Authorizations = [
   }
 ];
 
-export const EducationTypes = [
-  {
-    key: "EDUCATION",
-    text: "Opleiding",
-    iconProps: { iconName: "PublishCourse" },
-    sortIndex: 1
-  },
-  {
-    key: "TRAINING",
-    text: "Training",
-    iconProps: { iconName: "UserEvent" },
-    sortIndex: 2
-  }
-];
-
 export const EducationResultTypes = [
   {
     key: "DIPLOMA",

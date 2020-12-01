@@ -38,9 +38,10 @@
   <xsl:template match="cv:set_of__account">
     {
     "account": [<xsl:apply-templates select="cv:_account"/>]
-    ,"authorization": [<xsl:apply-templates select="cv:_account/cv:rol"/>]
+    ,"authorization": [<xsl:apply-templates select="cv:_account" mode="authorization"/>]
     ,"cv": [<xsl:apply-templates select="*/cv:cv"/>]
-    ,"education": [<xsl:apply-templates select="*/cv:cv/cv:opleiding"/>]
+    ,"education": [<xsl:apply-templates select="*/cv:cv/cv:opleiding[not(cv:soort_opleiding = 1)]" mode="opleiding"/>]
+    ,"training": [<xsl:apply-templates select="*/cv:cv/cv:opleiding[cv:soort_opleiding = 1]" mode="training"/>]
     ,"publication": [<xsl:apply-templates select="*/cv:cv/cv:publicatie[cv:titel or cv:media]"/>]
     ,"reference": [<xsl:apply-templates select="*/cv:cv/cv:referentie[cv:naam_referent]"/>]
     ,"skill": [
@@ -63,16 +64,15 @@
     }
   </xsl:template>
 
-  <xsl:template match="cv:rol">
+  <xsl:template match="cv:_account" mode="authorization">
     <xsl:if test="position() > 1">,</xsl:if>
     {
-    "_id": "<xsl:value-of select="util:uuid(concat('authorization', ../@id))"/>"
-    ,"accountId": "<xsl:value-of select="util:uuid(../@id)"/>"
-    ,"level":
-    <xsl:choose>
-      <xsl:when test="cv:naam = 'view alle CVs'">ADMIN</xsl:when>
+    "_id": "<xsl:value-of select="util:uuid(concat('authorization', @id))"/>"
+    ,"accountId": "<xsl:value-of select="util:uuid(@id)"/>"
+    ,"level": "<xsl:choose>
+      <xsl:when test="cv:rol[cv:naam = 'view alle CVs']">ADMIN</xsl:when>
       <xsl:otherwise>CONSULTANT</xsl:otherwise>
-    </xsl:choose>
+    </xsl:choose>"
     }
   </xsl:template>
 
@@ -121,17 +121,30 @@
     }
   </xsl:template>
 
-  <xsl:template match="cv:opleiding">
+  <xsl:template match="cv:opleiding" mode="opleiding">
     <xsl:if test="position() > 1">,</xsl:if>
     {
     "_id": "<xsl:value-of select="util:uuid(@id)"/>"
     ,"cvId": "<xsl:value-of select="util:uuid(../@id)"/>"
-    ,"type": "<xsl:apply-templates select="cv:soort_opleiding" mode="educationType"/>"
     ,"name": {
     "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
     }
     ,"institution": "<xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/>"
     ,"yearTo": <xsl:value-of select="util:jsonInt(cv:jaar_diploma)"/>
+    ,"result": "<xsl:apply-templates select="cv:diploma" mode="educationResult"/>"
+    }
+  </xsl:template>
+
+  <xsl:template match="cv:opleiding" mode="training">
+    <xsl:if test="position() > 1">,</xsl:if>
+    {
+    "_id": "<xsl:value-of select="util:uuid(@id)"/>"
+    ,"cvId": "<xsl:value-of select="util:uuid(../@id)"/>"
+    ,"name": {
+    "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
+    }
+    ,"institution": "<xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/>"
+    ,"year": <xsl:value-of select="util:jsonInt(cv:jaar_diploma)"/>
     ,"result": "<xsl:apply-templates select="cv:diploma" mode="educationResult"/>"
     }
   </xsl:template>
@@ -262,7 +275,7 @@
       {
       "_id": "<xsl:value-of select="util:uuid(@id)"/>"
       ,"cvId": "<xsl:value-of select="util:uuid(../@id)"/>"
-      ,"category": "<xsl:apply-templates select="cv:categorie" mode="convertCategory"/>"
+      ,"category": "<xsl:apply-templates select="cv:categorie" mode="toCategory"/>"
       ,"description": {
       "nl_NL": "<xsl:value-of select="$omschrijving"/>"
       }
@@ -326,13 +339,6 @@
   </xsl:template>
 
 
-  <xsl:template match="text()" mode="educationType">
-    <xsl:choose>
-      <xsl:when test=". = 1">TRAINING</xsl:when>
-      <xsl:otherwise>EDUCATION</xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <xsl:template match="text()" mode="educationResult">
     <xsl:choose>
       <xsl:when test=". = 1">DIPLOMA</xsl:when>
@@ -354,7 +360,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="text()" mode="convertCategory">
+  <xsl:template match="text()" mode="toCategory">
     <xsl:choose>
       <xsl:when test=". = 'Databases'">DATABASES</xsl:when>
       <xsl:when test=". = 'Applicaties'">APPLICATIONS</xsl:when>

@@ -252,8 +252,8 @@
         EDUCATION
 
         -->
-        <xsl:variable name="education" select="cv:education[cv:type = 'EDUCATION']"/>
-        <xsl:if test="$education">
+        <xsl:variable name="educations" select="cv:education"/>
+        <xsl:if test="$educations">
           <w:p w14:paraId="6C209D83" w14:textId="48D9D99D" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                w:rsidP="001860B4">
             <w:pPr>
@@ -334,7 +334,7 @@
                 </w:p>
               </w:tc>
             </w:tr>
-            <xsl:apply-templates select="$education">
+            <xsl:apply-templates select="$educations">
               <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
               <xsl:sort select="cv:result" data-type="number"/>
             </xsl:apply-templates>
@@ -345,8 +345,8 @@
         TRAINING
 
         -->
-        <xsl:variable name="training" select="cv:education[cv:type = 'TRAINING']"/>
-        <xsl:if test="$training">
+        <xsl:variable name="trainings" select="cv:training"/>
+        <xsl:if test="$trainings">
           <w:p w14:paraId="6600C847" w14:textId="2432E297" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                w:rsidP="001860B4">
             <w:pPr>
@@ -407,7 +407,7 @@
                     <w:outlineLvl w:val="1"/>
                   </w:pPr>
                   <w:r>
-                    <w:t>Onderwijsinstelling</w:t>
+                    <w:t>Opleidingsinstituut</w:t>
                   </w:r>
                 </w:p>
               </w:tc>
@@ -427,8 +427,8 @@
                 </w:p>
               </w:tc>
             </w:tr>
-            <xsl:apply-templates select="$training">
-              <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
+            <xsl:apply-templates select="$trainings">
+              <xsl:sort select="cv:year" data-type="number" order="descending"/>
               <xsl:sort select="cv:result" data-type="number"/>
             </xsl:apply-templates>
           </w:tbl>
@@ -844,6 +844,67 @@
     </w:tr>
   </xsl:template>
 
+  <!-- TRAINING -->
+  <xsl:template match="cv:training">
+    <w:tr w:rsidR="001860B4" w14:paraId="150F7FE7" w14:textId="77777777" w:rsidTr="000B7B5E">
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3164" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="028BDECC" w14:textId="0BDF33E7" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA"
+             w:rsidP="000B7B5E">
+          <w:r>
+            <w:t>
+              <xsl:value-of select="cv:name/cv:nl_NL"/>
+            </w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3164" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="4AEEE7FD" w14:textId="373E4A48" w:rsidR="001860B4" w:rsidRDefault="001860B4"
+             w:rsidP="000B7B5E">
+          <w:r>
+            <w:t>
+              <xsl:value-of select="cv:institution"/>
+            </w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+      <w:tc>
+        <w:tcPr>
+          <w:tcW w:w="3164" w:type="dxa"/>
+        </w:tcPr>
+        <w:p w14:paraId="4A46B160" w14:textId="391ADBDB" w:rsidR="001860B4" w:rsidRDefault="001860B4"
+             w:rsidP="000B7B5E">
+          <w:r>
+            <w:t>
+              <xsl:choose>
+                <xsl:when test="cv:year">
+                  <xsl:value-of select="cv:year"/>
+                </xsl:when>
+                <xsl:otherwise>heden</xsl:otherwise>
+              </xsl:choose>
+            </w:t>
+          </w:r>
+          <w:r w:rsidRPr="001860B4">
+            <w:rPr>
+              <w:rStyle w:val="Valori-geel"/>
+            </w:rPr>
+            <w:t xml:space="preserve"> // </w:t>
+          </w:r>
+          <w:r w:rsidRPr="00666ED6">
+            <w:t>
+              <xsl:apply-templates select="cv:result" mode="education-result"/>
+            </w:t>
+          </w:r>
+        </w:p>
+      </w:tc>
+    </w:tr>
+  </xsl:template>
+
   <!-- PUBLICATION -->
   <xsl:template match="cv:publication">
     <w:tr w:rsidR="001860B4" w14:paraId="2E94810F" w14:textId="77777777" w:rsidTr="001860B4">
@@ -1006,6 +1067,9 @@
               <w:pStyle w:val="Paragraaf"/>
             </w:pPr>
             <w:r>
+              <w:rPr>
+                <w:rStyle w:val="Valori-geel"/>
+              </w:rPr>
               <w:t>Taken/werkzaamheden:</w:t>
             </w:r>
           </w:p>
@@ -1019,6 +1083,9 @@
               <w:pStyle w:val="Paragraaf"/>
             </w:pPr>
             <w:r>
+              <w:rPr>
+                <w:rStyle w:val="Valori-geel"/>
+              </w:rPr>
               <w:t>Resultaat:</w:t>
             </w:r>
           </w:p>
@@ -1032,6 +1099,9 @@
               <w:pStyle w:val="Paragraaf"/>
             </w:pPr>
             <w:r>
+              <w:rPr>
+                <w:rStyle w:val="Valori-geel"/>
+              </w:rPr>
               <w:t>Werkomgeving:</w:t>
             </w:r>
           </w:p>

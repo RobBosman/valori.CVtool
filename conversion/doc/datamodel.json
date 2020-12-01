@@ -37,13 +37,22 @@
   "education": {
     "_id": "ID",
     "cvId": "ID",
-    "type": "ENUM_EDUCATION_TYPE",
     "name": {
       "[locale]": "STRING"
     },
     "institution": "STRING",
     "yearFrom": "YEAR",
     "yearTo": "YEAR",
+    "result": "ENUM_EDUCATION_RESULT"
+  },
+  "training": {
+    "_id": "ID",
+    "cvId": "ID",
+    "name": {
+      "[locale]": "STRING"
+    },
+    "institution": "STRING",
+    "year": "YEAR",
     "result": "ENUM_EDUCATION_RESULT"
   },
   "skill": {
@@ -110,10 +119,6 @@
     "SALES",
     "EE_LEAD",
     "CONSULTANT"
-  ],
-  "ENUM_EDUCATION_TYPE": [
-    "EDUCATION",
-    "TRAINING"
   ],
   "ENUM_EDUCATION_RESULT": [
     "DIPLOMA",

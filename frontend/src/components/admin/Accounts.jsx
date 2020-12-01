@@ -143,6 +143,17 @@ const AccountManagement = (props) => {
     }
   };
 
+  const authorizationButton = props.authInfo.authorizationLevel === "ADMIN"
+    ? <CvDropdown
+      label="Autorisatie"
+      field="authorization.level"
+      instanceContext={combinedInstanceContext}
+      disabled={props.authInfo.authorizationLevel !== "ADMIN" || props.authInfo.accountId === props.selectedAccountId}
+      options={Authorizations}
+      styles={{ dropdown: { width: 120 } }}
+    />
+    : null;
+
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -185,14 +196,7 @@ const AccountManagement = (props) => {
                 instanceContext={combinedInstanceContext}
                 disabled={true}
               />
-              <CvDropdown
-                label="Autorisatie"
-                field="authorization.level"
-                instanceContext={combinedInstanceContext}
-                disabled={props.authInfo.authorizationLevel !== "ADMIN" || props.authInfo.accountId === props.selectedAccountId}
-                options={Authorizations}
-                styles={{ dropdown: { width: 120 } }}
-              />
+              {authorizationButton}
             </Stack>
           </td>
         </tr>
