@@ -16,4 +16,4 @@ stats.json
 secret/.env
 /conversion/src/main/resources/*.xml
 /conversion/src/main/resources/*.json
-/exported-json/
+/exported/
