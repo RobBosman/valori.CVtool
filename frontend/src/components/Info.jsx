@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Stack } from "@fluentui/react";
+import { Text, Stack, Link } from "@fluentui/react";
 import { useTheme } from "../services/ui/ui-services";
 
 const Info = () => {
@@ -33,7 +33,7 @@ const Info = () => {
             <br/>Je kunt de volgorde van werkervaringen met drag&amp;drop aanpassen.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
-        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <a href="mailto:RobBosman@Valori.nl?subject=CVtool" target="blank">RobBosman@Valori.nl</a>.
+        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:RobBosman@Valori.nl?subject=CVtool" target="blank">RobBosman@Valori.nl</Link>.
         <br/>
         <br/>Enjoy!
         <br/>Rob

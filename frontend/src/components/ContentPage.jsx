@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { PrimaryButton, Nav, Separator, Stack, TooltipHost, DefaultButton } from "@fluentui/react";
+import { PrimaryButton, Nav, Separator, Stack, TooltipHost, ActionButton } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -46,6 +46,7 @@ const ContentPage = (props) => {
     },
     {
       name: "CV",
+      onLinkClick: (link) => console.log("link", link),
       links: [
         {
           key: "#profile",
@@ -118,29 +119,34 @@ const ContentPage = (props) => {
       || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
 
-  const onRenderGroupHeader = (group) =>
-    (<h3>{group.name}</h3>);
+  const onFetchCv = () =>
+    props.fetchCvByAccountId(props.selectedAccountId);
 
-  const onGenerateCv = () =>
-    props.generateCv(props.selectedAccountId || props.authInfo.accountId);
-
-  const onEditCv = () => {
-    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel) && props.selectedAccountId) {
-      props.fetchCvByAccountId(props.selectedAccountId);
-    }
-  };
-
-  const editCvButton = ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+  // Show the fetchCvButton only if
+  // * the user has the right authorization level AND
+  // * if the user selected an other person's account AND
+  // * if the cv-data of that other person is not available yet.
+  const fetchCvButton = ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+  && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId && !props.selectedCvId
     ? <TooltipHost content="Haal de gegevens op om het CV te bewerken">
-      <DefaultButton
-        text="Bewerk CV"
-        iconProps={{ iconName: "PageEdit" }}
-        disabled={!props.selectedAccountId || props.selectedCvId}
-        onClick={onEditCv}
-        styles={{ root: { width: 180 } }}
+      <ActionButton
+        text="gegevens ophalen"
+        onClick={onFetchCv}
+        styles={{ root: { fontStyle: "italic" } }}
       />
     </TooltipHost>
     : null;
+
+  const onRenderGroupHeader = (group) =>
+    <Stack horizontal
+      verticalAlign="center"
+      tokens={{ childrenGap: "l1" }}>
+      <h3>{group.name}</h3>
+      {group.name === "CV" ? fetchCvButton : null}
+    </Stack>;
+
+  const onGenerateCv = () =>
+    props.generateCv(props.selectedAccountId || props.authInfo.accountId);
 
   return (
     <Stack horizontal>
@@ -153,19 +159,15 @@ const ContentPage = (props) => {
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />
-        <Stack
-          tokens={{ childrenGap: "l1" }}>
-          {editCvButton}
-          <TooltipHost content="Download CV als MS-Word document">
-            <PrimaryButton
-              text="Download CV"
-              iconProps={{ iconName: "DownloadDocument" }}
-              disabled={!props.selectedAccountId}
-              onClick={onGenerateCv}
-              styles={{ root: { width: 180 } }}
-            />
-          </TooltipHost>
-        </Stack>
+        <TooltipHost content="Download CV als MS-Word document">
+          <PrimaryButton
+            text="Download CV"
+            iconProps={{ iconName: "DownloadDocument" }}
+            disabled={!props.selectedAccountId}
+            onClick={onGenerateCv}
+            styles={{ root: { width: 180 } }}
+          />
+        </TooltipHost>
       </Stack>
       <Separator vertical />
       <Stack.Item grow>

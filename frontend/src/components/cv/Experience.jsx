@@ -26,7 +26,7 @@ const Experience = (props) => {
     if (props.experienceEntity && props.selectedCvId) {
       setExperiences(
         Object.values(props.experienceEntity)
-          .filter((instance) => instance.cvId === props.selectedCvId)
+          .filter(instance => instance.cvId === props.selectedCvId)
           .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
       );
     }

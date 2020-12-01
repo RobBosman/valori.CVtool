@@ -20,11 +20,11 @@ const AccountManagement = (props) => {
       const combinedEntity = {};
       Object.entries(props.accountEntity)
         .forEach(([accountId, account]) => {
-          const authorization = props.authorizationEntity && Object.values(props.authorizationEntity)
+          const authorization = Object.values(props.authorizationEntity)
             .find(authorizationInstance => authorizationInstance.accountId === accountId);
 
-          const businessUnit = props.businessUnitEntity && Object.values(props.businessUnitEntity)
-            .find(businessUnit => businessUnit.accountIds.includes(accountId));
+          const businessUnit = Object.values(props.businessUnitEntity)
+            .find(businessUnit => businessUnit.accountIds?.includes(accountId));
 
           combinedEntity[accountId] = {
             ...account,

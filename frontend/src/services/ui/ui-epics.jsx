@@ -47,7 +47,7 @@ export const uiEpics = [
     map(action => action.payload),
     map(themeName => {
       uiServices.loadThemeByName(themeName);
-      document.cookie = `theme=${themeName}`;
+      window.localStorage.setItem("theme", themeName);
     }),
     ignoreElements()
   ),

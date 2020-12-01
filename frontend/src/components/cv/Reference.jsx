@@ -24,7 +24,8 @@ const Reference = (props) => {
   React.useEffect(() => {
     if (props.referenceEntity && props.selectedCvId) {
       setReferences(
-        Object.values(props.referenceEntity).filter((instance) => instance.cvId === props.selectedCvId)
+        Object.values(props.referenceEntity)
+          .filter(instance => instance.cvId === props.selectedCvId)
           .sort((l, r) => compareStrings(l.referentName, r.referentName))
       );
     }

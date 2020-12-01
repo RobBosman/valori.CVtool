@@ -27,7 +27,7 @@ const Skill = (props) => {
   React.useEffect(() => {
     if (props.skillEntity && props.selectedCvId) {
       setSkills(Object.values(props.skillEntity)
-        .filter((instance) => instance.cvId === props.selectedCvId)
+        .filter(instance => instance.cvId === props.selectedCvId)
         .sort((l, r) => {
           let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
           if (compare === 0) {

@@ -29,7 +29,7 @@ const Training = (props) => {
     if (props.trainingEntity && props.selectedCvId) {
       setTrainings(
         Object.values(props.trainingEntity)
-          .filter((instance) => instance.cvId === props.selectedCvId)
+          .filter(instance => instance.cvId === props.selectedCvId)
           .sort((l, r) => {
             let compare = compareStrings(composePeriod(r), composePeriod(l));
             if (compare === 0) {

@@ -40,8 +40,8 @@
     "account": [<xsl:apply-templates select="cv:_account"/>]
     ,"authorization": [<xsl:apply-templates select="cv:_account" mode="authorization"/>]
     ,"cv": [<xsl:apply-templates select="*/cv:cv"/>]
-    ,"education": [<xsl:apply-templates select="*/cv:cv/cv:opleiding[not(cv:soort_opleiding = 1)]" mode="opleiding"/>]
-    ,"training": [<xsl:apply-templates select="*/cv:cv/cv:opleiding[cv:soort_opleiding = 1]" mode="training"/>]
+    ,"education": [<xsl:apply-templates select="*/cv:cv/cv:opleiding[not(cv:soort_opleiding) or cv:soort_opleiding = 0]" mode="opleiding"/>]
+    ,"training": [<xsl:apply-templates select="*/cv:cv/cv:opleiding[cv:soort_opleiding > 0]" mode="training"/>]
     ,"publication": [<xsl:apply-templates select="*/cv:cv/cv:publicatie[cv:titel or cv:media]"/>]
     ,"reference": [<xsl:apply-templates select="*/cv:cv/cv:referentie[cv:naam_referent]"/>]
     ,"skill": [
@@ -70,9 +70,9 @@
     "_id": "<xsl:value-of select="util:uuid(concat('authorization', @id))"/>"
     ,"accountId": "<xsl:value-of select="util:uuid(@id)"/>"
     ,"level": "<xsl:choose>
-      <xsl:when test="cv:rol[cv:naam = 'view alle CVs']">ADMIN</xsl:when>
-      <xsl:otherwise>CONSULTANT</xsl:otherwise>
-    </xsl:choose>"
+    <xsl:when test="cv:rol[cv:naam = 'view alle CVs']">ADMIN</xsl:when>
+    <xsl:otherwise>CONSULTANT</xsl:otherwise>
+  </xsl:choose>"
     }
   </xsl:template>
 
@@ -129,7 +129,10 @@
     ,"name": {
     "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
     }
-    ,"institution": "<xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/>"
+    ,"institution": "<xsl:choose>
+    <xsl:when test="contains(cv:naam_instituut, cv:plaats_instituut)"><xsl:value-of select="cv:naam_instituut"/></xsl:when>
+    <xsl:otherwise><xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/></xsl:otherwise>
+  </xsl:choose>"
     ,"yearTo": <xsl:value-of select="util:jsonInt(cv:jaar_diploma)"/>
     ,"result": "<xsl:apply-templates select="cv:diploma" mode="educationResult"/>"
     }
@@ -143,7 +146,10 @@
     ,"name": {
     "nl_NL": "<xsl:value-of select="util:jsonText(cv:naam_opleiding)"/>"
     }
-    ,"institution": "<xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/>"
+    ,"institution": "<xsl:choose>
+      <xsl:when test="contains(cv:naam_instituut, cv:plaats_instituut)"><xsl:value-of select="cv:naam_instituut"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="util:jsonText(concat(cv:naam_instituut, ' ', cv:plaats_instituut))"/></xsl:otherwise>
+    </xsl:choose>"
     ,"year": <xsl:value-of select="util:jsonInt(cv:jaar_diploma)"/>
     ,"result": "<xsl:apply-templates select="cv:diploma" mode="educationResult"/>"
     }

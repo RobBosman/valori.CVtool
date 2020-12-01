@@ -25,11 +25,10 @@ export const initializeUI = () => {
   initializeIcons();
   registerOnThemeChangeCallback((theme) => document.documentElement.style.background = theme.semanticColors.bodyBackground);
 
-  const userPrefs = {...defaultUserPrefs};
-  decodeURIComponent(document.cookie)
-    .split(";")
-    .map(kvString => kvString.trim().split("="))
-    .forEach(kv => userPrefs[kv[0]] = kv[1]);
+  const userPrefs = { ...defaultUserPrefs };
+  Object.keys(defaultUserPrefs).forEach(key => {
+    userPrefs[key] = window.localStorage.getItem(key) || userPrefs[key];
+  });
   return userPrefs;
 };
 
