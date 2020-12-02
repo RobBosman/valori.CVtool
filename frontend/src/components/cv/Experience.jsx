@@ -62,7 +62,7 @@ const Experience = (props) => {
       fieldName: "client",
       name: "Opdrachtgever",
       isResizable: true,
-      minWidth: 100,
+      minWidth: 90,
       maxWidth: 250,
       data: "string"
     },
@@ -92,6 +92,7 @@ const Experience = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
+        minWidth: 350,
         height: "calc(100vh - 170px)"
       }
     ]

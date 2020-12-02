@@ -1,4 +1,4 @@
-import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap } from "rxjs/operators";
+import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap, tap, debounceTime } from "rxjs/operators";
 import { fromEvent, of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as authActions from "../auth/auth-actions";
@@ -8,22 +8,23 @@ import * as uiServices from "./ui-services";
 export const uiEpics = [
   // Keep track of location (address bar) changes.
   () => fromEvent(window, "hashchange").pipe(
-    map(() => uiActions.setLocationHash(document.location.hash || ""))
+    map(event => uiActions.setLocationHash(event.target.location.hash || ""))
   ),
 
   // Delete all selections on logout.
   (_, state$) => state$.pipe(
-    map(state => state.auth.loginState),
+    map(state => state.auth?.loginState),
     distinctUntilChanged(),
     filter(loginState => loginState === authActions.LoginStates.LOGGED_OUT),
     map(() => uiActions.resetSelectedIds({}))
   ),
 
   // Select the account who'se AccountInfo is retrieved.
-  (action$) => action$.pipe(
+  (action$, state$) => action$.pipe(
     ofType(authActions.setAuthInfo.type),
-    map(action => action.payload),
-    map(authInfo => uiActions.setSelectedId("account", authInfo?.accountId))
+    map(action => action.payload?.accountId),
+    filter(accountId => accountId !== state$.value.ui?.selectedId?.account),
+    map(accountId => uiActions.setSelectedId("account", accountId))
   ),
 
   // Reset all selected ids if the selected accountId changes.
@@ -32,16 +33,38 @@ export const uiEpics = [
     map(action => action.payload),
     filter(payload => payload.entityName === "account"),
     map(payload => payload.selectedId),
+    debounceTime(50), // When changing the selection in a DetailsList, the selection is first set to undefined and then to the new value.
     distinctUntilChanged(),
     map(accountId => {
       const cvEntity = state$.value.safe?.content?.cv;
       const cvInstance = cvEntity && Object.values(cvEntity)
         .find(cvInstance => cvInstance.accountId === accountId);
-      return uiActions.resetSelectedIds({ account: accountId, cv: cvInstance?._id });
+      const [entityName, selectedId] = state$.value.ui.locationHash.split("=");
+      return uiActions.resetSelectedIds({
+        account: accountId,
+        cv: cvInstance?._id,
+        [entityName.substr(1)]: selectedId
+      });
     })
   ),
 
-  // Apply the selected theme and store it in a cookie.
+  // Add the selected id to the URL-hash in the address bar.
+  (action$, state$) => action$.pipe(
+    ofType(uiActions.setSelectedId.type),
+    map(action => action.payload),
+    filter(payload => state$.value.ui?.locationHash?.includes(payload.entityName)),
+    filter(payload => state$.value.auth?.authInfo?.accountId !== payload.selectedId),
+    distinctUntilChanged(),
+    tap(payload => {
+      const hash = state$.value.ui.locationHash.split("=")[0];
+      window.location.hash = payload.selectedId
+        ? `${hash}=${payload.selectedId}`
+        : hash;
+    }),
+    ignoreElements()
+  ),
+
+  // Apply the selected theme and store it in localStorage.
   (action$) => action$.pipe(
     ofType(uiActions.setTheme.type),
     map(action => action.payload),

@@ -12,7 +12,7 @@ reducerRegistry.register(
   "ui", 
   createReducer(
     {
-      locationHash: document.location.hash || "",
+      locationHash: window.location.hash || "",
       userPrefs: {},
       selectedId: {}
     },

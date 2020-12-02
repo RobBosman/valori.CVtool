@@ -12,7 +12,7 @@ export const Authorizations = [
   },
   {
     key: "EE_LEAD",
-    text: "E&E"
+    text: "E&E Lead"
   },
   {
     key: "SALES",

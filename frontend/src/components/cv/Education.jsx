@@ -10,7 +10,7 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { compareStrings, isValidYear } from "../../utils/CommonUtils";
-import { EducationResultTypes, getEnumData } from "./Enums";
+import { EducationResultTypes } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 
 const entityName = "education";
@@ -47,7 +47,8 @@ const Education = (props) => {
       fieldName: `name.${props.locale}`,
       name: "Opleiding",
       isResizable: true,
-      minWidth: 180,
+      minWidth: 125,
+      maxWidth: 300,
       data: "string"
     },
     {
@@ -55,7 +56,8 @@ const Education = (props) => {
       fieldName: "institution",
       name: "Onderwijsinstelling",
       isResizable: true,
-      minWidth: 220,
+      minWidth: 140,
+      maxWidth: 300,
       data: "string"
     },
     {
@@ -66,16 +68,6 @@ const Education = (props) => {
       minWidth: 75,
       maxWidth: 75,
       data: "string"
-    },
-    {
-      key: "result",
-      fieldName: "result",
-      name: "Resultaat",
-      onRender: (item) => getEnumData(EducationResultTypes, item.result)?.text || "",
-      isResizable: false,
-      minWidth: 80,
-      maxWidth: 80,
-      data: "string"
     }
   ];
 
@@ -85,6 +77,7 @@ const Education = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
+        minWidth: 350,
         height: "calc(100vh - 170px)"
       }
     ]

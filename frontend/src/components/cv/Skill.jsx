@@ -64,8 +64,6 @@ const Skill = (props) => {
       fieldName: `description.${props.locale}`,
       name: "Omschrijving",
       isResizable: true,
-      minWidth: 150,
-      maxWidth: 400,
       isSorted: false,
       isSortedDescending: false,
       data: "string"
@@ -88,6 +86,7 @@ const Skill = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
+        minWidth: 350,
         height: "calc(100vh - 170px)"
       }
     ]

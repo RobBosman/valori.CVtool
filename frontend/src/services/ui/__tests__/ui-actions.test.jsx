@@ -5,12 +5,6 @@ describe("ui-actions.test", () => {
 
   const reducer = reducerRegistry.getRootReducer();
 
-  it("should reduce setLocationHash", () => {
-    const state = reducer(undefined, uiActions.setLocationHash("#xyz"));
-    expect(state.ui.locationHash)
-      .toBe("#xyz");
-  });
-
   it("should reduce setLocale", () => {
     const state = reducer(undefined, uiActions.setLocale("de_DE"));
     expect(state.ui.userPrefs.locale)

@@ -16,6 +16,7 @@ import CvLogo from "./widgets/CvLogo";
 import Training from "./cv/Training";
 import Accounts from "./admin/Accounts";
 import * as cvActions from "../services/cv/cv-actions";
+import { Authorizations, getEnumData } from "./cv/Enums";
 
 const ContentPage = (props) => {
 
@@ -33,7 +34,7 @@ const ContentPage = (props) => {
     },
     ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
     && {
-      name: props.authInfo.authorizationLevel === "ADMIN" ? "Admin" : props.authInfo.authorizationLevel === "EE_LEAD" ? "E&E Lead" : "Sales",
+      name: getEnumData(Authorizations, props.authInfo.authorizationLevel).text,
       links: [
         {
           key: "#accounts",
@@ -46,7 +47,6 @@ const ContentPage = (props) => {
     },
     {
       name: "CV",
-      onLinkClick: (link) => console.log("link", link),
       links: [
         {
           key: "#profile",
@@ -109,12 +109,13 @@ const ContentPage = (props) => {
   ].filter(Boolean);
 
   let renderContent = null;
-  if (props.locationHash === "" || props.locationHash === "#") {
+  const locationHash = props.locationHash.split("=")[0];
+  if (locationHash === "" || locationHash === "#") {
     renderContent = <Info />;
   } else {
     const item = navGroups
       .flatMap((navGroup) => navGroup.links)
-      .find((item) => item.url === props.locationHash);
+      .find((item) => item.url === locationHash);
     renderContent = item?.content
       || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
@@ -131,6 +132,7 @@ const ContentPage = (props) => {
     ? <TooltipHost content="Haal de gegevens op om het CV te bewerken">
       <ActionButton
         text="gegevens ophalen"
+        iconProps={{ iconName: "CloudDownload" }}
         onClick={onFetchCv}
         styles={{ root: { fontStyle: "italic" } }}
       />
@@ -139,8 +141,7 @@ const ContentPage = (props) => {
 
   const onRenderGroupHeader = (group) =>
     <Stack horizontal
-      verticalAlign="center"
-      tokens={{ childrenGap: "l1" }}>
+      verticalAlign="center">
       <h3>{group.name}</h3>
       {group.name === "CV" ? fetchCvButton : null}
     </Stack>;
@@ -155,7 +156,7 @@ const ContentPage = (props) => {
         <Nav
           styles={{ root: { width: 180, marginTop: 59 } }}
           groups={navGroups}
-          initialSelectedKey={props.locationHash || "#"}
+          initialSelectedKey={locationHash || "#"}
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />

@@ -73,6 +73,7 @@ const Reference = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
+        minWidth: 350,
         height: "calc(100vh - 170px)"
       }
     ]

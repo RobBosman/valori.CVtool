@@ -12,7 +12,7 @@ import { CvTextField } from "../widgets/CvTextField";
 import { compareStrings } from "../../utils/CommonUtils";
 import { Authorizations, getEnumData } from "../cv/Enums";
 
-const AccountManagement = (props) => {
+const Accounts = (props) => {
 
   const [combinedEntity, setCombinedEntity] = React.useState({});
   
@@ -65,6 +65,7 @@ const AccountManagement = (props) => {
       name: "Naam",
       isResizable: true,
       minWidth: 130,
+      maxWidth: 250,
       isSorted: false,
       isSortedDescending: false,
       data: "string"
@@ -74,7 +75,7 @@ const AccountManagement = (props) => {
       fieldName: "businessUnit.name",
       name: "Tribe",
       isResizable: true,
-      minWidth: 120,
+      minWidth: 130,
       data: "string"
     },
     {
@@ -203,7 +204,7 @@ const AccountManagement = (props) => {
   );
 };
 
-AccountManagement.propTypes = {
+Accounts.propTypes = {
   locale: PropTypes.string.isRequired,
   authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
@@ -232,4 +233,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
 });
 
-export default connect(select, mapDispatchToProps)(AccountManagement);
+export default connect(select, mapDispatchToProps)(Accounts);

@@ -44,7 +44,7 @@ const Publication = (props) => {
       name: "Titel",
       isResizable: true,
       minWidth: 150,
-      maxWidth: 300,
+      maxWidth: 400,
       data: "string"
     },
     {
@@ -55,15 +55,6 @@ const Publication = (props) => {
       minWidth: 150,
       maxWidth: 400,
       data: "string"
-    },
-    {
-      key: "year",
-      fieldName: "year",
-      name: "Jaar",
-      isResizable: false,
-      minWidth: 30,
-      maxWidth: 30,
-      data: "number"
     },
     {
       key: "includeInCv",
@@ -82,6 +73,7 @@ const Publication = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
+        minWidth: 350,
         height: "calc(100vh - 170px)"
       }
     ]
