@@ -212,6 +212,7 @@ const Skill = (props) => {
                 label="Omschrijving"
                 field={`description.${props.locale}`}
                 instanceContext={skillContext}
+                validateInput={commonUtils.isValidText(28)}
               />
               <CvRating
                 label="Niveau"
