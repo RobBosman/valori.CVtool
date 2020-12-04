@@ -98,7 +98,7 @@ Profile.propTypes = {
 const select = (state) => ({
   locale: state.ui.userPrefs.locale,
   cvEntity: state.safe.content.cv,
-  selectedCvId: state.ui.selectedId["cv"],
+  selectedCvId: state.ui.selectedId.cv,
   accountEntity: state.safe.content.account
 });
 

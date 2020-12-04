@@ -195,8 +195,8 @@ ContentPage.propTypes = {
 const select = (state) => ({
   authInfo: state.auth.authInfo,
   locationHash: state.ui.locationHash,
-  selectedAccountId: state.ui.selectedId["account"],
-  selectedCvId: state.ui.selectedId["cv"]
+  selectedAccountId: state.ui.selectedId.account,
+  selectedCvId: state.ui.selectedId.cv
 });
 
 const mapDispatchToProps = (dispatch) => ({

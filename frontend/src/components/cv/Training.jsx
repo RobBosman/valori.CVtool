@@ -222,7 +222,7 @@ Training.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId["cv"],
+  selectedCvId: state.ui.selectedId.cv,
   trainingEntity: state.safe.content[entityName],
   selectedTrainingId: state.ui.selectedId[entityName]
 });

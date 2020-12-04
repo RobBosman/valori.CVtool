@@ -210,7 +210,7 @@ Reference.propTypes = {
 
 const select = (state) => ({
   locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId["cv"],
+  selectedCvId: state.ui.selectedId.cv,
   referenceEntity: state.safe.content[entityName],
   selectedReferenceId: state.ui.selectedId[entityName]
 });

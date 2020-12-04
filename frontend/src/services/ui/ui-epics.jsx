@@ -1,9 +1,27 @@
-import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap, tap, debounceTime } from "rxjs/operators";
+import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap, tap, debounceTime, skip } from "rxjs/operators";
 import { fromEvent, of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as authActions from "../auth/auth-actions";
 import * as uiActions from "./ui-actions";
 import * as uiServices from "./ui-services";
+
+// const getAccountIdFromLocationHash = () => {
+//   const [hash, selectedId, selectedAccountId] = window.location.hash?.split("=");
+//   return hash.includes("account")
+//     ? selectedId
+//     : selectedAccountId;
+// };
+
+const switchAccount = (accountId, state) => {
+  const cvEntity = state.safe?.content?.cv;
+  const cvInstance = cvEntity && Object.values(cvEntity)
+    .find(cvInstance => cvInstance.accountId === accountId);
+  console.log("switchAccount", accountId, accountId);
+  return uiActions.resetSelectedIds({
+    account: accountId,
+    cv: cvInstance?._id
+  });
+};
 
 export const uiEpics = [
   // Keep track of location (address bar) changes.
@@ -15,54 +33,66 @@ export const uiEpics = [
   (_, state$) => state$.pipe(
     map(state => state.auth?.loginState),
     distinctUntilChanged(),
+    skip(1), // Ignore the first time, when starting the app.
     filter(loginState => loginState === authActions.LoginStates.LOGGED_OUT),
     map(() => uiActions.resetSelectedIds({}))
   ),
 
-  // Select the account who'se AccountInfo is retrieved.
+  // Select the account whose AccountInfo is retrieved.
   (action$, state$) => action$.pipe(
     ofType(authActions.setAuthInfo.type),
     map(action => action.payload?.accountId),
-    filter(accountId => accountId !== state$.value.ui?.selectedId?.account),
-    map(accountId => uiActions.setSelectedId("account", accountId))
+    tap(accountId => console.log("setAuthInfo", accountId)),
+    map(accountId => switchAccount(accountId, state$.value))
   ),
 
-  // Reset all selected ids if the selected accountId changes.
+  // Reset all selected ids when switching to another account.
   (action$, state$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
+    debounceTime(20), // When changing the selection in a DetailsList, the selection is first set to undefined and then to the new value.
     map(action => action.payload),
     filter(payload => payload.entityName === "account"),
     map(payload => payload.selectedId),
-    debounceTime(50), // When changing the selection in a DetailsList, the selection is first set to undefined and then to the new value.
     distinctUntilChanged(),
-    map(accountId => {
-      const cvEntity = state$.value.safe?.content?.cv;
-      const cvInstance = cvEntity && Object.values(cvEntity)
-        .find(cvInstance => cvInstance.accountId === accountId);
-      const [entityName, selectedId] = state$.value.ui.locationHash.split("=");
-      return uiActions.resetSelectedIds({
-        account: accountId,
-        cv: cvInstance?._id,
-        [entityName.substr(1)]: selectedId
-      });
-    })
+    tap(x => console.log("setSelectedId(account)", x)),
+    map(accountId => switchAccount(accountId, state$.value))
   ),
 
-  // Add the selected id to the URL-hash in the address bar.
-  (action$, state$) => action$.pipe(
-    ofType(uiActions.setSelectedId.type),
-    map(action => action.payload),
-    filter(payload => state$.value.ui?.locationHash?.includes(payload.entityName)),
-    filter(payload => state$.value.auth?.authInfo?.accountId !== payload.selectedId),
-    distinctUntilChanged(),
-    tap(payload => {
-      const hash = state$.value.ui.locationHash.split("=")[0];
-      window.location.hash = payload.selectedId
-        ? `${hash}=${payload.selectedId}`
-        : hash;
-    }),
-    ignoreElements()
-  ),
+  // // Select the locationHash-account when receiving the 'other' account instances.
+  // (action$, state$) => action$.pipe(
+  //   ofType(safeActions.resetEntities.type),
+  //   map(action => action.payload.account), // Only check account instances.
+  //   filter(accounts => accounts),
+  //   map(accounts => {
+  //     const locationHashAccountId = getAccountIdFromLocationHash();
+  //     return accounts[locationHashAccountId] && locationHashAccountId; // Only if the account instance is present.
+  //   }),
+  //   filter(locationHashAccountId => locationHashAccountId),
+  //   tap(accountId => console.log("resetEntities", accountId)),
+  //   map(accountId => switchAccount(accountId, state$.value))
+  // ),
+
+  // // Add the selected id to the URL-hash in the address bar.
+  // (action$, state$) => action$.pipe(
+  //   ofType(uiActions.setSelectedId.type),
+  //   // debounceTime(20), // When changing the selection in a DetailsList, the selection is first set to undefined and then to the new value.
+  //   map(action => action.payload),
+  //   filter(payload => state$.value.ui?.locationHash?.includes(payload.entityName)), // Only if the id's entity is in the URL-hash.
+  //   map(payload => payload.selectedId || ""),
+  //   // map(selectedId => state$.value.auth?.authInfo?.accountId === selectedId ? "" : selectedId), // Don't show own accountId to the URL-hash.
+  //   tap(selectedId => {
+  //     const selectedAccountId = state$.value.ui?.selectedId?.account || "";
+  //     const ownAccountId = state$.value.auth?.authInfo?.accountId || "";
+  //     console.log("update locationHash", selectedId, selectedAccountId, ownAccountId);
+  //     let hash = state$.value.ui.locationHash.split("=")[0];
+  //     if (selectedAccountId && selectedAccountId !== selectedId && selectedAccountId !== ownAccountId)
+  //       hash = `${hash}=${selectedId}=${selectedAccountId}`;
+  //     else if (selectedId && selectedId !== ownAccountId)
+  //       hash = `${hash}=${selectedId}`;
+  //     window.location.hash = hash;
+  //   }),
+  //   ignoreElements()
+  // ),
 
   // Apply the selected theme and store it in localStorage.
   (action$) => action$.pipe(

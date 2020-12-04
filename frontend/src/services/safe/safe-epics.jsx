@@ -1,5 +1,5 @@
 import { ofType } from "redux-observable";
-import { map, switchMap, debounceTime, filter, mergeMap, distinctUntilChanged } from "rxjs/operators";
+import { map, switchMap, debounceTime, filter, mergeMap, distinctUntilChanged, skip } from "rxjs/operators";
 import * as eventBusServices from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
@@ -28,6 +28,7 @@ export const safeEpics = [
     map(state => state?.eventBus?.connectionState),
     distinctUntilChanged(),
     filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),
+    skip(1), // Ignore the first time, when starting the app.
     map(() => safeActions.save(false))
   ),
 

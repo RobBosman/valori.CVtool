@@ -16,8 +16,9 @@ export const CvDetailsList = (props) => {
 
   // Re-select current item when navigating back to this page.
   React.useEffect(() => {
+    console.log("DetailList", instanceId);
     selection.setAllSelected(false);
-    selection.setKeySelected(instanceId, true, false);
+    instanceId && selection.setKeySelected(instanceId, true, false);
   }, [props.items, instanceId]);
 
   const mapLocaleFields = props.columns.map((column) => {
@@ -67,6 +68,7 @@ export const CvDetailsList = (props) => {
           selectionMode={1}
           isHeaderVisible={true}
           layoutMode={DetailsListLayoutMode.justified}
+          compact={true}
           selectionPreservedOnEmptyClick={true}
           onRenderDetailsHeader={onRenderDetailsHeader}
           onRenderItemColumn={props.onRenderItemColumn}

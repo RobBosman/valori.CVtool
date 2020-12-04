@@ -49,8 +49,8 @@ CvTitle.propTypes = {
 const select = (state) => ({
   locale: state.ui.userPrefs.locale,
   cvEntity: state.safe.content.cv,
-  selectedAccountId: state.ui.selectedId["account"],
-  selectedCvId: state.ui.selectedId["cv"],
+  selectedAccountId: state.ui.selectedId.account,
+  selectedCvId: state.ui.selectedId.cv,
   accountEntity: state.safe.content.account
 });
 

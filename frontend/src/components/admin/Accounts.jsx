@@ -220,10 +220,10 @@ Accounts.propTypes = {
 const select = (state) => ({
   locale: state.ui.userPrefs.locale,
   authInfo: state.auth.authInfo,
-  accountEntity: state.safe.content["account"],
-  authorizationEntity: state.safe.content["authorization"],
-  businessUnitEntity: state.safe.content["businessUnit"],
-  selectedAccountId: state.ui.selectedId["account"]
+  accountEntity: state.safe.content.account,
+  authorizationEntity: state.safe.content.authorization,
+  businessUnitEntity: state.safe.content.businessUnit,
+  selectedAccountId: state.ui.selectedId.account
 });
 
 const mapDispatchToProps = (dispatch) => ({
