@@ -12,7 +12,7 @@ export const CvDetailsList = (props) => {
     items: props.items,
     getKey: getKey,
     onSelectionChanged: () => setSelectedInstance(selection.getSelection()[0]?._id)
-  }));
+  }), []);
 
   // Re-select current item when navigating back to this page.
   React.useEffect(() => {

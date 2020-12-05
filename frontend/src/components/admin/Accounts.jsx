@@ -14,11 +14,9 @@ import { Authorizations, getEnumData } from "../cv/Enums";
 
 const Accounts = (props) => {
 
-  const [combinedEntity, setCombinedEntity] = React.useState({});
-  
-  React.useEffect(() => {
+  const combineEntities = () => {
+    const combined = {};
     if (props.accountEntity && props.authorizationEntity && props.businessUnitEntity) {
-      const combinedEntity = {};
       Object.entries(props.accountEntity)
         .forEach(([accountId, account]) => {
           const authorization = Object.values(props.authorizationEntity)
@@ -27,15 +25,15 @@ const Accounts = (props) => {
           const businessUnit = Object.values(props.businessUnitEntity)
             .find(businessUnit => businessUnit.accountIds?.includes(accountId));
 
-          combinedEntity[accountId] = {
+          combined[accountId] = {
             ...account,
             authorization: authorization,
             businessUnit: businessUnit
           };
         });
-      setCombinedEntity(combinedEntity);
     }
-  }, [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
+    return combined;
+  };
 
   const replaceCombinedInstance = (accountId, combinedInstance) => {
     const authorization = props.authorizationEntity && Object.values(props.authorizationEntity)
@@ -46,54 +44,89 @@ const Accounts = (props) => {
     });
   };
 
-  // Sort {CombinedInstance} records.
-  const combinedInstances = combinedEntity && Object.values(combinedEntity)
-    .sort((l, r) => compareStrings(l.name, r.name))
-    || [];
+  const [sortingBy, setSortingBy] = React.useState({ key: "name", field: "name", isSortedDescending: false });
 
-  const combinedInstanceContext = {
+  const combinedEntity = React.useCallback(
+    combineEntities(),
+    [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
+
+  const combinedInstances = React.useCallback(
+    combinedEntity && Object.values(combinedEntity) || [],
+    [combinedEntity]);
+
+  const combinedInstanceContext = React.useCallback({
     entity: combinedEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
     replaceInstance: replaceCombinedInstance
-  };
+  }, [combinedEntity, props.selectedAccountId]);
 
-  const columns = [
+  const onRenderAuthorization = (item) =>
+    getEnumData(Authorizations, item.authorization?.level)?.text || "";
+
+  const onSort = (_event, column) =>
+    setSortingBy({
+      key: column.key,
+      field: column.fieldName,
+      isSortedDescending: column.isSorted && !column.isSortedDescending
+    });
+
+  const createColumn = (field) => ({
+    key: field,
+    fieldName: field,
+    isSorted: sortingBy.key === field,
+    isSortedDescending: sortingBy.key === field && sortingBy.isSortedDescending,
+    onColumnClick: onSort,
+    data: "string"
+  });
+
+  const columns = React.useCallback([
     {
-      key: "name",
-      fieldName: "name",
+      ...createColumn("name"),
       name: "Naam",
       isResizable: true,
       minWidth: 130,
-      maxWidth: 250,
-      isSorted: false,
-      isSortedDescending: false,
-      data: "string"
+      maxWidth: 250
     },
     {
-      key: "businessUnit.name",
-      fieldName: "businessUnit.name",
+      ...createColumn("businessUnit.name"),
       name: "Tribe",
       isResizable: true,
-      minWidth: 130,
-      data: "string"
+      minWidth: 120
     },
     {
-      key: "authorization.level",
+      ...createColumn("authorization"),
       fieldName: "onRender",
       name: "Autorisatie",
-      onRender: (item) => {
-        const authorizationLevel = props.authorizationEntity && Object.values(props.authorizationEntity)
-          .find(authorization => authorization.accountId === item._id)
-          ?.level;
-        return getEnumData(Authorizations, authorizationLevel)?.text || "";
-      },
+      onRender: onRenderAuthorization,
       isResizable: false,
-      minWidth: 80,
-      maxWidth: 80,
-      data: "string"
+      minWidth: 90,
+      maxWidth: 90
     }
-  ];
+  ],
+  [sortingBy]);
+
+  const [items, setItems] = React.useState(combinedInstances);
+
+  const [filterText, setFilterText] = React.useState("");
+  React.useEffect(() => {
+    if (filterText) {
+      const lowerCaseFilterText = filterText.toLowerCase();
+      setItems(combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit}`.toLowerCase().indexOf(lowerCaseFilterText) >= 0));
+    } else {
+      setItems(combinedInstances);
+    }
+  },
+  [combinedInstances, filterText]);
+
+  const onFilter = (_, filterText) =>
+    setFilterText(filterText);
+
+  const onEditCv = () => {
+    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel) && props.selectedAccountId) {
+      props.fetchCvByAccountId(props.selectedAccountId);
+    }
+  };
 
   const { editPaneColor, viewPaneColor } = useTheme();
   const viewStyles = {
@@ -119,28 +152,19 @@ const Accounts = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const [listItems, setListItems] = React.useState(combinedInstances);
-  const [filterText, setFilterText] = React.useState("");
-  // Refresh the list if necessary.
-  if (filterText === "" && listItems.length !== combinedInstances.length) {
-    setListItems(combinedInstances);
-  }
-
-  const onFilter = (_, filterText) => {
-    if (filterText) {
-      setFilterText(filterText);
-      const lowerCaseFilterText = filterText.toLowerCase();
-      setListItems(combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit}`.toLowerCase().indexOf(lowerCaseFilterText) >= 0));
-    } else {
-      setListItems(combinedInstances);
+  const compareItemsByField = (l, r, field) => {
+    const fieldPath = field.split(".", 2);
+    if (fieldPath.length > 1) {
+      return compareItemsByField(l[fieldPath[0]], r[fieldPath[0]], fieldPath[1]);
     }
+    return compareStrings(l && l[field] || "", r && r[field] || "");
   };
 
-  const onEditCv = () => {
-    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel) && props.selectedAccountId) {
-      props.fetchCvByAccountId(props.selectedAccountId);
-    }
-  };
+  const sortedItems = React.useCallback(
+    items.slice(0).sort((l, r) => sortingBy.isSortedDescending
+      ? compareItemsByField(r, l, sortingBy.field)
+      : compareItemsByField(l, r, sortingBy.field)),
+    [items, sortingBy]);
 
   const authorizationButton = props.authInfo.authorizationLevel === "ADMIN"
     ? <CvDropdown
@@ -168,14 +192,14 @@ const Accounts = (props) => {
                     underlined
                     onChange={onFilter}
                   />
-                  <Text variant="xSmall">{listItems.length} / {combinedInstances.length}</Text>
+                  <Text variant="xSmall">{items.length} / {combinedInstances.length}</Text>
                 </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}
-                items={listItems}
+                items={sortedItems}
                 instanceContext={combinedInstanceContext}
-                setKey="combinedInstances"
+                setKey="accounts"
                 onItemInvoked={onEditCv}
               />
             </Stack>
