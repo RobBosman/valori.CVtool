@@ -61,8 +61,9 @@ const Training = (props) => {
       data: "string"
     },
     {
-      key: "period",
-      name: "Periode",
+      key: "year",
+      fieldName: "year",
+      name: "Jaar",
       onRender: composePeriod,
       isResizable: false,
       minWidth: 60,

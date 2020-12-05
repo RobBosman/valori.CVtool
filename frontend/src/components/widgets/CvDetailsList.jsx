@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { DetailsList, DetailsListLayoutMode, ScrollablePane, Selection, Sticky, StickyPositionType, TooltipHost } from "@fluentui/react";
+import * as commonUtils from "../../utils/CommonUtils";
 
 export const CvDetailsList = (props) => {
 
@@ -20,17 +21,6 @@ export const CvDetailsList = (props) => {
       .map(getKey)
       .forEach(key => selection.setKeySelected(key, key === instanceId), false);
   }, []);
-
-  const mapLocaleFields = props.columns.map((column) => {
-    const fieldPath = (column.fieldName || "").split(".");
-    if (fieldPath.length === 2) {
-      return {
-        ...column,
-        onRender: (instance) => instance[fieldPath[0]] && instance[fieldPath[0]][fieldPath[1]]
-      };
-    }
-    return column;
-  });
 
   const scrollStyle = {
     position: "relative",
@@ -56,12 +46,46 @@ export const CvDetailsList = (props) => {
     );
   };
 
+  const [sortingBy, setSortingBy] = React.useState({
+    fieldName: props.columns[0]?.fieldName,
+    isSortedDescending: props.columns[0]?.isSortedDescending
+  }, []);
+
+  const onSort = (_event, column) =>
+    setSortingBy({
+      fieldName: column?.fieldName,
+      isSortedDescending: column.isSorted && !column.isSortedDescending
+    });
+
+  const sortableColumns = React.useCallback(
+    props.columns
+      .map((column) => {
+        const fieldPath = column.fieldName?.split(".", 2) || [];
+        return {
+          isSorted: sortingBy.fieldName === column.fieldName,
+          isSortedDescending: sortingBy.fieldName === column.fieldName && sortingBy?.isSortedDescending,
+          onColumnClick: onSort,
+          onRender: fieldPath.length === 2
+            ? (instance) => instance[fieldPath[0]] && instance[fieldPath[0]][fieldPath[1]]
+            : column.onRender,
+          ...column
+        };
+      }),
+    [props.columns, sortingBy]);
+
+  const sortedItems = React.useCallback(
+    props.items.slice(0)
+      .sort((l, r) => sortingBy.isSortedDescending
+        ? commonUtils.compareItemsByField(r, l, sortingBy.fieldName)
+        : commonUtils.compareItemsByField(l, r, sortingBy.fieldName)),
+    [props.items, sortingBy]);
+
   return (
     <div style={scrollStyle}>
       <ScrollablePane>
         <DetailsList
-          columns={mapLocaleFields}
-          items={props.items}
+          columns={sortableColumns}
+          items={sortedItems}
           setKey={props.setKey}
           getKey={getKey}
           selection={selection}

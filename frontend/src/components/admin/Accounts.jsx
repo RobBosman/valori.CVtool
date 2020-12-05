@@ -9,7 +9,6 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
-import { compareStrings } from "../../utils/CommonUtils";
 import { Authorizations, getEnumData } from "../cv/Enums";
 
 const Accounts = (props) => {
@@ -44,8 +43,6 @@ const Accounts = (props) => {
     });
   };
 
-  const [sortingBy, setSortingBy] = React.useState({ key: "name", field: "name", isSortedDescending: false });
-
   const combinedEntity = React.useCallback(
     combineEntities(),
     [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
@@ -61,49 +58,36 @@ const Accounts = (props) => {
     replaceInstance: replaceCombinedInstance
   }, [combinedEntity, props.selectedAccountId]);
 
+
   const onRenderAuthorization = (item) =>
     getEnumData(Authorizations, item.authorization?.level)?.text || "";
 
-  const onSort = (_event, column) =>
-    setSortingBy({
-      key: column.key,
-      field: column.fieldName,
-      isSortedDescending: column.isSorted && !column.isSortedDescending
-    });
-
-  const createColumn = (field) => ({
-    key: field,
-    fieldName: field,
-    isSorted: sortingBy.key === field,
-    isSortedDescending: sortingBy.key === field && sortingBy.isSortedDescending,
-    onColumnClick: onSort,
-    data: "string"
-  });
-
-  const columns = React.useCallback([
+  const columns = [
     {
-      ...createColumn("name"),
+      key: "name",
+      fieldName: "name",
       name: "Naam",
       isResizable: true,
       minWidth: 130,
       maxWidth: 250
     },
     {
-      ...createColumn("businessUnit.name"),
+      key: "businessUnit.name",
+      fieldName: "businessUnit.name",
       name: "Tribe",
       isResizable: true,
       minWidth: 120
     },
     {
-      ...createColumn("authorization.level."),
+      key: "authorization.level.",
+      fieldName: "authorization.level.",
       onRender: onRenderAuthorization,
       name: "Autorisatie",
       isResizable: false,
       minWidth: 90,
       maxWidth: 90
     }
-  ],
-  [sortingBy]);
+  ];
 
   const [items, setItems] = React.useState(combinedInstances);
 
@@ -151,20 +135,6 @@ const Accounts = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const compareItemsByField = (l, r, field) => {
-    const fieldPath = field.split(".", 2);
-    if (fieldPath.length > 1) {
-      return compareItemsByField(l[fieldPath[0]], r[fieldPath[0]], fieldPath[1]);
-    }
-    return compareStrings(l && l[field] || "", r && r[field] || "");
-  };
-
-  const sortedItems = React.useCallback(
-    items.slice(0).sort((l, r) => sortingBy.isSortedDescending
-      ? compareItemsByField(r, l, sortingBy.field)
-      : compareItemsByField(l, r, sortingBy.field)),
-    [items, sortingBy]);
-
   const authorizationButton = props.authInfo.authorizationLevel === "ADMIN"
     ? <CvDropdown
       label="Autorisatie"
@@ -196,7 +166,7 @@ const Accounts = (props) => {
               </Stack>
               <CvDetailsList
                 columns={columns}
-                items={sortedItems}
+                items={items}
                 instanceContext={combinedInstanceContext}
                 setKey="accounts"
                 onItemInvoked={onEditCv}

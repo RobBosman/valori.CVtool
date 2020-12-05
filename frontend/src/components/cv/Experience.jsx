@@ -48,14 +48,14 @@ const Experience = (props) => {
   const columns = [
     {
       key: "period",
-      fieldName: "period",
+      fieldName: "sortIndex",
       name: "Periode *",
       onRender: composePeriod,
       isResizable: false,
       minWidth: 110,
       maxWidth: 110,
-      data: "string",
-      onColumnClick: (e) => setCoachmarkTarget(e.target),
+      data: "number",
+      // onColumnClick: (e) => setCoachmarkTarget(e.target)
     },
     {
       key: "client",

@@ -48,8 +48,7 @@ const Education = (props) => {
       name: "Opleiding",
       isResizable: true,
       minWidth: 125,
-      maxWidth: 300,
-      data: "string"
+      maxWidth: 300
     },
     {
       key: "institution",
@@ -57,17 +56,16 @@ const Education = (props) => {
       name: "Onderwijsinstelling",
       isResizable: true,
       minWidth: 140,
-      maxWidth: 300,
-      data: "string"
+      maxWidth: 300
     },
     {
       key: "period",
+      fieldName: "yearTo",
       name: "Periode",
       onRender: composePeriod,
       isResizable: false,
       minWidth: 75,
-      maxWidth: 75,
-      data: "string"
+      maxWidth: 75
     }
   ];
 

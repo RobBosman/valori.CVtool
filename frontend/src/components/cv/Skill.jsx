@@ -64,8 +64,6 @@ const Skill = (props) => {
       fieldName: `description.${props.locale}`,
       name: "Omschrijving",
       isResizable: true,
-      isSorted: false,
-      isSortedDescending: false,
       data: "string"
     },
     {
@@ -104,7 +102,7 @@ const Skill = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const onRenderItem = (item, number, column) => {
+  const onRenderItem = (item, _, column) => {
     switch (column.fieldName) {
     case "includeInCv":
       return <CvCheckbox
