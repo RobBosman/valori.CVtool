@@ -65,6 +65,16 @@ const Profile = (props) => {
               styles={{ root: { width: "100%" } }}
             />
           </Stack>
+        </Stack>
+        <Stack
+          styles={{ root: { width: "50%" } }}>
+          <CvTextField
+            label="Profielschets"
+            field={`profile.${props.locale}`}
+            instanceContext={cvContext}
+            multiline
+            autoAdjustHeight
+          />
           <CvTextField
             label="Interesses"
             field={`interests.${props.locale}`}
@@ -73,14 +83,6 @@ const Profile = (props) => {
             autoAdjustHeight
           />
         </Stack>
-        <CvTextField
-          label="Profielschets"
-          field={`profile.${props.locale}`}
-          instanceContext={cvContext}
-          multiline
-          autoAdjustHeight
-          styles={{ root: { width: "50%" } }}
-        />
       </Stack>
     </Stack>
   );

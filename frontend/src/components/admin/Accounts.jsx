@@ -95,10 +95,9 @@ const Accounts = (props) => {
       minWidth: 120
     },
     {
-      ...createColumn("authorization"),
-      fieldName: "onRender",
-      name: "Autorisatie",
+      ...createColumn("authorization.level."),
       onRender: onRenderAuthorization,
+      name: "Autorisatie",
       isResizable: false,
       minWidth: 90,
       maxWidth: 90
@@ -112,7 +111,7 @@ const Accounts = (props) => {
   React.useEffect(() => {
     if (filterText) {
       const lowerCaseFilterText = filterText.toLowerCase();
-      setItems(combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit}`.toLowerCase().indexOf(lowerCaseFilterText) >= 0));
+      setItems(combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit?.name || ""}`.toLowerCase().includes(lowerCaseFilterText)));
     } else {
       setItems(combinedInstances);
     }

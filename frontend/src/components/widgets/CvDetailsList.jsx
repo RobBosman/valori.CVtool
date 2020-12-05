@@ -5,21 +5,21 @@ import { DetailsList, DetailsListLayoutMode, ScrollablePane, Selection, Sticky, 
 export const CvDetailsList = (props) => {
 
   const { instanceId, setSelectedInstance } = props.instanceContext;
-  const getKey = (item) => item._id;
+  const getKey = (item) => item?._id;
 
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
   const [selection] = React.useState(new Selection({
     items: props.items,
     getKey: getKey,
-    onSelectionChanged: () => setSelectedInstance(selection.getSelection()[0]?._id)
+    onSelectionChanged: () => setSelectedInstance(getKey(selection.getSelection()[0]))
   }), []);
 
   // Re-select current item when navigating back to this page.
   React.useEffect(() => {
-    console.log("DetailList", instanceId);
-    selection.setAllSelected(false);
-    instanceId && selection.setKeySelected(instanceId, true, false);
-  }, [props.items, instanceId]);
+    props.items
+      .map(getKey)
+      .forEach(key => selection.setKeySelected(key, key === instanceId), false);
+  }, []);
 
   const mapLocaleFields = props.columns.map((column) => {
     const fieldPath = (column.fieldName || "").split(".");
