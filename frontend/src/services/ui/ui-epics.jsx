@@ -1,16 +1,20 @@
 import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap, tap, skip } from "rxjs/operators";
-import { fromEvent, of } from "rxjs";
+import { EMPTY, fromEvent, of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as authActions from "../auth/auth-actions";
+import * as safeActions from "../safe/safe-actions";
 import * as uiActions from "./ui-actions";
 import * as uiServices from "./ui-services";
 
-// const getAccountIdFromLocationHash = () => {
-//   const [hash, selectedId, selectedAccountId] = window.location.hash?.split("=");
-//   return hash.includes("account")
-//     ? selectedId
-//     : selectedAccountId;
-// };
+const getInstanceIdFromLocationHash = () =>
+  window.location.hash?.split("=");
+
+const getAccountIdFromLocationHash = () => {
+  const [hash, selectedId, selectedAccountId] = window.location.hash?.split("=");
+  return hash.includes("account")
+    ? selectedId
+    : selectedAccountId;
+};
 
 export const uiEpics = [
   // Keep track of location (address bar) changes.
@@ -31,7 +35,6 @@ export const uiEpics = [
   (action$) => action$.pipe(
     ofType(authActions.setAuthInfo.type),
     map(action => action.payload?.accountId),
-    // tap(accountId => console.log("setAuthInfo", accountId)),
     map(accountId => uiActions.setSelectedId("account", accountId))
   ),
 
@@ -42,7 +45,6 @@ export const uiEpics = [
     filter(payload => payload.entityName === "account"),
     map(payload => payload.selectedId),
     distinctUntilChanged(),
-    // tap(accountId => console.log("setSelectedId(account)", accountId)),
     map(accountId => {
       const cvEntity = state$.value.safe?.content?.cv;
       const cvInstance = cvEntity && Object.values(cvEntity)
@@ -54,19 +56,32 @@ export const uiEpics = [
     })
   ),
 
-  // // Select the locationHash-account when receiving the 'other' account instances.
-  // (action$, state$) => action$.pipe(
-  //   ofType(safeActions.resetEntities.type),
-  //   map(action => action.payload.account), // Only check account instances.
-  //   filter(accounts => accounts),
-  //   map(accounts => {
-  //     const locationHashAccountId = getAccountIdFromLocationHash();
-  //     return accounts[locationHashAccountId] && locationHashAccountId; // Only if the account instance is present.
-  //   }),
-  //   filter(locationHashAccountId => locationHashAccountId),
-  //   tap(accountId => console.log("resetEntities", accountId)),
-  //   map(accountId => switchAccount(accountId, state$.value))
-  // ),
+  // Select the locationHash-account when receiving the 'other' account instances.
+  (action$) => action$.pipe(
+    ofType(safeActions.resetEntities.type),
+    map(action => action.payload?.account), // Only check account instances.
+    filter(accounts => accounts),
+    map(accounts => {
+      const locationHashAccountId = getAccountIdFromLocationHash();
+      return accounts[locationHashAccountId] && locationHashAccountId; // Only if the account instance is present.
+    }),
+    filter(locationHashAccountId => locationHashAccountId),
+    map(accountId => uiActions.setSelectedId("account", accountId))
+  ),
+
+  // Select the locationHash-instanceId when receiving cv data.
+  (action$) => action$.pipe(
+    ofType(safeActions.resetEntities.type),
+    map(action => action.payload),
+    filter(entities => entities?.cv), // Only proceed when receiving cv instances.
+    mergeMap(entities => {
+      const [hash, instanceId] = getInstanceIdFromLocationHash();
+      const entityName = Object.keys(entities).find(entityName => hash.includes(entityName));
+      return entityName
+        ? of(uiActions.setSelectedId(entityName, instanceId))
+        : EMPTY;
+    })
+  ),
 
   // Add the selected id to the URL-hash in the address bar.
   (action$, state$) => action$.pipe(
@@ -74,11 +89,9 @@ export const uiEpics = [
     map(action => action.payload),
     filter(payload => state$.value.ui?.locationHash?.includes(payload.entityName)), // Only if the id's entity is in the URL-hash.
     map(payload => payload.selectedId || ""),
-    // map(selectedId => state$.value.auth?.authInfo?.accountId === selectedId ? "" : selectedId), // Don't show own accountId to the URL-hash.
     tap(selectedId => {
       const selectedAccountId = state$.value.ui?.selectedId?.account || "";
       const ownAccountId = state$.value.auth?.authInfo?.accountId || "";
-      // console.log("update locationHash", selectedId, selectedAccountId, ownAccountId);
       let hash = state$.value.ui.locationHash.split("=")[0];
       if (selectedAccountId && selectedAccountId !== selectedId && selectedAccountId !== ownAccountId)
         hash = `${hash}=${selectedId}=${selectedAccountId}`;

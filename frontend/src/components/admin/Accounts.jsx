@@ -13,15 +13,15 @@ import { Authorizations, getEnumData } from "../cv/Enums";
 
 const Accounts = (props) => {
 
-  const combineEntities = () => {
+  const combineEntities = (accountEntity, authorizationEntity, businessUnitEntity) => {
     const combined = {};
-    if (props.accountEntity && props.authorizationEntity && props.businessUnitEntity) {
-      Object.entries(props.accountEntity)
+    if (accountEntity && authorizationEntity && businessUnitEntity) {
+      Object.entries(accountEntity)
         .forEach(([accountId, account]) => {
-          const authorization = Object.values(props.authorizationEntity)
+          const authorization = Object.values(authorizationEntity)
             .find(authorizationInstance => authorizationInstance.accountId === accountId);
 
-          const businessUnit = Object.values(props.businessUnitEntity)
+          const businessUnit = Object.values(businessUnitEntity)
             .find(businessUnit => businessUnit.accountIds?.includes(accountId));
 
           combined[accountId] = {
@@ -34,30 +34,30 @@ const Accounts = (props) => {
     return combined;
   };
 
-  const replaceCombinedInstance = (accountId, combinedInstance) => {
-    const authorization = props.authorizationEntity && Object.values(props.authorizationEntity)
+  const replaceCombinedInstance = (authorizationEntity, replaceAuthorization) => (accountId, combinedInstance) => {
+    const authorization = authorizationEntity && Object.values(authorizationEntity)
       .find(authorizationInstance => authorizationInstance.accountId === accountId);
-    props.replaceAuthorization(authorization._id, {
+    replaceAuthorization(authorization._id, {
       ...authorization,
       level: combinedInstance.authorization.level
     });
   };
 
-  const combinedEntity = React.useCallback(
-    combineEntities(),
-    [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
-
-  const combinedInstances = React.useCallback(
-    combinedEntity && Object.values(combinedEntity) || [],
-    [combinedEntity]);
+  const memo = React.useMemo(() => {
+    const combinedEntity = combineEntities(props.accountEntity, props.authorizationEntity, props.businessUnitEntity);
+    return {
+      combinedEntity: combinedEntity,
+      combinedInstances: combinedEntity && Object.values(combinedEntity) || []
+    };
+  },
+  [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
 
   const combinedInstanceContext = React.useCallback({
-    entity: combinedEntity,
+    entity: memo.combinedEntity,
     instanceId: props.selectedAccountId,
     setSelectedInstance: props.setSelectedAccountId,
-    replaceInstance: replaceCombinedInstance
-  }, [combinedEntity, props.selectedAccountId]);
-
+    replaceInstance: replaceCombinedInstance(props.authorizationEntity, props.replaceAuthorization)
+  }, [memo.combinedEntity, props.replaceAuthorization, props.selectedAccountId]);
 
   const onRenderAuthorization = (item) =>
     getEnumData(Authorizations, item.authorization?.level)?.text || "";
@@ -89,21 +89,29 @@ const Accounts = (props) => {
     }
   ];
 
-  const [items, setItems] = React.useState(combinedInstances);
+  const [state, setState] = React.useState({
+    items: memo.combinedInstances,
+    filterText: ""
+  });
 
-  const [filterText, setFilterText] = React.useState("");
-  React.useEffect(() => {
-    if (filterText) {
-      const lowerCaseFilterText = filterText.toLowerCase();
-      setItems(combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit?.name || ""}`.toLowerCase().includes(lowerCaseFilterText)));
-    } else {
-      setItems(combinedInstances);
+  React.useLayoutEffect(() => {
+    let newItems = memo.combinedInstances;
+    if (state.filterText) {
+      const lowerCaseFilterText = state.filterText.toLowerCase();
+      newItems = memo.combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit?.name || ""}`.toLowerCase().includes(lowerCaseFilterText));
     }
+    setState(prevState => ({
+      ...prevState,
+      items: newItems
+    }));
   },
-  [combinedInstances, filterText]);
+  [memo.combinedInstances, state.filterText]);
 
   const onFilter = (_, filterText) =>
-    setFilterText(filterText);
+    setState(prevState => ({
+      ...prevState,
+      filterText: filterText
+    }));
 
   const onEditCv = () => {
     if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel) && props.selectedAccountId) {
@@ -161,12 +169,12 @@ const Accounts = (props) => {
                     underlined
                     onChange={onFilter}
                   />
-                  <Text variant="xSmall">{items.length} / {combinedInstances.length}</Text>
+                  <Text variant="xSmall">{state.items.length} / {memo.combinedInstances.length}</Text>
                 </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}
-                items={items}
+                items={state.items}
                 instanceContext={combinedInstanceContext}
                 setKey="accounts"
                 onItemInvoked={onEditCv}
@@ -210,13 +218,13 @@ Accounts.propTypes = {
   fetchCvByAccountId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  authInfo: state.auth.authInfo,
-  accountEntity: state.safe.content.account,
-  authorizationEntity: state.safe.content.authorization,
-  businessUnitEntity: state.safe.content.businessUnit,
-  selectedAccountId: state.ui.selectedId.account
+const select = (store) => ({
+  locale: store.ui.userPrefs.locale,
+  authInfo: store.auth.authInfo,
+  accountEntity: store.safe.content.account,
+  authorizationEntity: store.safe.content.authorization,
+  businessUnitEntity: store.safe.content.businessUnit,
+  selectedAccountId: store.ui.selectedId.account
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -16,14 +16,21 @@ import { isFilledLocaleField } from "../../utils/CommonUtils";
 const entityName = "experience";
 
 const Experience = (props) => {
+  
+  const [state, setState] = React.useState({
+    isConfirmDialogVisible: false,
+    coachmarkTarget: undefined,
+    isCoachmarkVisible: false,
+    draggedItem: undefined
+  });
 
-  const experienceContext = {
+  const experienceContext = React.useCallback({
     locale: props.locale,
     entity: props.experienceEntity,
     instanceId: props.selectedExperienceId,
     setSelectedInstance: props.setSelectedExperienceId,
     replaceInstance: props.replaceExperience
-  };
+  }, [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);
   
   // Find all {Experiences} of the selected {cv}.
   const experiences = React.useCallback(
@@ -33,8 +40,17 @@ const Experience = (props) => {
       || [],
     [props.experienceEntity, props.selectedCvId]);
   
-  const [coachmarkTarget, setCoachmarkTarget] = React.useState(undefined);
-  const hideCoachmark = () => setCoachmarkTarget(undefined);
+  const showCoachmark = (event) =>
+    setState(prevState => ({
+      ...prevState,
+      coachmarkTarget: event.target,
+      isCoachmarkVisible: true
+    }));
+  const hideCoachmark = () =>
+    setState(prevState => ({
+      ...prevState,
+      isCoachmarkVisible: false
+    }));
 
   const composePeriod = (experience) =>
     `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
@@ -49,13 +65,13 @@ const Experience = (props) => {
     {
       key: "period",
       fieldName: "sortIndex",
-      name: "Periode *",
+      name: "Periode",
       onRender: composePeriod,
       isResizable: false,
       minWidth: 110,
       maxWidth: 110,
       data: "number",
-      // onColumnClick: (e) => setCoachmarkTarget(e.target)
+      onColumnClick: showCoachmark
     },
     {
       key: "client",
@@ -63,17 +79,15 @@ const Experience = (props) => {
       name: "Opdrachtgever",
       isResizable: true,
       minWidth: 90,
-      maxWidth: 250,
-      data: "string"
+      maxWidth: 250
     },
     {
       key: "role",
       fieldName: `role.${props.locale}`,
       name: "Rol",
       isResizable: true,
-      minWidth: 100,
-      maxWidth: 400,
-      data: "string"
+      minWidth: 90,
+      maxWidth: 400
     },
     {
       key: "includeInCv",
@@ -81,8 +95,8 @@ const Experience = (props) => {
       name: "In cv",
       onRender: renderInCvCheckbox,
       isResizable: false,
-      minWidth: 40,
-      maxWidth: 40
+      minWidth: 50,
+      maxWidth: 50
     }
   ];
 
@@ -110,11 +124,12 @@ const Experience = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedExperience = experiences.find(experience => experience._id === props.selectedExperienceId);
-  const selectedItemFields = selectedExperience && {
-    Periode: composePeriod(selectedExperience),
-    Opdrachtgever: selectedExperience.client
+  const selectedItemFields = () => {
+    const selectedExperience = experiences.find(experience => experience._id === props.selectedExperienceId);
+    return selectedExperience && {
+      Periode: composePeriod(selectedExperience),
+      Opdrachtgever: selectedExperience.client
+    };
   };
 
   const isFilledExperience = (experience) =>
@@ -135,7 +150,10 @@ const Experience = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedExperienceId) {
-      setConfirmDialogVisible(true);
+      setState(prevState => ({
+        ...prevState,
+        isConfirmDialogVisible: true
+      }));
     }
   };
   const onDeleteConfirmed = () => {
@@ -143,27 +161,36 @@ const Experience = (props) => {
       props.replaceExperience(props.selectedExperienceId, {});
       props.setSelectedExperienceId(undefined);
     }
-    setConfirmDialogVisible(false);
+    setState(prevState => ({
+      ...prevState,
+      isConfirmDialogVisible: false
+    }));
   };
   const onDeleteCancelled = () =>
-    setConfirmDialogVisible(false);
-  
-  // Keep hold of the dragged item.
-  const [draggedItem, setDraggedItem] = React.useState(undefined);
+    setState(prevState => ({
+      ...prevState,
+      isConfirmDialogVisible: false
+    }));
   
   const dragDropEvents = {
     canDrop: () => true,
     canDrag: () => true,
-    onDragStart: (item) => { setDraggedItem(item); },
-    onDragEnd: () => { setDraggedItem(undefined); },
+    onDragStart: (item) => setState(prevState => ({
+      ...prevState,
+      draggedItem: item
+    })),
+    onDragEnd: () => setState(prevState => ({
+      ...prevState,
+      draggedItem: undefined
+    })),
     onDragEnter: () => "", // return string is the css classes that will be added to the entering element.
     onDragLeave: () => {},
     onDrop: (targetItem) => {
-      const draggedItemKey = draggedItem._id;
-      if (draggedItem && targetItem._id !== draggedItemKey) {
+      const draggedItemKey = state.draggedItem._id;
+      if (state.draggedItem && targetItem._id !== draggedItemKey) {
         const insertIndex = experiences.indexOf(targetItem);
         const items = experiences.filter(item => item._id !== draggedItemKey);
-        items.splice(insertIndex, 0, draggedItem);
+        items.splice(insertIndex, 0, state.draggedItem);
         updateSortIndexes(items);
       }
     }
@@ -208,8 +235,8 @@ const Experience = (props) => {
                   <ConfirmDialog
                     title="Definitief verwijderen?"
                     primaryButtonText="Verwijderen"
-                    itemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
+                    selectedItemFields={selectedItemFields}
+                    isVisible={state.isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}
                   />
@@ -222,15 +249,15 @@ const Experience = (props) => {
                 setKey={entityName}
                 dragDropEvents={dragDropEvents}
               />
-              {coachmarkTarget && (
+              {state.isCoachmarkVisible &&
                 <Coachmark
-                  target={coachmarkTarget}
+                  target={state.coachmarkTarget}
                   positioningContainerProps={{
                     directionalHint: DirectionalHint.topCenter,
                     doNotLayer: false
                   }}>
                   <TeachingBubbleContent
-                    target={coachmarkTarget}
+                    target={state.coachmarkTarget}
                     headline="Sorteren met drag&amp;drop"
                     asSmallHeadline={true}
                     isWide={true}
@@ -239,7 +266,7 @@ const Experience = (props) => {
                     Bepaal handmatig de volgorde waarin werkervaringen in je cv komen te staan.
                   </TeachingBubbleContent>
                 </Coachmark>
-              )}
+              }
             </Stack>
           </td>
 
@@ -323,11 +350,11 @@ Experience.propTypes = {
   setSelectedExperienceId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId.cv,
-  experienceEntity: state.safe.content[entityName],
-  selectedExperienceId: state.ui.selectedId[entityName]
+const select = (store) => ({
+  locale: store.ui.userPrefs.locale,
+  selectedCvId: store.ui.selectedId.cv,
+  experienceEntity: store.safe.content[entityName],
+  selectedExperienceId: store.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({

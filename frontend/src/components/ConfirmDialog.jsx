@@ -30,7 +30,7 @@ const ConfirmDialog = (props) => {
       onDismiss={props.onCancel}>
       <table>
         <tbody>
-          {props.itemFields && Object.entries(props.itemFields)
+          {props.selectedItemFields && props.selectedItemFields() && Object.entries(props.selectedItemFields())
             .map(([label, value], index) => renderField(index, label, value))
           }
         </tbody>
@@ -53,7 +53,7 @@ ConfirmDialog.propTypes = {
   title: PropTypes.string.isRequired,
   primaryButtonText: PropTypes.string.isRequired,
   isVisible: PropTypes.bool.isRequired,
-  itemFields: PropTypes.object,
+  selectedItemFields: PropTypes.func,
   onProceed: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired
 };

@@ -44,17 +44,15 @@ const Reference = (props) => {
       name: "Naam",
       isResizable: true,
       minWidth: 100,
-      maxWidth: 300,
-      data: "string"
+      maxWidth: 300
     },
     {
       key: "referentFunction",
       fieldName: `referentFunction.${props.locale}`,
       name: "Functie",
       isResizable: true,
-      minWidth: 200,
-      maxWidth: 400,
-      data: "string"
+      minWidth: 190,
+      maxWidth: 400
     },
     {
       key: "includeInCv",
@@ -62,8 +60,8 @@ const Reference = (props) => {
       name: "In cv",
       onRender: renderInCvCheckbox,
       isResizable: false,
-      minWidth: 40,
-      maxWidth: 40
+      minWidth: 50,
+      maxWidth: 50
     }
   ];
 
@@ -92,10 +90,12 @@ const Reference = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedReference = references.find(experience => experience._id === props.selectedReferenceId);
-  const selectedItemFields = selectedReference && {
-    Naam: selectedReference.referentName,
-    Functie: selectedReference.referentFunction && selectedReference.referentFunction[props.locale]
+  const selectedItemFields = () => {
+    const selectedReference = references.find(experience => experience._id === props.selectedReferenceId);
+    return selectedReference && {
+      Naam: selectedReference.referentName,
+      Functie: selectedReference.referentFunction && selectedReference.referentFunction[props.locale]
+    };
   };
 
   const isFilledReference = (reference) =>
@@ -155,7 +155,7 @@ const Reference = (props) => {
                   <ConfirmDialog
                     title="Definitief verwijderen?"
                     primaryButtonText="Verwijderen"
-                    itemFields={selectedItemFields}
+                    selectedItemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

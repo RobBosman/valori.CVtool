@@ -44,17 +44,15 @@ const Publication = (props) => {
       name: "Titel",
       isResizable: true,
       minWidth: 150,
-      maxWidth: 400,
-      data: "string"
+      maxWidth: 400
     },
     {
       key: "media",
       fieldName: "media",
       name: "Media",
       isResizable: true,
-      minWidth: 150,
-      maxWidth: 400,
-      data: "string"
+      minWidth: 140,
+      maxWidth: 400
     },
     {
       key: "includeInCv",
@@ -62,8 +60,8 @@ const Publication = (props) => {
       name: "In cv",
       onRender: renderInCvCheckbox,
       isResizable: false,
-      minWidth: 40,
-      maxWidth: 40
+      minWidth: 50,
+      maxWidth: 50
     }
   ];
 
@@ -92,10 +90,12 @@ const Publication = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedPublication = publications.find(experience => experience._id === props.selectedPublicationId);
-  const selectedItemFields = selectedPublication && {
-    Titel: selectedPublication.title && selectedPublication.title[props.locale],
-    Media: selectedPublication.media
+  const selectedItemFields = () => {
+    const selectedPublication = publications.find(experience => experience._id === props.selectedPublicationId);
+    return selectedPublication && {
+      Titel: selectedPublication.title && selectedPublication.title[props.locale],
+      Media: selectedPublication.media
+    };
   };
 
   const isFilledPublication = (publication) =>
@@ -155,7 +155,7 @@ const Publication = (props) => {
                   <ConfirmDialog
                     title="Definitief verwijderen?"
                     primaryButtonText="Verwijderen"
-                    itemFields={selectedItemFields}
+                    selectedItemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

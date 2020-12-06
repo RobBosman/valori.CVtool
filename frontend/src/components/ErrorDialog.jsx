@@ -7,7 +7,7 @@ const ErrorDialog = (props) => {
 
   const [showDialog, setShowDialog] = React.useState(false);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (props.lastError)
       setShowDialog(true);
   }, [props.lastError]);

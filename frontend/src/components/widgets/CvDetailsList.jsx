@@ -7,20 +7,26 @@ export const CvDetailsList = (props) => {
 
   const { instanceId, setSelectedInstance } = props.instanceContext;
   const getKey = (item) => item?._id;
-
+  
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
-  const [selection] = React.useState(new Selection({
-    items: props.items,
-    getKey: getKey,
-    onSelectionChanged: () => setSelectedInstance(getKey(selection.getSelection()[0]))
-  }), []);
+  const [state, setState] = React.useState({
+    selection: new Selection({
+      items: props.items,
+      getKey: getKey,
+      onSelectionChanged: () => setSelectedInstance(getKey(state.selection.getSelection()[0]))
+    }),
+    sortingBy: {
+      fieldName: props.columns[0]?.fieldName,
+      isSortedDescending: props.columns[0]?.isSortedDescending
+    }
+  });
 
   // Re-select current item when navigating back to this page.
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     props.items
       .map(getKey)
-      .forEach(key => selection.setKeySelected(key, key === instanceId), false);
-  }, []);
+      .forEach(key => state.selection.setKeySelected(key, key === instanceId), false);
+  }, [props.items, instanceId]);
 
   const scrollStyle = {
     position: "relative",
@@ -46,39 +52,42 @@ export const CvDetailsList = (props) => {
     );
   };
 
-  const [sortingBy, setSortingBy] = React.useState({
-    fieldName: props.columns[0]?.fieldName,
-    isSortedDescending: props.columns[0]?.isSortedDescending
-  }, []);
-
-  const onSort = (_event, column) =>
-    setSortingBy({
-      fieldName: column?.fieldName,
-      isSortedDescending: column.isSorted && !column.isSortedDescending
-    });
+  const onSort = (orgOnColumnClick) => (event, column) => {
+    setState(prevState => ({
+      ...prevState,
+      sortingBy: {
+        fieldName: column?.fieldName,
+        isSortedDescending: column.isSorted && !column.isSortedDescending
+      }
+    }));
+    return orgOnColumnClick && orgOnColumnClick(event, column);
+  };
 
   const sortableColumns = React.useCallback(
     props.columns
       .map((column) => {
         const fieldPath = column.fieldName?.split(".", 2) || [];
+        const isSortColumn = state.sortingBy.fieldName === column.fieldName;
         return {
-          isSorted: sortingBy.fieldName === column.fieldName,
-          isSortedDescending: sortingBy.fieldName === column.fieldName && sortingBy?.isSortedDescending,
-          onColumnClick: onSort,
+          isSorted: isSortColumn,
+          isSortedDescending: isSortColumn && state.sortingBy?.isSortedDescending,
           onRender: fieldPath.length === 2
             ? (instance) => instance[fieldPath[0]] && instance[fieldPath[0]][fieldPath[1]]
             : column.onRender,
-          ...column
+          ...column,
+          onColumnClick: onSort(column.onColumnClick)
         };
       }),
-    [props.columns, sortingBy]);
+    [props.columns, state.sortingBy]);
 
-  const sortedItems = React.useCallback(
-    props.items.slice(0)
-      .sort((l, r) => sortingBy.isSortedDescending
-        ? commonUtils.compareItemsByField(r, l, sortingBy.fieldName)
-        : commonUtils.compareItemsByField(l, r, sortingBy.fieldName)),
-    [props.items, sortingBy]);
+  const sortedItems = React.useMemo(() =>
+    props.items
+      .slice(0)
+      .sort((l, r) => state.sortingBy.isSortedDescending
+        ? commonUtils.compareItemsByField(r, l, state.sortingBy.fieldName)
+        : commonUtils.compareItemsByField(l, r, state.sortingBy.fieldName)
+      ),
+  [props.items, state.sortingBy]);
 
   return (
     <div style={scrollStyle}>
@@ -88,7 +97,7 @@ export const CvDetailsList = (props) => {
           items={sortedItems}
           setKey={props.setKey}
           getKey={getKey}
-          selection={selection}
+          selection={state.selection}
           selectionMode={1}
           isHeaderVisible={true}
           layoutMode={DetailsListLayoutMode.justified}

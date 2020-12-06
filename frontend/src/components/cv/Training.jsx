@@ -48,8 +48,7 @@ const Training = (props) => {
       name: "Training",
       isResizable: true,
       minWidth: 140,
-      maxWidth: 300,
-      data: "string"
+      maxWidth: 300
     },
     {
       key: "institution",
@@ -57,8 +56,7 @@ const Training = (props) => {
       name: "Opleidingsinstituut",
       isResizable: true,
       minWidth: 140,
-      maxWidth: 300,
-      data: "string"
+      maxWidth: 300
     },
     {
       key: "year",
@@ -67,8 +65,7 @@ const Training = (props) => {
       onRender: composePeriod,
       isResizable: false,
       minWidth: 60,
-      maxWidth: 60,
-      data: "string"
+      maxWidth: 60
     }
   ];
 
@@ -97,10 +94,12 @@ const Training = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedTraining = trainings.find(experience => experience._id === props.selectedTrainingId);
-  const selectedItemFields = selectedTraining && {
-    Opleiding: selectedTraining.name && selectedTraining.name[props.locale],
-    Opleidingsinstituut: selectedTraining.institution
+  const selectedItemFields = () => {
+    const selectedTraining = trainings.find(experience => experience._id === props.selectedTrainingId);
+    return selectedTraining && {
+      Opleiding: selectedTraining.name && selectedTraining.name[props.locale],
+      Opleidingsinstituut: selectedTraining.institution
+    };
   };
 
   const isFilledTraining = (training) =>
@@ -160,7 +159,7 @@ const Training = (props) => {
                   <ConfirmDialog
                     title="Definitief verwijderen?"
                     primaryButtonText="Verwijderen"
-                    itemFields={selectedItemFields}
+                    selectedItemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

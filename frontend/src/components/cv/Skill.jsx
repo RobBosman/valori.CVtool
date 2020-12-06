@@ -56,15 +56,13 @@ const Skill = (props) => {
       onRender: renderSkill,
       isResizable: false,
       minWidth: 110,
-      maxWidth: 110,
-      data: "string"
+      maxWidth: 110
     },
     {
       key: "description",
       fieldName: `description.${props.locale}`,
       name: "Omschrijving",
-      isResizable: true,
-      data: "string"
+      isResizable: true
     },
     {
       key: "skillLevel",
@@ -73,8 +71,7 @@ const Skill = (props) => {
       onRender: renderSkillLevel,
       isResizable: false,
       minWidth: 60,
-      maxWidth: 60,
-      data: "string"
+      maxWidth: 60
     }
   ];
 
@@ -115,10 +112,12 @@ const Skill = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedSkill = skills.find(experience => experience._id === props.selectedSkillId);
-  const selectedItemFields = selectedSkill && {
-    Categorie: renderSkill(selectedSkill),
-    Omschrijving: selectedSkill.description && selectedSkill.description[props.locale]
+  const selectedItemFields = () => {
+    const selectedSkill = skills.find(experience => experience._id === props.selectedSkillId);
+    return selectedSkill && {
+      Categorie: renderSkill(selectedSkill),
+      Omschrijving: selectedSkill.description && selectedSkill.description[props.locale]
+    };
   };
 
   const isFilledSkill = (skill) =>
@@ -179,7 +178,7 @@ const Skill = (props) => {
                   <ConfirmDialog
                     title="Definitief verwijderen?"
                     primaryButtonText="Verwijderen"
-                    itemFields={selectedItemFields}
+                    selectedItemFields={selectedItemFields}
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}

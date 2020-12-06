@@ -8,6 +8,11 @@ import "./KeyFrames.css";
 
 const PulseMonitor = (props) => {
 
+  const [state, setState] = React.useState({
+    angle: 0,
+    pulse: undefined
+  });
+
   React.useEffect(() => {
     const handler = { address: "server.heartbeat", header: {}, callback: serverHeartbeatHandler };
     eventBusClient.addEventHandler(handler);
@@ -15,20 +20,29 @@ const PulseMonitor = (props) => {
     return () => eventBusClient.removeEventHandler(handler);
   }, []);
 
-  const [angle, setAngle] = React.useState(0);
-
   React.useEffect(() => {
-    const timeoutID = setTimeout(() => setAngle((angle + 9) % 360), 25);
+    const timeoutID = setTimeout(() => setState(prevState => ({
+      ...prevState,
+      angle: (prevState.angle + 9) % 360
+    })),
+    25);
     // at the close:
     return () => clearTimeout(timeoutID);
   });
 
-  const [pulse, setPulse] = React.useState(undefined);
-
   const serverHeartbeatHandler = () => {
-    setPulse(<circle cx="100" cy="100" r="25" fill={getTheme().semanticColors.bodySubtext}
-      style={{ opacity: 0.0, animationName: "fadeOutOpacity", animationDuration: "1s" }} />);
-    const timeoutID = setTimeout(() => setPulse(undefined), 900);
+    setState(prevState => ({
+      ...prevState,
+      pulse: <circle cx="100" cy="100" r="25" fill={getTheme().semanticColors.bodySubtext}
+        style={{ opacity: 0.0, animationName: "fadeOutOpacity", animationDuration: "1s" }}
+      />
+    }));
+
+    const timeoutID = setTimeout(() => setState(prevState => ({
+      ...prevState,
+      pulse: undefined
+    })),
+    900);
     // at the close:
     return () => clearTimeout(timeoutID);
   };
@@ -40,13 +54,13 @@ const PulseMonitor = (props) => {
         fill="none"
         stroke={getTheme().semanticColors.primaryButtonBackground}
         strokeWidth="10" strokeDasharray="400,500"
-        transform={"rotate(" + angle + ",100,100)"} />
+        transform={"rotate(" + state.angle + ",100,100)"} />
       {(props.shouldBeConnected !== props.isConnected || !props.shouldBeConnected !== props.isDisconnected)
         ? <circle cx="100" cy="100" r="50"
           fill="none" strokeWidth="25"
           stroke={getTheme().semanticColors.warningHighlight} />
         : undefined}
-      {pulse}
+      {state.pulse}
     </svg>
   );
 };
