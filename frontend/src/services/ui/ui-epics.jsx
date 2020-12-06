@@ -1,20 +1,10 @@
-import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap, tap, skip } from "rxjs/operators";
+import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap, skip, tap } from "rxjs/operators";
 import { EMPTY, fromEvent, of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as authActions from "../auth/auth-actions";
 import * as safeActions from "../safe/safe-actions";
 import * as uiActions from "./ui-actions";
 import * as uiServices from "./ui-services";
-
-const getInstanceIdFromLocationHash = () =>
-  window.location.hash?.split("=");
-
-const getAccountIdFromLocationHash = () => {
-  const [hash, selectedId, selectedAccountId] = window.location.hash?.split("=");
-  return hash.includes("account")
-    ? selectedId
-    : selectedAccountId;
-};
 
 export const uiEpics = [
   // Keep track of location (address bar) changes.
@@ -56,26 +46,13 @@ export const uiEpics = [
     })
   ),
 
-  // Select the locationHash-account when receiving the 'other' account instances.
-  (action$) => action$.pipe(
-    ofType(safeActions.resetEntities.type),
-    map(action => action.payload?.account), // Only check account instances.
-    filter(accounts => accounts),
-    map(accounts => {
-      const locationHashAccountId = getAccountIdFromLocationHash();
-      return accounts[locationHashAccountId] && locationHashAccountId; // Only if the account instance is present.
-    }),
-    filter(locationHashAccountId => locationHashAccountId),
-    map(accountId => uiActions.setSelectedId("account", accountId))
-  ),
-
   // Select the locationHash-instanceId when receiving cv data.
   (action$) => action$.pipe(
     ofType(safeActions.resetEntities.type),
     map(action => action.payload),
     filter(entities => entities?.cv), // Only proceed when receiving cv instances.
     mergeMap(entities => {
-      const [hash, instanceId] = getInstanceIdFromLocationHash();
+      const [hash, instanceId] = window.location.hash?.split("=");
       const entityName = Object.keys(entities).find(entityName => hash.includes(entityName));
       return entityName
         ? of(uiActions.setSelectedId(entityName, instanceId))
