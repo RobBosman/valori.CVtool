@@ -17,6 +17,7 @@ import Training from "./cv/Training";
 import Accounts from "./admin/Accounts";
 import * as cvActions from "../services/cv/cv-actions";
 import { Authorizations, getEnumData } from "./cv/Enums";
+// import BusinessUnits from "./admin/BusinessUnits";
 
 const ContentPage = (props) => {
 
@@ -42,7 +43,15 @@ const ContentPage = (props) => {
           name: "Accounts",
           icon: "AccountManagement",
           content: <Accounts />
-        }
+        },
+        // ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+        // && {
+        //   key: "#businessUnits",
+        //   url: "#businessUnits",
+        //   name: "Tribes",
+        //   icon: "WorkforceManagement",
+        //   content: <BusinessUnits />
+        // }
       ]
     },
     {
@@ -147,7 +156,7 @@ const ContentPage = (props) => {
     </Stack>;
 
   const onGenerateCv = () =>
-    props.generateCv(props.selectedAccountId || props.authInfo.accountId);
+    props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
 
   return (
     <Stack horizontal>
@@ -162,7 +171,7 @@ const ContentPage = (props) => {
         />
         <TooltipHost content="Download CV als MS-Word document">
           <PrimaryButton
-            text="Download CV"
+            text={`Download CV ${props.locale.substr(3)}`}
             iconProps={{ iconName: "DownloadDocument" }}
             disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
@@ -183,6 +192,7 @@ const ContentPage = (props) => {
 };
 
 ContentPage.propTypes = {
+  locale: PropTypes.string.isRequired,
   navKey: PropTypes.string,
   authInfo: PropTypes.object,
   locationHash: PropTypes.string,
@@ -192,15 +202,16 @@ ContentPage.propTypes = {
   fetchCvByAccountId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  authInfo: state.auth.authInfo,
-  locationHash: state.ui.locationHash,
-  selectedAccountId: state.ui.selectedId.account,
-  selectedCvId: state.ui.selectedId.cv
+const select = (store) => ({
+  locale: store.ui.userPrefs.locale,
+  authInfo: store.auth.authInfo,
+  locationHash: store.ui.locationHash,
+  selectedAccountId: store.ui.selectedId.account,
+  selectedCvId: store.ui.selectedId.cv
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  generateCv: (accountId) => dispatch(cvActions.generateCv(accountId)),
+  generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
   fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
 });
 

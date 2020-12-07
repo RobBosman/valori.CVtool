@@ -1,3 +1,3 @@
-export const generateCvAtRemote = (accountId, sendEventFunc) =>
-  sendEventFunc("cv.generate", { accountId })
+export const generateCvAtRemote = (accountId, locale, sendEventFunc) =>
+  sendEventFunc("cv.generate", { accountId, locale })
     .then((message) => message.body);

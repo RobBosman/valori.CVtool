@@ -35,7 +35,8 @@ internal class CvGenerateVerticle : AbstractVerticle() {
 
     private val xslIncludesMap = mapOf(
         "common.xsl" to loadBytes("/docx/Valori/common.xsl"),
-        "common-nl_NL.xsl" to loadBytes("/docx/Valori/nl_NL/common-nl_NL.xsl")
+        "common-nl_NL.xsl" to loadBytes("/docx/Valori/nl_NL/common-nl_NL.xsl"),
+        "common-uk_UK.xsl" to loadBytes("/docx/Valori/uk_UK/common-uk_UK.xsl")
     )
 
     private fun loadBytes(location: String) =
@@ -56,13 +57,19 @@ internal class CvGenerateVerticle : AbstractVerticle() {
     internal fun createXslTemplate(location: String) =
         transformerFactory.newTemplates(StreamSource(ByteArrayInputStream(loadBytes(location))))
 
+    private fun createDocxPartNamesXslTemplatesMap(locale: String) =
+        mapOf(
+            "docProps/core.xml" to createXslTemplate("/docx/Valori/$locale/docProps/core.xml.xsl"),
+            "word/document.xml" to createXslTemplate("/docx/Valori/$locale/word/document.xml.xsl"),
+            "word/footer1.xml" to createXslTemplate("/docx/Valori/$locale/word/footer1.xml.xsl"),
+            "word/footer2.xml" to createXslTemplate("/docx/Valori/$locale/word/footer2.xml.xsl"),
+            "word/header2.xml" to createXslTemplate("/docx/Valori/$locale/word/header2.xml.xsl")
+        )
+
     private val docxTemplate = loadBytes("/docx/Valori/template.docx")
     private val docxPartNamesXslTemplatesMap = mapOf(
-        "docProps/core.xml" to createXslTemplate("/docx/Valori/nl_NL/docProps/core.xml.xsl"),
-        "word/document.xml" to createXslTemplate("/docx/Valori/nl_NL/word/document.xml.xsl"),
-        "word/footer1.xml" to createXslTemplate("/docx/Valori/nl_NL/word/footer1.xml.xsl"),
-        "word/footer2.xml" to createXslTemplate("/docx/Valori/nl_NL/word/footer2.xml.xsl"),
-        "word/header2.xml" to createXslTemplate("/docx/Valori/nl_NL/word/header2.xml.xsl")
+        "nl_NL" to createDocxPartNamesXslTemplatesMap("nl_NL"),
+        "uk_UK" to createDocxPartNamesXslTemplatesMap("uk_UK"),
     )
 
     internal fun xslTransform(xmlBytes: ByteArray, xslTemplate: Templates): ByteArray {
@@ -95,30 +102,32 @@ internal class CvGenerateVerticle : AbstractVerticle() {
         )
   }
 
-  private fun handleRequest(message: Message<JsonObject>) =
-      Single
-          .just(message.body())
-          .flatMap(::fetchCvData)
-          .flatMap { cvJson ->
-            xmlToDocx(convertToXml(cvJson))
-                .map { composeFileName(cvJson) to it }
-          }
-          .map { (fileName, docxBytes) ->
-            JsonObject()
-                .put("fileName", fileName)
-                .put("contentB64", String(Base64.getEncoder().encode(docxBytes)))
-          }
-          .subscribe(
-              {
-                log.debug("Successfully generated cv data")
-                message.reply(it)
-              },
-              {
-                val errorMsg = "Error generating cv data: ${it.message}"
-                log.warn(errorMsg)
-                message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
-              }
-          )
+  private fun handleRequest(message: Message<JsonObject>) {
+    val locale = message.body().getString("locale", "nl_NL")
+    Single
+        .just(message.body())
+        .flatMap(::fetchCvData)
+        .flatMap { cvJson ->
+          xmlToDocx(convertToXml(cvJson), locale)
+              .map { composeFileName(cvJson, locale) to it }
+        }
+        .map { (fileName, docxBytes) ->
+          JsonObject()
+              .put("fileName", fileName)
+              .put("contentB64", String(Base64.getEncoder().encode(docxBytes)))
+        }
+        .subscribe(
+            {
+              log.debug("Successfully generated cv data")
+              message.reply(it)
+            },
+            {
+              val errorMsg = "Error generating cv data: ${it.message}"
+              log.warn(errorMsg)
+              message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+            }
+        )
+  }
 
   private fun fetchCvData(requestData: JsonObject): Single<JsonObject> =
       vertx.eventBus()
@@ -131,9 +140,9 @@ internal class CvGenerateVerticle : AbstractVerticle() {
     return writer.toByteArray()
   }
 
-  internal fun xmlToDocx(xmlBytes: ByteArray) =
+  internal fun xmlToDocx(xmlBytes: ByteArray, locale: String) =
       Flowable
-          .fromIterable(docxPartNamesXslTemplatesMap.entries)
+          .fromIterable(docxPartNamesXslTemplatesMap[locale]!!.entries)
           .parallel()
           .runOn(Schedulers.computation())
           .map { entry -> entry.key to xslTransform(xmlBytes, entry.value) }
@@ -163,11 +172,11 @@ internal class CvGenerateVerticle : AbstractVerticle() {
             docxBytes.toByteArray()
           }
 
-  private fun composeFileName(cvJson: JsonObject): String {
+  private fun composeFileName(cvJson: JsonObject, locale: String): String {
     val name = (cvJson.getJsonObject("account")
         .map.values.elementAt(0) as JsonObject)
         .getString("name")
         .replace(" ", "")
-    return "CV_NL_$name.docx"
+    return "CV_${locale.substring(3)}_$name.docx"
   }
 }

@@ -26,6 +26,9 @@ const CvTopBar = (props) => {
     </TooltipHost>
   );
 
+  const selectLocale = (locale) =>
+    () =>  props.setLocale(locale);
+
   const onOpenEmail = () =>
     window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank");
   
@@ -61,6 +64,25 @@ const CvTopBar = (props) => {
       iconOnly: false,
       subMenuProps: {
         items: [
+          {
+            key: "locale",
+            text: "Taal",
+            iconProps: { iconName: "LocaleLanguage" },
+            subMenuProps: {
+              items: [
+                {
+                  key: "nl_NL",
+                  text: "Nederlands",
+                  onClick: selectLocale("nl_NL")
+                },
+                {
+                  key: "uk_UK",
+                  text: "Engels",
+                  onClick: selectLocale("uk_UK")
+                }
+              ]
+            }
+          },
           {
             key: "theme",
             text: "Theme",
@@ -126,6 +148,7 @@ CvTopBar.propTypes = {
   hasSafeData: PropTypes.bool.isRequired,
   lastEditedTimestamp: PropTypes.object,
   lastSavedTimestamp: PropTypes.object,
+  setLocale: PropTypes.func.isRequired,
   setTheme: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired
@@ -140,6 +163,7 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  setLocale: (locale) => dispatch(uiActions.setLocale(locale)),
   setTheme: (theme) => dispatch(uiActions.setTheme(theme)),
   requestToLogout: () => dispatch(authActions.requestLogout()),
   save: () => dispatch(safeActions.save(true))

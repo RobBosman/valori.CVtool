@@ -14,7 +14,7 @@ export const cvEpics = [
   (action$, state$) => action$.pipe(
     ofType(cvActions.generateCv.type),
     map(action => action.payload),
-    switchMap(accountId =>
+    switchMap(payload =>
       // When requested to download a cv then first save any changes...
       merge(
         of(safeActions.save(false)),
@@ -22,7 +22,7 @@ export const cvEpics = [
           // ...and wait for the data to be saved.
           filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
           take(1),
-          mergeMap(() => cvServices.generateCvAtRemote(accountId, eventBusClient.sendEvent)),
+          mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
           tap(generatedCv => downloadFile(generatedCv.fileName, generatedCv.contentB64)),
           ignoreElements()
         )

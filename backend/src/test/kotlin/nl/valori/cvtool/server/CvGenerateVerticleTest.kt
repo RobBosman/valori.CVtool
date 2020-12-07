@@ -26,7 +26,7 @@ internal class CvGenerateVerticleTest {
     val numGenerations = 1000
     val startMillis = System.currentTimeMillis()
     IntStream.range(0, numGenerations).forEach {
-      generator.xmlToDocx(generator.convertToXml(json))
+      generator.xmlToDocx(generator.convertToXml(json), "nl_NL")
     }
     println("generating $numGenerations cvs took ${System.currentTimeMillis() - startMillis} ms")
   }

@@ -230,11 +230,11 @@ Education.propTypes = {
   setSelectedEducationId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId.cv,
-  educationEntity: state.safe.content[entityName],
-  selectedEducationId: state.ui.selectedId[entityName]
+const select = (store) => ({
+  locale: store.ui.userPrefs.locale,
+  selectedCvId: store.ui.selectedId.cv,
+  educationEntity: store.safe.content[entityName],
+  selectedEducationId: store.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({
