@@ -4,37 +4,51 @@ import { TextField } from "@fluentui/react";
 
 export const CvTextField = (props) => {
 
-  const [errorMessage, setErrorMessage] = React.useState("");
-  React.useEffect(() => {
-    const timeoutId = setTimeout(() => setErrorMessage(""), 3000);
-    return () => clearTimeout(timeoutId);
-  }, [errorMessage]);
-  
   const { entity, instanceId, replaceInstance } = props.instanceContext;
-  const instance = entity && entity[instanceId];
 
-  let value = instance;
-  props.field.split(".")
-    .forEach(field => {
-      value = value && value[field];
-    });
-  value = value || props.defaultValue || "";
+  const [state, setState] = React.useState({
+    instance: undefined,
+    errorMessage: ""
+  });
+  React.useLayoutEffect(() => {
+    setState(prevState => ({ ...prevState, instance: entity && entity[instanceId] }));
+  }, [props.instanceContext]);
+
+  const value = React.useMemo(() => {
+    let val = state.instance;
+    props.field.split(".")
+      .forEach(field => {
+        val = val && val[field];
+      });
+    return val || props.defaultValue || "";
+  }, [state.instance, props.field, props.defaultValue]);
+
+  React.useEffect(() => {
+    if (state.errorMessage) {
+      const timeoutId = setTimeout(() =>
+        setState(prevState => ({ ...prevState, errorMessage: "" })),
+      3000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [state.errorMessage]);
 
   const onChange = (event) => {
     if (props.validateInput) {
       const validationMessage = props.validateInput(event.target.value);
       if (validationMessage) {
-        setErrorMessage(validationMessage);
+        setState(prevState => ({ ...prevState, errorMessage: validationMessage }));
         return;
       }
     }
-    setErrorMessage("");
+    if (state.errorMessage) {
+      setState(prevState => ({ ...prevState, errorMessage: "" }));
+    }
     let instanceToBeSaved;
     const fieldPath = props.field.split(".");
     if (fieldPath.length === 2) {
-      let subInstance = instance[fieldPath[0]] || {};
+      let subInstance = state.instance[fieldPath[0]] || {};
       instanceToBeSaved = {
-        ...instance,
+        ...state.instance,
         [fieldPath[0]]: {
           ...subInstance,
           [fieldPath[1]]: event.target.value
@@ -42,7 +56,7 @@ export const CvTextField = (props) => {
       };
     } else {
       instanceToBeSaved = {
-        ...instance,
+        ...state.instance,
         [fieldPath[0]]: event.target.value
       };
     }
@@ -55,11 +69,11 @@ export const CvTextField = (props) => {
       placeholder={props.placeholder}
       multiline={props.multiline}
       autoAdjustHeight={props.autoAdjustHeight}
-      disabled={props.disabled || !instance}
+      disabled={props.disabled || !state.instance}
       value={value}
       styles={props.styles}
       onChange={onChange}
-      errorMessage={errorMessage}
+      errorMessage={state.errorMessage}
     />
   );
 };

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, Separator, DefaultButton } from "@fluentui/react";
+import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -11,7 +11,7 @@ import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import ConfirmDialog from "../ConfirmDialog";
-import { isFilledLocaleField } from "../../utils/CommonUtils";
+import * as commonUtils from "../../utils/CommonUtils";
 
 const entityName = "experience";
 
@@ -47,13 +47,13 @@ const Experience = (props) => {
       isCoachmarkVisible: true
     }));
   const hideCoachmark = () =>
-    setState(prevState => ({
-      ...prevState,
-      isCoachmarkVisible: false
-    }));
+    setState(prevState => ({ ...prevState, isCoachmarkVisible: false }));
 
   const composePeriod = (experience) =>
     `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
+
+  const renderRole = (item) =>
+    item.role && item.role[props.locale] || commonUtils.getPlaceholder(experiences, "role", item._id, props.locale);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -85,6 +85,7 @@ const Experience = (props) => {
       key: "role",
       fieldName: `role.${props.locale}`,
       name: "Rol",
+      onRender: renderRole,
       isResizable: true,
       minWidth: 90,
       maxWidth: 400
@@ -133,7 +134,7 @@ const Experience = (props) => {
   };
 
   const isFilledExperience = (experience) =>
-    experience.periodBegin || experience.client || isFilledLocaleField(experience.assignment, experience.activities, experience.results, experience.keywords);
+    experience.periodBegin || experience.client || commonUtils.isFilledLocaleField(experience.assignment, experience.activities, experience.results, experience.keywords);
 
   const onAddItem = () => {
     let newExperience = experiences.find(experience => !isFilledExperience(experience));
@@ -150,10 +151,7 @@ const Experience = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedExperienceId) {
-      setState(prevState => ({
-        ...prevState,
-        isConfirmDialogVisible: true
-      }));
+      setState(prevState => ({ ...prevState, isConfirmDialogVisible: true }));
     }
   };
   const onDeleteConfirmed = () => {
@@ -161,28 +159,16 @@ const Experience = (props) => {
       props.replaceExperience(props.selectedExperienceId, {});
       props.setSelectedExperienceId(undefined);
     }
-    setState(prevState => ({
-      ...prevState,
-      isConfirmDialogVisible: false
-    }));
+    setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
   };
   const onDeleteCancelled = () =>
-    setState(prevState => ({
-      ...prevState,
-      isConfirmDialogVisible: false
-    }));
+    setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
   
   const dragDropEvents = {
     canDrop: () => true,
     canDrag: () => true,
-    onDragStart: (item) => setState(prevState => ({
-      ...prevState,
-      draggedItem: item
-    })),
-    onDragEnd: () => setState(prevState => ({
-      ...prevState,
-      draggedItem: undefined
-    })),
+    onDragStart: (item) => setState(prevState => ({ ...prevState, draggedItem: item })),
+    onDragEnd: () => setState(prevState => ({ ...prevState, draggedItem: undefined })),
     onDragEnter: () => "", // return string is the css classes that will be added to the entering element.
     onDragLeave: () => {},
     onDrop: (targetItem) => {
@@ -289,6 +275,7 @@ const Experience = (props) => {
                 label="Rol"
                 field={`role.${props.locale}`}
                 instanceContext={experienceContext}
+                placeholder={commonUtils.getPlaceholder(experiences, "role", props.selectedExperienceId, props.locale)}
               />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
@@ -303,7 +290,6 @@ const Experience = (props) => {
                   instanceContext={experienceContext}
                 />
               </Stack>
-              <Separator/>
               <CvTextField
                 label="Opdracht"
                 field={`assignment.${props.locale}`}

@@ -9,7 +9,7 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
-import { compareStrings, isValidYear } from "../../utils/CommonUtils";
+import * as commonUtils from "../../utils/CommonUtils";
 import { EducationResultTypes } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 
@@ -32,20 +32,24 @@ const Training = (props) => {
     props.trainingEntity && props.selectedCvId && Object.values(props.trainingEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = compareStrings(composePeriod(r), composePeriod(l));
+        let compare = commonUtils.compareStrings(composePeriod(r), composePeriod(l));
         if (compare === 0) {
-          compare = compareStrings(l.name || "", r.name || "");
+          compare = commonUtils.compareStrings(l.name || "", r.name || "");
         }
         return compare;
       })
       || [],
     [props.trainingEntity, props.selectedCvId]);
+
+  const renderName = (item) =>
+    item.name && item.name[props.locale] || commonUtils.getPlaceholder(trainings, "name", item._id, props.locale);
   
   const columns = [
     {
       key: "name",
       fieldName: `name.${props.locale}`,
       name: "Training",
+      onRender: renderName,
       isResizable: true,
       minWidth: 140,
       maxWidth: 300
@@ -180,18 +184,21 @@ const Training = (props) => {
               <CvTextField
                 label="Training"
                 field={`name.${props.locale}`}
-                instanceContext={trainingContext} />
+                instanceContext={trainingContext}
+                placeholder={commonUtils.getPlaceholder(trainings, "name", props.selectedTrainingId, props.locale)}
+              />
               <CvTextField
                 label="Opleidingsinstituut"
                 field="institution"
-                instanceContext={trainingContext} />
+                instanceContext={trainingContext}
+              />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
                 <CvTextField
                   label="Jaar"
                   field="year"
                   instanceContext={trainingContext}
-                  validateInput={isValidYear}
+                  validateInput={commonUtils.isValidYear}
                   placeholder='yyyy'
                   styles={{ fieldGroup: { width: 80 } }}
                 />
@@ -220,11 +227,11 @@ Training.propTypes = {
   setSelectedTrainingId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId.cv,
-  trainingEntity: state.safe.content[entityName],
-  selectedTrainingId: state.ui.selectedId[entityName]
+const select = (store) => ({
+  locale: store.ui.userPrefs.locale,
+  selectedCvId: store.ui.selectedId.cv,
+  trainingEntity: store.safe.content[entityName],
+  selectedTrainingId: store.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({

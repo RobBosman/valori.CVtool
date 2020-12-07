@@ -46,7 +46,11 @@ const Skill = (props) => {
   const renderSkill = (item) =>
     getEnumData(SkillCategories, item.category)?.text || "";
 
-  const renderSkillLevel = (item) => "* ".repeat(item.skillLevel).trim();
+  const renderDescription = (item) =>
+    item.description && item.description[props.locale] || commonUtils.getPlaceholder(skills, "description", item._id, props.locale);
+
+  const renderSkillLevel = (item) =>
+    "* ".repeat(item.skillLevel).trim();
 
   const columns = [
     {
@@ -62,6 +66,7 @@ const Skill = (props) => {
       key: "description",
       fieldName: `description.${props.locale}`,
       name: "Omschrijving",
+      onRender: renderDescription,
       isResizable: true
     },
     {
@@ -209,6 +214,7 @@ const Skill = (props) => {
                 field={`description.${props.locale}`}
                 instanceContext={skillContext}
                 validateInput={commonUtils.isValidText(28)}
+                placeholder={commonUtils.getPlaceholder(skills, "description", props.selectedSkillId, props.locale)}
               />
               <CvRating
                 label="Niveau"

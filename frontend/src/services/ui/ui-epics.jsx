@@ -25,6 +25,7 @@ export const uiEpics = [
   (action$) => action$.pipe(
     ofType(authActions.setAuthInfo.type),
     map(action => action.payload?.accountId),
+    filter(accountId => accountId),
     map(accountId => uiActions.setSelectedId("account", accountId))
   ),
 
@@ -54,7 +55,7 @@ export const uiEpics = [
     mergeMap(entities => {
       const [hash, instanceId] = window.location.hash?.split("=");
       const entityName = Object.keys(entities).find(entityName => hash.includes(entityName));
-      return entityName
+      return entityName && instanceId
         ? of(uiActions.setSelectedId(entityName, instanceId))
         : EMPTY;
     })

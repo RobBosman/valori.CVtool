@@ -38,10 +38,8 @@ const PulseMonitor = (props) => {
       />
     }));
 
-    const timeoutID = setTimeout(() => setState(prevState => ({
-      ...prevState,
-      pulse: undefined
-    })),
+    const timeoutID = setTimeout(() =>
+      setState(prevState => ({ ...prevState, pulse: undefined })),
     900);
     // at the close:
     return () => clearTimeout(timeoutID);

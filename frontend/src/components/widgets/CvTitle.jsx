@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
+import * as commonUtils from "../../utils/CommonUtils";
 
 const CvTitle = (props) => {
 
@@ -18,7 +19,7 @@ const CvTitle = (props) => {
   const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
   const titleFields = {
     name: account?.name || "<NAAM>",
-    role: cv?.role && cv.role[props.locale] || "<ROL>",
+    role: cv?.role && (cv.role[props.locale] || cv && commonUtils.getPlaceholder([cv], "role", props.selectedCvId, props.locale)) || "<ROL>",
     dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
     residence: account?.residence || "<WOONPLAATS>"
   };
@@ -46,12 +47,12 @@ CvTitle.propTypes = {
   accountEntity: PropTypes.object
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  cvEntity: state.safe.content.cv,
-  selectedAccountId: state.ui.selectedId.account,
-  selectedCvId: state.ui.selectedId.cv,
-  accountEntity: state.safe.content.account
+const select = (store) => ({
+  locale: store.ui.userPrefs.locale,
+  cvEntity: store.safe.content.cv,
+  selectedAccountId: store.ui.selectedId.account,
+  selectedCvId: store.ui.selectedId.cv,
+  accountEntity: store.safe.content.account
 });
 
 export default connect(select)(CvTitle);

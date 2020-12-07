@@ -714,7 +714,7 @@
           <w:rStyle w:val="Valori-skillChar"/>
         </w:rPr>
         <w:t>
-          <xsl:value-of select="cv:description/cv:uk_UK"/>
+          <xsl:apply-templates select="cv:description" mode="locale-placeholder"/>
         </w:t>
         <w:tab/>
       </w:r>
@@ -756,7 +756,7 @@
              w:rsidP="001860B4">
           <w:r>
             <w:t>
-              <xsl:value-of select="cv:role/cv:uk_UK"/>
+              <xsl:apply-templates select="cv:role" mode="locale-placeholder"/>
             </w:t>
           </w:r>
         </w:p>
@@ -788,7 +788,7 @@
              w:rsidP="000B7B5E">
           <w:r>
             <w:t>
-              <xsl:value-of select="cv:name/cv:uk_UK"/>
+              <xsl:apply-templates select="cv:name" mode="locale-placeholder"/>
             </w:t>
           </w:r>
         </w:p>
@@ -855,7 +855,7 @@
              w:rsidP="000B7B5E">
           <w:r>
             <w:t>
-              <xsl:value-of select="cv:name/cv:uk_UK"/>
+              <xsl:apply-templates select="cv:name" mode="locale-placeholder"/>
             </w:t>
           </w:r>
         </w:p>
@@ -1034,7 +1034,7 @@
               <w:rStyle w:val="Valori-geel"/>
             </w:rPr>
             <w:t>
-              <xsl:value-of select="cv:role/cv:uk_UK"/>
+              <xsl:apply-templates select="cv:role" mode="locale-placeholder"/>
             </w:t>
           </w:r>
         </w:p>

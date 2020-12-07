@@ -89,10 +89,7 @@ const Accounts = (props) => {
     }
   ];
 
-  const [state, setState] = React.useState({
-    items: memo.combinedInstances,
-    filterText: ""
-  });
+  const [state, setState] = React.useState({ items: memo.combinedInstances, filterText: "" });
 
   React.useLayoutEffect(() => {
     let newItems = memo.combinedInstances;
@@ -100,21 +97,16 @@ const Accounts = (props) => {
       const lowerCaseFilterText = state.filterText.toLowerCase();
       newItems = memo.combinedInstances.filter(instance => `${instance.name}\n${instance.businessUnit?.name || ""}`.toLowerCase().includes(lowerCaseFilterText));
     }
-    setState(prevState => ({
-      ...prevState,
-      items: newItems
-    }));
+    setState(prevState => ({ ...prevState, items: newItems }));
   },
   [memo.combinedInstances, state.filterText]);
 
   const onFilter = (_, filterText) =>
-    setState(prevState => ({
-      ...prevState,
-      filterText: filterText
-    }));
+    setState(prevState => ({ ...prevState, filterText: filterText }));
 
   const onEditCv = () => {
-    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel) && props.selectedAccountId) {
+    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+    && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };

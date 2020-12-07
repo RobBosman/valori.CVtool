@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
     version="1.0">
 
   <!-- DATE - NUMERIC -->
@@ -32,6 +33,14 @@
         <xsl:apply-templates select="$periodEnd" mode="date-period"/>
       </xsl:when>
       <xsl:otherwise>today</xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- LOCALE PLACEHOLDER -->
+  <xsl:template match="node()" mode="locale-placeholder">
+    <xsl:choose>
+      <xsl:when test="cv:uk_UK"><xsl:value-of select="cv:uk_UK"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="cv:nl_NL"/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 

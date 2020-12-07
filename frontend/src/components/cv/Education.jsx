@@ -9,7 +9,7 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
-import { compareStrings, isValidYear } from "../../utils/CommonUtils";
+import * as commonUtils from "../../utils/CommonUtils";
 import { EducationResultTypes } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 
@@ -32,20 +32,24 @@ const Education = (props) => {
     props.educationEntity && props.selectedCvId && Object.values(props.educationEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = compareStrings(composePeriod(r), composePeriod(l));
+        let compare = commonUtils.compareStrings(composePeriod(r), composePeriod(l));
         if (compare === 0) {
-          compare = compareStrings(l.name || "", r.name || "");
+          compare = commonUtils.compareStrings(l.name || "", r.name || "");
         }
         return compare;
       })
       || [],
     [props.educationEntity, props.selectedCvId]);
 
+  const renderName = (item) =>
+    item.name && item.name[props.locale] || commonUtils.getPlaceholder(educations, "name", item._id, props.locale);
+
   const columns = [
     {
       key: "name",
       fieldName: `name.${props.locale}`,
       name: "Opleiding",
+      onRender: renderName,
       isResizable: true,
       minWidth: 125,
       maxWidth: 300
@@ -181,6 +185,7 @@ const Education = (props) => {
                 label="Opleiding"
                 field={`name.${props.locale}`}
                 instanceContext={educationContext}
+                placeholder={commonUtils.getPlaceholder(educations, "name", props.selectedEducationId, props.locale)}
               />
               <CvTextField
                 label="Onderwijsinstelling"
@@ -193,7 +198,7 @@ const Education = (props) => {
                   label="Jaar van"
                   field="yearFrom"
                   instanceContext={educationContext}
-                  validateInput={isValidYear}
+                  validateInput={commonUtils.isValidYear}
                   placeholder='yyyy'
                   styles={{ fieldGroup: { width: 80 } }}
                 />
@@ -201,7 +206,7 @@ const Education = (props) => {
                   label="Jaar tot"
                   field="yearTo"
                   instanceContext={educationContext}
-                  validateInput={isValidYear}
+                  validateInput={commonUtils.isValidYear}
                   placeholder='yyyy'
                   styles={{ fieldGroup: { width: 80 } }}
                 />
