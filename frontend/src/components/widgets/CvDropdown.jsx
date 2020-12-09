@@ -45,7 +45,8 @@ export const CvDropdown = (props) => {
       styles={props.styles}
       disabled={props.disabled || !instance}
       selectedKey={value}
-      onChange={onChange} />
+      onChange={onChange}
+    />
   );
 };
 

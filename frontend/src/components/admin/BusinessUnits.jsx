@@ -13,17 +13,19 @@ import { createUuid } from "../../services/safe/safe-services";
 const entityName = "businessUnit";
 
 const BusinessUnits = (props) => {
-  
-  const businessUnitContext = React.useCallback({
+
+  const businessUnitContext = {
     entity: props.businessUnitEntity,
     instanceId: props.selectedBusinessUnitId,
     setSelectedInstance: props.setSelectedBusinessUnitId,
     replaceInstance: props.replaceBusinessUnit
-  }, [props.businessUnitEntity, props.selectedBusinessUnitId, props.setSelectedBusinessUnitId, props.replaceBusinessUnit]);
+  };
   
-  const businessUnits = React.useCallback(
-    props.businessUnitEntity && Object.values(props.businessUnitEntity) || [],
-    [props.businessUnitEntity]);
+  const businessUnits = React.useMemo(() =>
+    props.businessUnitEntity && Object.values(props.businessUnitEntity)
+      .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
+      || [],
+  [props.businessUnitEntity]);
 
   const columns = [
     {
@@ -31,7 +33,7 @@ const BusinessUnits = (props) => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
-      minWidth: 130,
+      minWidth: 140,
       maxWidth: 250
     },
     {
@@ -40,6 +42,15 @@ const BusinessUnits = (props) => {
       name: "Contactpersoon",
       isResizable: true,
       minWidth: 120
+    },
+    {
+      key: "accountIds.length",
+      fieldName: "accountIds.length",
+      name: "Members",
+      isResizable: false,
+      minWidth: 80,
+      maxWidth: 80,
+      data: "number"
     }
   ];
 
@@ -49,7 +60,7 @@ const BusinessUnits = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
-        minWidth: 350,
+        minWidth: 500,
         height: "calc(100vh - 170px)"
       }
     ]
@@ -68,26 +79,28 @@ const BusinessUnits = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedItemFields = () => {
+  const selectedItemFields = React.useCallback(() => {
     const selectedBusinessUnit = businessUnits.find(businessUnit => businessUnit._id === props.selectedBusinessUnitId);
     return selectedBusinessUnit && {
       Naam: selectedBusinessUnit.name,
-      Contactpersoon: selectedBusinessUnit.contactName
+      Contactpersoon: selectedBusinessUnit.contactName,
+      Members: selectedBusinessUnit.accountIds?.length || 0
     };
-  };
+  }, [businessUnits, props.selectedBusinessUnitId]);
 
   const isFilledBusinessUnit = (businessUnit) =>
     businessUnit.name || businessUnit.contactName;
 
   const onAddItem = () => {
-    let newEducation = businessUnits.find(education => !isFilledBusinessUnit(education));
-    if (!newEducation) {
-      newEducation = {
-        _id: createUuid()
+    let newBusinessUnit = businessUnits.find(businessUnit => !isFilledBusinessUnit(businessUnit));
+    if (!newBusinessUnit) {
+      newBusinessUnit = {
+        _id: createUuid(),
+        accountIds: []
       };
-      props.replaceBusinessUnit(newEducation._id, newEducation);
+      props.replaceBusinessUnit(newBusinessUnit._id, newBusinessUnit);
     }
-    props.setSelectedBusinessUnitId(newEducation._id);
+    props.setSelectedBusinessUnitId(newBusinessUnit._id);
   };
 
   const onDeleteItem = () => {
@@ -170,6 +183,7 @@ const BusinessUnits = (props) => {
 
 BusinessUnits.propTypes = {
   authInfo: PropTypes.object,
+  accountEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   selectedBusinessUnitId: PropTypes.string,
   setSelectedBusinessUnitId: PropTypes.func.isRequired,
@@ -178,6 +192,7 @@ BusinessUnits.propTypes = {
 
 const select = (store) => ({
   authInfo: store.auth.authInfo,
+  accountEntity: store.safe.content.account,
   businessUnitEntity: store.safe.content[entityName],
   selectedBusinessUnitId: store.ui.selectedId[entityName]
 });

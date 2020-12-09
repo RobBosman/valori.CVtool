@@ -24,12 +24,12 @@ const Reference = (props) => {
   };
   
   // Find all {references} of the selected {cv}.
-  const references = React.useCallback(
+  const references = React.useMemo(() =>
     props.referenceEntity && props.selectedCvId && Object.values(props.referenceEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => commonUtils.compareStrings(l.referentName, r.referentName))
       || [],
-    [props.referenceEntity, props.selectedCvId]);
+  [props.referenceEntity, props.selectedCvId]);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -61,7 +61,8 @@ const Reference = (props) => {
       onRender: renderInCvCheckbox,
       isResizable: false,
       minWidth: 50,
-      maxWidth: 50
+      maxWidth: 50,
+      data: "boolean"
     }
   ];
 
@@ -90,13 +91,14 @@ const Reference = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedItemFields = () => {
-    const selectedReference = references.find(experience => experience._id === props.selectedReferenceId);
+  const selectedItemFields = React.useCallback(() => {
+    const selectedReference = references.find(reference => reference._id === props.selectedReferenceId);
     return selectedReference && {
       Naam: selectedReference.referentName,
-      Functie: selectedReference.referentFunction && selectedReference.referentFunction[props.locale]
+      Functie: commonUtils.getValueOrFallback(selectedReference, "referentFunction", props.locale)
     };
-  };
+  },
+  [references, props.selectedReferenceId, props.locale]);
 
   const isFilledReference = (reference) =>
     reference.referentName || commonUtils.isFilledLocaleField(reference.referentFunction);

@@ -24,21 +24,22 @@ const Experience = (props) => {
     draggedItem: undefined
   });
 
-  const experienceContext = React.useCallback({
+  const experienceContext = React.useMemo(() => ({
     locale: props.locale,
     entity: props.experienceEntity,
     instanceId: props.selectedExperienceId,
     setSelectedInstance: props.setSelectedExperienceId,
     replaceInstance: props.replaceExperience
-  }, [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);
+  }),
+  [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);
   
   // Find all {Experiences} of the selected {cv}.
-  const experiences = React.useCallback(
+  const experiences = React.useMemo(() =>
     props.experienceEntity && props.selectedCvId && Object.values(props.experienceEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
       || [],
-    [props.experienceEntity, props.selectedCvId]);
+  [props.experienceEntity, props.selectedCvId]);
   
   const showCoachmark = (event) =>
     setState(prevState => ({
@@ -53,7 +54,7 @@ const Experience = (props) => {
     `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
 
   const renderRole = (item) =>
-    item.role && item.role[props.locale] || commonUtils.getPlaceholder(experiences, "role", item._id, props.locale);
+    item.role && item.role[props.locale] || commonUtils.getPlaceholder(experiences, item._id, "role", props.locale);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -97,7 +98,8 @@ const Experience = (props) => {
       onRender: renderInCvCheckbox,
       isResizable: false,
       minWidth: 50,
-      maxWidth: 50
+      maxWidth: 50,
+      data: "boolean"
     }
   ];
 
@@ -125,13 +127,14 @@ const Experience = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const selectedItemFields = () => {
+  const selectedItemFields = React.useCallback(() => {
     const selectedExperience = experiences.find(experience => experience._id === props.selectedExperienceId);
     return selectedExperience && {
       Periode: composePeriod(selectedExperience),
       Opdrachtgever: selectedExperience.client
     };
-  };
+  },
+  [experiences, props.selectedExperienceId]);
 
   const isFilledExperience = (experience) =>
     experience.periodBegin || experience.client || commonUtils.isFilledLocaleField(experience.assignment, experience.activities, experience.results, experience.keywords);
@@ -249,7 +252,7 @@ const Experience = (props) => {
                     isWide={true}
                     hasCloseButton={true}
                     onDismiss={hideCoachmark}>
-                    Bepaal handmatig de volgorde waarin werkervaringen in je cv komen te staan.
+                    Bepaal handmatig drag&amp;drop) de volgorde waarin werkervaringen in je cv komen te staan.
                   </TeachingBubbleContent>
                 </Coachmark>
               }
@@ -275,7 +278,7 @@ const Experience = (props) => {
                 label="Rol"
                 field={`role.${props.locale}`}
                 instanceContext={experienceContext}
-                placeholder={commonUtils.getPlaceholder(experiences, "role", props.selectedExperienceId, props.locale)}
+                placeholder={commonUtils.getPlaceholder(experiences, props.selectedExperienceId, "role", props.locale)}
               />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>

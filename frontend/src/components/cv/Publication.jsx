@@ -24,12 +24,12 @@ const Publication = (props) => {
   };
   
   // Find all {Publication} of the selected {cv}.
-  const publications = React.useCallback(
+  const publications = React.useMemo(() =>
     props.publicationEntity && props.selectedCvId && Object.values(props.publicationEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => r.year - l.year)
       || [],
-    [props.publicationEntity, props.selectedCvId]);
+  [props.publicationEntity, props.selectedCvId]);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -61,7 +61,8 @@ const Publication = (props) => {
       onRender: renderInCvCheckbox,
       isResizable: false,
       minWidth: 50,
-      maxWidth: 50
+      maxWidth: 50,
+      data: "boolean"
     }
   ];
 
@@ -90,13 +91,14 @@ const Publication = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedItemFields = () => {
-    const selectedPublication = publications.find(experience => experience._id === props.selectedPublicationId);
+  const selectedItemFields = React.useCallback(() => {
+    const selectedPublication = publications.find(publication => publication._id === props.selectedPublicationId);
     return selectedPublication && {
-      Titel: selectedPublication.title && selectedPublication.title[props.locale],
+      Titel: commonUtils.getValueOrFallback(selectedPublication, "title", props.locale),
       Media: selectedPublication.media
     };
-  };
+  },
+  [publications, props.selectedPublicationId, props.locale]);
 
   const isFilledPublication = (publication) =>
     publication.media || commonUtils.isFilledLocaleField(publication.title);

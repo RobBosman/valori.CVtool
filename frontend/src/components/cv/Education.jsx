@@ -28,7 +28,7 @@ const Education = (props) => {
     `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || "heden"}`;
   
   // Find all {Education} of the selected {cv}.
-  const educations = React.useCallback(
+  const educations = React.useMemo(() =>
     props.educationEntity && props.selectedCvId && Object.values(props.educationEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
@@ -39,10 +39,10 @@ const Education = (props) => {
         return compare;
       })
       || [],
-    [props.educationEntity, props.selectedCvId]);
+  [props.educationEntity, props.selectedCvId]);
 
   const renderName = (item) =>
-    item.name && item.name[props.locale] || commonUtils.getPlaceholder(educations, "name", item._id, props.locale);
+    item.name && item.name[props.locale] || commonUtils.getPlaceholder(educations, item._id, "name", props.locale);
 
   const columns = [
     {
@@ -69,7 +69,8 @@ const Education = (props) => {
       onRender: composePeriod,
       isResizable: false,
       minWidth: 75,
-      maxWidth: 75
+      maxWidth: 75,
+      data: "number"
     }
   ];
 
@@ -98,13 +99,14 @@ const Education = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedItemFields = () => {
+  const selectedItemFields = React.useCallback(() => {
     const selectedEducation = educations.find(education => education._id === props.selectedEducationId);
     return selectedEducation && {
-      Opleiding: selectedEducation.name && selectedEducation.name[props.locale],
+      Opleiding: commonUtils.getValueOrFallback(selectedEducation, "name", props.locale),
       Opleidingsinstituut: selectedEducation.institution
     };
-  };
+  },
+  [educations, props.selectedEducationId, props.locale]);
 
   const isFilledEducation = (education) =>
     education.name || education.institution;
@@ -185,7 +187,7 @@ const Education = (props) => {
                 label="Opleiding"
                 field={`name.${props.locale}`}
                 instanceContext={educationContext}
-                placeholder={commonUtils.getPlaceholder(educations, "name", props.selectedEducationId, props.locale)}
+                placeholder={commonUtils.getPlaceholder(educations, props.selectedEducationId, "name", props.locale)}
               />
               <CvTextField
                 label="Onderwijsinstelling"
@@ -243,8 +245,8 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  replaceEducation: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
-  setSelectedEducationId: (id) => dispatch(setSelectedId(entityName, id))
+  setSelectedEducationId: (id) => dispatch(setSelectedId(entityName, id)),
+  replaceEducation: (id, instance) => dispatch(changeInstance(entityName, id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Education);

@@ -149,6 +149,13 @@ internal object IntentionReadAllAccountsTest {
   }
 
   @Test
+  fun testSaveBusinessUnit() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.messageSaveBusinessUnit, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.messageSaveBusinessUnit, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.messageSaveBusinessUnit, authInfoTom))
+  }
+
+  @Test
   fun testSaveAuthorization() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))

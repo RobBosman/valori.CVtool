@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.authorization.AuthorizationLevel.ADMIN
 import nl.valori.cvtool.server.authorization.AuthorizationLevel.CONSULTANT
+import nl.valori.cvtool.server.authorization.AuthorizationLevel.EE_LEAD
 import nl.valori.cvtool.server.authorization.AuthorizationLevel.SALES
 import org.slf4j.LoggerFactory
 
@@ -19,7 +20,8 @@ internal object Authorizer {
       IntentionReadAllBusinessUnits to SALES,
       IntentionReadAllAuthorizations to SALES,
       IntentionUpdateOwnCv to CONSULTANT,
-      IntentionUpdateOtherCv to SALES,
+      IntentionUpdateOtherCv to EE_LEAD,
+      IntentionUpdateBusinessUnits to ADMIN,
       IntentionUpdateAuthorizations to ADMIN
   )
 

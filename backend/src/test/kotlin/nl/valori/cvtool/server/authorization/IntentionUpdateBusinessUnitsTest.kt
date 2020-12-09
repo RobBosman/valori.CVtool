@@ -10,6 +10,7 @@ import nl.valori.cvtool.server.authorization.TestData.messageFetchSkillTom
 import nl.valori.cvtool.server.authorization.TestData.messageGenerateCvPascal
 import nl.valori.cvtool.server.authorization.TestData.messageGenerateCvTom
 import nl.valori.cvtool.server.authorization.TestData.messageSaveAuthorizationPascal
+import nl.valori.cvtool.server.authorization.TestData.messageSaveBusinessUnit
 import nl.valori.cvtool.server.authorization.TestData.messageSaveCvPascal
 import nl.valori.cvtool.server.authorization.TestData.messageSaveCvTom
 import nl.valori.cvtool.server.authorization.TestData.messageSaveSkillPascal
@@ -21,9 +22,9 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal object IntentionUpdateOtherCvTest {
+internal object IntentionUpdateBusinessUnitsTest {
 
-  private val intentionToTest = IntentionUpdateOtherCv
+  private val intentionToTest = IntentionUpdateBusinessUnits
 
   @Test
   fun testNoBody() {
@@ -135,21 +136,21 @@ internal object IntentionUpdateOtherCvTest {
   fun testSaveOtherCv() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveCvPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveCvPascal, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCvPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCvPascal, authInfoTom))
   }
 
   @Test
   fun testSaveOtherSkill() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveSkillPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveSkillPascal, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveSkillPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveSkillPascal, authInfoTom))
   }
 
   @Test
   fun testSaveBusinessUnit() {
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.messageSaveBusinessUnit, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.messageSaveBusinessUnit, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.messageSaveBusinessUnit, authInfoTom))
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveBusinessUnit, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveBusinessUnit, authInfoTom))
+    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveBusinessUnit, authInfoTom))
   }
 
   @Test

@@ -61,6 +61,12 @@ internal object IntentionAllTest {
           "accountId": "account-id-of-pascal",
           "name": "ADMIN"
         }
+      },
+      "businessUnit": {
+        "businessUnit-id": {
+          "_id": "businessUnit-id",
+          "contactPerson": "Pascal Klankman"
+        }
       }
   }""")
 
@@ -83,7 +89,8 @@ internal object IntentionAllTest {
     listOf(
         IntentionUpdateOwnCv,
         IntentionUpdateOtherCv,
-        IntentionUpdateAuthorizations)
+        IntentionUpdateAuthorizations,
+        IntentionUpdateBusinessUnits)
         .forEach { intentionToTest ->
           assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAll, authInfoTom),
               "Testing class ${intentionToTest.javaClass.simpleName}")

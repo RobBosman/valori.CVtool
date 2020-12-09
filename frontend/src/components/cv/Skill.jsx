@@ -27,7 +27,7 @@ const Skill = (props) => {
   };
   
   // Find all {Skill} of the selected {cv}.
-  const skills = React.useCallback(
+  const skills = React.useMemo(() =>
     props.skillEntity && props.selectedCvId && Object.values(props.skillEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
@@ -41,13 +41,13 @@ const Skill = (props) => {
         return compare;
       })
       || [],
-    [props.skillEntity, props.selectedCvId]);
+  [props.skillEntity, props.selectedCvId]);
 
   const renderSkill = (item) =>
     getEnumData(SkillCategories, item.category)?.text || "";
 
   const renderDescription = (item) =>
-    item.description && item.description[props.locale] || commonUtils.getPlaceholder(skills, "description", item._id, props.locale);
+    item.description && item.description[props.locale] || commonUtils.getPlaceholder(skills, item._id, "description", props.locale);
 
   const renderSkillLevel = (item) =>
     "* ".repeat(item.skillLevel).trim();
@@ -117,13 +117,14 @@ const Skill = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedItemFields = () => {
-    const selectedSkill = skills.find(experience => experience._id === props.selectedSkillId);
+  const selectedItemFields = React.useCallback(() => {
+    const selectedSkill = skills.find(skill => skill._id === props.selectedSkillId);
     return selectedSkill && {
       Categorie: renderSkill(selectedSkill),
-      Omschrijving: selectedSkill.description && selectedSkill.description[props.locale]
+      Omschrijving: commonUtils.getValueOrFallback(selectedSkill, "description", props.locale)
     };
-  };
+  },
+  [skills, props.selectedSkillId, props.locale]);
 
   const isFilledSkill = (skill) =>
     skill.category || commonUtils.isFilledLocaleField(skill.description);
@@ -214,7 +215,7 @@ const Skill = (props) => {
                 field={`description.${props.locale}`}
                 instanceContext={skillContext}
                 validateInput={commonUtils.isValidText(28)}
-                placeholder={commonUtils.getPlaceholder(skills, "description", props.selectedSkillId, props.locale)}
+                placeholder={commonUtils.getPlaceholder(skills, props.selectedSkillId, "description", props.locale)}
               />
               <CvRating
                 label="Niveau"

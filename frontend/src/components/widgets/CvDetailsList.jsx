@@ -63,7 +63,7 @@ export const CvDetailsList = (props) => {
     return orgOnColumnClick && orgOnColumnClick(event, column);
   };
 
-  const sortableColumns = React.useCallback(
+  const sortableColumns = React.useMemo(() =>
     props.columns
       .map((column) => {
         const fieldPath = column.fieldName?.split(".", 2) || [];
@@ -78,7 +78,7 @@ export const CvDetailsList = (props) => {
           onColumnClick: onSort(column.onColumnClick)
         };
       }),
-    [props.columns, state.sortingBy]);
+  [props.columns, state.sortingBy]);
 
   const sortedItems = React.useMemo(() =>
     props.items

@@ -5,23 +5,21 @@ import { TextField } from "@fluentui/react";
 export const CvTextField = (props) => {
 
   const { entity, instanceId, replaceInstance } = props.instanceContext;
-
-  const [state, setState] = React.useState({
-    instance: undefined,
-    errorMessage: ""
-  });
-  React.useLayoutEffect(() => {
-    setState(prevState => ({ ...prevState, instance: entity && entity[instanceId] }));
-  }, [props.instanceContext]);
+  
+  const instance = entity && entity[instanceId];
 
   const value = React.useMemo(() => {
-    let val = state.instance;
+    let val = instance;
     props.field.split(".")
       .forEach(field => {
         val = val && val[field];
       });
     return val || props.defaultValue || "";
-  }, [state.instance, props.field, props.defaultValue]);
+  }, [instance, props.field, props.defaultValue]);
+
+  const [state, setState] = React.useState({
+    errorMessage: ""
+  });
 
   React.useEffect(() => {
     if (state.errorMessage) {
@@ -46,9 +44,9 @@ export const CvTextField = (props) => {
     let instanceToBeSaved;
     const fieldPath = props.field.split(".");
     if (fieldPath.length === 2) {
-      let subInstance = state.instance[fieldPath[0]] || {};
+      let subInstance = instance[fieldPath[0]] || {};
       instanceToBeSaved = {
-        ...state.instance,
+        ...instance,
         [fieldPath[0]]: {
           ...subInstance,
           [fieldPath[1]]: event.target.value
@@ -56,7 +54,7 @@ export const CvTextField = (props) => {
       };
     } else {
       instanceToBeSaved = {
-        ...state.instance,
+        ...instance,
         [fieldPath[0]]: event.target.value
       };
     }
@@ -69,7 +67,7 @@ export const CvTextField = (props) => {
       placeholder={props.placeholder}
       multiline={props.multiline}
       autoAdjustHeight={props.autoAdjustHeight}
-      disabled={props.disabled || !state.instance}
+      disabled={props.disabled || !instance}
       value={value}
       styles={props.styles}
       onChange={onChange}

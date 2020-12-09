@@ -28,7 +28,7 @@ const Training = (props) => {
     `${training.year || "heden"}`;
   
   // Find all {Training} of the selected {cv}.
-  const trainings = React.useCallback(
+  const trainings = React.useMemo(() =>
     props.trainingEntity && props.selectedCvId && Object.values(props.trainingEntity)
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
@@ -39,10 +39,10 @@ const Training = (props) => {
         return compare;
       })
       || [],
-    [props.trainingEntity, props.selectedCvId]);
+  [props.trainingEntity, props.selectedCvId]);
 
   const renderName = (item) =>
-    item.name && item.name[props.locale] || commonUtils.getPlaceholder(trainings, "name", item._id, props.locale);
+    item.name && item.name[props.locale] || commonUtils.getPlaceholder(trainings, item._id, "name", props.locale);
   
   const columns = [
     {
@@ -69,7 +69,8 @@ const Training = (props) => {
       onRender: composePeriod,
       isResizable: false,
       minWidth: 60,
-      maxWidth: 60
+      maxWidth: 60,
+      data: "number"
     }
   ];
 
@@ -98,28 +99,29 @@ const Training = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const selectedItemFields = () => {
-    const selectedTraining = trainings.find(experience => experience._id === props.selectedTrainingId);
+  const selectedItemFields = React.useCallback(() => {
+    const selectedTraining = trainings.find(training => training._id === props.selectedTrainingId);
     return selectedTraining && {
-      Opleiding: selectedTraining.name && selectedTraining.name[props.locale],
+      Opleiding: commonUtils.getValueOrFallback(selectedTraining, "name", props.locale),
       Opleidingsinstituut: selectedTraining.institution
     };
-  };
+  },
+  [trainings, props.selectedTrainingId, props.locale]);
 
   const isFilledTraining = (training) =>
     training.name || training.institution;
 
   const onAddItem = () => {
-    let newEducation = trainings.find(education => !isFilledTraining(education));
-    if (!newEducation) {
-      newEducation = {
+    let newTraining = trainings.find(training => !isFilledTraining(training));
+    if (!newTraining) {
+      newTraining = {
         _id: createUuid(),
         cvId: props.selectedCvId,
         includeInCv: true
       };
-      props.replaceTraining(newEducation._id, newEducation);
+      props.replaceTraining(newTraining._id, newTraining);
     }
-    props.setSelectedTrainingId(newEducation._id);
+    props.setSelectedTrainingId(newTraining._id);
   };
 
   const onDeleteItem = () => {
@@ -185,7 +187,7 @@ const Training = (props) => {
                 label="Training"
                 field={`name.${props.locale}`}
                 instanceContext={trainingContext}
-                placeholder={commonUtils.getPlaceholder(trainings, "name", props.selectedTrainingId, props.locale)}
+                placeholder={commonUtils.getPlaceholder(trainings, props.selectedTrainingId, "name", props.locale)}
               />
               <CvTextField
                 label="Opleidingsinstituut"

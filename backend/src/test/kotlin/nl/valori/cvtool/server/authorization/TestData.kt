@@ -7,8 +7,8 @@ internal object TestData {
   val authInfoTom = AuthInfo.fromJson(JsonObject("""{
       "email": "tom@vrt.be",
       "name": "Tom Testerom",
-      "authorization": [],
       "accountId": "account-id-of-tom",
+      "authorizationLevel": "CONSULTANT",
       "cvIds": ["cv-id-of-tom"]
     }"""))
 
@@ -97,6 +97,15 @@ internal object TestData {
           "_id": "skill-id-of-pascal",
           "cvId": "cv-id-of-pascal",
           "key": "value"
+        }
+      }
+    }""")
+
+  val messageSaveBusinessUnit = JsonObject("""{
+      "businessUnit": {
+        "businessUnit-id": {
+          "_id": "businessUnit-id",
+          "contactPerson": "Pascal"
         }
       }
     }""")

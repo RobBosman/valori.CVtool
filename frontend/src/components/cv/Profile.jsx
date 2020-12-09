@@ -6,6 +6,7 @@ import { changeInstance } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
+import * as commonUtils from "../../utils/CommonUtils";
 
 const Profile = (props) => {
 
@@ -15,10 +16,11 @@ const Profile = (props) => {
     instanceId: props.selectedCvId,
     replaceInstance: props.onCvChange
   };
+  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
   const accountContext = {
     locale: props.locale,
     entity: props.accountEntity,
-    instanceId: props.cvEntity && props.cvEntity[props.selectedCvId] && props.cvEntity[props.selectedCvId].accountId,
+    instanceId: cv?.accountId,
     replaceInstance: props.onAccountChange
   };
   const { editPaneColor } = useTheme();
@@ -49,6 +51,7 @@ const Profile = (props) => {
             label="Rol"
             field={`role.${props.locale}`}
             instanceContext={cvContext}
+            placeholder={commonUtils.getValueOrFallback(cv, "role", props.locale)}
           />
           <Stack horizontal
             tokens={{ childrenGap: "l1" }}>
