@@ -252,7 +252,7 @@ const Experience = (props) => {
                     isWide={true}
                     hasCloseButton={true}
                     onDismiss={hideCoachmark}>
-                    Bepaal handmatig drag&amp;drop) de volgorde waarin werkervaringen in je cv komen te staan.
+                    Bepaal handmatig (drag&amp;drop) de volgorde waarin werkervaringen in je cv komen te staan.
                   </TeachingBubbleContent>
                 </Coachmark>
               }
