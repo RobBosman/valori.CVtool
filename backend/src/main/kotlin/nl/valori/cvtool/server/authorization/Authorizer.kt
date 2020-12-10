@@ -21,7 +21,7 @@ internal object Authorizer {
       IntentionReadAllAuthorizations to SALES,
       IntentionUpdateOwnCv to CONSULTANT,
       IntentionUpdateOtherCv to EE_LEAD,
-      IntentionUpdateBusinessUnits to ADMIN,
+      IntentionUpdateBusinessUnits to EE_LEAD,
       IntentionUpdateAuthorizations to ADMIN
   )
 

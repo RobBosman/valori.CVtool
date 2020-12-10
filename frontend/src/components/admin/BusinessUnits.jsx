@@ -84,7 +84,7 @@ const BusinessUnits = (props) => {
     return selectedBusinessUnit && {
       Naam: selectedBusinessUnit.name,
       Contactpersoon: selectedBusinessUnit.contactName,
-      Members: selectedBusinessUnit.accountIds?.length || 0
+      Members: selectedBusinessUnit.accountIds?.length || "0"
     };
   }, [businessUnits, props.selectedBusinessUnitId]);
 

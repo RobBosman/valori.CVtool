@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { PrimaryButton, Nav, Separator, Stack, TooltipHost, ActionButton } from "@fluentui/react";
+import { PrimaryButton, Nav, Separator, Stack, TooltipHost } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -22,15 +22,11 @@ import BusinessUnits from "./admin/BusinessUnits";
 const ContentPage = (props) => {
 
   const [state, setState] = React.useState({});
-  
-  const onFetchCv = () =>
-    props.fetchCvByAccountId(props.selectedAccountId);
 
   const onRenderGroupHeader = (group) =>
     <Stack horizontal
       verticalAlign="center">
       <h3>{group.name}</h3>
-      {group.name === "CV" ? state.fetchCvButton : null}
     </Stack>;
 
   const onGenerateCv = () =>
@@ -148,22 +144,7 @@ const ContentPage = (props) => {
     setState({
       locationHash: locationHash,
       navGroups: navGroups,
-      renderContent: renderContent,
-      // Show the fetchCvButton only if
-      // * the user is authorized to edit other person's cvs AND
-      // * if the user selected an other person's account AND
-      // * if the cv-data of that other person is not available yet.
-      fetchCvButton: ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
-        && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId && !props.selectedCvId
-        ? <TooltipHost content="Haal de gegevens op om het CV te bewerken">
-          <ActionButton
-            text="gegevens ophalen"
-            iconProps={{ iconName: "CloudDownload" }}
-            onClick={onFetchCv}
-            styles={{ root: { fontStyle: "italic" } }}
-          />
-        </TooltipHost>
-        : null
+      renderContent: renderContent
     });
   }, [props.authInfo.authorizationLevel, props.selectedAccountId, props.selectedCvId, props.locationHash]);
 
@@ -207,8 +188,7 @@ ContentPage.propTypes = {
   locationHash: PropTypes.string,
   selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
-  generateCv: PropTypes.func.isRequired,
-  fetchCvByAccountId: PropTypes.func.isRequired
+  generateCv: PropTypes.func.isRequired
 };
 
 const select = (store) => ({
@@ -220,8 +200,7 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
-  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
+  generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale))
 });
 
 export default connect(select, mapDispatchToProps)(ContentPage);

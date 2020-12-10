@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField } from "@fluentui/react";
+import { Text, Stack, TextField, DefaultButton, TooltipHost, Separator } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import * as safeActions from "../../services/safe/safe-actions";
@@ -140,10 +140,17 @@ const Accounts = (props) => {
   const onFilter = (_, newFilterText) =>
     setFilterText(newFilterText);
 
-  const onEditCv = () => {
+  const onFetchCv = () => {
     if (["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
     && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
+    }
+  };
+
+  const onDeleteAccount = () => {
+    if (["ADMIN"].includes(props.authInfo.authorizationLevel)
+    && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
+      alert("TODO: IMPLEMENT THIS FEATURE!");
     }
   };
 
@@ -153,7 +160,7 @@ const Accounts = (props) => {
       {
         background: viewPaneColor,
         padding: 20,
-        minWidth: 500,
+        minWidth: 550,
         height: "calc(100vh - 170px)"
       }
     ]
@@ -194,37 +201,60 @@ const Accounts = (props) => {
                 items={items}
                 instanceContext={combinedContext(replaceAccountInstance)}
                 setKey="accounts"
-                onItemInvoked={onEditCv}
+                onItemInvoked={onFetchCv}
               />
             </Stack>
           </td>
 
-          <td valign="top" style={tdStyle}>
-            <Stack styles={editStyles}>
-              <CvTextField
-                label="Naam"
-                field="name"
-                instanceContext={combinedContext(replaceAccountInstance)}
-                disabled={true}
-              />
-              <CvDropdown
-                label="Tribe"
-                field="businessUnit._id"
-                instanceContext={combinedContext(switchBusinessUnitOfAccount)}
-                disabled={!["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)}
-                options={BusinessUnitOptions}
-                styles={{ dropdown: { width: 180 } }}
-              />
-              <CvDropdown
-                label="Autorisatie"
-                field="authorization.level"
-                instanceContext={combinedContext(replaceAuthorizationInstance)}
-                disabled={!["ADMIN"].includes(props.authInfo.authorizationLevel) || props.authInfo.accountId === props.selectedAccountId}
-                options={Authorizations}
-                styles={{ dropdown: { width: 180 } }}
-              />
-            </Stack>
-          </td>
+          { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel) &&
+            <td valign="top" style={tdStyle}>
+              <Stack styles={editStyles}>
+                <CvTextField
+                  label="Naam"
+                  field="name"
+                  instanceContext={combinedContext(replaceAccountInstance)}
+                  disabled={true}
+                />
+                <CvDropdown
+                  label="Tribe"
+                  field="businessUnit._id"
+                  instanceContext={combinedContext(switchBusinessUnitOfAccount)}
+                  options={BusinessUnitOptions}
+                  styles={{ dropdown: { width: 200 } }}
+                />
+                { ["ADMIN"].includes(props.authInfo.authorizationLevel) &&
+                  <CvDropdown
+                    label="Autorisatie"
+                    field="authorization.level"
+                    instanceContext={combinedContext(replaceAuthorizationInstance)}
+                    disabled={props.authInfo.accountId === props.selectedAccountId}
+                    options={Authorizations}
+                    styles={{ dropdown: { width: 200 } }}
+                  />
+                }
+                <Separator/>
+                <Stack grow verticalAlign="space-between">
+                  <TooltipHost content="Haal de gegevens op om het CV te bewerken">
+                    <DefaultButton
+                      text="CV bewerken"
+                      iconProps={{ iconName: "CloudDownload" }}
+                      onClick={onFetchCv}
+                      styles={{ root: { width: 200 } }}
+                    />
+                  </TooltipHost>
+                  { ["ADMIN"].includes(props.authInfo.authorizationLevel) &&
+                    <DefaultButton
+                      text="Account verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={props.authInfo.accountId === props.selectedAccountId}
+                      onClick={onDeleteAccount}
+                      styles={{ root: { width: 200 } }}
+                    />
+                  }
+                </Stack>
+              </Stack>
+            </td>
+          }
         </tr>
       </tbody>
     </table>
