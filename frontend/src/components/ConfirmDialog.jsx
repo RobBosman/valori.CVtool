@@ -1,8 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { Dialog, DialogFooter, DefaultButton, DialogType, ContextualMenu, PrimaryButton } from "@fluentui/react";
+import * as uiServives from "../services/ui/ui-services";
 
 const ConfirmDialog = (props) => {
+
+  const { primaryColor } = uiServives.useTheme();
 
   const dialogContentProps = {
     type: DialogType.normal,
@@ -14,6 +17,13 @@ const ConfirmDialog = (props) => {
       moveMenuItemText: "Move",
       closeMenuItemText: "Close",
       menu: ContextualMenu
+    },
+    styles: {
+      main: {
+        borderTopWidth: 5,
+        borderTopStyle: "solid",
+        borderColor: primaryColor
+      }
     }
   };
 

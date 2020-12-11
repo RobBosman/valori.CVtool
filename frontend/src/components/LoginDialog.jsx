@@ -3,8 +3,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner, SpinnerSize, ContextualMenu } from "@fluentui/react";
 import * as authActions from "../services/auth/auth-actions";
+import * as uiServives from "../services/ui/ui-services";
 
 const LoginDialog = (props) => {
+
+  const { primaryColor } = uiServives.useTheme();
 
   const dialogContentProps = {
     type: DialogType.normal,
@@ -16,6 +19,16 @@ const LoginDialog = (props) => {
       moveMenuItemText: "Move",
       closeMenuItemText: "Close",
       menu: ContextualMenu
+    },
+    styles: {
+      main: {
+        borderTopWidth: 5,
+        borderTopStyle: "solid",
+        borderColor: primaryColor
+      },
+      heading: {
+        backgroundColor: "red"
+      }
     }
   };
   

@@ -36,7 +36,7 @@ const Accounts = (props) => {
 
   const switchBusinessUnitOfAccount = React.useCallback((accountId, combinedInstance) => {
     const fromBusinessUnit = Object.values(props.businessUnitEntity || {})
-      .find(businessUnit => businessUnit.accountIds.includes(accountId));
+      .find(businessUnit => businessUnit.accountIds?.includes(accountId));
     const toBusinessUnit = Object.values(props.businessUnitEntity || {})
       .find(businessUnit => businessUnit._id === combinedInstance.businessUnit?._id);
     if (toBusinessUnit?._id !== fromBusinessUnit?._id) {
@@ -81,6 +81,7 @@ const Accounts = (props) => {
 
   const BusinessUnitOptions = React.useMemo(() => {
     const buOptions = Object.values(props.businessUnitEntity || {})
+      .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
       .map(businessUnit => ({ key: businessUnit._id, text: businessUnit?.name }));
     return [
       { key: null, text: "" },
@@ -166,7 +167,7 @@ const Accounts = (props) => {
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
 
-  const { editPaneColor, viewPaneColor } = useTheme();
+  const { editPaneColor, viewPaneColor, alertColor } = useTheme();
   const viewStyles = {
     root: [
       {
@@ -269,7 +270,7 @@ const Accounts = (props) => {
                       iconProps={{ iconName: "Delete" }}
                       disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                       onClick={onDeleteAccount}
-                      styles={{ root: { width: 200 } }}
+                      styles={{ root: { color: alertColor, width: 200 } }}
                     />
                   }
                 </Stack>

@@ -2,8 +2,11 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Dialog, DialogFooter, DefaultButton, DialogType, ContextualMenu } from "@fluentui/react";
+import * as uiServives from "../services/ui/ui-services";
 
 const ErrorDialog = (props) => {
+
+  const { alertColor } = uiServives.useTheme();
 
   const [showDialog, setShowDialog] = React.useState(false);
 
@@ -23,6 +26,13 @@ const ErrorDialog = (props) => {
       moveMenuItemText: "Move",
       closeMenuItemText: "Close",
       menu: ContextualMenu
+    },
+    styles: {
+      main: {
+        borderTopWidth: 5,
+        borderTopStyle: "solid",
+        borderColor: alertColor
+      }
     }
   };
   
