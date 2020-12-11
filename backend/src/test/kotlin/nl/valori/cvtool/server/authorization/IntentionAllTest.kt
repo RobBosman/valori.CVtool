@@ -31,6 +31,19 @@ internal object IntentionAllTest {
   }""")
 
   private val bodySaveAll = JsonObject("""{
+      "authorization": {
+        "authorization-id-of-pascal": {
+          "_id": "authorization-id-of-pascal",
+          "accountId": "account-id-of-pascal",
+          "name": "ADMIN"
+        }
+      },
+      "businessUnit": {
+        "businessUnit-id": {
+          "_id": "businessUnit-id",
+          "contactPerson": "Pascal Klankman"
+        }
+      },
       "cv": {
         "cv-id-of-tom": {
           "_id": "cv-id-of-tom",
@@ -54,19 +67,6 @@ internal object IntentionAllTest {
           "cvId": "cv-id-of-pascal",
           "key": "value"
         }
-      },
-      "authorization": {
-        "authorization-id-of-pascal": {
-          "_id": "authorization-id-of-pascal",
-          "accountId": "account-id-of-pascal",
-          "name": "ADMIN"
-        }
-      },
-      "businessUnit": {
-        "businessUnit-id": {
-          "_id": "businessUnit-id",
-          "contactPerson": "Pascal Klankman"
-        }
       }
   }""")
 
@@ -89,8 +89,8 @@ internal object IntentionAllTest {
     listOf(
         IntentionUpdateOwnCv,
         IntentionUpdateOtherCv,
-        IntentionUpdateAuthorizations,
-        IntentionUpdateBusinessUnits)
+        IntentionUpdateAuthorization,
+        IntentionUpdateBusinessUnit)
         .forEach { intentionToTest ->
           assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, bodySaveAll, authInfoTom),
               "Testing class ${intentionToTest.javaClass.simpleName}")

@@ -17,7 +17,7 @@ export const isValidText = (maxSize) =>
 
 export const isFilledLocaleField = (...localeFields) =>
   localeFields && localeFields.find(localeField =>
-    localeField && Object.values(localeField).find(localeValue => localeValue));
+    Object.values(localeField || {}).find(localeValue => localeValue));
 
 export const getPlaceholder = (instances, selectedId, fieldName, locale) =>
   getValueOrFallback(instances && instances.find(instance => instance._id === selectedId), fieldName, locale);

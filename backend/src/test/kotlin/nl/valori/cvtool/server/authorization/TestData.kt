@@ -119,4 +119,8 @@ internal object TestData {
         }
       }
     }""")
+
+  val messageDeleteAccountPascal = JsonObject("""{
+      "accountId": "account-id-of-pascal"
+    }""")
 }

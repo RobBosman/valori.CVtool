@@ -38,7 +38,7 @@ export const uiEpics = [
     distinctUntilChanged(),
     map(accountId => {
       const cvEntity = state$.value.safe?.content?.cv;
-      const cvInstance = cvEntity && Object.values(cvEntity)
+      const cvInstance = Object.values(cvEntity || {})
         .find(cvInstance => cvInstance.accountId === accountId);
       return uiActions.resetSelectedIds({
         account: accountId,

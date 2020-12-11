@@ -35,7 +35,7 @@ const Experience = (props) => {
   
   // Find all {Experiences} of the selected {cv}.
   const experiences = React.useMemo(() =>
-    props.experienceEntity && props.selectedCvId && Object.values(props.experienceEntity)
+    props.selectedCvId && Object.values(props.experienceEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
       || [],
@@ -158,11 +158,11 @@ const Experience = (props) => {
     }
   };
   const onDeleteConfirmed = () => {
+    setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
     if (props.selectedExperienceId) {
       props.replaceExperience(props.selectedExperienceId, {});
       props.setSelectedExperienceId(undefined);
     }
-    setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
   };
   const onDeleteCancelled = () =>
     setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));

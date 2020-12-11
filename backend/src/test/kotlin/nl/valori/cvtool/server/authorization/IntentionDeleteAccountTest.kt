@@ -1,6 +1,7 @@
 package nl.valori.cvtool.server.authorization
 
 import nl.valori.cvtool.server.authorization.TestData.authInfoTom
+import nl.valori.cvtool.server.authorization.TestData.messageDeleteAccountPascal
 import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByAccountIdPascal
 import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByAccountIdTom
 import nl.valori.cvtool.server.authorization.TestData.messageFetchCvByCvIdPascal
@@ -22,9 +23,9 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal object IntentionUpdateOwnCvTest {
+internal object IntentionDeleteAccountTest {
 
-  private val intentionToTest = IntentionUpdateOwnCv
+  private val intentionToTest = IntentionDeleteAccount
 
   @Test
   fun testNoBody() {
@@ -94,14 +95,14 @@ internal object IntentionUpdateOwnCvTest {
   fun testSaveOwnCv() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveCvTom, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveCvTom, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCvTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCvTom, authInfoTom))
   }
 
   @Test
   fun testSaveOwnSkill() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveSkillTom, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveSkillTom, authInfoTom))
-    assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveSkillTom, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveSkillTom, authInfoTom))
   }
 
   @Test
@@ -162,9 +163,9 @@ internal object IntentionUpdateOwnCvTest {
 
   @Test
   fun testDeleteAccount() {
-    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
-    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
-    assertFalse(intentionToTest.match(ACCOUNT_DELETE_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageDeleteAccountPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageDeleteAccountPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageDeleteAccountPascal, authInfoTom))
+    assertTrue(intentionToTest.match(ACCOUNT_DELETE_ADDRESS, messageDeleteAccountPascal, authInfoTom))
   }
 }

@@ -21,6 +21,7 @@ import BusinessUnits from "./admin/BusinessUnits";
 
 const ContentPage = (props) => {
 
+  const locationHash = props.locationHash.split("=")[0];
   const [state, setState] = React.useState({});
 
   const onRenderGroupHeader = (group) =>
@@ -32,9 +33,7 @@ const ContentPage = (props) => {
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
 
-  React.useLayoutEffect(() => {
-    const locationHash = props.locationHash.split("=")[0];
-
+  React.useEffect(() => {
     const navGroups = [
       {
         links: [
@@ -130,7 +129,7 @@ const ContentPage = (props) => {
         ]
       }
     ].filter(Boolean);
-      
+
     let renderContent = null;
     if (locationHash === "" || locationHash === "#") {
       renderContent = <Info />;
@@ -142,7 +141,6 @@ const ContentPage = (props) => {
     }
 
     setState({
-      locationHash: locationHash,
       navGroups: navGroups,
       renderContent: renderContent
     });
@@ -155,7 +153,7 @@ const ContentPage = (props) => {
         <Nav
           styles={{ root: { width: 180, marginTop: 59 } }}
           groups={state.navGroups}
-          initialSelectedKey={state.locationHash || "#"}
+          initialSelectedKey={locationHash || "#"}
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />

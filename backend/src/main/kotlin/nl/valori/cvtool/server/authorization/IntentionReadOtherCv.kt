@@ -36,7 +36,8 @@ internal object IntentionReadOtherCv : Intention {
                 when (entityName) {
                   "account" -> {
                     // Only consider 'other' account.
-                    if (authInfo.accountId != criterion.map["_id"])
+                    val accountId = criterion.map["_id"]
+                    if (accountId != null && accountId != authInfo.accountId)
                       return true
                   }
                   "authorization" -> {}

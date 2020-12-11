@@ -9,6 +9,7 @@ import io.vertx.core.VertxOptions
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.server.authorization.AuthInfoFetchVerticle
 import nl.valori.cvtool.server.authorization.AuthenticateVerticle
+import nl.valori.cvtool.server.cv.AccountDeleteVerticle
 import nl.valori.cvtool.server.cv.CvFetchVerticle
 import nl.valori.cvtool.server.cv.CvGenerateVerticle
 import nl.valori.cvtool.server.persistence.MongodbFetchVerticle
@@ -28,7 +29,8 @@ object Main {
       MongodbSaveVerticle::class,
       AuthInfoFetchVerticle::class,
       CvFetchVerticle::class,
-      CvGenerateVerticle::class)
+      CvGenerateVerticle::class,
+      AccountDeleteVerticle::class)
 
   fun run() {
     val options = VertxOptions()

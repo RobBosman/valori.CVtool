@@ -29,7 +29,7 @@ const Training = (props) => {
   
   // Find all {Training} of the selected {cv}.
   const trainings = React.useMemo(() =>
-    props.trainingEntity && props.selectedCvId && Object.values(props.trainingEntity)
+    props.selectedCvId && Object.values(props.trainingEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
         let compare = commonUtils.compareStrings(composePeriod(r), composePeriod(l));
@@ -130,11 +130,11 @@ const Training = (props) => {
     }
   };
   const onDeleteConfirmed = () => {
+    setConfirmDialogVisible(false);
     if (props.selectedTrainingId) {
       props.replaceTraining(props.selectedTrainingId, {});
       props.setSelectedTrainingId(undefined);
     }
-    setConfirmDialogVisible(false);
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);

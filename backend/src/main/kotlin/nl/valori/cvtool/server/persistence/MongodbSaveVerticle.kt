@@ -74,16 +74,15 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
   private fun handleRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
       Flowable
           .fromIterable(message.body().map.entries)
-          .flatMap {
-            val entity = it.key
-            val instances = validateInstances(it.value)
-            when (instances.isEmpty) {
+          .flatMap { (entityName, criteria) ->
+            val instanceCriteria = validateCriteria(criteria)
+            when (instanceCriteria.isEmpty) {
               true -> FlowableEmpty.empty()
               else -> {
-                log.debug("Vertx saving ${instances.map.size} instances of '$entity'...")
+                log.debug("Vertx saving ${instanceCriteria.map.size} instances of '$entityName'...")
                 mongoDatabase
-                    .getCollection(entity)
-                    .bulkWrite(composeWriteRequests(instances.map))
+                    .getCollection(entityName)
+                    .bulkWrite(composeWriteRequests(instanceCriteria.map))
               }
             }
           }
@@ -100,16 +99,16 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
               }
           )
 
-  private fun validateInstances(instances: Any?): JsonObject {
-    if (instances !is JsonObject)
-      error("Expected instances to be a 'JsonObject' but found '${instances?.javaClass?.name}'")
-    instances.forEach { (id, instance) ->
+  private fun validateCriteria(instanceCriteria: Any?): JsonObject {
+    if (instanceCriteria !is JsonObject)
+      error("Expected instances to be a 'JsonObject' but found '${instanceCriteria?.javaClass?.name}'")
+    instanceCriteria.forEach { (id, instance) ->
       if (instance !is JsonObject)
         error("Expected instance to be a 'JsonObject' but found '${instance?.javaClass?.name}'")
       if (!instance.isEmpty && instance.getString("_id", "") != id)
         error("Expected instance id '${instance.getString("_id", "")}' to match '$id'")
     }
-    return instances
+    return instanceCriteria
   }
 
   /**

@@ -25,7 +25,7 @@ const Reference = (props) => {
   
   // Find all {references} of the selected {cv}.
   const references = React.useMemo(() =>
-    props.referenceEntity && props.selectedCvId && Object.values(props.referenceEntity)
+    props.selectedCvId && Object.values(props.referenceEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => commonUtils.compareStrings(l.referentName, r.referentName))
       || [],
@@ -122,11 +122,11 @@ const Reference = (props) => {
     }
   };
   const onDeleteConfirmed = () => {
+    setConfirmDialogVisible(false);
     if (props.selectedReferenceId) {
       props.replaceReference(props.selectedReferenceId, {});
       props.setSelectedReferenceId(undefined);
     }
-    setConfirmDialogVisible(false);
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
@@ -184,6 +184,7 @@ const Reference = (props) => {
                 label="Functie"
                 field={`referentFunction.${props.locale}`}
                 instanceContext={referenceContext}
+                placeholder={commonUtils.getPlaceholder(references, props.selectedReferenceId, "referentFunction", props.locale)}
               />
               <CvTextField
                 label="Omschrijving"

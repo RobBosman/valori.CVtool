@@ -15,28 +15,28 @@ const CvTitle = (props) => {
     }
   };
 
-  const [state, setState] = React.useState({});
-  React.useLayoutEffect(() => {
+  const memo = React.useMemo(() => {
     const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
     const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-    setState({
+    return {
       name: account?.name || "<NAAM>",
       role: commonUtils.getValueOrFallback(cv, "role", props.locale) || "<ROL>",
       dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
       residence: account?.residence || "<WOONPLAATS>"
-    });
-  }, [props.cvEntity, props.cvEntity, props.selectedCvId, props.locale]);
+    };
+  },
+  [props.cvEntity, props.cvEntity, props.selectedAccountId, props.selectedCvId, props.locale]);
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
-      <Text variant="xxLarge">{state.name}</Text>
+      <Text variant="xxLarge">{memo.name}</Text>
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
-        <Text variant="large">{state.role}</Text>
+        <Text variant="large">{memo.role}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
-        <Text variant="large">{state.dateOfBirth}</Text>
+        <Text variant="large">{memo.dateOfBirth}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
-        <Text variant="large">{state.residence}</Text>
+        <Text variant="large">{memo.residence}</Text>
       </Stack>
     </Stack>
   );

@@ -6,6 +6,20 @@ import javax.xml.stream.XMLStreamWriter
 
 object ModelUtils {
 
+  val ACCOUNT_RELATED_ENTITY_NAMES = listOf(
+      "authorization",
+      "cv"
+  )
+
+  val CV_RELATED_ENTITY_NAMES = listOf(
+      "education",
+      "training",
+      "skill",
+      "publication",
+      "reference",
+      "experience"
+  )
+
   fun composeAccountInstance(id: String, email: String, name: String) =
       JsonObject("""
         {
@@ -34,6 +48,21 @@ object ModelUtils {
           "role": {},
           "profile": {},
           "interests": {}
+        }""".trimIndent())
+
+  fun composeCvCriteria(accountId: String) =
+      JsonObject("""{ "cv": [{ "accountId": "$accountId" }] }""")
+
+  fun composeCvDataCriteria(accountId: String, cvId: String?) =
+      JsonObject("""{
+          "cv": [{ "_id": "$cvId" }],
+          "account": [{ "_id": "$accountId" }],
+          "education": [{ "cvId": "$cvId" }],
+          "training": [{ "cvId": "$cvId" }],
+          "skill": [{ "cvId": "$cvId" }],
+          "publication": [{ "cvId": "$cvId" }],
+          "reference": [{ "cvId": "$cvId" }],
+          "experience": [{ "cvId": "$cvId" }]
         }""".trimIndent())
 
   fun JsonObject.addEntity(entity: String, instance: JsonObject): JsonObject =

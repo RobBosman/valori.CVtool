@@ -28,7 +28,7 @@ const Skill = (props) => {
   
   // Find all {Skill} of the selected {cv}.
   const skills = React.useMemo(() =>
-    props.skillEntity && props.selectedCvId && Object.values(props.skillEntity)
+    props.selectedCvId && Object.values(props.skillEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
         let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
@@ -149,11 +149,11 @@ const Skill = (props) => {
     }
   };
   const onDeleteConfirmed = () => {
+    setConfirmDialogVisible(false);
     if (props.selectedSkillId) {
       props.replaceSkill(props.selectedSkillId, {});
       props.setSelectedSkillId(undefined);
     }
-    setConfirmDialogVisible(false);
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);

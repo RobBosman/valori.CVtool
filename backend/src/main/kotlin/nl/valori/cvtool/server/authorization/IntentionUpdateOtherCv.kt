@@ -18,16 +18,17 @@ internal object IntentionUpdateOtherCv : Intention {
     bodyJson.map.entries
         .forEach { (entityName, instances) ->
           val instancesMap = toJsonObject(instances)?.map
-          if (instancesMap != null) { // Ignore 'criteria' and only consider 'instances'.
+          if (instancesMap != null) { // Ignore 'criteria' (JsonArray) and only consider 'instances' (JsonObject).
             when (entityName) {
               "account" -> {
-                // Referring to 'other' accountId(s)?
-                when (instancesMap.keys.size) {
-                  0 -> {}
-                  1 -> if (!instancesMap.keys.contains(authInfo.accountId))
-                    return true
-                  else -> return true
-                }
+                // Referring to 'other' accountId(s) and NOT deleting the account?
+                instancesMap.values
+                    .mapNotNull { toJsonObject(it) }
+                    .forEach { instance ->
+                      val accountId = instance.map["_id"]
+                      if (accountId != null && accountId != authInfo.accountId)
+                        return true
+                    }
               }
               "authorization" -> {}
               "businessUnit" -> {}
@@ -38,7 +39,7 @@ internal object IntentionUpdateOtherCv : Intention {
               }
               else -> {
                 instancesMap.values
-                    .mapNotNull { toJsonObject(it) } // Ignore 'criteria' and only consider 'instances'.
+                    .mapNotNull { toJsonObject(it) }
                     .forEach { instance ->
                       val accountId = instance.map["accountId"]
                       val cvId = instance.map["cvId"]

@@ -8,6 +8,8 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.ModelUtils.addEntity
+import nl.valori.cvtool.server.ModelUtils.composeCvCriteria
+import nl.valori.cvtool.server.ModelUtils.composeCvDataCriteria
 import nl.valori.cvtool.server.ModelUtils.composeCvInstance
 import nl.valori.cvtool.server.ModelUtils.getInstanceIds
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
@@ -40,8 +42,8 @@ internal class CvFetchVerticle : AbstractVerticle() {
 
   private fun handleRequest(message: Message<JsonObject>) =
       Single
-          .just(message)
-          .map { it.body().getString("accountId", "") }
+          .just(message.body())
+          .map { it.getString("accountId", "") }
           .doOnSuccess { if (it === "") error("'accountId' is not specified.") }
           .flatMap { accountId -> fetchCvData(accountId) }
           .subscribe(
@@ -63,21 +65,6 @@ internal class CvFetchVerticle : AbstractVerticle() {
           .map { composeCvDataCriteria(accountId, it) }
           .flatMap { vertx.eventBus().rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, it, deliveryOptions) }
           .map { it.body() }
-
-  private fun composeCvCriteria(accountId: String) =
-      JsonObject("""{ "cv": [{ "accountId": "$accountId" }] }""")
-
-  private fun composeCvDataCriteria(accountId: String, cvId: String?) =
-      JsonObject("""{
-          "cv": [{ "_id": "$cvId" }],
-          "account": [{ "_id": "$accountId" }],
-          "education": [{ "cvId": "$cvId" }],
-          "training": [{ "cvId": "$cvId" }],
-          "skill": [{ "cvId": "$cvId" }],
-          "publication": [{ "cvId": "$cvId" }],
-          "reference": [{ "cvId": "$cvId" }],
-          "experience": [{ "cvId": "$cvId" }]
-        }""".trimIndent())
 
   private fun obtainOrCreateCvId(cvEntity: JsonObject, accountId: String): Single<String> {
     val cvIds = cvEntity.getInstanceIds("cv")

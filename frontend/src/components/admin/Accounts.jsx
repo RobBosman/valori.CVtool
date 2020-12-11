@@ -10,41 +10,35 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
 import { Authorizations, getEnumData } from "../cv/Enums";
+import ConfirmDialog from "../ConfirmDialog";
 
 const Accounts = (props) => {
 
   const combineEntities = (accountEntity, authorizationEntity, businessUnitEntity) => {
     const combined = {};
-    if (accountEntity && authorizationEntity && businessUnitEntity) {
-      Object.values(accountEntity)
-        .filter(account => account._id) // Don't show deleted accounts.
-        .forEach(account => {
-          const authorization = Object.values(authorizationEntity)
-            .find(authorizationInstance => authorizationInstance.accountId === account._id);
+    Object.values(accountEntity || {})
+      .filter(account => account._id) // Don't show deleted accounts.
+      .forEach(account => {
+        const authorization = Object.values(authorizationEntity || {})
+          .find(authorizationInstance => authorizationInstance.accountId === account._id);
 
-          const businessUnit = Object.values(businessUnitEntity)
-            .find(businessUnit => businessUnit.accountIds?.includes(account._id));
+        const businessUnit = Object.values(businessUnitEntity || {})
+          .find(businessUnit => businessUnit.accountIds?.includes(account._id));
 
-          combined[account._id] = {
-            ...account,
-            authorization: authorization,
-            businessUnit: businessUnit
-          };
-        });
-    }
+        combined[account._id] = {
+          ...account,
+          authorization: authorization,
+          businessUnit: businessUnit
+        };
+      });
     return combined;
   };
 
-  const replaceAccountInstance = React.useCallback((accountId, combinedInstance) => {
-    console.log("replaceAccountInstance", accountId, combinedInstance);
-  },
-  [props.accountEntity, props.replaceAccount]);
-
   const switchBusinessUnitOfAccount = React.useCallback((accountId, combinedInstance) => {
-    const fromBusinessUnit = props.businessUnitEntity && Object.values(props.businessUnitEntity)
+    const fromBusinessUnit = Object.values(props.businessUnitEntity || {})
       .find(businessUnit => businessUnit.accountIds.includes(accountId));
-    const toBusinessUnit = props.businessUnitEntity && Object.values(props.businessUnitEntity)
-      .find(businessUnit => businessUnit._id === combinedInstance.businessUnit._id);
+    const toBusinessUnit = Object.values(props.businessUnitEntity || {})
+      .find(businessUnit => businessUnit._id === combinedInstance.businessUnit?._id);
     if (toBusinessUnit?._id !== fromBusinessUnit?._id) {
       toBusinessUnit && props.replaceBusinessUnit(toBusinessUnit._id, {
         ...toBusinessUnit,
@@ -59,7 +53,7 @@ const Accounts = (props) => {
   [props.businessUnitEntity, props.replaceBusinessUnit]);
 
   const replaceAuthorizationInstance = React.useCallback((accountId, combinedInstance) => {
-    const authorization = props.authorizationEntity && Object.values(props.authorizationEntity)
+    const authorization = Object.values(props.authorizationEntity || {})
       .find(authorizationInstance => authorizationInstance.accountId === accountId);
     props.replaceAuthorization(authorization._id, {
       ...authorization,
@@ -72,7 +66,7 @@ const Accounts = (props) => {
     const combinedEntity = combineEntities(props.accountEntity, props.authorizationEntity, props.businessUnitEntity);
     return {
       entity: combinedEntity,
-      instances: combinedEntity && Object.values(combinedEntity) || []
+      instances:Object.values(combinedEntity || {})
     };
   },
   [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
@@ -86,8 +80,8 @@ const Accounts = (props) => {
   [combined.entity, props.selectedAccountId]);
 
   const BusinessUnitOptions = React.useMemo(() => {
-    const buOptions = props.businessUnitEntity && Object.values(props.businessUnitEntity)
-      .map(businessUnit => ({ key: businessUnit._id, text: businessUnit.name })) || [];
+    const buOptions = Object.values(props.businessUnitEntity || {})
+      .map(businessUnit => ({ key: businessUnit._id, text: businessUnit?.name }));
     return [
       { key: null, text: "" },
       ...buOptions
@@ -147,12 +141,30 @@ const Accounts = (props) => {
     }
   };
 
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const selectedItemFields = React.useCallback(() => {
+    const selectedAccount = combined.instances.find(businessUnit => businessUnit._id === props.selectedAccountId);
+    return selectedAccount && {
+      Naam: selectedAccount.name,
+      Tribe: selectedAccount.businessUnit?.name
+    };
+  }, [combined.instances, props.selectedAccountId]);
+
   const onDeleteAccount = () => {
     if (["ADMIN"].includes(props.authInfo.authorizationLevel)
     && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
-      alert("TODO: IMPLEMENT THIS FEATURE!");
+      setConfirmDialogVisible(true);
     }
   };
+  const onDeleteConfirmed = () => {
+    setConfirmDialogVisible(false);
+    if (props.selectedAccountId) {
+      props.deleteAccount(props.selectedAccountId);
+      props.setSelectedAccountId(undefined);
+    }
+  };
+  const onDeleteCancelled = () =>
+    setConfirmDialogVisible(false);
 
   const { editPaneColor, viewPaneColor } = useTheme();
   const viewStyles = {
@@ -194,25 +206,33 @@ const Accounts = (props) => {
                     onChange={onFilter}
                   />
                   <Text variant="xSmall">{items.length} / {combined.instances.length}</Text>
+                  <ConfirmDialog
+                    title="Account en cv-gegevens definitief verwijderen?"
+                    primaryButtonText="Verwijderen"
+                    selectedItemFields={selectedItemFields}
+                    isVisible={isConfirmDialogVisible}
+                    onProceed={onDeleteConfirmed}
+                    onCancel={onDeleteCancelled}
+                  />
                 </Stack>
               </Stack>
               <CvDetailsList
                 columns={columns}
                 items={items}
-                instanceContext={combinedContext(replaceAccountInstance)}
+                instanceContext={combinedContext()}
                 setKey="accounts"
                 onItemInvoked={onFetchCv}
               />
             </Stack>
           </td>
 
-          { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel) &&
-            <td valign="top" style={tdStyle}>
+          { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+            && <td valign="top" style={tdStyle}>
               <Stack styles={editStyles}>
                 <CvTextField
                   label="Naam"
                   field="name"
-                  instanceContext={combinedContext(replaceAccountInstance)}
+                  instanceContext={combinedContext()}
                   disabled={true}
                 />
                 <CvDropdown
@@ -222,12 +242,12 @@ const Accounts = (props) => {
                   options={BusinessUnitOptions}
                   styles={{ dropdown: { width: 200 } }}
                 />
-                { ["ADMIN"].includes(props.authInfo.authorizationLevel) &&
-                  <CvDropdown
+                { ["ADMIN"].includes(props.authInfo.authorizationLevel)
+                  && <CvDropdown
                     label="Autorisatie"
                     field="authorization.level"
                     instanceContext={combinedContext(replaceAuthorizationInstance)}
-                    disabled={props.authInfo.accountId === props.selectedAccountId}
+                    disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                     options={Authorizations}
                     styles={{ dropdown: { width: 200 } }}
                   />
@@ -238,15 +258,16 @@ const Accounts = (props) => {
                     <DefaultButton
                       text="CV bewerken"
                       iconProps={{ iconName: "CloudDownload" }}
+                      disabled={!props.selectedAccountId}
                       onClick={onFetchCv}
                       styles={{ root: { width: 200 } }}
                     />
                   </TooltipHost>
-                  { ["ADMIN"].includes(props.authInfo.authorizationLevel) &&
-                    <DefaultButton
+                  { ["ADMIN"].includes(props.authInfo.authorizationLevel)
+                    && <DefaultButton
                       text="Account verwijderen"
                       iconProps={{ iconName: "Delete" }}
-                      disabled={props.authInfo.accountId === props.selectedAccountId}
+                      disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                       onClick={onDeleteAccount}
                       styles={{ root: { width: 200 } }}
                     />
@@ -267,7 +288,7 @@ Accounts.propTypes = {
   accountEntity: PropTypes.object,
   authorizationEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
-  replaceAccount: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
   replaceAuthorization: PropTypes.func.isRequired,
   replaceBusinessUnit: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
@@ -286,7 +307,7 @@ const select = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setSelectedAccountId: (id) => dispatch(setSelectedId("account", id)),
-  replaceAccount: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
+  deleteAccount: (id) => dispatch(safeActions.deleteAccount(id)),
   replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
   replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance)),
   fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))

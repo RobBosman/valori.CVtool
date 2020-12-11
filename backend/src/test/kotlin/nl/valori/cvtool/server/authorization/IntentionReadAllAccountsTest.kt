@@ -17,6 +17,7 @@ import nl.valori.cvtool.server.authorization.TestData.messageSaveCvPascal
 import nl.valori.cvtool.server.authorization.TestData.messageSaveCvTom
 import nl.valori.cvtool.server.authorization.TestData.messageSaveSkillPascal
 import nl.valori.cvtool.server.authorization.TestData.messageSaveSkillTom
+import nl.valori.cvtool.server.cv.ACCOUNT_DELETE_ADDRESS
 import nl.valori.cvtool.server.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
@@ -160,5 +161,13 @@ internal object IntentionReadAllAccountsTest {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveAuthorizationPascal, authInfoTom))
+  }
+
+  @Test
+  fun testDeleteAccount() {
+    assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
+    assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
+    assertFalse(intentionToTest.match(ACCOUNT_DELETE_ADDRESS, TestData.messageDeleteAccountPascal, authInfoTom))
   }
 }

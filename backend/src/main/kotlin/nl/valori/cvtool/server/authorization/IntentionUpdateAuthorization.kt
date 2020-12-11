@@ -4,7 +4,7 @@ import nl.valori.cvtool.server.ModelUtils.getInstances
 import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 
-internal object IntentionUpdateAuthorizations : Intention {
+internal object IntentionUpdateAuthorization : Intention {
 
   override fun name() = "change account authorization"
 
@@ -18,9 +18,9 @@ internal object IntentionUpdateAuthorizations : Intention {
 
     // Only consider queries updating authorizations.
     bodyJson.getInstances("authorization")
-        .forEach { roleInstance ->
-          // Ignore 'criteria' and only consider 'instances'.
-          if (toJsonObject(roleInstance) != null)
+        .forEach { authorizationInstance ->
+          // Ignore 'criteria' (JsonArray) and only consider 'instances' (JsonObject).
+          if (toJsonObject(authorizationInstance) != null)
             return true
         }
 

@@ -3,6 +3,7 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 
 export const fetchAllInstances = createAction("FECTH_ALL_INSTANCES");
 export const save = createAction("SAVE");
+export const deleteAccount = createAction("DELETE_ACCOUNT");
 
 export const resetEntities = createAction("RESET_ENTITIES");
 export const changeInstances = createAction("CHANGE_INSTANCES",

@@ -29,7 +29,7 @@ const Education = (props) => {
   
   // Find all {Education} of the selected {cv}.
   const educations = React.useMemo(() =>
-    props.educationEntity && props.selectedCvId && Object.values(props.educationEntity)
+    props.selectedCvId && Object.values(props.educationEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
         let compare = commonUtils.compareStrings(composePeriod(r), composePeriod(l));
@@ -130,11 +130,11 @@ const Education = (props) => {
     }
   };
   const onDeleteConfirmed = () => {
+    setConfirmDialogVisible(false);
     if (props.selectedEducationId) {
       props.replaceEducation(props.selectedEducationId, {});
       props.setSelectedEducationId(undefined);
     }
-    setConfirmDialogVisible(false);
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);

@@ -4,9 +4,9 @@ import nl.valori.cvtool.server.ModelUtils.getInstances
 import nl.valori.cvtool.server.ModelUtils.toJsonObject
 import nl.valori.cvtool.server.persistence.MONGODB_SAVE_ADDRESS
 
-internal object IntentionUpdateBusinessUnits : Intention {
+internal object IntentionUpdateBusinessUnit : Intention {
 
-  override fun name() = "change businessUnits"
+  override fun name() = "change businessUnit"
 
   override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
     // Only consider save queries.
@@ -18,9 +18,9 @@ internal object IntentionUpdateBusinessUnits : Intention {
 
     // Only consider queries updating businessUnits.
     bodyJson.getInstances("businessUnit")
-        .forEach { roleInstance ->
-          // Ignore 'criteria' and only consider 'instances'.
-          if (toJsonObject(roleInstance) != null)
+        .forEach { businessUnitInstance ->
+          // Ignore 'criteria' (JsonArray) and only consider 'instances' (JsonObject).
+          if (toJsonObject(businessUnitInstance) != null)
             return true
         }
 

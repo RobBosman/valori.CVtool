@@ -43,6 +43,33 @@ export const safeEpics = [
       return safeServices.saveToRemote(extractChangedData(state$.value.safe), eventBusServices.eventBusClient.sendEvent)
         .then(() => safeActions.setLastSavedTimestamp(saveTimestamp));
     })
+  ),
+
+  // Delete the account from the server.
+  (action$, state$) => action$.pipe(
+    ofType(safeActions.deleteAccount.type),
+    map(action => action.payload),
+    mergeMap(accountId =>
+      safeServices.deleteAccountFromRemote(accountId, eventBusServices.eventBusClient.sendEvent)
+        .then(() => accountId)
+    ),
+    map(accountId => {
+      const businessUnitInstancess = {};
+      Object.values(state$.value.safe.content.businessUnit || {})
+        .filter(businessUnit => businessUnit.accountIds?.includes(accountId))
+        .forEach(businessUnit => {
+          businessUnitInstancess[businessUnit._id] = {
+            ...businessUnit,
+            accountIds: businessUnit.accountIds.filter(id => id !== accountId)
+          };
+        });
+      return safeActions.resetEntities({
+        account: {
+          [accountId]: undefined
+        },
+        businessUnit: businessUnitInstancess
+      });
+    })
   )
 ];
 

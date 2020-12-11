@@ -25,7 +25,7 @@ const Publication = (props) => {
   
   // Find all {Publication} of the selected {cv}.
   const publications = React.useMemo(() =>
-    props.publicationEntity && props.selectedCvId && Object.values(props.publicationEntity)
+    props.selectedCvId && Object.values(props.publicationEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => r.year - l.year)
       || [],
@@ -122,11 +122,11 @@ const Publication = (props) => {
     }
   };
   const onDeleteConfirmed = () => {
+    setConfirmDialogVisible(false);
     if (props.selectedPublicationId) {
       props.replacePublication(props.selectedPublicationId, {});
       props.setSelectedPublicationId(undefined);
     }
-    setConfirmDialogVisible(false);
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
@@ -179,6 +179,7 @@ const Publication = (props) => {
                 label="Titel"
                 field={`title.${props.locale}`}
                 instanceContext={publicationContext}
+                placeholder={commonUtils.getPlaceholder(publications, props.selectedPublicationId, "title", props.locale)}
               />
               <CvTextField
                 label="Media"

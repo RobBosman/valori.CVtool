@@ -22,7 +22,7 @@ const BusinessUnits = (props) => {
   };
   
   const businessUnits = React.useMemo(() =>
-    props.businessUnitEntity && Object.values(props.businessUnitEntity)
+    Object.values(props.businessUnitEntity || {})
       .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
       || [],
   [props.businessUnitEntity]);
@@ -109,11 +109,11 @@ const BusinessUnits = (props) => {
     }
   };
   const onDeleteConfirmed = () => {
+    setConfirmDialogVisible(false);
     if (props.selectedBusinessUnitId) {
       props.replaceBusinessUnit(props.selectedBusinessUnitId, {});
       props.setSelectedBusinessUnitId(undefined);
     }
-    setConfirmDialogVisible(false);
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);

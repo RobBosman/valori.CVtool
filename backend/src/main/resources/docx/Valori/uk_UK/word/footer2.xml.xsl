@@ -37,6 +37,7 @@
                w:rsidRDefault="00C97881" w:rsidP="000A5FCA">
             <w:pPr>
               <w:pStyle w:val="Voettekst"/>
+              <w:ind w:right="709"/>
               <w:jc w:val="center"/>
             </w:pPr>
             <w:r w:rsidRPr="00C0691A">

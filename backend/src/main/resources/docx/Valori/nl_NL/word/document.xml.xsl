@@ -60,7 +60,7 @@
               <w:headerReference w:type="first" r:id="rId9"/>
               <w:footerReference w:type="first" r:id="rId10"/>
               <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
-              <w:pgMar w:top="2835" w:right="707" w:bottom="1701" w:left="1701" w:header="1276" w:footer="641"
+              <w:pgMar w:top="2835" w:right="991" w:bottom="1701" w:left="1701" w:header="1276" w:footer="641"
                        w:gutter="0"/>
               <w:cols w:space="708"/>
               <w:titlePg/>
@@ -111,7 +111,7 @@
             <w:sectPr w:rsidR="00660A7D" w:rsidSect="00660A7D">
               <w:type w:val="continuous"/>
               <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
-              <w:pgMar w:top="1843" w:right="707" w:bottom="1701" w:left="1701" w:header="714" w:footer="641"
+              <w:pgMar w:top="1843" w:right="991" w:bottom="1701" w:left="1701" w:header="714" w:footer="641"
                        w:gutter="0"/>
               <w:cols w:num="3" w:space="238"/>
               <w:titlePg/>
@@ -192,9 +192,9 @@
                        w:noVBand="1"/>
           </w:tblPr>
           <w:tblGrid>
-            <w:gridCol w:w="3164"/>
-            <w:gridCol w:w="3164"/>
-            <w:gridCol w:w="3164"/>
+            <w:gridCol w:w="3071"/>
+            <w:gridCol w:w="3071"/>
+            <w:gridCol w:w="3071"/>
           </w:tblGrid>
           <w:tr w:rsidR="00F15DA6" w14:paraId="2666AACC" w14:textId="77777777" w:rsidTr="001860B4">
             <w:tc>
@@ -283,9 +283,9 @@
                          w:noVBand="1"/>
             </w:tblPr>
             <w:tblGrid>
-              <w:gridCol w:w="3164"/>
-              <w:gridCol w:w="3164"/>
-              <w:gridCol w:w="3164"/>
+              <w:gridCol w:w="3071"/>
+              <w:gridCol w:w="3071"/>
+              <w:gridCol w:w="3071"/>
             </w:tblGrid>
             <w:tr w:rsidR="001860B4" w14:paraId="0B48CA77" w14:textId="77777777" w:rsidTr="000B7B5E">
               <w:tc>
@@ -376,9 +376,9 @@
                          w:noVBand="1"/>
             </w:tblPr>
             <w:tblGrid>
-              <w:gridCol w:w="3164"/>
-              <w:gridCol w:w="3164"/>
-              <w:gridCol w:w="3164"/>
+              <w:gridCol w:w="3071"/>
+              <w:gridCol w:w="3071"/>
+              <w:gridCol w:w="3071"/>
             </w:tblGrid>
             <w:tr w:rsidR="001860B4" w14:paraId="185231E8" w14:textId="77777777" w:rsidTr="000B7B5E">
               <w:tc>
@@ -471,8 +471,8 @@
             </w:tblPr>
             <w:tblGrid>
               <w:gridCol w:w="3119"/>
-              <w:gridCol w:w="2551"/>
-              <w:gridCol w:w="709"/>
+              <w:gridCol w:w="2268"/>
+              <w:gridCol w:w="708"/>
               <w:gridCol w:w="3119"/>
             </w:tblGrid>
             <w:tr w:rsidR="001860B4" w14:paraId="6575444B" w14:textId="77777777" w:rsidTr="001860B4">
@@ -493,7 +493,7 @@
               </w:tc>
               <w:tc>
                 <w:tcPr>
-                  <w:tcW w:w="2456" w:type="dxa"/>
+                  <w:tcW w:w="2268" w:type="dxa"/>
                 </w:tcPr>
                 <w:p w14:paraId="3E786C01" w14:textId="6055BD31" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                      w:rsidP="000B7B5E">
@@ -523,7 +523,7 @@
               </w:tc>
               <w:tc>
                 <w:tcPr>
-                  <w:tcW w:w="3164" w:type="dxa"/>
+                  <w:tcW w:w="3119" w:type="dxa"/>
                 </w:tcPr>
                 <w:p w14:paraId="2CD43EAD" w14:textId="13C86D98" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                      w:rsidP="001860B4">
@@ -598,7 +598,7 @@
                          w:noVBand="1"/>
             </w:tblPr>
             <w:tblGrid>
-              <w:gridCol w:w="9498"/>
+              <w:gridCol w:w="9214"/>
             </w:tblGrid>
             <xsl:apply-templates select="$references"/>
           </w:tbl>
@@ -646,8 +646,8 @@
                        w:noVBand="1"/>
           </w:tblPr>
           <w:tblGrid>
-            <w:gridCol w:w="2098"/>
-            <w:gridCol w:w="7400"/>
+            <w:gridCol w:w="2051"/>
+            <w:gridCol w:w="7241"/>
           </w:tblGrid>
           <xsl:apply-templates select="cv:experience[cv:includeInCv = 'true']">
             <xsl:sort select="cv:sortIndex" data-type="number"/>
@@ -658,7 +658,7 @@
         <w:sectPr w:rsidR="00A52C14" w:rsidSect="004D5885">
           <w:type w:val="continuous"/>
           <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
-          <w:pgMar w:top="1843" w:right="707" w:bottom="1701" w:left="1701" w:header="714" w:footer="641" w:gutter="0"/>
+          <w:pgMar w:top="1843" w:right="991" w:bottom="1701" w:left="1701" w:header="714" w:footer="641" w:gutter="0"/>
           <w:cols w:space="708"/>
           <w:titlePg/>
           <w:docGrid w:linePitch="360"/>
@@ -923,7 +923,7 @@
       </w:tc>
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="2551" w:type="dxa"/>
+          <w:tcW w:w="2268" w:type="dxa"/>
         </w:tcPr>
         <w:p w14:paraId="010D5F50" w14:textId="215C545B" w:rsidR="001860B4" w:rsidRDefault="001860B4"
              w:rsidP="000B7B5E">
@@ -968,7 +968,7 @@
     <w:tr w:rsidR="001860B4" w14:paraId="44A9A9D2" w14:textId="77777777" w:rsidTr="001860B4">
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="9498" w:type="dxa"/>
+          <w:tcW w:w="9214" w:type="dxa"/>
         </w:tcPr>
         <w:p w14:paraId="2D66D278" w14:textId="68175263" w:rsidR="001860B4" w:rsidRPr="00666ED6"
              w:rsidRDefault="001860B4" w:rsidP="00666ED6">
@@ -978,7 +978,8 @@
           </w:pPr>
           <w:r w:rsidRPr="00666ED6">
             <w:t xml:space="preserve"><xsl:value-of select="cv:referentName"/>
-              <xsl:value-of select="cv:referentFunction/cv:nl_NL"/></w:t>
+              <xsl:value-of select="cv:referentFunction/cv:nl_NL"/>
+            </w:t>
           </w:r>
         </w:p>
       </w:tc>
@@ -986,7 +987,7 @@
     <w:tr w:rsidR="001860B4" w14:paraId="18A8EE06" w14:textId="77777777" w:rsidTr="001860B4">
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="9498" w:type="dxa"/>
+          <w:tcW w:w="9214" w:type="dxa"/>
         </w:tcPr>
         <w:p w14:paraId="3BE4A452" w14:textId="20C5834B" w:rsidR="001860B4" w:rsidRDefault="001860B4"
              w:rsidP="000B7B5E">
@@ -1052,7 +1053,7 @@
       </w:tc>
       <w:tc>
         <w:tcPr>
-          <w:tcW w:w="7400" w:type="dxa"/>
+          <w:tcW w:w="7241" w:type="dxa"/>
           <w:tcMar>
             <w:left w:w="113" w:type="dxa"/>
           </w:tcMar>

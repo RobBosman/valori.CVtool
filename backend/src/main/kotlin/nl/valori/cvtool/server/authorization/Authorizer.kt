@@ -21,14 +21,15 @@ internal object Authorizer {
       IntentionReadAllAuthorizations to SALES,
       IntentionUpdateOwnCv to CONSULTANT,
       IntentionUpdateOtherCv to EE_LEAD,
-      IntentionUpdateBusinessUnits to EE_LEAD,
-      IntentionUpdateAuthorizations to ADMIN
+      IntentionUpdateBusinessUnit to EE_LEAD,
+      IntentionUpdateAuthorization to ADMIN,
+      IntentionDeleteAccount to ADMIN
   )
 
   internal fun determineDataToBeDeleted(messageBody: JsonObject) =
       messageBody.map.entries.asSequence()
           .map { (entityName, instances) ->
-            val instanceIds = toJsonObject(instances) // Ignore 'criteria' and only consider 'instances'.
+            val instanceIds = toJsonObject(instances) // Ignore 'criteria' (JsonArray) and only consider 'instances' (JsonObject).
                 ?.filter { (_, instance) -> instance.toString() == "{}" }
                 ?.map { (instanceId, _) -> instanceId }
                 ?: emptyList()

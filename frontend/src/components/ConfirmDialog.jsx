@@ -30,7 +30,7 @@ const ConfirmDialog = (props) => {
       onDismiss={props.onCancel}>
       <table>
         <tbody>
-          {props.selectedItemFields && props.selectedItemFields() && Object.entries(props.selectedItemFields())
+          {Object.entries(props.selectedItemFields && props.selectedItemFields() || {})
             .map(([label, value], index) => renderField(index, label, value))
           }
         </tbody>
