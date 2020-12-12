@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.4"
 
 volumes:
   mongodb:
@@ -21,6 +21,12 @@ services:
       - type: volume
         source: mongodb
         target: /data/db
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u ${MONGO_ROOT_USERNAME} -p ${MONGO_ROOT_PASSWORD} --quiet | grep 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
   cvtool:
     image: bransom/cvtool
@@ -44,6 +50,12 @@ services:
         source: webroot
         target: /webroot
         read_only: true
+    healthcheck:
+      test: echo 'wget -qO- https://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   letsencrypt:
     image: certbot/certbot

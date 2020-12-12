@@ -10,7 +10,7 @@ import * as cvServices from "./cv-services";
 
 export const cvEpics = [
 
-  // Generate cv at the server.
+  // Generate cv at the backend server.
   (action$, state$) => action$.pipe(
     ofType(cvActions.generateCv.type),
     map(action => action.payload),
@@ -30,7 +30,7 @@ export const cvEpics = [
     )
   ),
 
-  // Fetch cv data from the server.
+  // Fetch cv data from the backend server.
   (action$) => action$.pipe(
     ofType(cvActions.fetchCvByAccountId.type),
     map(action => action.payload),

@@ -6,7 +6,7 @@ import * as safeServices from "./safe-services";
 
 export const safeEpics = [
 
-  // Fetch all instances of the requested entity from the server.
+  // Fetch all instances of the requested entity from the backend server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchAllInstances.type),
     map(action => action.payload),
@@ -32,7 +32,7 @@ export const safeEpics = [
     map(() => safeActions.save(false))
   ),
 
-  // Send the content to the server.
+  // Send the content to the backend server.
   (action$, state$) => action$.pipe(
     ofType(safeActions.save.type),
     map(action => action.payload),
@@ -45,7 +45,7 @@ export const safeEpics = [
     })
   ),
 
-  // Delete the account from the server.
+  // Delete the account from the backend server.
   (action$, state$) => action$.pipe(
     ofType(safeActions.deleteAccount.type),
     map(action => action.payload),

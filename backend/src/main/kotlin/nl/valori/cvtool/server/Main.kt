@@ -7,6 +7,7 @@ import io.vertx.core.DeploymentOptions
 import io.vertx.core.Vertx
 import io.vertx.core.VertxOptions
 import io.vertx.core.json.JsonObject
+import io.vertx.reactivex.core.AbstractVerticle
 import nl.valori.cvtool.server.authorization.AuthInfoFetchVerticle
 import nl.valori.cvtool.server.authorization.AuthenticateVerticle
 import nl.valori.cvtool.server.cv.AccountDeleteVerticle
@@ -15,6 +16,7 @@ import nl.valori.cvtool.server.cv.CvGenerateVerticle
 import nl.valori.cvtool.server.persistence.MongodbFetchVerticle
 import nl.valori.cvtool.server.persistence.MongodbSaveVerticle
 import org.slf4j.LoggerFactory
+import kotlin.reflect.KClass
 
 fun main() = Main.run()
 
@@ -31,6 +33,10 @@ object Main {
       CvFetchVerticle::class,
       CvGenerateVerticle::class,
       AccountDeleteVerticle::class)
+  val verticleDeploymentStates = verticlesToDeploy
+      .map { it to "not started" }
+      .toMap()
+      .toMutableMap()
 
   fun run() {
     val options = VertxOptions()
@@ -50,13 +56,17 @@ object Main {
         .getConfig { config ->
           val deploymentOptions = DeploymentOptions().setConfig(config.result())
           verticlesToDeploy
-              .forEach { deployVerticle(vertx, it.java.name, deploymentOptions) }
+              .forEach { deployVerticle(vertx, it, deploymentOptions) }
         }
   }
 
-  private fun deployVerticle(vertx: Vertx, verticleClassName: String, deploymentOptions: DeploymentOptions) =
-      vertx.deployVerticle(verticleClassName, deploymentOptions) { deploymentResult ->
-        if (deploymentResult.failed())
-          log.error("Error deploying $verticleClassName", deploymentResult.cause())
+  private fun deployVerticle(vertx: Vertx, verticleClass: KClass<out AbstractVerticle>, deploymentOptions: DeploymentOptions) =
+      vertx.deployVerticle(verticleClass.java.name, deploymentOptions) { deploymentResult ->
+        if (deploymentResult.succeeded()) {
+          verticleDeploymentStates[verticleClass] = "UP"
+        } else {
+          verticleDeploymentStates[verticleClass] = deploymentResult.cause().message ?: "UNKNOWN ERROR"
+          log.error("Error deploying ${verticleClass.simpleName}", deploymentResult.cause())
+        }
       }
 }

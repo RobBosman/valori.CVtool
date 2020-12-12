@@ -68,7 +68,7 @@ export class EventBusClient {
 
     this._eventBus.onerror = (error) => {
       if (error.body === "rejected") {
-        this._errorMessagesSubject.next("Je hebt onvoldoende rechten voor deze actie.");
+        this._errorMessagesSubject.next("Oeps! Er ging iets mis in de communicatie met de backend server.");
       } else {
         console.error("An error occurred on the vert.x EventBus.", error);
       }
@@ -107,11 +107,11 @@ export class EventBusClient {
         console.debug(`Sending event '${address}'`, requestData);
         this._eventBus.send(address, requestData, this.mergeHeaders(headers),
           (error, message) => error
-            ? _reject(`Onbekende fout in de backend: ${error} ${message}`)
+            ? _reject(`Onbekende fout in de backend server: ${error} ${message}`)
             : _resolve(message)
         );
       } else {
-        _reject(new Error("De verbinding met de backend is verbroken. Probeer het later nog eens."));
+        _reject(new Error("De verbinding met de backend server is verbroken. Probeer het later nog eens."));
       }
     });
 
