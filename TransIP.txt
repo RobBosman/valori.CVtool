@@ -83,16 +83,46 @@ docker volume rm $(docker volume ls --filter dangling=true -q)
 docker rmi -f $(docker images -qa)
 
 
-docker run -it --rm bransom/cvtool sh
-
-
-mongodump --out=backup/cvtool-2020-04-01 --uri mongodb://localhost:27017/cvtool
-mongorestore backup/cvtool-2020-04-01 --uri mongodb://localhost:27017/cvtool --stopOnError
-
 docker run -it --rm ^
-    --mount type=bind,source=/mongodb_backup,target=/backup ^
+    --mount type=volume,source=valoricvtool_mongodb_backup,target=/backup ^
     mongo ^
-    mongodump --uri mongodb://mongodb:27017/cvtool --out=/backup/cvtool-2020-10-09
+    bash
+docker run -it --rm \
+    --mount type=volume,source=root_mongodb_backup,target=/backup \
+    mongo \
+    bash
+
+FOR /F "usebackq delims=" %A IN (`docker ps -aqf "name=mongo"`) DO docker exec -it %A ^
+    mongodump --out=/backup/2020-12-13 --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
+
+docker exec -it ^
+    $(docker ps -aqf "name=mongo") ^
+    mongodump --out=/backup/2020-12-13 --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
+
+
+
+########################################################################################################################
+# BACKUP @ production server
+########################################################################################################################
+docker exec -it \
+    $(docker ps -aqf "name=mongo") \
+    mongodump --out=/backup/2020-12-13 --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
+lftp -c '\
+    set ftp:ssl-allow true ;\
+    set ssl:verify-certificate no ;\
+    open -u VCV01,WYenU7hKxnet3vyD \
+      -e " \
+        mirror -R /var/lib/docker/volumes/root_mongodb_backup/_data/2020-12-13 /cvtool/2020-12-13 ;\
+        quit \
+        " \
+    157.97.115.138 \
+    '
+
+
+mongodump /out:/backup/2020-12-12 /gzip /uri:mongodb://localhost:27017/cvtool
+
+mongorestore /drop /preserveUUID /dir:/backup/2020-12-12 /gzip /uri:mongodb://localhost:27017/cvtool
+mongorestore /drop /preserveUUID /dir:/backup/2020-12-12 /gzip /uri:mongodb://root:MongoPassword@127.0.0.1:27117/cvtool?authSource=admin
 
 
 # MongoDB collections:
@@ -120,7 +150,7 @@ db.role.renameCollection("authorization")
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://root:MongoPassword@127.0.0.1:27117/cvtool?authSource=admin
 # ls -1 exported\json\*.json | while read jsonfile; do --file=$jsonfile --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool; done
 
-
+# interactive mode:
 lftp
     set ftp:ssl-allow true ;\
     set ssl:verify-certificate no ;\
@@ -134,6 +164,18 @@ lftp -c '\
       -e " \
         cd /cvtool/2020-10-21/ ;\
         put ./dummy.txt ;\
+        quit \
+        " \
+    157.97.115.138 \
+    '
+
+lftp -c '\
+    set ftp:ssl-allow true ;\
+    set ssl:verify-certificate no ;\
+    open -u VCV01,WYenU7hKxnet3vyD \
+      -e " \
+        cd /cvtool/ ;\
+        put /backup/2020-12-13 ;\
         quit \
         " \
     157.97.115.138 \
