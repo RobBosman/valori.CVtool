@@ -102,21 +102,12 @@ docker exec -it ^
 
 
 ########################################################################################################################
-# BACKUP @ production server
+# BACKUP/RESTORE - see cvtool_backup.sh
 ########################################################################################################################
-docker exec -it \
-    $(docker ps -aqf "name=mongo") \
-    mongodump --out=/backup/2020-12-13 --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
-lftp -c '\
+lftp
     set ftp:ssl-allow true ;\
     set ssl:verify-certificate no ;\
-    open -u VCV01,WYenU7hKxnet3vyD \
-      -e " \
-        mirror -R /var/lib/docker/volumes/root_mongodb_backup/_data/2020-12-13 /cvtool/2020-12-13 ;\
-        quit \
-        " \
-    157.97.115.138 \
-    '
+    open -u VCV01,WYenU7hKxnet3vyD 157.97.115.138
 
 
 mongodump /out:/backup/2020-12-12 /gzip /uri:mongodb://localhost:27017/cvtool
@@ -149,34 +140,3 @@ db.role.renameCollection("authorization")
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://root:MongoPassword@127.0.0.1:27117/cvtool?authSource=admin
 # ls -1 exported\json\*.json | while read jsonfile; do --file=$jsonfile --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool; done
-
-# interactive mode:
-lftp
-    set ftp:ssl-allow true ;\
-    set ssl:verify-certificate no ;\
-    open -u VCV01,WYenU7hKxnet3vyD \
-    157.97.115.138
-
-lftp -c '\
-    set ftp:ssl-allow true ;\
-    set ssl:verify-certificate no ;\
-    open -u VCV01,WYenU7hKxnet3vyD \
-      -e " \
-        cd /cvtool/2020-10-21/ ;\
-        put ./dummy.txt ;\
-        quit \
-        " \
-    157.97.115.138 \
-    '
-
-lftp -c '\
-    set ftp:ssl-allow true ;\
-    set ssl:verify-certificate no ;\
-    open -u VCV01,WYenU7hKxnet3vyD \
-      -e " \
-        cd /cvtool/ ;\
-        put /backup/2020-12-13 ;\
-        quit \
-        " \
-    157.97.115.138 \
-    '
