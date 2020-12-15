@@ -75,8 +75,8 @@ const Skill = (props) => {
       name: "Niveau",
       onRender: renderSkillLevel,
       isResizable: false,
-      minWidth: 60,
-      maxWidth: 60
+      minWidth: 70,
+      maxWidth: 70
     }
   ];
 

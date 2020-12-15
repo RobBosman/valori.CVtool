@@ -9,22 +9,6 @@ import nl.valori.cvtool.server.persistence.MongoConnection
 
 internal object HealthChecker {
 
-  fun getHandler(vertx: Vertx): HealthCheckHandler =
-      HealthCheckHandler.create(vertx)
-          .register("health-check", 2000) { healthStatus ->
-            val verticlesNotUp = Main.verticleDeploymentStates
-                .filter { (_, state) -> state != "UP" }
-            if (verticlesNotUp.isEmpty()) {
-              healthStatus.complete(Status.OK())
-            } else {
-              // Not all verticles are properly started.
-              val details = JsonObject()
-              verticlesNotUp.forEach { (verticleClass, state) -> details.put(verticleClass.simpleName, state) }
-              healthStatus.complete(Status.KO(details))
-            }
-          }
-
-  // TODO: activate improved health-check.
   fun getHandler(vertx: Vertx, config: JsonObject): HealthCheckHandler =
       HealthCheckHandler.create(vertx)
 

@@ -1,10 +1,11 @@
 #!/bin/sh
 
-export BACKUP_DATE=date +'%Y-%m-%d'
+BACKUP_DATE="$(date +'%Y-%m-%d')"
 
 docker exec -it \
     "$(docker ps -aqf 'name=mongo')" \
     mongodump --out=/backup/${BACKUP_DATE} --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
+
 lftp -c "\
     set ftp:ssl-allow true ;\
     set ssl:verify-certificate no ;\
