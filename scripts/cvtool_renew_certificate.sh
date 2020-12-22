@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/sh
 
-docker run --rm -it \
+docker run --rm \
     --name certbot \
     --mount source=root_ssl_certs,target=/etc/letsencrypt \
     --mount source=root_webroot,target=/data/letsencrypt \

@@ -4,5 +4,5 @@
 #         month of the year (1-12),
 #            day of the week (0-6, 0=Sunday)
 #               command
-12  4  *  *  *  /root/cvtool_backup.sh
-27  3  *  *  *  /root/cvtool_renew_certificate.sh
+58 23  *  *  *  /root/cvtool_backup.sh > /root/cvtool_backup.log 2>&1
+27  3  *  *  *  /root/cvtool_renew_certificate.sh > /root/cvtool_renew_certificate.log 2>&1

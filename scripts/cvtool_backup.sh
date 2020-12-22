@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/usr/bin/sh
 
 BACKUP_DATE="$(date +'%Y-%m-%d')"
 
-docker exec -it \
+docker exec \
     "$(docker ps -aqf 'name=mongo')" \
     mongodump --out=/backup/${BACKUP_DATE} --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
 
