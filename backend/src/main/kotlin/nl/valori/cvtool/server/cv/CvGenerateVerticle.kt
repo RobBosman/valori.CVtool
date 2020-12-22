@@ -29,9 +29,10 @@ internal class CvGenerateVerticle : AbstractVerticle() {
 
   companion object {
     internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20201130.xsd"
+    internal val allLocales = setOf("nl_NL", "uk_UK")
 
     private val log = LoggerFactory.getLogger(CvGenerateVerticle::class.java)
-    private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
+    private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
     private val xslIncludesMap = mapOf(
         "common.xsl" to loadBytes("/docx/Valori/common.xsl"),
@@ -109,12 +110,11 @@ internal class CvGenerateVerticle : AbstractVerticle() {
         .flatMap(::fetchCvData)
         .flatMap { cvJson ->
           xmlToDocx(convertToXml(cvJson), locale)
-              .map { composeFileName(cvJson, locale) to it }
-        }
-        .map { (fileName, docxBytes) ->
-          JsonObject()
-              .put("fileName", fileName)
-              .put("contentB64", String(Base64.getEncoder().encode(docxBytes)))
+              .map { docxBytes ->
+                JsonObject()
+                    .put("fileName", composeFileName(cvJson, locale))
+                    .put("contentB64", String(Base64.getEncoder().encode(docxBytes)))
+              }
         }
         .subscribe(
             {
@@ -172,11 +172,15 @@ internal class CvGenerateVerticle : AbstractVerticle() {
             docxBytes.toByteArray()
           }
 
-  private fun composeFileName(cvJson: JsonObject, locale: String): String {
-    val name = (cvJson.getJsonObject("account")
-        .map.values.elementAt(0) as JsonObject)
-        .getString("name")
-        .replace(" ", "")
+  private fun composeFileName(cvEntities: JsonObject, locale: String): String {
+    val name = when (val accountInstances = cvEntities.getValue("account")) {
+      is JsonObject -> accountInstances.map.values
+          .filterIsInstance(JsonObject::class.java)
+          .first()
+          .getString("name")
+          .replace(" ", "")
+      else -> ""
+    }
     return "CV_${locale.substring(3)}_$name.docx"
   }
 }

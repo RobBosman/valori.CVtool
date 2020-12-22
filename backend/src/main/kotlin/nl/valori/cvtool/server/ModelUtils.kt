@@ -83,9 +83,7 @@ object ModelUtils {
 
   fun JsonObject.getCriteria(entityName: String): List<JsonObject> {
     return when (val criteria = getValue(entityName)) {
-      is JsonArray -> {
-        criteria.list.mapNotNull(::toJsonObject)
-      }
+      is JsonArray -> criteria.list.mapNotNull(::toJsonObject)
       else -> emptyList()
     }
   }

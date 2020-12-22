@@ -11,6 +11,7 @@ import io.vertx.reactivex.core.AbstractVerticle
 import nl.valori.cvtool.server.authorization.AuthInfoFetchVerticle
 import nl.valori.cvtool.server.authorization.AuthenticateVerticle
 import nl.valori.cvtool.server.cv.AccountDeleteVerticle
+import nl.valori.cvtool.server.cv.CvBackupVerticle
 import nl.valori.cvtool.server.cv.CvFetchVerticle
 import nl.valori.cvtool.server.cv.CvGenerateVerticle
 import nl.valori.cvtool.server.persistence.MongodbFetchVerticle
@@ -32,7 +33,8 @@ object Main {
       AuthInfoFetchVerticle::class,
       CvFetchVerticle::class,
       CvGenerateVerticle::class,
-      AccountDeleteVerticle::class)
+      AccountDeleteVerticle::class,
+      CvBackupVerticle::class)
   val verticleDeploymentStates = verticlesToDeploy
       .map { it to "not started" }
       .toMap()
@@ -40,7 +42,7 @@ object Main {
 
   fun run() {
     val options = VertxOptions()
-    if (log.isDebugEnabled)
+//    if (log.isDebugEnabled)
       options.blockedThreadCheckInterval = 1_000 * 60 * 10 // allow blocking threads for max 10 minutes (for debugging)
 
     val vertx = Vertx.vertx(options)
@@ -54,7 +56,8 @@ object Main {
                 )
         )
         .getConfig { config ->
-          val deploymentOptions = DeploymentOptions().setConfig(config.result())
+          val deploymentOptions = DeploymentOptions()
+              .setConfig(config.result())
           verticlesToDeploy
               .forEach { deployVerticle(vertx, it, deploymentOptions) }
         }
