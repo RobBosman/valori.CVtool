@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory
 internal object EventBusMessageHandler {
 
   private val log = LoggerFactory.getLogger(EventBusMessageHandler::class.java)
-  private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
+  private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
   internal fun create(vertx: Vertx) =
       SockJSHandler.create(vertx).bridge(createBridgeOptions()) { authHandler(vertx, it) }

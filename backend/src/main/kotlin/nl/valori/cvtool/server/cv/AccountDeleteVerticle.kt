@@ -21,7 +21,7 @@ const val ACCOUNT_DELETE_ADDRESS = "account.delete"
 internal class AccountDeleteVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
-  private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
+  private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
   override fun start(startPromise: Promise<Void>) {
     vertx.eventBus()

@@ -22,7 +22,7 @@ const val CV_FETCH_ADDRESS = "cv.fetch"
 internal class CvFetchVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
-  private val deliveryOptions = DeliveryOptions().setSendTimeout(2000)
+  private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
   override fun start(startPromise: Promise<Void>) {
     vertx.eventBus()
