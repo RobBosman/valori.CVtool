@@ -24,13 +24,19 @@ internal class CvBackupVerticle : AbstractVerticle() {
 
   private var counter = 0
   private var processingNanos = AtomicLong(1_000 * 1_000_000)
-  private val intervalSubject = BehaviorSubject.createDefault(10 * 1_000_000L)
+  private val intervalSubject = BehaviorSubject.createDefault(100 * 1_000_000L)
+  // Create a 'trickle charger' with a dynamic interval that is constantly tuned to the effective processing speed of the system.
+  // This is done by adjusting the interval to the current processing time divided by the number of CPU cores.
+  private val trickleCharger = intervalSubject
+      .switchMap { interval -> Observable.timer(interval, NANOSECONDS) }
+      .doOnNext { intervalSubject.onNext(processingNanos.get() / Runtime.getRuntime().availableProcessors()) }
+      .toFlowable(BackpressureStrategy.ERROR)
 
   override fun start(startPromise: Promise<Void>) {
     // Generate all cvs every 10 seconds.
     vertx.setPeriodic(10 * 1_000) { timerID ->
-      // run only once!
-      if (counter > 9)
+      // Stop after a few times.
+      if (counter > 2)
         vertx.cancelTimer(timerID)
 
       generateAllCvs()
@@ -47,17 +53,10 @@ internal class CvBackupVerticle : AbstractVerticle() {
     val start = System.nanoTime()
     val allGeneratedCvs = ConcurrentHashMap<String, String>()
 
-    // Use a 'trickle charger' with a dynamic interval that is constantly adjusted to the effective processing speed of the system.
-    val trickleCharger = intervalSubject
-        .switchMap { interval -> Observable.timer(interval, NANOSECONDS) }
-        // Set the new interval to a fraction of the latest processing time.
-        .doOnNext { intervalSubject.onNext(processingNanos.get() / 4) }
-        .toFlowable(BackpressureStrategy.ERROR)
-
     fetchAllCvInstances()
         .toFlowable()
         .flatMap { allCvs -> Flowable.fromIterable(allCvs.getInstances("cv")) }
-        .zipWith(trickleCharger) { cv, _ -> cv } // Trickle-charge.
+        .zipWith(trickleCharger) { cv, _ -> cv }
         .flatMap { cv ->
           Flowable
               .fromIterable(allLocales)
@@ -69,8 +68,7 @@ internal class CvBackupVerticle : AbstractVerticle() {
         .subscribe(
             { generatedCv ->
               allGeneratedCvs[generatedCv.getString("fileName")] = generatedCv.getString("contentB64")
-              log.info("duration ${processingNanos.get() / 1_000_000} ms")
-//              log.info("Generated CV '${generatedCv.getString("fileName")}'")
+              log.info("Generated CV '${generatedCv.getString("fileName")}' in ${processingNanos.get() / 1_000_000} ms")
             },
             {
               log.error("Vertx error in CvBackupVerticle", it)
