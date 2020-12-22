@@ -15,9 +15,9 @@
 
   <properties>
     <java.version>15</java.version>
-    <java-target.version>14</java-target.version>
+    <java-target.version>15</java-target.version>
     <kotlin.version>1.4.21</kotlin.version>
-    <vertx.version>4.0.0.CR2</vertx.version>
+    <vertx.version>4.0.0</vertx.version>
   </properties>
 
   <build>
