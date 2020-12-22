@@ -198,7 +198,7 @@ const Publication = (props) => {
                 label="Omschrijving"
                 field={`description.${props.locale}`}
                 instanceContext={publicationContext}
-                validateInput={commonUtils.isValidText(120)}
+                validateInput={commonUtils.isValidText(250)}
               />
             </Stack>
           </td>
