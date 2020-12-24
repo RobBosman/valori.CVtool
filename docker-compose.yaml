@@ -3,6 +3,7 @@ version: "3.4"
 volumes:
   mongodb:
   mongodb_backup:
+  cvtool_backup:
   webroot:
   ssl_certs:
   letsencrypt_logs:
@@ -42,7 +43,7 @@ services:
       - HTTPS_CONNECTION_STRING=https://${HTTP_HOST}:${HTTPS_PORT}/?/ssl_certs/live/${HTTP_HOST}/privkey.pem:/ssl_certs/live/${HTTP_HOST}/fullchain.pem
       - AUTH_CONNECTION_STRING=https://login.microsoftonline.com/${OAUTH_TENANT_ID}/v2.0?${OAUTH_CLIENT_ID}:${OAUTH_CLIENT_SECRET}
       - MONGO_CONNECTION_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin
-      - CONTROL_CONNECTION_STRING=http://127.0.0.1:${CONTROL_PORT}/
+      - CONTROL_CONNECTION_STRING=http://localhost:${CONTROL_PORT}/
     ports:
       - ${HTTP_PORT}:${HTTP_PORT}
       - ${HTTPS_PORT}:${HTTPS_PORT}

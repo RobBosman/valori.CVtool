@@ -1,2 +1,23 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.adoc text
+*.me text
+
+# Declare files that will always have LF line endings on checkout.
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.jsx text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.ico binary
+*.png binary
+
 # Force the following filetypes to have unix EOLs.
 Dockerfile eol=lf
+*.yaml eol=lf
+*.env eol=lf
+*.sh eol=lf

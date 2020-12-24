@@ -37,7 +37,7 @@ internal class ControlVerticle : AbstractVerticle() {
         .subscribe(
             {
               startPromise.complete()
-              log.info("Download a zip with all cv docx files via http://${configConfig.authority}/all-docx")
+              log.info("Download all cvs via http://${configConfig.authority}/all-docx.zip")
             },
             {
               log.error("Vertx error in ControlVerticle", it)
@@ -49,7 +49,7 @@ internal class ControlVerticle : AbstractVerticle() {
   private fun createRouter(): Router {
     val router = Router.router(vertx)
     router
-        .route("/all-docx")
+        .route("/all-docx.zip")
         .handler { context ->
           vertx.eventBus()
               .rxRequest<JsonObject>(ALL_CVS_GENERATE_ADDRESS, null, deliveryOptions)
