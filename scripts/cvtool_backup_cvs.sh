@@ -1,13 +1,14 @@
 #!/usr/bin/sh
-
 . /secret/.env
 
-BACKUP_DATE="$(date +'%Y-%m-%d')"
+BACKUP_DATE="$(date +'%Y-%m-%d')"\
+DOCKER_CONTAINER="$(docker ps -aqf 'ancestor=bransom/cvtool')"
 
-docker exec \
-    "$(docker ps -aqf 'ancestor=bransom/cvtool')" \
-    mkdir -p /backup/${BACKUP_DATE} \
-    && wget http://localhost:${CONTROL_PORT}/all-docx -q -P /backup/${BACKUP_DATE}
+docker exec ${DOCKER_CONTAINER} \
+    mkdir -p /backup/${BACKUP_DATE}
+
+docker exec ${DOCKER_CONTAINER} \
+    wget http://localhost:${CONTROL_PORT}/all-docx.zip -q -P /backup/${BACKUP_DATE}
 
 lftp -c "\
     set ftp:ssl-allow true ;\
