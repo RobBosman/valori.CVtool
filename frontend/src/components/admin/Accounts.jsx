@@ -203,6 +203,7 @@ const Accounts = (props) => {
                   tokens={{ childrenGap: "l1" }}l>
                   <TextField
                     label="Filter"
+                    iconProps={{ iconName: "Filter" }}
                     underlined
                     onChange={onFilter}
                   />
