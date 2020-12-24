@@ -27,7 +27,7 @@ services:
         source: mongodb_backup
         target: /backup
     healthcheck:
-      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u ${MONGO_ROOT_USERNAME} -p ${MONGO_ROOT_PASSWORD} --quiet | grep 1
+      test: echo 'curl --connect-timeout 10 --silent --show-error http://localhost:${MONGO_PORT}/' | grep "It looks like you are trying to access MongoDB over HTTP on the native driver port."
       interval: 10s
       timeout: 10s
       retries: 3
@@ -60,7 +60,7 @@ services:
         source: cvtool_backup
         target: /backup
     healthcheck:
-      test: echo 'wget -qO- https://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
+      test: echo 'wget -q -O - https://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
       interval: 5s
       timeout: 5s
       retries: 3

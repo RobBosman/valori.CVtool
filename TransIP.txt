@@ -51,9 +51,9 @@ docker exec -it ^
 # BACKUP/RESTORE (see scripts/cvtool_backup.sh)
 ########################################################################################################################
 lftp
-    set ftp:ssl-allow true ;\
-    set ssl:verify-certificate no ;\
-    open -u VCV01,WYenU7hKxnet3vyD 157.97.115.138
+  set ftp:ssl-allow true
+  set ssl:verify-certificate no
+  open -u VCV01,WYenU7hKxnet3vyD 157.97.115.138
 
 
 mongodump /out:/backup/2020-12-12 /gzip /uri:mongodb://localhost:27017/cvtool
