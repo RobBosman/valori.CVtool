@@ -4,7 +4,7 @@
 # Prerequisites: make sure that the following files are in your homedir (~rbosman):
 #   ~bosmanr/.env
 #   ~bosmanr/docker-compose.yml
-#   ~bosmanr/cvtool_backup.sh
+#   ~bosmanr/cvtool_backup_mongodb.sh
 #   ~bosmanr/cvtool_renew_certificate.sh
 ########################################################################################################################
 

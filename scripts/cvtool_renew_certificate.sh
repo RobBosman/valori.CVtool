@@ -12,4 +12,4 @@ docker run --rm \
     --webroot-path=/data/letsencrypt \
     --quiet \
     && \
-    docker restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"
+    docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"

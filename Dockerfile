@@ -36,10 +36,6 @@ WORKDIR /
 FROM alpine:latest
 MAINTAINER RobBosman@valori.nl
 
-### Add openssl for HTTP/2.
-##RUN apk --update add \
-##   openssl
-
 # Copy the executable code.
 COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
