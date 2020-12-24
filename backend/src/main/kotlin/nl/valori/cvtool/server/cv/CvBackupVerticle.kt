@@ -1,52 +1,56 @@
 package nl.valori.cvtool.server.cv
 
-import io.reactivex.BackpressureStrategy
+import io.reactivex.BackpressureStrategy.ERROR
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.eventbus.ReplyFailure
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
+import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.server.ModelUtils.getInstances
 import nl.valori.cvtool.server.cv.CvGenerateVerticle.Companion.allLocales
 import nl.valori.cvtool.server.persistence.MONGODB_FETCH_ADDRESS
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayOutputStream
-import java.io.File
+import java.lang.System.nanoTime
 import java.util.Base64
-import java.util.concurrent.ConcurrentHashMap
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+
+const val ALL_CVS_GENERATE_ADDRESS = "all.cvs.generate"
 
 internal class CvBackupVerticle : AbstractVerticle() {
 
   private val log = LoggerFactory.getLogger(javaClass)
   private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
-
-  private var counter = 0
   private val permitSubject = BehaviorSubject.createDefault(1)
 
   override fun start(startPromise: Promise<Void>) {
-    // Generate all cvs every 10 seconds.
-    vertx.setPeriodic(10 * 1_000) { timerID ->
-      // Stop after a few times.
-      if (counter > 2)
-        vertx.cancelTimer(timerID)
-
-      generateAllCvs()
-    }
-    startPromise.complete()
-
-    generateAllCvs()
+    vertx.eventBus()
+        .consumer<JsonObject>(ALL_CVS_GENERATE_ADDRESS)
+        .toObservable()
+        .doOnSubscribe { startPromise.complete() }
+        .subscribe(
+            {
+              handleRequest(it)
+            },
+            {
+              log.error("Vertx error in CvBackupVerticle")
+              startPromise.fail(it)
+            }
+        )
   }
 
-  private fun generateAllCvs() {
-    log.info("Here we go! [$counter]")
-    counter++
-
-    val start = System.nanoTime()
-    val allGeneratedCvs = ConcurrentHashMap<String, String>()
-
+  /**
+   * input: null
+   * output: {
+   *   "zipB64": "binary zip data with all docx cvs"
+   * }
+   */
+  private fun handleRequest(message: Message<JsonObject>) {
+    val startNanos = nanoTime()
     fetchAllCvInstances()
         .toFlowable()
         .flatMap { allCvs -> Flowable.fromIterable(allCvs.getInstances("cv")) }
@@ -55,24 +59,28 @@ internal class CvBackupVerticle : AbstractVerticle() {
               .fromIterable(allLocales)
               .map { locale -> cv.getString("accountId") to locale }
         }
-        .zipWith(permitSubject.toFlowable(BackpressureStrategy.ERROR)) { job, _ -> job }
+        .zipWith(permitSubject.toFlowable(ERROR)) { job, _ -> job }
         .flatMap { (accountId, locale) ->
           generateCv(accountId, locale)
               .toFlowable()
               .doOnComplete { permitSubject.onNext(1) }
         }
+        .reduceWith({ HashMap<String, String>() }, { allGeneratedCvs, generatedCv ->
+          allGeneratedCvs[generatedCv.getString("fileName")] = generatedCv.getString("docxB64")
+          allGeneratedCvs
+        })
         .subscribe(
-            { generatedCv ->
-              allGeneratedCvs[generatedCv.getString("fileName")] = generatedCv.getString("contentB64")
+            { allGeneratedCvs ->
+              log.info("Generated and zipped ${allGeneratedCvs.size} cvs in ${(nanoTime() - startNanos) / 1_000_000} ms")
+              val zipBytes = createZip(allGeneratedCvs)
+              message.reply(JsonObject().put("zipBytes", zipBytes))
             },
             {
-              log.error("Vertx error in CvBackupVerticle", it)
-            },
-            {
-              val resultZip = createZip(allGeneratedCvs)
-              File("C:\\temp\\cvs.zip").writeBytes(resultZip)
-              log.info("Generated ${allGeneratedCvs.size} cvs (${resultZip.size}) in ${(System.nanoTime() - start) / 1_000_000} ms")
-            })
+              val errorMsg = "Error generating all cvs: ${it.message}"
+              log.warn(errorMsg)
+              message.fail(ReplyFailure.RECIPIENT_FAILURE.toInt(), errorMsg)
+            }
+        )
   }
 
   private fun fetchAllCvInstances() =
@@ -93,9 +101,9 @@ internal class CvBackupVerticle : AbstractVerticle() {
     val zipBytes = ByteArrayOutputStream()
     ZipOutputStream(zipBytes)
         .use { zipOutputStream ->
-          allGeneratedCvs.forEach { (fileName, contentB64) ->
+          allGeneratedCvs.forEach { (fileName, docxB64) ->
             zipOutputStream.putNextEntry(ZipEntry(fileName))
-            zipOutputStream.write(Base64.getDecoder().decode(contentB64))
+            zipOutputStream.write(Base64.getDecoder().decode(docxB64))
             zipOutputStream.closeEntry()
           }
         }

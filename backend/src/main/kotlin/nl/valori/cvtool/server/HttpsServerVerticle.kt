@@ -14,53 +14,51 @@ import java.net.URL
 internal class HttpsServerVerticle : AbstractVerticle() {
 
   companion object {
+    private val log = LoggerFactory.getLogger(HttpsServerVerticle::class.java)
+
     private fun loadCert(resourceName: String) =
         buffer(HttpsServerVerticle::class.java.getResource(resourceName).readText())
 
     internal val sslCert = loadCert("/ssl/localhost-fullchain.pem")
     internal val sslKey = loadCert("/ssl/localhost-privkey.pem")
-
-    private val log = LoggerFactory.getLogger(HttpsServerVerticle::class.java)
   }
 
   override fun start(startPromise: Promise<Void>) {
     // Environment variable:
-    //   HTTPS_CONNECTION_STRING=https://<HOST_NAME>:443/?<SSL_KEY_PATH>:<SSL_CERT_PATH>
+    //   HTTPS_CONNECTION_STRING=https://<HOST_NAME>:<PORT>/?<SSL_KEY_PATH>:<SSL_CERT_PATH>
     //   HTTPS_CONNECTION_STRING=https://www.example.com:443/?/ssl_certs/privkey1.pem:/ssl_certs/fullchain1.pem
     val connectionString = config().getString("HTTPS_CONNECTION_STRING")
     val httpsConfig = URL(connectionString)
     if (httpsConfig.protocol != "https")
-      throw IllegalArgumentException("Invalid protocol: expected 'https' but found '${httpsConfig.protocol}'.")
+      error("Invalid protocol: expected 'https' but found '${httpsConfig.protocol}'.")
     val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
 
     getPemKeyCertOptions(httpsConfig)
-        .subscribe(
-            { pemKeyCertOptions ->
-              vertx
-                  .createHttpServer(HttpServerOptions()
-                      .setPort(httpsPort)
-                      .setPemKeyCertOptions(pemKeyCertOptions)
-                      .setCompressionSupported(true)
-                      .setSsl(true)
+        .toFlowable()
+        .flatMap { pemKeyCertOptions ->
+          vertx
+              .createHttpServer(HttpServerOptions()
+                  .setPort(httpsPort)
+                  .setPemKeyCertOptions(pemKeyCertOptions)
+                  .setSsl(true)
 //                      .setSslEngineOptions(OpenSSLEngineOptions())
-                      .removeEnabledSecureTransportProtocol("TLSv1")
-                      .removeEnabledSecureTransportProtocol("TLSv1.1")
+                  .removeEnabledSecureTransportProtocol("TLSv1")
+                  .removeEnabledSecureTransportProtocol("TLSv1.1")
 //                      .addEnabledSecureTransportProtocol("TLSv1.3")
 //                      .setUseAlpn(true)
-                  )
-                  .requestHandler(createRouter())
-                  .listen { result ->
-                    if (result.succeeded()) {
-                      startPromise.complete()
-                      log.info("Listening on https://${httpsConfig.authority}/")
-                    } else {
-                      log.error("Error starting server on https://${httpsConfig.authority}/")
-                      startPromise.fail(result.cause())
-                    }
-                  }
+                  .setCompressionSupported(true)
+              )
+              .requestHandler(createRouter())
+              .rxListen()
+              .toFlowable()
+        }
+        .subscribe(
+            {
+              startPromise.complete()
+              log.info("Listening on https://${httpsConfig.authority}/")
             },
             {
-              log.error("Error loading SSL certificates")
+              log.error("Error starting server on https://${httpsConfig.authority}/")
               startPromise.fail(it)
             }
         )

@@ -4,7 +4,8 @@ import io.reactivex.Single
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
-import io.vertx.ext.bridge.BridgeEventType
+import io.vertx.ext.bridge.BridgeEventType.PUBLISH
+import io.vertx.ext.bridge.BridgeEventType.SEND
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.reactivex.core.Vertx
@@ -40,7 +41,7 @@ internal object EventBusMessageHandler {
 
   private fun authHandler(vertx: Vertx, bridgeEvent: BridgeEvent) {
     when (bridgeEvent.type()) {
-      BridgeEventType.SEND, BridgeEventType.PUBLISH -> {
+      SEND, PUBLISH -> {
         Single
             .just(bridgeEvent)
             .flatMap { authenticate(vertx, it) }
@@ -118,7 +119,7 @@ internal object EventBusMessageHandler {
   }
 
   /**
-   * input
+   * input:
    * {
    *   skill: {
    *     skill-1-to-be-deleted: {},
@@ -130,8 +131,7 @@ internal object EventBusMessageHandler {
    *   }
    * }
    *
-   * results in
-   *
+   * output:
    * {
    *   skill: [{ _id: skill-1-to-be-deleted }]
    * }

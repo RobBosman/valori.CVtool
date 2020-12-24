@@ -23,7 +23,7 @@ export const cvEpics = [
           filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
           take(1),
           mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
-          tap(generatedCv => downloadFile(generatedCv.fileName, generatedCv.contentB64)),
+          tap(generatedCv => downloadFile(generatedCv.fileName, generatedCv.docxB64)),
           ignoreElements()
         )
       )
@@ -42,16 +42,16 @@ export const cvEpics = [
   )
 ];
 
-const downloadFile = (fileName, contentB64) => {
+const downloadFile = (fileName, docxB64) => {
   const a = document.createElement("a");
   a.style = "display: none";
   document.body.appendChild(a);
   
   // Convert the Base64 data into a byte array.
-  const contentBytes = atob(contentB64);
-  var uintArray = new Uint8Array(new ArrayBuffer(contentBytes.length));
-  for (var i = 0; i < contentBytes.length; i++) {
-    uintArray[i] = contentBytes.charCodeAt(i);
+  const docxBytes = atob(docxB64);
+  var uintArray = new Uint8Array(new ArrayBuffer(docxBytes.length));
+  for (var i = 0; i < docxBytes.length; i++) {
+    uintArray[i] = docxBytes.charCodeAt(i);
   }
 
   const blob = new Blob([uintArray], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});

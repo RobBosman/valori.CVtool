@@ -24,20 +24,22 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
 
     vertx
         .createHttpServer(HttpServerOptions()
-            .setCompressionSupported(true)
             .setPort(redirectPort)
             .setSsl(false)
+            .setCompressionSupported(true)
         )
         .requestHandler(createRouter(httpsConfig))
-        .listen { result ->
-          if (result.succeeded()) {
-            startPromise.complete()
-            log.info("Redirecting http://${redirectConfig.authority}/ to https://${httpsConfig.authority}/")
-          } else {
-            log.error("Error redirecting http://${redirectConfig.authority}/ to https://${httpsConfig.authority}/")
-            startPromise.fail(result.cause())
-          }
-        }
+        .rxListen()
+        .subscribe(
+            {
+              startPromise.complete()
+              log.info("Redirecting http://${redirectConfig.authority}/ to https://${httpsConfig.authority}/")
+            },
+            {
+              log.error("Error redirecting http://${redirectConfig.authority}/ to https://${httpsConfig.authority}/")
+              startPromise.fail(it)
+            }
+        )
   }
 
   private fun createRouter(httpsConfig: URL): Router {

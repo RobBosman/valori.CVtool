@@ -25,6 +25,7 @@ object Main {
 
   private val log = LoggerFactory.getLogger(javaClass)
   private val verticlesToDeploy = listOf(
+      ControlVerticle::class,
       HttpRedirectVerticle::class,
       HttpsServerVerticle::class,
       AuthenticateVerticle::class,
@@ -44,16 +45,14 @@ object Main {
     val options = VertxOptions()
     if (log.isDebugEnabled)
       options.blockedThreadCheckInterval = 1_000 * 60 * 10 // allow blocking threads for max 10 minutes (for debugging)
-
     val vertx = Vertx.vertx(options)
+
     ConfigRetriever
-        .create(
-            vertx,
-            ConfigRetrieverOptions()
-                .addStore(ConfigStoreOptions()
-                    .setType("env")
-                    .setConfig(JsonObject())
-                )
+        .create(vertx, ConfigRetrieverOptions()
+            .addStore(ConfigStoreOptions()
+                .setType("env")
+                .setConfig(JsonObject())
+            )
         )
         .getConfig { config ->
           val deploymentOptions = DeploymentOptions()

@@ -113,7 +113,7 @@ internal class CvGenerateVerticle : AbstractVerticle() {
               .map { docxBytes ->
                 JsonObject()
                     .put("fileName", composeFileName(cvJson, locale))
-                    .put("contentB64", String(Base64.getEncoder().encode(docxBytes)))
+                    .put("docxB64", String(Base64.getEncoder().encode(docxBytes)))
               }
         }
         .subscribe(
