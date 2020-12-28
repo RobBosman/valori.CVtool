@@ -16,8 +16,9 @@ import CvLogo from "./widgets/CvLogo";
 import Training from "./cv/Training";
 import Accounts from "./admin/Accounts";
 import * as cvActions from "../services/cv/cv-actions";
-import { Authorizations, getEnumData } from "./cv/Enums";
 import BusinessUnits from "./admin/BusinessUnits";
+import Search from "./admin/Search";
+import LocaleFlag from "./widgets/LocaleFlag";
 
 const ContentPage = (props) => {
 
@@ -44,29 +45,32 @@ const ContentPage = (props) => {
             icon: "BullseyeTarget",
             content: <Info />
           },
-        ]
+          ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+          && {
+            key: "#accounts",
+            url: "#accounts",
+            name: "Accounts",
+            icon: "AccountManagement",
+            content: <Accounts />
+          },
+          ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+          && {
+            key: "#businessUnits",
+            url: "#businessUnits",
+            name: "Tribes",
+            icon: "WorkforceManagement",
+            content: <BusinessUnits />
+          },
+          ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+          && {
+            key: "#search",
+            url: "#search",
+            name: "Zoeken",
+            icon: "DocumentSearch",
+            content: <Search />
+          }
+        ].filter(Boolean)
       },
-      ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
-        && {
-          name: getEnumData(Authorizations, props.authInfo.authorizationLevel).text,
-          links: [
-            {
-              key: "#accounts",
-              url: "#accounts",
-              name: "Accounts",
-              icon: "AccountManagement",
-              content: <Accounts />
-            },
-            ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
-              && {
-                key: "#businessUnits",
-                url: "#businessUnits",
-                name: "Tribes",
-                icon: "WorkforceManagement",
-                content: <BusinessUnits />
-              }
-          ]
-        },
       {
         name: "CV",
         links: [
@@ -128,7 +132,7 @@ const ContentPage = (props) => {
           }
         ]
       }
-    ].filter(Boolean);
+    ];
 
     let renderContent = null;
     if (locationHash === "" || locationHash === "#") {
@@ -159,12 +163,13 @@ const ContentPage = (props) => {
         />
         <TooltipHost content="Download CV als MS-Word document">
           <PrimaryButton
-            text={`Download CV ${props.locale.substr(3)}`}
+            text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
             disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
-            styles={{ root: { width: 180 } }}
-          />
+            styles={{ root: { width: 180 } }}>
+            <LocaleFlag/>
+          </PrimaryButton>
         </TooltipHost>
       </Stack>
       <Separator vertical />

@@ -20,7 +20,7 @@ const Education = (props) => {
   const educationContext = {
     entity: props.educationEntity,
     instanceId: props.selectedEducationId,
-    setSelectedInstance: props.setSelectedEducationId,
+    setSelectedInstanceId: props.setSelectedEducationId,
     replaceInstance: props.replaceEducation
   };
 

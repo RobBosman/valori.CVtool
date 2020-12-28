@@ -20,7 +20,7 @@ const Training = (props) => {
   const trainingContext = {
     entity: props.trainingEntity,
     instanceId: props.selectedTrainingId,
-    setSelectedInstance: props.setSelectedTrainingId,
+    setSelectedInstanceId: props.setSelectedTrainingId,
     replaceInstance: props.replaceTraining
   };
 

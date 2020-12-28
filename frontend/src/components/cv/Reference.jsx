@@ -19,7 +19,7 @@ const Reference = (props) => {
   const referenceContext = {
     entity: props.referenceEntity,
     instanceId: props.selectedReferenceId,
-    setSelectedInstance: props.setSelectedReferenceId,
+    setSelectedInstanceId: props.setSelectedReferenceId,
     replaceInstance: props.replaceReference
   };
   

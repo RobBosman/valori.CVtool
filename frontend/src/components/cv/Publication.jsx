@@ -19,7 +19,7 @@ const Publication = (props) => {
   const publicationContext = {
     entity: props.publicationEntity,
     instanceId: props.selectedPublicationId,
-    setSelectedInstance: props.setSelectedPublicationId,
+    setSelectedInstanceId: props.setSelectedPublicationId,
     replaceInstance: props.replacePublication
   };
   

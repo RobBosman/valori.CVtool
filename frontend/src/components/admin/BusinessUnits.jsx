@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, SelectionMode } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import * as safeActions from "../../services/safe/safe-actions";
@@ -17,7 +17,7 @@ const BusinessUnits = (props) => {
   const businessUnitContext = {
     entity: props.businessUnitEntity,
     instanceId: props.selectedBusinessUnitId,
-    setSelectedInstance: props.setSelectedBusinessUnitId,
+    setSelectedInstanceId: props.setSelectedBusinessUnitId,
     replaceInstance: props.replaceBusinessUnit
   };
   
@@ -127,54 +127,62 @@ const BusinessUnits = (props) => {
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Tribes</Text>
-                <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
-                  <DefaultButton
-                    text="Toevoegen"
-                    iconProps={{ iconName: "Add" }}
-                    onClick={onAddItem}
-                  />
-                  <DefaultButton
-                    text="Verwijderen"
-                    iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedBusinessUnitId}
-                    onClick={onDeleteItem}
-                  />
-                  <ConfirmDialog
-                    title="Definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                  />
-                </Stack>
+                { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+                  &&  <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <DefaultButton
+                      text="Toevoegen"
+                      iconProps={{ iconName: "Add" }}
+                      onClick={onAddItem}
+                    />
+                    <DefaultButton
+                      text="Verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedBusinessUnitId}
+                      onClick={onDeleteItem}
+                    />
+                    <ConfirmDialog
+                      title="Definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={isConfirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                    />
+                  </Stack>
+                }
               </Stack>
               <CvDetailsList
                 columns={columns}
                 items={businessUnits}
                 instanceContext={businessUnitContext}
                 setKey="businessUnits"
+                selectionMode={["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+                  ? SelectionMode.single
+                  : SelectionMode.none
+                }
               />
             </Stack>
           </td>
 
-          <td valign="top" style={tdStyle}>
-            <Stack styles={editStyles}>
-              <CvTextField
-                label="Tribe"
-                field="name"
-                instanceContext={businessUnitContext}
-                disabled={!props.selectedBusinessUnitId}
-              />
-              <CvTextField
-                label="Contactpersoon"
-                field="contactName"
-                instanceContext={businessUnitContext}
-                disabled={!props.selectedBusinessUnitId}
-              />
-            </Stack>
-          </td>
+          { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+            && <td valign="top" style={tdStyle}>
+              <Stack styles={editStyles}>
+                <CvTextField
+                  label="Tribe"
+                  field="name"
+                  instanceContext={businessUnitContext}
+                  disabled={!props.selectedBusinessUnitId}
+                />
+                <CvTextField
+                  label="Contactpersoon"
+                  field="contactName"
+                  instanceContext={businessUnitContext}
+                  disabled={!props.selectedBusinessUnitId}
+                />
+              </Stack>
+            </td>
+          }
         </tr>
       </tbody>
     </table>

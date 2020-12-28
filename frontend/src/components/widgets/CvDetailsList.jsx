@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { DetailsList, DetailsListLayoutMode, ScrollablePane, Selection, Sticky, StickyPositionType, TooltipHost } from "@fluentui/react";
+import { DetailsList, DetailsListLayoutMode, ScrollablePane, Selection, SelectionMode, Sticky, StickyPositionType, TooltipHost } from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
 
 export const CvDetailsList = (props) => {
 
-  const { instanceId, setSelectedInstance } = props.instanceContext;
+  const { instanceId, setSelectedInstanceId } = props.instanceContext;
   const getKey = (item) => item?._id;
   
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
@@ -13,7 +13,7 @@ export const CvDetailsList = (props) => {
     selection: new Selection({
       items: props.items,
       getKey: getKey,
-      onSelectionChanged: () => setSelectedInstance(getKey(state.selection.getSelection()[0]))
+      onSelectionChanged: () => setSelectedInstanceId(getKey(state.selection.getSelection()[0]))
     }),
     sortingBy: {
       fieldName: props.columns[0]?.fieldName,
@@ -98,14 +98,13 @@ export const CvDetailsList = (props) => {
           setKey={props.setKey}
           getKey={getKey}
           selection={state.selection}
-          selectionMode={1}
+          selectionMode={props.selectionMode === undefined ? SelectionMode.single : props.selectionMode}
           isHeaderVisible={true}
           layoutMode={DetailsListLayoutMode.justified}
           compact={true}
           selectionPreservedOnEmptyClick={true}
           onRenderDetailsHeader={onRenderDetailsHeader}
           onRenderItemColumn={props.onRenderItemColumn}
-          onColumnC
           dragDropEvents={props.dragDropEvents}
           onItemInvoked={props.onItemInvoked}
           styles={props.styles}
@@ -119,6 +118,7 @@ CvDetailsList.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
   items: PropTypes.array.isRequired,
+  selectionMode: PropTypes.number,
   dragDropEvents: PropTypes.object,
   setKey: PropTypes.string,
   onRenderItemColumn: PropTypes.func,

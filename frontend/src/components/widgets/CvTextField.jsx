@@ -68,6 +68,8 @@ export const CvTextField = (props) => {
       multiline={props.multiline}
       autoAdjustHeight={props.autoAdjustHeight}
       disabled={props.disabled || !instance}
+      readOnly={props.readOnly}
+      borderless={props.readOnly}
       value={value}
       styles={props.styles}
       onChange={onChange}
@@ -82,6 +84,7 @@ CvTextField.propTypes = {
   defaultValue: PropTypes.string,
   label: PropTypes.string,
   disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
   placeholder: PropTypes.string,
   multiline: PropTypes.bool,
   autoAdjustHeight: PropTypes.bool,

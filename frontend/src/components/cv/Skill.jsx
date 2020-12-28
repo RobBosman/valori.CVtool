@@ -22,7 +22,7 @@ const Skill = (props) => {
   const skillContext = {
     entity: props.skillEntity,
     instanceId: props.selectedSkillId,
-    setSelectedInstance: props.setSelectedSkillId,
+    setSelectedInstanceId: props.setSelectedSkillId,
     replaceInstance: props.replaceSkill
   };
   

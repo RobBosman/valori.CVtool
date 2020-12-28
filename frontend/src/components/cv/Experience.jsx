@@ -28,7 +28,7 @@ const Experience = (props) => {
     locale: props.locale,
     entity: props.experienceEntity,
     instanceId: props.selectedExperienceId,
-    setSelectedInstance: props.setSelectedExperienceId,
+    setSelectedInstanceId: props.setSelectedExperienceId,
     replaceInstance: props.replaceExperience
   }),
   [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);

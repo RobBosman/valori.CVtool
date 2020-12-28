@@ -16,8 +16,8 @@ const CvTitle = (props) => {
   };
 
   const memo = React.useMemo(() => {
-    const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
     const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+    const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
     return {
       name: account?.name || "<NAAM>",
       role: commonUtils.getValueOrFallback(cv, "role", props.locale) || "<ROL>",
@@ -25,7 +25,7 @@ const CvTitle = (props) => {
       residence: account?.residence || "<WOONPLAATS>"
     };
   },
-  [props.cvEntity, props.cvEntity, props.selectedAccountId, props.selectedCvId, props.locale]);
+  [props.accountEntity, props.cvEntity, props.selectedAccountId, props.selectedCvId, props.locale]);
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>

@@ -1,6 +1,6 @@
 import { ofType } from "redux-observable";
-import { merge, of } from "rxjs";
-import { map, switchMap, ignoreElements, tap, mergeMap, filter, take } from "rxjs/operators";
+import { from, merge, of } from "rxjs";
+import { map, switchMap, ignoreElements, tap, mergeMap, filter, take, debounceTime, takeUntil } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "../safe/safe-actions";
 import * as safeServices from "../safe/safe-services";
@@ -28,6 +28,21 @@ export const cvEpics = [
         )
       )
     )
+  ),
+
+  // Search cv data at the backend server.
+  (action$) => action$.pipe(
+    ofType(cvActions.searchCvData.type),
+    debounceTime(500),
+    map(action => action.payload),
+    switchMap(keywords =>
+      from(cvServices.searchCvData(keywords, eventBusClient.sendEvent)).pipe(
+        takeUntil(action$.pipe(
+          ofType(cvActions.searchCvData.type)
+        ))
+      )
+    ),
+    map(fetchedCvData => cvActions.setSearchResult(fetchedCvData))
   ),
 
   // Fetch cv data from the backend server.

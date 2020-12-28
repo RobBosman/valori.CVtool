@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text, Stack, TextField, DefaultButton, TooltipHost, Separator } from "@fluentui/react";
 import { connect } from "react-redux";
-import { setSelectedId } from "../../services/ui/ui-actions";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as cvActions from "../../services/cv/cv-actions";
+import * as uiActions from "../../services/ui/ui-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvDropdown } from "../widgets/CvDropdown";
@@ -74,7 +74,7 @@ const Accounts = (props) => {
   const combinedContext = React.useCallback((replaceInstance) => ({
     entity: combined.entity,
     instanceId: props.selectedAccountId,
-    setSelectedInstance: props.setSelectedAccountId,
+    setSelectedInstanceId: props.setSelectedAccountId,
     replaceInstance: replaceInstance
   }),
   [combined.entity, props.selectedAccountId]);
@@ -200,7 +200,7 @@ const Accounts = (props) => {
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Accounts</Text>
                 <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}l>
+                  tokens={{ childrenGap: "s1" }}>
                   <TextField
                     label="Filter"
                     iconProps={{ iconName: "Filter" }}
@@ -308,7 +308,7 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSelectedAccountId: (id) => dispatch(setSelectedId("account", id)),
+  setSelectedAccountId: (id) => dispatch(uiActions.setSelectedId("account", id)),
   deleteAccount: (id) => dispatch(safeActions.deleteAccount(id)),
   replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
   replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance)),
