@@ -29,21 +29,26 @@ docker volume rm $(docker volume ls --filter dangling=true -q)
 docker rmi -f $(docker images -qa)
 
 
-docker run -it --rm ^
-    --mount type=volume,source=valoricvtool_mongodb_backup,target=/backup ^
-    mongo ^
-    bash
 docker run -it --rm \
     --mount type=volume,source=root_mongodb_backup,target=/backup \
     mongo \
     bash
-
-FOR /F "usebackq delims=" %A IN (`docker ps -aqf "name=mongo"`) DO docker exec -it %A ^
-    mongodump --out=/backup/2020-12-13 --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
+FOR /F "usebackq delims=" %A IN (`docker ps -aqf "name=mongo"`) DO docker exec -it %A bash
 
 docker exec -it ^
     $(docker ps -aqf "name=mongo") ^
     mongodump --out=/backup/2020-12-13 --gzip --uri=mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
+
+
+
+########################################################################################################################
+# CREATE MONGODB INDEXES
+########################################################################################################################
+# MongoSH:
+use cvtool
+db.experience.createIndex({"$**":"text"})
+db.skill.createIndex({"description.nl_NL":"text", "description.uk_UK":"text"})
+
 
 
 
@@ -86,3 +91,15 @@ db.role.renameCollection("authorization")
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool
 # FOR /R %i IN (exported\json\*.json) DO mongoimport --file=%i --jsonArray --stopOnError --mode=upsert --uri mongodb://root:MongoPassword@127.0.0.1:27117/cvtool?authSource=admin
 # ls -1 exported\json\*.json | while read jsonfile; do --file=$jsonfile --jsonArray --stopOnError --mode=upsert --uri mongodb://localhost:27017/cvtool; done
+
+
+
+
+
+
+
+
+
+db.experience.find({$text: {$search: "secure"}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}})
+db.skill.find({$text: {$search: "secure"}})
+db.skill.find({$text: {$search: "secure"}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}})
