@@ -7,6 +7,7 @@ import * as authActions from "../../services/auth/auth-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
+import LocaleFlag from "../widgets/LocaleFlag";
 
 const CvTopBar = (props) => {
   
@@ -31,6 +32,12 @@ const CvTopBar = (props) => {
 
   const onOpenEmail = () =>
     window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank");
+
+  const LocaleButton = (p) => (
+    <CommandBarButton {...p}>
+      <LocaleFlag/>
+    </CommandBarButton>
+  );
 
   const [state, setState] = React.useState({});
   React.useLayoutEffect(() => {
@@ -61,7 +68,9 @@ const CvTopBar = (props) => {
         {
           key: "locale",
           text: props.locale === "uk_UK" ? "Engels" : "Nederlands",
+          commandBarButtonAs: LocaleButton,
           iconProps: { iconName: "LocaleLanguage" },
+          locale: props.locale,
           subMenuProps: {
             items: [
               {
