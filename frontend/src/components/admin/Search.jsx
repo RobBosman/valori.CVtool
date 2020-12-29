@@ -50,6 +50,7 @@ const Search = (props) => {
   const searchNextKeyword = (text, keywords) => {
     const lowerText = text.toLowerCase();
     const hits = keywords
+      .filter(keyword => keyword)
       .sort((l, r) => r.length - l.length)
       .map(keyword => [indexOfWord(lowerText, keyword.toLowerCase()), keyword])
       .filter(([index]) => index >= 0)
@@ -81,9 +82,6 @@ const Search = (props) => {
   
   const getTextFragment = (text, keywords, maxLength) => {
     const [index, keyword] = searchNextKeyword(text, keywords);
-    if (index < 0) {
-      return text.slice(0, maxLength);
-    }
     const fragmentStartIndex = Math.max(0, index - (maxLength - keyword.length) / 2);
     let textFragment = text.slice(fragmentStartIndex, fragmentStartIndex + maxLength);
     if (fragmentStartIndex > 0) {
@@ -92,19 +90,23 @@ const Search = (props) => {
     if (text.length > fragmentStartIndex + maxLength) {
       textFragment = `${textFragment}...`;
     }
-    return renderWithHighlightedKeywords(textFragment, keywords, renderWithHighlightedKeywords);
+    return textFragment;
   };
   
-  const renderFragmentWithHighlightedKeywords = (text, searchCriteria, maxLength) =>
-    getTextFragment(text || "", searchCriteria?.trim()?.split(/\s+/) || [], maxLength);
+  const renderFragmentWithHighlightedKeywords = (text, searchText, maxLength) => {
+    const keywords = searchText?.trim()?.split(/\s+/) || [];
+    const textFragment = getTextFragment(text || "", keywords, maxLength);
+    return renderWithHighlightedKeywords(textFragment, keywords, renderWithHighlightedKeywords);
+  };
 
-  const composeSkillResult = (skill) => ({
+  const composeSkillResult = React.useCallback(skill => ({
     _id: skill._id,
     relevance: "* ".repeat(skill.skillLevel).trim(),
     context: skill.description && skill.description[props.locale]
-  });
+  }),
+  [props.locale]);
 
-  const composeExperienceResult = (experience) => ({
+  const composeExperienceResult = React.useCallback(experience => ({
     _id: experience._id,
     relevance: `${experience.periodBegin?.substr(0, 4) || ""} - ${experience.periodEnd?.substr(0, 4) || "heden"}`,
     context: [
@@ -113,7 +115,8 @@ const Search = (props) => {
       experience.results && experience.results[props.locale],
       experience.keywords && experience.keywords[props.locale]
     ].join("\n")
-  });
+  }),
+  [props.locale]);
 
   const searchResultEntity = React.useMemo(() => {
     const accounts = Object.values(props.accountEntity || {});
@@ -140,7 +143,7 @@ const Search = (props) => {
       .forEach(instance => entity[instance._id] = instance);
     return entity;
   },
-  [props.accountEntity, props.searchResultEntities, props.searchCriteria, props.locale]);
+  [props.accountEntity, props.searchResultEntities, props.locale]);
 
   const searchResultItems = Object.values(searchResultEntity);
 
@@ -151,8 +154,9 @@ const Search = (props) => {
   }),
   [searchResultEntity, props.selectedSearchResultId]);
 
-  const onRenderContext = (item, _, element) =>
-    renderFragmentWithHighlightedKeywords(item.context, props.searchCriteria, element.calculatedWidth / 6);
+  const onRenderContext = React.useCallback((item, _, element) =>
+    renderFragmentWithHighlightedKeywords(item.context, props.searchText, element.calculatedWidth / 6),
+  [props.searchText]);
 
   const columns = [
     {
@@ -208,8 +212,6 @@ const Search = (props) => {
     props.searchCvData(event.target.value);
   };
 
-  const selectedItem = searchResultEntity[props.selectedSearchResultId];
-
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -224,7 +226,7 @@ const Search = (props) => {
                     label="Zoekterm"
                     underlined
                     iconProps={{ iconName: "Search" }}
-                    value={props.searchCriteria}
+                    value={props.searchText}
                     onChange={onSearch}
                     styles={{ root: { width: 350 } }}
                   />
@@ -253,7 +255,7 @@ const Search = (props) => {
                 instanceContext={searchResultContext}
                 readOnly={true}
               />
-              {renderFragmentWithHighlightedKeywords(selectedItem?.context, props.searchCriteria, 1000)}
+              {renderFragmentWithHighlightedKeywords(searchResultEntity[props.selectedSearchResultId]?.context, props.searchText, 1000)}
             </Stack>
           </td>
         </tr>
@@ -266,7 +268,7 @@ Search.propTypes = {
   locale: PropTypes.string.isRequired,
   authInfo: PropTypes.object,
   searchCvData: PropTypes.func.isRequired,
-  searchCriteria: PropTypes.string,
+  searchText: PropTypes.string,
   searchResultEntities: PropTypes.object,
   accountEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
@@ -278,7 +280,7 @@ Search.propTypes = {
 const select = (store) => ({
   locale: store.ui.userPrefs.locale,
   authInfo: store.auth.authInfo,
-  searchCriteria: store.cv.searchCriteria,
+  searchText: store.cv.searchText,
   searchResultEntities: store.cv.searchResult,
   accountEntity: store.safe.content.account,
   selectedAccountId: store.ui.selectedId.account,
@@ -286,7 +288,7 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  searchCvData: (searchCriteria) => dispatch(cvActions.searchCvData(searchCriteria)),
+  searchCvData: (searchText) => dispatch(cvActions.searchCvData(searchText)),
   setSelectedAccountId: (id) => dispatch(uiActions.setSelectedId("account", id)),
   setSelectedSearchResultId: (id) => dispatch(uiActions.setSelectedId("searchResult", id))
 });

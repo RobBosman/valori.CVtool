@@ -16,7 +16,7 @@ reducerRegistry.register(
         state.generateCvTimestamp = new Date();
       },
       [searchCvData]: (state, action) => {
-        state.searchCriteria = action.payload;
+        state.searchText = action.payload;
       },
       [setSearchResult]: (state, action) => {
         state.searchResult = action.payload;

@@ -123,7 +123,7 @@ internal object IntentionReadOtherCvTest {
   @Test
   fun testSearchCvData() {
     assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSearchCvData, authInfoTom))
-    assertFalse(intentionToTest.match(CV_SEARCH_ADDRESS, messageSearchCvData, authInfoTom))
+    assertTrue(intentionToTest.match(CV_SEARCH_ADDRESS, messageSearchCvData, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSearchCvData, authInfoTom))
     assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSearchCvData, authInfoTom))
   }

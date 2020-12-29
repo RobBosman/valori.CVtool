@@ -1,11 +1,13 @@
 package nl.valori.cvtool.backend.authorization.intention
 
 import io.vertx.core.json.JsonArray
+import nl.valori.cvtool.backend.ModelUtils
 import nl.valori.cvtool.backend.ModelUtils.toJsonObject
 import nl.valori.cvtool.backend.authorization.AuthInfo
 import nl.valori.cvtool.backend.authorization.Intention
 import nl.valori.cvtool.backend.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_GENERATE_ADDRESS
+import nl.valori.cvtool.backend.cv.CV_SEARCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadOtherCv : Intention {
@@ -19,6 +21,11 @@ internal object IntentionReadOtherCv : Intention {
     if (address == CV_FETCH_ADDRESS || address == CV_GENERATE_ADDRESS) {
       val accountId = bodyJson.map["accountId"]
       if (accountId != null && accountId != authInfo.accountId)
+        return true
+    }
+
+    if (address == CV_SEARCH_ADDRESS) {
+      if (bodyJson.map["searchText"] != null)
         return true
     }
 

@@ -35,8 +35,8 @@ export const cvEpics = [
     ofType(cvActions.searchCvData.type),
     debounceTime(500),
     map(action => action.payload),
-    switchMap(keywords =>
-      from(cvServices.searchCvData(keywords, eventBusClient.sendEvent)).pipe(
+    switchMap(searchText =>
+      from(cvServices.searchCvData(searchText, eventBusClient.sendEvent)).pipe(
         takeUntil(action$.pipe(
           ofType(cvActions.searchCvData.type)
         ))

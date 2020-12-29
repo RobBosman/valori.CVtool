@@ -13,7 +13,6 @@ import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllBusiness
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadOtherCv
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadOwnAuthInfo
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadOwnCv
-import nl.valori.cvtool.backend.authorization.intention.IntentionSearchCvData
 import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateAuthorization
 import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateBusinessUnit
 import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateOtherCv
@@ -31,7 +30,6 @@ internal object Authorizer {
       IntentionReadAllAccounts to SALES,
       IntentionReadAllBusinessUnits to SALES,
       IntentionReadAllAuthorizations to SALES,
-      IntentionSearchCvData to SALES,
       IntentionUpdateOwnCv to CONSULTANT,
       IntentionUpdateOtherCv to EE_LEAD,
       IntentionUpdateBusinessUnit to EE_LEAD,
