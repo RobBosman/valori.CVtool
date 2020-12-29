@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Dialog, DialogFooter, DefaultButton, DialogType, ContextualMenu } from "@fluentui/react";
-import * as uiServives from "../services/ui/ui-services";
+import * as uiServices from "../services/ui/ui-services";
 
 const ErrorDialog = (props) => {
 
-  const { alertColor } = uiServives.useTheme();
+  const { alertColor } = uiServices.useTheme();
 
   const [showDialog, setShowDialog] = React.useState(false);
 

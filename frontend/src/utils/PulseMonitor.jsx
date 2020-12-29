@@ -56,7 +56,7 @@ const PulseMonitor = (props) => {
       {(props.shouldBeConnected !== props.isConnected || !props.shouldBeConnected !== props.isDisconnected)
         ? <circle cx="100" cy="100" r="50"
           fill="none" strokeWidth="25"
-          stroke={getTheme().semanticColors.warningHighlight} />
+          stroke={getTheme().semanticColors.warningIcon} />
         : undefined}
       {state.pulse}
     </svg>

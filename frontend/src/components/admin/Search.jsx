@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text, Stack, TextField } from "@fluentui/react";
 import { connect } from "react-redux";
-import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
+import { useTheme } from "../../services/ui/ui-services";
 
 // searchResult:
 // {
@@ -28,22 +28,39 @@ import * as uiActions from "../../services/ui/ui-actions";
 // }
 const Search = (props) => {
 
-  const searchKeywords = (text, keywords) => {
-    const index = text.search(new RegExp(`\\b(?:${keywords.join("|")})\\b`, "gi"));
-    if (index < 0) {
-      return [index, ""];
+  const isLetter = (text, index) => {
+    if (index >= 0 && index < text.length) {
+      const code = text.charCodeAt(index);
+      return ((code > 64 && code < 91) || (code > 96 && code < 123)); // a-z, A-Z
     }
-    const textAtIndex = text.toLowerCase().slice(index);
-    return [
-      index,
-      keywords
-        .sort((l, r) => r.length - l.length)
-        .find(keyword => textAtIndex.startsWith(keyword.toLowerCase()))
-    ];
+    return false;
   };
+
+  const indexOfWord = (text, word) => {
+    let index = text.indexOf(word);
+    while (index >= 0) {
+      if (!isLetter(text, index - 1) && !isLetter(text, index + word.length)) {
+        return index;
+      }
+      index = text.indexOf(word, index + word.length);
+    }
+    return -1;
+  };
+
+  const searchNextKeyword = (text, keywords) => {
+    const lowerText = text.toLowerCase();
+    const hits = keywords
+      .sort((l, r) => r.length - l.length)
+      .map(keyword => [indexOfWord(lowerText, keyword.toLowerCase()), keyword])
+      .filter(([index]) => index >= 0)
+      .sort((l, r) => l[0] - r[0]);
+    return hits.length > 0 ? hits[0] : [-1, ""];
+  };
+
+  const {highlightBackground} = useTheme();
   
-  const renderWithHighlightedKeywords = (text, keywords, recurseFunction, recurseLevel = 50) => {
-    const [index, keyword] = searchKeywords(text, keywords);
+  const renderWithHighlightedKeywords = (text, keywords, recurseFunction, recurseLevel = 100) => {
+    const [index, keyword] = searchNextKeyword(text, keywords);
     if (index < 0) {
       return <Text>{text}</Text>;
     }
@@ -53,7 +70,7 @@ const Search = (props) => {
     return (
       <Text>
         {before}
-        <Text style={{backgroundColor: "yellow"}}>{match}</Text>
+        <Text style={{backgroundColor: highlightBackground}}>{match}</Text>
         { recurseLevel > 0 && after.length > 0
           ? recurseFunction(after, keywords, recurseFunction, recurseLevel - 1)
           : after
@@ -63,7 +80,7 @@ const Search = (props) => {
   };
   
   const getTextFragment = (text, keywords, maxLength) => {
-    const [index, keyword] = searchKeywords(text, keywords);
+    const [index, keyword] = searchNextKeyword(text, keywords);
     if (index < 0) {
       return text.slice(0, maxLength);
     }
