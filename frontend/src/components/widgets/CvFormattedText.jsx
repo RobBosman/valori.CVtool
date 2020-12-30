@@ -22,19 +22,18 @@ export const CvFormattedText = (props) => {
   const {semanticColors} = uiServices.useTheme();
 
   const textBlock = (p) => <Text block>{p.children}</Text>;
-  const markDownSpecs = [
-    {
-      text: "\n", wordOnly: false, render: textBlock
-    }
-  ];
+  const bulletListItem = (p) => <Text>&nbsp;●&nbsp;&nbsp;{p.children.substr(2)}</Text>;
 
-  const needleSpecs = React.useMemo(() =>
-    props.markDown
+  const needleSpecs = React.useMemo(() => {
+    const specs = props.needleSpecs || [];
+    return props.markDown
       ? [
-        ...markDownSpecs,
-        ...(props.needleSpecs || [])
+        { text: "* ", wordOnly: false, render: bulletListItem },
+        { text: "\n", wordOnly: false, render: textBlock },
+        ...specs
       ]
-      : props.needleSpecs,
+      : specs;
+  },
   [props.needleSpecs, props.markDown]);
 
   const textStyle = {
@@ -44,7 +43,8 @@ export const CvFormattedText = (props) => {
   };
 
   return (
-    <Stack>
+    <Stack
+      styles={props.styles}>
       { props.label
         && <Label
           disabled={props.disabled || !instance}>
@@ -64,6 +64,7 @@ CvFormattedText.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string,
   disabled: PropTypes.bool,
-  needleSpecs: PropTypes.object,
+  needleSpecs: PropTypes.array,
   markDown: PropTypes.bool,
+  styles: PropTypes.object
 };

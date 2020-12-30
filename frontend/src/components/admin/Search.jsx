@@ -1,89 +1,100 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField } from "@fluentui/react";
+import { Text, Stack, TextField, Label, Pivot, PivotItem, Separator, ScrollablePane, PivotLinkFormat } from "@fluentui/react";
 import { connect } from "react-redux";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvFormattedText } from "../widgets/CvFormattedText";
+import { getEnumData, SkillCategories } from "../cv/Enums";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
-import * as textFormatter from "../../utils/TextFormatter";
+import { asEntity } from "../../utils/CommonUtils";
+import { renderWithHighlightedKeywords } from "../../utils/TextFormatter";
 
 // searchResult:
 // {
-//   "_id": "id-skill-1",
-//   "cvId": "id-cv-1",
-//   "accountId": "id-account-1",
-//   "name": "Rob Bosman",
-//   "context": "...",
-//   "skillLevel": 3
-// }
-// or
-// {
-//   "_id": "id-experience-1",
-//   "cvId": "id-cv-1",
-//   "accountId": "id-account-1",
-//   "name": "Rob Bosman",
-//   "context": "...",
-//   "period": "2004 - 2007"
+//   _id: "id-account-1",
+//   cvId: "id-cv-1",
+//   name: "Rob Bosman",
+//   skills: [],
+//   skillLevel: 3,
+//   experiences: [],
+//   experienceYear: 2020
 // }
 const Search = (props) => {
 
-  const {highlightBackground, editPaneBackground, viewPaneBackground} = uiServices.useTheme();
+  const {semanticColors, highlightBackground, editPaneBackground, viewPaneBackground} = uiServices.useTheme();
+  const today = new Date().toISOString();
 
   const renderHighlighted = (p) =>
     <Text style={{backgroundColor: highlightBackground}}>{p.children}</Text>;
   const needleSpecs = props.searchText
     ?.trim()
     ?.split(/\s+/)
-    ?.map(word => ({
-      text: word,
+    ?.map(keyword => ({
+      text: keyword,
       wholeWord: true,
       render: renderHighlighted
     }));
 
-  const composeSkillResult = React.useCallback(skill => ({
-    _id: skill._id,
-    relevance: "* ".repeat(skill.skillLevel).trim(),
-    context: skill.description && skill.description[props.locale]
+  const composeExperienceDescription = (experience, locale) =>
+    [
+      experience.assignment,
+      experience.activities,
+      experience.results,
+      experience.keywords
+    ]
+    .filter(field => field)
+    .map(field => field[locale])
+    .join("\n")
+    .trim();
+
+  const enrichExperience = React.useCallback((experience) => ({
+    ...experience,
+    toYear: parseInt((experience.periodEnd || today).substr(0, 4)),
+    period: `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`,
+    clientOrEmployer: experience.client || experience.employer,
+    description: {
+      [props.locale]: composeExperienceDescription(experience, props.locale)
+    }
   }),
   [props.locale]);
 
-  const composeExperienceResult = React.useCallback(experience => ({
-    _id: experience._id,
-    relevance: `${experience.periodBegin?.substr(0, 4) || ""} - ${experience.periodEnd?.substr(0, 4) || "heden"}`,
-    context: [
-      experience.assignment && experience.assignment[props.locale],
-      experience.activities && experience.activities[props.locale],
-      experience.results && experience.results[props.locale],
-      experience.keywords && experience.keywords[props.locale]
-    ].join("\n")
-  }),
-  [props.locale]);
+  const composeSearchResult = React.useCallback(cvInstance => {
+    const name = Object.values(props.accountEntity || {})
+      .find(account => account._id === cvInstance.accountId)?.name;
+    const skills = Object.values(props.searchResultEntities?.skill || {})
+      .filter(skill => skill.cvId === cvInstance._id);
+    const skillLevel = skills
+      .sort((l, r) => r.skillLevel - l.skillLevel)
+      .map(skill => skill.skillLevel)
+      .shift()
+      || 0;
+    const experiences = Object.values(props.searchResultEntities?.experience || {})
+      .filter(experience => experience.cvId === cvInstance._id)
+      .map(enrichExperience);
+    const toYear = experiences
+      .map(experience => experience.toYear)
+      .sort((l, r) => r - l)
+      .shift()
+      || -1;
+    return {
+      _id: cvInstance.accountId,
+      cvId: cvInstance._id,
+      name: name,
+      skills: skills,
+      skillLevel: skillLevel,
+      experiences: experiences,
+      experienceYear: toYear
+    };
+  },
+  [props.accountEntity, props.searchResultEntities]);
 
   const searchResultEntity = React.useMemo(() => {
-    const accounts = Object.values(props.accountEntity || {});
-    const experiences = Object.values(props.searchResultEntities?.experience || {});
-    const skills = Object.values(props.searchResultEntities?.skill || {});
     const entity = {};
     Object.values(props.searchResultEntities?.cv || {})
-      .flatMap(cvInstance =>
-        [
-          ...skills
-            .filter(skill => skill.cvId === cvInstance._id)
-            .map(skill => composeSkillResult(skill)),
-          ...experiences
-            .filter(experience => experience.cvId === cvInstance._id)
-            .map(experience => composeExperienceResult(experience))
-        ]
-          .map(searchResultItem => ({
-            ...searchResultItem,
-            cvId: cvInstance._id,
-            accountId: cvInstance.accountId,
-            name: accounts.find(account => account._id === cvInstance.accountId)?.name
-          }))
-      )
+      .map(cvInstance => composeSearchResult(cvInstance))
       .forEach(instance => entity[instance._id] = instance);
     return entity;
   },
@@ -93,17 +104,22 @@ const Search = (props) => {
 
   const searchResultContext = React.useMemo(() => ({
     entity: searchResultEntity,
-    instanceId: props.selectedSearchResultId,
-    setSelectedInstanceId: props.setSelectedSearchResultId
+    instanceId: props.selectedAccountId,
+    setSelectedInstanceId: props.setSelectedAccountId
   }),
-  [searchResultEntity, props.selectedSearchResultId]);
+  [searchResultEntity, props.selectedAccountId, props.setSelectedAccountId]);
 
-  const onRenderContext = React.useCallback((item, _, element) => {
-    const {needleSpec} = textFormatter.searchNextNeedle(item.context, needleSpecs);
-    const textFragment = textFormatter.getTextFragment(item.context, needleSpec?.text, element.calculatedWidth / 6);
-    return textFormatter.renderWithHighlightedKeywords(textFragment, needleSpecs);
-  },
-  [needleSpecs]);
+  const selectedSearchResult = searchResultEntity[props.selectedAccountId];
+
+  const renderSkillResult = (item) =>
+    item.skills.length > 0
+      ? `${"* ".repeat(item.skillLevel).trim()} (${item.skills.length})`
+      : "";
+
+  const renderExperienceResult = (item) =>
+    item.experiences.length > 0
+      ? `${item.experienceYear} (${item.experiences.length})`
+      : "";
 
   const columns = [
     {
@@ -111,23 +127,23 @@ const Search = (props) => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
-      minWidth: 130,
-      maxWidth: 200
+      minWidth: 130
     },
     {
-      key: "relevance",
-      fieldName: "relevance",
-      name: "Relevantie",
-      minWidth: 90,
-      maxWidth: 90
+      key: "skills",
+      fieldName: "skillLevel",
+      name: "Vaardigheden",
+      minWidth: 110,
+      maxWidth: 110,
+      onRender: renderSkillResult
     },
     {
-      key: "context",
-      fieldName: "context",
-      name: "Context",
-      isResizable: true,
-      minWidth: 150,
-      onRender: onRenderContext
+      key: "experiences",
+      fieldName: "experienceYear",
+      name: "Werkervaring",
+      minWidth: 110,
+      maxWidth: 110,
+      onRender: renderExperienceResult
     }
   ];
 
@@ -146,16 +162,32 @@ const Search = (props) => {
       {
         background: editPaneBackground,
         padding: 20,
+        width: "100%",
         height: "calc(100vh - 170px)"
       }
     ]
   };
   const tdStyle = {
-    width: "calc(50vw - 98px)"
+    width: "calc(50vw - 98px)",
+    maxWidth: "calc(50vw - 98px)"
+  };
+  const skillsStyle = {
+    backgroundColor: selectedSearchResult?.skills?.length > 0 ? semanticColors.inputBackground : semanticColors.disabledBackground,
+    padding: 8,
+    width: "100%",
+    maxWidth: "500px",
+    minHeight: 16
   };
 
   const onSearch = (event) => {
     props.searchCvData(event.target.value);
+  };
+
+  const onFetchCv = () => {
+    if (["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+    && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
+      props.fetchCvByAccountId(props.selectedAccountId);
+    }
   };
 
   return (
@@ -183,31 +215,93 @@ const Search = (props) => {
                 items={searchResultItems}
                 instanceContext={searchResultContext}
                 setKey="searchResults"
+                onItemInvoked={onFetchCv}
               />
             </Stack>
           </td>
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <CvTextField
-                label="Naam"
-                field="name"
-                instanceContext={searchResultContext}
-                readOnly={true}
-              />
-              <CvTextField
-                label="Relevantie"
-                field="relevance"
-                instanceContext={searchResultContext}
-                readOnly={true}
-              />
-              <CvFormattedText
-                label="Context"
-                field="context"
-                instanceContext={searchResultContext}
-                markDown={true}
-                needleSpecs={needleSpecs}
-              />
+              <Label
+                disabled={!selectedSearchResult?.skills?.length}>
+                Vaardigheden
+              </Label>
+              <table style={skillsStyle}>
+                <tbody>
+                  { selectedSearchResult
+                    ?.skills
+                    ?.sort((l, r) => r.skillLevel - l.skillLevel)
+                    ?.map(skill =>
+                      <tr key={skill._id}>
+                        <td width="30%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
+                        <td width="60%">{renderWithHighlightedKeywords(skill.description && skill.description[props.locale], needleSpecs)}</td>
+                        <td width="10%" align="right">{"* ".repeat(skill.skillLevel).trim()}</td>
+                      </tr>
+                    )
+                  }
+                </tbody>
+              </table>
+              <Separator/>
+              <Pivot linkFormat={PivotLinkFormat.tabs}>
+                { selectedSearchResult
+                  ?.experiences
+                  ?.sort((l, r) => r.toYear - l.toYear)
+                  .slice(0, 5)
+                  ?.map(experience => {
+                    const experienceContext = {
+                      entity: asEntity(selectedSearchResult.experiences),
+                      instanceId: experience._id,
+                    };
+                    return (
+                      <PivotItem key={experience._id}
+                        headerText={experience.toYear}>
+                        <Stack>
+                          <Stack horizontal
+                            tokens={{ childrenGap: "l1" }}>
+                            <CvTextField
+                              label="Periode"
+                              field="period"
+                              instanceContext={experienceContext}
+                              readOnly={true}
+                            />
+                            <CvFormattedText
+                              label="Opdrachtgever"
+                              field="clientOrEmployer"
+                              instanceContext={experienceContext}
+                              markDown={false}
+                              needleSpecs={needleSpecs}
+                              styles={{ root: { width: 250 } }}
+                            />
+                            <CvFormattedText
+                              label="Rol"
+                              field={`role.${props.locale}`}
+                              instanceContext={experienceContext}
+                              markDown={false}
+                              needleSpecs={needleSpecs}
+                              styles={{ root: { width: 250 } }}
+                            />
+                          </Stack>
+                          <div style={{
+                            position: "relative",
+                            overflowY: "auto",
+                            height: `calc(100vh - ${395 + selectedSearchResult.skills.length * 24}px)`
+                            }}>
+                            <ScrollablePane>
+                              <CvFormattedText
+                                label="Werkervaring"
+                                field={`description.${props.locale}`}
+                                instanceContext={experienceContext}
+                                markDown={true}
+                                needleSpecs={needleSpecs}
+                              />
+                            </ScrollablePane>
+                          </div>
+                        </Stack>
+                      </PivotItem>
+                    );
+                  })
+                }
+              </Pivot>
             </Stack>
           </td>
         </tr>
@@ -223,10 +317,8 @@ Search.propTypes = {
   searchText: PropTypes.string,
   searchResultEntities: PropTypes.object,
   accountEntity: PropTypes.object,
-  selectedAccountId: PropTypes.string,
   setSelectedAccountId: PropTypes.func.isRequired,
-  selectedSearchResultId: PropTypes.string,
-  setSelectedSearchResultId: PropTypes.func.isRequired
+  selectedAccountId: PropTypes.string
 };
 
 const select = (store) => ({
@@ -235,14 +327,13 @@ const select = (store) => ({
   searchText: store.cv.searchText,
   searchResultEntities: store.cv.searchResult,
   accountEntity: store.safe.content.account,
-  selectedAccountId: store.ui.selectedId.account,
-  selectedSearchResultId: store.ui.selectedId.searchResult
+  selectedAccountId: store.ui.selectedId.account
 });
 
 const mapDispatchToProps = (dispatch) => ({
   searchCvData: (searchText) => dispatch(cvActions.searchCvData(searchText)),
   setSelectedAccountId: (id) => dispatch(uiActions.setSelectedId("account", id)),
-  setSelectedSearchResultId: (id) => dispatch(uiActions.setSelectedId("searchResult", id))
+  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
 });
 
 export default connect(select, mapDispatchToProps)(Search);

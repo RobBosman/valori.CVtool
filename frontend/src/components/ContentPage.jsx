@@ -22,7 +22,7 @@ import LocaleFlag from "./widgets/LocaleFlag";
 
 const ContentPage = (props) => {
 
-  const locationHash = props.locationHash.split("=")[0];
+  const locationHash = props.locationHash.split("=").shift();
   const [state, setState] = React.useState({});
 
   const onRenderGroupHeader = (group) =>
@@ -161,7 +161,8 @@ const ContentPage = (props) => {
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />
-        <TooltipHost content="Download CV als MS-Word document">
+        <TooltipHost
+          content={`Download CV van ${props.accountEntity && props.accountEntity[props.selectedAccountId]?.name} als MS-Word document`}>
           <PrimaryButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
@@ -189,6 +190,7 @@ ContentPage.propTypes = {
   navKey: PropTypes.string,
   authInfo: PropTypes.object,
   locationHash: PropTypes.string,
+  accountEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
   generateCv: PropTypes.func.isRequired
@@ -198,6 +200,7 @@ const select = (store) => ({
   locale: store.ui.userPrefs.locale,
   authInfo: store.auth.authInfo,
   locationHash: store.ui.locationHash,
+  accountEntity: store.safe.content.account,
   selectedAccountId: store.ui.selectedId.account,
   selectedCvId: store.ui.selectedId.cv
 });

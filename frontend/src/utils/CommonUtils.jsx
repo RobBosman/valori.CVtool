@@ -2,7 +2,7 @@ export const compareStrings = (l, r) =>
   l < r ? -1 : l > r ? 1 : 0;
 
 export const compareItemsByField = (l, r, field) => {
-  const fieldPath = field.split(".", 2);
+  const fieldPath = field?.split(".", 2) || [];
   if (fieldPath.length > 1) {
     return compareItemsByField(l[fieldPath[0]], r[fieldPath[0]], fieldPath[1]);
   }
@@ -10,7 +10,7 @@ export const compareItemsByField = (l, r, field) => {
 };
 
 export const isValidYear = (value) =>
-  !/^\d*$/.test(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
+  isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
 
 export const isValidText = (maxSize) =>
   value => value.length > maxSize ? `Maximaal ${maxSize} tekens` : "";
@@ -28,3 +28,9 @@ export const getValueOrFallback = (instance, fieldName, locale) =>
       ? instance[fieldName][locale]
       : Object.values(instance[fieldName]).find(field => field)
     : "";
+
+export const asEntity = (instances) => {
+  const entity = {};
+  (instances || []).forEach(instance => entity[instance._id] = instance);
+  return entity;
+};

@@ -1,19 +1,6 @@
 import React from "react";
 import { Text } from "@fluentui/react";
 
-export const getTextFragment = (fullText = "", needle = "", maxLength) => {
-  const index = fullText.indexOf(needle);
-  const fragmentStartIndex = Math.max(0, index - (maxLength - needle.length) / 2);
-  let textFragment = fullText.slice(fragmentStartIndex, fragmentStartIndex + maxLength);
-  if (fragmentStartIndex > 0) {
-    textFragment = `...${textFragment}`;
-  }
-  if (fullText.length > fragmentStartIndex + maxLength) {
-    textFragment = `${textFragment}...`;
-  }
-  return textFragment;
-};
-
 const isLetter = (text, index) => {
   if (index >= 0 && index < text.length) {
     const code = text.charCodeAt(index);
@@ -55,7 +42,7 @@ export const searchNextNeedle = (haystack = "", needleSpecs = []) => {
     })
     .filter(({index}) => index >= 0)
     .sort((l, r) => l.index - r.index)
-    .find(() => true)
+    .shift()
     || { index: -1 };
 };
   
@@ -81,3 +68,16 @@ const renderRecursively = (haystack, needleSpecs, recurseFunction, recurseLevel)
   
 export const renderWithHighlightedKeywords = (text = "", needleSpecs = []) =>
   renderRecursively(text, needleSpecs, renderRecursively, 100);
+
+export const getTextFragment = (fullText = "", needle = "", maxLength) => {
+  const index = fullText.indexOf(needle);
+  const fragmentStartIndex = Math.max(0, index - (maxLength - needle.length) / 2);
+  let textFragment = fullText.slice(fragmentStartIndex, fragmentStartIndex + maxLength);
+  if (fragmentStartIndex > 0) {
+    textFragment = `...${textFragment}`;
+  }
+  if (fullText.length > fragmentStartIndex + maxLength) {
+    textFragment = `${textFragment}...`;
+  }
+  return textFragment;
+};
