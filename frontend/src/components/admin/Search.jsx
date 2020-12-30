@@ -9,7 +9,6 @@ import { getEnumData, SkillCategories } from "../cv/Enums";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
-import { asEntity } from "../../utils/CommonUtils";
 import { renderWithHighlightedKeywords } from "../../utils/TextFormatter";
 
 // searchResult:
@@ -45,10 +44,10 @@ const Search = (props) => {
       experience.results,
       experience.keywords
     ]
-    .filter(field => field)
-    .map(field => field[locale])
-    .join("\n")
-    .trim();
+      .filter(field => field)
+      .map(field => field[locale])
+      .join("\n")
+      .trim();
 
   const enrichExperience = React.useCallback((experience) => ({
     ...experience,
@@ -190,6 +189,58 @@ const Search = (props) => {
     }
   };
 
+  const renderExperience = (experience) => {
+    const experienceContext = {
+      entity: { [experience._id]: experience }, 
+      instanceId: experience._id,
+    };
+    return <PivotItem key={experience._id}
+      headerText={experience.toYear}>
+      <Stack>
+        <Stack horizontal
+          tokens={{ childrenGap: "l1" }}>
+          <CvTextField
+            label="Periode"
+            field="period"
+            instanceContext={experienceContext}
+            readOnly={true}
+          />
+          <CvFormattedText
+            label="Opdrachtgever"
+            field="clientOrEmployer"
+            instanceContext={experienceContext}
+            markDown={false}
+            needleSpecs={needleSpecs}
+            styles={{ root: { width: 250 } }}
+          />
+          <CvFormattedText
+            label="Rol"
+            field={`role.${props.locale}`}
+            instanceContext={experienceContext}
+            markDown={false}
+            needleSpecs={needleSpecs}
+            styles={{ root: { width: 250 } }}
+          />
+        </Stack>
+        <div style={{
+          position: "relative",
+          overflowY: "auto",
+          height: `calc(100vh - ${395 + selectedSearchResult.skills.length * 24}px)`
+        }}>
+          <ScrollablePane>
+            <CvFormattedText
+              label="Werkervaring"
+              field={`description.${props.locale}`}
+              instanceContext={experienceContext}
+              markDown={true}
+              needleSpecs={needleSpecs}
+            />
+          </ScrollablePane>
+        </div>
+      </Stack>
+    </PivotItem>;
+  };
+
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -247,59 +298,7 @@ const Search = (props) => {
                   ?.experiences
                   ?.sort((l, r) => r.toYear - l.toYear)
                   .slice(0, 5)
-                  ?.map(experience => {
-                    const experienceContext = {
-                      entity: asEntity(selectedSearchResult.experiences),
-                      instanceId: experience._id,
-                    };
-                    return (
-                      <PivotItem key={experience._id}
-                        headerText={experience.toYear}>
-                        <Stack>
-                          <Stack horizontal
-                            tokens={{ childrenGap: "l1" }}>
-                            <CvTextField
-                              label="Periode"
-                              field="period"
-                              instanceContext={experienceContext}
-                              readOnly={true}
-                            />
-                            <CvFormattedText
-                              label="Opdrachtgever"
-                              field="clientOrEmployer"
-                              instanceContext={experienceContext}
-                              markDown={false}
-                              needleSpecs={needleSpecs}
-                              styles={{ root: { width: 250 } }}
-                            />
-                            <CvFormattedText
-                              label="Rol"
-                              field={`role.${props.locale}`}
-                              instanceContext={experienceContext}
-                              markDown={false}
-                              needleSpecs={needleSpecs}
-                              styles={{ root: { width: 250 } }}
-                            />
-                          </Stack>
-                          <div style={{
-                            position: "relative",
-                            overflowY: "auto",
-                            height: `calc(100vh - ${395 + selectedSearchResult.skills.length * 24}px)`
-                            }}>
-                            <ScrollablePane>
-                              <CvFormattedText
-                                label="Werkervaring"
-                                field={`description.${props.locale}`}
-                                instanceContext={experienceContext}
-                                markDown={true}
-                                needleSpecs={needleSpecs}
-                              />
-                            </ScrollablePane>
-                          </div>
-                        </Stack>
-                      </PivotItem>
-                    );
-                  })
+                  ?.map(experience => renderExperience(experience))
                 }
               </Pivot>
             </Stack>
@@ -318,7 +317,8 @@ Search.propTypes = {
   searchResultEntities: PropTypes.object,
   accountEntity: PropTypes.object,
   setSelectedAccountId: PropTypes.func.isRequired,
-  selectedAccountId: PropTypes.string
+  selectedAccountId: PropTypes.string,
+  fetchCvByAccountId: PropTypes.func.isRequired
 };
 
 const select = (store) => ({

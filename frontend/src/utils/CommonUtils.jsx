@@ -28,9 +28,3 @@ export const getValueOrFallback = (instance, fieldName, locale) =>
       ? instance[fieldName][locale]
       : Object.values(instance[fieldName]).find(field => field)
     : "";
-
-export const asEntity = (instances) => {
-  const entity = {};
-  (instances || []).forEach(instance => entity[instance._id] = instance);
-  return entity;
-};
