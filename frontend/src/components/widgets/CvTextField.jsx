@@ -4,7 +4,7 @@ import { TextField } from "@fluentui/react";
 
 export const CvTextField = (props) => {
 
-  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const {entity, instanceId, replaceInstance} = props.instanceContext;
   
   const instance = entity && entity[instanceId];
 

@@ -6,7 +6,7 @@ import * as uiServices from "../services/ui/ui-services";
 
 const ErrorDialog = (props) => {
 
-  const { alertColor } = uiServices.useTheme();
+  const {semanticColors} = uiServices.useTheme();
 
   const [showDialog, setShowDialog] = React.useState(false);
 
@@ -31,7 +31,7 @@ const ErrorDialog = (props) => {
       main: {
         borderTopWidth: 5,
         borderTopStyle: "solid",
-        borderColor: alertColor
+        borderColor: semanticColors.severeWarningIcon
       }
     }
   };

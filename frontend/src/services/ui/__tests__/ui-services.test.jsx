@@ -24,9 +24,9 @@ describe("ui-services.test", () => {
 
   it("should useTheme", () => {
     const TestComp = () => {
-      const { viewPaneColor } = uiServices.useTheme();
+      const {viewPaneBackground} = uiServices.useTheme();
       return (
-        <div id="testTarget" style={{ background: viewPaneColor }} />
+        <div id="testTarget" style={{ background: viewPaneBackground}} />
       );
     };
 

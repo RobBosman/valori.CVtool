@@ -4,11 +4,11 @@ import { useTheme } from "../services/ui/ui-services";
 
 const Info = () => {
 
-  const { viewPaneColor } = useTheme();
+  const {viewPaneBackground} = useTheme();
   const viewStyles = {
     root: [
       {
-        background: viewPaneColor,
+        background: viewPaneBackground,
         padding: 20,
         height: "calc(100vh - 170px)"
       }

@@ -74,11 +74,11 @@ const Education = (props) => {
     }
   ];
 
-  const { viewPaneColor, editPaneColor } = useTheme();
+  const {viewPaneBackground, editPaneBackground} = useTheme();
   const viewStyles = {
     root: [
       {
-        background: viewPaneColor,
+        background: viewPaneBackground,
         padding: 20,
         minWidth: 350,
         height: "calc(100vh - 170px)"
@@ -88,7 +88,7 @@ const Education = (props) => {
   const editStyles = {
     root: [
       {
-        background: editPaneColor,
+        background: editPaneBackground,
         padding: 20,
         height: "calc(100vh - 170px)"
       }

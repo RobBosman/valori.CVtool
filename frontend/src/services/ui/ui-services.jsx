@@ -43,10 +43,9 @@ export const useTheme = () => {
 
   return {
     theme,
-    viewPaneColor: theme.palette.neutralLighter,
-    editPaneColor: theme.palette.neutralLighterAlt,
-    primaryColor: theme.semanticColors.primaryButtonBackground,
-    alertColor: theme.semanticColors.severeWarningIcon,
+    semanticColors: theme.semanticColors,
+    viewPaneBackground: theme.palette.neutralLighter,
+    editPaneBackground: theme.palette.neutralLighterAlt,
     highlightBackground: theme.palette.yellowLight
   };
 };

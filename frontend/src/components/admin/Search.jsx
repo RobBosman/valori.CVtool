@@ -4,9 +4,11 @@ import { Text, Stack, TextField } from "@fluentui/react";
 import { connect } from "react-redux";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
+import { CvFormattedText } from "../widgets/CvFormattedText";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
-import { useTheme } from "../../services/ui/ui-services";
+import * as uiServices from "../../services/ui/ui-services";
+import * as textFormatter from "../../utils/TextFormatter";
 
 // searchResult:
 // {
@@ -28,76 +30,18 @@ import { useTheme } from "../../services/ui/ui-services";
 // }
 const Search = (props) => {
 
-  const isLetter = (text, index) => {
-    if (index >= 0 && index < text.length) {
-      const code = text.charCodeAt(index);
-      return ((code > 64 && code < 91) || (code > 96 && code < 123)); // a-z, A-Z
-    }
-    return false;
-  };
+  const {highlightBackground, editPaneBackground, viewPaneBackground} = uiServices.useTheme();
 
-  const indexOfWord = (text, word) => {
-    let index = text.indexOf(word);
-    while (index >= 0) {
-      if (!isLetter(text, index - 1) && !isLetter(text, index + word.length)) {
-        return index;
-      }
-      index = text.indexOf(word, index + word.length);
-    }
-    return -1;
-  };
-
-  const searchNextKeyword = (text, keywords) => {
-    const lowerText = text.toLowerCase();
-    const hits = keywords
-      .filter(keyword => keyword)
-      .sort((l, r) => r.length - l.length)
-      .map(keyword => [indexOfWord(lowerText, keyword.toLowerCase()), keyword])
-      .filter(([index]) => index >= 0)
-      .sort((l, r) => l[0] - r[0]);
-    return hits.length > 0 ? hits[0] : [-1, ""];
-  };
-
-  const {highlightBackground} = useTheme();
-  
-  const renderWithHighlightedKeywords = (text, keywords, recurseFunction, recurseLevel = 100) => {
-    const [index, keyword] = searchNextKeyword(text, keywords);
-    if (index < 0) {
-      return <Text>{text}</Text>;
-    }
-    const before = text.slice(0, index);
-    const match = text.slice(index, index + keyword.length);
-    const after = text.slice(index + keyword.length);
-    return (
-      <Text>
-        {before}
-        <Text style={{backgroundColor: highlightBackground}}>{match}</Text>
-        { recurseLevel > 0 && after.length > 0
-          ? recurseFunction(after, keywords, recurseFunction, recurseLevel - 1)
-          : after
-        }
-      </Text>
-    );
-  };
-  
-  const getTextFragment = (text, keywords, maxLength) => {
-    const [index, keyword] = searchNextKeyword(text, keywords);
-    const fragmentStartIndex = Math.max(0, index - (maxLength - keyword.length) / 2);
-    let textFragment = text.slice(fragmentStartIndex, fragmentStartIndex + maxLength);
-    if (fragmentStartIndex > 0) {
-      textFragment = `...${textFragment}`;
-    }
-    if (text.length > fragmentStartIndex + maxLength) {
-      textFragment = `${textFragment}...`;
-    }
-    return textFragment;
-  };
-  
-  const renderFragmentWithHighlightedKeywords = (text, searchText, maxLength) => {
-    const keywords = searchText?.trim()?.split(/\s+/) || [];
-    const textFragment = getTextFragment(text || "", keywords, maxLength);
-    return renderWithHighlightedKeywords(textFragment, keywords, renderWithHighlightedKeywords);
-  };
+  const renderHighlighted = (p) =>
+    <Text style={{backgroundColor: highlightBackground}}>{p.children}</Text>;
+  const needleSpecs = props.searchText
+    ?.trim()
+    ?.split(/\s+/)
+    ?.map(word => ({
+      text: word,
+      wholeWord: true,
+      render: renderHighlighted
+    }));
 
   const composeSkillResult = React.useCallback(skill => ({
     _id: skill._id,
@@ -154,9 +98,12 @@ const Search = (props) => {
   }),
   [searchResultEntity, props.selectedSearchResultId]);
 
-  const onRenderContext = React.useCallback((item, _, element) =>
-    renderFragmentWithHighlightedKeywords(item.context, props.searchText, element.calculatedWidth / 6),
-  [props.searchText]);
+  const onRenderContext = React.useCallback((item, _, element) => {
+    const {needleSpec} = textFormatter.searchNextNeedle(item.context, needleSpecs);
+    const textFragment = textFormatter.getTextFragment(item.context, needleSpec?.text, element.calculatedWidth / 6);
+    return textFormatter.renderWithHighlightedKeywords(textFragment, needleSpecs);
+  },
+  [needleSpecs]);
 
   const columns = [
     {
@@ -184,11 +131,10 @@ const Search = (props) => {
     }
   ];
 
-  const { editPaneColor, viewPaneColor } = useTheme();
   const viewStyles = {
     root: [
       {
-        background: viewPaneColor,
+        background: viewPaneBackground,
         padding: 20,
         minWidth: 550,
         height: "calc(100vh - 170px)"
@@ -198,7 +144,7 @@ const Search = (props) => {
   const editStyles = {
     root: [
       {
-        background: editPaneColor,
+        background: editPaneBackground,
         padding: 20,
         height: "calc(100vh - 170px)"
       }
@@ -255,7 +201,13 @@ const Search = (props) => {
                 instanceContext={searchResultContext}
                 readOnly={true}
               />
-              {renderFragmentWithHighlightedKeywords(searchResultEntity[props.selectedSearchResultId]?.context, props.searchText, 1000)}
+              <CvFormattedText
+                label="Context"
+                field="context"
+                instanceContext={searchResultContext}
+                markDown={true}
+                needleSpecs={needleSpecs}
+              />
             </Stack>
           </td>
         </tr>

@@ -167,11 +167,11 @@ const Accounts = (props) => {
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
 
-  const { editPaneColor, viewPaneColor, alertColor } = useTheme();
+  const {editPaneBackground, viewPaneBackground, semanticColors} = useTheme();
   const viewStyles = {
     root: [
       {
-        background: viewPaneColor,
+        background: viewPaneBackground,
         padding: 20,
         minWidth: 550,
         height: "calc(100vh - 170px)"
@@ -181,7 +181,7 @@ const Accounts = (props) => {
   const editStyles = {
     root: [
       {
-        background: editPaneColor,
+        background: editPaneBackground,
         padding: 20,
         height: "calc(100vh - 170px)"
       }
@@ -271,7 +271,7 @@ const Accounts = (props) => {
                       iconProps={{ iconName: "Delete" }}
                       disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                       onClick={onDeleteAccount}
-                      styles={{ root: { color: alertColor, width: 200 } }}
+                      styles={{ root: { color: semanticColors.severeWarningIcon, width: 200 } }}
                     />
                   }
                 </Stack>

@@ -23,11 +23,11 @@ const Profile = (props) => {
     instanceId: cv?.accountId,
     replaceInstance: props.onAccountChange
   };
-  const { editPaneColor } = useTheme();
+  const {editPaneBackground} = useTheme();
   const editStyles = {
     root: [
       {
-        background: editPaneColor,
+        background: editPaneBackground,
         padding: 20,
         maxWidth: "calc(100vw - 200px)",
         height: "calc(100vh - 170px)"

@@ -7,7 +7,7 @@ import * as uiServives from "../services/ui/ui-services";
 
 const LoginDialog = (props) => {
 
-  const { primaryColor } = uiServives.useTheme();
+  const {semanticColors} = uiServives.useTheme();
 
   const dialogContentProps = {
     type: DialogType.normal,
@@ -24,7 +24,7 @@ const LoginDialog = (props) => {
       main: {
         borderTopWidth: 5,
         borderTopStyle: "solid",
-        borderColor: primaryColor
+        borderColor: semanticColors.primaryButtonBackground
       },
       heading: {
         backgroundColor: "red"

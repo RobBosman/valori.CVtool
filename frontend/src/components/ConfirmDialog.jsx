@@ -5,7 +5,7 @@ import * as uiServives from "../services/ui/ui-services";
 
 const ConfirmDialog = (props) => {
 
-  const { primaryColor } = uiServives.useTheme();
+  const {semanticColors} = uiServives.useTheme();
 
   const dialogContentProps = {
     type: DialogType.normal,
@@ -22,7 +22,7 @@ const ConfirmDialog = (props) => {
       main: {
         borderTopWidth: 5,
         borderTopStyle: "solid",
-        borderColor: primaryColor
+        borderColor: semanticColors.primaryButtonBackground
       }
     }
   };

@@ -54,11 +54,11 @@ const BusinessUnits = (props) => {
     }
   ];
 
-  const { editPaneColor, viewPaneColor } = useTheme();
+  const {editPaneBackground, viewPaneBackground} = useTheme();
   const viewStyles = {
     root: [
       {
-        background: viewPaneColor,
+        background: viewPaneBackground,
         padding: 20,
         minWidth: 500,
         height: "calc(100vh - 170px)"
@@ -68,7 +68,7 @@ const BusinessUnits = (props) => {
   const editStyles = {
     root: [
       {
-        background: editPaneColor,
+        background: editPaneBackground,
         padding: 20,
         height: "calc(100vh - 170px)"
       }
