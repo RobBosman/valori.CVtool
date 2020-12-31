@@ -21,122 +21,122 @@ const val MONGODB_SAVE_ADDRESS = "mongodb.save"
 
 internal class MongodbSaveVerticle : AbstractVerticle() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
+    private val log = LoggerFactory.getLogger(javaClass)
 
-  override fun start(startPromise: Promise<Void>) {
-    MongoConnection
-        .mongodbConnection(config())
-        .subscribe(
-            { mongoDatabase ->
-              vertx.eventBus()
-                  .consumer<JsonObject>(MONGODB_SAVE_ADDRESS)
-                  .toObservable()
-                  .subscribe(
-                      {
-                        handleRequest(it, mongoDatabase)
-                      },
-                      {
-                        log.error("Vertx error processing MongoDB save request: ${it.message}.")
-                      }
-                  )
-              MongoConnection.checkConnection(config())
-                  .subscribe { startPromise.tryComplete() }
-            },
-            {
-              log.error("Error connecting to MongoDB")
-              startPromise.fail(it)
-            }
-        )
-  }
-
-  /**
-   * Request message body must be JSON, normalized per entity:
-   * <pre>
-   *   {
-   *     "entity_1": {
-   *       "XXX": {
-   *         "_id": "XXX",
-   *         "property": "value"
-   *       },
-   *       "YYY": {
-   *         "_id": "YYY",
-   *         "property": "value"
-   *       }
-   *     },
-   *     "entity_2": {
-   *       "ZZZ": {
-   *         "_id": "ZZZ",
-   *         "property": "value"
-   *       }
-   *     }
-   *   }
-   * </pre>
-   */
-  private fun handleRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
-      Flowable
-          .fromIterable(message.body().map.entries)
-          .flatMap { (entityName, criteria) ->
-            val instanceCriteria = validateCriteria(criteria)
-            when (instanceCriteria.isEmpty) {
-              true -> FlowableEmpty.empty()
-              else -> {
-                log.debug("Vertx saving ${instanceCriteria.map.size} instances of '$entityName'...")
-                mongoDatabase
-                    .getCollection(entityName)
-                    .bulkWrite(composeWriteRequests(instanceCriteria.map))
-              }
-            }
-          }
-          .subscribe(
-              {},
-              {
-                val errorMsg = "Error saving data: ${it.message}"
-                log.warn(errorMsg)
-                message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
-              },
-              {
-                log.debug("Successfully saved data")
-                message.reply(JsonObject().put("result", "Successfully saved data"))
-              }
-          )
-
-  private fun validateCriteria(instanceCriteria: Any?): JsonObject {
-    if (instanceCriteria !is JsonObject)
-      error("Expected instances to be a 'JsonObject' but found '${instanceCriteria?.javaClass?.name}'")
-    instanceCriteria.forEach { (id, instance) ->
-      if (instance !is JsonObject)
-        error("Expected instance to be a 'JsonObject' but found '${instance?.javaClass?.name}'")
-      if (!instance.isEmpty && instance.getString("_id", "") != id)
-        error("Expected instance id '${instance.getString("_id", "")}' to match '$id'")
+    override fun start(startPromise: Promise<Void>) {
+        MongoConnection
+            .mongodbConnection(config())
+            .subscribe(
+                { mongoDatabase ->
+                    vertx.eventBus()
+                        .consumer<JsonObject>(MONGODB_SAVE_ADDRESS)
+                        .toObservable()
+                        .subscribe(
+                            {
+                                handleRequest(it, mongoDatabase)
+                            },
+                            {
+                                log.error("Vertx error processing MongoDB save request: ${it.message}.")
+                            }
+                        )
+                    MongoConnection.checkConnection(config())
+                        .subscribe { startPromise.tryComplete() }
+                },
+                {
+                    log.error("Error connecting to MongoDB")
+                    startPromise.fail(it)
+                }
+            )
     }
-    return instanceCriteria
-  }
 
-  /**
-   * <pre>
-   *   {
-   *     "XXX": {
-   *       "_id": "XXX",
-   *       "property": "value"
-   *     },
-   *     "YYY": {
-   *       "_id": "YYY",
-   *       "property": "value"
-   *     },
-   *     "ZZZ": {}
-   *   }
-   * </pre>
-   */
-  private fun composeWriteRequests(instanceMap: Map<String, Any>): List<WriteModel<Document>> =
-      instanceMap.entries.stream()
-          .map { (id, instance) -> toWriteModel(id, instance) }
-          .collect(toList())
+    /**
+     * Request message body must be JSON, normalized per entity:
+     * <pre>
+     *   {
+     *     "entity_1": {
+     *       "XXX": {
+     *         "_id": "XXX",
+     *         "property": "value"
+     *       },
+     *       "YYY": {
+     *         "_id": "YYY",
+     *         "property": "value"
+     *       }
+     *     },
+     *     "entity_2": {
+     *       "ZZZ": {
+     *         "_id": "ZZZ",
+     *         "property": "value"
+     *       }
+     *     }
+     *   }
+     * </pre>
+     */
+    private fun handleRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
+        Flowable
+            .fromIterable(message.body().map.entries)
+            .flatMap { (entityName, criteria) ->
+                val instanceCriteria = validateCriteria(criteria)
+                when (instanceCriteria.isEmpty) {
+                    true -> FlowableEmpty.empty()
+                    else -> {
+                        log.debug("Vertx saving ${instanceCriteria.map.size} instances of '$entityName'...")
+                        mongoDatabase
+                            .getCollection(entityName)
+                            .bulkWrite(composeWriteRequests(instanceCriteria.map))
+                    }
+                }
+            }
+            .subscribe(
+                {},
+                {
+                    val errorMsg = "Error saving data: ${it.message}"
+                    log.warn(errorMsg)
+                    message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+                },
+                {
+                    log.debug("Successfully saved data")
+                    message.reply(JsonObject().put("result", "Successfully saved data"))
+                }
+            )
 
-  private fun toWriteModel(id: String, instance: Any): WriteModel<Document> =
-      if (instance is JsonObject && instance.getString("_id", "") == id) {
-        val instanceDoc = Document.parse(instance.encode())
-        ReplaceOneModel(Filters.eq("_id", id), instanceDoc, ReplaceOptions().upsert(true))
-      } else {
-        DeleteOneModel(Filters.eq("_id", id))
-      }
+    private fun validateCriteria(instanceCriteria: Any?): JsonObject {
+        if (instanceCriteria !is JsonObject)
+            error("Expected instances to be a 'JsonObject' but found '${instanceCriteria?.javaClass?.name}'")
+        instanceCriteria.forEach { (id, instance) ->
+            if (instance !is JsonObject)
+                error("Expected instance to be a 'JsonObject' but found '${instance?.javaClass?.name}'")
+            if (!instance.isEmpty && instance.getString("_id", "") != id)
+                error("Expected instance id '${instance.getString("_id", "")}' to match '$id'")
+        }
+        return instanceCriteria
+    }
+
+    /**
+     * <pre>
+     *   {
+     *     "XXX": {
+     *       "_id": "XXX",
+     *       "property": "value"
+     *     },
+     *     "YYY": {
+     *       "_id": "YYY",
+     *       "property": "value"
+     *     },
+     *     "ZZZ": {}
+     *   }
+     * </pre>
+     */
+    private fun composeWriteRequests(instanceMap: Map<String, Any>): List<WriteModel<Document>> =
+        instanceMap.entries.stream()
+            .map { (id, instance) -> toWriteModel(id, instance) }
+            .collect(toList())
+
+    private fun toWriteModel(id: String, instance: Any): WriteModel<Document> =
+        if (instance is JsonObject && instance.getString("_id", "") == id) {
+            val instanceDoc = Document.parse(instance.encode())
+            ReplaceOneModel(Filters.eq("_id", id), instanceDoc, ReplaceOptions().upsert(true))
+        } else {
+            DeleteOneModel(Filters.eq("_id", id))
+        }
 }

@@ -18,41 +18,43 @@ import java.util.concurrent.TimeUnit.SECONDS
 @ExtendWith(VertxExtension::class)
 internal object HttpsServerVerticleTest {
 
-  private const val HOST_NAME = "localhost"
+    private const val HOST_NAME = "localhost"
 
-  private fun runHttpsServer(vertx: Vertx, testContext: VertxTestContext): Int {
-    val port = ServerSocket(0).use { it.localPort }
-    vertx.deployVerticle(
-        HttpsServerVerticle::class.java.name,
-        DeploymentOptions()
-            .setConfig(JsonObject()
-                .put("HTTPS_CONNECTION_STRING", "https://$HOST_NAME:$port/")
-            ),
-        testContext.succeedingThenComplete()
-    )
-    return port
-  }
-
-  @Test
-  fun testServer(vertx: Vertx, testContext: VertxTestContext) {
-    val port = runHttpsServer(vertx, testContext)
-
-    WebClient
-        .create(vertx, WebClientOptions()
-            .setSsl(true)
-            .setPemTrustOptions(PemTrustOptions().addCertValue(HttpsServerVerticle.sslCert))
+    private fun runHttpsServer(vertx: Vertx, testContext: VertxTestContext): Int {
+        val port = ServerSocket(0).use { it.localPort }
+        vertx.deployVerticle(
+            HttpsServerVerticle::class.java.name,
+            DeploymentOptions()
+                .setConfig(
+                    JsonObject()
+                        .put("HTTPS_CONNECTION_STRING", "https://$HOST_NAME:$port/")
+                ),
+            testContext.succeedingThenComplete()
         )
-        .get(port, HOST_NAME, "/.well-known/acme-challenge/index.html")
-        .`as`(BodyCodec.string())
-        .send(testContext.succeeding { response ->
-          testContext.verify {
-            assertTrue(response.body().contains("/.well-known/acme-challenge/index.html"))
-            testContext.completeNow()
-          }
-        })
+        return port
+    }
 
-    assertTrue(testContext.awaitCompletion(2, SECONDS))
-    if (testContext.failed())
-      throw testContext.causeOfFailure()
-  }
+    @Test
+    fun testServer(vertx: Vertx, testContext: VertxTestContext) {
+        val port = runHttpsServer(vertx, testContext)
+
+        WebClient
+            .create(
+                vertx, WebClientOptions()
+                    .setSsl(true)
+                    .setPemTrustOptions(PemTrustOptions().addCertValue(HttpsServerVerticle.sslCert))
+            )
+            .get(port, HOST_NAME, "/.well-known/acme-challenge/index.html")
+            .`as`(BodyCodec.string())
+            .send(testContext.succeeding { response ->
+                testContext.verify {
+                    assertTrue(response.body().contains("/.well-known/acme-challenge/index.html"))
+                    testContext.completeNow()
+                }
+            })
+
+        assertTrue(testContext.awaitCompletion(2, SECONDS))
+        if (testContext.failed())
+            throw testContext.causeOfFailure()
+    }
 }

@@ -25,53 +25,61 @@ fun main() = Main.run()
 
 object Main {
 
-  private val log = LoggerFactory.getLogger(javaClass)
-  private val verticlesToDeploy = listOf(
-      ControlVerticle::class,
-      HttpRedirectVerticle::class,
-      HttpsServerVerticle::class,
-      AuthenticateVerticle::class,
-      MongodbFetchVerticle::class,
-      MongodbSaveVerticle::class,
-      AuthInfoFetchVerticle::class,
-      AccountDeleteVerticle::class,
-      CvFetchVerticle::class,
-      CvGenerateVerticle::class,
-      CvSearchVerticle::class,
-      CvBackupVerticle::class)
-  val verticleDeploymentStates = verticlesToDeploy
-      .map { it to "not started" }
-      .toMap()
-      .toMutableMap()
+    private val log = LoggerFactory.getLogger(javaClass)
+    private val verticlesToDeploy = listOf(
+        ControlVerticle::class,
+        HttpRedirectVerticle::class,
+        HttpsServerVerticle::class,
+        AuthenticateVerticle::class,
+        MongodbFetchVerticle::class,
+        MongodbSaveVerticle::class,
+        AuthInfoFetchVerticle::class,
+        AccountDeleteVerticle::class,
+        CvFetchVerticle::class,
+        CvGenerateVerticle::class,
+        CvSearchVerticle::class,
+        CvBackupVerticle::class
+    )
+    val verticleDeploymentStates = verticlesToDeploy
+        .map { it to "not started" }
+        .toMap()
+        .toMutableMap()
 
-  fun run() {
-    val options = VertxOptions()
-    if (log.isDebugEnabled)
-      options.blockedThreadCheckInterval = 1_000 * 60 * 10 // allow blocking threads for max 10 minutes (for debugging)
-    val vertx = Vertx.vertx(options)
+    fun run() {
+        val options = VertxOptions()
+        if (log.isDebugEnabled)
+            options.blockedThreadCheckInterval =
+                1_000 * 60 * 10 // allow blocking threads for max 10 minutes (for debugging)
+        val vertx = Vertx.vertx(options)
 
-    ConfigRetriever
-        .create(vertx, ConfigRetrieverOptions()
-            .addStore(ConfigStoreOptions()
-                .setType("env")
-                .setConfig(JsonObject())
+        ConfigRetriever
+            .create(
+                vertx, ConfigRetrieverOptions()
+                    .addStore(
+                        ConfigStoreOptions()
+                            .setType("env")
+                            .setConfig(JsonObject())
+                    )
             )
-        )
-        .getConfig { config ->
-          val deploymentOptions = DeploymentOptions()
-              .setConfig(config.result())
-          verticlesToDeploy
-              .forEach { deployVerticle(vertx, it, deploymentOptions) }
-        }
-  }
+            .getConfig { config ->
+                val deploymentOptions = DeploymentOptions()
+                    .setConfig(config.result())
+                verticlesToDeploy
+                    .forEach { deployVerticle(vertx, it, deploymentOptions) }
+            }
+    }
 
-  private fun deployVerticle(vertx: Vertx, verticleClass: KClass<out AbstractVerticle>, deploymentOptions: DeploymentOptions) =
-      vertx.deployVerticle(verticleClass.java.name, deploymentOptions) { deploymentResult ->
-        if (deploymentResult.succeeded()) {
-          verticleDeploymentStates[verticleClass] = "UP"
-        } else {
-          verticleDeploymentStates[verticleClass] = deploymentResult.cause().message ?: "UNKNOWN ERROR"
-          log.error("Error deploying ${verticleClass.simpleName}", deploymentResult.cause())
+    private fun deployVerticle(
+        vertx: Vertx,
+        verticleClass: KClass<out AbstractVerticle>,
+        deploymentOptions: DeploymentOptions
+    ) =
+        vertx.deployVerticle(verticleClass.java.name, deploymentOptions) { deploymentResult ->
+            if (deploymentResult.succeeded()) {
+                verticleDeploymentStates[verticleClass] = "UP"
+            } else {
+                verticleDeploymentStates[verticleClass] = deploymentResult.cause().message ?: "UNKNOWN ERROR"
+                log.error("Error deploying ${verticleClass.simpleName}", deploymentResult.cause())
+            }
         }
-      }
 }

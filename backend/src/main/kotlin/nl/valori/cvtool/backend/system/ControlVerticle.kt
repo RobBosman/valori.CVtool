@@ -16,61 +16,62 @@ import java.net.URL
 
 internal class ControlVerticle : AbstractVerticle() {
 
-  private val log = LoggerFactory.getLogger(javaClass)
-  private val deliveryOptions = DeliveryOptions().setSendTimeout(30_000)
+    private val log = LoggerFactory.getLogger(javaClass)
+    private val deliveryOptions = DeliveryOptions().setSendTimeout(30_000)
 
-  override fun start(startPromise: Promise<Void>) {
-    // Environment variables:
-    //   CONTROL_CONNECTION_STRING=http://<HOST_NAME>:<PORT>/
-    //   CONTROL_CONNECTION_STRING=http://localhost:88/
-    val configConfig = URL(config().getString("CONTROL_CONNECTION_STRING"))
+    override fun start(startPromise: Promise<Void>) {
+        // Environment variables:
+        //   CONTROL_CONNECTION_STRING=http://<HOST_NAME>:<PORT>/
+        //   CONTROL_CONNECTION_STRING=http://localhost:88/
+        val configConfig = URL(config().getString("CONTROL_CONNECTION_STRING"))
 
-    vertx
-        .createHttpServer(HttpServerOptions()
-            .setHost(configConfig.host)
-            .setPort(configConfig.port)
-            .setSsl(false)
-            .setCompressionSupported(true)
-        )
-        .requestHandler(createRouter())
-        .rxListen()
-        .subscribe(
-            {
-              startPromise.complete()
-              log.info("Download all cvs via http://${configConfig.authority}/all-docx.zip")
-            },
-            {
-              log.error("Vertx error in ControlVerticle", it)
-              startPromise.fail(it)
+        vertx
+            .createHttpServer(
+                HttpServerOptions()
+                    .setHost(configConfig.host)
+                    .setPort(configConfig.port)
+                    .setSsl(false)
+                    .setCompressionSupported(true)
+            )
+            .requestHandler(createRouter())
+            .rxListen()
+            .subscribe(
+                {
+                    startPromise.complete()
+                    log.info("Download all cvs via http://${configConfig.authority}/all-docx.zip")
+                },
+                {
+                    log.error("Vertx error in ControlVerticle", it)
+                    startPromise.fail(it)
+                }
+            )
+    }
+
+    private fun createRouter(): Router {
+        val router = Router.router(vertx)
+        router
+            .route("/all-docx.zip")
+            .handler { context ->
+                vertx.eventBus()
+                    .rxRequest<JsonObject>(ALL_CVS_GENERATE_ADDRESS, null, deliveryOptions)
+                    .map { Buffer.buffer(it.body().getBinary("zipBytes")) }
+                    .subscribe(
+                        { zipBytes ->
+                            context.response()
+                                .setStatusCode(HTTP_OK)
+                                .putHeader(TRANSFER_ENCODING, "application/zip")
+                                .putHeader(TRANSFER_ENCODING, "chunked")
+                                .putHeader("Content-Disposition", "attachment; filename=\"all-docx.zip\"")
+                                .send(zipBytes)
+                        },
+                        {
+                            log.error("Error generating all cvs", it)
+                            context.response()
+                                .setStatusCode(HTTP_INTERNAL_ERROR)
+                                .end()
+                        }
+                    )
             }
-        )
-  }
-
-  private fun createRouter(): Router {
-    val router = Router.router(vertx)
-    router
-        .route("/all-docx.zip")
-        .handler { context ->
-          vertx.eventBus()
-              .rxRequest<JsonObject>(ALL_CVS_GENERATE_ADDRESS, null, deliveryOptions)
-              .map { Buffer.buffer(it.body().getBinary("zipBytes")) }
-              .subscribe(
-                  { zipBytes ->
-                    context.response()
-                        .setStatusCode(HTTP_OK)
-                        .putHeader(TRANSFER_ENCODING, "application/zip")
-                        .putHeader(TRANSFER_ENCODING, "chunked")
-                        .putHeader("Content-Disposition", "attachment; filename=\"all-docx.zip\"")
-                        .send(zipBytes)
-                  },
-                  {
-                    log.error("Error generating all cvs", it)
-                    context.response()
-                        .setStatusCode(HTTP_INTERNAL_ERROR)
-                        .end()
-                  }
-              )
-        }
-    return router
-  }
+        return router
+    }
 }

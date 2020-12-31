@@ -2,74 +2,75 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>nl.valori.cvtool</groupId>
-    <artifactId>root</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <groupId>nl.valori.cvtool</groupId>
+        <artifactId>root</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>conversion</artifactId>
-  <description>conversion of old CVtool data format (XML) to new (JSON)</description>
+    <artifactId>conversion</artifactId>
+    <description>conversion of old CVtool data format (XML) to new (JSON)</description>
 
-  <properties>
-    <java.version>15</java.version>
-    <java-target.version>15</java-target.version>
-    <kotlin.version>1.4.21</kotlin.version>
-    <vertx.version>4.0.0</vertx.version>
-  </properties>
+    <properties>
+        <kotlin.code.style>official</kotlin.code.style>
+        <java.version>15</java.version>
+        <java-target.version>15</java-target.version>
+        <kotlin.version>1.4.21</kotlin.version>
+        <vertx.version>4.0.0</vertx.version>
+    </properties>
 
-  <build>
-    <sourceDirectory>src/main/kotlin</sourceDirectory>
-    <testSourceDirectory>src/test/kotlin</testSourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-maven-plugin</artifactId>
-        <version>${kotlin.version}</version>
-        <executions>
-          <execution>
-            <id>compile</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>test-compile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>test-compile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <jvmTarget>${java-target.version}</jvmTarget>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jvmTarget>${java-target.version}</jvmTarget>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-  <dependencies>
-    <!-- kotlin -->
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
-      <version>${kotlin.version}</version>
-    </dependency>
-    <!-- Json -->
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-core</artifactId>
-      <version>${vertx.version}</version>
-    </dependency>
-    <!-- test -->
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-test-junit5</artifactId>
-      <version>${kotlin.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <!-- kotlin -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <!-- Json -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -9,24 +9,24 @@ import org.slf4j.LoggerFactory
 
 abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
 
-  internal val log = LoggerFactory.getLogger(javaClass)
-  internal val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
+    internal val log = LoggerFactory.getLogger(javaClass)
+    internal val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
-  abstract fun handleRequest(message: Message<JsonObject>)
+    abstract fun handleRequest(message: Message<JsonObject>)
 
-  override fun start(startPromise: Promise<Void>) {
-    vertx.eventBus()
-        .consumer<JsonObject>(address)
-        .toObservable()
-        .doOnSubscribe { startPromise.complete() }
-        .subscribe(
-            {
-              handleRequest(it)
-            },
-            {
-              log.error("Vertx error in ${javaClass.name}")
-              startPromise.fail(it)
-            }
-        )
-  }
+    override fun start(startPromise: Promise<Void>) {
+        vertx.eventBus()
+            .consumer<JsonObject>(address)
+            .toObservable()
+            .doOnSubscribe { startPromise.complete() }
+            .subscribe(
+                {
+                    handleRequest(it)
+                },
+                {
+                    log.error("Vertx error in ${javaClass.name}")
+                    startPromise.fail(it)
+                }
+            )
+    }
 }

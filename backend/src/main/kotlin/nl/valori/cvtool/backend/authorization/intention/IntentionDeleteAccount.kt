@@ -7,18 +7,18 @@ import nl.valori.cvtool.backend.cv.ACCOUNT_DELETE_ADDRESS
 
 internal object IntentionDeleteAccount : Intention {
 
-  override fun name() = "delete account"
+    override fun name() = "delete account"
 
-  override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
-    if (address != ACCOUNT_DELETE_ADDRESS)
-      return false
+    override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
+        if (address != ACCOUNT_DELETE_ADDRESS)
+            return false
 
-    val bodyJson = ModelUtils.toJsonObject(body)
-        ?: return false
+        val bodyJson = ModelUtils.toJsonObject(body)
+            ?: return false
 
-    if (bodyJson.map["accountId"] == null)
-      return false
+        if (bodyJson.map["accountId"] == null)
+            return false
 
-    return true
-  }
+        return true
+    }
 }

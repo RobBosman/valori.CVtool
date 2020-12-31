@@ -24,7 +24,8 @@
 
   <xsl:template match="cv:root">
     <w:hdr mc:Ignorable="w14 wp14">
-      <w:p w14:paraId="422E78F8" w14:textId="292300FC" w:rsidR="006E0130" w:rsidRDefault="00A2340C" w:rsidP="007C6954">
+      <w:p w14:paraId="422E78F8" w14:textId="292300FC" w:rsidR="006E0130" w:rsidRDefault="00A2340C"
+           w:rsidP="007C6954">
         <w:pPr>
           <w:pStyle w:val="Titel"/>
           <w:jc w:val="right"/>
@@ -35,7 +36,8 @@
             <w:lang w:eastAsia="nl-NL"/>
           </w:rPr>
           <w:drawing>
-            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0" relativeHeight="251662848"
+            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
+                       relativeHeight="251662848"
                        behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="3BED597A"
                        wp14:editId="69F6AAF1">
               <wp:simplePos x="0" y="0"/>
@@ -63,7 +65,9 @@
                       <a:blip r:embed="rId1">
                         <a:extLst>
                           <a:ext>
-                            <xsl:attribute name="uri">{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:attribute>
+                            <xsl:attribute name="uri">
+                              {28A0092B-C50C-407E-A947-70E740481C1C}
+                            </xsl:attribute>
                             <a14:useLocalDpi val="0"/>
                           </a:ext>
                         </a:extLst>
@@ -99,7 +103,8 @@
             <w:lang w:eastAsia="nl-NL"/>
           </w:rPr>
           <w:drawing>
-            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0" relativeHeight="251659776"
+            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
+                       relativeHeight="251659776"
                        behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="09903F99"
                        wp14:editId="563A367D">
               <wp:simplePos x="0" y="0"/>
@@ -127,7 +132,9 @@
                       <a:blip r:embed="rId2" cstate="print">
                         <a:extLst>
                           <a:ext>
-                            <xsl:attribute name="uri">{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:attribute>
+                            <xsl:attribute name="uri">
+                              {28A0092B-C50C-407E-A947-70E740481C1C}
+                            </xsl:attribute>
                             <a14:useLocalDpi val="0"/>
                           </a:ext>
                         </a:extLst>
@@ -163,7 +170,8 @@
           </w:t>
         </w:r>
       </w:p>
-      <w:p w14:paraId="3EE983D6" w14:textId="01CA2A7A" w:rsidR="007C6954" w:rsidRPr="007C6954" w:rsidRDefault="007C6954"
+      <w:p w14:paraId="3EE983D6" w14:textId="01CA2A7A" w:rsidR="007C6954" w:rsidRPr="007C6954"
+           w:rsidRDefault="007C6954"
            w:rsidP="007C6954">
         <w:pPr>
           <w:pStyle w:val="Subtitel"/>

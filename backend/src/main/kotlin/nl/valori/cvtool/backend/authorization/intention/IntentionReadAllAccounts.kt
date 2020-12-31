@@ -8,18 +8,18 @@ import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadAllAccounts : Intention {
 
-  override fun name() = "read all accounts"
+    override fun name() = "read all accounts"
 
-  override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
-    // Only consider fetch queries.
-    if (address != MONGODB_FETCH_ADDRESS)
-      return false
+    override fun match(address: String, body: Any?, authInfo: AuthInfo): Boolean {
+        // Only consider fetch queries.
+        if (address != MONGODB_FETCH_ADDRESS)
+            return false
 
-    val bodyJson = toJsonObject(body)
-        ?: return false
+        val bodyJson = toJsonObject(body)
+            ?: return false
 
-    return bodyJson
-        .getCriteria("account")
-        .any { criterion -> criterion.map.isEmpty() }
-  }
+        return bodyJson
+            .getCriteria("account")
+            .any { criterion -> criterion.map.isEmpty() }
+    }
 }
