@@ -16,7 +16,7 @@ WORKDIR /build
 RUN git clone https://github.com/RobBosman/valori.CVtool.git .
 
 # Build the app.
-RUN mvn clean package
+RUN mvn clean verify
 
 # Move the executable code to a suitable location.
 RUN mv backend/target/*-fat.jar cvtool-fat.jar

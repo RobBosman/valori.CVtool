@@ -23,7 +23,6 @@ import LocaleFlag from "./widgets/LocaleFlag";
 const ContentPage = (props) => {
 
   const locationHash = props.locationHash.split("=").shift();
-  const [state, setState] = React.useState({});
 
   const onRenderGroupHeader = (group) =>
     <Stack horizontal
@@ -34,8 +33,8 @@ const ContentPage = (props) => {
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
 
-  React.useEffect(() => {
-    const navGroups = [
+  const navGroups = React.useMemo(() =>
+    [
       {
         links: [
           {
@@ -132,43 +131,42 @@ const ContentPage = (props) => {
           }
         ]
       }
-    ];
+    ],
+  [props.authInfo.authorizationLevel, props.selectedCvId]);
 
-    let renderContent = null;
-    if (locationHash === "" || locationHash === "#") {
-      renderContent = <Info />;
-    } else {
-      const item = navGroups
-        .flatMap((navGroup) => navGroup.links)
-        .find((item) => item.url === locationHash);
-      renderContent = item?.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
-    }
+  let renderContent = null;
+  if (locationHash === "" || locationHash === "#") {
+    renderContent = <Info />;
+  } else {
+    const item = navGroups
+      // .flatMap(navGroup => navGroup.links) // flatmap() is not supported by Edge
+      .map(navGroup => navGroup.links)
+      .reduce((acc, val) => acc.concat(val), [])
+      .find(item => item.url === locationHash);
+    renderContent = item?.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
+  }
 
-    setState({
-      navGroups: navGroups,
-      renderContent: renderContent
-    });
-  }, [props.authInfo.authorizationLevel, props.selectedAccountId, props.selectedCvId, props.locationHash]);
+  const selectedAccountName = props.accountEntity && props.accountEntity[props.selectedAccountId]?.name;
 
   return (
     <Stack horizontal>
       <Stack>
         <CvLogo/>
         <Nav
-          styles={{ root: { width: 180, marginTop: 59 } }}
-          groups={state.navGroups}
+          styles={{ root: { width: 180, marginTop: 61 }, groupContent: { marginBottom: 0 } }}
+          groups={navGroups}
           initialSelectedKey={locationHash || "#"}
           selectedKey={props.navKey}
           onRenderGroupHeader={onRenderGroupHeader}
         />
         <TooltipHost
-          content={`Download CV van ${props.accountEntity && props.accountEntity[props.selectedAccountId]?.name} als MS-Word document`}>
+          content={`Download CV${selectedAccountName ? ` van ${selectedAccountName}` : ""} als MS-Word document`}>
           <PrimaryButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
             disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
-            styles={{ root: { width: 180 } }}>
+            styles={{ root: { width: 180, marginTop: 10 } }}>
             <LocaleFlag/>
           </PrimaryButton>
         </TooltipHost>
@@ -179,7 +177,7 @@ const ContentPage = (props) => {
         <div style={{ height: 105 }}>
           <CvTitle />
         </div>
-        {state.renderContent}
+        {renderContent}
       </Stack.Item>
     </Stack>
   );

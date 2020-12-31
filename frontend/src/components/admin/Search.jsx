@@ -194,51 +194,48 @@ const Search = (props) => {
       entity: { [experience._id]: experience }, 
       instanceId: experience._id,
     };
-    return <PivotItem key={experience._id}
-      headerText={experience.toYear}>
-      <Stack>
-        <Stack horizontal
-          tokens={{ childrenGap: "l1" }}>
-          <CvTextField
-            label="Periode"
-            field="period"
-            instanceContext={experienceContext}
-            readOnly={true}
-          />
-          <CvFormattedText
-            label="Opdrachtgever"
-            field="clientOrEmployer"
-            instanceContext={experienceContext}
-            markDown={false}
-            needleSpecs={needleSpecs}
-            styles={{ root: { width: 250 } }}
-          />
-          <CvFormattedText
-            label="Rol"
-            field={`role.${props.locale}`}
-            instanceContext={experienceContext}
-            markDown={false}
-            needleSpecs={needleSpecs}
-            styles={{ root: { width: 250 } }}
-          />
-        </Stack>
-        <div style={{
-          position: "relative",
-          overflowY: "auto",
-          height: `calc(100vh - ${395 + selectedSearchResult.skills.length * 24}px)`
-        }}>
-          <ScrollablePane>
-            <CvFormattedText
-              label="Werkervaring"
-              field={`description.${props.locale}`}
-              instanceContext={experienceContext}
-              markDown={true}
-              needleSpecs={needleSpecs}
-            />
-          </ScrollablePane>
-        </div>
+    return <Stack>
+      <Stack horizontal
+        tokens={{ childrenGap: "l1" }}>
+        <CvTextField
+          label="Periode"
+          field="period"
+          instanceContext={experienceContext}
+          readOnly={true}
+        />
+        <CvFormattedText
+          label="Opdrachtgever"
+          field="clientOrEmployer"
+          instanceContext={experienceContext}
+          markDown={false}
+          needleSpecs={needleSpecs}
+          styles={{ root: { width: 250 } }}
+        />
+        <CvFormattedText
+          label="Rol"
+          field={`role.${props.locale}`}
+          instanceContext={experienceContext}
+          markDown={false}
+          needleSpecs={needleSpecs}
+          styles={{ root: { width: 250 } }}
+        />
       </Stack>
-    </PivotItem>;
+      <div style={{
+        position: "relative",
+        overflowY: "auto",
+        height: `calc(100vh - ${395 + selectedSearchResult.skills.length * 24}px)`
+      }}>
+        <ScrollablePane>
+          <CvFormattedText
+            label="Werkervaring"
+            field={`description.${props.locale}`}
+            instanceContext={experienceContext}
+            markDown={true}
+            needleSpecs={needleSpecs}
+          />
+        </ScrollablePane>
+      </div>
+    </Stack>;
   };
 
   return (
@@ -273,32 +270,41 @@ const Search = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <Label
-                disabled={!selectedSearchResult?.skills?.length}>
-                Vaardigheden
-              </Label>
-              <table style={skillsStyle}>
-                <tbody>
-                  { selectedSearchResult
-                    ?.skills
-                    ?.sort((l, r) => r.skillLevel - l.skillLevel)
-                    ?.map(skill =>
-                      <tr key={skill._id}>
-                        <td width="30%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
-                        <td width="60%">{renderWithHighlightedKeywords(skill.description && skill.description[props.locale], needleSpecs)}</td>
-                        <td width="10%" align="right">{"* ".repeat(skill.skillLevel).trim()}</td>
-                      </tr>
-                    )
-                  }
-                </tbody>
-              </table>
+              { selectedSearchResult
+                && <Label
+                  disabled={!selectedSearchResult?.skills?.length}>
+                  Vaardigheden
+                </Label>
+              }
+              { selectedSearchResult
+                && <table style={skillsStyle}>
+                  <tbody>
+                    { selectedSearchResult
+                      ?.skills
+                      ?.sort((l, r) => r.skillLevel - l.skillLevel)
+                      ?.map(skill =>
+                        <tr key={skill._id}>
+                          <td width="30%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
+                          <td width="60%">{renderWithHighlightedKeywords(skill.description && skill.description[props.locale], needleSpecs)}</td>
+                          <td width="10%" align="right">{"* ".repeat(skill.skillLevel).trim()}</td>
+                        </tr>
+                      )
+                    }
+                  </tbody>
+                </table>
+              }
               <Separator/>
               <Pivot linkFormat={PivotLinkFormat.tabs}>
                 { selectedSearchResult
                   ?.experiences
                   ?.sort((l, r) => r.toYear - l.toYear)
                   .slice(0, 5)
-                  ?.map(experience => renderExperience(experience))
+                  ?.map(experience =>
+                    <PivotItem key={experience._id}
+                      headerText={experience.toYear}>
+                      {renderExperience(experience)}
+                    </PivotItem>
+                  )
                 }
               </Pivot>
             </Stack>
