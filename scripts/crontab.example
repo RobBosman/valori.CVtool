@@ -5,5 +5,5 @@
 #            day of the week (0-6, 0=Sunday)
 #               command
 58 23  *  *  *  /root/cvtool_backup_mongodb.sh    > /root/cvtool_backup_mongodb.log 2>&1
-07  0  *  *  *  /root/cvtool_backup_cvs.sh        > /root/cvtool_backup_cvs.log 2>&1
-27  3  *  *  *  /root/cvtool_renew_certificate.sh > /root/cvtool_renew_certificate.log 2>&1
+55 23  *  *  *  /root/cvtool_backup_cvs.sh        > /root/cvtool_backup_cvs.log     2>&1
+27  3  *  *  *  /root/cvtool_renew_certificate.sh > cvtool_renew_certificate.log    2>&1

@@ -2,10 +2,10 @@
 # INSTALL TransIP BladeVPS ubuntu 20.04 - cvtool.valori.nl
 #
 # Prerequisites: make sure that the following files are in your homedir (~rbosman):
-#   ~bosmanr/.env
 #   ~bosmanr/docker-compose.yml
-#   ~bosmanr/cvtool_backup_mongodb.sh
-#   ~bosmanr/cvtool_renew_certificate.sh
+#   ~bosmanr/scripts/.env.example
+#   ~bosmanr/scripts/crontab.example
+#   ~bosmanr/scripts/cvtool_*.sh
 ########################################################################################################################
 
 sudo -i
@@ -40,25 +40,26 @@ usermod -aG docker rbosman
 
 # Install docker-compose.
 curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" \
-    -o /usr/local/bin/docker-compose
+  -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
+
+# Copy script files to /root/.
+cp ~bosmanr/docker-compose.yml .
+cp ~bosmanr/scripts/cvtool_*.sh .
+
+# Prepare secret config file.
+mkdir -p /secret
+cp ~bosmanr/scripts/.env.example /secret/.env
+chmod -R 400 /secret
+# Fill-in secret data.
+vi /secret/.env
 
 # Login to DockerHub.
 docker login -u bransom
 # NOTE: remove pwd from /root/.docker/config.json
 
-# Prepare secret config file.
-mkdir -p /secret
-cp ~bosmanr/.env /secret
-chmod -R 400 /secret
-
-# Copy script files to /root/.
-cp ~bosmanr/docker-compose.yml .
-cp ~bosmanr/cvtool_backup.sh .
-cp ~bosmanr/cvtool_renew_certificate.sh .
-
 ########################################################################################################################
-# Add crontab rules, see file crontab.example.
+# Add crontab rules, see file ~bosmanr/scripts/crontab.example.
 crontab -e
 ########################################################################################################################
 
@@ -68,5 +69,12 @@ docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
 docker container prune -f
 docker image prune -f
 
+# Restore MongoDB.
+# ./cvtool_restore_data.sh
+# ./cvtool_restore_mongodb.sh
+
+# Initialize MongoDB.
+./cvtool_initialize_mongodb.sh
+
 # Restart CVtool server to load a new certificate.
-docker container restart "$(docker ps -aqf 'name=cvtool')"
+docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"

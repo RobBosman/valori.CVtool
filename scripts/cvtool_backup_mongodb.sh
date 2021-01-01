@@ -5,8 +5,8 @@ BACKUP_DATE="$(date +'%Y-%m-%d')"
 VOLUME_MONGODB_BACKUP=/var/lib/docker/volumes/root_mongodb_backup/_data
 
 docker exec "$(docker ps -aqf 'name=mongo')" \
-    mongodump --uri=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin \
-	--gzip --out=/backup/${BACKUP_DATE}
+  mongodump --uri=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin \
+  --gzip --out=/backup/${BACKUP_DATE}
 
 lftp -c " \
     set ftp:ssl-allow true \

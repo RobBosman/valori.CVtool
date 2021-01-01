@@ -12,16 +12,9 @@ docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
 docker container prune -f
 docker image prune -f
 
+
 # Initialize MongoDB.
-docker exec -it \
-    $(docker ps -aqf "name=mongo") \
-	bash
-# FOR /F "usebackq delims=" %A IN (`docker ps -aqf "name=mongo"`) DO docker exec -it %A bash
-mongo --shell mongodb://root:MongoPassword@mongodb:27017/cvtool?authSource=admin
-    use cvtool
-    db.experience.createIndex({"$**":"text"})
-    db.skill.createIndex({"description.nl_NL":"text", "description.uk_UK":"text"})
-    exit
+scripts\cvtool_initialize_mongodb.cmd
 
 # Restart CVtool server to load a new certificate.
 docker container restart "$(docker ps -aqf 'name=bransom/cvtool')"

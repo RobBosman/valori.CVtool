@@ -6,7 +6,7 @@ BACKUP_FILE=all-docx.zip
 VOLUME_CVTOOL_BACKUP=/var/lib/docker/volumes/root_cvtool_backup/_data
 
 docker exec "$(docker ps -aqf 'ancestor=bransom/cvtool')" \
-    sh -c " \
+  sh -c " \
         mkdir -p /backup/${BACKUP_DATE} \
         && rm -f /backup/${BACKUP_DATE}/${BACKUP_FILE} \
         && wget -P /backup/${BACKUP_DATE} http://localhost:${CONTROL_PORT}/${BACKUP_FILE} \
