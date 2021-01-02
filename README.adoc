@@ -12,6 +12,7 @@ React + Redux + vert.x + MongoDB + Docker application to edit and maintain curri
 * https://www.jetbrains.com/idea/download/#section=windows[IntelliJ IDEA Community Edition]
 * https://code.visualstudio.com/docs/?dv=win[Visual Studio Code]
 * https://www.mongodb.com/try/download/community[MongoDB Community server and client]
+* https://www.mongodb.com/try/download/database-tools[MongoDB Database Tools]
 * https://docs.microsoft.com/nl-nl/windows/wsl/install-win10#manual-installation-steps[Windows Subsystem for Linux (WSL2)]
 * https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker Desktop]
 * https://www.bitvise.com/ssh-client-download[BitWise SSH client]
