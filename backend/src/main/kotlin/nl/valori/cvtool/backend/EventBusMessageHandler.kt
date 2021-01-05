@@ -71,7 +71,7 @@ internal object EventBusMessageHandler {
             ?.getJsonObject("headers")
             ?.getString("Authorization")
             ?.substringAfter("Bearer ")
-            ?: throw IllegalArgumentException("Cannot obtain 'Bearer' token from Authorization header.")
+            ?: error("Cannot obtain 'Bearer' token from Authorization header.")
         return vertx
             .eventBus()
             .rxRequest<JsonObject>(AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)

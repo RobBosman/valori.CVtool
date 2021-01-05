@@ -45,7 +45,7 @@ internal class CvGenerateVerticle : BasicVerticle(CV_GENERATE_ADDRESS) {
                 .also {
                     it.setURIResolver { href, _ ->
                         val xslt = xslIncludesMap.getOrElse(href.substringAfterLast("/")) {
-                            throw IllegalArgumentException("Cannot find XSLT $href.")
+                            error("Cannot find XSLT $href.")
                         }
                         StreamSource(ByteArrayInputStream(xslt))
                     }

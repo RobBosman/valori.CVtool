@@ -25,22 +25,19 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
 
     override fun start(startPromise: Promise<Void>) {
         MongoConnection
-            .mongodbConnection(config())
+            .connectToDatabase(config())
             .subscribe(
                 { mongoDatabase ->
                     vertx.eventBus()
                         .consumer<JsonObject>(MONGODB_SAVE_ADDRESS)
                         .toObservable()
                         .subscribe(
-                            {
-                                handleRequest(it, mongoDatabase)
-                            },
+                            { handleRequest(it, mongoDatabase) },
                             {
                                 log.error("Vertx error processing MongoDB save request: ${it.message}.")
                             }
                         )
-                    MongoConnection.checkConnection(config())
-                        .subscribe { startPromise.tryComplete() }
+                    startPromise.complete()
                 },
                 {
                     log.error("Error connecting to MongoDB")

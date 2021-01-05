@@ -59,7 +59,7 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
                     .map { cvId }
             }
             1 -> Single.just(cvIds.first())
-            else -> throw IllegalStateException("Found ${cvIds.size} cv records with accountId $accountId.")
+            else -> error("Found ${cvIds.size} cv records with accountId $accountId.")
         }
     }
 }

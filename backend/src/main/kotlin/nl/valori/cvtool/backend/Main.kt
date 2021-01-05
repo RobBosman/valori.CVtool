@@ -47,9 +47,10 @@ object Main {
 
     fun run() {
         val options = VertxOptions()
-        if (log.isDebugEnabled)
-            options.blockedThreadCheckInterval =
-                1_000 * 60 * 10 // allow blocking threads for max 10 minutes (for debugging)
+        if (log.isDebugEnabled) {
+            // Allow blocking threads for max 10 minutes (for debugging).
+            options.blockedThreadCheckInterval = 1_000 * 60 * 10
+        }
         val vertx = Vertx.vertx(options)
 
         ConfigRetriever

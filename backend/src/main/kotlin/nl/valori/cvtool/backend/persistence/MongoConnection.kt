@@ -3,11 +3,12 @@ package nl.valori.cvtool.backend.persistence
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable
-import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.subjects.ReplaySubject
 import io.reactivex.subjects.Subject
 import io.vertx.core.json.JsonObject
 import org.bson.Document
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 object MongoConnection {
 
@@ -24,7 +25,7 @@ object MongoConnection {
             .getDatabase(databaseName)
     }
 
-    fun mongodbConnection(config: JsonObject): Subject<MongoDatabase> {
+    private fun mongodbConnection(config: JsonObject): Subject<MongoDatabase> {
         // Connect to MongoDB only once, using the first config. Subsequent calls to this function will use the same connection.
         if (!mongodbSubject.hasComplete()) {
             mongodbSubject.onNext(getMongoDatabase(config))
@@ -33,12 +34,14 @@ object MongoConnection {
         return mongodbSubject
     }
 
-    fun checkConnection(config: JsonObject): Observable<String> =
+    fun connectToDatabase(config: JsonObject): Single<MongoDatabase> =
         mongodbConnection(config)
             .flatMap { mongoDatabase ->
                 Flowable
                     .defer { mongoDatabase.runCommand(Document("ping", 1)) }
                     .toObservable()
+                    .timeout(2000, MILLISECONDS)
+                    .map { mongoDatabase }
             }
-            .map(Document::toJson)
+            .singleOrError()
 }

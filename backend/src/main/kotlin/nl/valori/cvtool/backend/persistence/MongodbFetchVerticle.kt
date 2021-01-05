@@ -20,22 +20,19 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
 
     override fun start(startPromise: Promise<Void>) {
         MongoConnection
-            .mongodbConnection(config())
+            .connectToDatabase(config())
             .subscribe(
                 { mongoDatabase ->
                     vertx.eventBus()
                         .consumer<JsonObject>(MONGODB_FETCH_ADDRESS)
                         .toObservable()
                         .subscribe(
-                            {
-                                handleRequest(it, mongoDatabase)
-                            },
+                            { handleRequest(it, mongoDatabase) },
                             {
                                 log.error("Vertx error processing MongoDB fetch request: ${it.message}.")
                             }
                         )
-                    MongoConnection.checkConnection(config())
-                        .subscribe { startPromise.tryComplete() }
+                    startPromise.complete()
                 },
                 {
                     log.error("Error connecting to MongoDB")
@@ -118,7 +115,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
         mongoDatabase: MongoDatabase
     ): Single<JsonObject> {
         if (criteriaArray !is JsonArray)
-            throw IllegalArgumentException("Error fetching data: search criteria must be of type JsonArray")
+            error("Error fetching data: search criteria must be of type JsonArray")
         val criteria =
             if (criteriaArray.isEmpty) "{}" else criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
         return Flowable

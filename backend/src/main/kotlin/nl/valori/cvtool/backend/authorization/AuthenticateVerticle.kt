@@ -15,6 +15,7 @@ import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import io.vertx.reactivex.ext.web.client.WebClient
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTH_DOMAIN = "Valori.nl"
@@ -43,9 +44,10 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 .rxSend()
                 .toObservable()
                 .map { it.statusCode() }
+                .timeout(2000, MILLISECONDS)
                 .doOnNext {
                     if (it != 200)
-                        throw Exception("Received HTTP status code: $it from ${url.protocol}://${url.authority}/")
+                        error("Received HTTP status code: $it from ${url.protocol}://${url.authority}/")
                 }
         }
     }
@@ -86,7 +88,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         Single
             .just(
                 message.body().getString("jwt")
-                    ?: throw IllegalArgumentException("Cannot obtain 'jwt' from message body.")
+                    ?: error("Cannot obtain 'jwt' from message body.")
             )
             .flatMap { authenticateJwt(it, oauth2) }
             .subscribe(
@@ -107,9 +109,9 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
                 if (email.isBlank())
-                    throw IllegalArgumentException("Cannot obtain email from JWT.")
+                    error("Cannot obtain email from JWT.")
                 else if (!email.toUpperCase().endsWith("@${AUTH_DOMAIN.toUpperCase()}"))
-                    throw IllegalArgumentException("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
+                    error("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
                 JsonObject()
                     .put("email", email)
                     .put("name", accessToken.getString("name", ""))
