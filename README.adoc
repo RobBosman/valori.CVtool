@@ -40,7 +40,7 @@ See `scripts\cvtool_*.sh`.
 
 == Docker commands
 === Build and publish docker image
- docker build -t bransom/cvtool .
+ docker build --no-cache=true -t bransom/cvtool .
  docker push bransom/cvtool
 
 === Deploy
