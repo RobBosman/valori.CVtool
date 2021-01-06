@@ -30,7 +30,7 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
                 { mongoDatabase ->
                     vertx.eventBus()
                         .consumer<JsonObject>(MONGODB_SAVE_ADDRESS)
-                        .toObservable()
+                        .toFlowable()
                         .subscribe(
                             { handleRequest(it, mongoDatabase) },
                             {

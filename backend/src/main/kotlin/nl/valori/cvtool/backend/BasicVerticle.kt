@@ -17,7 +17,7 @@ abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
     override fun start(startPromise: Promise<Void>) {
         vertx.eventBus()
             .consumer<JsonObject>(address)
-            .toObservable()
+            .toFlowable()
             .doOnSubscribe { startPromise.complete() }
             .subscribe(
                 {

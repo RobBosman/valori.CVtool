@@ -41,6 +41,7 @@ object MongoConnection {
                     .defer { mongoDatabase.runCommand(Document("ping", 1)) }
                     .toObservable()
                     .timeout(2000, MILLISECONDS)
+                    .retry(2)
                     .map { mongoDatabase }
             }
             .singleOrError()

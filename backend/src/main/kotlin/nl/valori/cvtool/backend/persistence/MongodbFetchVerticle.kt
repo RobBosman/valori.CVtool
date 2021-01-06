@@ -25,7 +25,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
                 { mongoDatabase ->
                     vertx.eventBus()
                         .consumer<JsonObject>(MONGODB_FETCH_ADDRESS)
-                        .toObservable()
+                        .toFlowable()
                         .subscribe(
                             { handleRequest(it, mongoDatabase) },
                             {

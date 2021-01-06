@@ -1,6 +1,5 @@
 package nl.valori.cvtool.backend.authorization
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
@@ -22,9 +21,9 @@ const val AUTH_DOMAIN = "Valori.nl"
 
 internal class AuthenticateVerticle : AbstractVerticle() {
 
-    private val log = LoggerFactory.getLogger(javaClass)
-
     companion object {
+
+        private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
         private class Config(val site: String, val clientID: String, val clientSecret: String)
 
@@ -36,19 +35,20 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             return Config(connectionString.substringBefore("?"), clientIdSecret[0], clientIdSecret[1])
         }
 
-        fun checkConnection(vertx: Vertx, config: JsonObject): Observable<Int> {
+        fun checkConnection(vertx: Vertx, config: JsonObject): Single<Int> {
             val url = URL(parseConfig(config).site)
             val port = if (url.port >= 0) url.port else url.defaultPort
             return WebClient.create(vertx, WebClientOptions().setSsl(true))
                 .get(port, url.host, "/")
                 .rxSend()
-                .toObservable()
                 .map { it.statusCode() }
-                .timeout(2000, MILLISECONDS)
-                .doOnNext {
+                .doOnSuccess {
                     if (it != 200)
                         error("Received HTTP status code: $it from ${url.protocol}://${url.authority}/")
                 }
+                .timeout(1000, MILLISECONDS)
+                .retry(2)
+                .timeout(3000, MILLISECONDS)
         }
     }
 
@@ -61,6 +61,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .setClientID(config.clientID)
                     .setClientSecret(config.clientSecret)
             )
+            .retry(2)
             .doOnSuccess { startPromise.complete() }
             .flatMapObservable { oauth2 ->
                 vertx.eventBus()

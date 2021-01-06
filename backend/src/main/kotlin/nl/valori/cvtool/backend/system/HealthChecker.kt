@@ -31,18 +31,6 @@ internal object HealthChecker {
                 }
             }
 
-            // Check if the OpenId provider is up and running.
-            .register("OpenID") { healthStatus ->
-                AuthenticateVerticle
-                    .checkConnection(vertx, config)
-                    .subscribe(
-                        { healthStatus.complete(Status.OK()) },
-                        {
-                            log.warn("OpenID provider is not available.", it)
-                            healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
-                        })
-            }
-
             // Chek if MongoDB is up and running.
             .register("MongoDB") { healthStatus ->
                 MongoConnection
@@ -51,7 +39,19 @@ internal object HealthChecker {
                         { healthStatus.complete(Status.OK()) },
                         {
                             log.warn("MongoDB is not available.", it)
-                            healthStatus.tryComplete(Status.KO(JsonObject().put("error", it.message)))
+                            healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
+                        })
+            }
+
+            // Check if the OpenID provider is up and running.
+            .register("OpenID") { healthStatus ->
+                AuthenticateVerticle
+                    .checkConnection(vertx, config)
+                    .subscribe(
+                        { healthStatus.complete(Status.OK()) },
+                        {
+                            log.warn("OpenID provider is not available.", it)
+                            healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
                         })
             }
 }
