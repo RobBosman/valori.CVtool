@@ -1,34 +1,34 @@
 {
-    "account": {
-        "14bfa6bb-1487-3e45-bba0-28a21ed38046": {
-            "name": "Pietje Puk",
-            "dateOfBirth": "1965-09-06",
-            "_id": "14bfa6bb-1487-3e45-bba0-28a21ed38046"
-        }
-    },
-    "authorization": {
-        "517d43ec-b668-d33d-815b-11367b3edc9a": {
-            "accountId": "14bfa6bb-1487-3e45-bba0-28a21ed38046",
-            "level": "ADMIN",
-            "_id": "517d43ec-b668-d33d-815b-11367b3edc9a"
-        }
-    },
-    "cv": {
-        "43ec517d-68b6-3dd3-815b-3edc9a11367b": {
-            "accountId": "14bfa6bb-1487-3e45-bba0-28a21ed38046",
-            "workingSince": 1991,
-            "inItSince": "",
-            "role": {
-                "nl_NL": "manager"
-            },
-            "profile": {
-                "uk_UK": "",
-                "nl_NL": "Bla bla bla. x <= 0, maar zeker ook y = \"0\".\n\n\tHierboven staat een lege regel."
-            },
-            "_id": "43ec517d-68b6-3dd3-815b-3edc9a11367b",
-            "interests": {
-                "nl_NL": "Reactive programming, quantum computing, machine learning\nHobby's: mountainbiken, volleybal, motorrijden, skeeleren"
-            }
-        }
+  "account": {
+    "14bfa6bb-1487-3e45-bba0-28a21ed38046": {
+      "name": "Pietje Puk",
+      "dateOfBirth": "1965-09-06",
+      "_id": "14bfa6bb-1487-3e45-bba0-28a21ed38046"
     }
+  },
+  "authorization": {
+    "517d43ec-b668-d33d-815b-11367b3edc9a": {
+      "accountId": "14bfa6bb-1487-3e45-bba0-28a21ed38046",
+      "level": "ADMIN",
+      "_id": "517d43ec-b668-d33d-815b-11367b3edc9a"
+    }
+  },
+  "cv": {
+    "43ec517d-68b6-3dd3-815b-3edc9a11367b": {
+      "accountId": "14bfa6bb-1487-3e45-bba0-28a21ed38046",
+      "workingSince": 1991,
+      "inItSince": "",
+      "role": {
+        "nl_NL": "manager"
+      },
+      "profile": {
+        "uk_UK": "",
+        "nl_NL": "Bla bla bla. x <= 0, maar zeker ook y = \"0\".\n\n\tHierboven staat een lege regel."
+      },
+      "_id": "43ec517d-68b6-3dd3-815b-3edc9a11367b",
+      "interests": {
+        "nl_NL": "Reactive programming, quantum computing, machine learning\nHobby's: mountainbiken, volleybal, motorrijden, skeeleren"
+      }
+    }
+  }
 }
