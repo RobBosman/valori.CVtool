@@ -27,6 +27,7 @@ object Main {
 
     private val log = LoggerFactory.getLogger(javaClass)
     private val verticlesToDeploy = listOf(
+        CvGenerateVerticle::class, // Start with this one because it takes some time to initialize all XSL-stuff.
         ControlVerticle::class,
         HttpRedirectVerticle::class,
         HttpsServerVerticle::class,
@@ -36,7 +37,6 @@ object Main {
         AuthInfoFetchVerticle::class,
         AccountDeleteVerticle::class,
         CvFetchVerticle::class,
-        CvGenerateVerticle::class,
         CvSearchVerticle::class,
         CvBackupVerticle::class
     )
@@ -65,8 +65,11 @@ object Main {
             .getConfig { config ->
                 val deploymentOptions = DeploymentOptions()
                     .setConfig(config.result())
+                    .setWorker(true)
                 verticlesToDeploy
-                    .forEach { deployVerticle(vertx, it, deploymentOptions) }
+                    .forEach {
+                        deployVerticle(vertx, it, deploymentOptions)
+                    }
             }
     }
 

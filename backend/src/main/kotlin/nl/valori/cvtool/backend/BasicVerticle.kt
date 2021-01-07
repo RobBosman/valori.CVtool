@@ -18,14 +18,16 @@ abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
         vertx.eventBus()
             .consumer<JsonObject>(address)
             .toFlowable()
+            .doOnSubscribe {
+                startPromise.complete()
+            }
             .subscribe(
                 {
-                    startPromise.tryComplete()
                     handleRequest(it)
                 },
                 {
                     log.error("Vertx error in ${javaClass.name}")
-                    startPromise.fail(it)
+                    startPromise.tryFail(it)
                 }
             )
     }

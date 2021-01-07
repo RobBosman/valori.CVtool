@@ -4,15 +4,37 @@ import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.ReplaySubject
 import io.reactivex.subjects.Subject
 import io.vertx.core.json.JsonObject
 import org.bson.Document
-import java.util.concurrent.TimeUnit.MILLISECONDS
+import org.slf4j.LoggerFactory
 
 object MongoConnection {
 
+    private val log = LoggerFactory.getLogger(javaClass)
+
+    private val configSubject: Subject<JsonObject> = ReplaySubject.create()
     private val mongodbSubject: Subject<MongoDatabase> = ReplaySubject.create()
+
+    init {
+        // Connect to MongoDB only once, using the first config available.
+        configSubject
+            .observeOn(Schedulers.io())
+            .take(1)
+            .map { getMongoDatabase(it) }
+            .subscribe(
+                {
+                    mongodbSubject.onNext(it)
+                    mongodbSubject.onComplete()
+                    log.info("Successfully connected to MongoDB")
+                },
+                {
+                    log.error("Error connecting to MongoDB", it)
+                }
+            )
+    }
 
     private fun getMongoDatabase(config: JsonObject): MongoDatabase {
         // Environment variable:
@@ -25,24 +47,17 @@ object MongoConnection {
             .getDatabase(databaseName)
     }
 
-    private fun mongodbConnection(config: JsonObject): Subject<MongoDatabase> {
+    fun connectToDatabase(config: JsonObject): Single<MongoDatabase> {
         // Connect to MongoDB only once, using the first config. Subsequent calls to this function will use the same connection.
-        if (!mongodbSubject.hasComplete()) {
-            mongodbSubject.onNext(getMongoDatabase(config))
-            mongodbSubject.onComplete()
-        }
+        configSubject.onNext(config)
         return mongodbSubject
-    }
-
-    fun connectToDatabase(config: JsonObject): Single<MongoDatabase> =
-        mongodbConnection(config)
+            .singleOrError()
             .flatMap { mongoDatabase ->
                 Flowable
                     .defer { mongoDatabase.runCommand(Document("ping", 1)) }
-                    .toObservable()
-                    .timeout(2000, MILLISECONDS)
-                    .retry(2)
+                    .singleOrError()
+                    .observeOn(Schedulers.io())
                     .map { mongoDatabase }
             }
-            .singleOrError()
+    }
 }

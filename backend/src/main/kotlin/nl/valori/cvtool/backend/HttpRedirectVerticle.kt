@@ -33,8 +33,8 @@ internal class HttpRedirectVerticle : AbstractVerticle() {
             .rxListen()
             .subscribe(
                 {
-                    startPromise.complete()
                     log.info("Redirecting http://${redirectConfig.authority}/ to https://${httpsConfig.authority}/")
+                    startPromise.complete()
                 },
                 {
                     log.error("Error redirecting http://${redirectConfig.authority}/ to https://${httpsConfig.authority}/")

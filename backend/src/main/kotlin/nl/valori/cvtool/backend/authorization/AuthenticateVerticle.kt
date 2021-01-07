@@ -1,6 +1,7 @@
 package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
@@ -14,7 +15,6 @@ import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import io.vertx.reactivex.ext.web.client.WebClient
 import org.slf4j.LoggerFactory
 import java.net.URL
-import java.util.concurrent.TimeUnit.MILLISECONDS
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTH_DOMAIN = "Valori.nl"
@@ -38,17 +38,16 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         fun checkConnection(vertx: Vertx, config: JsonObject): Single<Int> {
             val url = URL(parseConfig(config).site)
             val port = if (url.port >= 0) url.port else url.defaultPort
-            return WebClient.create(vertx, WebClientOptions().setSsl(true))
+            return WebClient
+                .create(vertx, WebClientOptions().setSsl(true))
                 .get(port, url.host, "/")
                 .rxSend()
+                .observeOn(Schedulers.io())
                 .map { it.statusCode() }
                 .doOnSuccess {
                     if (it != 200)
                         error("Received HTTP status code: $it from ${url.protocol}://${url.authority}/")
                 }
-                .timeout(3000, MILLISECONDS)
-                .retry(1)
-                .timeout(5000, MILLISECONDS)
         }
     }
 
@@ -61,21 +60,27 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .setClientID(config.clientID)
                     .setClientSecret(config.clientSecret)
             )
-            .retry(2)
-            .doOnSuccess { startPromise.complete() }
-            .flatMapObservable { oauth2 ->
-                vertx.eventBus()
-                    .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
-                    .toObservable()
-                    .map { it to oauth2 }
-            }
+            .observeOn(Schedulers.io())
             .subscribe(
-                { (message, oauth2) ->
-                    handleRequest(message, oauth2)
+                { oauth2 ->
+                    log.info("Successfully connected to OpenID Provider.")
+                    startPromise.complete()
+
+                    vertx.eventBus()
+                        .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
+                        .toFlowable()
+                        .subscribe(
+                            {
+                                handleRequest(it, oauth2)
+                            },
+                            {
+                                log.error("Vertx error processing authentication request: ${it.message}")
+                            }
+                        )
                 },
                 {
                     log.error("Vertx error: ${it.message}")
-                    startPromise.fail(it)
+                    startPromise.tryFail(it)
                 }
             )
     }

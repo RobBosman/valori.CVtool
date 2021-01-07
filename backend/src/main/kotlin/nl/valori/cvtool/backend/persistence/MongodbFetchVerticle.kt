@@ -23,16 +23,19 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
             .connectToDatabase(config())
             .subscribe(
                 { mongoDatabase ->
+                    startPromise.complete()
+
                     vertx.eventBus()
                         .consumer<JsonObject>(MONGODB_FETCH_ADDRESS)
                         .toFlowable()
                         .subscribe(
-                            { handleRequest(it, mongoDatabase) },
+                            {
+                                handleRequest(it, mongoDatabase)
+                            },
                             {
                                 log.error("Vertx error processing MongoDB fetch request: ${it.message}.")
                             }
                         )
-                    startPromise.complete()
                 },
                 {
                     log.error("Error connecting to MongoDB")

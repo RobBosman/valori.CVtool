@@ -18,40 +18,44 @@ internal object HealthChecker {
             .create(vertx)
 
             // Check if all verticles are running.
-            .register("Verticles", 500) { healthStatus ->
+            .register("Verticles", 100) { healthStatus ->
                 val verticlesNotUp = Main.verticleDeploymentStates.filter { (_, state) -> state != "UP" }
                 if (verticlesNotUp.isEmpty()) {
-                    healthStatus.complete(Status.OK())
+                    healthStatus.tryComplete(Status.OK())
                 } else {
                     // Not all verticles are properly started.
                     val details = JsonObject()
                     verticlesNotUp.forEach { (verticleClass, state) -> details.put(verticleClass.simpleName, state) }
                     log.warn("Not all verticles are properly started. ${details.encode()}")
-                    healthStatus.complete(Status.KO(details))
+                    healthStatus.tryComplete(Status.KO(details))
                 }
             }
 
             // Chek if MongoDB is up and running.
-            .register("MongoDB") { healthStatus ->
+            .register("MongoDB", 2_000) { healthStatus ->
                 MongoConnection
                     .connectToDatabase(config)
                     .subscribe(
-                        { healthStatus.complete(Status.OK()) },
+                        {
+                            healthStatus.tryComplete(Status.OK())
+                        },
                         {
                             log.warn("MongoDB is not available.", it)
-                            healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
+                            healthStatus.tryComplete(Status.KO(JsonObject().put("error", it.message)))
                         })
             }
 
             // Check if the OpenID provider is up and running.
-            .register("OpenID") { healthStatus ->
+            .register("OpenID", 3_000) { healthStatus ->
                 AuthenticateVerticle
                     .checkConnection(vertx, config)
                     .subscribe(
-                        { healthStatus.tryComplete(Status.OK()) },
+                        {
+                            healthStatus.tryComplete(Status.OK())
+                        },
                         {
                             log.warn("OpenID provider is not available.", it)
-                            healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
+                            healthStatus.tryComplete(Status.KO(JsonObject().put("error", it.message)))
                         })
             }
 }

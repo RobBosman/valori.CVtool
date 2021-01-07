@@ -35,7 +35,6 @@ internal class HttpsServerVerticle : AbstractVerticle() {
         val httpsPort = if (httpsConfig.port > 0) httpsConfig.port else httpsConfig.defaultPort
 
         getPemKeyCertOptions(httpsConfig)
-            .toFlowable()
             .flatMap { pemKeyCertOptions ->
                 vertx
                     .createHttpServer(
@@ -52,12 +51,11 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                     )
                     .requestHandler(createRouter())
                     .rxListen()
-                    .toFlowable()
             }
             .subscribe(
                 {
-                    startPromise.complete()
                     log.info("Listening on https://${httpsConfig.authority}/")
+                    startPromise.complete()
                 },
                 {
                     log.error("Error starting server on https://${httpsConfig.authority}/")
