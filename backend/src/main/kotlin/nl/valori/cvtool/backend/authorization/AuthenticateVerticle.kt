@@ -46,9 +46,9 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     if (it != 200)
                         error("Received HTTP status code: $it from ${url.protocol}://${url.authority}/")
                 }
-                .timeout(1000, MILLISECONDS)
-                .retry(2)
                 .timeout(3000, MILLISECONDS)
+                .retry(1)
+                .timeout(5000, MILLISECONDS)
         }
     }
 

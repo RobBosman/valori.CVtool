@@ -48,7 +48,7 @@ internal object HealthChecker {
                 AuthenticateVerticle
                     .checkConnection(vertx, config)
                     .subscribe(
-                        { healthStatus.complete(Status.OK()) },
+                        { healthStatus.tryComplete(Status.OK()) },
                         {
                             log.warn("OpenID provider is not available.", it)
                             healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
