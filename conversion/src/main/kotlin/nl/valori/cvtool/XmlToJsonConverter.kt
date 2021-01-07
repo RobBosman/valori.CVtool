@@ -16,7 +16,7 @@ fun main() = XmlToJsonConverter.run()
 object XmlToJsonConverter {
 
     fun run() {
-        val exportedDir = Path.of(".").resolve("exported")
+        val exportedDir = Path.of(".", "exported")
         val dataDumpDir = exportedDir.resolve("dump")
         val jsonDir = exportedDir.resolve("json")
         val accountsXml = dataDumpDir.resolve("accounts.xml")
