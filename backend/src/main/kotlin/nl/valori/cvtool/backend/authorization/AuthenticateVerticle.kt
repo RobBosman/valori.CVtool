@@ -2,17 +2,17 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.ReplaySubject
+import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.auth.oauth2.OAuth2FlowType.PASSWORD
 import io.vertx.ext.auth.oauth2.OAuth2Options
-import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.reactivex.core.AbstractVerticle
-import io.vertx.reactivex.core.Vertx
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
-import io.vertx.reactivex.ext.web.client.WebClient
 import org.slf4j.LoggerFactory
 import java.net.URL
 
@@ -25,45 +25,55 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
         private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
-        private class Config(val site: String, val clientID: String, val clientSecret: String)
+        private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create()
 
-        private fun parseConfig(config: JsonObject): Config {
-            // Environment variable:
-            //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
-            val connectionString = config.getString("AUTH_CONNECTION_STRING")
-            val clientIdSecret = URL(connectionString).query.split(":")
-            return Config(connectionString.substringBefore("?"), clientIdSecret[0], clientIdSecret[1])
-        }
-
-        fun checkConnection(vertx: Vertx, config: JsonObject): Single<Int> {
-            val url = URL(parseConfig(config).site)
-            val port = if (url.port >= 0) url.port else url.defaultPort
-            return WebClient
-                .create(vertx, WebClientOptions().setSsl(true))
-                .get(port, url.host, "/")
-                .rxSend()
+        fun checkOpenIdConnection(): Single<String> {
+            // Use any available OAuth2 connection.
+            return oauth2Subject
                 .observeOn(Schedulers.io())
-                .map { it.statusCode() }
-                .doOnSuccess {
-                    if (it != 200)
-                        error("Received HTTP status code: $it from ${url.protocol}://${url.authority}/")
+                .take(1)
+                .singleOrError()
+                .flatMap { oauth2 ->
+                    // Send a dummy authorization request to the OpenID Provider.
+                    // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
+                    oauth2
+                        .rxAuthenticate(
+                            JsonObject()
+                                .put("code", PASSWORD.grantType)
+                                .put("redirect_uri", "http://example.com/")
+                        )
+                        .map { "" }
+                        .onErrorReturn { it.message } // Expected error response. Don't propagate the error.
                 }
         }
     }
 
-    override fun start(startPromise: Promise<Void>) {
-        val config = parseConfig(config())
-        OpenIDConnectAuth
+    private fun connectToOpenID(): Single<OAuth2Auth> {
+        // Environment variable:
+        //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
+        val connectionString = config().getString("AUTH_CONNECTION_STRING")
+        val openIdSite = connectionString.substringBefore("?")
+        val clientIdAndSecret = URL(connectionString).query.split(":")
+
+        // Connect to OpenID Provider.
+        return OpenIDConnectAuth
             .rxDiscover(
                 vertx, OAuth2Options()
-                    .setSite(config.site)
-                    .setClientID(config.clientID)
-                    .setClientSecret(config.clientSecret)
+                    .setSite(openIdSite)
+                    .setClientID(clientIdAndSecret[0])
+                    .setClientSecret(clientIdAndSecret[1])
             )
             .observeOn(Schedulers.io())
+            .doOnSuccess {
+                log.info("Successfully connected to OpenID Provider")
+                oauth2Subject.onNext(it) // Keep track of oauth2 to use it for health checking.
+            }
+    }
+
+    override fun start(startPromise: Promise<Void>) {
+        connectToOpenID()
             .subscribe(
                 { oauth2 ->
-                    log.info("Successfully connected to OpenID Provider.")
                     startPromise.complete()
 
                     vertx.eventBus()

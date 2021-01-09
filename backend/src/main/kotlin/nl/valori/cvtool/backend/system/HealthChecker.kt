@@ -32,7 +32,7 @@ internal object HealthChecker {
             }
 
             // Chek if MongoDB is up and running.
-            .register("MongoDB", 2_000) { healthStatus ->
+            .register("MongoDB", 1_000) { healthStatus ->
                 MongoConnection
                     .connectToDatabase(config)
                     .subscribe(
@@ -46,9 +46,9 @@ internal object HealthChecker {
             }
 
             // Check if the OpenID provider is up and running.
-            .register("OpenID", 3_000) { healthStatus ->
+            .register("OpenID", 1_000) { healthStatus ->
                 AuthenticateVerticle
-                    .checkConnection(vertx, config)
+                    .checkOpenIdConnection()
                     .subscribe(
                         {
                             healthStatus.tryComplete(Status.OK())
