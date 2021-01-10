@@ -1,6 +1,6 @@
 = Valori CVtool
 
-React + Redux + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.valori.nl/[cvtool.valori.nl].
+React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.valori.nl/[cvtool.valori.nl].
 
 == Development environment
 === _Pre-requisites_
@@ -24,6 +24,7 @@ React + Redux + vert.x + MongoDB + Docker application to edit and maintain curri
 
 === _Setup Visual Studio Code_
 * Install ESlint plugin
+* Open project subdirectory `/frontend/`
 
 == Configure server
 See `scripts/clean_install_BladeVPS.sh`.
@@ -33,10 +34,11 @@ See `scripts\cvtool_*.sh`.
 
  #!/usr/bin/sh
  . /secret/.env
- lftp
-    set ftp:ssl-allow true
-    set ssl:verify-certificate no
-    open -u ${LFTP_USERNAME},${LFTP_PASSWORD} ${LFTP_HOST}
+ lftp -e " \
+     set ftp:ssl-allow true; \
+     set ssl:verify-certificate no; \
+     open -u ${LFTP_USERNAME},${LFTP_PASSWORD} ${LFTP_HOST} \
+     "
 
 == Docker commands
 === Build and publish docker image
@@ -50,11 +52,15 @@ See `scripts\cvtool_*.sh`.
  docker image prune -f
 
 === Initialize
+ # Create MongoDB indexes
  scripts/cvtool_initialize_mongodb.sh
  # Restart CVtool server to load a new certificate
  docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"
 
-=== Path to Docker Desktop volumes
+=== Logs
+ docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool')"
+
+=== Docker Desktop volumes
  \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
 
 == MongoDB commands
@@ -62,9 +68,9 @@ See `scripts\cvtool_*.sh`.
  #   businessUnit
  #   account
  #   authorization
- #   role
  #   cv
  #   education
+ #   training
  #   skill
  #   publication
  #   reference
