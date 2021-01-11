@@ -38,7 +38,7 @@ internal class ControlVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     startPromise.complete()
-                    log.info("Download all cvs via http://${configConfig.authority}/all-docx.zip")
+                    log.info("All cvs can be downloaded via http://${configConfig.authority}/all-docx.zip")
                 },
                 {
                     log.error("Vertx error in ControlVerticle", it)

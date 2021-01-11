@@ -7,7 +7,8 @@ import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
-import io.vertx.ext.auth.oauth2.OAuth2FlowType.PASSWORD
+import io.vertx.ext.auth.oauth2.OAuth2FlowType
+import io.vertx.ext.auth.oauth2.OAuth2FlowType.AUTH_JWT
 import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
@@ -39,11 +40,15 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     oauth2
                         .rxAuthenticate(
                             JsonObject()
-                                .put("code", PASSWORD.grantType)
+                                .put("code", AUTH_JWT.grantType)
                                 .put("redirect_uri", "http://example.com/")
                         )
                         .map { "" }
-                        .onErrorReturn { it.message } // Expected error response. Don't propagate the error.
+                        .onErrorReturn {
+                            if (it.message?.contains("Bad Request") != true)
+                                throw it
+                            it.message // Expected error response. Don't propagate the error, only the message String.
+                        }
                 }
         }
     }
