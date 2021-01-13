@@ -9,7 +9,7 @@ import { getEnumData, SkillCategories } from "../cv/Enums";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
-import { renderWithHighlightedKeywords } from "../../utils/TextFormatter";
+import * as textFormatter from "../../utils/TextFormatter";
 
 // searchResult:
 // {
@@ -23,18 +23,24 @@ import { renderWithHighlightedKeywords } from "../../utils/TextFormatter";
 // }
 const Search = (props) => {
 
-  const {semanticColors, highlightBackground, editPaneBackground, viewPaneBackground} = uiServices.useTheme();
+  const { semanticColors, highlightBackground, editPaneBackground, viewPaneBackground } = uiServices.useTheme();
   const today = new Date().toISOString();
 
-  const renderHighlighted = (p) =>
-    <Text style={{backgroundColor: highlightBackground}}>{p.children}</Text>;
-  const needleSpecs = props.searchText
+  const renderHighlighted = (before, match, after, formattingSpecs) =>
+    <Text>
+      {textFormatter.renderAndFormat(before, formattingSpecs)}
+      <Text style={{ backgroundColor: highlightBackground }}>{match}</Text>
+      {textFormatter.renderAndFormat(after, formattingSpecs)}
+    </Text>;
+
+  const combinedFormattingSpecs = props.searchText
     ?.trim()
     ?.split(/\s+/)
     ?.map(keyword => ({
-      text: keyword,
-      wholeWord: true,
-      render: renderHighlighted
+      textToMatch: keyword,
+      wordBreakBefore: true,
+      wordBreakAfter: true,
+      renderAndFormat: renderHighlighted
     }));
 
   const composeExperienceDescription = (experience, locale) =>
@@ -184,14 +190,14 @@ const Search = (props) => {
 
   const onFetchCv = () => {
     if (["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
-    && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
+      && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
 
   const renderExperience = (experience) => {
     const experienceContext = {
-      entity: { [experience._id]: experience }, 
+      entity: { [experience._id]: experience },
       instanceId: experience._id,
     };
     return <Stack>
@@ -208,7 +214,7 @@ const Search = (props) => {
           field="clientOrEmployer"
           instanceContext={experienceContext}
           markDown={false}
-          needleSpecs={needleSpecs}
+          formattingSpecs={combinedFormattingSpecs}
           styles={{ root: { width: 250 } }}
         />
         <CvFormattedText
@@ -216,7 +222,7 @@ const Search = (props) => {
           field={`role.${props.locale}`}
           instanceContext={experienceContext}
           markDown={false}
-          needleSpecs={needleSpecs}
+          formattingSpecs={combinedFormattingSpecs}
           styles={{ root: { width: 250 } }}
         />
       </Stack>
@@ -231,7 +237,7 @@ const Search = (props) => {
             field={`description.${props.locale}`}
             instanceContext={experienceContext}
             markDown={true}
-            needleSpecs={needleSpecs}
+            formattingSpecs={combinedFormattingSpecs}
           />
         </ScrollablePane>
       </div>
@@ -270,22 +276,22 @@ const Search = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              { selectedSearchResult
+              {selectedSearchResult
                 && <Label
                   disabled={!selectedSearchResult?.skills?.length}>
                   Vaardigheden
                 </Label>
               }
-              { selectedSearchResult
+              {selectedSearchResult
                 && <table style={skillsStyle}>
                   <tbody>
-                    { selectedSearchResult
+                    {selectedSearchResult
                       ?.skills
                       ?.sort((l, r) => r.skillLevel - l.skillLevel)
                       ?.map(skill =>
                         <tr key={skill._id}>
                           <td width="30%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
-                          <td width="60%">{renderWithHighlightedKeywords(skill.description && skill.description[props.locale], needleSpecs)}</td>
+                          <td width="60%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], combinedFormattingSpecs)}</td>
                           <td width="10%" align="right">{"* ".repeat(skill.skillLevel).trim()}</td>
                         </tr>
                       )
@@ -293,9 +299,9 @@ const Search = (props) => {
                   </tbody>
                 </table>
               }
-              <Separator/>
+              <Separator />
               <Pivot linkFormat={PivotLinkFormat.tabs}>
-                { selectedSearchResult
+                {selectedSearchResult
                   ?.experiences
                   ?.sort((l, r) => r.toYear - l.toYear)
                   .slice(0, 5)

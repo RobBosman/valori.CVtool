@@ -6,8 +6,8 @@ import * as textFormatter from "../../utils/TextFormatter";
 
 export const CvFormattedText = (props) => {
 
-  const {entity, instanceId} = props.instanceContext;
-  
+  const { entity, instanceId } = props.instanceContext;
+
   const instance = entity && entity[instanceId];
 
   const value = React.useMemo(() => {
@@ -19,22 +19,31 @@ export const CvFormattedText = (props) => {
     return val || "";
   }, [instance, props.field]);
 
-  const {semanticColors} = uiServices.useTheme();
+  const { semanticColors } = uiServices.useTheme();
 
-  const textBlock = (p) => <Text block>{p.children}</Text>;
-  const bulletListItem = (p) => <Text>&nbsp;●&nbsp;&nbsp;{p.children.substr(2)}</Text>;
+  const renderParagraph = (before, match, after, formattingSpecs) =>
+    <Text>
+      {before && <Text block>{textFormatter.renderAndFormat(before, formattingSpecs)}</Text>}
+      {after && <Text block>{textFormatter.renderAndFormat(after, formattingSpecs)}</Text>}
+    </Text>;
 
-  const needleSpecs = React.useMemo(() => {
-    const specs = props.needleSpecs || [];
+  const renderBulletListItem = (before, match, after, formattingSpecs) =>
+    <Text>
+      {textFormatter.renderAndFormat(before, formattingSpecs)}
+      <Text block style={{ marginLeft: 9 }}>●<Text block style={{ marginLeft: 24, marginTop: -18 }}>{textFormatter.renderAndFormat(after, formattingSpecs)}</Text></Text>
+    </Text>;
+
+  const formattingSpecs = React.useMemo(() => {
+    const specs = props.formattingSpecs || [];
     return props.markDown
       ? [
-        { text: "* ", wordOnly: false, render: bulletListItem },
-        { text: "\n", wordOnly: false, render: textBlock },
+        { textToMatch: "\n", renderAndFormat: renderParagraph },
+        { textToMatch: "* ", wordBreakBefore: true, renderAndFormat: renderBulletListItem },
         ...specs
       ]
       : specs;
   },
-  [props.needleSpecs, props.markDown]);
+  [props.formattingSpecs, props.markDown]);
 
   const textStyle = {
     backgroundColor: instance ? semanticColors.inputBackground : semanticColors.disabledBackground,
@@ -53,7 +62,7 @@ export const CvFormattedText = (props) => {
       }
       <Text
         style={textStyle}>
-        {textFormatter.renderWithHighlightedKeywords(value, needleSpecs)}
+        {textFormatter.renderAndFormat(value, formattingSpecs)}
       </Text>
     </Stack>
   );
@@ -64,7 +73,7 @@ CvFormattedText.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string,
   disabled: PropTypes.bool,
-  needleSpecs: PropTypes.array,
+  formattingSpecs: PropTypes.array,
   markDown: PropTypes.bool,
   styles: PropTypes.object
 };
