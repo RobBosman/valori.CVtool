@@ -1,6 +1,3 @@
-import React from "react";
-import { Text } from "@fluentui/react";
-
 export const isLetter = (text, index) => {
   if (index >= 0 && index < text.length) {
     const code = text.charCodeAt(index);
@@ -9,10 +6,11 @@ export const isLetter = (text, index) => {
   return false;
 };
 
-const indexOfWord = (haystack, needle, wordBreakBefore, wordBreakAfter) => {
+const searchIndex = (haystack, needle, newLineBefore, wordBreakBefore, wordBreakAfter) => {
   let index = haystack.indexOf(needle);
   while (index >= 0) {
-    if ((!wordBreakBefore || !isLetter(haystack, index - 1))
+    if ((!newLineBefore || index === 0 || haystack[index - 1] === "\n")
+      && (!wordBreakBefore || !isLetter(haystack, index - 1))
       && (!wordBreakAfter || !isLetter(haystack, index + needle.length))) {
       return index;
     }
@@ -28,7 +26,7 @@ const searchNextNeedle = (haystack = "", formattingSpecs = []) => {
     .map(formattingSpec => {
       const needle = formattingSpec.textToMatch.toLowerCase();
       return {
-        index: indexOfWord(lowerCaseHaystack, needle, formattingSpec.wordBreakBefore, formattingSpec.wordBreakAfter),
+        index: searchIndex(lowerCaseHaystack, needle, formattingSpec.newLineBefore, formattingSpec.wordBreakBefore, formattingSpec.wordBreakAfter),
         formattingSpec
       };
     })
@@ -37,30 +35,11 @@ const searchNextNeedle = (haystack = "", formattingSpecs = []) => {
     || { index: -1 };
 };
 
-const renderRecursively = (haystack, formattingSpecs, recurseFunction, recurseLevel) => {
-  const { index, formattingSpec } = searchNextNeedle(haystack, formattingSpecs, true);
-  if (index < 0) {
-    return haystack;
-  }
-  const before = haystack.slice(0, index);
-  const match = haystack.slice(index, index + formattingSpec.textToMatch.length);
-  const after = haystack.slice(index + formattingSpec.textToMatch.length);
-  return (
-    <Text>
-      {before}
-      {formattingSpec.renderAndFormat(match)}
-      {recurseLevel > 0 && after.length > 0
-        ? recurseFunction(after, formattingSpecs, recurseFunction, recurseLevel - 1)
-        : after
-      }
-    </Text>
-  );
-};
-
 /**
  * formattingSpec:
  * {
  *   textToMatch: "text to match",
+ *   newLineBefore: Boolean,
  *   wordBreakBefore: Boolean,
  *   wordBreakAfter: Boolean,
  *   render: (before, match, after, formattingSpecs) =>
@@ -81,9 +60,6 @@ export const renderAndFormat = (fullText = "", formattingSpecs = []) => {
   const after = fullText.slice(index + formattingSpec.textToMatch.length);
   return formattingSpec.renderAndFormat(before, match, after, formattingSpecs);
 };
-
-export const renderWithFormatting = (text = "", formattingSpecs = []) =>
-  renderRecursively(text, formattingSpecs, renderRecursively, 100);
 
 export const getTextFragment = (fullText = "", targetText = "", maxLength) => {
   const index = fullText.indexOf(targetText);

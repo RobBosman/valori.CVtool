@@ -30,7 +30,8 @@ export const CvFormattedText = (props) => {
   const renderBulletListItem = (before, match, after, formattingSpecs) =>
     <Text>
       {textFormatter.renderAndFormat(before, formattingSpecs)}
-      <Text block style={{ marginLeft: 9 }}>●<Text block style={{ marginLeft: 24, marginTop: -18 }}>{textFormatter.renderAndFormat(after, formattingSpecs)}</Text></Text>
+      <Text style={{ marginLeft: 12 }}>●</Text>
+      <Text block style={{ marginLeft: 32, marginTop: -18 }}>{textFormatter.renderAndFormat(after, formattingSpecs)}</Text>
     </Text>;
 
   const formattingSpecs = React.useMemo(() => {
@@ -38,7 +39,7 @@ export const CvFormattedText = (props) => {
     return props.markDown
       ? [
         { textToMatch: "\n", renderAndFormat: renderParagraph },
-        { textToMatch: "* ", wordBreakBefore: true, renderAndFormat: renderBulletListItem },
+        { textToMatch: "* ", newLineBefore: true, renderAndFormat: renderBulletListItem },
         ...specs
       ]
       : specs;
