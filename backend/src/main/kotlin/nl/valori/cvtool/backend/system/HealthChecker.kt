@@ -19,7 +19,7 @@ internal object HealthChecker {
             .create(vertx)
 
             // Check if all verticles are running.
-            .register("Verticles", 5_000) { healthStatus ->
+            .register("Verticles", 2_000) { healthStatus ->
                 val verticlesNotUp = Main.verticleDeploymentStates
                     .filter { (_, state) -> state != "UP" }
                 if (verticlesNotUp.isEmpty()) {
@@ -41,6 +41,8 @@ internal object HealthChecker {
                 MongoConnection
                     .connectToDatabase(config)
                     .timeout(2_000, MILLISECONDS)
+                    .doOnError { log.info("Retrying to connect to MongoDB (${it.cause?.message ?: it.message}).") }
+                    .retry(1)
                     .subscribe(
                         {
                             healthStatus.complete(Status.OK())
@@ -52,10 +54,12 @@ internal object HealthChecker {
             }
 
             // Check if the OpenID provider is up and running.
-            .register("OpenID", 5_000) { healthStatus ->
+            .register("OpenID", 7_000) { healthStatus ->
                 AuthenticateVerticle
                     .checkOpenIdConnection()
-                    .timeout(2_000, MILLISECONDS)
+                    .timeout(3_000, MILLISECONDS)
+                    .doOnError { log.info("Retrying to connect to OpenID Provider (${it.cause?.message ?: it.message}).") }
+                    .retry(1)
                     .subscribe(
                         {
                             healthStatus.complete(Status.OK())
