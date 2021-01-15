@@ -26,11 +26,11 @@ const Search = (props) => {
   const { semanticColors, highlightBackground, editPaneBackground, viewPaneBackground } = uiServices.useTheme();
   const today = new Date().toISOString();
 
-  const renderHighlighted = (before, match, after, formattingSpecs) =>
+  const renderHighlighted = (before, match, after, renderFunc) =>
     <Text>
-      {textFormatter.renderAndFormat(before, formattingSpecs)}
+      {renderFunc(before)}
       <Text style={{ backgroundColor: highlightBackground }}>{match}</Text>
-      {textFormatter.renderAndFormat(after, formattingSpecs)}
+      {renderFunc(after)}
     </Text>;
 
   const combinedFormattingSpecs = props.searchText
@@ -40,20 +40,35 @@ const Search = (props) => {
       textToMatch: keyword,
       wordBreakBefore: true,
       wordBreakAfter: true,
-      renderAndFormat: renderHighlighted
+      renderMatch: renderHighlighted
     }));
 
-  const composeExperienceDescription = (experience, locale) =>
-    [
-      experience.assignment,
-      experience.activities,
-      experience.results,
-      experience.keywords
-    ]
-      .filter(field => field)
-      .map(field => field[locale])
-      .join("\n")
-      .trim();
+  const composeExperienceDescription = (experience, locale) => {
+    const assignment = experience.assignment && experience.assignment[locale]?.trim() || "";
+    const activities = experience.activities && experience.activities[locale]?.trim() || "";
+    const results = experience.activities && experience.activities[locale]?.trim() || "";
+    const keywords = experience.keywords && experience.keywords[locale]?.trim() || "";
+    var composedText = assignment;
+    if (activities)
+      composedText += `\n\nTaken/werkzaamheden:\n${activities}`;
+    if (results)
+      composedText += `\n\nResultaat:\n${results}`;
+    if (keywords)
+      composedText += `\n\nWerkomgeving:\n${keywords}`;
+    return composedText.trim();
+  };
+
+  // const _composeExperienceDescription = (experience, locale) =>
+  //   [
+  //     experience.assignment,
+  //     experience.activities,
+  //     experience.results,
+  //     experience.keywords
+  //   ]
+  //     .filter(field => field)
+  //     .map(field => field[locale].trim())
+  //     .filter(text => text)
+  //     .join("\n\u00A0\n");
 
   const enrichExperience = React.useCallback((experience) => ({
     ...experience,

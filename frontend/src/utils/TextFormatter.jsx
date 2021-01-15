@@ -35,22 +35,7 @@ const searchNextNeedle = (haystack = "", formattingSpecs = []) => {
     || { index: -1 };
 };
 
-/**
- * formattingSpec:
- * {
- *   textToMatch: "text to match",
- *   newLineBefore: Boolean,
- *   wordBreakBefore: Boolean,
- *   wordBreakAfter: Boolean,
- *   render: (before, match, after, formattingSpecs) =>
- *     <Text>
- *       {before}
- *       <Text style={{color: "red"}}>{match}</Text>
- *       {renderAndFormat(after, formattingSpecs)}
- *     </Text>
- * }
- */
-export const renderAndFormat = (fullText = "", formattingSpecs = []) => {
+const recursivelyRenderAndFormat = (fullText, formattingSpecs, renderContext) => {
   const { index, formattingSpec } = searchNextNeedle(fullText, formattingSpecs);
   if (index < 0) {
     return fullText;
@@ -58,8 +43,32 @@ export const renderAndFormat = (fullText = "", formattingSpecs = []) => {
   const before = fullText.slice(0, index);
   const match = fullText.slice(index, index + formattingSpec.textToMatch.length);
   const after = fullText.slice(index + formattingSpec.textToMatch.length);
-  return formattingSpec.renderAndFormat(before, match, after, formattingSpecs);
+  const renderFunc = (someText, options = {}) => {
+    if (options.newParagraph) {
+      renderContext.paragraph = renderContext.paragraph + 1;
+    }
+    return recursivelyRenderAndFormat(someText, formattingSpecs, renderContext);
+  };
+  return formattingSpec.renderMatch(before, match, after, renderFunc, renderContext);
 };
+
+/**
+ * formattingSpec:
+ * {
+ *   textToMatch: "text to match",
+ *   newLineBefore: Boolean,
+ *   wordBreakBefore: Boolean,
+ *   wordBreakAfter: Boolean,
+ *   renderMatch: (before, match, after, renderFunc, renderContext) =>
+ *     <Text>
+ *       {renderFunc(before)}
+ *       <Text style={{color: "red"}}>{match}</Text>
+ *       {renderFunc(after, { x: 3 })}
+ *     </Text>
+ * }
+ */
+export const renderAndFormat = (fullText = "", formattingSpecs = []) =>
+  recursivelyRenderAndFormat(fullText, formattingSpecs, { paragraph: 0 });
 
 export const getTextFragment = (fullText = "", targetText = "", maxLength) => {
   const index = fullText.indexOf(targetText);
