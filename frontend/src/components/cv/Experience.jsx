@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton } from "@fluentui/react";
+import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton, StackItem } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -282,16 +282,20 @@ const Experience = (props) => {
               />
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
-                <CvTextField
-                  label="Opdrachtgever"
-                  field="client"
-                  instanceContext={experienceContext}
-                />
-                <CvTextField
-                  label="Werkgever"
-                  field="employer"
-                  instanceContext={experienceContext}
-                />
+                <StackItem grow>
+                  <CvTextField
+                    label="Opdrachtgever"
+                    field="client"
+                    instanceContext={experienceContext}
+                  />
+                </StackItem>
+                <StackItem grow>
+                  <CvTextField
+                    label="Werkgever"
+                    field="employer"
+                    instanceContext={experienceContext}
+                  />
+                </StackItem>
               </Stack>
               <CvTextField
                 label="Opdracht"

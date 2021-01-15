@@ -46,6 +46,8 @@ export const useTheme = () => {
     semanticColors: theme.semanticColors,
     viewPaneBackground: theme.palette.neutralLighter,
     editPaneBackground: theme.palette.neutralLighterAlt,
-    highlightBackground: theme.palette.yellowLight
+    markHighlightBackground: theme.semanticColors.markHighlightBackground || theme.palette.greenLight,
+    valoriBlue: "#211959",
+    valoriYellow: "#F29100"
   };
 };

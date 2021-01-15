@@ -12,6 +12,7 @@ import LocaleFlag from "../widgets/LocaleFlag";
 const CvTopBar = (props) => {
   
   const currentTheme = getTheme();
+  const { semanticColors } = uiServices.useTheme();
 
   const createThemeItem = (theme, label) => ({
     key: theme,
@@ -50,7 +51,7 @@ const CvTopBar = (props) => {
           key: "connected",
           iconProps: { iconName: props.isConnected ? "PlugConnected" : "PlugDisconnected" },
           commandBarButtonAs: TooltipButton,
-          style: { background: props.isConnected ? "initial" : currentTheme.semanticColors.severeWarningBackground },
+          style: { background: props.isConnected ? "initial" : semanticColors.severeWarningBackground },
           tooltipText: props.isConnected ? "Verbonden met de backend server" : "Geen verbinding met de backend server"
         },
         {
@@ -60,7 +61,7 @@ const CvTopBar = (props) => {
           disabled: !isDirty,
           onClick: props.save,
           commandBarButtonAs: TooltipButton,
-          style: { background: isDirty ? currentTheme.semanticColors.warningBackground : "initial" },
+          style: { background: isDirty ? semanticColors.warningBackground : "initial" },
           tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
         }
       ],

@@ -1,7 +1,7 @@
 export const isLetter = (text, index) => {
   if (index >= 0 && index < text.length) {
     const code = text.charCodeAt(index);
-    return ((code > 64 && code < 91) || (code > 96 && code < 123)); // a-z, A-Z
+    return ((code > 64 && code < 91) || (code > 96 && code < 123)); // A-Z, a-z
   }
   return false;
 };
@@ -35,7 +35,7 @@ const searchNextNeedle = (haystack = "", formattingSpecs = []) => {
     || { index: -1 };
 };
 
-const recursivelyRenderAndFormat = (fullText, formattingSpecs, renderContext) => {
+const recursivelyRenderAndFormat = (fullText, formattingSpecs, defaultStyle, renderContext) => {
   const { index, formattingSpec } = searchNextNeedle(fullText, formattingSpecs);
   if (index < 0) {
     return fullText;
@@ -47,9 +47,9 @@ const recursivelyRenderAndFormat = (fullText, formattingSpecs, renderContext) =>
     if (options.newParagraph) {
       renderContext.paragraph = renderContext.paragraph + 1;
     }
-    return recursivelyRenderAndFormat(someText, formattingSpecs, renderContext);
+    return recursivelyRenderAndFormat(someText, formattingSpecs, defaultStyle, renderContext);
   };
-  return formattingSpec.renderMatch(before, match, after, renderFunc, renderContext);
+  return formattingSpec.render(before, match, after, renderFunc, defaultStyle, renderContext);
 };
 
 /**
@@ -59,16 +59,16 @@ const recursivelyRenderAndFormat = (fullText, formattingSpecs, renderContext) =>
  *   newLineBefore: Boolean,
  *   wordBreakBefore: Boolean,
  *   wordBreakAfter: Boolean,
- *   renderMatch: (before, match, after, renderFunc, renderContext) =>
- *     <Text>
+ *   render: (before, match, after, renderFunc, defaultStyle, renderContext) =>
+ *     <Text style={defaultStyle}>
  *       {renderFunc(before)}
- *       <Text style={{color: "red"}}>{match}</Text>
+ *       <Text style={{ ...defaultStyle, color: "red" }}>{match}</Text>
  *       {renderFunc(after, { x: 3 })}
  *     </Text>
  * }
  */
-export const renderAndFormat = (fullText = "", formattingSpecs = []) =>
-  recursivelyRenderAndFormat(fullText, formattingSpecs, { paragraph: 0 });
+export const renderAndFormat = (fullText = "", formattingSpecs = [], defaultStyle = {}) =>
+  recursivelyRenderAndFormat(fullText, formattingSpecs, defaultStyle, { paragraph: 0 });
 
 export const getTextFragment = (fullText = "", targetText = "", maxLength) => {
   const index = fullText.indexOf(targetText);

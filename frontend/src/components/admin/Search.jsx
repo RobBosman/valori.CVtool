@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField, Label, Pivot, PivotItem, Separator, ScrollablePane, PivotLinkFormat } from "@fluentui/react";
+import { Text, Stack, TextField, Label, Pivot, PivotItem, ScrollablePane, PivotLinkFormat } from "@fluentui/react";
 import { connect } from "react-redux";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
-import { CvFormattedText } from "../widgets/CvFormattedText";
+import { CvFormattedText, cvHeadings } from "../widgets/CvFormattedText";
 import { getEnumData, SkillCategories } from "../cv/Enums";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
@@ -23,13 +23,13 @@ import * as textFormatter from "../../utils/TextFormatter";
 // }
 const Search = (props) => {
 
-  const { semanticColors, highlightBackground, editPaneBackground, viewPaneBackground } = uiServices.useTheme();
+  const { semanticColors, markHighlightBackground, editPaneBackground, viewPaneBackground } = uiServices.useTheme();
   const today = new Date().toISOString();
 
-  const renderHighlighted = (before, match, after, renderFunc) =>
-    <Text>
+  const renderHighlighted = (before, match, after, renderFunc, defaultStyle) =>
+    <Text style={defaultStyle}>
       {renderFunc(before)}
-      <Text style={{ backgroundColor: highlightBackground }}>{match}</Text>
+      <Text style={{ ...defaultStyle, backgroundColor: markHighlightBackground }}>{match}</Text>
       {renderFunc(after)}
     </Text>;
 
@@ -40,35 +40,23 @@ const Search = (props) => {
       textToMatch: keyword,
       wordBreakBefore: true,
       wordBreakAfter: true,
-      renderMatch: renderHighlighted
+      render: renderHighlighted
     }));
 
   const composeExperienceDescription = (experience, locale) => {
     const assignment = experience.assignment && experience.assignment[locale]?.trim() || "";
     const activities = experience.activities && experience.activities[locale]?.trim() || "";
-    const results = experience.activities && experience.activities[locale]?.trim() || "";
+    const results = experience.results && experience.results[locale]?.trim() || "";
     const keywords = experience.keywords && experience.keywords[locale]?.trim() || "";
     var composedText = assignment;
     if (activities)
-      composedText += `\n\nTaken/werkzaamheden:\n${activities}`;
+      composedText += `\n${cvHeadings.activities}\n${activities}`;
     if (results)
-      composedText += `\n\nResultaat:\n${results}`;
+      composedText += `\n${cvHeadings.results}\n${results}`;
     if (keywords)
-      composedText += `\n\nWerkomgeving:\n${keywords}`;
+      composedText += `\n${cvHeadings.keywords}\n${keywords}`;
     return composedText.trim();
   };
-
-  // const _composeExperienceDescription = (experience, locale) =>
-  //   [
-  //     experience.assignment,
-  //     experience.activities,
-  //     experience.results,
-  //     experience.keywords
-  //   ]
-  //     .filter(field => field)
-  //     .map(field => field[locale].trim())
-  //     .filter(text => text)
-  //     .join("\n\u00A0\n");
 
   const enrichExperience = React.useCallback((experience) => ({
     ...experience,
@@ -195,7 +183,6 @@ const Search = (props) => {
     backgroundColor: selectedSearchResult?.skills?.length > 0 ? semanticColors.inputBackground : semanticColors.disabledBackground,
     padding: 8,
     width: "100%",
-    maxWidth: "500px",
     minHeight: 16
   };
 
@@ -215,40 +202,43 @@ const Search = (props) => {
       entity: { [experience._id]: experience },
       instanceId: experience._id,
     };
-    return <Stack>
+    return <Stack
+      tokens={{ childrenGap: "l1" }}
+      styles={{
+        root: {
+          background: viewPaneBackground,
+          padding: 20,
+          height: `calc(100vh - ${329 + selectedSearchResult.skills.length * 24}px)`
+        }
+      }}>
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
         <CvTextField
-          label="Periode"
           field="period"
           instanceContext={experienceContext}
           readOnly={true}
+          styles={{ root: { width: 135 } }}
         />
         <CvFormattedText
-          label="Opdrachtgever"
-          field="clientOrEmployer"
-          instanceContext={experienceContext}
-          markDown={false}
-          formattingSpecs={combinedFormattingSpecs}
-          styles={{ root: { width: 250 } }}
-        />
-        <CvFormattedText
-          label="Rol"
           field={`role.${props.locale}`}
           instanceContext={experienceContext}
           markDown={false}
           formattingSpecs={combinedFormattingSpecs}
-          styles={{ root: { width: 250 } }}
+        />
+        <CvFormattedText
+          field="clientOrEmployer"
+          instanceContext={experienceContext}
+          markDown={false}
+          formattingSpecs={combinedFormattingSpecs}
         />
       </Stack>
       <div style={{
         position: "relative",
         overflowY: "auto",
-        height: `calc(100vh - ${395 + selectedSearchResult.skills.length * 24}px)`
+        height: "inherit"
       }}>
         <ScrollablePane>
           <CvFormattedText
-            label="Werkervaring"
             field={`description.${props.locale}`}
             instanceContext={experienceContext}
             markDown={true}
@@ -314,20 +304,28 @@ const Search = (props) => {
                   </tbody>
                 </table>
               }
-              <Separator />
-              <Pivot linkFormat={PivotLinkFormat.tabs}>
-                {selectedSearchResult
-                  ?.experiences
-                  ?.sort((l, r) => r.toYear - l.toYear)
-                  .slice(0, 5)
-                  ?.map(experience =>
-                    <PivotItem key={experience._id}
-                      headerText={experience.toYear}>
-                      {renderExperience(experience)}
-                    </PivotItem>
-                  )
-                }
-              </Pivot>
+              {selectedSearchResult?.experiences?.length > 0
+                && <Label
+                  disabled={!selectedSearchResult?.experiences?.length}>
+                  Werkervaring
+                </Label>
+              }
+              {selectedSearchResult
+                && <Pivot
+                  linkFormat={PivotLinkFormat.tabs}>
+                  {selectedSearchResult
+                    ?.experiences
+                    ?.sort((l, r) => r.toYear - l.toYear)
+                    .slice(0, 8)
+                    ?.map(experience =>
+                      <PivotItem key={experience._id}
+                        headerText={experience.toYear}>
+                        {renderExperience(experience)}
+                      </PivotItem>
+                    )
+                  }
+                </Pivot>
+              }
             </Stack>
           </td>
         </tr>
