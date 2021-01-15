@@ -49,6 +49,7 @@ const CvTopBar = (props) => {
       items: [
         {
           key: "connected",
+          text: "",
           iconProps: { iconName: props.isConnected ? "PlugConnected" : "PlugDisconnected" },
           commandBarButtonAs: TooltipButton,
           style: { background: props.isConnected ? "initial" : semanticColors.severeWarningBackground },
