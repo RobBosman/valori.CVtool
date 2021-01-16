@@ -9,16 +9,17 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 
 === _Download and install the following_
 * https://jdk.java.net/[Java OpenJDK]
+* https://git-scm.com/[Git (for Windows)]
 * https://www.jetbrains.com/idea/download/#section=windows[IntelliJ IDEA Community Edition]
 * https://code.visualstudio.com/docs/?dv=win[Visual Studio Code]
 * https://www.mongodb.com/try/download/community[MongoDB Community server and client]
 * https://www.mongodb.com/try/download/database-tools[MongoDB Database Tools]
 * https://docs.microsoft.com/nl-nl/windows/wsl/install-win10#manual-installation-steps[Windows Subsystem for Linux (WSL2)]
+* https://www.microsoft.com/nl-nl/p/ubuntu/9nblggh4msv6?activetab=pivot:overviewtab[Ubuntu (WSL2)]
 * https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker Desktop]
 * https://www.bitvise.com/ssh-client-download[BitWise SSH client]
 
 === _Setup IDEA_
-* Download and install git (_Settings_ => _Version Control_ => _Git_)
 * Update Kotlin plugin
 * Configure https://kotlinlang.org/docs/reference/coding-conventions.html[Kotlin Coding Conventions]
 
@@ -32,7 +33,7 @@ See `scripts/clean_install_BladeVPS.sh`.
 == Backup/restore
 See `scripts\cvtool_*.sh`.
 
- #!/usr/bin/sh
+ #!/usr/bin/env sh
  . /secret/.env
  lftp -e " \
      set ftp:ssl-allow true; \

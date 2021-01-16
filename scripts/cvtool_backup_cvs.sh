@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 . /secret/.env
 
 BACKUP_DATE="$(date +'%Y-%m-%d')"

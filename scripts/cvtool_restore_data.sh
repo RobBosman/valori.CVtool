@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 . /secret/.env
 
 RESTORE_DATE="$(date --date='yesterday' +'%Y-%m-%d')"
@@ -15,4 +15,4 @@ lftp -c " \
         \" \
     "
 
-mv ${VOLUME_MONGODB_BACKUP}/_data/${RESTORE_DATE}/${BACKUP_FILE} .
+mv "${VOLUME_MONGODB_BACKUP}/_data/${RESTORE_DATE}/${BACKUP_FILE}" .

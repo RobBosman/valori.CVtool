@@ -13,7 +13,8 @@ npm-audit.txt
 npm-outdated.txt
 stats.json
 *.p12
+*.pem
+.env
 /conversion/src/main/resources/*.xml
 /conversion/src/main/resources/*.json
 /exported/
-/scripts/.env
