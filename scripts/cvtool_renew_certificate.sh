@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+VOLUME_SSL_CERTS=/var/lib/docker/volumes/root_ssl_certs/_data
+
 docker run --rm \
   --name certbot \
   --mount source=root_ssl_certs,target=/etc/letsencrypt \
@@ -10,5 +12,9 @@ docker run --rm \
   renew \
   --webroot \
   --webroot-path=/data/letsencrypt \
-  --quiet &&
+  --quiet
+
+# Restart CVtool server only if the SSL certificate was renewed.
+if [ "$(find ${VOLUME_SSL_CERTS} -name '*.pem' -mmin -5)" != "" ]; then
   docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"
+fi

@@ -61,7 +61,8 @@ See `scripts\cvtool_*.sh`.
 === Logs
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool')"
 
-=== Docker Desktop volumes
+=== Docker volumes
+ /var/lib/docker/volumes/
  \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
 
 == MongoDB commands
