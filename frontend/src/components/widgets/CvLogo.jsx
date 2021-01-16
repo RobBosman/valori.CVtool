@@ -5,12 +5,10 @@ import cvtoolTextSvg from "../../static/CVtool-text.svg";
 import {appVersion} from "../../app";
 
 const logoStyles = {
-  root: [
-    {
-      paddingLeft: 20,
-      paddingTop: 20
-    }
-  ]
+  root: {
+    paddingLeft: 20,
+    paddingTop: 20
+  }
 };
 const versionStyle = {
   position: "fixed",

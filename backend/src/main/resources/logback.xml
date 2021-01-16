@@ -6,8 +6,8 @@
     <!-- define CONSOLE as console output -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <!-- see https://logback.qos.ch/manual/layouts.html -->
-            <Pattern>%d{HH:mm:ss.SSS} %-31logger{30} [%30.30thread] [%level] %msg%n%ex</Pattern>
+            <!-- see https://logback.qos.ch/manual/layouts.html#ClassicPatternLayout -->
+            <Pattern>%d{ISO8601} %-31logger{30} [%20.20thread] %-5level - %msg%n%ex</Pattern>
         </layout>
     </appender>
 

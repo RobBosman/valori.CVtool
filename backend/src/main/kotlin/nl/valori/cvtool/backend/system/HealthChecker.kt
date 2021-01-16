@@ -41,8 +41,6 @@ internal object HealthChecker {
                 MongoConnection
                     .connectToDatabase(config)
                     .timeout(2_000, MILLISECONDS)
-                    .doOnError { log.info("Retrying to connect to MongoDB (${it.cause?.message ?: it.message}).") }
-                    .retry(1)
                     .subscribe(
                         {
                             healthStatus.complete(Status.OK())
@@ -54,12 +52,10 @@ internal object HealthChecker {
             }
 
             // Check if the OpenID provider is up and running.
-            .register("OpenID", 7_000) { healthStatus ->
+            .register("OpenID", 5_000) { healthStatus ->
                 AuthenticateVerticle
                     .checkOpenIdConnection()
                     .timeout(3_000, MILLISECONDS)
-                    .doOnError { log.info("Retrying to connect to OpenID Provider (${it.cause?.message ?: it.message}).") }
-                    .retry(1)
                     .subscribe(
                         {
                             healthStatus.complete(Status.OK())

@@ -169,27 +169,25 @@ const Accounts = (props) => {
 
   const {editPaneBackground, viewPaneBackground, semanticColors} = useTheme();
   const viewStyles = {
-    root: [
-      {
-        background: viewPaneBackground,
-        padding: 20,
-        minWidth: 550,
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: viewPaneBackground,
+      padding: 20,
+      minWidth: 550,
+      height: "calc(100vh - 170px)"
+    }
   };
   const editStyles = {
-    root: [
-      {
-        background: editPaneBackground,
-        padding: 20,
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: editPaneBackground,
+      padding: 20,
+      height: "calc(100vh - 170px)"
+    }
   };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
+
+  const selectedAccountName = props.accountEntity && props.accountEntity[props.selectedAccountId]?.name;
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -215,6 +213,11 @@ const Accounts = (props) => {
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}
+                    styles={{
+                      main: {
+                        backgroundColor: semanticColors.severeWarningBackground
+                      }
+                    }}
                   />
                 </Stack>
               </Stack>
@@ -266,13 +269,22 @@ const Accounts = (props) => {
                     />
                   </TooltipHost>
                   { ["ADMIN"].includes(props.authInfo.authorizationLevel)
-                    && <DefaultButton
-                      text="Account verwijderen"
-                      iconProps={{ iconName: "Delete" }}
-                      disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
-                      onClick={onDeleteAccount}
-                      styles={{ root: { color: semanticColors.severeWarningIcon, width: 200 } }}
-                    />
+                    && <TooltipHost content={`Definitief verwijderen van alle gegevens${selectedAccountName
+                      ? ` van ${selectedAccountName}`
+                      : " van een account"}`}>
+                      <DefaultButton
+                        text="Account verwijderen"
+                        iconProps={{ iconName: "Delete" }}
+                        disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
+                        onClick={onDeleteAccount}
+                        styles={{
+                          root: {
+                            color: semanticColors.severeWarningIcon,
+                            width: 200
+                          }
+                        }}
+                      />
+                    </TooltipHost>
                   }
                 </Stack>
               </Stack>

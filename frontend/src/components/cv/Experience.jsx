@@ -175,25 +175,21 @@ const Experience = (props) => {
 
   const [previewVisible, setPreviewVisible] = React.useState(false);
 
-  const { semanticColors, viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
+  const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
   const viewStyles = {
-    root: [
-      {
-        background: viewPaneBackground,
-        padding: 20,
-        minWidth: 350,
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: viewPaneBackground,
+      padding: 20,
+      minWidth: 350,
+      height: "calc(100vh - 170px)"
+    }
   };
   const editStyles = {
-    root: [
-      {
-        background: editPaneBackground,
-        padding: 20,
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: editPaneBackground,
+      padding: 20,
+      height: "calc(100vh - 170px)"
+    }
   };
   const tdStyle = {
     width: "calc(50vw - 98px)"
@@ -203,39 +199,72 @@ const Experience = (props) => {
     const experience = experiences
       .find(experience => experience._id === props.selectedExperienceId);
     const previewContext = {
-      entity: { [props.selectedExperienceId]: experience && preview.composeExperiencePreview(experience, props.locale) },
+      entity: {
+        [props.selectedExperienceId]: experience && preview.composeExperiencePreview(experience, props.locale)
+      },
       instanceId: props.selectedExperienceId
     };
     return <Stack horizontal
       styles={{
         root: {
-          backgroundColor: semanticColors.inputBackground,
+          backgroundColor: "white",
+          borderColor: valoriYellow,
+          borderWidth: 1,
+          borderStyle: "solid none solid none",
           overflow: "auto"
         }
       }}>
       <Stack
         styles={{
           root: {
-            borderColor: valoriYellow,
-            borderWidth: 1,
-            borderStyle: "solid none solid none",
             width: 140
           }
         }}>
-        <Text block style={{ ...preview.cvTextStyle, color: valoriBlue }}>{experience && preview.composeExperiencePeriod(experience)}</Text>
-        <Text block style={{ ...preview.cvTextStyle, color: valoriYellow }}>{experience?.role && experience.role[props.locale]}</Text>
-        <Text block style={{ ...preview.cvTextStyle, color: valoriYellow }}>{experience?.client || experience?.employer}</Text>
+        <CvFormattedText
+          field="period"
+          instanceContext={previewContext}
+          markDown={false}
+          textComponentStyle={{
+            backgroundColor: "white",
+            color: valoriBlue,
+            padding: 0
+          }}
+        />
+        <CvFormattedText
+          field={`role.${props.locale}`}
+          instanceContext={previewContext}
+          markDown={false}
+          textComponentStyle={{
+            backgroundColor: "white",
+            color: valoriYellow,
+            padding: 0
+          }}
+        />
+        <CvFormattedText
+          field="clientOrEmployer"
+          instanceContext={previewContext}
+          markDown={false}
+          textComponentStyle={{
+            backgroundColor: "white",
+            color: valoriYellow,
+            padding: 0
+          }}
+        />
       </Stack>
       <CvFormattedText
         field={`description.${props.locale}`}
         instanceContext={previewContext}
         markDown={true}
+        textComponentStyle={{
+          backgroundColor: "white",
+          color: "black",
+          paddingTop: 0
+        }}
         styles={{
           root: {
             borderColor: valoriYellow,
             borderWidth: 1,
-            borderStyle: "solid none solid dashed",
-            paddingTop: 0,
+            borderLeftStyle: "dashed",
             width: 492
           }
         }}

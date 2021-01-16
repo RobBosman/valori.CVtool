@@ -25,14 +25,12 @@ const Profile = (props) => {
   };
   const {editPaneBackground} = useTheme();
   const editStyles = {
-    root: [
-      {
-        background: editPaneBackground,
-        padding: 20,
-        maxWidth: "calc(100vw - 200px)",
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: editPaneBackground,
+      padding: 20,
+      maxWidth: "calc(100vw - 200px)",
+      height: "calc(100vh - 170px)"
+    }
   };
 
   return (

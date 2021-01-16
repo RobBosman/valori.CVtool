@@ -7,7 +7,6 @@ import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
-import io.vertx.ext.auth.oauth2.OAuth2FlowType
 import io.vertx.ext.auth.oauth2.OAuth2FlowType.AUTH_JWT
 import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
@@ -28,9 +27,9 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
         private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create()
 
-        fun checkOpenIdConnection(): Single<String> {
+        fun checkOpenIdConnection() =
             // Use any available OAuth2 connection.
-            return oauth2Subject
+            oauth2Subject
                 .observeOn(Schedulers.io())
                 .take(1)
                 .singleOrError()
@@ -50,7 +49,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                             it.message // Expected error response. Don't propagate the error, only the message String.
                         }
                 }
-        }
     }
 
     private fun connectToOpenID(): Single<OAuth2Auth> {

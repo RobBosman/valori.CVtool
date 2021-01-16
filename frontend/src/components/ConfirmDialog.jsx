@@ -19,7 +19,9 @@ const ConfirmDialog = (props) => {
       menu: ContextualMenu
     },
     styles: {
+      ...props.styles,
       main: {
+        ...props.styles?.main,
         borderTopWidth: 5,
         borderTopStyle: "solid",
         borderColor: semanticColors.primaryButtonBackground
@@ -65,7 +67,8 @@ ConfirmDialog.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   selectedItemFields: PropTypes.func,
   onProceed: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired
+  onCancel: PropTypes.func.isRequired,
+  styles: PropTypes.object
 };
 
 export default ConfirmDialog;

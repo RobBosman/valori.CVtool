@@ -6,13 +6,11 @@ const Info = () => {
 
   const {viewPaneBackground} = useTheme();
   const viewStyles = {
-    root: [
-      {
-        background: viewPaneBackground,
-        padding: 20,
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: viewPaneBackground,
+      padding: 20,
+      height: "calc(100vh - 170px)"
+    }
   };
 
   return (

@@ -23,7 +23,7 @@ import * as preview from "../cv/Preview";
 // }
 const Search = (props) => {
 
-  const { semanticColors, markHighlightBackground, editPaneBackground, viewPaneBackground } = uiServices.useTheme();
+  const { semanticColors, markHighlightBackground, editPaneBackground, viewPaneBackground, valoriYellow } = uiServices.useTheme();
   const today = new Date().toISOString();
 
   const renderHighlighted = (before, match, after, renderFunc, defaultStyle) =>
@@ -137,24 +137,20 @@ const Search = (props) => {
   ];
 
   const viewStyles = {
-    root: [
-      {
-        background: viewPaneBackground,
-        padding: 20,
-        minWidth: 550,
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: viewPaneBackground,
+      padding: 20,
+      minWidth: 550,
+      height: "calc(100vh - 170px)"
+    }
   };
   const editStyles = {
-    root: [
-      {
-        background: editPaneBackground,
-        padding: 20,
-        width: "100%",
-        height: "calc(100vh - 170px)"
-      }
-    ]
+    root: {
+      background: editPaneBackground,
+      padding: 20,
+      width: "100%",
+      height: "calc(100vh - 170px)"
+    }
   };
   const tdStyle = {
     width: "calc(50vw - 98px)",
@@ -184,7 +180,6 @@ const Search = (props) => {
       instanceId: experience._id,
     };
     return <Stack
-      tokens={{ childrenGap: "l1" }}
       styles={{
         root: {
           background: viewPaneBackground,
@@ -192,39 +187,63 @@ const Search = (props) => {
           height: `calc(100vh - ${329 + selectedSearchResult.skills.length * 24}px)`
         }
       }}>
-      <Stack horizontal
-        tokens={{ childrenGap: "l1" }}>
-        <CvFormattedText
-          field="period"
-          instanceContext={experienceContext}
-          markDown={false}
-          formattingSpecs={highlightFormattingSpecs}
-          styles={{ root: { minWidth: 135 } }}
-        />
-        <CvFormattedText
-          field={`role.${props.locale}`}
-          instanceContext={experienceContext}
-          markDown={false}
-          formattingSpecs={highlightFormattingSpecs}
-        />
-        <CvFormattedText
-          field="clientOrEmployer"
-          instanceContext={experienceContext}
-          markDown={false}
-          formattingSpecs={highlightFormattingSpecs}
-        />
-      </Stack>
       <div style={{
         position: "relative",
         overflowY: "auto",
         height: "inherit"
       }}>
         <ScrollablePane>
+          <Stack
+            styles={{
+              root: {
+                borderColor: valoriYellow,
+                borderWidth: 1,
+                borderStyle: "solid dashed none none"
+              }
+            }}>
+            <CvFormattedText
+              field="period"
+              instanceContext={experienceContext}
+              markDown={false}
+              formattingSpecs={highlightFormattingSpecs}
+              textComponentStyle={{
+                paddingBottom: 0
+              }}
+            />
+            <CvFormattedText
+              field={`role.${props.locale}`}
+              instanceContext={experienceContext}
+              markDown={false}
+              formattingSpecs={highlightFormattingSpecs}
+              textComponentStyle={{
+                color: valoriYellow,
+                paddingTop: 0,
+                paddingBottom: 0
+              }}
+            />
+            <CvFormattedText
+              field="clientOrEmployer"
+              instanceContext={experienceContext}
+              markDown={false}
+              formattingSpecs={highlightFormattingSpecs}
+              textComponentStyle={{
+                color: valoriYellow,
+                paddingTop: 0
+              }}
+            />
+          </Stack>
           <CvFormattedText
             field={`description.${props.locale}`}
             instanceContext={experienceContext}
             markDown={true}
             formattingSpecs={highlightFormattingSpecs}
+            styles={{
+              root: {
+                borderColor: valoriYellow,
+                borderWidth: 1,
+                borderStyle: "solid none solid dashed"
+              }
+            }}
           />
         </ScrollablePane>
       </div>
@@ -287,8 +306,7 @@ const Search = (props) => {
                 </table>
               }
               {selectedSearchResult?.experiences?.length > 0
-                && <Label
-                  disabled={!selectedSearchResult?.experiences?.length}>
+                && <Label>
                   Werkervaring
                 </Label>
               }
