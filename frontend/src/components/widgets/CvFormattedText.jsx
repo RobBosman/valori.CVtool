@@ -3,12 +3,7 @@ import React from "react";
 import { Label, Stack, Text } from "@fluentui/react";
 import * as uiServices from "../../services/ui/ui-services";
 import * as textFormatter from "../../utils/TextFormatter";
-
-export const cvHeadings = {
-  activities: "Taken/werkzaamheden:",
-  results: "Resultaat:",
-  keywords: "Werkomgeving:"
-};
+import * as preview from "../cv/Preview";
 
 export const CvFormattedText = (props) => {
 
@@ -26,10 +21,6 @@ export const CvFormattedText = (props) => {
   }, [instance, props.field]);
 
   const { semanticColors, valoriYellow } = uiServices.useTheme();
-
-  const cvTextStyle = {
-    fontFamily: "Arial, Helvetica, sans-serif"
-  };
 
   const renderBlankLine = (before, match, after, renderFunc, defaultStyle) =>
     <Text>
@@ -68,12 +59,12 @@ export const CvFormattedText = (props) => {
   const renderCvHeading = (before, match, after, renderFunc, defaultStyle) =>
     <Text style={defaultStyle}>
       {renderFunc(before)}
-      <Text block style={{ ...defaultStyle, color: valoriYellow, fontWeight: "bold", marginTop: 12 }}>{match}</Text>
+      <Text block style={{ ...defaultStyle, color: valoriYellow, marginTop: 12 }}>{match}</Text>
       {renderFunc(after, { newParagraph: true })}
     </Text>;
-
+  
   const cvHeadingSpecs =
-    Object.values(cvHeadings)
+    Object.values(preview.cvHeadings)
       .map(cvHeading => ({ textToMatch: cvHeading, newLineBefore: true, wordBreakAfter: true, render: renderCvHeading }));
 
   const formattingSpecs = React.useMemo(() => {
@@ -107,8 +98,8 @@ export const CvFormattedText = (props) => {
         </Label>
       }
       <Text
-        style={{ ...cvTextStyle, ...textComponentStyle }}>
-        {textFormatter.renderAndFormat(value, formattingSpecs, cvTextStyle)}
+        style={{ ...preview.cvTextStyle, ...textComponentStyle }}>
+        {textFormatter.renderAndFormat(value, formattingSpecs, preview.cvTextStyle)}
       </Text>
     </Stack>
   );

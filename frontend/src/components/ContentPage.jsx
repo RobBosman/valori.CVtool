@@ -85,7 +85,7 @@ const ContentPage = (props) => {
             key: "#education",
             url: "#education",
             name: "Opleidingen",
-            icon: "D365TalentLearn",
+            icon: "Education",
             disabled: !props.selectedCvId,
             content: <Education />
           },

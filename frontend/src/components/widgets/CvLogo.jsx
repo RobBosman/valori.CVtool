@@ -17,7 +17,8 @@ const versionStyle = {
   right: 10,
   bottom: 10,
   fontSize: "small",
-  color: "#888888"
+  color: "#888888",
+  zIndex: 1
 };
 
 const CvLogo = () => (

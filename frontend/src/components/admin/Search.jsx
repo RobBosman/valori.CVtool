@@ -3,13 +3,13 @@ import React from "react";
 import { Text, Stack, TextField, Label, Pivot, PivotItem, ScrollablePane, PivotLinkFormat } from "@fluentui/react";
 import { connect } from "react-redux";
 import { CvDetailsList } from "../widgets/CvDetailsList";
-import { CvTextField } from "../widgets/CvTextField";
-import { CvFormattedText, cvHeadings } from "../widgets/CvFormattedText";
+import { CvFormattedText } from "../widgets/CvFormattedText";
 import { getEnumData, SkillCategories } from "../cv/Enums";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
 import * as textFormatter from "../../utils/TextFormatter";
+import * as preview from "../cv/Preview";
 
 // searchResult:
 // {
@@ -33,7 +33,7 @@ const Search = (props) => {
       {renderFunc(after)}
     </Text>;
 
-  const combinedFormattingSpecs = props.searchText
+  const highlightFormattingSpecs = props.searchText
     ?.trim()
     ?.split(/\s+/)
     ?.map(keyword => ({
@@ -43,29 +43,10 @@ const Search = (props) => {
       render: renderHighlighted
     }));
 
-  const composeExperienceDescription = (experience, locale) => {
-    const assignment = experience.assignment && experience.assignment[locale]?.trim() || "";
-    const activities = experience.activities && experience.activities[locale]?.trim() || "";
-    const results = experience.results && experience.results[locale]?.trim() || "";
-    const keywords = experience.keywords && experience.keywords[locale]?.trim() || "";
-    var composedText = assignment;
-    if (activities)
-      composedText += `\n${cvHeadings.activities}\n${activities}`;
-    if (results)
-      composedText += `\n${cvHeadings.results}\n${results}`;
-    if (keywords)
-      composedText += `\n${cvHeadings.keywords}\n${keywords}`;
-    return composedText.trim();
-  };
-
-  const enrichExperience = React.useCallback((experience) => ({
+  const enrichExperience = React.useCallback(experience => ({
     ...experience,
     toYear: parseInt((experience.periodEnd || today).substr(0, 4)),
-    period: `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`,
-    clientOrEmployer: experience.client || experience.employer,
-    description: {
-      [props.locale]: composeExperienceDescription(experience, props.locale)
-    }
+    ...preview.composeExperiencePreview(experience, props.locale)
   }),
   [props.locale]);
 
@@ -213,23 +194,24 @@ const Search = (props) => {
       }}>
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
-        <CvTextField
+        <CvFormattedText
           field="period"
           instanceContext={experienceContext}
-          readOnly={true}
-          styles={{ root: { width: 135 } }}
+          markDown={false}
+          formattingSpecs={highlightFormattingSpecs}
+          styles={{ root: { minWidth: 135 } }}
         />
         <CvFormattedText
           field={`role.${props.locale}`}
           instanceContext={experienceContext}
           markDown={false}
-          formattingSpecs={combinedFormattingSpecs}
+          formattingSpecs={highlightFormattingSpecs}
         />
         <CvFormattedText
           field="clientOrEmployer"
           instanceContext={experienceContext}
           markDown={false}
-          formattingSpecs={combinedFormattingSpecs}
+          formattingSpecs={highlightFormattingSpecs}
         />
       </Stack>
       <div style={{
@@ -242,7 +224,7 @@ const Search = (props) => {
             field={`description.${props.locale}`}
             instanceContext={experienceContext}
             markDown={true}
-            formattingSpecs={combinedFormattingSpecs}
+            formattingSpecs={highlightFormattingSpecs}
           />
         </ScrollablePane>
       </div>
@@ -296,7 +278,7 @@ const Search = (props) => {
                       ?.map(skill =>
                         <tr key={skill._id}>
                           <td width="30%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
-                          <td width="60%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], combinedFormattingSpecs)}</td>
+                          <td width="60%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], highlightFormattingSpecs)}</td>
                           <td width="10%" align="right">{"* ".repeat(skill.skillLevel).trim()}</td>
                         </tr>
                       )

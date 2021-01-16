@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton, StackItem } from "@fluentui/react";
+import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Panel, PanelType } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -11,12 +11,14 @@ import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import ConfirmDialog from "../ConfirmDialog";
+import { CvFormattedText } from "../widgets/CvFormattedText";
 import * as commonUtils from "../../utils/CommonUtils";
+import * as preview from "./Preview";
 
 const entityName = "experience";
 
 const Experience = (props) => {
-  
+
   const [state, setState] = React.useState({
     isConfirmDialogVisible: false,
     coachmarkTarget: undefined,
@@ -32,15 +34,15 @@ const Experience = (props) => {
     replaceInstance: props.replaceExperience
   }),
   [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);
-  
+
   // Find all {Experiences} of the selected {cv}.
   const experiences = React.useMemo(() =>
     props.selectedCvId && Object.values(props.experienceEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
-      || [],
+    || [],
   [props.experienceEntity, props.selectedCvId]);
-  
+
   const showCoachmark = (event) =>
     setState(prevState => ({
       ...prevState,
@@ -49,9 +51,6 @@ const Experience = (props) => {
     }));
   const hideCoachmark = () =>
     setState(prevState => ({ ...prevState, isCoachmarkVisible: false }));
-
-  const composePeriod = (experience) =>
-    `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
 
   const renderRole = (item) =>
     item.role && item.role[props.locale] || commonUtils.getPlaceholder(experiences, item._id, "role", props.locale);
@@ -67,7 +66,7 @@ const Experience = (props) => {
       key: "period",
       fieldName: "sortIndex",
       name: "Periode",
-      onRender: composePeriod,
+      onRender: preview.composeExperiencePeriod,
       isResizable: false,
       minWidth: 110,
       maxWidth: 110,
@@ -103,34 +102,10 @@ const Experience = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground} = useTheme();
-  const viewStyles = {
-    root: [
-      {
-        background: viewPaneBackground,
-        padding: 20,
-        minWidth: 350,
-        height: "calc(100vh - 170px)"
-      }
-    ]
-  };
-  const editStyles = {
-    root: [
-      {
-        background: editPaneBackground,
-        padding: 20,
-        height: "calc(100vh - 170px)"
-      }
-    ]
-  };
-  const tdStyle = {
-    width: "calc(50vw - 98px)"
-  };
-
   const selectedItemFields = React.useCallback(() => {
     const selectedExperience = experiences.find(experience => experience._id === props.selectedExperienceId);
     return selectedExperience && {
-      Periode: composePeriod(selectedExperience),
+      Periode: preview.composeExperiencePeriod(selectedExperience),
       Opdrachtgever: selectedExperience.client
     };
   },
@@ -166,14 +141,14 @@ const Experience = (props) => {
   };
   const onDeleteCancelled = () =>
     setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
-  
+
   const dragDropEvents = {
     canDrop: () => true,
     canDrag: () => true,
     onDragStart: (item) => setState(prevState => ({ ...prevState, draggedItem: item })),
     onDragEnd: () => setState(prevState => ({ ...prevState, draggedItem: undefined })),
     onDragEnter: () => "", // return string is the css classes that will be added to the entering element.
-    onDragLeave: () => {},
+    onDragLeave: () => { },
     onDrop: (targetItem) => {
       const draggedItemKey = state.draggedItem._id;
       if (state.draggedItem && targetItem._id !== draggedItemKey) {
@@ -197,6 +172,77 @@ const Experience = (props) => {
       props.replaceExperiences(reIndexedItems);
     }
   };
+
+  const [previewVisible, setPreviewVisible] = React.useState(false);
+
+  const { semanticColors, viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
+  const viewStyles = {
+    root: [
+      {
+        background: viewPaneBackground,
+        padding: 20,
+        minWidth: 350,
+        height: "calc(100vh - 170px)"
+      }
+    ]
+  };
+  const editStyles = {
+    root: [
+      {
+        background: editPaneBackground,
+        padding: 20,
+        height: "calc(100vh - 170px)"
+      }
+    ]
+  };
+  const tdStyle = {
+    width: "calc(50vw - 98px)"
+  };
+
+  const renderPreview = React.useCallback(() => {
+    const experience = experiences
+      .find(experience => experience._id === props.selectedExperienceId);
+    const previewContext = {
+      entity: { [props.selectedExperienceId]: experience && preview.composeExperiencePreview(experience, props.locale) },
+      instanceId: props.selectedExperienceId
+    };
+    return <Stack horizontal
+      styles={{
+        root: {
+          backgroundColor: semanticColors.inputBackground,
+          overflow: "auto"
+        }
+      }}>
+      <Stack
+        styles={{
+          root: {
+            borderColor: valoriYellow,
+            borderWidth: 1,
+            borderStyle: "solid none solid none",
+            width: 140
+          }
+        }}>
+        <Text block style={{ ...preview.cvTextStyle, color: valoriBlue }}>{experience && preview.composeExperiencePeriod(experience)}</Text>
+        <Text block style={{ ...preview.cvTextStyle, color: valoriYellow }}>{experience?.role && experience.role[props.locale]}</Text>
+        <Text block style={{ ...preview.cvTextStyle, color: valoriYellow }}>{experience?.client || experience?.employer}</Text>
+      </Stack>
+      <CvFormattedText
+        field={`description.${props.locale}`}
+        instanceContext={previewContext}
+        markDown={true}
+        styles={{
+          root: {
+            borderColor: valoriYellow,
+            borderWidth: 1,
+            borderStyle: "solid none solid dashed",
+            paddingTop: 0,
+            width: 492
+          }
+        }}
+      />
+    </Stack>;
+  },
+  [experiences, props.selectedExperienceId, props.locale]);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -261,18 +307,38 @@ const Experience = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <Stack horizontal
+              <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
-                <CvDatePicker
-                  label="Van"
-                  field="periodBegin"
-                  instanceContext={experienceContext}
-                />
-                <CvDatePicker
-                  label="tot"
-                  field="periodEnd"
-                  instanceContext={experienceContext}
-                />
+                <Stack horizontal
+                  tokens={{ childrenGap: "l1" }}>
+                  <CvDatePicker
+                    label="Van"
+                    field="periodBegin"
+                    instanceContext={experienceContext}
+                  />
+                  <CvDatePicker
+                    label="tot"
+                    field="periodEnd"
+                    instanceContext={experienceContext}
+                  />
+                </Stack>
+                <StackItem align="end">
+                  <PrimaryButton
+                    text="Preview"
+                    iconProps={{ iconName: "EntryView" }}
+                    onClick={() => setPreviewVisible(true)}
+                  />
+                </StackItem>
+                <Panel
+                  isBlocking={false}
+                  isOpen={previewVisible}
+                  onDismiss={() => setPreviewVisible(false)}
+                  type={PanelType.custom}
+                  customWidth={700}
+                  closeButtonAriaLabel="Close"
+                  headerText="Preview">
+                  {renderPreview()}
+                </Panel>
               </Stack>
               <CvTextField
                 label="Rol"
@@ -297,34 +363,43 @@ const Experience = (props) => {
                   />
                 </StackItem>
               </Stack>
-              <CvTextField
-                label="Opdracht"
-                field={`assignment.${props.locale}`}
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight
-              />
-              <CvTextField
-                label="Activiteiten"
-                field={`activities.${props.locale}`}
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight
-              />
-              <CvTextField
-                label="Resultaten"
-                field={`results.${props.locale}`}
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight
-              />
-              <CvTextField
-                label="Werkomgeving"
-                field={`keywords.${props.locale}`}
-                instanceContext={experienceContext}
-                multiline
-                autoAdjustHeight
-              />
+              <Separator />
+              <div style={{
+                position: "relative",
+                overflowY: "auto",
+                height: "inherit"
+              }}>
+                <ScrollablePane>
+                  <CvTextField
+                    label="Opdracht"
+                    field={`assignment.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
+                  <CvTextField
+                    label="Activiteiten"
+                    field={`activities.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
+                  <CvTextField
+                    label="Resultaten"
+                    field={`results.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
+                  <CvTextField
+                    label="Werkomgeving"
+                    field={`keywords.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
+                </ScrollablePane>
+              </div>
             </Stack>
           </td>
         </tr>
