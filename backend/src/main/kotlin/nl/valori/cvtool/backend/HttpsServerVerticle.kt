@@ -93,6 +93,14 @@ internal class HttpsServerVerticle : AbstractVerticle() {
                     .setWebRoot("/webroot/.well-known/acme-challenge")
             )
         router
+            .get("/cvtool*") // Redirect old (bookmarked) URLs, e.g. https://cvtool.valori/cvtool/CVtool.html to root.
+            .handler { context ->
+                context.response()
+                    .setStatusCode(301)
+                    .putHeader("Location", "/")
+                    .end()
+            }
+        router
             .get("/health*")
             .handler(HealthChecker.getHandler(vertx, config()))
         router
