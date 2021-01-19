@@ -131,8 +131,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     error("Cannot obtain email from JWT.")
                 else if (!email.toUpperCase().endsWith("@${AUTH_DOMAIN.toUpperCase()}"))
                     error("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
+                var name = accessToken.getString("name", "")
+                if (name.isBlank())
+                    name = email.substringBefore("@")
                 JsonObject()
                     .put("email", email)
-                    .put("name", accessToken.getString("name", ""))
+                    .put("name", name)
             }
 }

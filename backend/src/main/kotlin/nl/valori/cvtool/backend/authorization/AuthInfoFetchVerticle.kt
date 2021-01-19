@@ -20,15 +20,15 @@ const val AUTH_INFO_FETCH_ADDRESS = "authInfo.fetch"
 internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
 
     /**
-     * Expects message body
+     * Expected message body:
      *   {
-     *     "email": "PietjePuk@Valori.nl",
+     *     "email": "P.Puk@Valori.nl",
      *     "name": "Pietje Puk"
      *   }
      *
      * Response:
      *   {
-     *     "email": "PietjePuk@Valori.nl",
+     *     "email": "P.Puk@Valori.nl",
      *     "name": "Pietje Puk",
      *     "authorizationLevel": "SALES",
      *     "accountId": "1111-2222-5555-7777",

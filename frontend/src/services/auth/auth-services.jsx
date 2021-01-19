@@ -45,7 +45,7 @@ export const authenticateAtOpenIdProvider = () => {
 
 export const fetchAuthInfoFromRemote = (authenticationResult, sendEvent) => {
   const {account} = authenticationResult;
-  return sendEvent("authInfo.fetch", { email: account.username, name: account.name })
+  return sendEvent("authInfo.fetch", { email: account.username, name: account.name || account.username.split("@")[0] })
     .then((message) => {
       const authInfo = message.body;
       if (!authInfo) {

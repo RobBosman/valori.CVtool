@@ -54,7 +54,7 @@ internal object EventBusMessageHandler {
                             bridgeEvent.complete(true)
                         },
                         {
-                            log.debug("Event bridge message was not authenticated: ${it.message}")
+                            log.warn("Event bridge message was not authenticated: ${it.message}")
                             bridgeEvent.complete(false)
                         }
                     )
@@ -90,9 +90,7 @@ internal object EventBusMessageHandler {
         vertx
             .eventBus()
             .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, authInfo.toJson(), deliveryOptions)
-            .map {
-                AuthInfo.fromJson(it.body())
-            }
+            .map { AuthInfo.fromJson(it.body()) }
 
     private fun authorize(vertx: Vertx, bridgeEvent: BridgeEvent, authInfo: AuthInfo): Single<AuthInfo> {
         val address = bridgeEvent.rawMessage.getString("address")

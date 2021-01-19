@@ -268,7 +268,7 @@ const Accounts = (props) => {
                       styles={{ root: { width: 200 } }}
                     />
                   </TooltipHost>
-                  { ["ADMIN"].includes(props.authInfo.authorizationLevel)
+                  { z["ADMIN"].includes(props.authInfo.authorizationLevel)
                     && <TooltipHost content={`Definitief verwijderen van alle gegevens${selectedAccountName
                       ? ` van ${selectedAccountName}`
                       : " van een account"}`}>
