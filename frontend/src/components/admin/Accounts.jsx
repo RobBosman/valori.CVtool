@@ -231,7 +231,7 @@ const Accounts = (props) => {
             </Stack>
           </td>
 
-          { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+          {["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
             && <td valign="top" style={tdStyle}>
               <Stack styles={editStyles}>
                 <CvTextField
@@ -247,7 +247,7 @@ const Accounts = (props) => {
                   options={BusinessUnitOptions}
                   styles={{ dropdown: { width: 200 } }}
                 />
-                { ["ADMIN"].includes(props.authInfo.authorizationLevel)
+                {["ADMIN"].includes(props.authInfo.authorizationLevel)
                   && <CvDropdown
                     label="Autorisatie"
                     field="authorization.level"
@@ -268,7 +268,7 @@ const Accounts = (props) => {
                       styles={{ root: { width: 200 } }}
                     />
                   </TooltipHost>
-                  { z["ADMIN"].includes(props.authInfo.authorizationLevel)
+                  {["ADMIN"].includes(props.authInfo.authorizationLevel)
                     && <TooltipHost content={`Definitief verwijderen van alle gegevens${selectedAccountName
                       ? ` van ${selectedAccountName}`
                       : " van een account"}`}>
