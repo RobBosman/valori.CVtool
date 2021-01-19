@@ -5,8 +5,8 @@ export const generateCvAtRemote = (accountId, locale, sendEventFunc) =>
 
 const escapeJsonString = (text) =>
   text
-    .replace("\\", "\\\\") // escape backslashes
-    .replace("\"", "\\\"") // escape double quotes
+    .replace(/\\/g, "\\\\") // escape backslashes
+    .replace(/"/g, "\\\"") // escape double quotes
     .replace(/\s+/g, " ") // use single spaces
     .trim();
 
