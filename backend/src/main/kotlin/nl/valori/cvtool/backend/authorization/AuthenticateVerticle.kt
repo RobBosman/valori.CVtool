@@ -15,6 +15,7 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTH_DOMAIN = "Valori.nl"
@@ -27,7 +28,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
         private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create()
 
-        fun checkOpenIdConnection() =
+        fun checkOpenIdConnection(): Single<String> =
             // Use any available OAuth2 connection.
             oauth2Subject
                 .observeOn(Schedulers.io())
@@ -46,9 +47,13 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                         .onErrorReturn {
                             if (it.message?.contains("Bad Request") != true)
                                 throw it
-                            it.message // Expected error response. Don't propagate the error, only the message String.
+                            // The expected error response. Don't propagate the error, only the message String.
+                            it.message
                         }
                 }
+                .timeout(1_000, MILLISECONDS)
+                .doOnError { log.warn("Error connecting to OpenID: ${it.message}") }
+                .retry(2)
     }
 
     private fun connectToOpenID(): Single<OAuth2Auth> {

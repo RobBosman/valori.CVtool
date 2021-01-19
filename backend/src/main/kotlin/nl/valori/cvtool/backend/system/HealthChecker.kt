@@ -55,7 +55,7 @@ internal object HealthChecker {
             .register("OpenID", 5_000) { healthStatus ->
                 AuthenticateVerticle
                     .checkOpenIdConnection()
-                    .timeout(3_000, MILLISECONDS)
+                    .timeout(4_000, MILLISECONDS)
                     .subscribe(
                         {
                             healthStatus.complete(Status.OK())
