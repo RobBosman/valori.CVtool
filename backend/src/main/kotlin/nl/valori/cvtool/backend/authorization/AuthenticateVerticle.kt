@@ -15,7 +15,6 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URL
-import java.util.concurrent.TimeUnit.MILLISECONDS
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTH_DOMAIN = "Valori.nl"
@@ -51,9 +50,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                             it.message
                         }
                 }
-                .timeout(1_000, MILLISECONDS)
-                .doOnError { log.warn("Error connecting to OpenID: ${it.message}") }
-                .retry(2)
     }
 
     private fun connectToOpenID(): Single<OAuth2Auth> {

@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>nl.valori.cvtool</groupId>
-        <artifactId>root</artifactId>
+        <groupId>nl.valori</groupId>
+        <artifactId>cvtool</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>backend</artifactId>
+    <artifactId>cvtool-backend</artifactId>
     <description>Backend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
     <properties>
@@ -92,8 +92,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>nl.valori.cvtool</groupId>
-            <artifactId>frontend</artifactId>
+            <groupId>nl.valori</groupId>
+            <artifactId>cvtool-frontend</artifactId>
             <type>war</type>
             <version>${project.version}</version>
         </dependency>

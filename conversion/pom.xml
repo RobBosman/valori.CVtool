@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>nl.valori.cvtool</groupId>
-        <artifactId>root</artifactId>
+        <groupId>nl.valori</groupId>
+        <artifactId>cvtool</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>conversion</artifactId>
+    <artifactId>cvtool-conversion</artifactId>
     <description>conversion of old CVtool data format (XML) to new (JSON)</description>
 
     <properties>

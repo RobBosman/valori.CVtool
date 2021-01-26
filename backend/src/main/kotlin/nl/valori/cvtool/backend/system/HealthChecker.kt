@@ -1,5 +1,6 @@
 package nl.valori.cvtool.backend.system
 
+import io.reactivex.Single
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.healthchecks.Status
 import io.vertx.reactivex.core.Vertx
@@ -8,11 +9,35 @@ import nl.valori.cvtool.backend.Main
 import nl.valori.cvtool.backend.authorization.AuthenticateVerticle
 import nl.valori.cvtool.backend.persistence.MongoConnection
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
+import java.time.ZoneOffset.UTC
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.MILLISECONDS
+import java.util.concurrent.TimeUnit.SECONDS
+import java.util.concurrent.atomic.AtomicLong
 
 internal object HealthChecker {
 
     private val log = LoggerFactory.getLogger(javaClass)
+    private val lastSuccessEpochSecond = AtomicLong(getCurrentEpochSecond())
+
+    private fun getCurrentEpochSecond() =
+        LocalDateTime.now().toEpochSecond(UTC)
+
+    private fun Single<String>.debounceErrors(maxErrorsOnlyTimeUnits: Long, timeUnit: TimeUnit) =
+        this
+            .doOnSuccess { lastSuccessEpochSecond.set(getCurrentEpochSecond()) }
+            .onErrorReturn {
+                val currentEpochSecond = getCurrentEpochSecond()
+                val lastSuccessEpochSecond = lastSuccessEpochSecond.get()
+
+                if (currentEpochSecond - lastSuccessEpochSecond > timeUnit.toSeconds(maxErrorsOnlyTimeUnits))
+                    throw it
+
+                val message = "This error is ignored for now: ${it.message}"
+                log.warn(message)
+                message
+            }
 
     fun getHandler(vertx: Vertx, config: JsonObject): HealthCheckHandler =
         HealthCheckHandler
@@ -55,7 +80,8 @@ internal object HealthChecker {
             .register("OpenID", 5_000) { healthStatus ->
                 AuthenticateVerticle
                     .checkOpenIdConnection()
-                    .timeout(4_000, MILLISECONDS)
+                    .timeout(2_000, MILLISECONDS)
+                    .debounceErrors(90, SECONDS)
                     .subscribe(
                         {
                             healthStatus.complete(Status.OK())
