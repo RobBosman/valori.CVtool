@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { DatePicker, DayOfWeek } from "@fluentui/react";
+import { DatePicker, DayOfWeek, TextField } from "@fluentui/react";
 
 const datePickerStrings = {
   months: ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"],
@@ -19,7 +19,7 @@ const datePickerStrings = {
 
 export const CvDatePicker = (props) => {
 
-  const { entity, instanceId, replaceInstance, locale } = props.instanceContext;
+  const {entity, instanceId, replaceInstance, locale, readOnly} = props.instanceContext;
   const instance = entity && entity[instanceId];
   const localeForDate = locale?.substr(0, 2);
 
@@ -65,8 +65,16 @@ export const CvDatePicker = (props) => {
   
   const value = parseDateFromStorage(instance && instance[props.field] || props.defaultValue || "");
 
-  return (
-    <DatePicker
+  return readOnly
+    ? <TextField
+      label={props.label}
+      readOnly={true}
+      borderless={true}
+      disabled={!instance}
+      value={value && formatDateForScreen(value)}
+      styles={props.styles}
+    />
+    : <DatePicker
       label={props.label}
       disabled={!instance}
       styles={props.styles}
@@ -77,8 +85,7 @@ export const CvDatePicker = (props) => {
       onSelectDate={onChange}
       formatDate={formatDateForScreen}
       parseDateFromString={parseDateFromScreen}
-    />
-  );
+    />;
 };
 
 CvDatePicker.propTypes = {

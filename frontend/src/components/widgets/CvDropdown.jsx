@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Dropdown } from "@fluentui/react";
+import { Dropdown, TextField } from "@fluentui/react";
 
 export const CvDropdown = (props) => {
   
-  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
   const instance = entity && entity[instanceId];
 
   let value;
@@ -38,16 +38,23 @@ export const CvDropdown = (props) => {
     }
   };
 
-  return (
-    <Dropdown
+  return readOnly
+    ? <TextField
+      label={props.label}
+      readOnly={true}
+      borderless={true}
+      value={props.options.find(option => option.key === value)?.text}
+      disabled={props.disabled || !instance}
+      styles={props.styles}
+    />
+    : <Dropdown
       label={props.label}
       options={props.options}
       styles={props.styles}
       disabled={props.disabled || !instance}
       selectedKey={value}
       onChange={onChange}
-    />
-  );
+    />;
 };
 
 CvDropdown.propTypes = {

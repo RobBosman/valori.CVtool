@@ -16,11 +16,15 @@ const entityName = "publication";
 
 const Publication = (props) => {
 
+  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+
   const publicationContext = {
     entity: props.publicationEntity,
     instanceId: props.selectedPublicationId,
     setSelectedInstanceId: props.setSelectedPublicationId,
-    replaceInstance: props.replacePublication
+    replaceInstance: props.replacePublication,
+    readOnly: !isEditable
   };
   
   // Find all {Publication} of the selected {cv}.
@@ -136,29 +140,31 @@ const Publication = (props) => {
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Publicaties</Text>
-                <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
-                  <DefaultButton
-                    text="Toevoegen"
-                    iconProps={{ iconName: "Add" }}
-                    disabled={!props.selectedCvId}
-                    onClick={onAddItem}
-                  />
-                  <DefaultButton
-                    text="Verwijderen"
-                    iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedPublicationId}
-                    onClick={onDeleteItem}
-                  />
-                  <ConfirmDialog
-                    title="Definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                  />
-                </Stack>
+                {isEditable
+                  && <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <DefaultButton
+                      text="Toevoegen"
+                      iconProps={{ iconName: "Add" }}
+                      disabled={!props.selectedCvId}
+                      onClick={onAddItem}
+                    />
+                    <DefaultButton
+                      text="Verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedPublicationId}
+                      onClick={onDeleteItem}
+                    />
+                    <ConfirmDialog
+                      title="Definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={isConfirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                    />
+                  </Stack>
+                }
               </Stack>
               <CvDetailsList
                 columns={columns}
@@ -205,7 +211,9 @@ const Publication = (props) => {
 };
 
 Publication.propTypes = {
+  authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
+  cvEntity: PropTypes.object,
   selectedCvId: PropTypes.string,
   publicationEntity: PropTypes.object,
   replacePublication: PropTypes.func.isRequired,
@@ -213,11 +221,13 @@ Publication.propTypes = {
   setSelectedPublicationId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId.cv,
-  publicationEntity: state.safe.content[entityName],
-  selectedPublicationId: state.ui.selectedId[entityName]
+const select = (store) => ({
+  authInfo: store.auth.authInfo,
+  locale: store.ui.userPrefs.locale,
+  cvEntity: store.safe.content.cv,
+  selectedCvId: store.ui.selectedId.cv,
+  publicationEntity: store.safe.content[entityName],
+  selectedPublicationId: store.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({

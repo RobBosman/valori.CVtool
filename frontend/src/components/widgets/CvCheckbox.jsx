@@ -4,7 +4,7 @@ import { Checkbox } from "@fluentui/react";
 
 export const CvCheckbox = (props) => {
   
-  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
   const instance = entity && entity[instanceId];
   let value = instance && instance[props.field];
   value = value !== undefined ? !!value : props.defaultValue;
@@ -20,7 +20,7 @@ export const CvCheckbox = (props) => {
   return (
     <Checkbox
       label={props.label}
-      disabled={!instance || props.disabled}
+      disabled={!instance || props.disabled || readOnly}
       checked={value}
       onChange={onChange}
       styles={props.styles}

@@ -6,7 +6,8 @@ export const cvHeadings = {
 
 export const cvTextStyle = {
   fontFamily: "Arial, Helvetica, sans-serif",
-  fontSize: "10pt"
+  fontSize: "10pt",
+  lineHeight: 1.3
 };
 
 export const composeExperiencePeriod = (experience) =>

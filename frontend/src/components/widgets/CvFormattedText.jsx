@@ -22,27 +22,27 @@ export const CvFormattedText = (props) => {
 
   const { semanticColors, valoriYellow } = uiServices.useTheme();
 
-  const renderBlankLine = (before, match, after, renderFunc, defaultStyle) =>
+  const renderBlankLine = (before, _, after, renderFunc, defaultStyle) =>
     <Text>
       {before && <Text block style={defaultStyle}>{renderFunc(before)}</Text>}
       {before && after && <Text block style={defaultStyle}>{renderFunc("\u00A0", { newParagraph: true })}</Text>}
       {after && <Text block style={defaultStyle}>{renderFunc(after, { newParagraph: true })}</Text>}
     </Text>;
 
-  const renderParagraph = (before, match, after, renderFunc, defaultStyle) =>
+  const renderParagraph = (before, _, after, renderFunc, defaultStyle) =>
     <Text style={defaultStyle}>
       {before && <Text block style={defaultStyle}>{renderFunc(before)}</Text>}
       {after && <Text block style={defaultStyle}>{renderFunc(after, { newParagraph: true })}</Text>}
     </Text>;
 
-  const renderBulletListItem = (before, match, after, renderFunc, defaultStyle) =>
+  const renderBulletListItem = (before, _, after, renderFunc, defaultStyle) =>
     <Text style={defaultStyle}>
       {renderFunc(before)}
       <Text style={{ ...defaultStyle, marginLeft: 12, color: valoriYellow }}>●</Text>
       <Text block style={{ ...defaultStyle, marginLeft: 32, marginTop: -18 }}>{renderFunc(after)}</Text>
     </Text>;
 
-  const renderNumberedListItem = (before, match, after, renderFunc, defaultStyle, renderContext) => {
+  const renderNumberedListItem = (before, _, after, renderFunc, defaultStyle, renderContext) => {
     renderContext.numberingStartParagraph = isNaN(renderContext.numberingStartParagraph) ? renderContext.paragraph : parseInt(renderContext.numberingStartParagraph);
     renderContext.itemNumber = isNaN(renderContext.itemNumber) ? 1 : (parseInt(renderContext.itemNumber) + 1);
     if (renderContext.numberingStartParagraph + renderContext.itemNumber - 1 !== renderContext.paragraph) {

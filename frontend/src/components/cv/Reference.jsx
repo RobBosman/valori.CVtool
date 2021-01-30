@@ -16,11 +16,15 @@ const entityName = "reference";
 
 const Reference = (props) => {
 
+  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+
   const referenceContext = {
     entity: props.referenceEntity,
     instanceId: props.selectedReferenceId,
     setSelectedInstanceId: props.setSelectedReferenceId,
-    replaceInstance: props.replaceReference
+    replaceInstance: props.replaceReference,
+    readOnly: !isEditable
   };
   
   // Find all {references} of the selected {cv}.
@@ -136,29 +140,31 @@ const Reference = (props) => {
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Referenties</Text>
-                <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
-                  <DefaultButton
-                    text="Toevoegen"
-                    iconProps={{ iconName: "Add" }}
-                    disabled={!props.selectedCvId}
-                    onClick={onAddItem}
-                  />
-                  <DefaultButton
-                    text="Verwijderen"
-                    iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedReferenceId}
-                    onClick={onDeleteItem}
-                  />
-                  <ConfirmDialog
-                    title="Definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                  />
-                </Stack>
+                {isEditable
+                  && <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <DefaultButton
+                      text="Toevoegen"
+                      iconProps={{ iconName: "Add" }}
+                      disabled={!props.selectedCvId}
+                      onClick={onAddItem}
+                    />
+                    <DefaultButton
+                      text="Verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedReferenceId}
+                      onClick={onDeleteItem}
+                    />
+                    <ConfirmDialog
+                      title="Definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={isConfirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                    />
+                  </Stack>
+                }
               </Stack>
               <CvDetailsList
                 columns={columns}
@@ -199,7 +205,9 @@ const Reference = (props) => {
 };
 
 Reference.propTypes = {
+  authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
+  cvEntity: PropTypes.object,
   selectedCvId: PropTypes.string,
   referenceEntity: PropTypes.object,
   replaceReference: PropTypes.func.isRequired,
@@ -207,11 +215,13 @@ Reference.propTypes = {
   setSelectedReferenceId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId.cv,
-  referenceEntity: state.safe.content[entityName],
-  selectedReferenceId: state.ui.selectedId[entityName]
+const select = (store) => ({
+  authInfo: store.auth.authInfo,
+  locale: store.ui.userPrefs.locale,
+  cvEntity: store.safe.content.cv,
+  selectedCvId: store.ui.selectedId.cv,
+  referenceEntity: store.safe.content[entityName],
+  selectedReferenceId: store.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({

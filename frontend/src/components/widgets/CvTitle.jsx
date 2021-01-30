@@ -18,10 +18,10 @@ const CvTitle = (props) => {
   const memo = React.useMemo(() => {
     const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
     const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
-    const role = cv ? commonUtils.getValueOrFallback(cv, "role", props.locale) || "<ROL>" : "";
+    const role = commonUtils.getValueOrFallback(cv, "role", props.locale);
     return {
       name: account?.name || "<NAAM>",
-      role: role,
+      role: role || (cv ? "<ROL>" : ""),
       dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
       residence: account?.residence || "<WOONPLAATS>"
     };

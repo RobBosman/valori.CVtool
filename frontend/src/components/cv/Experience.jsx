@@ -19,6 +19,9 @@ const entityName = "experience";
 
 const Experience = (props) => {
 
+  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+
   const [state, setState] = React.useState({
     isConfirmDialogVisible: false,
     coachmarkTarget: undefined,
@@ -31,7 +34,8 @@ const Experience = (props) => {
     entity: props.experienceEntity,
     instanceId: props.selectedExperienceId,
     setSelectedInstanceId: props.setSelectedExperienceId,
-    replaceInstance: props.replaceExperience
+    replaceInstance: props.replaceExperience,
+    readOnly: !isEditable
   }),
   [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);
 
@@ -47,7 +51,7 @@ const Experience = (props) => {
     setState(prevState => ({
       ...prevState,
       coachmarkTarget: event.target,
-      isCoachmarkVisible: true
+      isCoachmarkVisible: isEditable
     }));
   const hideCoachmark = () =>
     setState(prevState => ({ ...prevState, isCoachmarkVisible: false }));
@@ -143,8 +147,8 @@ const Experience = (props) => {
     setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
 
   const dragDropEvents = {
-    canDrop: () => true,
-    canDrag: () => true,
+    canDrop: () => isEditable,
+    canDrag: () => isEditable,
     onDragStart: (item) => setState(prevState => ({ ...prevState, draggedItem: item })),
     onDragEnd: () => setState(prevState => ({ ...prevState, draggedItem: undefined })),
     onDragEnter: () => "", // return string is the css classes that will be added to the entering element.
@@ -282,29 +286,31 @@ const Experience = (props) => {
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Werkervaring</Text>
-                <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
-                  <DefaultButton
-                    text="Toevoegen"
-                    iconProps={{ iconName: "Add" }}
-                    disabled={!props.selectedCvId}
-                    onClick={onAddItem}
-                  />
-                  <DefaultButton
-                    text="Verwijderen"
-                    iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedExperienceId}
-                    onClick={onDeleteItem}
-                  />
-                  <ConfirmDialog
-                    title="Definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={state.isConfirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                  />
-                </Stack>
+                {isEditable
+                  && <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <DefaultButton
+                      text="Toevoegen"
+                      iconProps={{ iconName: "Add" }}
+                      disabled={!props.selectedCvId}
+                      onClick={onAddItem}
+                    />
+                    <DefaultButton
+                      text="Verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedExperienceId}
+                      onClick={onDeleteItem}
+                    />
+                    <ConfirmDialog
+                      title="Definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={state.isConfirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                    />
+                  </Stack>
+                }
               </Stack>
               <CvDetailsList
                 columns={columns}
@@ -313,8 +319,8 @@ const Experience = (props) => {
                 setKey={entityName}
                 dragDropEvents={dragDropEvents}
               />
-              {state.isCoachmarkVisible &&
-                <Coachmark
+              {state.isCoachmarkVisible
+                && <Coachmark
                   target={state.coachmarkTarget}
                   positioningContainerProps={{
                     directionalHint: DirectionalHint.topCenter,
@@ -335,101 +341,106 @@ const Experience = (props) => {
           </td>
 
           <td valign="top" style={tdStyle}>
-            <Stack styles={editStyles}>
-              <Stack horizontal horizontalAlign="space-between"
-                tokens={{ childrenGap: "l1" }}>
+            {isEditable
+              ? <Stack styles={editStyles}>
+                <Stack horizontal horizontalAlign="space-between"
+                  tokens={{ childrenGap: "l1" }}>
+                  <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <CvDatePicker
+                      label="Van"
+                      field="periodBegin"
+                      instanceContext={experienceContext}
+                    />
+                    <CvDatePicker
+                      label="tot"
+                      field="periodEnd"
+                      instanceContext={experienceContext}
+                    />
+                  </Stack>
+                  <StackItem align="end">
+                    <PrimaryButton
+                      text="Preview"
+                      iconProps={{ iconName: "EntryView" }}
+                      onClick={() => setPreviewVisible(true)}
+                    />
+                  </StackItem>
+                  <Panel
+                    isBlocking={false}
+                    isOpen={previewVisible}
+                    onDismiss={() => setPreviewVisible(false)}
+                    type={PanelType.custom}
+                    customWidth={700}
+                    closeButtonAriaLabel="Close"
+                    headerText="Preview">
+                    {renderPreview()}
+                  </Panel>
+                </Stack>
+                <CvTextField
+                  label="Rol"
+                  field={`role.${props.locale}`}
+                  instanceContext={experienceContext}
+                  placeholder={commonUtils.getPlaceholder(experiences, props.selectedExperienceId, "role", props.locale)}
+                />
                 <Stack horizontal
                   tokens={{ childrenGap: "l1" }}>
-                  <CvDatePicker
-                    label="Van"
-                    field="periodBegin"
-                    instanceContext={experienceContext}
-                  />
-                  <CvDatePicker
-                    label="tot"
-                    field="periodEnd"
-                    instanceContext={experienceContext}
-                  />
+                  <StackItem grow>
+                    <CvTextField
+                      label="Opdrachtgever"
+                      field="client"
+                      instanceContext={experienceContext}
+                    />
+                  </StackItem>
+                  <StackItem grow>
+                    <CvTextField
+                      label="Werkgever"
+                      field="employer"
+                      instanceContext={experienceContext}
+                    />
+                  </StackItem>
                 </Stack>
-                <StackItem align="end">
-                  <PrimaryButton
-                    text="Preview"
-                    iconProps={{ iconName: "EntryView" }}
-                    onClick={() => setPreviewVisible(true)}
-                  />
-                </StackItem>
-                <Panel
-                  isBlocking={false}
-                  isOpen={previewVisible}
-                  onDismiss={() => setPreviewVisible(false)}
-                  type={PanelType.custom}
-                  customWidth={700}
-                  closeButtonAriaLabel="Close"
-                  headerText="Preview">
-                  {renderPreview()}
-                </Panel>
+                <Separator />
+                <div style={{
+                  position: "relative",
+                  overflowY: "auto",
+                  height: "inherit"
+                }}>
+                  <ScrollablePane>
+                    <CvTextField
+                      label="Opdracht"
+                      field={`assignment.${props.locale}`}
+                      instanceContext={experienceContext}
+                      multiline
+                      autoAdjustHeight
+                    />
+                    <CvTextField
+                      label="Activiteiten"
+                      field={`activities.${props.locale}`}
+                      instanceContext={experienceContext}
+                      multiline
+                      autoAdjustHeight
+                    />
+                    <CvTextField
+                      label="Resultaten"
+                      field={`results.${props.locale}`}
+                      instanceContext={experienceContext}
+                      multiline
+                      autoAdjustHeight
+                    />
+                    <CvTextField
+                      label="Werkomgeving"
+                      field={`keywords.${props.locale}`}
+                      instanceContext={experienceContext}
+                      multiline
+                      autoAdjustHeight
+                    />
+                  </ScrollablePane>
+                </div>
               </Stack>
-              <CvTextField
-                label="Rol"
-                field={`role.${props.locale}`}
-                instanceContext={experienceContext}
-                placeholder={commonUtils.getPlaceholder(experiences, props.selectedExperienceId, "role", props.locale)}
-              />
-              <Stack horizontal
-                tokens={{ childrenGap: "l1" }}>
-                <StackItem grow>
-                  <CvTextField
-                    label="Opdrachtgever"
-                    field="client"
-                    instanceContext={experienceContext}
-                  />
-                </StackItem>
-                <StackItem grow>
-                  <CvTextField
-                    label="Werkgever"
-                    field="employer"
-                    instanceContext={experienceContext}
-                  />
-                </StackItem>
+              : <Stack styles={editStyles}>
+                {renderPreview()}
               </Stack>
-              <Separator />
-              <div style={{
-                position: "relative",
-                overflowY: "auto",
-                height: "inherit"
-              }}>
-                <ScrollablePane>
-                  <CvTextField
-                    label="Opdracht"
-                    field={`assignment.${props.locale}`}
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                  <CvTextField
-                    label="Activiteiten"
-                    field={`activities.${props.locale}`}
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                  <CvTextField
-                    label="Resultaten"
-                    field={`results.${props.locale}`}
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                  <CvTextField
-                    label="Werkomgeving"
-                    field={`keywords.${props.locale}`}
-                    instanceContext={experienceContext}
-                    multiline
-                    autoAdjustHeight
-                  />
-                </ScrollablePane>
-              </div>
-            </Stack>
+            }
           </td>
         </tr>
       </tbody>
@@ -438,7 +449,9 @@ const Experience = (props) => {
 };
 
 Experience.propTypes = {
+  authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
+  cvEntity: PropTypes.object,
   selectedCvId: PropTypes.string,
   experienceEntity: PropTypes.object,
   replaceExperience: PropTypes.func.isRequired,
@@ -448,7 +461,9 @@ Experience.propTypes = {
 };
 
 const select = (store) => ({
+  authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
+  cvEntity: store.safe.content.cv,
   selectedCvId: store.ui.selectedId.cv,
   experienceEntity: store.safe.content[entityName],
   selectedExperienceId: store.ui.selectedId[entityName]

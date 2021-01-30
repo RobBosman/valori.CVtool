@@ -136,8 +136,8 @@ const Accounts = (props) => {
     setFilterText(newFilterText);
 
   const onFetchCv = () => {
-    if (["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
-    && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
+    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+      && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
@@ -153,7 +153,7 @@ const Accounts = (props) => {
 
   const onDeleteAccount = () => {
     if (["ADMIN"].includes(props.authInfo.authorizationLevel)
-    && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
+      && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       setConfirmDialogVisible(true);
     }
   };
@@ -188,6 +188,11 @@ const Accounts = (props) => {
   };
 
   const selectedAccountName = props.accountEntity && props.accountEntity[props.selectedAccountId]?.name;
+  const infoText = <Text>
+    De lijst toont alleen de accountgegevens.
+    <br/><strong>Dubbel-klikken</strong> haalt ook de cv-gegevens van het geselecteerde account op.
+    <br/>De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
+  </Text>;
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -213,11 +218,7 @@ const Accounts = (props) => {
                     isVisible={isConfirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}
-                    styles={{
-                      main: {
-                        backgroundColor: semanticColors.severeWarningBackground
-                      }
-                    }}
+                    styles={{ main: { backgroundColor: semanticColors.severeWarningBackground } }}
                   />
                 </Stack>
               </Stack>
@@ -231,9 +232,14 @@ const Accounts = (props) => {
             </Stack>
           </td>
 
-          {["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
-            && <td valign="top" style={tdStyle}>
-              <Stack styles={editStyles}>
+          <td valign="top" style={tdStyle}>
+            {["SALES"].includes(props.authInfo.authorizationLevel)
+              && <Stack styles={editStyles}>
+                {infoText}
+              </Stack>
+            }
+            {["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+              && <Stack styles={editStyles}>
                 <CvTextField
                   label="Naam"
                   field="name"
@@ -264,7 +270,7 @@ const Accounts = (props) => {
                     styles={{ root: { width: 200 } }}>
                     <TooltipHost content="Haal de gegevens op om het CV te bewerken">
                       <DefaultButton
-                        text="CV bewerken"
+                        text={`CV ${"bewerken"}`}
                         iconProps={{ iconName: "CloudDownload" }}
                         disabled={!props.selectedAccountId}
                         onClick={onFetchCv}
@@ -286,15 +292,11 @@ const Accounts = (props) => {
                     }
                   </Stack>
                   <Separator vertical/>
-                  <Text>
-                    De lijst toont alleen de accountgegevens.
-                    <br/><strong>Dubbel-klikken</strong> haalt ook de cv-gegevens van het geselecteerde account op.
-                    <br/>De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
-                  </Text>
+                  {infoText}
                 </Stack>
               </Stack>
-            </td>
-          }
+            }
+          </td>
         </tr>
       </tbody>
     </table>

@@ -28,3 +28,6 @@ export const getValueOrFallback = (instance, fieldName, locale) =>
       ? instance[fieldName][locale]
       : Object.values(instance[fieldName]).find(field => field)
     : "";
+
+export const isAccountEditable = (accountId, authInfo) =>
+  accountId === authInfo.accountId || ["ADMIN", "EE_LEAD"].includes(authInfo.authorizationLevel);

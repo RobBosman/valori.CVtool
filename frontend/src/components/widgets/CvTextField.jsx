@@ -4,7 +4,7 @@ import { TextField } from "@fluentui/react";
 
 export const CvTextField = (props) => {
 
-  const {entity, instanceId, replaceInstance} = props.instanceContext;
+  const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
   
   const instance = entity && entity[instanceId];
 
@@ -61,18 +61,20 @@ export const CvTextField = (props) => {
     replaceInstance && replaceInstance(instanceId, instanceToBeSaved);
   };
 
+  const isReadOnly = props.readOnly || readOnly;
+
   return (
     <TextField
       label={props.label}
-      placeholder={props.placeholder}
+      placeholder={!isReadOnly && props.placeholder}
       multiline={props.multiline}
       autoAdjustHeight={props.autoAdjustHeight}
       disabled={props.disabled || !instance}
-      readOnly={props.readOnly}
-      borderless={props.readOnly}
+      readOnly={isReadOnly}
+      borderless={isReadOnly}
       value={value}
       styles={props.styles}
-      onChange={onChange}
+      onChange={!isReadOnly && onChange}
       errorMessage={state.errorMessage}
     />
   );

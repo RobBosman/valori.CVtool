@@ -17,11 +17,15 @@ const entityName = "training";
 
 const Training = (props) => {
 
+  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+
   const trainingContext = {
     entity: props.trainingEntity,
     instanceId: props.selectedTrainingId,
     setSelectedInstanceId: props.setSelectedTrainingId,
-    replaceInstance: props.replaceTraining
+    replaceInstance: props.replaceTraining,
+    readOnly: !isEditable
   };
 
   const composePeriod = (training) =>
@@ -144,29 +148,31 @@ const Training = (props) => {
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Trainingen</Text>
-                <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
-                  <DefaultButton
-                    text="Toevoegen"
-                    iconProps={{ iconName: "Add" }}
-                    disabled={!props.selectedCvId}
-                    onClick={onAddItem}
-                  />
-                  <DefaultButton
-                    text="Verwijderen"
-                    iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedTrainingId}
-                    onClick={onDeleteItem}
-                  />
-                  <ConfirmDialog
-                    title="Definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                  />
-                </Stack>
+                {isEditable
+                  && <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <DefaultButton
+                      text="Toevoegen"
+                      iconProps={{ iconName: "Add" }}
+                      disabled={!props.selectedCvId}
+                      onClick={onAddItem}
+                    />
+                    <DefaultButton
+                      text="Verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedTrainingId}
+                      onClick={onDeleteItem}
+                    />
+                    <ConfirmDialog
+                      title="Definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={isConfirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                    />
+                  </Stack>
+                }
               </Stack>
               <CvDetailsList
                 columns={columns}
@@ -217,7 +223,9 @@ const Training = (props) => {
 };
 
 Training.propTypes = {
+  authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
+  cvEntity: PropTypes.object,
   selectedCvId: PropTypes.string,
   trainingEntity: PropTypes.object,
   replaceTraining: PropTypes.func.isRequired,
@@ -226,7 +234,9 @@ Training.propTypes = {
 };
 
 const select = (store) => ({
+  authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
+  cvEntity: store.safe.content.cv,
   selectedCvId: store.ui.selectedId.cv,
   trainingEntity: store.safe.content[entityName],
   selectedTrainingId: store.ui.selectedId[entityName]

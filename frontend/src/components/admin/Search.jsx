@@ -168,7 +168,7 @@ const Search = (props) => {
   };
 
   const onFetchCv = () => {
-    if (["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
       && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
@@ -250,6 +250,40 @@ const Search = (props) => {
     </Stack>;
   };
 
+  const SearchText = (p) =>
+    <Text style={{ fontFamily: "Courier New, sans-serif", background: semanticColors.inputBackground }}>
+      &nbsp;{p.children}&nbsp;
+    </Text>;
+
+  const FoundText = (p) =>
+    <Text>
+      &quot;<em>{p.children}</em>&quot;
+    </Text>;
+
+  const infoText =
+    <Text>
+      Vul één of meer zoektermen in, gescheiden door spaties.
+      <ul>
+        <li>De lijst met zoekresultaten wordt automatisch bijgewerkt.</li>
+        <li>De zoekfunctie is case-insensitive.</li>
+        <li>
+          Er wordt alleen gezocht op hele woorden.
+          <br/>Dus als je zoekt op <SearchText>java</SearchText> zul je geen <FoundText>JavaScript</FoundText> vinden en andersom.
+        </li>
+        <li>
+          Combineren van zoektermen is mogelijk.
+          <br/>Met zoekterm <SearchText>java c#</SearchText> vind je alle cv&apos;s waarin zowel <FoundText>C#</FoundText> als <FoundText>Java</FoundText> voorkomt.
+        </li>
+      </ul>
+      <u>Let op</u>:
+      <br/>Sommige termen worden verschillend gespeld, zoals <FoundText>TMap</FoundText>, <FoundText>T-Map</FoundText> en <FoundText>T&nbsp;Map</FoundText>.
+      <br/>Het combineren van zoektermen werkt hier niet. Om alle spellingsvarianten te vinden moet je ze een voor een als zoekterm invoeren.
+      <br/>
+      <br/>De lijst toont alleen accountgegevens en zoekresultaten.
+      <br/><strong>Dubbel-klikken</strong> haalt ook de rest van cv-gegevens van het geselecteerde account op.
+      <br/>De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
+    </Text>;
+
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -281,18 +315,16 @@ const Search = (props) => {
           </td>
 
           <td valign="top" style={tdStyle}>
-            <Stack styles={editStyles}>
-              {selectedSearchResult
-                && <Label
-                  disabled={!selectedSearchResult?.skills?.length}>
+            {selectedSearchResult
+              ? <Stack styles={editStyles}>
+                <Label
+                  disabled={!selectedSearchResult.skills?.length}>
                   Vaardigheden
                 </Label>
-              }
-              {selectedSearchResult
-                && <table style={skillsStyle}>
+                <table style={skillsStyle}>
                   <tbody>
                     {selectedSearchResult
-                      ?.skills
+                      .skills
                       ?.sort((l, r) => r.skillLevel - l.skillLevel)
                       ?.map(skill =>
                         <tr key={skill._id}>
@@ -304,17 +336,15 @@ const Search = (props) => {
                     }
                   </tbody>
                 </table>
-              }
-              {selectedSearchResult?.experiences?.length > 0
-                && <Label>
-                  Werkervaring
-                </Label>
-              }
-              {selectedSearchResult
-                && <Pivot
+                {selectedSearchResult.experiences?.length > 0
+                  && <Label>
+                    Werkervaring
+                  </Label>
+                }
+                <Pivot
                   linkFormat={PivotLinkFormat.tabs}>
                   {selectedSearchResult
-                    ?.experiences
+                    .experiences
                     ?.sort((l, r) => r.toYear - l.toYear)
                     .slice(0, 8)
                     ?.map(experience =>
@@ -325,8 +355,11 @@ const Search = (props) => {
                     )
                   }
                 </Pivot>
-              }
-            </Stack>
+              </Stack>
+              : <Stack styles={editStyles}>
+                {infoText}
+              </Stack>
+            }
           </td>
         </tr>
       </tbody>

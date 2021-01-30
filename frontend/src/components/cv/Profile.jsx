@@ -10,18 +10,22 @@ import * as commonUtils from "../../utils/CommonUtils";
 
 const Profile = (props) => {
 
+  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+
   const cvContext = {
     locale: props.locale,
     entity: props.cvEntity,
     instanceId: props.selectedCvId,
-    replaceInstance: props.onCvChange
+    replaceInstance: props.onCvChange,
+    readOnly: !isEditable
   };
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
   const accountContext = {
     locale: props.locale,
     entity: props.accountEntity,
     instanceId: cv?.accountId,
-    replaceInstance: props.onAccountChange
+    replaceInstance: props.onAccountChange,
+    readOnly: !isEditable
   };
   const {editPaneBackground} = useTheme();
   const editStyles = {
@@ -90,6 +94,7 @@ const Profile = (props) => {
 };
 
 Profile.propTypes = {
+  authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
   cvEntity: PropTypes.object,
   selectedCvId: PropTypes.string,
@@ -98,11 +103,12 @@ Profile.propTypes = {
   onAccountChange: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  cvEntity: state.safe.content.cv,
-  selectedCvId: state.ui.selectedId.cv,
-  accountEntity: state.safe.content.account
+const select = (store) => ({
+  authInfo: store.auth.authInfo,
+  locale: store.ui.userPrefs.locale,
+  cvEntity: store.safe.content.cv,
+  selectedCvId: store.ui.selectedId.cv,
+  accountEntity: store.safe.content.account
 });
 
 const mapDispatchToProps = (dispatch) => ({

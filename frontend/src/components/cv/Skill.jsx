@@ -8,7 +8,6 @@ import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
-import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvRating } from "../widgets/CvRating";
 import { CvComboBox } from "../widgets/CvComboBox";
 import { getEnumData, SkillCategories } from "./Enums";
@@ -19,11 +18,15 @@ const entityName = "skill";
 
 const Skill = (props) => {
 
+  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
+  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+
   const skillContext = {
     entity: props.skillEntity,
     instanceId: props.selectedSkillId,
     setSelectedInstanceId: props.setSelectedSkillId,
-    replaceInstance: props.replaceSkill
+    replaceInstance: props.replaceSkill,
+    readOnly: !isEditable
   };
   
   // Find all {Skill} of the selected {cv}.
@@ -100,18 +103,6 @@ const Skill = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const onRenderItem = (item, _, column) => {
-    switch (column.fieldName) {
-    case "includeInCv":
-      return <CvCheckbox
-        field="includeInCv"
-        instanceContext={{ ...skillContext, instanceId: item._id }}
-      />;
-    default:
-      return item[column.fieldName];
-    }
-  };
-
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedItemFields = React.useCallback(() => {
     const selectedSkill = skills.find(skill => skill._id === props.selectedSkillId);
@@ -163,36 +154,37 @@ const Skill = (props) => {
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Vaardigheden</Text>
-                <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
-                  <DefaultButton
-                    text="Toevoegen"
-                    iconProps={{ iconName: "Add" }}
-                    disabled={!props.selectedCvId}
-                    onClick={onAddItem}
-                  />
-                  <DefaultButton
-                    text="Verwijderen"
-                    iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedSkillId}
-                    onClick={onDeleteItem}
-                  />
-                  <ConfirmDialog
-                    title="Definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                  />
-                </Stack>
+                {isEditable
+                  && <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <DefaultButton
+                      text="Toevoegen"
+                      iconProps={{ iconName: "Add" }}
+                      disabled={!props.selectedCvId}
+                      onClick={onAddItem}
+                    />
+                    <DefaultButton
+                      text="Verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedSkillId}
+                      onClick={onDeleteItem}
+                    />
+                    <ConfirmDialog
+                      title="Definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={isConfirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                    />
+                  </Stack>
+                }
               </Stack>
               <CvDetailsList
                 columns={columns}
                 items={skills}
                 instanceContext={skillContext}
                 setKey={entityName}
-                onRenderItemColumn={onRenderItem}
               />
             </Stack>
           </td>
@@ -236,7 +228,9 @@ const Skill = (props) => {
 };
 
 Skill.propTypes = {
+  authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
+  cvEntity: PropTypes.object,
   selectedCvId: PropTypes.string,
   skillEntity: PropTypes.object,
   replaceSkill: PropTypes.func.isRequired,
@@ -244,11 +238,13 @@ Skill.propTypes = {
   setSelectedSkillId: PropTypes.func.isRequired
 };
 
-const select = (state) => ({
-  locale: state.ui.userPrefs.locale,
-  selectedCvId: state.ui.selectedId.cv,
-  skillEntity: state.safe.content[entityName],
-  selectedSkillId: state.ui.selectedId[entityName]
+const select = (store) => ({
+  authInfo: store.auth.authInfo,
+  locale: store.ui.userPrefs.locale,
+  cvEntity: store.safe.content.cv,
+  selectedCvId: store.ui.selectedId.cv,
+  skillEntity: store.safe.content[entityName],
+  selectedSkillId: store.ui.selectedId[entityName]
 });
 
 const mapDispatchToProps = (dispatch) => ({

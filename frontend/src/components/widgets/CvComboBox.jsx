@@ -1,18 +1,26 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { ComboBox } from "@fluentui/react";
+import { ComboBox, TextField } from "@fluentui/react";
 
 export const CvComboBox = (props) => {
   
-  const { entity, instanceId, replaceInstance } = props.instanceContext;
+  const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
   const instance = entity && entity[instanceId];
   const value = instance && instance[props.field] || props.defaultValue || "";
 
   const onChange = (event, option) =>
     replaceInstance && replaceInstance(instanceId, { ...instance, [props.field]: (option?.key || event.target.value) });
 
-  return (
-    <ComboBox
+  return readOnly
+    ? <TextField
+      label={props.label}
+      readOnly={true}
+      borderless={true}
+      value={props.options.find(option => option.key === value)?.text}
+      disabled={!instance}
+      styles={props.styles}
+    />
+    : <ComboBox
       label={props.label}
       options={props.options}
       allowFreeform={props.allowFreeform}
@@ -21,8 +29,7 @@ export const CvComboBox = (props) => {
       disabled={!instance}
       selectedKey={value}
       onChange={onChange}
-    />
-  );
+    />;
 };
 
 CvComboBox.propTypes = {
