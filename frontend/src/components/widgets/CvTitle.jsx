@@ -18,9 +18,10 @@ const CvTitle = (props) => {
   const memo = React.useMemo(() => {
     const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
     const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
+    const role = cv ? commonUtils.getValueOrFallback(cv, "role", props.locale) || "<ROL>" : "";
     return {
       name: account?.name || "<NAAM>",
-      role: commonUtils.getValueOrFallback(cv, "role", props.locale) || "<ROL>",
+      role: role,
       dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
       residence: account?.residence || "<WOONPLAATS>"
     };
@@ -32,8 +33,14 @@ const CvTitle = (props) => {
       <Text variant="xxLarge">{memo.name}</Text>
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
-        <Text variant="large">{memo.role}</Text>
-        <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
+        {memo.role
+          ? <Text variant="large">{memo.role}</Text>
+          : null
+        }
+        {memo.role
+          ? <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
+          : null
+        }
         <Text variant="large">{memo.dateOfBirth}</Text>
         <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
         <Text variant="large">{memo.residence}</Text>

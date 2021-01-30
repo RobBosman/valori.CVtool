@@ -258,34 +258,39 @@ const Accounts = (props) => {
                   />
                 }
                 <Separator/>
-                <Stack grow verticalAlign="space-between">
-                  <TooltipHost content="Haal de gegevens op om het CV te bewerken">
-                    <DefaultButton
-                      text="CV bewerken"
-                      iconProps={{ iconName: "CloudDownload" }}
-                      disabled={!props.selectedAccountId}
-                      onClick={onFetchCv}
-                      styles={{ root: { width: 200 } }}
-                    />
-                  </TooltipHost>
-                  {["ADMIN"].includes(props.authInfo.authorizationLevel)
-                    && <TooltipHost content={`Definitief verwijderen van alle gegevens${selectedAccountName
-                      ? ` van ${selectedAccountName}`
-                      : " van een account"}`}>
+                <Stack horizontal grow
+                  tokens={{ childrenGap: "s1" }}>
+                  <Stack verticalAlign="space-between"
+                    styles={{ root: { width: 200 } }}>
+                    <TooltipHost content="Haal de gegevens op om het CV te bewerken">
                       <DefaultButton
-                        text="Account verwijderen"
-                        iconProps={{ iconName: "Delete" }}
-                        disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
-                        onClick={onDeleteAccount}
-                        styles={{
-                          root: {
-                            color: semanticColors.severeWarningIcon,
-                            width: 200
-                          }
-                        }}
+                        text="CV bewerken"
+                        iconProps={{ iconName: "CloudDownload" }}
+                        disabled={!props.selectedAccountId}
+                        onClick={onFetchCv}
+                        styles={{ root: { width: 200 } }}
                       />
                     </TooltipHost>
-                  }
+                    {["ADMIN"].includes(props.authInfo.authorizationLevel)
+                      && <TooltipHost content={`Definitief verwijderen van alle gegevens${selectedAccountName
+                        ? ` van ${selectedAccountName}`
+                        : " van een account"}`}>
+                        <DefaultButton
+                          text="Account verwijderen"
+                          iconProps={{ iconName: "Delete" }}
+                          disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
+                          onClick={onDeleteAccount}
+                          styles={{ root: { width: 200, color: semanticColors.severeWarningIcon } }}
+                        />
+                      </TooltipHost>
+                    }
+                  </Stack>
+                  <Separator vertical/>
+                  <Text>
+                    De lijst toont alleen de accountgegevens.
+                    <br/><strong>Dubbel-klikken</strong> haalt ook de cv-gegevens van het geselecteerde account op.
+                    <br/>De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
+                  </Text>
                 </Stack>
               </Stack>
             </td>
