@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Panel, PanelType } from "@fluentui/react";
+import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Modal, ContextualMenu, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -195,6 +195,13 @@ const Experience = (props) => {
       height: "calc(100vh - 170px)"
     }
   };
+  const previewStyles = {
+    root: {
+      background: viewPaneBackground,
+      padding: 20,
+      height: "calc(100vh - 300px)"
+    }
+  };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
@@ -318,6 +325,7 @@ const Experience = (props) => {
                 instanceContext={experienceContext}
                 setKey={entityName}
                 dragDropEvents={dragDropEvents}
+                onItemInvoked={() => setPreviewVisible(true)}
               />
               {state.isCoachmarkVisible
                 && <Coachmark
@@ -358,23 +366,34 @@ const Experience = (props) => {
                       instanceContext={experienceContext}
                     />
                   </Stack>
+                  <Modal
+                    isOpen={previewVisible}
+                    onDismiss={() => setPreviewVisible(false)}
+                    isModeless={true}
+                    dragOptions={{
+                      moveMenuItemText: "Move",
+                      closeMenuItemText: "Close",
+                      menu: ContextualMenu
+                    }}
+                    styles={{ root: { overflow: "hidden", margin: "-8px" } }}>
+                    <Stack styles={previewStyles}>
+                      <Stack horizontal horizontalAlign="space-between">
+                        <Text variant="xxLarge">Preview</Text>
+                        <IconButton
+                          iconProps={{ iconName: "Cancel" }}
+                          onClick={() => setPreviewVisible(false)}
+                        />
+                      </Stack>
+                      {renderPreview()}
+                    </Stack>
+                  </Modal>
                   <StackItem align="end">
                     <PrimaryButton
                       text="Preview"
                       iconProps={{ iconName: "EntryView" }}
-                      onClick={() => setPreviewVisible(true)}
+                      onClick={() => setPreviewVisible(!previewVisible)}
                     />
                   </StackItem>
-                  <Panel
-                    isBlocking={false}
-                    isOpen={previewVisible}
-                    onDismiss={() => setPreviewVisible(false)}
-                    type={PanelType.custom}
-                    customWidth={700}
-                    closeButtonAriaLabel="Close"
-                    headerText="Preview">
-                    {renderPreview()}
-                  </Panel>
                 </Stack>
                 <CvTextField
                   label="Rol"

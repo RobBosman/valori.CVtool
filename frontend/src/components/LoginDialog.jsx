@@ -18,7 +18,8 @@ const LoginDialog = (props) => {
     dragOptions: {
       moveMenuItemText: "Move",
       closeMenuItemText: "Close",
-      menu: ContextualMenu
+      menu: ContextualMenu,
+      keepInBounds: true
     },
     styles: {
       main: {

@@ -100,6 +100,15 @@ const Search = (props) => {
 
   const selectedSearchResult = searchResultEntity[props.selectedAccountId];
 
+  React.useEffect(() => {
+    // Re-select the recently selected experience or select the first one of the search results.
+    const selectedExperience =
+      selectedSearchResult?.experiences?.find(experience => experience._id === props.selectedExperienceId)
+        || selectedSearchResult?.experiences?.sort((l, r) => r.toYear - l.toYear)[0];
+    props.setSelectedExperienceId(selectedExperience?._id);
+  },
+  [selectedSearchResult]);
+
   const renderSkillResult = (item) =>
     item.skills.length > 0
       ? `${"* ".repeat(item.skillLevel).trim()} (${item.skills.length})`
@@ -280,7 +289,7 @@ const Search = (props) => {
       <br/>Het combineren van zoektermen werkt hier niet. Om alle spellingsvarianten te vinden moet je ze een voor een als zoekterm invoeren.
       <br/>
       <br/>De lijst toont alleen accountgegevens en zoekresultaten.
-      <br/><strong>Dubbel-klikken</strong> haalt ook de rest van cv-gegevens van het geselecteerde account op.
+      <br/><strong>Dubbel-klikken</strong> op een account haalt ook de rest van cv-gegevens op.
       <br/>De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
     </Text>;
 
@@ -342,13 +351,16 @@ const Search = (props) => {
                   </Label>
                 }
                 <Pivot
-                  linkFormat={PivotLinkFormat.tabs}>
+                  linkFormat={PivotLinkFormat.tabs}
+                  selectedKey={props.selectedExperienceId}
+                  onLinkClick={(item) => props.setSelectedExperienceId(item?.props?.itemKey)}>
                   {selectedSearchResult
                     .experiences
                     ?.sort((l, r) => r.toYear - l.toYear)
                     .slice(0, 8)
                     ?.map(experience =>
                       <PivotItem key={experience._id}
+                        itemKey={experience._id}
                         headerText={experience.toYear}>
                         {renderExperience(experience)}
                       </PivotItem>
@@ -376,7 +388,9 @@ Search.propTypes = {
   accountEntity: PropTypes.object,
   setSelectedAccountId: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
-  fetchCvByAccountId: PropTypes.func.isRequired
+  fetchCvByAccountId: PropTypes.func.isRequired,
+  selectedExperienceId: PropTypes.string,
+  setSelectedExperienceId: PropTypes.func.isRequired
 };
 
 const select = (store) => ({
@@ -385,13 +399,15 @@ const select = (store) => ({
   searchText: store.cv.searchText,
   searchResultEntities: store.cv.searchResult,
   accountEntity: store.safe.content.account,
-  selectedAccountId: store.ui.selectedId.account
+  selectedAccountId: store.ui.selectedId.account,
+  selectedExperienceId: store.ui.selectedId.experience
 });
 
 const mapDispatchToProps = (dispatch) => ({
   searchCvData: (searchText) => dispatch(cvActions.searchCvData(searchText)),
   setSelectedAccountId: (id) => dispatch(uiActions.setSelectedId("account", id)),
-  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
+  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId)),
+  setSelectedExperienceId: (id) => dispatch(uiActions.setSelectedId("experience", id))
 });
 
 export default connect(select, mapDispatchToProps)(Search);
