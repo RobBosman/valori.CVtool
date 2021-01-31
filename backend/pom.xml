@@ -21,7 +21,7 @@
         <logback-classic.version>1.2.3</logback-classic.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
-        <mongodb-driver-reactivestreams.version>4.1.1</mongodb-driver-reactivestreams.version>
+        <mongodb-driver-reactivestreams.version>4.2.0</mongodb-driver-reactivestreams.version>
         <vertx.version>4.0.0</vertx.version>
     </properties>
 

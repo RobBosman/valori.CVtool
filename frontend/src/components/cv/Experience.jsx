@@ -59,6 +59,9 @@ const Experience = (props) => {
   const renderRole = (item) =>
     item.role && item.role[props.locale] || commonUtils.getPlaceholder(experiences, item._id, "role", props.locale);
 
+  const renderClient = (item) =>
+    item.client || item.employer;
+
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
       field="includeInCv"
@@ -81,6 +84,7 @@ const Experience = (props) => {
       key: "client",
       fieldName: "client",
       name: "Opdrachtgever",
+      onRender: renderClient,
       isResizable: true,
       minWidth: 90,
       maxWidth: 250
