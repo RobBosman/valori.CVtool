@@ -21,7 +21,7 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 
 === _Setup IDEA_
 * Update Kotlin plugin
-* Configure https://kotlinlang.org/docs/reference/coding-conventions.html[Kotlin Coding Conventions]
+* Configure https://kotlinlang.org/docs/reference/coding-conventions.html[Kotlin Coding Conventions] (should be done automatically)
 
 === _Setup Visual Studio Code_
 * Install ESlint plugin

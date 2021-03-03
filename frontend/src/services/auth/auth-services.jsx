@@ -14,7 +14,7 @@ const OAUTH2_CONFIG = {
   }
 };
 const LOGIN_CONFIG = {
-  scopes: ["openid", "Sites.ReadWrite.All", "Files.ReadWrite"],
+  scopes: ["openid"],
   forceRefresh: false // Set this to "true" to skip a cached token and go to the backend server to get a new token.
 };
 
