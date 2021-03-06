@@ -29,7 +29,7 @@ internal object EventBusMessageHandler {
     private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
     internal fun create(vertx: Vertx) =
-        SockJSHandler.create(vertx).bridge(createBridgeOptions()) { authHandler(vertx, it) }
+        SockJSHandler.create(vertx).bridge(createBridgeOptions()) { bridgeEventHandler(vertx, it) }
 
     private fun createBridgeOptions() =
         SockJSBridgeOptions()
@@ -41,7 +41,7 @@ internal object EventBusMessageHandler {
             .addInboundPermitted(PermittedOptions().setAddress(MONGODB_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(MONGODB_SAVE_ADDRESS))
 
-    private fun authHandler(vertx: Vertx, bridgeEvent: BridgeEvent) {
+    private fun bridgeEventHandler(vertx: Vertx, bridgeEvent: BridgeEvent) {
         when (bridgeEvent.type()) {
             SEND, PUBLISH -> {
                 Single
@@ -92,6 +92,9 @@ internal object EventBusMessageHandler {
             .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, authInfo.toJson(), deliveryOptions)
             .map { AuthInfo.fromJson(it.body()) }
 
+    /**
+     * Verify if the authenticated user is authorized to execute this event.
+     */
     private fun authorize(vertx: Vertx, bridgeEvent: BridgeEvent, authInfo: AuthInfo): Single<AuthInfo> {
         val address = bridgeEvent.rawMessage.getString("address")
         val messageBody = bridgeEvent.rawMessage.getValue("body")
@@ -107,8 +110,7 @@ internal object EventBusMessageHandler {
                         // Only authorize if the message still contains anything to save.
                         if (toBeAuthorizedMessage.map.values
                                 .filterIsInstance<Map<*, *>>()
-                                .any { it.isNotEmpty() }
-                        ) {
+                                .any { it.isNotEmpty() }) {
                             Authorizer.authorize(address, toBeAuthorizedMessage, authInfo)
                         }
                     }

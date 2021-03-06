@@ -4,15 +4,21 @@ import { ErrorSources, setLastError } from "../services/error/error-actions";
 
 export class EpicRegistry {
   
-  constructor(firstEpic = () => EMPTY) {
-    this._epic$ = new BehaviorSubject(firstEpic);
+  constructor(initialEpic = () => EMPTY) {
+    this.allEpics = [initialEpic];
+    this.epic$ = new BehaviorSubject(initialEpic);
   }
 
   register = (...epics) =>
-    epics.map((epic) => this._epic$.next(epic));
+    epics
+      .filter(epic => !this.allEpics.includes(epic)) // Add epics only once.
+      .forEach(epic => {
+        this.allEpics.push(epic);
+        this.epic$.next(epic);
+      });
 
   rootEpic = (...args) =>
-    this._epic$.pipe(
+    this.epic$.pipe(
       mergeMap((epic) => epic(...args).pipe(
         catchError((error, source$) => {
           console.error("REDUX_MIDDLEWARE ERROR", error);

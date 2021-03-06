@@ -113,7 +113,7 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
     }
 
     /**
-     * <pre>
+     * Input map:
      *   {
      *     "XXX": {
      *       "_id": "XXX",
@@ -125,7 +125,6 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
      *     },
      *     "ZZZ": {}
      *   }
-     * </pre>
      */
     private fun composeWriteRequests(instanceMap: Map<String, Any>): List<WriteModel<Document>> =
         instanceMap.entries.stream()

@@ -20,7 +20,7 @@
     <frontend-maven-plugin.version>1.11.0</frontend-maven-plugin.version>
     <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
     <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
-    <nodejs.version>v15.7.0</nodejs.version>
+    <nodejs.version>v14.15.4</nodejs.version>
   </properties>
 
   <build>
@@ -87,7 +87,7 @@
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>process-sources</phase>
             <configuration>
               <nodeVersion>${nodejs.version}</nodeVersion>
             </configuration>
@@ -97,37 +97,36 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resources</phase>
             <configuration>
               <arguments>install --no-optional --no-audit --legacy-peer-deps</arguments>
             </configuration>
           </execution>
           <execution>
             <id>npm lint</id>
-            <phase>prepare-package</phase>
             <goals>
               <goal>npm</goal>
             </goals>
+            <phase>prepare-package</phase>
             <configuration>
               <arguments>run-script lint</arguments>
             </configuration>
           </execution>
           <execution>
             <id>npm test</id>
-            <phase>prepare-package</phase>
             <goals>
               <goal>npm</goal>
             </goals>
+            <phase>test</phase>
             <configuration>
               <arguments>run-script test:coverage</arguments>
             </configuration>
           </execution>
           <execution>
             <id>npm build</id>
-            <phase>prepare-package</phase>
             <goals>
               <goal>npm</goal>
             </goals>
+            <phase>prepare-package</phase>
             <configuration>
               <arguments>run-script build</arguments>
             </configuration>
