@@ -1,10 +1,11 @@
 package nl.valori.cvtool.backend.authorization
 
 import io.vertx.core.json.JsonObject
+import nl.valori.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
 
 internal object TestData {
 
-    val authInfoTom = AuthInfo.fromJson(
+    val authInfoTom =
         JsonObject(
             """{
                 "email": "tom@vrt.be",
@@ -13,8 +14,7 @@ internal object TestData {
                 "authorizationLevel": "CONSULTANT",
                 "cvIds": ["cv-id-of-tom"]
             }"""
-        )
-    )
+        ).toAuthInfo()
 
     val messageFetchAllAccounts = JsonObject(
         """{

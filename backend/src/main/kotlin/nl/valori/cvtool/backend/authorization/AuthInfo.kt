@@ -13,14 +13,14 @@ internal class AuthInfo(val email: String, val name: String) {
         private set
 
     companion object {
-        fun fromJson(json: JsonObject) =
+        fun JsonObject.toAuthInfo() =
             AuthInfo(
-                json.map["email"]?.toString() ?: error("Error creating AuthInfo: email not found."),
-                json.map["name"]?.toString() ?: error("Error creating AuthInfo: name not found.")
+                map["email"]?.toString() ?: error("Error creating AuthInfo: email not found."),
+                map["name"]?.toString() ?: error("Error creating AuthInfo: name not found.")
             )
-                .withAccountId(json.getString("accountId", ""))
-                .withAuthorizationLevel(json.getString("authorizationLevel", ""))
-                .withCvIds(json.getJsonArray("cvIds"))
+                .withAccountId(getString("accountId", ""))
+                .withAuthorizationLevel(getString("authorizationLevel", ""))
+                .withCvIds(getJsonArray("cvIds"))
     }
 
     fun toJson(): JsonObject =
