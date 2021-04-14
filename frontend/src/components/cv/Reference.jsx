@@ -109,7 +109,7 @@ const Reference = (props) => {
       newReference = {
         _id: createUuid(),
         cvId: props.selectedCvId,
-        includeInCv: true
+        includeInCv: false
       };
       props.replaceReference(newReference._id, newReference);
     }
@@ -194,7 +194,6 @@ const Reference = (props) => {
                 instanceContext={referenceContext}
                 multiline
                 autoAdjustHeight
-                validateInput={commonUtils.isValidText(250)}
               />
             </Stack>
           </td>

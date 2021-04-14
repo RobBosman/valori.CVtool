@@ -21,7 +21,7 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /(Headless.*|coverage|dist|node|node_modules)/,
+        exclude: /(Headless.*|dist|node|node_modules|target)/,
         use: {
           loader: require.resolve("babel-loader"),
           options: {

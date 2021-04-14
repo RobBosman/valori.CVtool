@@ -57,7 +57,6 @@ module.exports = {
     ]
   },
   ignorePatterns: [
-    "coverage/**",
     "dist/**",
     "node/**",
     "node_modules/**",
