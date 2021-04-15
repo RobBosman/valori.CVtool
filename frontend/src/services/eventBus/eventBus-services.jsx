@@ -1,4 +1,4 @@
-import EventBus from "vertx3-eventbus-client";
+import EventBus from "@vertx/eventbus-bridge-client.js";
 import { BehaviorSubject } from "rxjs";
 import { distinctUntilChanged } from "rxjs/operators";
 

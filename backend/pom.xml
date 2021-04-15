@@ -22,7 +22,7 @@
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <mongodb-driver-reactivestreams.version>4.2.3</mongodb-driver-reactivestreams.version>
-        <vertx.version>4.0.3</vertx.version>
+        <vertx.version>4.0.2</vertx.version>
     </properties>
 
     <build>

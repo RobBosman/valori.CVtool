@@ -194,6 +194,7 @@ const Reference = (props) => {
                 instanceContext={referenceContext}
                 multiline
                 autoAdjustHeight
+                validateInput={commonUtils.isValidText(1200)}
               />
             </Stack>
           </td>

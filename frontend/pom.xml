@@ -34,7 +34,8 @@
             <fileset>
               <directory>.</directory>
               <includes>
-                <include>npm-*.txt</include>
+                <include>npm-audit.txt</include>
+                <include>npm-outdated.txt</include>
                 <include>stats.json</include>
                 <directory>dist/**</directory>
                 <directory>node/**</directory>
