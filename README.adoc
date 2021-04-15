@@ -3,11 +3,14 @@
 React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.valori.nl/[cvtool.valori.nl].
 
 == Development environment
+
 === _Pre-requisites_
+
 * Windows 10 Home
 * Virtualization in BIOS enabled
 
 === _Download and install the following_
+
 * https://jdk.java.net/[Java OpenJDK]
 * https://git-scm.com/[Git (for Windows)]
 * https://www.jetbrains.com/idea/download/#section=windows[IntelliJ IDEA Community Edition]
@@ -20,17 +23,21 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 * https://www.bitvise.com/ssh-client-download[BitWise SSH client]
 
 === _Setup IDEA_
+
 * Update Kotlin plugin
 * Configure https://kotlinlang.org/docs/reference/coding-conventions.html[Kotlin Coding Conventions] (should be done automatically)
 
 === _Setup Visual Studio Code_
+
 * Install ESlint plugin
 * Open project subdirectory `/frontend/`
 
 == Configure server
+
 See `scripts/clean_install_BladeVPS.sh`.
 
 == Backup/restore
+
 See `scripts\cvtool_*.sh`.
 
  #!/usr/bin/env sh
@@ -42,31 +49,39 @@ See `scripts\cvtool_*.sh`.
      "
 
 == Docker commands
+
 === Build and publish docker image
+
  docker build --no-cache=true -t bransom/cvtool .
  docker push bransom/cvtool
 
 === Deploy
+
  docker pull bransom/cvtool
  docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
  docker container prune -f
  docker image prune -f
 
 === Initialize
+
  # Create MongoDB indexes
  scripts/cvtool_initialize_mongodb.sh
  # Restart CVtool server to load a new certificate
  docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"
 
 === Logs
+
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool')"
 
 === Docker volumes
+
  /var/lib/docker/volumes/
  \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
 
 == MongoDB commands
+
 === Import/export collections
+
  #   businessUnit
  #   account
  #   authorization
@@ -91,6 +106,7 @@ See `scripts\cvtool_*.sh`.
  done
 
 ==== mongo shell
+
  use cvtool
  db.education.updateMany({}, {"$rename": {"year": "yearTo"}})
  db.account.updateMany({}, {"$unset": {"privileges": ""}})

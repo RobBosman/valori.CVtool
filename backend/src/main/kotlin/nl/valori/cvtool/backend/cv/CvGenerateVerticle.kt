@@ -19,7 +19,6 @@ import javax.xml.transform.Templates
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
-import kotlin.collections.HashMap
 import kotlin.collections.set
 
 const val CV_GENERATE_ADDRESS = "cv.generate"

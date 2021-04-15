@@ -2,22 +2,22 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>nl.valori</groupId>
-  <artifactId>cvtool</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <description>app to enter and maintain cv's (curricula vitae)</description>
+    <groupId>nl.valori</groupId>
+    <artifactId>cvtool</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>app to enter and maintain cv's (curricula vitae)</description>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
-  <modules>
-    <module>backend</module>
-    <module>frontend</module>
-    <module>conversion</module>
-  </modules>
+    <modules>
+        <module>backend</module>
+        <module>frontend</module>
+        <module>conversion</module>
+    </modules>
 </project>
