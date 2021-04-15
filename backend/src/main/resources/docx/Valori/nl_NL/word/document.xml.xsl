@@ -651,10 +651,10 @@
                         <w:tblBorders>
                             <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
                             <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-                            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F19100"/>
+                            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F29100"/>
                             <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-                            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="F19100"/>
-                            <w:insideV w:val="dashed" w:sz="4" w:space="0" w:color="F19100"/>
+                            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="F29100"/>
+                            <w:insideV w:val="dashed" w:sz="4" w:space="0" w:color="F29100"/>
                         </w:tblBorders>
                         <w:tblLayout w:type="fixed"/>
                         <w:tblCellMar>
