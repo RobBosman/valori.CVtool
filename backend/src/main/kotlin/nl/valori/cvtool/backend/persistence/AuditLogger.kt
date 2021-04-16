@@ -41,21 +41,22 @@ internal object AuditLogger {
         messageBody.map.entries
             .forEach { (entityName, instances) ->
                 toJsonObject(instances) // Ignore 'criteria' (JsonArray) and only consider 'instances' (JsonObject).
-                    ?.map?.values
-                    ?.mapNotNull { toJsonObject(it) } // Convert to JsonObject or skip if that's not possible.
-                    ?.forEach { instance ->
-                        val auditInstance = composeAuditInstance(accountId, entityName, instance)
-                        auditLog.put(auditInstance.getString("_id"), auditInstance)
+                    ?.map?.entries
+                    ?.map { (instanceId, instance) -> instanceId to toJsonObject(instance) }
+                    ?.forEach { (instanceId, instance) ->
+                        if (instance != null) {
+                            val auditInstance = composeAuditInstance(accountId, entityName, instanceId, instance)
+                            auditLog.put(auditInstance.getString("_id"), auditInstance)
+                        }
                     }
             }
         return JsonObject().put("audit_log", auditLog)
     }
 
-    private fun composeAuditInstance(accountId: String, entityName: String, instance: JsonObject): JsonObject {
+    private fun composeAuditInstance(accountId: String, entityName: String, instanceId: String, instance: JsonObject): JsonObject {
         val auditId = UUID.randomUUID().toString()
-        val instanceId = instance.getString("_id", "")
         val cvId = if (entityName == "cv")  instanceId else instance.getString("cvId", "")
-        // TODO: 06-03-2021 determine upsert/delete
+        val action = if (instance.isEmpty) "delete" else "upsert"
         return JsonObject(
             """{
                 "_id": "$auditId",
@@ -64,7 +65,7 @@ internal object AuditLogger {
                 "entity": "$entityName",
                 "entityId": "$instanceId",
                 "cvId": "$cvId",
-                "action": "upsert/delete"
+                "action": "$action"
             }"""
         )
     }
