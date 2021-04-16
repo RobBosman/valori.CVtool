@@ -22,15 +22,16 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 * https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker Desktop]
 * https://www.bitvise.com/ssh-client-download[BitWise SSH client]
 
-=== _Setup IDEA_
-
-* Update Kotlin plugin
-* Configure https://kotlinlang.org/docs/reference/coding-conventions.html[Kotlin Coding Conventions] (should be done automatically)
-
 === _Setup Visual Studio Code_
 
 * Install ESlint plugin
 * Open project subdirectory `/frontend/`
+* Add `./node` to the PATH environment variable.
+* Add these patterns to the _Search: Exclude_ settings:
+
+    **/dist
+    **/node
+    **/target
 
 == Configure server
 

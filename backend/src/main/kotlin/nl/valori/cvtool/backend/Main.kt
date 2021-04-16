@@ -41,8 +41,7 @@ object Main {
         CvBackupVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy
-        .map { it to "not started" }
-        .toMap()
+        .associateWith { "not started" }
         .toMutableMap()
 
     fun run() {
