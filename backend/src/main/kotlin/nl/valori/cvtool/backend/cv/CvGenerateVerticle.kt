@@ -36,7 +36,7 @@ internal class CvGenerateVerticle : BasicVerticle(CV_GENERATE_ADDRESS) {
         )
 
         private fun loadBytes(location: String) =
-            CvGenerateVerticle::class.java.getResource(location).readBytes()
+            CvGenerateVerticle::class.java.getResource(location)!!.readBytes()
 
         private val transformerFactory =
             TransformerFactory

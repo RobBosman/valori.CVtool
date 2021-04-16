@@ -20,6 +20,7 @@ import nl.valori.cvtool.backend.cv.ACCOUNT_DELETE_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_GENERATE_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_SEARCH_ADDRESS
+import nl.valori.cvtool.backend.persistence.AuditLogger
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -49,6 +50,7 @@ internal object EventBusMessageHandler {
                     .just(bridgeEvent)
                     .flatMap { authenticate(vertx, it) }
                     .flatMap { authorize(vertx, it) }
+                    .flatMap { auditLog(vertx, it) }
                     .subscribe(
                         {
                             bridgeEvent.complete(true)
@@ -91,4 +93,13 @@ internal object EventBusMessageHandler {
                 JsonObject(bridgeEvent.getMessageHeader("authInfo")).toAuthInfo()
             )
             .map { bridgeEvent.setMessageHeader("authInfo", it.toJson().encode()) }
+
+    private fun auditLog(vertx: Vertx, bridgeEvent: BridgeEvent) =
+        AuditLogger
+            .auditLog(
+                vertx,
+                bridgeEvent.rawMessage.getString("address"),
+                bridgeEvent.rawMessage.getValue("body"),
+                JsonObject(bridgeEvent.getMessageHeader("authInfo")).toAuthInfo()
+            )
 }

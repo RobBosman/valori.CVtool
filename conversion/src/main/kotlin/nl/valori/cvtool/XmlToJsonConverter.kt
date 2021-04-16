@@ -15,6 +15,8 @@ fun main() = XmlToJsonConverter.run()
 
 object XmlToJsonConverter {
 
+    private const val REPLACE_EXISTING_DATA = true
+
     fun run() {
         val exportedDir = Path.of(".", "exported")
         val dataDumpDir = exportedDir.resolve("dump")
@@ -22,7 +24,7 @@ object XmlToJsonConverter {
         val accountsXml = dataDumpDir.resolve("accounts.xml")
         val businessUnitsXml = dataDumpDir.resolve("businessUnits.xml")
 
-        if (true) {
+        if (REPLACE_EXISTING_DATA) {
             Files.deleteIfExists(exportedDir)
             Files.createDirectory(exportedDir)
             Files.createDirectory(dataDumpDir)
@@ -57,7 +59,7 @@ object XmlToJsonConverter {
     }
 
     private fun convert(sourceUrl: URL, targetDir: Path) {
-        val jsonEntities = xslTransform(sourceUrl, javaClass.getResource("/xml-to-json.xsl"))
+        val jsonEntities = xslTransform(sourceUrl, javaClass.getResource("/xml-to-json.xsl")!!)
         JsonObject(jsonEntities)
             .map
             .forEach { (entity, instances) ->
