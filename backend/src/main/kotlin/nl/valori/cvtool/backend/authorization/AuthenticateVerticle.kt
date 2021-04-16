@@ -37,14 +37,10 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     // Send a dummy authorization request to the OpenID Provider.
                     // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
                     oauth2
-                        .rxAuthenticate(
-                            JsonObject()
-                                .put("code", AUTH_JWT.grantType)
-                                .put("redirect_uri", "http://example.com/")
-                        )
+                        .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
                         .map { "" }
                         .onErrorReturn {
-                            if (it.message?.contains("Bad Request") != true)
+                            if (it.message?.contains("invalid_grant") != true)
                                 throw it
                             // The expected error response. Don't propagate the error, only the message String.
                             it.message
