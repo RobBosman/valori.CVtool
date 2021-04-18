@@ -17,6 +17,17 @@ const val ACCOUNT_DELETE_ADDRESS = "account.delete"
 
 internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
 
+    /**
+     * Expected message body:
+     *   {
+     *     "accountId": "id-of-account-to-delete"
+     *   }
+     *
+     * Response:
+     *   {
+     *     "result": "Successfully saved data"
+     *   }
+     */
     override fun handleRequest(message: Message<JsonObject>) {
         Single
             .just(message.body())

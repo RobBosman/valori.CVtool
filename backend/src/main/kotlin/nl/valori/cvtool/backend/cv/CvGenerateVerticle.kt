@@ -82,6 +82,19 @@ internal class CvGenerateVerticle : BasicVerticle(CV_GENERATE_ADDRESS) {
         }
     }
 
+    /**
+     * Expected message body:
+     *   {
+     *     "locale": "nl_NL",
+     *     "accountId": "id-of-account-to-generate-cv-for"
+     *   }
+     *
+     * Response:
+     *   {
+     *     "fileName": "generated-cv.docx",
+     *     "docxB64": "Base64-encoded-docx-data",
+     *   }
+     */
     override fun handleRequest(message: Message<JsonObject>) {
         val locale = message.body().getString("locale", "nl_NL")
         Single

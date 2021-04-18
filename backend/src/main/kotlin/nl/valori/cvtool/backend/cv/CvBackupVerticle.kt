@@ -26,10 +26,13 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
     private val permitSubject = BehaviorSubject.createDefault(1)
 
     /**
-     * input: null
-     * output: {
-     *   "zipB64": "binary zip data with all docx cvs"
-     * }
+     * Expected message body:
+     *   null
+     *
+     * Response:
+     *   {
+     *     "zipB64": "binary zip data with all docx cvs"
+     *   }
      */
     override fun handleRequest(message: Message<JsonObject>) {
         val startNanos = nanoTime()

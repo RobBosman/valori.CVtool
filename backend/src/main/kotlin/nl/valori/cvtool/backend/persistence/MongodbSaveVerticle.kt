@@ -64,10 +64,7 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
      *       }
      *     },
      *     "entity_2": {
-     *       "ZZZ": {
-     *         "_id": "ZZZ",
-     *         "property": "value"
-     *       }
+     *       "ZZZ": {}
      *     }
      *   }
      * </pre>

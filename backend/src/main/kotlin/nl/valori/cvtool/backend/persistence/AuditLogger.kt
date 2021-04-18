@@ -12,7 +12,6 @@ import java.util.*
 internal object AuditLogger {
 
     private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
-    private const val ENABLED = true // TODO: enable audit logging
 
     /**
      * Log an audit record if the user is about to change something in the database.
@@ -21,31 +20,33 @@ internal object AuditLogger {
         vertx: Vertx,
         messageAddress: String,
         messageBody: Any?,
-        authInfo: AuthInfo
-    ): Single<AuthInfo> {
+        authInfo: AuthInfo,
+        originalData: JsonObject
+    ): Single<Unit> {
         // Check if this message intends to change any data.
-        if (ENABLED && messageAddress == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
+        if (messageAddress == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
             return vertx.eventBus()
                 .rxRequest<JsonObject>(
                     MONGODB_SAVE_ADDRESS,
-                    composeAuditLog(messageBody, authInfo.accountId),
+                    composeAuditLog(messageBody, originalData, authInfo.accountId),
                     deliveryOptions
                 )
-                .map { authInfo }
+                .map { }
         }
-        return Single.just(authInfo)
+        return Single.just(Unit)
     }
 
-    private fun composeAuditLog(messageBody: JsonObject, accountId: String): JsonObject {
+    private fun composeAuditLog(messageBody: JsonObject, originalData: JsonObject, accountId: String): JsonObject {
         val auditLog = JsonObject()
         messageBody.map.entries
-            .forEach { (entityName, instances) ->
-                toJsonObject(instances) // Ignore 'criteria' (JsonArray) and only consider 'instances' (JsonObject).
+            .forEach { (entityName, newInstances) ->
+                toJsonObject(newInstances) // Ignore 'criteria' (JsonArray) and only consider 'instances' (JsonObject).
                     ?.map?.entries
-                    ?.map { (instanceId, instance) -> instanceId to toJsonObject(instance) }
-                    ?.forEach { (instanceId, instance) ->
-                        if (instance != null) {
-                            val auditInstance = composeAuditInstance(accountId, entityName, instanceId, instance)
+                    ?.map { (instanceId, newInstance) -> instanceId to toJsonObject(newInstance) }
+                    ?.forEach { (instanceId, newInstance) ->
+                        if (newInstance != null) {
+                            val orgInstance = originalData.getJsonObject(entityName).getJsonObject(instanceId)
+                            val auditInstance = composeAuditInstance(accountId, entityName, instanceId, orgInstance, newInstance)
                             auditLog.put(auditInstance.getString("_id"), auditInstance)
                         }
                     }
@@ -53,20 +54,24 @@ internal object AuditLogger {
         return JsonObject().put("audit_log", auditLog)
     }
 
-    private fun composeAuditInstance(accountId: String, entityName: String, instanceId: String, instance: JsonObject): JsonObject {
+    private fun composeAuditInstance(
+        accountId: String,
+        entityName: String,
+        instanceId: String,
+        orgInstance: JsonObject,
+        newInstance: JsonObject
+    ): JsonObject {
         val auditId = UUID.randomUUID().toString()
-        val cvId = if (entityName == "cv")  instanceId else instance.getString("cvId", "")
-        val action = if (instance.isEmpty) "delete" else "upsert"
-        return JsonObject(
-            """{
-                "_id": "$auditId",
-                "accountId": "$accountId",
-                "timestamp": "${LocalDateTime.now()}",
-                "entity": "$entityName",
-                "entityId": "$instanceId",
-                "cvId": "$cvId",
-                "action": "$action"
-            }"""
-        )
+        val cvId = if (entityName == "cv") instanceId else orgInstance.getString("cvId", "")
+        val action = if (newInstance.isEmpty) "delete" else "upsert"
+        return JsonObject()
+            .put("_id", auditId)
+            .put("accountId", accountId)
+            .put("timestamp", LocalDateTime.now().toString())
+            .put("entity", entityName)
+            .put("instanceId", instanceId)
+            .put("orgInstance", orgInstance)
+            .put("cvId", cvId)
+            .put("action", action)
     }
 }

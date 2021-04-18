@@ -96,9 +96,17 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     }
 
     /**
-     * Expects jwt in message body: <pre>
-     *   { "jwt": "###.######.####" }
-     * </pre>
+     * Expected message body:
+     *   {
+     *     "jwt": "###.######.####"
+     *   }
+     *
+     * Response:
+     *   {
+     *     "email": "P.Puk@Valori.nl",
+     *     "name": "Pietje Puk",
+     *   }
+     *
      */
     private fun handleRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
         Single

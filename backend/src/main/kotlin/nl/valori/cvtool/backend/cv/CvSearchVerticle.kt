@@ -13,6 +13,36 @@ const val DOLLAR = "$"
 
 internal class CvSearchVerticle : BasicVerticle(CV_SEARCH_ADDRESS) {
 
+    /**
+     * Expected message body:
+     *   {
+     *     "searchText": "abc"
+     *   }
+     *
+     * Response:
+     *   {
+     *     "experience": {
+     *       "id-of-experience": {
+     *         "_id": "id-of-experience"
+     *         "cvId": "id-of-cv"
+     *         ...
+     *       }
+     *     },
+     *     "skill": {
+     *       "id-of-skill": {
+     *         "_id": "id-of-skill"
+     *         "cvId": "id-of-cv"
+     *         ...
+     *       }
+     *     },
+     *     "cv": {
+     *       "cv-id": {
+     *         "_id": ""cv-id",
+     *         "accountId": "account-id-1"
+     *       }
+     *     }
+     *   }
+     */
     override fun handleRequest(message: Message<JsonObject>) {
         Single
             .just(message.body())

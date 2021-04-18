@@ -17,6 +17,29 @@ const val CV_FETCH_ADDRESS = "cv.fetch"
 
 internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
 
+    /**
+     * Expected message body:
+     *   {
+     *     "accountId": "id-of-account-to-generate-cv-for"
+     *   }
+     *
+     * Response:
+     *   {
+     *     "cv": {
+     *       "id-of-cv": {
+     *         "_id": "id-of-cv"
+     *         ...
+     *       }
+     *     },
+     *     "skill": {
+     *       "id-of-skill": {
+     *         "_id": "id-of-skill"
+     *         "cvId": "id-of-cv"
+     *         ...
+     *       }
+     *     }
+     *   }
+     */
     override fun handleRequest(message: Message<JsonObject>) {
         Single
             .just(message.body())

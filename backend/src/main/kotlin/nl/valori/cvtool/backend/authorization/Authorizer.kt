@@ -55,6 +55,7 @@ internal object Authorizer {
     ): Single<AuthInfo> {
         // Check if this message intends to delete any data.
         if (messageAddress == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
+            // TODO: Use originalData from BridgeEvent header.
             val dataToBeDeleted = determineDataToBeDeleted(messageBody)
             if (dataToBeDeleted.isNotEmpty()) {
                 // If so, then fetch dat data-to-be-deleted and add it to the message that is used for authorization.
@@ -80,21 +81,19 @@ internal object Authorizer {
 
     /**
      * input:
-     * {
      *   skill: {
-     *     skill-1-to-be-deleted: {},
-     *     skill-2: {
-     *       _id: skill-2,
+     *     id-of-skill-1-to-be-deleted: {},
+     *     id-of-skill-2: {
+     *       _id: id-of-skill-2,
      *       cvId: cd-id-of-skill
      *       key: value
      *     }
      *   }
-     * }
      *
      * output:
-     * {
-     *   skill: [{ _id: skill-1-to-be-deleted }]
-     * }
+     *   {
+     *     skill: [{ _id: id-of-skill-1-to-be-deleted }]
+     *   }
      */
     private fun fetchToBeDeletedData(vertx: Vertx, dataToBeDeleted: Map<String, List<String>>): Single<JsonObject> {
         val queryForDataToBeDeleted = dataToBeDeleted
@@ -156,13 +155,13 @@ internal object Authorizer {
             error("No matching intention found for address '$address'.")
         }
 
-        val prohibitedIntentions = REQUIRED_AUTHORIZATION_LEVELS.entries
+        val prohibitedIntentionNames = REQUIRED_AUTHORIZATION_LEVELS.entries
             .filter { (intention, _) -> matchedIntentions.contains(intention) }
             .filter { (_, requiredAuthorizationLevel) -> !authInfo.isAuthorized(requiredAuthorizationLevel) }
-            .map { (intention, _) -> intention }
+            .map { (intention, _) -> intention.name() }
             .toSet()
-        if (prohibitedIntentions.isNotEmpty()) {
-            val prohibitedText = prohibitedIntentions.joinToString(" and to ", transform = Intention::name)
+        if (prohibitedIntentionNames.isNotEmpty()) {
+            val prohibitedText = prohibitedIntentionNames.joinToString(" and to ")
             log.debug("User ${authInfo.name} is prohibited to $prohibitedText.")
             throw IllegalAccessException("User ${authInfo.name} is prohibited to $prohibitedText.")
         }

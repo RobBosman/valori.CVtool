@@ -45,16 +45,13 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
     }
 
     /**
-     * Request message body must be JSON, listing search criteria per entity:
-     * <pre>
+     * Expected message body:
      *   {
      *     entity_1: [{ _id: "XXX" }, { _id: "YYY" }],
      *     entity_2: [{ _id: "ZZZ" }]
      *   }
-     * </pre>
      *
-     * Response will be JSON, normalized per entity:
-     * <pre>
+     * Response:
      *   {
      *     entity_1: {
      *       XXX: {
@@ -73,7 +70,6 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
      *       }
      *     }
      *   }
-     * </pre>
      */
     private fun handleRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
         Flowable
@@ -97,7 +93,6 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
 
     /**
      * Returns JSON:
-     * <pre>
      *   {
      *     entity_1: {
      *       XXX: {
@@ -110,7 +105,6 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
      *       }
      *     }
      *   }
-     * </pre>
      */
     private fun fetchInstancesOfEntity(
         entityName: String,

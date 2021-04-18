@@ -2,6 +2,7 @@ package nl.valori.cvtool.backend
 
 import io.reactivex.Single
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.bridge.BridgeEventType.PUBLISH
 import io.vertx.ext.bridge.BridgeEventType.SEND
@@ -12,6 +13,7 @@ import io.vertx.reactivex.ext.web.handler.sockjs.BridgeEvent
 import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
 import nl.valori.cvtool.backend.MessageUtils.getMessageHeader
 import nl.valori.cvtool.backend.MessageUtils.setMessageHeader
+import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.authorization.AUTHENTICATE_ADDRESS
 import nl.valori.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
@@ -50,6 +52,7 @@ internal object EventBusMessageHandler {
                     .just(bridgeEvent)
                     .flatMap { authenticate(vertx, it) }
                     .flatMap { authorize(vertx, it) }
+                    .flatMap { fetchOriginalData(vertx, it) }
                     .flatMap { auditLog(vertx, it) }
                     .subscribe(
                         {
@@ -84,7 +87,7 @@ internal object EventBusMessageHandler {
             .map { bridgeEvent.setMessageHeader("authInfo", it.encode()) }
     }
 
-    private fun authorize(vertx: Vertx, bridgeEvent: BridgeEvent) =
+    private fun authorize(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> =
         Authorizer
             .authorize(
                 vertx,
@@ -94,12 +97,76 @@ internal object EventBusMessageHandler {
             )
             .map { bridgeEvent.setMessageHeader("authInfo", it.toJson().encode()) }
 
-    private fun auditLog(vertx: Vertx, bridgeEvent: BridgeEvent) =
+    /**
+     * Input:
+     *   {
+     *     "entity-A": {
+     *       "id-of-instance-S-1": {
+     *         "_id": "id-of-instance-A-1",
+     *         "key": "new-value"
+     *       },
+     *       "id-of-instance-A-2": {}
+     *     },
+     *     "entity-B: {
+     *       "id-of-instance-B-1": {
+     *         "_id": "id-of-instance-B-1",
+     *         "key": "new-value"
+     *       }
+     *     }
+     *   }
+     *
+     * Response:
+     *   {
+     *     "entity-A": {
+     *       "id-of-instance-A-1": {
+     *         "_id": "id-of-instance-A-1",
+     *         "key": "old-value"
+     *       },
+     *       "id-of-instance-A-2": {
+     *         "_id": "id-of-instance-A-2",
+     *         "key": "value"
+     *       }
+     *     },
+     *     "entity-B: {
+     *       "id-of-instance-B-1": {
+     *         "_id": "id-of-instance-B-1",
+     *         "key": "old-value"
+     *       }
+     *     }
+     *   }
+     */
+    private fun fetchOriginalData(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> {
+        val bodyJson = ModelUtils.toJsonObject(bridgeEvent.rawMessage.getValue("body"))
+            ?: return Single.just(bridgeEvent.setMessageHeader("originalData", "{}"))
+
+        val searchCriteria = JsonObject()
+        bodyJson.map.keys
+            .forEach { entityName ->
+                val instanceIds = bodyJson.getInstanceIds(entityName)
+                    .map { instanceId -> JsonObject().put("_id", instanceId) }
+                if (instanceIds.isNotEmpty()) {
+                    searchCriteria.put(entityName, JsonArray(instanceIds))
+                }
+            }
+
+        if (searchCriteria.isEmpty) {
+            return Single.just(bridgeEvent.setMessageHeader("originalData", "{}"))
+        }
+
+        return vertx
+            .eventBus()
+            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions )
+            .map { bridgeEvent.setMessageHeader("originalData", it.body().encode()) }
+    }
+
+    private fun auditLog(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> =
         AuditLogger
             .auditLog(
                 vertx,
                 bridgeEvent.rawMessage.getString("address"),
                 bridgeEvent.rawMessage.getValue("body"),
-                JsonObject(bridgeEvent.getMessageHeader("authInfo")).toAuthInfo()
+                JsonObject(bridgeEvent.getMessageHeader("authInfo")).toAuthInfo(),
+                JsonObject(bridgeEvent.getMessageHeader("originalData"))
             )
+            .map { bridgeEvent }
 }
