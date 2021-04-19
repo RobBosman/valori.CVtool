@@ -111,7 +111,7 @@ See `scripts\cvtool_*.sh`.
  use cvtool
  db.education.updateMany({}, {"$rename": {"year": "yearTo"}})
  db.account.updateMany({}, {"$unset": {"privileges": ""}})
- db.skill.updateMany({"category": {"$nin": ["LANGUAGES", "BRANCHES", "EXPERTISE", "PROGRAMMING", "TOOLS", "METHODS", "DATABASES", "APPLICATIONS", "OS_NETWORKS"]}},
+ db.skill.updateMany({"category": {"$in": ["LANGUAGES", "BRANCHES", "EXPERTISE", "PROGRAMMING", "TOOLS", "METHODS", "DATABASES", "APPLICATIONS", "OS_NETWORKS"]}},
    {"$set": {"category": "EXPERTISE"}})
  db.role.renameCollection("authorization")
 

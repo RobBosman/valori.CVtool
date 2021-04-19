@@ -21,14 +21,14 @@ internal object AuditLogger {
         messageAddress: String,
         messageBody: Any?,
         authInfo: AuthInfo,
-        originalData: JsonObject
+        oldData: JsonObject
     ): Single<Unit> {
         // Check if this message intends to change any data.
         if (messageAddress == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
             return vertx.eventBus()
                 .rxRequest<JsonObject>(
                     MONGODB_SAVE_ADDRESS,
-                    composeAuditLog(messageBody, originalData, authInfo.accountId),
+                    composeAuditLog(messageBody, oldData, authInfo.accountId),
                     deliveryOptions
                 )
                 .map { }
@@ -36,7 +36,7 @@ internal object AuditLogger {
         return Single.just(Unit)
     }
 
-    private fun composeAuditLog(messageBody: JsonObject, originalData: JsonObject, accountId: String): JsonObject {
+    private fun composeAuditLog(messageBody: JsonObject, oldData: JsonObject, accountId: String): JsonObject {
         val auditLog = JsonObject()
         messageBody.map.entries
             .forEach { (entityName, newInstances) ->
@@ -45,9 +45,21 @@ internal object AuditLogger {
                     ?.map { (instanceId, newInstance) -> instanceId to toJsonObject(newInstance) }
                     ?.forEach { (instanceId, newInstance) ->
                         if (newInstance != null) {
-                            val orgInstance = originalData.getJsonObject(entityName).getJsonObject(instanceId)
-                            val auditInstance = composeAuditInstance(accountId, entityName, instanceId, orgInstance, newInstance)
-                            auditLog.put(auditInstance.getString("_id"), auditInstance)
+                            val oldInstanceNullable = oldData.getJsonObject(entityName).getJsonObject(instanceId)
+                            val newInstanceNullable = if (newInstance.isEmpty) null else newInstance
+                            // Skip audit logging if both old and new instance are equal, e.g. when you create
+                            // an instance and immediately delete it, or when changing an instance and immediately
+                            // undo your changes.
+                            if (newInstanceNullable != oldInstanceNullable) {
+                                val auditInstance = composeAuditInstance(
+                                    accountId,
+                                    entityName,
+                                    instanceId,
+                                    oldInstanceNullable,
+                                    newInstanceNullable
+                                )
+                                auditLog.put(auditInstance.getString("_id"), auditInstance)
+                            }
                         }
                     }
             }
@@ -58,20 +70,20 @@ internal object AuditLogger {
         accountId: String,
         entityName: String,
         instanceId: String,
-        orgInstance: JsonObject,
-        newInstance: JsonObject
-    ): JsonObject {
-        val auditId = UUID.randomUUID().toString()
-        val cvId = if (entityName == "cv") instanceId else orgInstance.getString("cvId", "")
-        val action = if (newInstance.isEmpty) "delete" else "upsert"
-        return JsonObject()
-            .put("_id", auditId)
-            .put("accountId", accountId)
-            .put("timestamp", LocalDateTime.now().toString())
-            .put("entity", entityName)
-            .put("instanceId", instanceId)
-            .put("orgInstance", orgInstance)
-            .put("cvId", cvId)
-            .put("action", action)
-    }
+        oldInstance: JsonObject?,
+        newInstance: JsonObject?
+    ) = JsonObject()
+        .put("_id", UUID.randomUUID().toString())
+        .put("accountId", accountId)
+        .put("timestamp", LocalDateTime.now().toString())
+        .put("entity", entityName)
+        .put("instanceId", instanceId)
+        .put("oldInstance", oldInstance)
+        .put("newInstance", newInstance)
+        .put("action", if (oldInstance == null) "insert" else if (newInstance == null) "delete" else "update")
+        .put(
+            "cvId",
+            if (entityName == "cv") instanceId
+            else (oldInstance ?: newInstance ?: JsonObject()).getString("cvId", "")
+        )
 }

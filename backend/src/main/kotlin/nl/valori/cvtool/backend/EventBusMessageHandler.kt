@@ -51,8 +51,8 @@ internal object EventBusMessageHandler {
                 Single
                     .just(bridgeEvent)
                     .flatMap { authenticate(vertx, it) }
-                    .flatMap { authorize(vertx, it) }
-                    .flatMap { fetchOriginalData(vertx, it) }
+                    .flatMap { fetchOldData(vertx, it) }
+                    .flatMap { authorize(it) }
                     .flatMap { auditLog(vertx, it) }
                     .subscribe(
                         {
@@ -86,16 +86,6 @@ internal object EventBusMessageHandler {
             }
             .map { bridgeEvent.setMessageHeader("authInfo", it.encode()) }
     }
-
-    private fun authorize(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> =
-        Authorizer
-            .authorize(
-                vertx,
-                bridgeEvent.rawMessage.getString("address"),
-                bridgeEvent.rawMessage.getValue("body"),
-                JsonObject(bridgeEvent.getMessageHeader("authInfo")).toAuthInfo()
-            )
-            .map { bridgeEvent.setMessageHeader("authInfo", it.toJson().encode()) }
 
     /**
      * Input:
@@ -135,29 +125,41 @@ internal object EventBusMessageHandler {
      *     }
      *   }
      */
-    private fun fetchOriginalData(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> {
+    private fun fetchOldData(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> {
         val bodyJson = ModelUtils.toJsonObject(bridgeEvent.rawMessage.getValue("body"))
-            ?: return Single.just(bridgeEvent.setMessageHeader("originalData", "{}"))
+            ?: return Single.just(bridgeEvent.setMessageHeader("oldData", "{}"))
 
         val searchCriteria = JsonObject()
         bodyJson.map.keys
             .forEach { entityName ->
                 val instanceIds = bodyJson.getInstanceIds(entityName)
-                    .map { instanceId -> JsonObject().put("_id", instanceId) }
                 if (instanceIds.isNotEmpty()) {
-                    searchCriteria.put(entityName, JsonArray(instanceIds))
+                    // { "entity": [{ "_id": "id-1" }, { "_id": "id-2"}] } }
+                    searchCriteria.put(entityName, JsonArray(instanceIds.map { JsonObject().put("_id", it) }))
                 }
             }
 
         if (searchCriteria.isEmpty) {
-            return Single.just(bridgeEvent.setMessageHeader("originalData", "{}"))
+            return Single.just(bridgeEvent.setMessageHeader("oldData", "{}"))
         }
 
         return vertx
             .eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions )
-            .map { bridgeEvent.setMessageHeader("originalData", it.body().encode()) }
+            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
+            .map { bridgeEvent.setMessageHeader("oldData", it.body().encode()) }
     }
+
+    private fun authorize(bridgeEvent: BridgeEvent): Single<BridgeEvent> =
+        Single
+            .just(bridgeEvent)
+            .doOnSuccess {
+                Authorizer.authorize(
+                    it.rawMessage.getString("address"),
+                    it.rawMessage.getValue("body"),
+                    JsonObject(it.getMessageHeader("authInfo")).toAuthInfo(),
+                    JsonObject(it.getMessageHeader("oldData"))
+                )
+            }
 
     private fun auditLog(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> =
         AuditLogger
@@ -166,7 +168,7 @@ internal object EventBusMessageHandler {
                 bridgeEvent.rawMessage.getString("address"),
                 bridgeEvent.rawMessage.getValue("body"),
                 JsonObject(bridgeEvent.getMessageHeader("authInfo")).toAuthInfo(),
-                JsonObject(bridgeEvent.getMessageHeader("originalData"))
+                JsonObject(bridgeEvent.getMessageHeader("oldData"))
             )
             .map { bridgeEvent }
 }
