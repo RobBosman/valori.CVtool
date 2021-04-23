@@ -100,7 +100,7 @@ export const CvFormattedText = (props) => {
       }
       <Text
         style={textComponentStyle}>
-        {textFormatter.renderAndFormat(value, formattingSpecs, preview.cvTextStyle)}
+        {textFormatter.renderAndFormat(value, formattingSpecs, props.textComponentStyle)}
       </Text>
     </Stack>
   );

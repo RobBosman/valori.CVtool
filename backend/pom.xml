@@ -14,9 +14,6 @@
     <description>Backend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
     <properties>
-        <kotlin.code.style>official</kotlin.code.style>
-        <java.version>15</java.version>
-        <java-target.version>15</java-target.version>
         <kotlin.version>1.4.32</kotlin.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -34,7 +31,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <release>${java.version}</release>
+                    <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
 
@@ -59,7 +56,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>${java-target.version}</jvmTarget>
+                    <jvmTarget>${maven.compiler.release}</jvmTarget>
                 </configuration>
             </plugin>
 

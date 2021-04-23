@@ -14,9 +14,6 @@
     <description>conversion of old CVtool data format (XML) to new (JSON)</description>
 
     <properties>
-        <kotlin.code.style>official</kotlin.code.style>
-        <java.version>15</java.version>
-        <java-target.version>15</java-target.version>
         <kotlin.version>1.4.32</kotlin.version>
         <vertx.version>4.0.2</vertx.version>
     </properties>
@@ -46,7 +43,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>${java-target.version}</jvmTarget>
+                    <jvmTarget>${maven.compiler.release}</jvmTarget>
                 </configuration>
             </plugin>
         </plugins>
