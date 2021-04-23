@@ -17,21 +17,35 @@ reducerRegistry.register(
       selectedId: {}
     },
     {
-      [setLocationHash]: (state, action) => {
-        state.locationHash = action.payload;
-      },
-      [setLocale]: (state, action) => {
-        state.userPrefs.locale = action.payload;
-      },
-      [setTheme]: (state, action) => {
-        state.userPrefs.theme = action.payload;
-      },
-      [setSelectedId]: (state, action) => {
-        state.selectedId[action.payload.entityName] = action.payload.selectedId;
-      },
-      [resetSelectedIds]: (state, action) => {
-        state.selectedId = action.payload;
-      }
+      [setLocationHash]: (state, action) => ({
+        ...state,
+        locationHash: action.payload
+      }),
+      [setLocale]: (state, action) => ({
+        ...state,
+        userPrefs: {
+          ...state.userPrefs,
+          locale: action.payload
+        }
+      }),
+      [setTheme]: (state, action) => ({
+        ...state,
+        userPrefs: {
+          ...state.userPrefs,
+          theme: action.payload
+        }
+      }),
+      [setSelectedId]: (state, action) => ({
+        ...state,
+        selectedId: {
+          ...state.selectedId,
+          [action.payload.entityName]: action.payload.selectedId
+        }
+      }),
+      [resetSelectedIds]: (state, action) => ({
+        ...state,
+        selectedId: action.payload
+      })
     }
   )
 );

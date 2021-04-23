@@ -11,7 +11,7 @@ export const fetchCvFromRemote = (accountId, sendEventFunc) =>
     .then((message) => message.body);
 
 export const deleteAccountFromRemote = (accountId, sendEventFunc) =>
-  sendEventFunc("account.delete", { accountId })
+  sendEventFunc("account.delete", { "account": { [accountId]: {} } })
     .then((message) => message.body);
 
 // Use this function to create a unique object id (UUID).

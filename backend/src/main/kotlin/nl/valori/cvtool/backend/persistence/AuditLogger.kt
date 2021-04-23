@@ -6,6 +6,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.Vertx
 import nl.valori.cvtool.backend.ModelUtils.toJsonObject
 import nl.valori.cvtool.backend.authorization.AuthInfo
+import nl.valori.cvtool.backend.cv.ACCOUNT_DELETE_ADDRESS
 import java.time.LocalDateTime
 import java.util.*
 
@@ -22,19 +23,18 @@ internal object AuditLogger {
         messageBody: Any?,
         authInfo: AuthInfo,
         oldData: JsonObject
-    ): Single<Unit> {
+    ) =
         // Check if this message intends to change any data.
-        if (messageAddress == MONGODB_SAVE_ADDRESS && messageBody is JsonObject) {
-            return vertx.eventBus()
+        if (messageBody is JsonObject && (messageAddress == MONGODB_SAVE_ADDRESS || messageAddress == ACCOUNT_DELETE_ADDRESS))
+            vertx.eventBus()
                 .rxRequest<JsonObject>(
                     MONGODB_SAVE_ADDRESS,
                     composeAuditLog(messageBody, oldData, authInfo.accountId),
                     deliveryOptions
                 )
                 .map { }
-        }
-        return Single.just(Unit)
-    }
+        else
+            Single.just(Unit)
 
     private fun composeAuditLog(messageBody: JsonObject, oldData: JsonObject, accountId: String): JsonObject {
         val auditLog = JsonObject()
@@ -45,20 +45,21 @@ internal object AuditLogger {
                     ?.map { (instanceId, newInstance) -> instanceId to toJsonObject(newInstance) }
                     ?.forEach { (instanceId, newInstance) ->
                         if (newInstance != null) {
-                            val oldInstanceNullable = oldData.getJsonObject(entityName).getJsonObject(instanceId)
-                            val newInstanceNullable = if (newInstance.isEmpty) null else newInstance
+                            val oldInstanceOrNull = oldData.getJsonObject(entityName).getJsonObject(instanceId)
+                            val newInstanceOrNull = if (newInstance.isEmpty) null else newInstance
                             // Skip audit logging if both old and new instance are equal, e.g. when you create
                             // an instance and immediately delete it, or when changing an instance and immediately
                             // undo your changes.
-                            if (newInstanceNullable != oldInstanceNullable) {
+                            if (newInstanceOrNull != oldInstanceOrNull) {
+                                val id = UUID.randomUUID().toString()
                                 val auditInstance = composeAuditInstance(
+                                    id,
                                     accountId,
                                     entityName,
-                                    instanceId,
-                                    oldInstanceNullable,
-                                    newInstanceNullable
+                                    oldInstanceOrNull,
+                                    newInstanceOrNull
                                 )
-                                auditLog.put(auditInstance.getString("_id"), auditInstance)
+                                auditLog.put(id, auditInstance)
                             }
                         }
                     }
@@ -67,23 +68,16 @@ internal object AuditLogger {
     }
 
     private fun composeAuditInstance(
+        id: String,
         accountId: String,
         entityName: String,
-        instanceId: String,
         oldInstance: JsonObject?,
         newInstance: JsonObject?
     ) = JsonObject()
-        .put("_id", UUID.randomUUID().toString())
+        .put("_id", id)
         .put("accountId", accountId)
         .put("timestamp", LocalDateTime.now().toString())
         .put("entity", entityName)
-        .put("instanceId", instanceId)
         .put("oldInstance", oldInstance)
         .put("newInstance", newInstance)
-        .put("action", if (oldInstance == null) "insert" else if (newInstance == null) "delete" else "update")
-        .put(
-            "cvId",
-            if (entityName == "cv") instanceId
-            else (oldInstance ?: newInstance ?: JsonObject()).getString("cvId", "")
-        )
 }

@@ -9,6 +9,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
+import nl.valori.cvtool.backend.cv.DOLLAR
 import org.bson.BsonDocument
 import org.slf4j.LoggerFactory
 
@@ -47,7 +48,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
     /**
      * Expected message body:
      *   {
-     *     entity_1: [{ _id: { $in: ["XXX", "YYY"] } }],
+     *     entity_1: [{ _id: "XXX" }, { _id: "YYY" }],
      *     entity_2: [{ cvId: "my-cv-id" }]
      *   }
      *
@@ -93,7 +94,11 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
             )
 
     /**
-     * Returns JSON:
+     * Expected input:
+     *   entity_1
+     *   [ { _id: "XXX" }, { _id: "YYY" } ]
+     *
+     * JSON response:
      *   {
      *     entity_1: {
      *       XXX: {
@@ -114,8 +119,11 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
     ): Single<JsonObject> {
         if (criteriaArray !is JsonArray)
             error("Error fetching data: search criteria must be of type JsonArray")
-        val criteria =
-            if (criteriaArray.isEmpty) "{}" else criteriaArray.encode().substringAfter("[").substringBeforeLast("]")
+        // Transform the non-empty criteriaArray
+        //   [ { _id: "XXX" }, { _id: "YYY" } ]
+        // into the query criteria:
+        //   { $or: [ { _id: "XXX" }, { _id: "YYY" } ] }
+        val criteria = if (criteriaArray.isEmpty) "{}" else "{ \"${DOLLAR}or\": ${criteriaArray.encode()} }"
         return Flowable
             .defer {
                 log.debug("Vertx fetching '$entityName' documents using criteria [$criteria]...")

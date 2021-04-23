@@ -139,14 +139,13 @@ internal object EventBusMessageHandler {
                 }
             }
 
-        if (searchCriteria.isEmpty) {
-            return Single.just(bridgeEvent.setMessageHeader("oldData", "{}"))
-        }
-
-        return vertx
-            .eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
-            .map { bridgeEvent.setMessageHeader("oldData", it.body().encode()) }
+        return if (searchCriteria.isEmpty)
+            Single.just(bridgeEvent.setMessageHeader("oldData", "{}"))
+        else
+            vertx
+                .eventBus()
+                .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
+                .map { bridgeEvent.setMessageHeader("oldData", it.body().encode()) }
     }
 
     private fun authorize(bridgeEvent: BridgeEvent): Single<BridgeEvent> =

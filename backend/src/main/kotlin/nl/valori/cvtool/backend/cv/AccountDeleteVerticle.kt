@@ -20,7 +20,9 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
     /**
      * Expected message body:
      *   {
-     *     "accountId": "id-of-account-to-delete"
+     *     "account": {
+     *       "id-of-account-to-delete": {}
+     *     }
      *   }
      *
      * Response:
@@ -31,7 +33,7 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
     override fun handleRequest(message: Message<JsonObject>) {
         Single
             .just(message.body())
-            .map { it.getString("accountId", "") }
+            .map { it.getInstanceIds("account").elementAtOrElse(0) { "" } }
             .doOnSuccess { if (it === "") error("'accountId' is not specified.") }
             .flatMap { accountId ->
                 fetchMetaData(accountId)

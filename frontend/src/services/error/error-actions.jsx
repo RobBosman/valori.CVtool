@@ -14,13 +14,14 @@ reducerRegistry.register(
   createReducer(
     {},
     {
-      [setLastError]: (state, action) => {
-        state.lastError = {
+      [setLastError]: (state, action) => ({
+        ...state,
+        lastError: {
           message: action.payload.message.substring(0, 1000),
           source: action.payload.source,
           timestamp: Date.now()
-        };
-      }
+        }
+      })
     }
   )
 );

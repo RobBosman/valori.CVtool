@@ -24,12 +24,14 @@ reducerRegistry.register(
       loginState: LoginStates.LOGGED_OUT
     },
     {
-      [setLoginState]: (state, action) => {
-        state.loginState = action.payload;
-      },
-      [setAuthInfo]: (state, action) => {
-        state.authInfo = action.payload;
-      }
+      [setLoginState]: (state, action) => ({
+        ...state,
+        loginState: action.payload
+      }),
+      [setAuthInfo]: (state, action) => ({
+        ...state,
+        authInfo: action.payload
+      })
     }
   )
 );

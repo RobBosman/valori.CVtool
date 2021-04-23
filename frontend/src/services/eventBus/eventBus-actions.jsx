@@ -9,9 +9,10 @@ reducerRegistry.register(
   createReducer(
     {},
     {
-      [setEventBusConnectionState]: (state, action) => {
-        state.connectionState = action.payload;
-      }
+      [setEventBusConnectionState]: (state, action) => ({
+        ...state,
+        connectionState: action.payload
+      })
     }
   )
 );
