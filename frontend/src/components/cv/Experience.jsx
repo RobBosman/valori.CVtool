@@ -272,7 +272,7 @@ const Experience = (props) => {
         markDown={true}
         textComponentStyle={{
           backgroundColor: "white",
-          color: "black",
+          color: valoriBlue,
           paddingTop: 0
         }}
         styles={{
