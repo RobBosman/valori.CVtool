@@ -40,6 +40,7 @@ See `scripts/clean_install_BladeVPS.sh`.
 == Backup/restore
 
 See `scripts\cvtool_*.sh`.
+Data retention is 120 days.
 
  #!/usr/bin/env sh
  . /secret/.env
