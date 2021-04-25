@@ -9,11 +9,11 @@ rm -rf ${VOLUME_CVTOOL_BACKUP}/${RETENTION_DATE}
 rm -rf ${VOLUME_MONGODB_BACKUP}/${RETENTION_DATE}
 
 lftp -c " \
-    set ftp:ssl-allow true \
-    ; set ssl:verify-certificate no \
-    ; open -u ${LFTP_USERNAME},${LFTP_PASSWORD} ${LFTP_HOST} \
-        -e \" \
-            rm -rf /cvtool/${RETENTION_DATE} \
-            ; quit \
-        \" \
-    "
+  set ftp:ssl-allow true \
+  ; set ssl:verify-certificate no \
+  ; open -u ${LFTP_USERNAME},${LFTP_PASSWORD} ${LFTP_HOST} \
+    -e \" \
+      rm -rf /cvtool/${RETENTION_DATE} \
+      ; quit \
+    \" \
+  "

@@ -1,0 +1,14 @@
+var db = db.getSiblingDB('cvtool');
+db.audit_log.createIndex({ accountId: 1});
+db.audit_log.createIndex({ cvId: 1});
+db.account.createIndex({ email: 1}, { unique: true });
+db.authorization.createIndex({ accountId: 1});
+db.cv.createIndex({ accountId: 1});
+db.eduction.createIndex({ cvId: 1});
+db.training.createIndex({ cvId: 1});
+db.skill.createIndex({ cvId: 1});
+db.publication.createIndex({ cvId: 1});
+db.reference.createIndex({ cvId: 1});
+db.experience.createIndex({ cvId: 1});
+db.skill.createIndex({ 'description.nl_NL': 'text', 'description.uk_UK': 'text' });
+db.experience.createIndex({ '$**': 'text' });
