@@ -73,11 +73,17 @@ internal object AuditLogger {
         entityName: String,
         oldInstance: JsonObject?,
         newInstance: JsonObject?
-    ) = JsonObject()
-        .put("_id", id)
-        .put("accountId", accountId)
-        .put("timestamp", LocalDateTime.now().toString())
-        .put("entity", entityName)
-        .put("oldInstance", oldInstance)
-        .put("newInstance", newInstance)
+    ): JsonObject {
+        val instance = (oldInstance ?: newInstance)!!
+        val cvId = if (entityName === "cv") instance.getString("_id") else instance.getString("cvId", "")
+        return JsonObject()
+            .put("_id", id)
+            .put("accountId", accountId)
+            .put("timestamp", LocalDateTime.now().toString())
+            .put("entity", entityName)
+            .put("oldInstance", oldInstance)
+            .put("newInstance", newInstance)
+            .put("instanceId", instance.getString("_id"))
+            .put("cvId", if (cvId !== "") cvId else null)
+    }
 }
