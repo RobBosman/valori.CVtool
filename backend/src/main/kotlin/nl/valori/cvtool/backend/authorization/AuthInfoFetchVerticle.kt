@@ -13,7 +13,7 @@ import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
-import java.util.*
+import java.util.UUID
 
 const val AUTH_INFO_FETCH_ADDRESS = "authInfo.fetch"
 

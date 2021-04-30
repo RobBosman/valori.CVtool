@@ -18,10 +18,10 @@ import nl.valori.cvtool.backend.authorization.AUTHENTICATE_ADDRESS
 import nl.valori.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
 import nl.valori.cvtool.backend.authorization.Authorizer
-import nl.valori.cvtool.backend.cv.ACCOUNT_DELETE_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_GENERATE_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_SEARCH_ADDRESS
+import nl.valori.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
 import nl.valori.cvtool.backend.persistence.AuditLogger
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS

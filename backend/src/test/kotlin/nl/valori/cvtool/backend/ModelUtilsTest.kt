@@ -11,8 +11,8 @@ internal class ModelUtilsTest {
 
     @Test
     fun jsonToXml() {
-        val json = JsonObject(javaClass.getResource("/test-cv.json").readText())
-        val expectedXml = javaClass.getResource("/test-cv.xml").readText()
+        val json = JsonObject(javaClass.getResource("/test-cv.json")!!.readText())
+        val expectedXml = javaClass.getResource("/test-cv.xml")!!.readText()
 
         val writer = StringWriter()
         val xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer)

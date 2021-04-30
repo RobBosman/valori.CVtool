@@ -125,11 +125,12 @@ internal class CvSearchVerticle : BasicVerticle(CV_SEARCH_ADDRESS) {
         )
         // {
         //     "cv": [
-        //         { "_id": { "${DOLLAR}in": [$cvIds] } }
+        //         { "_id": { "$in": [ $cvIds ] } }
         //     ]
         // }
-        val cvCriteria =
-            JsonObject().put("cv", JsonArray().add(JsonObject().put("_id", JsonObject().put("\$in", cvIds))))
+        val cvCriteria = JsonObject()
+            .put("cv", JsonArray().add(JsonObject()
+                .put("_id", JsonObject().put("\$in", cvIds))))
         return vertx.eventBus()
             .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, cvCriteria, deliveryOptions)
             .map { it.body() }

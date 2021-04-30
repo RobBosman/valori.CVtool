@@ -10,11 +10,11 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import nl.valori.cvtool.backend.authorization.AuthInfoFetchVerticle
 import nl.valori.cvtool.backend.authorization.AuthenticateVerticle
-import nl.valori.cvtool.backend.cv.AccountDeleteVerticle
 import nl.valori.cvtool.backend.cv.CvBackupVerticle
 import nl.valori.cvtool.backend.cv.CvFetchVerticle
 import nl.valori.cvtool.backend.cv.CvGenerateVerticle
 import nl.valori.cvtool.backend.cv.CvSearchVerticle
+import nl.valori.cvtool.backend.persistence.AccountDeleteVerticle
 import nl.valori.cvtool.backend.persistence.MongodbFetchVerticle
 import nl.valori.cvtool.backend.persistence.MongodbSaveVerticle
 import nl.valori.cvtool.backend.system.ControlVerticle

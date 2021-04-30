@@ -9,9 +9,9 @@ internal class CvGenerateVerticleTest {
 
     @Test
     fun jsonToXml() {
-        val xml = javaClass.getResource("/test-cv.xml").readBytes()
+        val xml = javaClass.getResource("/test-cv.xml")!!.readBytes()
         val xslt = CvGenerateVerticle.createXslTemplate("/test.xsl")
-        val expectedResult = javaClass.getResource("/test-result.xml").readBytes()
+        val expectedResult = javaClass.getResource("/test-result.xml")!!.readBytes()
 
         val result = CvGenerateVerticle.xslTransform(xml, xslt)
         assertArrayEquals(expectedResult, result)
@@ -19,7 +19,7 @@ internal class CvGenerateVerticleTest {
 
     @Test
     fun generateDocx() {
-        val json = JsonObject(javaClass.getResource("/test-cv.json").readText()) // 14bfa6bb-1487-3e45-bba0-28a21ed38046
+        val json = JsonObject(javaClass.getResource("/test-cv.json")!!.readText()) // 14bfa6bb-1487-3e45-bba0-28a21ed38046
         val generator = CvGenerateVerticle()
 
         val numGenerations = 1000

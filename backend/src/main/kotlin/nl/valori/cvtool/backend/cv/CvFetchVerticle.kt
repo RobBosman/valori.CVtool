@@ -11,7 +11,7 @@ import nl.valori.cvtool.backend.ModelUtils.composeCvInstance
 import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
-import java.util.*
+import java.util.UUID
 
 const val CV_FETCH_ADDRESS = "cv.fetch"
 

@@ -1,7 +1,7 @@
 package nl.valori.cvtool
 
 import java.nio.charset.StandardCharsets.UTF_8
-import java.util.*
+import java.util.UUID
 
 object XslUtil {
 

@@ -1,4 +1,4 @@
-package nl.valori.cvtool.backend.cv
+package nl.valori.cvtool.backend.persistence
 
 import io.reactivex.Single
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
@@ -10,8 +10,6 @@ import nl.valori.cvtool.backend.ModelUtils.ACCOUNT_RELATED_ENTITY_NAMES
 import nl.valori.cvtool.backend.ModelUtils.CV_RELATED_ENTITY_NAMES
 import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.ModelUtils.getInstances
-import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
-import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 
 const val ACCOUNT_DELETE_ADDRESS = "account.delete"
 

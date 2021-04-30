@@ -12,7 +12,7 @@ import nl.valori.cvtool.backend.cv.CvGenerateVerticle.Companion.allLocales
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import java.io.ByteArrayOutputStream
 import java.lang.System.nanoTime
-import java.util.*
+import java.util.Base64
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import kotlin.collections.component1

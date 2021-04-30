@@ -1,7 +1,9 @@
 package nl.valori.cvtool.backend.authorization.intention
 
 import io.vertx.core.json.JsonObject
+import nl.valori.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.backend.authorization.TestData.authInfoTom
+import nl.valori.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import org.junit.jupiter.api.Test
@@ -35,6 +37,9 @@ internal object IntentionAllTest {
 
     private val bodySaveAll = JsonObject(
         """{
+            "account": {
+                "account-id-to-delete": {}
+            },
             "authorization": {
                 "authorization-id-of-pascal": {
                     "_id": "authorization-id-of-pascal",
@@ -78,11 +83,11 @@ internal object IntentionAllTest {
     @Test
     fun testReadAll() {
         listOf(
-            IntentionReadOwnCv,
-            IntentionReadOtherCv,
             IntentionReadAllAccounts,
+            IntentionReadAllAuthorizations,
             IntentionReadAllBusinessUnits,
-            IntentionReadAllAuthorizations
+            IntentionReadOtherCv,
+            IntentionReadOwnCv
         )
             .forEach { intentionToTest ->
                 assertTrue(
@@ -95,10 +100,10 @@ internal object IntentionAllTest {
     @Test
     fun testSaveAll() {
         listOf(
-            IntentionUpdateOwnCv,
-            IntentionUpdateOtherCv,
             IntentionUpdateAuthorization,
-            IntentionUpdateBusinessUnit
+            IntentionUpdateBusinessUnit,
+            IntentionUpdateOwnCv,
+            IntentionUpdateOtherCv
         )
             .forEach { intentionToTest ->
                 assertTrue(
@@ -106,5 +111,17 @@ internal object IntentionAllTest {
                     "Testing class ${intentionToTest.javaClass.simpleName}"
                 )
             }
+    }
+
+    @Test
+    fun testMiscellanea() {
+        assertTrue(
+            IntentionReadOwnAuthInfo.match(AUTH_INFO_FETCH_ADDRESS, bodyFetchAll, authInfoTom),
+            "Testing class ${IntentionReadOwnAuthInfo.javaClass.simpleName}"
+        )
+        assertTrue(
+            IntentionDeleteAccount.match(ACCOUNT_DELETE_ADDRESS, bodySaveAll, authInfoTom),
+            "Testing class ${IntentionDeleteAccount.javaClass.simpleName}"
+        )
     }
 }
