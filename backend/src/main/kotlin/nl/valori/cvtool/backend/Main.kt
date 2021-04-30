@@ -13,6 +13,7 @@ import nl.valori.cvtool.backend.authorization.AuthenticateVerticle
 import nl.valori.cvtool.backend.cv.CvBackupVerticle
 import nl.valori.cvtool.backend.cv.CvFetchVerticle
 import nl.valori.cvtool.backend.cv.CvGenerateVerticle
+import nl.valori.cvtool.backend.cv.CvHistoryVerticle
 import nl.valori.cvtool.backend.cv.CvSearchVerticle
 import nl.valori.cvtool.backend.persistence.AccountDeleteVerticle
 import nl.valori.cvtool.backend.persistence.MongodbFetchVerticle
@@ -38,7 +39,8 @@ object Main {
         AccountDeleteVerticle::class,
         CvFetchVerticle::class,
         CvSearchVerticle::class,
-        CvBackupVerticle::class
+        CvBackupVerticle::class,
+        CvHistoryVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy
         .associateWith { "not started" }

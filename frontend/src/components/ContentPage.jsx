@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { PrimaryButton, Nav, Separator, Stack, TooltipHost } from "@fluentui/react";
+import { PrimaryButton, Nav, Separator, Stack, TooltipHost, IconButton } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -24,14 +24,23 @@ const ContentPage = (props) => {
 
   const locationHash = props.locationHash.split("=").shift();
 
-  const onRenderGroupHeader = (group) =>
-    <Stack horizontal
-      verticalAlign="center">
-      <h3>{group.name}</h3>
-    </Stack>;
+  const onFetchCvHistory = () =>
+    props.fetchCvHistory(props.selectedAccountId);
 
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
+
+  const onRenderGroupHeader = (group) =>
+    <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
+      <h3>{group.name}</h3>
+      <IconButton
+        iconProps={{ iconName: "FullHistory" }}
+        title="Wijzigingshistorie"
+        checked={false}
+        disabled={!props.selectedCvId}
+        onClick={onFetchCvHistory}
+      />
+    </Stack>;
 
   const navGroups = React.useMemo(() =>
     [
@@ -72,6 +81,8 @@ const ContentPage = (props) => {
       },
       {
         name: "CV",
+        url: "#cv",
+        icon: "FullHistory",
         links: [
           {
             key: "#profile",
@@ -191,6 +202,7 @@ ContentPage.propTypes = {
   accountEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
+  fetchCvHistory: PropTypes.func.isRequired,
   generateCv: PropTypes.func.isRequired
 };
 
@@ -204,6 +216,7 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
   generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale))
 });
 

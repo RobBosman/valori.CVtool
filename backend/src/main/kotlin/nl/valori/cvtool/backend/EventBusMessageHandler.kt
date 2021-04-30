@@ -20,6 +20,7 @@ import nl.valori.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
 import nl.valori.cvtool.backend.authorization.Authorizer
 import nl.valori.cvtool.backend.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_GENERATE_ADDRESS
+import nl.valori.cvtool.backend.cv.CV_HISTORY_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_SEARCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
 import nl.valori.cvtool.backend.persistence.AuditLogger
@@ -40,6 +41,7 @@ internal object EventBusMessageHandler {
             .addInboundPermitted(PermittedOptions().setAddress(AUTH_INFO_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_HISTORY_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_SEARCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(ACCOUNT_DELETE_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(MONGODB_FETCH_ADDRESS))

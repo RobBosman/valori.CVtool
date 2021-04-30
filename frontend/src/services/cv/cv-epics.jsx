@@ -3,9 +3,8 @@ import { from, merge, of } from "rxjs";
 import { map, switchMap, ignoreElements, tap, mergeMap, filter, take, debounceTime, takeUntil } from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "../safe/safe-actions";
-import * as safeServices from "../safe/safe-services";
-import * as cvActions from "./cv-actions";
 import * as uiActions from "../ui/ui-actions";
+import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
 
 export const cvEpics = [
@@ -49,11 +48,19 @@ export const cvEpics = [
   (action$) => action$.pipe(
     ofType(cvActions.fetchCvByAccountId.type),
     map(action => action.payload),
-    switchMap(accountId => safeServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
+    switchMap(accountId => cvServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
     mergeMap(fetchedCv => of(
       safeActions.resetEntities(fetchedCv),
       uiActions.setSelectedId("cv", Object.keys(fetchedCv.cv)[0])
     ))
+  ),
+
+  // Fetch cv history from the backend server.
+  (action$) => action$.pipe(
+    ofType(cvActions.fetchCvHistory.type),
+    map(action => action.payload),
+    switchMap(accountId => cvServices.fetchCvHistoryFromRemote(accountId, eventBusClient.sendEvent)),
+    map(fetchedCvHistory => safeActions.resetEntities(fetchedCvHistory))
   )
 ];
 

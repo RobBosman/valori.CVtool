@@ -6,10 +6,6 @@ export const fetchFromRemote = (entities, sendEventFunc) =>
 export const saveToRemote = (entities, sendEventFunc) =>
   sendEventFunc("mongodb.save", entities);
 
-export const fetchCvFromRemote = (accountId, sendEventFunc) =>
-  sendEventFunc("cv.fetch", { accountId })
-    .then((message) => message.body);
-
 export const deleteAccountFromRemote = (accountId, sendEventFunc) =>
   sendEventFunc("account.delete", { "account": { [accountId]: {} } })
     .then((message) => message.body);

@@ -1,7 +1,14 @@
+export const fetchCvFromRemote = (accountId, sendEventFunc) =>
+  sendEventFunc("cv.fetch", { accountId })
+    .then(message => message.body);
+
+export const fetchCvHistoryFromRemote = (accountId, sendEventFunc) =>
+  sendEventFunc("cv.history", { accountId })
+    .then(message => message.body);
+
 export const generateCvAtRemote = (accountId, locale, sendEventFunc) =>
   sendEventFunc("cv.generate", { accountId, locale })
-    .then((message) => message.body);
-
+    .then(message => message.body);
 
 const escapeJsonString = (text) =>
   text
@@ -13,5 +20,5 @@ const escapeJsonString = (text) =>
 export const searchCvData = (searchText, sendEventFunc) =>
   searchText
     ? sendEventFunc("cv.search", { searchText: escapeJsonString(searchText) })
-      .then((message) => message.body)
+      .then(message => message.body)
     : Promise.resolve({});

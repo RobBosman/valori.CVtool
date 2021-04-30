@@ -6,6 +6,7 @@ import nl.valori.cvtool.backend.authorization.AuthInfo
 import nl.valori.cvtool.backend.authorization.Intention
 import nl.valori.cvtool.backend.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_GENERATE_ADDRESS
+import nl.valori.cvtool.backend.cv.CV_HISTORY_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 
 internal object IntentionReadOwnCv : Intention {
@@ -16,7 +17,7 @@ internal object IntentionReadOwnCv : Intention {
         val bodyJson = toJsonObject(body)
             ?: return false
 
-        if ((address == CV_FETCH_ADDRESS || address == CV_GENERATE_ADDRESS)
+        if ((address == CV_FETCH_ADDRESS || address == CV_HISTORY_ADDRESS || address == CV_GENERATE_ADDRESS)
             && bodyJson.map["accountId"] == authInfo.accountId
         )
             return true

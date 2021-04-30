@@ -191,7 +191,7 @@ const Accounts = (props) => {
   const infoText = <Text>
     De lijst toont alleen de accountgegevens.
     <br/><strong>Dubbel-klikken</strong> op een account haalt ook de cv-gegevens op.
-    <br/>De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
+    De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
   </Text>;
 
   return (
