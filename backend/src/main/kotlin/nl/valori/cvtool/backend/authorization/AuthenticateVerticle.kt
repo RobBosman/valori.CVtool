@@ -60,7 +60,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .rxDiscover(
                 vertx, OAuth2Options()
                     .setSite(openIdSite)
-                    .setClientID(clientIdAndSecret[0])
+                    .setClientId(clientIdAndSecret[0])
                     .setClientSecret(clientIdAndSecret[1])
             )
             .observeOn(Schedulers.io())
@@ -134,7 +134,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 val email = accessToken.getString("preferred_username", "")
                 if (email.isBlank())
                     error("Cannot obtain email from JWT.")
-                else if (!email.toUpperCase().endsWith("@${AUTH_DOMAIN.toUpperCase()}"))
+                else if (!email.uppercase().endsWith("@${AUTH_DOMAIN.uppercase()}"))
                     error("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
                 var name = accessToken.getString("name", "")
                 if (name.isBlank())

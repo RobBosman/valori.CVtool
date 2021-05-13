@@ -24,7 +24,7 @@ object ModelUtils {
         JsonObject(
             """{
                 "_id": "$id",
-                "email": "${email.toUpperCase()}",
+                "email": "${email.uppercase()}",
                 "name": "$name",
                 "dateOfBirth": "",
                 "residence": ""

@@ -71,7 +71,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
-                JsonObject("""{ "account": [{ "email": "${email.toUpperCase()}" }] }"""),
+                JsonObject("""{ "account": [{ "email": "${email.uppercase()}" }] }"""),
                 deliveryOptions
             )
             .flatMap {
