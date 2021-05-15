@@ -270,7 +270,7 @@ const Accounts = (props) => {
                     styles={{ root: { width: 200 } }}>
                     <TooltipHost content="Haal de gegevens op om het CV te bewerken">
                       <DefaultButton
-                        text={`CV ${"bewerken"}`}
+                        text="CV bewerken"
                         iconProps={{ iconName: "CloudDownload" }}
                         disabled={!props.selectedAccountId}
                         onClick={onFetchCv}

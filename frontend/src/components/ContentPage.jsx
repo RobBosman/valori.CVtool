@@ -16,16 +16,20 @@ import CvLogo from "./widgets/CvLogo";
 import Training from "./cv/Training";
 import Accounts from "./admin/Accounts";
 import * as cvActions from "../services/cv/cv-actions";
+import * as uiActions from "../services/ui/ui-actions";
 import BusinessUnits from "./admin/BusinessUnits";
 import Search from "./admin/Search";
 import LocaleFlag from "./widgets/LocaleFlag";
+import HistoryView from "./cv/HistoryView";
 
 const ContentPage = (props) => {
 
   const locationHash = props.locationHash.split("=").shift();
 
-  const onFetchCvHistory = () =>
+  const onFetchCvHistory = () => {
     props.fetchCvHistory(props.selectedAccountId);
+    props.setHistoryViewVisible(true);
+  };
 
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
@@ -189,6 +193,7 @@ const ContentPage = (props) => {
           <CvTitle />
         </div>
         {renderContent}
+        <HistoryView/>
       </Stack.Item>
     </Stack>
   );
@@ -203,7 +208,8 @@ ContentPage.propTypes = {
   selectedAccountId: PropTypes.string,
   selectedCvId: PropTypes.string,
   fetchCvHistory: PropTypes.func.isRequired,
-  generateCv: PropTypes.func.isRequired
+  generateCv: PropTypes.func.isRequired,
+  setHistoryViewVisible: PropTypes.func
 };
 
 const select = (store) => ({
@@ -217,7 +223,8 @@ const select = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
-  generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale))
+  generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
+  setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
 });
 
 export default connect(select, mapDispatchToProps)(ContentPage);

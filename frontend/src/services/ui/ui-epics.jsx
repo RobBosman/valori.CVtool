@@ -80,6 +80,14 @@ export const uiEpics = [
     ignoreElements()
   ),
 
+  // Hide the CvHistoryView dialog if the selectedAccountId or selectedCvId changed.
+  (action$) => action$.pipe(
+    ofType(uiActions.setSelectedId.type),
+    map(action => action.payload),
+    filter(payload => ["account", "cv"].includes(payload.entityName)),
+    map(() => uiActions.setHistoryViewVisible(false))
+  ),
+
   // Apply the selected theme and store it in localStorage.
   (action$) => action$.pipe(
     ofType(uiActions.setTheme.type),

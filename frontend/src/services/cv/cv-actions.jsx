@@ -13,9 +13,10 @@ reducerRegistry.register(
   createReducer(
     {},
     {
-      [generateCv]: (state) => {
-        state.generateCvTimestamp = new Date();
-      },
+      [generateCv]: (state) => ({
+        ...state,
+        generateCvTimestamp: new Date()
+      }),
       [searchCvData]: (state, action) => ({
         ...state,
         searchText: action.payload

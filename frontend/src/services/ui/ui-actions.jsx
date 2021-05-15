@@ -7,6 +7,7 @@ export const setTheme = createAction("SET_THEME");
 export const setSelectedId = createAction("SET_SELECTED_ID",
   (entityName, selectedId) => ({payload: {entityName, selectedId}}));
 export const resetSelectedIds = createAction("RESET_SELECTED_IDS");
+export const setHistoryViewVisible = createAction("SET_HISTORY_VIEW_VISIBLE");
 
 reducerRegistry.register(
   "ui", 
@@ -14,7 +15,8 @@ reducerRegistry.register(
     {
       locationHash: window.location.hash || "",
       userPrefs: {},
-      selectedId: {}
+      selectedId: {},
+      isHistoryViewVisible: false
     },
     {
       [setLocationHash]: (state, action) => ({
@@ -45,6 +47,10 @@ reducerRegistry.register(
       [resetSelectedIds]: (state, action) => ({
         ...state,
         selectedId: action.payload
+      }),
+      [setHistoryViewVisible]: (state, action) => ({
+        ...state,
+        isHistoryViewVisible: action.payload
       })
     }
   )

@@ -4,7 +4,7 @@ db.audit_log.createIndex({ cvId: 1});
 db.account.createIndex({ email: 1}, { unique: true });
 db.authorization.createIndex({ accountId: 1});
 db.cv.createIndex({ accountId: 1});
-db.eduction.createIndex({ cvId: 1});
+db.education.createIndex({ cvId: 1});
 db.training.createIndex({ cvId: 1});
 db.skill.createIndex({ cvId: 1});
 db.publication.createIndex({ cvId: 1});

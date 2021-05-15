@@ -65,14 +65,14 @@ export const CvDetailsList = (props) => {
 
   const sortableColumns = React.useMemo(() =>
     props.columns
-      .map((column) => {
+      .map(column => {
         const fieldPath = column.fieldName?.split(".", 2) || [];
         const isSortColumn = state.sortingBy.fieldName === column.fieldName;
         return {
           isSorted: isSortColumn,
           isSortedDescending: isSortColumn && state.sortingBy?.isSortedDescending,
           onRender: fieldPath.length === 2
-            ? (instance) => instance[fieldPath[0]] && instance[fieldPath[0]][fieldPath[1]]
+            ? instance => instance[fieldPath[0]] && instance[fieldPath[0]][fieldPath[1]]
             : column.onRender,
           ...column,
           onColumnClick: onSort(column.onColumnClick)
