@@ -33,8 +33,10 @@ internal object IntentionUpdateOtherCv : Intention {
                                 }
                         }
                         "authorization" -> {
+                            // not applicable for IntentionUpdateOtherCv
                         }
                         "businessUnit" -> {
+                            // not applicable for IntentionUpdateOtherCv
                         }
                         "cv" -> {
                             // Referring to 'other' cvIds?

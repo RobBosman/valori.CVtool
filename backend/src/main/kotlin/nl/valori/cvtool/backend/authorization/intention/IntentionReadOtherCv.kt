@@ -24,9 +24,9 @@ internal object IntentionReadOtherCv : Intention {
                 return true
         }
 
-        if (address == CV_SEARCH_ADDRESS) {
-            if (bodyJson.map["searchText"] != null)
-                return true
+        if (address == CV_SEARCH_ADDRESS
+            && bodyJson.map["searchText"] != null) {
+            return true
         }
 
         if (address != MONGODB_FETCH_ADDRESS)
@@ -50,8 +50,10 @@ internal object IntentionReadOtherCv : Intention {
                                     return true
                             }
                             "authorization" -> {
+                                // not applicable for IntentionReadOtherCv
                             }
                             "businessUnit" -> {
+                                // not applicable for IntentionReadOtherCv
                             }
                             "cv" -> {
                                 val accountId = criterion.map["accountId"]

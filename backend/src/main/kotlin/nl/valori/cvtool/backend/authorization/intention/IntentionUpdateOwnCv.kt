@@ -32,8 +32,10 @@ internal object IntentionUpdateOwnCv : Intention {
                                 }
                         }
                         "businessUnit" -> {
+                            // not applicable for IntentionUpdateOwnCv
                         }
                         "authorization" -> {
+                            // not applicable for IntentionUpdateOwnCv
                         }
                         "cv" -> {
                             // Only consider 'own' cvIds.

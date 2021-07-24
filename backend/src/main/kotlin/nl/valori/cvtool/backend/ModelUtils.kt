@@ -130,6 +130,7 @@ object ModelUtils {
     private fun writeJsonKeyValue(xmlWriter: XMLStreamWriter, localName: String, value: Any?, cdata: Boolean = false) {
         when (value) {
             null -> {
+                // ignore
             }
             is JsonArray -> value.forEach { writeJsonKeyValue(xmlWriter, localName, it) }
             is List<*> -> value.forEach { writeJsonKeyValue(xmlWriter, localName, it) }

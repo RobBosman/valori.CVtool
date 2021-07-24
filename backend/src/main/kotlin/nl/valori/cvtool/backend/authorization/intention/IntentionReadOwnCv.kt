@@ -50,8 +50,10 @@ internal object IntentionReadOwnCv : Intention {
                                     return true
                             }
                             "authorization" -> {
+                                // not applicable for IntentionReadOwnCv
                             }
                             "businessUnit" -> {
+                                // not applicable for IntentionReadOwnCv
                             }
                             else -> {
                                 // Only consider 'own' accountId.
