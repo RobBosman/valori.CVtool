@@ -17,8 +17,6 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 * https://code.visualstudio.com/docs/?dv=win[Visual Studio Code]
 * https://www.mongodb.com/try/download/community[MongoDB Community server and client]
 * https://www.mongodb.com/try/download/database-tools[MongoDB Database Tools]
-* https://docs.microsoft.com/nl-nl/windows/wsl/install-win10#manual-installation-steps[Windows Subsystem for Linux (WSL2)]
-* https://www.microsoft.com/nl-nl/p/ubuntu/9nblggh4msv6?activetab=pivot:overviewtab[Ubuntu (WSL2)]
 * https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker Desktop]
 * https://www.bitvise.com/ssh-client-download[BitWise SSH client]
 
@@ -36,6 +34,8 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 == Configure server
 
 See `scripts/clean_install_BladeVPS.sh`.
+
+Create file `/secret/.env`, make it inaccessible for 'outsiders' and fill-in secrets, see `scripts\.env.example`.
 
 == Backup/restore
 
