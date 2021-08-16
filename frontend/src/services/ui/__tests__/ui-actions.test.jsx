@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { reducerRegistry } from "../../../redux/reducerRegistry";
 import * as uiActions from "../ui-actions";
 

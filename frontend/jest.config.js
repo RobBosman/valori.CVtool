@@ -1,9 +1,14 @@
 "use strict";
 
-// For a detailed explanation regarding each configuration property, visit:
-// https://jestjs.io/docs/en/configuration.html
-
+const {defaults} = require("jest-config");
 module.exports = {
+
+  moduleFileExtensions: [...defaults.moduleFileExtensions, "jsx"],
+
+  // For a detailed explanation regarding each configuration property, visit:
+  // https://jestjs.io/docs/en/configuration.html
+
+
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 

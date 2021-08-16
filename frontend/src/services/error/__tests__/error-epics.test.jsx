@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { createEpicMiddleware } from "redux-observable";
 import { configureStore } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../../redux/reducerRegistry";

@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { createEpicMiddleware } from "redux-observable";
 import { configureStore } from "@reduxjs/toolkit";
 import { EpicRegistry } from "../../../redux/epicRegistry";
@@ -23,7 +26,7 @@ describe("ui-epics.test", () => {
   it("should handle windows event 'hashchange'", () => {
     expect(_store.getState().ui.locationHash)
       .toBe("");
-    document.location.hash = "hashLocation";
+    window.location.hash = "hashLocation";
     return new Promise((_resolve) =>
       setTimeout(() => {
         // TODO: fix this
