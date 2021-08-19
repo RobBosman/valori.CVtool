@@ -7,6 +7,10 @@ export const searchCvData = createAction("SEARCH_CV_DATA");
 export const setSearchResult = createAction("SET_SEARCH_RESULT");
 export const generateCv = createAction("GENERATE_CV",
   (accountId, locale) => ({ payload: { accountId, locale } }));
+export const importFile = createAction("IMPORT_FILE",
+  (cvId, locale) => ({ payload: { cvId, locale } }));
+export const exportFile = createAction("EXPORT_FILE",
+  (cvId, locale) => ({ payload: { cvId, locale } }));
 
 reducerRegistry.register(
   "cv",

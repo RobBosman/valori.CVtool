@@ -8,7 +8,7 @@ module.exports = {
   },
 
   devServer: {
-    contentBase: "./dist",
+    static: "./dist",
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*"

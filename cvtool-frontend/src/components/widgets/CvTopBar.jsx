@@ -2,8 +2,9 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemType, TooltipHost } from "@fluentui/react";
-import * as safeActions from "../../services/safe/safe-actions";
 import * as authActions from "../../services/auth/auth-actions";
+import * as cvActions from "../../services/cv/cv-actions";
+import * as safeActions from "../../services/safe/safe-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
@@ -30,6 +31,12 @@ const CvTopBar = (props) => {
 
   const selectLocale = (_event, item) =>
     props.setLocale(item?.key);
+
+  const importFile = () =>
+    props.importFile(props.selectedCvId, props.locale);
+
+  const exportFile = () =>
+    props.exportFile(props.selectedCvId, props.locale);
 
   const onOpenEmail = () =>
     window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank");
@@ -96,6 +103,24 @@ const CvTopBar = (props) => {
           subMenuProps: {
             items: [
               {
+                key: "loadFile",
+                text: "Importeren...",
+                iconProps: { iconName: "OpenFolderHorizontal" },
+                disabled: !props.selectedCvId,
+                onClick: importFile
+              },
+              {
+                key: "saveFile",
+                text: "Exporteren...",
+                iconProps: { iconName: "Save" },
+                disabled: !props.selectedCvId,
+                onClick: exportFile
+              },
+              {
+                key: "loadSaveDivider",
+                itemType: ContextualMenuItemType.Divider
+              },
+              {
                 key: "theme",
                 text: "Theme",
                 iconProps: { iconName: "Brightness" },
@@ -137,7 +162,7 @@ const CvTopBar = (props) => {
         }
       ]
     });
-  }, [props.isConnected, props.hasSafeData, props.account, props.locale, props.lastEditedTimestamp, props.lastSavedTimestamp, currentTheme]);
+  }, [props.isConnected, props.hasSafeData, props.account, props.locale, props.lastEditedTimestamp, props.lastSavedTimestamp, props.selectedCvId, currentTheme]);
 
   const styles = {
     root: {
@@ -166,7 +191,10 @@ CvTopBar.propTypes = {
   setLocale: PropTypes.func.isRequired,
   setTheme: PropTypes.func.isRequired,
   requestToLogout: PropTypes.func.isRequired,
-  save: PropTypes.func.isRequired
+  save: PropTypes.func.isRequired,
+  selectedCvId: PropTypes.string,
+  importFile: PropTypes.func.isRequired,
+  exportFile: PropTypes.func.isRequired
 };
 
 const select = (store) => ({
@@ -174,6 +202,7 @@ const select = (store) => ({
   account: store.auth.authInfo,
   isConnected: store.eventBus.connectionState === ConnectionStates.CONNECTED,
   hasSafeData: Object.keys(store.safe.content).length > 0,
+  selectedCvId: store.ui.selectedId.cv,
   lastEditedTimestamp: store.safe.lastEditedTimestamp,
   lastSavedTimestamp: store.safe.lastSavedTimestamp
 });
@@ -182,7 +211,9 @@ const mapDispatchToProps = (dispatch) => ({
   setLocale: (locale) => dispatch(uiActions.setLocale(locale)),
   setTheme: (theme) => dispatch(uiActions.setTheme(theme)),
   requestToLogout: () => dispatch(authActions.requestLogout()),
-  save: () => dispatch(safeActions.save(true))
+  save: () => dispatch(safeActions.save(true)),
+  importFile: (cvId, locale) => dispatch(cvActions.importFile(cvId, locale)),
+  exportFile: (cvId, locale) => dispatch(cvActions.exportFile(cvId, locale))
 });
 
 export default connect(select, mapDispatchToProps)(CvTopBar);

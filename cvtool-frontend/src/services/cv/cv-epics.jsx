@@ -1,11 +1,15 @@
 import { ofType } from "redux-observable";
 import { from, merge, of } from "rxjs";
 import { map, switchMap, ignoreElements, tap, mergeMap, filter, take, debounceTime, takeUntil } from "rxjs/operators";
+import { Buffer } from "buffer";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "../safe/safe-actions";
 import * as uiActions from "../ui/ui-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
+
+const ContentTypeDocx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+const ContentTypeJson = "application/json";
 
 export const cvEpics = [
 
@@ -22,7 +26,7 @@ export const cvEpics = [
           filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
           take(1),
           mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
-          tap(generatedCv => downloadFile(generatedCv.fileName, generatedCv.docxB64)),
+          tap(generatedCv => downloadFile(generatedCv.fileName, Buffer.from(generatedCv.docxB64, "base64"), ContentTypeDocx)),
           ignoreElements()
         )
       )
@@ -61,22 +65,24 @@ export const cvEpics = [
     map(action => action.payload),
     switchMap(accountId => cvServices.fetchCvHistoryFromRemote(accountId, eventBusClient.sendEvent)),
     map(fetchedCvHistory => safeActions.resetEntities(fetchedCvHistory))
+  ),
+
+  // Export the cv content to a file.
+  (action$, state$) => action$.pipe(
+    ofType(cvActions.exportFile.type),
+    map(action => action.payload),
+    map(payload => cvServices.composeCvForExport(payload.cvId, payload.locale, state$.value.safe.content)),
+    tap(exportCv => downloadFile(exportCv.fileName, JSON.stringify(exportCv.json), ContentTypeJson)),
+    ignoreElements()
   )
 ];
 
-const downloadFile = (fileName, docxB64) => {
+const downloadFile = (fileName, rawData, contentType) => {
   const a = document.createElement("a");
   a.style = "display: none";
   document.body.appendChild(a);
   
-  // Convert the Base64 data into a byte array.
-  const docxBytes = atob(docxB64);
-  var uintArray = new Uint8Array(new ArrayBuffer(docxBytes.length));
-  for (var i = 0; i < docxBytes.length; i++) {
-    uintArray[i] = docxBytes.charCodeAt(i);
-  }
-
-  const blob = new Blob([uintArray], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  const blob = new Blob([rawData], {type: contentType});
   const url = window.URL.createObjectURL(blob);
   a.href = url;
   a.download = fileName;
