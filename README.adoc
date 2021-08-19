@@ -23,7 +23,7 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 === _Setup Visual Studio Code_
 
 * Install ESlint plugin
-* Open project subdirectory `/frontend/`
+* Open project subdirectory `/cvtool-frontend/`
 * Add `./node` to the PATH environment variable.
 * Add these patterns to the _Search: Exclude_ settings:
 

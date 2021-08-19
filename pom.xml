@@ -19,9 +19,9 @@
     </properties>
 
     <modules>
-        <module>backend</module>
-        <module>frontend</module>
-        <module>conversion</module>
+        <module>cvtool-backend</module>
+        <module>cvtool-frontend</module>
+        <module>cvtool-conversion</module>
     </modules>
 
     <reporting>
