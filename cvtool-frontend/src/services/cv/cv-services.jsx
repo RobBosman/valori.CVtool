@@ -1,3 +1,5 @@
+import { Buffer } from "buffer";
+
 export const fetchCvFromRemote = (accountId, sendEventFunc) =>
   sendEventFunc("cv.fetch", { accountId })
     .then(message => message.body);
@@ -23,7 +25,28 @@ export const searchCvData = (searchText, sendEventFunc) =>
       .then(message => message.body)
     : Promise.resolve({});
 
-export const composeCvForExport = (cvId, locale, safeContent) => {
+const downloadFile = (fileName, blob) => {
+  const a = document.createElement("a");
+  a.style = "display: none";
+  document.body.appendChild(a);
+  const url = window.URL.createObjectURL(blob);
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  window.URL.revokeObjectURL(url);
+};
+
+export const downloadDocxFile = (fileName, b64Data) => {
+  const blob = new Blob([Buffer.from(b64Data, "base64")], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  downloadFile(fileName, blob);
+};
+
+export const downloadJsonFile = (fileName, jsonData) => {
+  const blob = new Blob([JSON.stringify(jsonData)], {type: "application/json"});
+  downloadFile(fileName, blob);
+};
+
+export const composeCvForExport = (cvId, safeContent) => {
   const cv = safeContent.cv[cvId];
   const account = safeContent.account[cv.accountId];
 
@@ -48,8 +71,14 @@ export const composeCvForExport = (cvId, locale, safeContent) => {
         });
     });
 
+  const now = new Date();
+
   return {
-    fileName: `CV_${locale.substr(3)}_${account.name.replace(" ", "")}.json`,
-    json: { ...exportedCvData }
+    fileName: `CV_${account.name.replace(" ", "")}-${now.toLocaleString().replace(" ", "_")}.json`,
+    json: {
+      cvId: cvId,
+      timestamp: now.toISOString(),
+      content: exportedCvData
+    }
   };
 };

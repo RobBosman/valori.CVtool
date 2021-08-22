@@ -1,15 +1,11 @@
 import { ofType } from "redux-observable";
 import { from, merge, of } from "rxjs";
 import { map, switchMap, ignoreElements, tap, mergeMap, filter, take, debounceTime, takeUntil } from "rxjs/operators";
-import { Buffer } from "buffer";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "../safe/safe-actions";
 import * as uiActions from "../ui/ui-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
-
-const ContentTypeDocx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-const ContentTypeJson = "application/json";
 
 export const cvEpics = [
 
@@ -26,7 +22,7 @@ export const cvEpics = [
           filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
           take(1),
           mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
-          tap(generatedCv => downloadFile(generatedCv.fileName, Buffer.from(generatedCv.docxB64, "base64"), ContentTypeDocx)),
+          tap(generatedCv => cvServices.downloadDocxFile(generatedCv.fileName, generatedCv.docxB64)),
           ignoreElements()
         )
       )
@@ -71,21 +67,8 @@ export const cvEpics = [
   (action$, state$) => action$.pipe(
     ofType(cvActions.exportFile.type),
     map(action => action.payload),
-    map(payload => cvServices.composeCvForExport(payload.cvId, payload.locale, state$.value.safe.content)),
-    tap(exportCv => downloadFile(exportCv.fileName, JSON.stringify(exportCv.json), ContentTypeJson)),
+    map(cvId => cvServices.composeCvForExport(cvId, state$.value.safe.content)),
+    tap(exportCv => cvServices.downloadJsonFile(exportCv.fileName, exportCv.json)),
     ignoreElements()
   )
 ];
-
-const downloadFile = (fileName, rawData, contentType) => {
-  const a = document.createElement("a");
-  a.style = "display: none";
-  document.body.appendChild(a);
-  
-  const blob = new Blob([rawData], {type: contentType});
-  const url = window.URL.createObjectURL(blob);
-  a.href = url;
-  a.download = fileName;
-  a.click();
-  window.URL.revokeObjectURL(url);
-};

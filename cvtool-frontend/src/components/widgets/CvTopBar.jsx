@@ -33,10 +33,10 @@ const CvTopBar = (props) => {
     props.setLocale(item?.key);
 
   const importFile = () =>
-    props.importFile(props.selectedCvId, props.locale);
+    props.importFile(props.selectedCvId);
 
   const exportFile = () =>
-    props.exportFile(props.selectedCvId, props.locale);
+    props.exportFile(props.selectedCvId);
 
   const onOpenEmail = () =>
     window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank");
@@ -212,8 +212,8 @@ const mapDispatchToProps = (dispatch) => ({
   setTheme: (theme) => dispatch(uiActions.setTheme(theme)),
   requestToLogout: () => dispatch(authActions.requestLogout()),
   save: () => dispatch(safeActions.save(true)),
-  importFile: (cvId, locale) => dispatch(cvActions.importFile(cvId, locale)),
-  exportFile: (cvId, locale) => dispatch(cvActions.exportFile(cvId, locale))
+  importFile: (cvId) => dispatch(cvActions.importFile(cvId)),
+  exportFile: (cvId) => dispatch(cvActions.exportFile(cvId))
 });
 
 export default connect(select, mapDispatchToProps)(CvTopBar);
