@@ -9,6 +9,8 @@ import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.ext.web.codec.BodyCodec
 import io.vertx.junit5.VertxExtension
 import io.vertx.junit5.VertxTestContext
+import nl.valori.cvtool.backend.HttpsServerVerticle.Companion.loadCert
+import nl.valori.cvtool.backend.HttpsServerVerticle.Companion.sslFallbackCert
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -42,7 +44,7 @@ internal class HttpsServerVerticleTest {
             .create(
                 vertx, WebClientOptions()
                     .setSsl(true)
-                    .setPemTrustOptions(PemTrustOptions().addCertValue(HttpsServerVerticle.sslCert))
+                    .setPemTrustOptions(PemTrustOptions().addCertValue(loadCert(sslFallbackCert)))
             )
             .get(port, HOST_NAME, "/.well-known/acme-challenge/index.html")
             .`as`(BodyCodec.string())

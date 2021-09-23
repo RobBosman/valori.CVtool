@@ -14,8 +14,8 @@
     <description>conversion of old CVtool data format (XML) to new (JSON)</description>
 
     <properties>
-        <kotlin.version>1.5.30-RC</kotlin.version>
-        <vertx.version>4.1.2</vertx.version>
+        <kotlin.version>1.6.0-M1</kotlin.version>
+        <vertx.version>4.2.0.Beta1</vertx.version>
     </properties>
 
     <build>

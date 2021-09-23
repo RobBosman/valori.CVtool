@@ -22,7 +22,7 @@ export const cvEpics = [
           filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
           take(1),
           mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
-          tap(generatedCv => downloadFile(generatedCv.fileName, generatedCv.docxB64)),
+          tap(generatedCv => cvServices.downloadDocxFile(generatedCv.fileName, generatedCv.docxB64)),
           ignoreElements()
         )
       )
@@ -63,23 +63,3 @@ export const cvEpics = [
     map(fetchedCvHistory => safeActions.resetEntities(fetchedCvHistory))
   )
 ];
-
-const downloadFile = (fileName, docxB64) => {
-  const a = document.createElement("a");
-  a.style = "display: none";
-  document.body.appendChild(a);
-  
-  // Convert the Base64 data into a byte array.
-  const docxBytes = atob(docxB64);
-  var uintArray = new Uint8Array(new ArrayBuffer(docxBytes.length));
-  for (var i = 0; i < docxBytes.length; i++) {
-    uintArray[i] = docxBytes.charCodeAt(i);
-  }
-
-  const blob = new Blob([uintArray], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
-  const url = window.URL.createObjectURL(blob);
-  a.href = url;
-  a.download = fileName;
-  a.click();
-  window.URL.revokeObjectURL(url);
-};
