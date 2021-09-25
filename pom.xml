@@ -14,14 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <maven.compiler.release>15</maven.compiler.release>
+        <maven.compiler.release>16</maven.compiler.release>
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
     </properties>
 
     <modules>
         <module>cvtool-backend</module>
         <module>cvtool-frontend</module>
-        <module>cvtool-conversion</module>
     </modules>
 
     <reporting>
