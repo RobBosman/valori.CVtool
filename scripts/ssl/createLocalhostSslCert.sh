@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-JAVA_HOME="/mnt/c/Program Files/Java/jdk-15.0.1"
+JAVA_HOME="/mnt/c/Program Files/Java/jdk-17"
 HOSTNAME=localhost
 KEYSTORE=keystore.p12
 STORETYPE=PKCS12
