@@ -3,6 +3,7 @@ version: "3.4"
 volumes:
   mongodb:
   mongodb_backup:
+  mongodb_config:
   cvtool_backup:
   webroot:
   ssl_certs:
@@ -26,6 +27,9 @@ services:
       - type: volume
         source: mongodb_backup
         target: /backup
+      - type: volume
+        source: mongodb_config
+        target: /data/configdb
     healthcheck:
       test: echo 'curl --connect-timeout 10 --silent --show-error http://localhost:${MONGO_PORT}/' | grep "It looks like you are trying to access MongoDB over HTTP on the native driver port."
       interval: 10s
