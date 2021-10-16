@@ -13,7 +13,7 @@ volumes:
 services:
 
   mongodb:
-    image: mongo:4.4
+    image: mongo
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
