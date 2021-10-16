@@ -19,7 +19,6 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <mongodb-driver-reactivestreams.version>4.4.0-beta1</mongodb-driver-reactivestreams.version>
-        <netty-tcnative-boringssl-static.version>2.0.43.Final</netty-tcnative-boringssl-static.version>
         <vertx.version>4.2.0.Beta1</vertx.version>
     </properties>
 
@@ -128,12 +127,6 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web-client</artifactId>
             <version>${vertx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-tcnative-boringssl-static</artifactId>
-            <version>${netty-tcnative-boringssl-static.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
