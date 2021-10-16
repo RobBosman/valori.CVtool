@@ -30,8 +30,7 @@ object Main {
     private val verticlesToDeploy = listOf(
         CvGenerateVerticle::class, // Start with this one because it takes some time to initialize all XSL-stuff.
         ControlVerticle::class,
-        HttpRedirectVerticle::class,
-        HttpsServerVerticle::class,
+        HttpServerVerticle::class,
         AuthenticateVerticle::class,
         MongodbFetchVerticle::class,
         MongodbSaveVerticle::class,

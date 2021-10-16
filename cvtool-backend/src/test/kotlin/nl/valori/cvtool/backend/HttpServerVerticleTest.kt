@@ -3,14 +3,11 @@ package nl.valori.cvtool.backend
 import io.vertx.core.DeploymentOptions
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
-import io.vertx.core.net.PemTrustOptions
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.ext.web.codec.BodyCodec
 import io.vertx.junit5.VertxExtension
 import io.vertx.junit5.VertxTestContext
-import nl.valori.cvtool.backend.HttpsServerVerticle.Companion.loadCert
-import nl.valori.cvtool.backend.HttpsServerVerticle.Companion.sslFallbackCert
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,18 +15,18 @@ import java.net.ServerSocket
 import java.util.concurrent.TimeUnit.SECONDS
 
 @ExtendWith(VertxExtension::class)
-internal class HttpsServerVerticleTest {
+internal class HttpServerVerticleTest {
 
     private val HOST_NAME = "localhost"
 
     private fun runHttpsServer(vertx: Vertx, testContext: VertxTestContext): Int {
         val port = ServerSocket(0).use { it.localPort }
         vertx.deployVerticle(
-            HttpsServerVerticle::class.java.name,
+            HttpServerVerticle::class.java.name,
             DeploymentOptions()
                 .setConfig(
                     JsonObject()
-                        .put("HTTPS_CONNECTION_STRING", "https://$HOST_NAME:$port/")
+                        .put("HTTP_CONNECTION_STRING", "http://$HOST_NAME:$port/")
                 ),
             testContext.succeedingThenComplete()
         )
@@ -43,8 +40,7 @@ internal class HttpsServerVerticleTest {
         WebClient
             .create(
                 vertx, WebClientOptions()
-                    .setSsl(true)
-                    .setPemTrustOptions(PemTrustOptions().addCertValue(loadCert(sslFallbackCert)))
+                    .setSsl(false)
             )
             .get(port, HOST_NAME, "/.well-known/acme-challenge/index.html")
             .`as`(BodyCodec.string())
