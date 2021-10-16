@@ -53,7 +53,7 @@ export const uiEpics = [
     map(action => action.payload),
     filter(entities => entities?.cv), // Only proceed when receiving cv instances.
     mergeMap(entities => {
-      const [hash, instanceId] = window.location.hash?.split("=");
+      const [hash, instanceId] = window.location.hash?.split("=") || ["", null];
       const entityName = Object.keys(entities).find(entityName => hash.includes(entityName));
       return entityName && instanceId
         ? of(uiActions.setSelectedId(entityName, instanceId))
