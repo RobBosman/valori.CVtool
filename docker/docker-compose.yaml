@@ -40,20 +40,35 @@ services:
       retries: 3
       start_period: 20s
 
-  cvtool:
-    image: bransom/cvtool
+  cvtool-backend:
+    image: bransom/cvtool-backend
     depends_on:
       - mongodb
     restart: always
     environment:
       - CONTROL_CONNECTION_STRING=http://localhost:${CONTROL_PORT}/
-      - REDIRECT_CONNECTION_STRING=http://${HTTP_HOST}:${HTTP_PORT}/
-      - HTTPS_CONNECTION_STRING=https://${HTTP_HOST}:${HTTPS_PORT}/?/ssl_certs/live/${HTTP_HOST}/privkey.pem:/ssl_certs/live/${HTTP_HOST}/fullchain.pem
+      - HTTP_CONNECTION_STRING=http://${HTTP_HOST}:${HTTP_PORT}/
       - AUTH_CONNECTION_STRING=https://login.microsoftonline.com/${OAUTH_TENANT_ID}/v2.0?${OAUTH_CLIENT_ID}:${OAUTH_CLIENT_SECRET}
       - MONGO_CONNECTION_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin
+    volumes:
+      - type: volume
+        source: cvtool_backup
+        target: /backup
+    healthcheck:
+      test: echo 'wget -q -O - http://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  cvtool-frontend:
+    image: bransom/cvtool-frontend
+    depends_on:
+      - cvtool-backend
+    restart: always
     ports:
-      - ${HTTPS_PORT}:${HTTPS_PORT}
       - ${HTTP_PORT}:${HTTP_PORT}
+      - ${HTTPS_PORT}:${HTTPS_PORT}
     volumes:
       - type: volume
         source: ssl_certs
@@ -63,15 +78,41 @@ services:
         source: webroot
         target: /webroot
         read_only: true
-      - type: volume
-        source: cvtool_backup
-        target: /backup
-    healthcheck:
-      test: echo 'wget -q -O - https://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
-      interval: 5s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
+#    healthcheck:
+#      test: echo 'wget -q -O - http://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
+#      interval: 5s
+#      timeout: 5s
+#      retries: 3
+#      start_period: 10s
+
+#  nginx:
+#    container_name: nginx
+#    image: nginx:stable
+#    restart: always
+#    volumes:
+#      - type: volume
+#        source: ssl_certs
+#        target: /ssl_certs
+#        read_only: true
+#      - type: volume
+#        source: webroot
+#        target: /webroot
+#        read_only: true
+#      - type: volume
+#        source: ./nginx/config/nginx.conf
+#        target: /etc/nginx/nginx.conf
+#      - type: volume
+#        source: ./nginx/config/conf.d/local
+#        target: /etc/nginx/conf.d
+#      - type: volume
+#        source: /tmp/logs/nginx
+#        target: /var/log/nginx
+#      - type: volume
+#        source: ./nginx/html
+#        target: /var/www/public/content
+#    ports:
+#      - 80:80
+#      - 443:443
 
   letsencrypt:
     image: certbot/certbot

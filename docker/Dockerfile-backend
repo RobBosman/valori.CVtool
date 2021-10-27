@@ -1,0 +1,45 @@
+########################################################################################################################
+# Compose a container for building the CVtool-backend.
+########################################################################################################################
+FROM openjdk:17-alpine as builder
+
+# Add git, maven and binutils, needed by jlink.
+RUN apk --update add \
+    binutils \
+    git \
+    maven
+
+RUN mkdir /build
+WORKDIR /build
+
+# Copy the source code.
+RUN git clone --branch no_ssl https://github.com/RobBosman/valori.CVtool.git .
+
+# Build the backend.
+RUN mvn --projects cvtool-backend --also-make clean verify
+
+# Move the executable code to a suitable location.
+RUN mv cvtool-backend/target/*-fat.jar cvtool-fat.jar
+
+# Strip-off all overhead and bundle everything into a stand-alone executable.
+RUN jdeps --print-module-deps --ignore-missing-deps cvtool-fat.jar > java.modules
+RUN jlink --compress 2 --strip-debug --no-header-files --no-man-pages \
+    --add-modules $(cat java.modules) \
+    --output java/
+
+WORKDIR /
+
+
+########################################################################################################################
+# Compose the final CVtool-backend container.
+########################################################################################################################
+FROM alpine:latest
+MAINTAINER RobBosman@valori.nl
+
+# Copy the executable code.
+COPY --from=builder /build/java /java
+COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
+
+# Run the CVtool app.
+CMD exec /java/bin/java \
+    -jar /cvtool-fat.jar

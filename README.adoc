@@ -54,12 +54,15 @@ Data retention is 120 days.
 
 === Build and publish docker image
 
- docker build --no-cache=true -t bransom/cvtool .
- docker push bransom/cvtool
+ docker build --no-cache=true -t bransom/cvtool-backend - < Dockerfile-backend
+ docker build --no-cache=true -t bransom/cvtool-frontend - < Dockerfile-frontend
+ docker push bransom/cvtool-backend
+ docker push bransom/cvtool-frontend
 
 === Deploy
 
- docker pull bransom/cvtool
+ docker pull bransom/cvtool-backend
+ docker pull bransom/cvtool-frontend
  docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
  docker container prune -f
  docker image prune -f
@@ -68,12 +71,12 @@ Data retention is 120 days.
 
  # Create MongoDB indexes
  scripts/cvtool_initialize_mongodb.sh
- # Restart CVtool server to load a new certificate
- docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"
+ # Restart CVtool-frontend server to load a new certificate
+ docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
 
 === Logs
 
- docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool')"
+ docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')"
 
 === Docker volumes
 
