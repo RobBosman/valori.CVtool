@@ -90,6 +90,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>compile</phase>
                         <configuration>
                             <arguments>install --no-optional --no-audit</arguments>
                         </configuration>
@@ -129,6 +130,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>verify</phase>
                         <configuration>
                             <arguments>run-script npm-outdated</arguments>
                         </configuration>
@@ -138,6 +140,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>verify</phase>
                         <configuration>
                             <arguments>run-script npm-audit</arguments>
                         </configuration>

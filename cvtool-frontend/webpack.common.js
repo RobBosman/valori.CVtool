@@ -17,7 +17,7 @@ module.exports = {
     port: 8000,
     proxy: {
       "/eventbus": {
-        target: "https://localhost:443/",
+        target: "http://localhost:80/",
         secure: false,
         changeOrigin: true
       }
