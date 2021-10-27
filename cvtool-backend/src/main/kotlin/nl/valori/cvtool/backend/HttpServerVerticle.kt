@@ -4,7 +4,6 @@ import io.vertx.core.Promise
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
-import io.vertx.reactivex.ext.web.handler.StaticHandler
 import nl.valori.cvtool.backend.system.HealthChecker
 import org.slf4j.LoggerFactory
 import java.net.URL
@@ -34,7 +33,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .rxListen()
             .subscribe(
                 {
-                    log.info("Listening on http://${httpConfig.authority}/")
+                    log.info("Listening on http://${httpConfig.authority}/health and /eventbus")
                     startPromise.complete()
                 },
                 {
@@ -47,33 +46,12 @@ internal class HttpServerVerticle : AbstractVerticle() {
     private fun createRouter(): Router {
         val router = Router.router(vertx)
         router
-            .get("/.well-known/acme-challenge/*") // Used by letsencrypt to renew SSL certificates.
-            .handler(
-                StaticHandler.create()
-                    .setAllowRootFileSystemAccess(true)
-                    .setWebRoot("/webroot/.well-known/acme-challenge")
-            )
-        router
-            .get("/cvtool*") // Redirect old (bookmarked) URLs, e.g. https://cvtool.valori/cvtool/CVtool.html to root.
-            .handler { context ->
-                context.response()
-                    .setStatusCode(301)
-                    .putHeader("Location", "/")
-                    .end()
-            }
-        router
             .get("/health*")
             .handler(HealthChecker.getHandler(vertx, config()))
         router
             .mountSubRouter(
                 "/eventbus",
                 EventBusMessageHandler.create(vertx)
-            )
-        router
-            .route("/*")
-            .handler(
-                StaticHandler.create()
-                    .setWebRoot("cvtool-frontend/dist")
             )
         return router
     }
