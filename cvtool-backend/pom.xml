@@ -90,12 +90,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>nl.valori</groupId>
-            <artifactId>cvtool-frontend</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
         <!-- logging -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
