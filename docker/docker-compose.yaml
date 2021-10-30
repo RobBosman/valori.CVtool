@@ -5,14 +5,16 @@ volumes:
   mongodb_backup:
   mongodb_config:
   cvtool_backup:
-  webroot:
-  ssl_certs:
+  letsencrypt_certs:
   letsencrypt_logs:
   letsencrypt_var:
+  letsencrypt_webroot:
+  nginx_conf:
 
 services:
 
   mongodb:
+    container_name: mongodb
     image: mongo:4.4
     # WARNING: MongoDB 5.0+ requires a CPU with AVX support, and your current system does not appear to have that!
     #  see https://www.mongodb.com/community/forums/t/mongodb-5-0-cpu-intel-g4650-compatibility/116610/2
@@ -41,6 +43,7 @@ services:
       start_period: 20s
 
   cvtool-backend:
+    container_name: cvtool-backend
     image: bransom/cvtool-backend
     depends_on:
       - mongodb
@@ -62,73 +65,47 @@ services:
       start_period: 10s
 
   cvtool-frontend:
+    container_name: cvtool-frontend
     image: bransom/cvtool-frontend
     depends_on:
       - cvtool-backend
-    restart: always
+#    restart: always
+    environment:
+      - HTTP_HOST=${HTTP_HOST}
+      - HTTP_PORT=${HTTP_PORT}
+      - HTTPS_PORT=${HTTPS_PORT}
     ports:
       - ${HTTP_PORT}:${HTTP_PORT}
       - ${HTTPS_PORT}:${HTTPS_PORT}
     volumes:
       - type: volume
-        source: ssl_certs
-        target: /ssl_certs
+        source: nginx_conf
+        target: /etc/nginx
+      - type: volume
+        source: letsencrypt_certs
+        target: /letsencrypt_certs
         read_only: true
       - type: volume
-        source: webroot
-        target: /webroot
+        source: letsencrypt_webroot
+        target: /www/letsencrypt
         read_only: true
-#    healthcheck:
-#      test: echo 'wget -q -O - http://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
-#      interval: 5s
-#      timeout: 5s
-#      retries: 3
-#      start_period: 10s
-
-#  nginx:
-#    container_name: nginx
-#    image: nginx:stable
-#    restart: always
-#    volumes:
-#      - type: volume
-#        source: ssl_certs
-#        target: /ssl_certs
-#        read_only: true
-#      - type: volume
-#        source: webroot
-#        target: /webroot
-#        read_only: true
-#      - type: volume
-#        source: ./nginx/config/nginx.conf
-#        target: /etc/nginx/nginx.conf
-#      - type: volume
-#        source: ./nginx/config/conf.d/local
-#        target: /etc/nginx/conf.d
-#      - type: volume
-#        source: /tmp/logs/nginx
-#        target: /var/log/nginx
-#      - type: volume
-#        source: ./nginx/html
-#        target: /var/www/public/content
-#    ports:
-#      - 80:80
-#      - 443:443
 
   letsencrypt:
+    container_name: letsencrypt
     image: certbot/certbot
     depends_on:
-      - cvtool
+      - cvtool-frontend
     volumes:
       - type: volume
-        source: ssl_certs
+        source: letsencrypt_certs
         target: /etc/letsencrypt
-      - type: volume
-        source: webroot
-        target: /data/letsencrypt
       - type: volume
         source: letsencrypt_logs
         target: /var/log/letsencrypt
       - type: volume
         source: letsencrypt_var
         target: /var/lib/letsencrypt
+      - type: volume
+        source: letsencrypt_webroot
+        target: /data/letsencrypt
     command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos --quiet -d ${HTTP_HOST}
