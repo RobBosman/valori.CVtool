@@ -9,7 +9,6 @@ volumes:
   letsencrypt_logs:
   letsencrypt_var:
   letsencrypt_webroot:
-  nginx_conf:
 
 services:
 
@@ -69,7 +68,7 @@ services:
     image: bransom/cvtool-frontend
     depends_on:
       - cvtool-backend
-#    restart: always
+    restart: always
     environment:
       - HTTP_HOST=${HTTP_HOST}
       - HTTP_PORT=${HTTP_PORT}
@@ -78,9 +77,6 @@ services:
       - ${HTTP_PORT}:${HTTP_PORT}
       - ${HTTPS_PORT}:${HTTPS_PORT}
     volumes:
-      - type: volume
-        source: nginx_conf
-        target: /etc/nginx
       - type: volume
         source: letsencrypt_certs
         target: /letsencrypt_certs

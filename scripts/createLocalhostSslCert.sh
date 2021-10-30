@@ -30,3 +30,6 @@ STOREPASS=KeyStorePassword
 openssl pkcs12 -in ${KEYSTORE} -nocerts -out ${HOSTNAME}-privkey-with-password.pem -passin pass:${STOREPASS} -passout pass:${STOREPASS}
 openssl rsa -in ${HOSTNAME}-privkey-with-password.pem -out ${HOSTNAME}-privkey.pem -passin pass:${STOREPASS}
 openssl pkcs12 -in ${KEYSTORE} -clcerts -nokeys -out ${HOSTNAME}-fullchain.pem -passin pass:${STOREPASS}
+
+# Generate a cert for DH params (takes a long time!)
+openssl dhparam -out dhparam.pem 4096
