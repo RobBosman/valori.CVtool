@@ -24,11 +24,11 @@ WORKDIR /
 ########################################################################################################################
 # Compose the final CVtool-frontend container.
 ########################################################################################################################
-FROM nginx:latest
+FROM nginx:alpine
 MAINTAINER RobBosman@valori.nl
 
 # Copy nginx configuration.
-COPY --from=builder /build/docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /build/docker/default.conf.template /etc/nginx/templates/
 
 # Copy the executable code.
-COPY --from=builder /build/cvtool-frontend/dist/. /usr/share/nginx/html
+COPY --from=builder /build/cvtool-frontend/dist/. /www/cvtool-frontend
