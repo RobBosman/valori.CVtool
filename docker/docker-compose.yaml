@@ -12,6 +12,7 @@ volumes:
 
 services:
 
+  ######################################################################################################################
   mongodb:
     container_name: mongodb
     image: mongo:4.4
@@ -41,6 +42,7 @@ services:
       retries: 3
       start_period: 20s
 
+  ######################################################################################################################
   cvtool-backend:
     container_name: cvtool-backend
     image: bransom/cvtool-backend
@@ -63,6 +65,7 @@ services:
       retries: 3
       start_period: 10s
 
+  ######################################################################################################################
   cvtool-frontend:
     container_name: cvtool-frontend
     image: bransom/cvtool-frontend
@@ -86,6 +89,7 @@ services:
         target: /www/letsencrypt
         read_only: true
 
+  ######################################################################################################################
   letsencrypt:
     container_name: letsencrypt
     image: certbot/certbot
