@@ -1,4 +1,4 @@
-import { map, filter, distinctUntilChanged, ignoreElements, take, mergeMap, skip, tap } from "rxjs/operators";
+import * as rx from "rxjs/operators";
 import { EMPTY, fromEvent, of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as authActions from "../auth/auth-actions";
@@ -9,34 +9,34 @@ import * as uiServices from "./ui-services";
 export const uiEpics = [
   // Keep track of location (address bar) changes.
   () => fromEvent(window, "hashchange").pipe(
-    map(event => uiActions.setLocationHash(event.target.location.hash || ""))
+    rx.map(event => uiActions.setLocationHash(event.target.location.hash || ""))
   ),
 
   // Delete all selections on logout.
   (_, state$) => state$.pipe(
-    map(state => state.auth?.loginState),
-    distinctUntilChanged(),
-    skip(1), // Ignore the first time, when starting the app.
-    filter(loginState => loginState === authActions.LoginStates.LOGGED_OUT),
-    map(() => uiActions.resetSelectedIds({}))
+    rx.map(state => state.auth?.loginState),
+    rx.distinctUntilChanged(),
+    rx.skip(1), // Ignore the first time, when starting the app.
+    rx.filter(loginState => loginState === authActions.LoginStates.LOGGED_OUT),
+    rx.map(() => uiActions.resetSelectedIds({}))
   ),
 
   // Select the account whose AccountInfo is retrieved.
   (action$) => action$.pipe(
     ofType(authActions.setAuthInfo.type),
-    map(action => action.payload?.accountId),
-    filter(accountId => accountId),
-    map(accountId => uiActions.setSelectedId("account", accountId))
+    rx.map(action => action.payload?.accountId),
+    rx.filter(accountId => accountId),
+    rx.map(accountId => uiActions.setSelectedId("account", accountId))
   ),
 
   // Reset all selected ids when switching to another account.
   (action$, state$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
-    map(action => action.payload),
-    filter(payload => payload.entityName === "account"),
-    map(payload => payload.selectedId),
-    distinctUntilChanged(),
-    map(accountId => {
+    rx.map(action => action.payload),
+    rx.filter(payload => payload.entityName === "account"),
+    rx.map(payload => payload.selectedId),
+    rx.distinctUntilChanged(),
+    rx.map(accountId => {
       const cvEntity = state$.value.safe?.content?.cv;
       const cvInstance = Object.values(cvEntity || {})
         .find(cvInstance => cvInstance.accountId === accountId);
@@ -50,9 +50,9 @@ export const uiEpics = [
   // Select the locationHash-instanceId when receiving cv data.
   (action$) => action$.pipe(
     ofType(safeActions.resetEntities.type),
-    map(action => action.payload),
-    filter(entities => entities?.cv), // Only proceed when receiving cv instances.
-    mergeMap(entities => {
+    rx.map(action => action.payload),
+    rx.filter(entities => entities?.cv), // Only proceed when receiving cv instances.
+    rx.mergeMap(entities => {
       const [hash, instanceId] = window.location.hash?.split("=") || ["", null];
       const entityName = Object.keys(entities).find(entityName => hash.includes(entityName));
       return entityName && instanceId
@@ -64,10 +64,10 @@ export const uiEpics = [
   // Add the selected id to the URL-hash in the address bar.
   (action$, state$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
-    map(action => action.payload),
-    filter(payload => state$.value.ui?.locationHash?.includes(payload.entityName)), // Only if the id's entity is in the URL-hash.
-    map(payload => payload.selectedId || ""),
-    tap(selectedId => {
+    rx.map(action => action.payload),
+    rx.filter(payload => state$.value.ui?.locationHash?.includes(payload.entityName)), // Only if the id's entity is in the URL-hash.
+    rx.map(payload => payload.selectedId || ""),
+    rx.tap(selectedId => {
       const selectedAccountId = state$.value.ui?.selectedId?.account || "";
       const ownAccountId = state$.value.auth?.authInfo?.accountId || "";
       let hash = state$.value.ui.locationHash.split("=")[0];
@@ -77,33 +77,33 @@ export const uiEpics = [
         hash = `${hash}=${selectedId}`;
       window.location.hash = hash;
     }),
-    ignoreElements()
+    rx.ignoreElements()
   ),
 
   // Hide the CvHistoryView dialog if the selectedAccountId or selectedCvId changed.
   (action$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
-    map(action => action.payload),
-    filter(payload => ["account", "cv"].includes(payload.entityName)),
-    map(() => uiActions.setHistoryViewVisible(false))
+    rx.map(action => action.payload),
+    rx.filter(payload => ["account", "cv"].includes(payload.entityName)),
+    rx.map(() => uiActions.setHistoryViewVisible(false))
   ),
 
   // Apply the selected theme and store it in localStorage.
   (action$) => action$.pipe(
     ofType(uiActions.setTheme.type),
-    map(action => action.payload),
-    map(themeName => {
+    rx.map(action => action.payload),
+    rx.map(themeName => {
       uiServices.loadThemeByName(themeName);
       window.localStorage.setItem("theme", themeName);
     }),
-    ignoreElements()
+    rx.ignoreElements()
   ),
 
   // Read the preferred theme from a cookie. This is done only once, when the app starts.
   // NOTE - this epic must be added last, otherwise the returned actions may not be noticed by other epics.
   (_, state$) => state$.pipe(
-    take(1),
-    mergeMap(() => {
+    rx.take(1),
+    rx.mergeMap(() => {
       const userPrefs = uiServices.initializeUI();
       return of(
         uiActions.setLocale(userPrefs.locale),
