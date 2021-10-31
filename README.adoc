@@ -80,8 +80,7 @@ Data retention is 120 days.
 
 === Docker volumes
 
- /var/lib/docker/volumes/ # Trans-IP
- /volume1/@docker/volumes # Synology
+ /var/lib/docker/volumes/
  \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
 
 == MongoDB commands
