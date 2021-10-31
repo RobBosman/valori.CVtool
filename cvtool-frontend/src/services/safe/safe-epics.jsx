@@ -1,5 +1,5 @@
 import { ofType } from "redux-observable";
-import { map, switchMap, debounceTime, filter, mergeMap, distinctUntilChanged, skip } from "rxjs/operators";
+import * as rx from "rxjs/operators";
 import * as eventBusServices from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
@@ -9,36 +9,36 @@ export const safeEpics = [
   // Fetch all instances of the requested entity from the backend server.
   (action$) => action$.pipe(
     ofType(safeActions.fetchAllInstances.type),
-    map(action => action.payload),
-    mergeMap(entityName => safeServices.fetchFromRemote({ [entityName]: [{}] }, eventBusServices.eventBusClient.sendEvent)),
-    map(fetchedData => safeActions.resetEntities(fetchedData))
+    rx.map(action => action.payload),
+    rx.mergeMap(entityName => safeServices.fetchFromRemote({ [entityName]: [{}] }, eventBusServices.eventBusClient.sendEvent)),
+    rx.map(fetchedData => safeActions.resetEntities(fetchedData))
   ),
 
   // Auto-save 2 seconds after the last edit.
   (_, state$) => state$.pipe(
-    map(state => state.safe?.lastEditedTimestamp),
-    filter(timestamp => timestamp),
-    distinctUntilChanged(),
-    debounceTime(2000),
-    map(() => safeActions.save(false))
+    rx.map(state => state.safe?.lastEditedTimestamp),
+    rx.filter(timestamp => timestamp),
+    rx.distinctUntilChanged(),
+    rx.debounceTime(2000),
+    rx.map(() => safeActions.save(false))
   ),
 
   // Auto-save when the eventBus reconnects.
   (_, state$) => state$.pipe(
-    map(state => state?.eventBus?.connectionState),
-    distinctUntilChanged(),
-    filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),
-    skip(1), // Ignore the first time, when starting the app.
-    map(() => safeActions.save(false))
+    rx.map(state => state?.eventBus?.connectionState),
+    rx.distinctUntilChanged(),
+    rx.filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),
+    rx.skip(1), // Ignore the first time, when starting the app.
+    rx.map(() => safeActions.save(false))
   ),
 
   // Send the content to the backend server.
   (action$, state$) => action$.pipe(
     ofType(safeActions.save.type),
-    map(action => action.payload),
-    filter(saveEnforced => saveEnforced || state$.value.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
-    filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
-    switchMap(() => {
+    rx.map(action => action.payload),
+    rx.filter(saveEnforced => saveEnforced || state$.value.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
+    rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
+    rx.switchMap(() => {
       const saveTimestamp = new Date();
       return safeServices.saveToRemote(extractChangedData(state$.value.safe), eventBusServices.eventBusClient.sendEvent)
         .then(() => safeActions.setLastSavedTimestamp(saveTimestamp));
@@ -48,12 +48,12 @@ export const safeEpics = [
   // Delete the account from the backend server.
   (action$, state$) => action$.pipe(
     ofType(safeActions.deleteAccount.type),
-    map(action => action.payload),
-    mergeMap(accountId =>
+    rx.map(action => action.payload),
+    rx.mergeMap(accountId =>
       safeServices.deleteAccountFromRemote(accountId, eventBusServices.eventBusClient.sendEvent)
         .then(() => accountId)
     ),
-    map(accountId => {
+    rx.map(accountId => {
       const businessUnitInstancess = {};
       Object.values(state$.value.safe.content.businessUnit || {})
         .filter(businessUnit => businessUnit.accountIds?.includes(accountId))

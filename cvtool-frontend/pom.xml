@@ -11,7 +11,6 @@
     </parent>
 
     <artifactId>cvtool-frontend</artifactId>
-    <packaging>war</packaging>
     <description>Frontend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
     <properties>
@@ -19,8 +18,7 @@
         <dependency-check-maven.version>6.3.1</dependency-check-maven.version>
         <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-war-plugin.version>3.3.1</maven-war-plugin.version>
-        <nodejs.version>v14.17.6</nodejs.version>
+        <nodejs.version>v14.18.1</nodejs.version>
     </properties>
 
     <build>
@@ -90,6 +88,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>compile</phase>
                         <configuration>
                             <arguments>install --no-optional --no-audit</arguments>
                         </configuration>
@@ -129,6 +128,7 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>verify</phase>
                         <configuration>
                             <arguments>run-script npm-outdated</arguments>
                         </configuration>
@@ -138,29 +138,12 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+                        <phase>verify</phase>
                         <configuration>
                             <arguments>run-script npm-audit</arguments>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>${maven-war-plugin.version}</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>dist</directory>
-                            <!-- Make sure the <targetPath> is set to the relative path in the file system.
-                            This way the backend can find the frontend code either on the classpath (when running standalone)
-                            or in the file system (while debugging). -->
-                            <targetPath>cvtool-frontend/dist</targetPath>
-                        </resource>
-                    </webResources>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
             </plugin>
         </plugins>
     </build>
