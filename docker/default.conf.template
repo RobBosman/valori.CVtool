@@ -22,7 +22,6 @@ server {
   server_name               ${HTTP_HOST};
 
   add_header                Strict-Transport-Security max-age=63072000;
-  add_header                X-Frame-Options DENY;
 
   ssl_certificate           /letsencrypt_certs/live/${HTTP_HOST}/fullchain.pem;
   ssl_certificate_key       /letsencrypt_certs/live/${HTTP_HOST}/privkey.pem;
