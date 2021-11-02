@@ -21,6 +21,8 @@ server {
   listen                    [::]:${HTTPS_PORT} ssl;
   server_name               ${HTTP_HOST};
 
+  redirect                  ^/cvtool/$ /
+
   add_header                Strict-Transport-Security max-age=63072000;
 
   ssl_certificate           /letsencrypt_certs/live/${HTTP_HOST}/fullchain.pem;
