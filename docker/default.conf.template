@@ -21,7 +21,7 @@ server {
   listen                    [::]:${HTTPS_PORT} ssl;
   server_name               ${HTTP_HOST};
 
-  redirect                  ^/cvtool/$ /
+  rewrite                   ^/cvtool/$ / permanent;
 
   add_header                Strict-Transport-Security max-age=63072000;
 
