@@ -11,7 +11,7 @@ export class ReducerRegistry {
     return Object.keys(this._reducers).length === 0
       ? (state = {}) => state
       : combineReducers(this._reducers);
-  }
+  };
 
   register = (name, reducer) => {
     this._reducers = {
@@ -21,11 +21,11 @@ export class ReducerRegistry {
     if (this._notifyChange) {
       this._notifyChange(this.getRootReducer());
     }
-  }
+  };
 
   setChangeListener = (listener) => {
     this._notifyChange = listener;
-  }
+  };
 }
 
 export const reducerRegistry = new ReducerRegistry();

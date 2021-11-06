@@ -73,7 +73,7 @@ export class EventBusClient {
         console.error("An error occurred on the vert.x EventBus.", error);
       }
     };
-  }
+  };
   
   disconnectEventBus = () => {
     this._connectionStateSubject.next(ConnectionStates.DISCONNECTING);
@@ -90,7 +90,7 @@ export class EventBusClient {
       ...this._defaultHeaders,
       ...headers
     };
-  }
+  };
 
   deleteDefaultHeaders = (headers) =>
     Object.keys(headers).forEach((key) =>
