@@ -9,6 +9,7 @@ volumes:
   letsencrypt_logs:
   letsencrypt_var:
   letsencrypt_webroot:
+  nginx_conf:
 
 services:
 
@@ -88,6 +89,9 @@ services:
         source: letsencrypt_webroot
         target: /www/letsencrypt
         read_only: true
+      - type: volume
+        source: nginx_conf
+        target: /etc/nginx
 
   ######################################################################################################################
   letsencrypt:
