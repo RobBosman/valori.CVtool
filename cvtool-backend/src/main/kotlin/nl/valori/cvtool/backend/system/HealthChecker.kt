@@ -81,7 +81,7 @@ internal object HealthChecker {
                 AuthenticateVerticle
                     .checkOpenIdConnection()
                     .timeout(2_000, MILLISECONDS)
-                    .debounceErrors(90, SECONDS)
+                    .debounceErrors(120, SECONDS)
                     .subscribe(
                         {
                             healthStatus.complete(Status.OK())
