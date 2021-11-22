@@ -37,11 +37,16 @@ FROM alpine:latest
 MAINTAINER RobBosman@valori.nl
 
 # Add haveged, see https://helpx.adobe.com/mt/experience-manager/kb/securerandom-nextbytes-hangs-request-threads-in-aem.html
-RUN apk -U add haveged
+RUN apk -U add \
+    haveged \
+    openrc
+
+# Start haveged at boot time.
+RUN rc-update add haveged default
 
 # Copy the executable code.
 COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
 
 # Start haveged and run the CVtool app.
-CMD ["sh","-c","haveged start && /java/bin/java -jar /cvtool-fat.jar"]
+CMD /java/bin/java -jar /cvtool-fat.jar
