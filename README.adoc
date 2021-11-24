@@ -74,9 +74,11 @@ Data retention is 120 days.
  # Restart CVtool-frontend server to load a new certificate
  docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
 
-=== Logs
+=== Logs and more
 
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')"
+ docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
+ cat /proc/sys/kernel/random/entropy_avail
 
 === Docker volumes
 

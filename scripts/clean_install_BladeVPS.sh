@@ -33,6 +33,11 @@ ufw allow 80/tcp
 ufw allow from 85.146.18.88 to any port 27017
 ufw enable
 
+# Install haveged to provide entropy for secure random number generation.
+apt-get -y install haveged
+systemctl start haveged.service
+systemctl enable --now haveged
+
 # Install Docker.
 apt-get -y install docker.io
 systemctl enable --now docker
