@@ -1,14 +1,14 @@
 version: "3.4"
 
 volumes:
-  mongodb:
-  mongodb_backup:
-  mongodb_config:
   cvtool_backup:
   letsencrypt_certs:
   letsencrypt_logs:
   letsencrypt_var:
   letsencrypt_webroot:
+  mongodb:
+  mongodb_backup:
+  mongodb_config:
   nginx_conf:
 
 services:

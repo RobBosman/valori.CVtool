@@ -14,7 +14,7 @@ docker run --rm \
   --webroot-path=/data/letsencrypt \
   --quiet
 
-# Restart CVtool server only if the SSL certificate was renewed.
+# Restart the CVtool frontend server only if the SSL certificate was renewed.
 if [ "$(find ${VOLUME_SSL_CERTS} -name '*.pem' -mmin -5)" != "" ]; then
-  docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"
+  docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
 fi
