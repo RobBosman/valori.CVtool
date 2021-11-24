@@ -246,6 +246,12 @@ const Accounts = (props) => {
                   instanceContext={combinedContext()}
                   disabled={true}
                 />
+                <CvTextField
+                  label="E-mail"
+                  field="email"
+                  instanceContext={combinedContext()}
+                  disabled={true}
+                />
                 <CvDropdown
                   label="Tribe"
                   field="businessUnit._id"

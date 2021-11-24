@@ -1,5 +1,8 @@
-export const compareStrings = (l, r) =>
-  l < r ? -1 : l > r ? 1 : 0;
+export const compareStrings = (l, r) => {
+  const L = l?.toUpperCase();
+  const R = r?.toUpperCase();
+  return L < R ? -1 : L > R ? 1 : 0;
+};
 
 export const compareItemsByField = (l, r, field) => {
   const fieldPath = field?.split(".", 2) || [];
