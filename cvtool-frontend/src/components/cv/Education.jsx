@@ -36,9 +36,9 @@ const Education = (props) => {
     props.selectedCvId && Object.values(props.educationEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = commonUtils.compareStrings(composePeriod(r), composePeriod(l));
+        let compare = commonUtils.comparePrimitives(composePeriod(r), composePeriod(l));
         if (compare === 0) {
-          compare = commonUtils.compareStrings(l.name || "", r.name || "");
+          compare = commonUtils.comparePrimitives(l.name || "", r.name || "");
         }
         return compare;
       })

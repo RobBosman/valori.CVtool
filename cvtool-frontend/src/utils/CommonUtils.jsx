@@ -1,6 +1,6 @@
-export const compareStrings = (l, r) => {
-  const L = l?.toUpperCase();
-  const R = r?.toUpperCase();
+export const comparePrimitives = (l, r) => {
+  const L = typeof l === "string" ? l.toUpperCase() : l;
+  const R = typeof r === "string" ? r.toUpperCase() : r;
   return L < R ? -1 : L > R ? 1 : 0;
 };
 
@@ -9,7 +9,7 @@ export const compareItemsByField = (l, r, field) => {
   if (fieldPath.length > 1) {
     return compareItemsByField(l[fieldPath[0]], r[fieldPath[0]], fieldPath[1]);
   }
-  return compareStrings(l && l[field] || "", r && r[field] || "");
+  return comparePrimitives(l && l[field] || "", r && r[field] || "");
 };
 
 export const isValidYear = (value) =>

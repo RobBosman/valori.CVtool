@@ -31,6 +31,12 @@ const Accounts = (props) => {
           businessUnit: businessUnit
         };
       });
+
+    // Export all accounts and their tribes to csv.
+    // console.log("combined", "name,email,tribe\n" + Object.values(combined)
+    //   .map(c => `${c.name},${c.email},${c.businessUnit?.name || ""}`)
+    //   .join("\n"));
+
     return combined;
   };
 

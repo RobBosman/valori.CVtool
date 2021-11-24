@@ -39,7 +39,7 @@ const Skill = (props) => {
           compare = (r.skillLevel || 0) - (l.skillLevel || 0);
         }
         if (compare === 0) {
-          compare = commonUtils.compareStrings(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
+          compare = commonUtils.comparePrimitives(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
         }
         return compare;
       })

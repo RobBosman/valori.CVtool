@@ -31,7 +31,7 @@ const Reference = (props) => {
   const references = React.useMemo(() =>
     props.selectedCvId && Object.values(props.referenceEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
-      .sort((l, r) => commonUtils.compareStrings(l.referentName, r.referentName))
+      .sort((l, r) => commonUtils.comparePrimitives(l.referentName, r.referentName))
       || [],
   [props.referenceEntity, props.selectedCvId]);
 
