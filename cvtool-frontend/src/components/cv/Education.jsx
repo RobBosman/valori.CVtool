@@ -12,6 +12,7 @@ import { CvDropdown } from "../widgets/CvDropdown";
 import * as commonUtils from "../../utils/CommonUtils";
 import { EducationResultTypes } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const entityName = "education";
 
@@ -48,6 +49,12 @@ const Education = (props) => {
   const renderName = (item) =>
     item.name && item.name[props.locale] || commonUtils.getPlaceholder(educations, item._id, "name", props.locale);
 
+  const renderInCvCheckbox = (item) =>
+    <CvCheckbox
+      field="includeInCv"
+      instanceContext={{ ...educationContext, instanceId: item._id }}
+    />;
+
   const columns = [
     {
       key: "name",
@@ -55,15 +62,15 @@ const Education = (props) => {
       name: "Opleiding",
       onRender: renderName,
       isResizable: true,
-      minWidth: 125,
-      maxWidth: 300
+      minWidth: 95,
+      maxWidth: 250
     },
     {
       key: "institution",
       fieldName: "institution",
       name: "Onderwijsinstelling",
       isResizable: true,
-      minWidth: 140,
+      minWidth: 120,
       maxWidth: 300
     },
     {
@@ -75,6 +82,16 @@ const Education = (props) => {
       minWidth: 75,
       maxWidth: 75,
       data: "number"
+    },
+    {
+      key: "includeInCv",
+      fieldName: "includeInCv",
+      name: "In cv",
+      onRender: renderInCvCheckbox,
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40,
+      data: "boolean"
     }
   ];
 
@@ -199,7 +216,7 @@ const Education = (props) => {
               <Stack horizontal
                 tokens={{ childrenGap: "l1" }}>
                 <CvTextField
-                  label="Jaar van"
+                  label="Van jaar"
                   field="yearFrom"
                   instanceContext={educationContext}
                   validateInput={commonUtils.isValidYear}
@@ -207,7 +224,7 @@ const Education = (props) => {
                   styles={{ fieldGroup: { width: 80 } }}
                 />
                 <CvTextField
-                  label="Jaar tot"
+                  label="Tot jaar"
                   field="yearTo"
                   instanceContext={educationContext}
                   validateInput={commonUtils.isValidYear}

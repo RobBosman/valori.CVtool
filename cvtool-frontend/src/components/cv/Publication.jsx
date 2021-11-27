@@ -64,8 +64,8 @@ const Publication = (props) => {
       name: "In cv",
       onRender: renderInCvCheckbox,
       isResizable: false,
-      minWidth: 50,
-      maxWidth: 50,
+      minWidth: 40,
+      maxWidth: 40,
       data: "boolean"
     }
   ];

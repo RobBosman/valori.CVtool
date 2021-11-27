@@ -258,7 +258,7 @@
                 EDUCATION
 
                 -->
-                <xsl:variable name="educations" select="cv:education"/>
+                <xsl:variable name="educations" select="cv:education[cv:includeInCv = 'true']"/>
                 <xsl:if test="$educations">
                     <w:p w14:paraId="6C209D83" w14:textId="48D9D99D" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -355,7 +355,7 @@
                 TRAINING
 
                 -->
-                <xsl:variable name="trainings" select="cv:training"/>
+                <xsl:variable name="trainings" select="cv:training[cv:includeInCv = 'true']"/>
                 <xsl:if test="$trainings">
                     <w:p w14:paraId="6600C847" w14:textId="2432E297" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -692,7 +692,7 @@
     <!-- SKILL SECTION -->
     <xsl:template name="skill-section">
         <xsl:param name="category"/>
-        <xsl:variable name="skills" select="cv:skill[cv:category = $category]"/>
+        <xsl:variable name="skills" select="cv:skill[cv:includeInCv = 'true'][cv:category = $category]"/>
         <xsl:if test="$skills">
             <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE"
                  w:rsidRDefault="008317EA"

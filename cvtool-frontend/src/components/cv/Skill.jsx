@@ -13,6 +13,7 @@ import { CvComboBox } from "../widgets/CvComboBox";
 import { getEnumData, SkillCategories } from "./Enums";
 import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const entityName = "skill";
 
@@ -55,6 +56,12 @@ const Skill = (props) => {
   const renderSkillLevel = (item) =>
     "* ".repeat(item.skillLevel).trim();
 
+  const renderInCvCheckbox = (item) =>
+    <CvCheckbox
+      field="includeInCv"
+      instanceContext={{ ...skillContext, instanceId: item._id }}
+    />;
+
   const columns = [
     {
       key: "category",
@@ -80,6 +87,16 @@ const Skill = (props) => {
       isResizable: false,
       minWidth: 70,
       maxWidth: 70
+    },
+    {
+      key: "includeInCv",
+      fieldName: "includeInCv",
+      name: "In cv",
+      onRender: renderInCvCheckbox,
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40,
+      data: "boolean"
     }
   ];
 

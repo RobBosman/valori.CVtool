@@ -12,6 +12,7 @@ import { CvDropdown } from "../widgets/CvDropdown";
 import * as commonUtils from "../../utils/CommonUtils";
 import { EducationResultTypes } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const entityName = "training";
 
@@ -47,6 +48,12 @@ const Training = (props) => {
 
   const renderName = (item) =>
     item.name && item.name[props.locale] || commonUtils.getPlaceholder(trainings, item._id, "name", props.locale);
+
+  const renderInCvCheckbox = (item) =>
+    <CvCheckbox
+      field="includeInCv"
+      instanceContext={{ ...trainingContext, instanceId: item._id }}
+    />;
   
   const columns = [
     {
@@ -55,15 +62,15 @@ const Training = (props) => {
       name: "Training",
       onRender: renderName,
       isResizable: true,
-      minWidth: 140,
-      maxWidth: 300
+      minWidth: 110,
+      maxWidth: 280
     },
     {
       key: "institution",
       fieldName: "institution",
       name: "Opleidingsinstituut",
       isResizable: true,
-      minWidth: 140,
+      minWidth: 120,
       maxWidth: 300
     },
     {
@@ -72,9 +79,19 @@ const Training = (props) => {
       name: "Jaar",
       onRender: composePeriod,
       isResizable: false,
-      minWidth: 60,
-      maxWidth: 60,
+      minWidth: 50,
+      maxWidth: 50,
       data: "number"
+    },
+    {
+      key: "includeInCv",
+      fieldName: "includeInCv",
+      name: "In cv",
+      onRender: renderInCvCheckbox,
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40,
+      data: "boolean"
     }
   ];
 
