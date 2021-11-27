@@ -104,8 +104,8 @@ const Experience = (props) => {
       name: "In cv",
       onRender: renderInCvCheckbox,
       isResizable: false,
-      minWidth: 50,
-      maxWidth: 50,
+      minWidth: 40,
+      maxWidth: 40,
       data: "boolean"
     }
   ];
@@ -391,13 +391,12 @@ const Experience = (props) => {
                       {renderPreview()}
                     </Stack>
                   </Modal>
-                  <StackItem align="end">
-                    <PrimaryButton
-                      text="Preview"
-                      iconProps={{ iconName: "EntryView" }}
-                      onClick={() => setPreviewVisible(!previewVisible)}
-                    />
-                  </StackItem>
+                  <PrimaryButton
+                    text="Preview"
+                    iconProps={{ iconName: "EntryView" }}
+                    onClick={() => setPreviewVisible(!previewVisible)}
+                    style={{ top: "28px" }}
+                  />
                 </Stack>
                 <CvTextField
                   label="Rol"
