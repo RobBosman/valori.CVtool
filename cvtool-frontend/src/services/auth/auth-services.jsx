@@ -22,11 +22,16 @@ const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 
 export const authenticateAtOpenIdProvider = () => {
   const allAccounts = msal.getAllAccounts();
-  if (allAccounts?.length > 0) {
-    const loginConfig = {
-      ...LOGIN_CONFIG,
-      account: allAccounts[0]
-    };
+  const cachedAccount = allAccounts && allAccounts[0];
+  const loginConfig = {
+    ...LOGIN_CONFIG,
+    account: cachedAccount
+  };
+
+  // Check if the cached token is still valid.
+  const expirationDate = new Date("1970-01-01T00:00:00.000+00:00"); // Epoch, t = 0.
+  expirationDate.setSeconds(cachedAccount?.idTokenClaims?.exp || 0);
+  if (expirationDate > new Date()) {
     return msal
       .acquireTokenSilent(loginConfig)
       .catch((error) => {
@@ -39,7 +44,7 @@ export const authenticateAtOpenIdProvider = () => {
         }
       });
   } else {
-    return msal.acquireTokenPopup(LOGIN_CONFIG);
+    return msal.acquireTokenPopup(loginConfig);
   }
 };
 
