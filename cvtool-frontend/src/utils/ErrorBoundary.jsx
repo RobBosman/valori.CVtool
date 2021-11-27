@@ -9,12 +9,12 @@ export class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    console.log("getDerivedStateFromError()", error);
+    console.error("getDerivedStateFromError()", error);
     return { theError: error };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.log("componentDidCatch()", error, errorInfo.componentStack);
+    console.error("componentDidCatch()", error, errorInfo.componentStack);
   }
   
   getForegroundColor() {
