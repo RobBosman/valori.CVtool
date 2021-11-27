@@ -177,7 +177,7 @@ const Search = (props) => {
   };
 
   const onFetchCv = () => {
-    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+    if (["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
       && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }

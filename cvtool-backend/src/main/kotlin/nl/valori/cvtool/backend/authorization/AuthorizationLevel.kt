@@ -2,7 +2,7 @@ package nl.valori.cvtool.backend.authorization
 
 internal enum class AuthorizationLevel {
     ADMIN,
-    EE_LEAD,
+    UNIT_LEAD,
     SALES,
     CONSULTANT;
 

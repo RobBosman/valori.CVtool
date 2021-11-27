@@ -33,4 +33,4 @@ export const getValueOrFallback = (instance, fieldName, locale) =>
     : "";
 
 export const isAccountEditable = (accountId, authInfo) =>
-  accountId === authInfo.accountId || ["ADMIN", "EE_LEAD"].includes(authInfo.authorizationLevel);
+  accountId === authInfo.accountId || ["ADMIN", "UNIT_LEAD"].includes(authInfo.authorizationLevel);

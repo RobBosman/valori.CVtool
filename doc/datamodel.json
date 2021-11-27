@@ -117,7 +117,7 @@
   "ENUM_AUTHORIZATION_LEVEL": [
     "ADMIN",
     "SALES",
-    "EE_LEAD",
+    "UNIT_LEAD",
     "CONSULTANT"
   ],
   "ENUM_EDUCATION_RESULT": [

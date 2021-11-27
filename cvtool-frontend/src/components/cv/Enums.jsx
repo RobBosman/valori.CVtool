@@ -11,8 +11,8 @@ export const Authorizations = [
     text: "Admin"
   },
   {
-    key: "EE_LEAD",
-    text: "E&E Lead"
+    key: "UNIT_LEAD",
+    text: "Unit Lead"
   },
   {
     key: "SALES",

@@ -179,7 +179,7 @@
   },
   "ENUM_ROLE": [
     "ADMIN",
-    "EE_LEAD",
+    "UNIT_LEAD",
     "SALES",
     "CONSULTANT"
   ],

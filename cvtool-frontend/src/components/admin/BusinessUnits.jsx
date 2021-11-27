@@ -122,8 +122,8 @@ const BusinessUnits = (props) => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
-                <Text variant="xxLarge">Tribes</Text>
-                { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+                <Text variant="xxLarge">Units</Text>
+                { ["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
                   &&  <Stack horizontal
                     tokens={{ childrenGap: "l1" }}>
                     <DefaultButton
@@ -153,7 +153,7 @@ const BusinessUnits = (props) => {
                 items={businessUnits}
                 instanceContext={businessUnitContext}
                 setKey="businessUnits"
-                selectionMode={["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+                selectionMode={["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
                   ? SelectionMode.single
                   : SelectionMode.none
                 }
@@ -161,11 +161,11 @@ const BusinessUnits = (props) => {
             </Stack>
           </td>
 
-          { ["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+          { ["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
             && <td valign="top" style={tdStyle}>
               <Stack styles={editStyles}>
                 <CvTextField
-                  label="Tribe"
+                  label="Unit"
                   field="name"
                   instanceContext={businessUnitContext}
                   disabled={!props.selectedBusinessUnitId}

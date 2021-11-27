@@ -11,7 +11,7 @@ const entityName = "audit_log";
 export const entityNames = {
   "account": "Account",
   "authorization": "Authorizatie",
-  "businessUnit": "Tribe",
+  "businessUnit": "Unit",
   "cv": "CV gegevens",
   "education": "Opleiding",
   "experience": "Werkervaring",

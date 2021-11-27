@@ -32,8 +32,8 @@ const Accounts = (props) => {
         };
       });
 
-    // Export all accounts and their tribes to csv.
-    // console.log("combined", "name,email,tribe\n" + Object.values(combined)
+    // Export all accounts including their businessUnit to csv.
+    // console.log("combined", "name,email,unit\n" + Object.values(combined)
     //   .map(c => `${c.name},${c.email},${c.businessUnit?.name || ""}`)
     //   .join("\n"));
 
@@ -111,7 +111,7 @@ const Accounts = (props) => {
     {
       key: "businessUnit.name",
       fieldName: "businessUnit.name",
-      name: "Tribe",
+      name: "Unit",
       isResizable: true,
       minWidth: 120
     },
@@ -142,7 +142,7 @@ const Accounts = (props) => {
     setFilterText(newFilterText);
 
   const onFetchCv = () => {
-    if (["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+    if (["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
       && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
@@ -153,7 +153,7 @@ const Accounts = (props) => {
     const selectedAccount = combined.instances.find(businessUnit => businessUnit._id === props.selectedAccountId);
     return selectedAccount && {
       Naam: selectedAccount.name,
-      Tribe: selectedAccount.businessUnit?.name
+      Unit: selectedAccount.businessUnit?.name
     };
   }, [combined.instances, props.selectedAccountId]);
 
@@ -244,7 +244,7 @@ const Accounts = (props) => {
                 {infoText}
               </Stack>
             }
-            {["ADMIN", "EE_LEAD"].includes(props.authInfo.authorizationLevel)
+            {["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
               && <Stack styles={editStyles}>
                 <CvTextField
                   label="Naam"
@@ -259,7 +259,7 @@ const Accounts = (props) => {
                   disabled={true}
                 />
                 <CvDropdown
-                  label="Tribe"
+                  label="Unit"
                   field="businessUnit._id"
                   instanceContext={combinedContext(switchBusinessUnitOfAccount)}
                   options={BusinessUnitOptions}

@@ -57,7 +57,7 @@ const ContentPage = (props) => {
             icon: "BullseyeTarget",
             content: <Info />
           },
-          ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+          ["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
           && {
             key: "#accounts",
             url: "#accounts",
@@ -65,15 +65,15 @@ const ContentPage = (props) => {
             icon: "AccountManagement",
             content: <Accounts />
           },
-          ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+          ["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
           && {
             key: "#businessUnits",
             url: "#businessUnits",
-            name: "Tribes",
+            name: "Units",
             icon: "WorkforceManagement",
             content: <BusinessUnits />
           },
-          ["ADMIN", "EE_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+          ["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
           && {
             key: "#search",
             url: "#search",

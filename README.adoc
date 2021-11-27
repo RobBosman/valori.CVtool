@@ -123,6 +123,9 @@ Data retention is 120 days.
  db.skill.updateMany(
    { "includeInCv": { "$exists": false } },
    { "$set": { "includeInCv": true } });
+ db.authorization.updateMany(
+   { "level": { "$eq": "EE_LEAD" } },
+   { "$set": { "level": "UNIT_LEAD" } });
 
  db.experience.find(
    {"$text": {"$search": "c#"}},

@@ -113,7 +113,7 @@ export const authEpics = [
           authActions.setLoginState(authActions.LoginStates.LOGGED_IN),
           cvActions.fetchCvByAccountId(authInfo.accountId)
         );
-        if (["ADMIN", "EE_LEAD", "SALES"].includes(authInfo.authorizationLevel)) {
+        if (["ADMIN", "UNIT_LEAD", "SALES"].includes(authInfo.authorizationLevel)) {
           actions.push(
             safeActions.fetchAllInstances("account"),
             safeActions.fetchAllInstances("authorization"),

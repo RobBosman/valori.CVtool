@@ -4,7 +4,7 @@ import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.backend.ModelUtils.toJsonObject
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.ADMIN
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
-import nl.valori.cvtool.backend.authorization.AuthorizationLevel.EE_LEAD
+import nl.valori.cvtool.backend.authorization.AuthorizationLevel.UNIT_LEAD
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.SALES
 import nl.valori.cvtool.backend.authorization.intention.IntentionDeleteAccount
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllAccounts
@@ -32,8 +32,8 @@ internal object Authorizer {
         IntentionReadAllBusinessUnits to SALES,
         IntentionReadAllAuthorizations to SALES,
         IntentionUpdateOwnCv to CONSULTANT,
-        IntentionUpdateOtherCv to EE_LEAD,
-        IntentionUpdateBusinessUnit to EE_LEAD,
+        IntentionUpdateOtherCv to UNIT_LEAD,
+        IntentionUpdateBusinessUnit to UNIT_LEAD,
         IntentionUpdateAuthorization to ADMIN,
         IntentionDeleteAccount to ADMIN
     )
