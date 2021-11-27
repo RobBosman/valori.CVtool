@@ -74,6 +74,11 @@ export const CvFormattedText = (props) => {
         { textToMatch: "\n\n", render: renderBlankLine },
         { textToMatch: "\n", render: renderParagraph },
         { textToMatch: "* ", newLineBefore: true, render: renderBulletListItem },
+        { textToMatch: "*\t", newLineBefore: true, render: renderBulletListItem },
+        { textToMatch: "- ", newLineBefore: true, render: renderBulletListItem },
+        { textToMatch: "-\t", newLineBefore: true, render: renderBulletListItem },
+        { textToMatch: "\u2022 ", newLineBefore: true, render: renderBulletListItem },
+        { textToMatch: "\u2022\t", newLineBefore: true, render: renderBulletListItem },
         { textToMatch: "# ", newLineBefore: true, render: renderNumberedListItem },
         ...cvHeadingSpecs,
         ...specs

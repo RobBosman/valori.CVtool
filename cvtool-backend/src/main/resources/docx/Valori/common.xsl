@@ -70,7 +70,8 @@
         <xsl:param name="text"/>
         <xsl:param name="listItemNumber"/>
         <xsl:choose>
-            <xsl:when test="starts-with($text, '* ')">
+            <xsl:when test="substring($text, 1, 2) = '* ' or  substring($text, 1, 2) = '- ' or  substring($text, 1, 2) = '&#x2022; '
+                    or substring($text, 1, 2) = '*&#x09;' or  substring($text, 1, 2) = '-&#x09;' or  substring($text, 1, 2) = '&#x2022;&#x09;'">
                 <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949"
                      w:rsidP="001730DD">
                     <w:pPr>
@@ -114,6 +115,10 @@
                 </w:p>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template>
+
     </xsl:template>
 
 </xsl:stylesheet>

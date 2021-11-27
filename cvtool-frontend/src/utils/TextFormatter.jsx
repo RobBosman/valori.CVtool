@@ -6,10 +6,10 @@ export const isLetter = (text, index) => {
   return false;
 };
 
-const searchIndex = (haystack, needle, newLineBefore, wordBreakBefore, wordBreakAfter) => {
+const searchIndex = (haystack, isStartOfLine, needle, newLineBefore, wordBreakBefore, wordBreakAfter) => {
   let index = haystack.indexOf(needle);
   while (index >= 0) {
-    if ((!newLineBefore || index === 0 || haystack[index - 1] === "\n")
+    if ((!newLineBefore || (isStartOfLine && index === 0) || haystack[index - 1] === "\n")
       && (!wordBreakBefore || !isLetter(haystack, index - 1))
       && (!wordBreakAfter || !isLetter(haystack, index + needle.length))) {
       return index;
@@ -19,33 +19,36 @@ const searchIndex = (haystack, needle, newLineBefore, wordBreakBefore, wordBreak
   return -1;
 };
 
-const searchNextNeedle = (haystack = "", formattingSpecs = []) => {
+const searchNextNeedle = (haystack, isStartOfLine, formattingSpecs) => {
   const lowerCaseHaystack = haystack.toLowerCase();
   return formattingSpecs
     .filter(formattingSpec => formattingSpec.textToMatch)
-    .map(formattingSpec => {
-      const needle = formattingSpec.textToMatch.toLowerCase();
-      return {
-        index: searchIndex(lowerCaseHaystack, needle, formattingSpec.newLineBefore, formattingSpec.wordBreakBefore, formattingSpec.wordBreakAfter),
-        formattingSpec
-      };
-    })
+    .map(formattingSpec => ({
+      index: searchIndex(lowerCaseHaystack, isStartOfLine, formattingSpec.textToMatch.toLowerCase(),
+        formattingSpec.newLineBefore, formattingSpec.wordBreakBefore, formattingSpec.wordBreakAfter),
+      formattingSpec
+    }))
     .filter(({ index }) => index >= 0)
     .shift()
     || { index: -1 };
 };
 
 const recursivelyRenderAndFormat = (fullText, formattingSpecs, defaultStyle, renderContext) => {
-  const { index, formattingSpec } = searchNextNeedle(fullText, formattingSpecs);
+  const { index, formattingSpec } = searchNextNeedle(fullText, renderContext.isStartOfLine, formattingSpecs);
   if (index < 0) {
     return fullText;
   }
   const before = fullText.slice(0, index);
   const match = fullText.slice(index, index + formattingSpec.textToMatch.length);
   const after = fullText.slice(index + formattingSpec.textToMatch.length);
+  
   const renderFunc = (someText, options = {}) => {
     if (options.newParagraph) {
       renderContext.paragraph = renderContext.paragraph + 1;
+      renderContext.isStartOfLine = true;
+    } else {
+      const someTextIndex = fullText.indexOf(someText);
+      renderContext.isStartOfLine = someTextIndex === 0 || fullText[someTextIndex - 1] === "\n";
     }
     return recursivelyRenderAndFormat(someText, formattingSpecs, defaultStyle, renderContext);
   };
@@ -68,7 +71,7 @@ const recursivelyRenderAndFormat = (fullText, formattingSpecs, defaultStyle, ren
  * }
  */
 export const renderAndFormat = (fullText = "", formattingSpecs = [], defaultStyle = {}) =>
-  recursivelyRenderAndFormat(fullText, formattingSpecs, defaultStyle, { paragraph: 0 });
+  recursivelyRenderAndFormat(fullText, formattingSpecs, defaultStyle, { paragraph: 0, isStartOfLine: true });
 
 export const getTextFragment = (fullText = "", targetText = "", maxLength) => {
   const index = fullText.indexOf(targetText);

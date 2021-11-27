@@ -10,8 +10,15 @@ export const cvTextStyle = {
   lineHeight: 1.3
 };
 
-export const composeExperiencePeriod = (experience) =>
-  `${experience.periodBegin?.substr(0, 7) || ""} - ${experience.periodEnd?.substr(0, 7) || "heden"}`;
+export const composeExperiencePeriod = (experience) => {
+  const beginString = experience.periodBegin
+    ? `${experience.periodBegin.substr(5, 2)}-${experience.periodBegin.substr(0, 4)}`
+    : "";
+  const endString = experience.periodEnd
+    ? `${experience.periodEnd.substr(5, 2)}-${experience.periodEnd.substr(0, 4)}`
+    : "heden";
+  return `${beginString} \u2014 ${endString}`;
+};
 
 export const composeExperienceDescription = (experience, locale) => {
   const assignment = experience.assignment && experience.assignment[locale]?.trim() || "";

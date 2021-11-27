@@ -20,10 +20,8 @@ const Info = () => {
         <br/>Dit is de Valori <strong>CVtool</strong> waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
         <ul>
-          <li><u>AutoSave</u>: Alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
-          <br/>
           <li><u>Markdown lijst</u>: In veel tekstvelden kun je een opsomming maken door regels te laten beginnen met
-            <br/>&apos;<strong>* </strong>&apos; (sterretje + spatie) voor een lijst met bullets of met
+            <br/>&apos;<strong>* </strong>&apos; of &apos;<strong>- </strong>&apos; (asterisk/streepje + spatie) voor een lijst met Valori bullets of met
             <br/>&apos;<strong># </strong>&apos; (hekje + spatie) voor een genummerde lijst.</li>
           <br/>
           <li><u>Sorteren</u>: Gegevens in tabellen kun je sorteren, maar dat heeft geen invloed op de volgorde in het cv-document.
@@ -34,6 +32,8 @@ const Info = () => {
             <br/>De meeste gegevems moet je echter per taal opnieuw invoeren, de betreffende tekstvelden zijn dan leeg.
             <br/>Bij een aantal daarvan wordt de NL-waarde alvast voor-ingevuld, bijvoorbeeld bij vaardigheden.
             <br/>Je kunt daar je eigen vertaling invullen, maar als je dat niet doet wordt de voor-ingevulde waarde in je cv opgenomen.</li>
+          <br/>
+          <li><u>AutoSave</u>: Alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
         <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:RobBosman@Valori.nl?subject=CVtool" target="blank">RobBosman@Valori.nl</Link>.
