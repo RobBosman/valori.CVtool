@@ -2,7 +2,7 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.ReplaySubject
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
@@ -15,6 +15,7 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.concurrent.TimeUnit.MINUTES
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTH_DOMAIN = "Valori.nl"
@@ -25,27 +26,25 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
         private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
-        private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create()
+        private val oauth2Subject: Subject<OAuth2Auth> = BehaviorSubject.create()
 
         fun checkOpenIdConnection(): Single<String> =
-            // Use any available OAuth2 connection.
-            oauth2Subject
-                .observeOn(Schedulers.io())
-                .take(1)
-                .singleOrError()
-                .flatMap { oauth2 ->
-                    // Send a dummy authorization request to the OpenID Provider.
-                    // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
-                    oauth2
-                        .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
-                        .map { "" }
-                        .onErrorReturn {
-                            if (it.message?.contains("invalid_grant") != true)
-                                throw it
-                            // The expected error response. Don't propagate the error, only the message String.
-                            it.message
-                        }
+            oauth2Subject.blockingFirst()
+                // Send a dummy authorization request to the OpenID Provider.
+                // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
+                .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
+                .map { "" }
+                .onErrorReturn {
+                    if (it.message?.contains("invalid_grant") != true)
+                        throw it
+                    // The expected error response. Don't propagate the error, only the message String.
+                    it.message
                 }
+    }
+
+    override fun start(startPromise: Promise<Void>) {
+        initializeOAuthConnection(startPromise)
+        handleVertxEvents()
     }
 
     private fun connectToOpenID(): Single<OAuth2Auth> {
@@ -64,36 +63,37 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .setClientSecret(clientIdAndSecret[1])
             )
             .observeOn(Schedulers.io())
-            .doOnSuccess {
-                log.info("Successfully connected to OpenID Provider")
-                oauth2Subject.onNext(it) // Keep track of oauth2 to use it for health checking.
-            }
     }
 
-    override fun start(startPromise: Promise<Void>) {
-        connectToOpenID()
+    private fun initializeOAuthConnection(startPromise: Promise<Void>) =
+        Single
+            .just(1)
+            .repeatWhen { completed -> completed.delay(30, MINUTES) }
+            .switchMap { connectToOpenID().toFlowable() }
             .subscribe(
-                { oauth2 ->
-                    startPromise.complete()
-
-                    vertx.eventBus()
-                        .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
-                        .toFlowable()
-                        .subscribe(
-                            {
-                                handleRequest(it, oauth2)
-                            },
-                            {
-                                log.error("Vertx error processing authentication request: ${it.message}")
-                            }
-                        )
+                {
+                    log.info("Successfully (re)connected to OpenID Provider")
+                    oauth2Subject.onNext(it) // Keep track of oauth2 to use it for health checking.
+                    startPromise.tryComplete()
                 },
                 {
                     log.error("Vertx error: ${it.message}")
                     startPromise.tryFail(it)
                 }
             )
-    }
+
+    private fun handleVertxEvents() =
+        vertx.eventBus()
+            .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
+            .toFlowable()
+            .subscribe(
+                {
+                    handleRequest(it, oauth2Subject.blockingFirst())
+                },
+                {
+                    log.error("Vertx error processing authentication request: ${it.message}")
+                }
+            )
 
     /**
      * Expected message body:
