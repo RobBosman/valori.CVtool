@@ -22,8 +22,10 @@ const val AUTH_DOMAIN = "Valori.nl"
 
 internal class AuthenticateVerticle : AbstractVerticle() {
 
+
     companion object {
 
+        private const val OAUTH_CONNECTION_REFRESH_MINUTES = 60L
         private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
         private val oauth2Subject: Subject<OAuth2Auth> = BehaviorSubject.create()
@@ -68,7 +70,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private fun initializeOAuthConnection(startPromise: Promise<Void>) =
         Single
             .just(1)
-            .repeatWhen { completed -> completed.delay(30, MINUTES) }
+            .repeatWhen { completed -> completed.delay(OAUTH_CONNECTION_REFRESH_MINUTES, MINUTES) }
             .switchMap { connectToOpenID().toFlowable() }
             .subscribe(
                 {
@@ -143,4 +145,5 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("email", email)
                     .put("name", name)
             }
+            .doOnError { log.error("Error authenticating JWT $jwt") }
 }
