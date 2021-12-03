@@ -1,6 +1,6 @@
 import EventBus from "@vertx/eventbus-bridge-client.js";
 import { BehaviorSubject } from "rxjs";
-import { distinctUntilChanged } from "rxjs/operators";
+import * as rx from "rxjs/operators";
 
 const CONNECT_URL = "/eventbus";
 const CONNECT_OPTIONS = {
@@ -33,7 +33,7 @@ export class EventBusClient {
 
   monitorConnectionState = () =>
     this._connectionStateSubject.asObservable().pipe(
-      distinctUntilChanged()
+      rx.distinctUntilChanged()
     );
 
   monitorErrorMessages = () =>
@@ -85,7 +85,7 @@ export class EventBusClient {
     }
   };
 
-  addDefaultHeaders = (headers) => {
+  upsertDefaultHeaders = (headers) => {
     this._defaultHeaders = {
       ...this._defaultHeaders,
       ...headers
@@ -93,7 +93,7 @@ export class EventBusClient {
   };
 
   deleteDefaultHeaders = (headers) =>
-    Object.keys(headers).forEach((key) =>
+    Object.keys(headers).forEach(key =>
       key in this._defaultHeaders && delete this._defaultHeaders[key]);
 
   mergeHeaders = (headers) => ({
@@ -104,7 +104,6 @@ export class EventBusClient {
   sendEvent = (address, requestData, headers = {}) =>
     new Promise((_resolve, _reject) => {
       if (this._eventBus?.state === EventBus.OPEN) {
-        console.debug(`Sending event '${address}'`, requestData);
         this._eventBus.send(address, requestData, this.mergeHeaders(headers),
           (error, message) => error
             ? _reject(`Onbekende fout in de backend server: ${error} ${message}`)

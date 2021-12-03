@@ -20,21 +20,19 @@ const LOGIN_CONFIG = {
 
 const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 
-export const authenticateAtOpenIdProvider = () => {
-  const allAccounts = msal.getAllAccounts();
-  const cachedAccount = allAccounts && allAccounts[0];
+export const authenticateAtOpenIdProvider = (forceRefresh = false) => {
+  const allCachedAccounts = msal.getAllAccounts();
+  const cachedAccount = allCachedAccounts && allCachedAccounts[0];
   const loginConfig = {
     ...LOGIN_CONFIG,
-    account: cachedAccount
+    account: cachedAccount,
+    forceRefresh: forceRefresh
   };
 
-  // Check if the cached token is still valid.
-  const expirationDate = new Date("1970-01-01T00:00:00.000+00:00"); // Epoch, t = 0.
-  expirationDate.setSeconds(cachedAccount?.idTokenClaims?.exp || 0);
-  if (expirationDate > new Date()) {
-    return msal
-      .acquireTokenSilent(loginConfig)
-      .catch((error) => {
+  return (!cachedAccount)
+    ? msal.acquireTokenPopup(loginConfig)
+    : msal.acquireTokenSilent(loginConfig)
+      .catch(error => {
         if (error instanceof MSAL.InteractionRequiredAuthError) {
           // Fallback to interaction mode when silent call fails.
           return msal.acquireTokenPopup(loginConfig);
@@ -43,15 +41,16 @@ export const authenticateAtOpenIdProvider = () => {
           return Promise.resolve();
         }
       });
-  } else {
-    return msal.acquireTokenPopup(loginConfig);
-  }
 };
 
 export const fetchAuthInfoFromRemote = (authenticationResult, sendEvent) => {
   const {account} = authenticationResult;
-  return sendEvent("authInfo.fetch", { email: account.username, name: account.name || account.username.split("@")[0] })
-    .then((message) => {
+  return sendEvent("authInfo.fetch",
+    {
+      email: account.username,
+      name: account.name || account.username.split("@")[0]
+    })
+    .then(message => {
       const authInfo = message.body;
       if (!authInfo) {
         throw new Error("Authentication error: message.body contains no authInfo");

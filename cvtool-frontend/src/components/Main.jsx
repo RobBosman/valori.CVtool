@@ -6,7 +6,17 @@ import { LoginStates } from "../services/auth/auth-actions";
 import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import ErrorDialog from "./ErrorDialog";
+import {appVersion} from "../app";
 // import "./ThemeExposer";
+
+const versionStyle = {
+  position: "fixed",
+  right: 10,
+  bottom: 10,
+  fontSize: "small",
+  color: "#888888",
+  zIndex: 1
+};
 
 const Main = (props) => {
 
@@ -14,6 +24,7 @@ const Main = (props) => {
     <ThemeProvider>
       <ErrorDialog />
       {props.isLoggedIn ? <ContentPage /> : <LoginPage />}
+      <div style={versionStyle}><em>{appVersion}</em></div>
     </ThemeProvider>
   );
 };

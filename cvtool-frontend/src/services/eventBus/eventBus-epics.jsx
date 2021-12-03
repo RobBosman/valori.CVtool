@@ -1,7 +1,7 @@
 import { ofType } from "redux-observable";
 import { EMPTY } from "rxjs";
 import * as rx from "rxjs/operators";
-import { setAuthenticationResult } from "../auth/auth-actions";
+import * as authActions from "../auth/auth-actions";
 import * as errorActions from "../error/error-actions";
 import * as eventBusActions from "./eventBus-actions";
 import { eventBusClient, ConnectionStates } from "./eventBus-services";
@@ -38,11 +38,11 @@ export const eventBusEpics = [
   
   // Add or delete EventBus headers.
   (action$) => action$.pipe(
-    ofType(setAuthenticationResult.type),
+    ofType(authActions.refreshAuthentication.type),
     rx.map(action => action.payload?.idToken),
     rx.map(jwt =>
       jwt
-        ? eventBusClient.addDefaultHeaders({ Authorization: `Bearer ${jwt}` })
+        ? eventBusClient.upsertDefaultHeaders({ Authorization: `Bearer ${jwt}` })
         : eventBusClient.deleteDefaultHeaders({ Authorization: "" })
     ),
     rx.ignoreElements()

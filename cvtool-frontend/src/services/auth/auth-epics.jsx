@@ -1,4 +1,4 @@
-import { of, merge } from "rxjs";
+import { from, of, merge, EMPTY } from "rxjs";
 import * as rx from "rxjs/operators";
 import { ofType } from "redux-observable";
 import * as errorActions from "../error/error-actions";
@@ -8,6 +8,8 @@ import * as cvActions from "../cv/cv-actions";
 import * as safeActions from "../safe/safe-actions";
 import * as authActions from "./auth-actions";
 import * as authServices from "./auth-services";
+
+const AUTHENTICATION_REFRESH_MILLIS = 5 * 60 * 1000; // 5 minutes
 
 export const authEpics = [
 
@@ -34,7 +36,7 @@ export const authEpics = [
               authActions.setLoginState(authActions.LoginStates.LOGGING_OUT),
               // Then delete the authInfo data and disconnect the EventBus.
               authActions.setAuthInfo(undefined),
-              authActions.setAuthenticationResult(undefined),
+              authActions.refreshAuthentication(undefined),
               eventBusActions.requestEventBusConnection(false)
             ))
           )
@@ -45,9 +47,9 @@ export const authEpics = [
   // Authenticate at the OpenID provider.
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
-    rx.mergeMap(() => authServices.authenticateAtOpenIdProvider()),
+    rx.switchMap(() => authServices.authenticateAtOpenIdProvider()),
     rx.mergeMap(authenticationResult => of(
-      authActions.setAuthenticationResult(authenticationResult),
+      authActions.refreshAuthentication(authenticationResult),
       // When requested to login then fetch the authInfo data.
       authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
       authActions.fetchAuthInfo(authenticationResult)
@@ -61,23 +63,37 @@ export const authEpics = [
     ))
   ),
 
-  // Refresh the JWT when it is about to expire.
-  (action$) => action$.pipe(
-    ofType(authActions.setAuthenticationResult.type),
+  // Check every 5 minutes if the JWT is still valid for at least five more minutes.
+  (action$, state$) => action$.pipe(
+    ofType(authActions.refreshAuthentication.type),
     rx.map(action => action.payload),
-    rx.filter(authenticationResult => authenticationResult),
-    rx.switchMap(authenticationResult => of(1).pipe(
-      rx.delay(new Date(authenticationResult.expiresOn.getTime() - 60000)), // Obtain a new token 1 minute before the current one expires.
-      rx.mergeMap(() => authServices.authenticateAtOpenIdProvider()),
-      rx.map(refreshedAuthenticationResult => authActions.setAuthenticationResult(refreshedAuthenticationResult)),
-      rx.catchError((error, source$) => merge(
-        of(
-          errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
-          authActions.requestLogout()
-        ),
-        source$
-      ))
-    ))
+    rx.switchMap(authenticationResult => {
+
+      // Abort any refreshing when logged out.
+      const loginState = state$.value.auth?.loginState;
+      if (!authenticationResult
+        || loginState === authActions.LoginStates.LOGGED_OUT
+        || loginState === authActions.LoginStates.LOGGING_OUT) {
+        return EMPTY;
+      }
+      
+      // Check if the JWT is still valid for at least 5 minutes.
+      const remainingMillis = (authenticationResult.expiresOn.getTime() || 0) - new Date().getTime();
+      const next$ = (remainingMillis > AUTHENTICATION_REFRESH_MILLIS)
+        ? of(authenticationResult) // Keep using the same token.
+        : from(authServices.authenticateAtOpenIdProvider(true)); // Get a new token.
+      return next$.pipe(
+        rx.delay(AUTHENTICATION_REFRESH_MILLIS),
+        rx.map(refreshedAuthenticationResult => authActions.refreshAuthentication(refreshedAuthenticationResult)),
+        rx.catchError((error, source$) => merge(
+          of(
+            errorActions.setLastError(`Her-authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+            authActions.requestLogout()
+          ),
+          source$
+        ))
+      );
+    })
   ),
 
   // Fetch the authInfo. But first ensure the EventBus is connected.
