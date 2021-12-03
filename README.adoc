@@ -50,9 +50,16 @@ Data retention is 120 days.
      open -u ${LFTP_USERNAME},${LFTP_PASSWORD} ${LFTP_HOST} \
      "
 
-== Docker commands
+== Helpful commands
 
-=== Build and publish docker image
+=== Initialize server
+
+ # Create MongoDB indexes
+ scripts/cvtool_initialize_mongodb.sh
+ # Restart CVtool-frontend server to load a new certificate
+ docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
+
+=== Build and publish docker images
 
  docker build --no-cache=true -t bransom/cvtool-backend - < Dockerfile-backend
  docker build --no-cache=true -t bransom/cvtool-frontend - < Dockerfile-frontend
@@ -67,25 +74,21 @@ Data retention is 120 days.
  docker container prune -f
  docker image prune -f
 
-=== Initialize
+== Docker commands
 
- # Create MongoDB indexes
- scripts/cvtool_initialize_mongodb.sh
- # Restart CVtool-frontend server to load a new certificate
- docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
-
-=== Logs and more
-
+ # Logs
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')"
+ # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
+ # System entropy
  cat /proc/sys/kernel/random/entropy_avail
 
-=== Docker volumes
-
+ # Volumes Linux
  /var/lib/docker/volumes/
+ # Volumes Windows
  \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
 
-== MongoDB commands
+== MongoDB
 
 === Import/export collections
 
