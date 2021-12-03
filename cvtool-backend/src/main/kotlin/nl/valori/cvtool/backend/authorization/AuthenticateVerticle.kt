@@ -15,17 +15,14 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URL
-import java.util.concurrent.TimeUnit.MINUTES
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTH_DOMAIN = "Valori.nl"
 
 internal class AuthenticateVerticle : AbstractVerticle() {
 
-
     companion object {
 
-        private const val OAUTH_CONNECTION_REFRESH_MINUTES = 60L
         private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
         private val oauth2Subject: Subject<OAuth2Auth> = BehaviorSubject.create()
@@ -68,15 +65,12 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     }
 
     private fun initializeOAuthConnection(startPromise: Promise<Void>) =
-        Single
-            .just(1)
-            .repeatWhen { completed -> completed.delay(OAUTH_CONNECTION_REFRESH_MINUTES, MINUTES) }
-            .switchMap { connectToOpenID().toFlowable() }
+        connectToOpenID()
             .subscribe(
                 {
-                    log.info("Successfully (re)connected to OpenID Provider")
                     oauth2Subject.onNext(it) // Keep track of oauth2 to use it for health checking.
-                    startPromise.tryComplete()
+                    startPromise.complete()
+                    log.info("Successfully connected to OpenID Provider")
                 },
                 {
                     log.error("Vertx error: ${it.message}")
@@ -145,5 +139,4 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("email", email)
                     .put("name", name)
             }
-            .doOnError { log.error("Error authenticating JWT $jwt") }
 }
