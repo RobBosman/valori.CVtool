@@ -28,22 +28,38 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         private val oauth2Subject: Subject<OAuth2Auth> = BehaviorSubject.create()
 
         fun checkOpenIdConnection(): Single<String> =
-            oauth2Subject.blockingFirst()
-                // Send a dummy authorization request to the OpenID Provider.
-                // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
-                .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
-                .map { "" }
-                .onErrorReturn {
-                    if (it.message?.contains("invalid_grant") != true)
-                        throw it
-                    // The expected error response. Don't propagate the error, only the message String.
-                    it.message
+            // Use the latest available OAuth2 connection.
+            oauth2Subject
+                .singleOrError()
+                .flatMap { oauth2 ->
+                    // Send a dummy authorization request to the OpenID Provider.
+                    // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
+                    oauth2
+                        .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
+                        .map { "" }
+                        .onErrorReturn {
+                            if (it.message?.contains("invalid_grant") != true)
+                                throw it
+                            // The expected error response. Don't propagate the error, only the message String.
+                            it.message
+                        }
                 }
     }
 
     override fun start(startPromise: Promise<Void>) {
-        initializeOAuthConnection(startPromise)
-        handleVertxEvents()
+        connectToOpenID()
+            .subscribe(
+                {
+                    oauth2Subject.onNext(it) // Keep track of oauth2 to use it for health checking.
+                    handleVertxEvents(it)
+                    startPromise.complete()
+                    log.info("Successfully connected to OpenID Provider")
+                },
+                {
+                    log.error("Vertx error: ${it.message}")
+                    startPromise.tryFail(it)
+                }
+            )
     }
 
     private fun connectToOpenID(): Single<OAuth2Auth> {
@@ -64,27 +80,13 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .observeOn(Schedulers.io())
     }
 
-    private fun initializeOAuthConnection(startPromise: Promise<Void>) =
-        connectToOpenID()
-            .subscribe(
-                {
-                    oauth2Subject.onNext(it) // Keep track of oauth2 to use it for health checking.
-                    startPromise.complete()
-                    log.info("Successfully connected to OpenID Provider")
-                },
-                {
-                    log.error("Vertx error: ${it.message}")
-                    startPromise.tryFail(it)
-                }
-            )
-
-    private fun handleVertxEvents() =
+    private fun handleVertxEvents(oauth2: OAuth2Auth) =
         vertx.eventBus()
             .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
             .toFlowable()
             .subscribe(
                 {
-                    handleRequest(it, oauth2Subject.blockingFirst())
+                    handleRequest(it, oauth2)
                 },
                 {
                     log.error("Vertx error processing authentication request: ${it.message}")
