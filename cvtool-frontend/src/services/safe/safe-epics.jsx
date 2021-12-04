@@ -40,7 +40,8 @@ export const safeEpics = [
     rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
     rx.switchMap(() => {
       const saveTimestamp = new Date();
-      return safeServices.saveToRemote(extractChangedData(state$.value.safe), eventBusServices.eventBusClient.sendEvent)
+      return safeServices
+        .saveToRemote(extractChangedData(state$.value.safe), eventBusServices.eventBusClient.sendEvent)
         .then(() => safeActions.setLastSavedTimestamp(saveTimestamp));
     })
   ),

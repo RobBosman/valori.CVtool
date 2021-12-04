@@ -47,19 +47,20 @@ export const authEpics = [
   // Authenticate at the OpenID provider.
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
-    rx.switchMap(() => authServices.authenticateAtOpenIdProvider()),
-    rx.mergeMap(authenticationResult => of(
-      authActions.refreshAuthentication(authenticationResult),
-      // When requested to login then fetch the authInfo data.
-      authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
-      authActions.fetchAuthInfo(authenticationResult)
-    )),
-    rx.catchError((error, source$) => merge(
-      of(
-        errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
-        authActions.requestLogout()
-      ),
-      source$
+    rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider()).pipe(
+      rx.mergeMap(authenticationResult => of(
+        authActions.refreshAuthentication(authenticationResult),
+        // When requested to login then fetch the authInfo data.
+        authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
+        authActions.fetchAuthInfo(authenticationResult)
+      )),
+      rx.catchError((error, source$) => merge(
+        of(
+          errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+          authActions.requestLogout()
+        ),
+        source$
+      ))
     ))
   ),
 
@@ -68,7 +69,6 @@ export const authEpics = [
     ofType(authActions.refreshAuthentication.type),
     rx.map(action => action.payload),
     rx.switchMap(authenticationResult => {
-
       // Abort any refreshing when logged out.
       const loginState = state$.value.auth?.loginState;
       if (!authenticationResult
@@ -104,16 +104,15 @@ export const authEpics = [
       // Fetch the authInfo data as soon as the EventBus is connected.
       rx.filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),
       rx.take(1), // Connect once; don't automatically fetch authInfo at future reconnects.
-      rx.map(() => authenticationResult)
-    )),
-    rx.mergeMap(authenticationResult => authServices.fetchAuthInfoFromRemote(authenticationResult, eventBusServices.eventBusClient.sendEvent)),
-    rx.map(authInfo => authActions.setAuthInfo(authInfo)),
-    rx.catchError((error, source$) => merge(
-      of(
-        errorActions.setLastError(`Fout bij ophalen accountgegevens: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
-        authActions.requestLogout()
-      ),
-      source$
+      rx.mergeMap(() => authServices.fetchAuthInfoFromRemote(authenticationResult, eventBusServices.eventBusClient.sendEvent)),
+      rx.map(authInfo => authActions.setAuthInfo(authInfo)),
+      rx.catchError((error, source$) => merge(
+        of(
+          errorActions.setLastError(`Fout bij ophalen accountgegevens: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+          authActions.requestLogout()
+        ),
+        source$
+      ))
     ))
   ),
 
@@ -139,7 +138,8 @@ export const authEpics = [
       } else {
         actions.push(
           authActions.setLoginState(authActions.LoginStates.LOGGED_OUT),
-          safeActions.resetEntities(null)
+          safeActions.resetEntities(null),
+          cvActions.resetSearchData()
         );
       }
       return of(...actions);

@@ -48,7 +48,7 @@ export const cvEpics = [
   (action$) => action$.pipe(
     ofType(cvActions.fetchCvByAccountId.type),
     rx.map(action => action.payload),
-    rx.switchMap(accountId => cvServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
+    rx.mergeMap(accountId => cvServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
     rx.mergeMap(fetchedCv => of(
       safeActions.resetEntities(fetchedCv),
       uiActions.setSelectedId("cv", Object.keys(fetchedCv.cv)[0])
@@ -59,7 +59,7 @@ export const cvEpics = [
   (action$) => action$.pipe(
     ofType(cvActions.fetchCvHistory.type),
     rx.map(action => action.payload),
-    rx.switchMap(accountId => cvServices.fetchCvHistoryFromRemote(accountId, eventBusClient.sendEvent)),
+    rx.mergeMap(accountId => cvServices.fetchCvHistoryFromRemote(accountId, eventBusClient.sendEvent)),
     rx.map(fetchedCvHistory => safeActions.resetEntities(fetchedCvHistory))
   )
 ];
