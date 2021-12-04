@@ -2,8 +2,6 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
@@ -15,54 +13,17 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.function.BiConsumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
+const val AUTHENTICATE_HEALTH_ADDRESS = "authenticate.health"
 const val AUTH_DOMAIN = "Valori.nl"
 
 internal class AuthenticateVerticle : AbstractVerticle() {
 
-    companion object {
-
-        private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
-
-        private val oauth2Subject: Subject<OAuth2Auth> = BehaviorSubject.create()
-
-        fun checkOpenIdConnection(): Single<String> =
-            // Use the latest available OAuth2 connection.
-            oauth2Subject
-                .singleOrError()
-                .flatMap { oauth2 ->
-                    // Send a dummy authorization request to the OpenID Provider.
-                    // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
-                    oauth2
-                        .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
-                        .map { "" }
-                        .onErrorReturn {
-                            if (it.message?.contains("invalid_grant") != true)
-                                throw it
-                            // The expected error response. Don't propagate the error, only the message String.
-                            it.message
-                        }
-                }
-    }
+    private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
     override fun start(startPromise: Promise<Void>) {
-        connectToOpenID()
-            .subscribe(
-                {
-                    oauth2Subject.onNext(it) // Keep track of oauth2 to use it for health checking.
-                    handleVertxEvents(it)
-                    startPromise.complete()
-                    log.info("Successfully connected to OpenID Provider")
-                },
-                {
-                    log.error("Vertx error: ${it.message}")
-                    startPromise.tryFail(it)
-                }
-            )
-    }
-
-    private fun connectToOpenID(): Single<OAuth2Auth> {
         // Environment variable:
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
         val connectionString = config().getString("AUTH_CONNECTION_STRING")
@@ -70,7 +31,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         val clientIdAndSecret = URL(connectionString).query.split(":")
 
         // Connect to OpenID Provider.
-        return OpenIDConnectAuth
+        OpenIDConnectAuth
             .rxDiscover(
                 vertx, OAuth2Options()
                     .setSite(openIdSite)
@@ -78,15 +39,32 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .setClientSecret(clientIdAndSecret[1])
             )
             .observeOn(Schedulers.io())
+            .subscribe(
+                {
+                    handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, it)
+                    handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
+
+                    startPromise.complete()
+                    log.info("Successfully connected to OpenID Provider")
+                },
+                {
+                    log.error("Vertx error: ${it.message}")
+                    startPromise.fail(it)
+                }
+            )
     }
 
-    private fun handleVertxEvents(oauth2: OAuth2Auth) =
+    private fun handleVertxEvents(
+        eventAddress: String,
+        handler: BiConsumer<Message<JsonObject>, OAuth2Auth>,
+        oauth2: OAuth2Auth
+    ) =
         vertx.eventBus()
-            .consumer<JsonObject>(AUTHENTICATE_ADDRESS)
+            .consumer<JsonObject>(eventAddress)
             .toFlowable()
             .subscribe(
                 {
-                    handleRequest(it, oauth2)
+                    handler.accept(it, oauth2)
                 },
                 {
                     log.error("Vertx error processing authentication request: ${it.message}")
@@ -106,7 +84,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
      *   }
      *
      */
-    private fun handleRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
+    private fun handleAuthenticationRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
         Single
             .just(
                 message.body().getString("jwt")
@@ -141,4 +119,25 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("email", email)
                     .put("name", name)
             }
+
+    private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
+        oauth2
+            // Send a dummy authorization request to the OpenID Provider.
+            // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
+            .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
+            .map { "" }
+            .onErrorReturn {
+                if (it.message?.contains("invalid_grant") != true)
+                    throw it
+                // The expected error response. Don't propagate the error, only the message String.
+                it.message
+            }
+            .subscribe(
+                {
+                    message.reply(it)
+                },
+                {
+                    message.fail(RECIPIENT_FAILURE.toInt(), it.message)
+                }
+            )
 }
