@@ -9,7 +9,8 @@ import * as safeActions from "../safe/safe-actions";
 import * as authActions from "./auth-actions";
 import * as authServices from "./auth-services";
 
-const AUTHENTICATION_REFRESH_MILLIS = 5 * 60 * 1000; // 5 minutes
+const AUTHENTICATION_VERIFY_MILLIS = 5 * 60 * 1000; // 5 minutes
+const AUTHENTICATION_REFRESH_SECONDS = 15 * 60; // 15 minutes
 
 export const authEpics = [
 
@@ -77,13 +78,13 @@ export const authEpics = [
         return EMPTY;
       }
       
-      // Check if the JWT is still valid for at least 5 minutes.
-      const remainingMillis = (authenticationResult.expiresOn.getTime() || 0) - new Date().getTime();
-      const next$ = (remainingMillis > AUTHENTICATION_REFRESH_MILLIS)
+      // Check if the JWT is still valid the next few minutes.
+      const remainingSeconds = (authenticationResult.idTokenClaims?.exp || 0) - (new Date().getTime() / 1000);
+      const next$ = (remainingSeconds > AUTHENTICATION_REFRESH_SECONDS)
         ? of(authenticationResult) // Keep using the same token.
         : from(authServices.authenticateAtOpenIdProvider(true)); // Get a new token.
       return next$.pipe(
-        rx.delay(AUTHENTICATION_REFRESH_MILLIS),
+        rx.delay(AUTHENTICATION_VERIFY_MILLIS), // Repeat this check every few minutes.
         rx.map(refreshedAuthenticationResult => authActions.refreshAuthentication(refreshedAuthenticationResult)),
         rx.catchError((error, source$) => merge(
           of(

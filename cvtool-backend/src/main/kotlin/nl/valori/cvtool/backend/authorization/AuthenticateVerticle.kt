@@ -123,9 +123,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("email", email)
                     .put("name", name)
             }
-            .doOnError {
-                log.info("Error authenticating JWT\n\t$jwt", it)
-            }
 
     private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) {
 
