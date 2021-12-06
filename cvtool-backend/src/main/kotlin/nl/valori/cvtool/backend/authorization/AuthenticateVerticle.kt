@@ -13,6 +13,7 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.concurrent.atomic.AtomicLong
 import java.util.function.BiConsumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
@@ -22,6 +23,8 @@ const val AUTH_DOMAIN = "Valori.nl"
 internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
+    private val healthSpanMillis = 3 * 60 * 1000
+    private val lastOpenIDConnectionAtMillis = AtomicLong(0L)
 
     override fun start(startPromise: Promise<Void>) {
         // Environment variable:
@@ -94,6 +97,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     log.debug("Authenticated successfully.")
+                    lastOpenIDConnectionAtMillis.set(System.currentTimeMillis())
                     message.reply(it)
                 },
                 {
@@ -120,7 +124,14 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("name", name)
             }
 
-    private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
+    private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) {
+
+        // Check if health has been OK during the past few minutes.
+        val wasHealthyRecently = lastOpenIDConnectionAtMillis.get() + healthSpanMillis > System.currentTimeMillis()
+        if (wasHealthyRecently) {
+            message.reply("")
+        }
+
         oauth2
             // Send a dummy authorization request to the OpenID Provider.
             // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
@@ -134,10 +145,15 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             }
             .subscribe(
                 {
-                    message.reply(it)
+                    lastOpenIDConnectionAtMillis.set(System.currentTimeMillis())
+                    if (!wasHealthyRecently) {
+                        message.reply(it)
+                    }
                 },
                 {
+                    log.error("Health of is not OK", it)
                     message.fail(RECIPIENT_FAILURE.toInt(), it.message)
                 }
             )
+    }
 }
