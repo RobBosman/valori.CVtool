@@ -30,6 +30,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
                     .setCompressionSupported(true)
             )
             .requestHandler(createRouter())
+            .exceptionHandler { log.debug("Unexpected error in HttpServer: ${it.message}.", it) }
             .rxListen()
             .subscribe(
                 {
@@ -48,6 +49,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
         router
             .get("/health*")
             .handler(HealthChecker.getHandler(vertx, config()))
+            .failureHandler { log.error("Error handling health-check request", it) }
         router
             .mountSubRouter(
                 "/eventbus",
