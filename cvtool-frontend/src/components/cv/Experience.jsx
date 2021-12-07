@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TeachingBubbleContent, Coachmark, DirectionalHint, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Modal, ContextualMenu, IconButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Modal, ContextualMenu, IconButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -14,6 +14,7 @@ import ConfirmDialog from "../ConfirmDialog";
 import { CvFormattedText } from "../widgets/CvFormattedText";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as preview from "./Preview";
+import { CvHelpIcon } from "../widgets/CvHelpIcon";
 
 const entityName = "experience";
 
@@ -24,8 +25,6 @@ const Experience = (props) => {
 
   const [state, setState] = React.useState({
     isConfirmDialogVisible: false,
-    coachmarkTarget: undefined,
-    isCoachmarkVisible: false,
     draggedItem: undefined
   });
 
@@ -47,14 +46,7 @@ const Experience = (props) => {
     || [],
   [props.experienceEntity, props.selectedCvId]);
 
-  const showCoachmark = (event) =>
-    setState(prevState => ({
-      ...prevState,
-      coachmarkTarget: event.target,
-      isCoachmarkVisible: isEditable
-    }));
-  const hideCoachmark = () =>
-    setState(prevState => ({ ...prevState, isCoachmarkVisible: false }));
+  const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
 
   const renderRole = (item) =>
     item.role && item.role[props.locale] || commonUtils.getPlaceholder(experiences, item._id, "role", props.locale);
@@ -68,17 +60,28 @@ const Experience = (props) => {
       instanceContext={{ ...experienceContext, instanceId: item._id }}
     />;
 
+  const renderPeriodCallout = () =>
+    <Stack tokens={{ childrenGap: "s2" }}>
+      <Text variant="xLarge">Sorteren met <em>drag&amp;drop</em></Text>
+      <Text>
+        Bepaal handmatig (met <em>drag&amp;drop</em>) de volgorde
+        <br/>waarin werkervaringen in je cv komen te staan.
+      </Text>
+    </Stack>;
+
   const columns = [
     {
       key: "period",
       fieldName: "sortIndex",
-      name: "Periode",
+      name: <Stack horizontal>
+        <Text><strong>Periode</strong></Text>
+        <CvHelpIcon onRenderCallout={renderPeriodCallout}/>
+      </Stack>,
       onRender: preview.composeExperiencePeriod,
       isResizable: false,
       minWidth: 110,
       maxWidth: 110,
-      data: "number",
-      onColumnClick: showCoachmark
+      data: "number"
     },
     {
       key: "client",
@@ -183,7 +186,6 @@ const Experience = (props) => {
 
   const [previewVisible, setPreviewVisible] = React.useState(false);
 
-  const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -331,24 +333,6 @@ const Experience = (props) => {
                 dragDropEvents={dragDropEvents}
                 onItemInvoked={() => setPreviewVisible(true)}
               />
-              {state.isCoachmarkVisible
-                && <Coachmark
-                  target={state.coachmarkTarget}
-                  positioningContainerProps={{
-                    directionalHint: DirectionalHint.topCenter,
-                    doNotLayer: false
-                  }}>
-                  <TeachingBubbleContent
-                    target={state.coachmarkTarget}
-                    headline="Sorteren met drag&amp;drop"
-                    asSmallHeadline={true}
-                    isWide={true}
-                    hasCloseButton={true}
-                    onDismiss={hideCoachmark}>
-                    Bepaal handmatig (drag&amp;drop) de volgorde waarin werkervaringen in je cv komen te staan.
-                  </TeachingBubbleContent>
-                </Coachmark>
-              }
             </Stack>
           </td>
 
