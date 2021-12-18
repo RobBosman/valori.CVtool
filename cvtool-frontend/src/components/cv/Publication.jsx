@@ -11,6 +11,7 @@ import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import ConfirmDialog from "../ConfirmDialog";
 import * as commonUtils from "../../utils/CommonUtils";
+import { createHelpIcon } from "../widgets/CvHelpIcon";
 
 const entityName = "publication";
 
@@ -178,7 +179,14 @@ const Publication = (props) => {
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvTextField
-                label="Titel"
+                label={createHelpIcon({
+                  label: "Titel",
+                  content:
+                    <Text>
+                      Indien relevant, neemt je hier de publicaties op
+                      <br/>die in het (recente) verleden hebt geplaatst.
+                    </Text>
+                })}
                 field={`title.${props.locale}`}
                 instanceContext={publicationContext}
                 placeholder={commonUtils.getPlaceholder(publications, props.selectedPublicationId, "title", props.locale)}
@@ -197,7 +205,14 @@ const Publication = (props) => {
                 styles={{ fieldGroup: { width: 80 } }}
               />
               <CvTextField
-                label="Omschrijving"
+                label={createHelpIcon({
+                  label: "Omschrijving",
+                  content:
+                    <Text>
+                      Je vermeldt hier korte omschrijving. Eventueel kan je een link opnemen
+                      <br/>naar de locatie waar de publicatie te vinden is.
+                    </Text>
+                })}
                 field={`description.${props.locale}`}
                 instanceContext={publicationContext}
                 validateInput={commonUtils.isValidText(120)}

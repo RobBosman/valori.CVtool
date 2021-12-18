@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Modal, ContextualMenu, IconButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Modal, ContextualMenu, IconButton, ColumnActionsMode } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -12,9 +12,9 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import ConfirmDialog from "../ConfirmDialog";
 import { CvFormattedText } from "../widgets/CvFormattedText";
+import { createHelpIcon } from "../widgets/CvHelpIcon";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as preview from "./Preview";
-import { CvHelpIcon } from "../widgets/CvHelpIcon";
 
 const entityName = "experience";
 
@@ -38,7 +38,7 @@ const Experience = (props) => {
   }),
   [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);
 
-  // Find all {Experiences} of the selected {cv}.
+  // Find all {Experiences} of the selected {cv} and sort them by their sortIndex.
   const experiences = React.useMemo(() =>
     props.selectedCvId && Object.values(props.experienceEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
@@ -60,28 +60,27 @@ const Experience = (props) => {
       instanceContext={{ ...experienceContext, instanceId: item._id }}
     />;
 
-  const renderPeriodCallout = () =>
-    <Stack tokens={{ childrenGap: "s2" }}>
-      <Text variant="xLarge">Sorteren met <em>drag&amp;drop</em></Text>
-      <Text>
-        Bepaal handmatig (met <em>drag&amp;drop</em>) de volgorde
-        <br/>waarin werkervaringen in je cv komen te staan.
-      </Text>
-    </Stack>;
-
   const columns = [
     {
       key: "period",
       fieldName: "sortIndex",
-      name: <Stack horizontal>
-        <Text><strong>Periode</strong></Text>
-        <CvHelpIcon onRenderCallout={renderPeriodCallout}/>
-      </Stack>,
+      name: createHelpIcon({
+        label: "Periode",
+        title: "Sorteren",
+        content:
+          <Text>
+            Bepaal handmatig met <em>drag&amp;drop</em> de volgorde
+            <br/>waarin werkervaringen in je cv komen te staan.
+          </Text>
+      }),
       onRender: preview.composeExperiencePeriod,
       isResizable: false,
       minWidth: 110,
       maxWidth: 110,
-      data: "number"
+      data: "number",
+      isSorted: true,
+      isSortedDescending: false,
+      columnActionsMode: ColumnActionsMode.disabled
     },
     {
       key: "client",
@@ -90,7 +89,8 @@ const Experience = (props) => {
       onRender: renderClient,
       isResizable: true,
       minWidth: 90,
-      maxWidth: 250
+      maxWidth: 250,
+      columnActionsMode: ColumnActionsMode.disabled
     },
     {
       key: "role",
@@ -99,7 +99,8 @@ const Experience = (props) => {
       onRender: renderRole,
       isResizable: true,
       minWidth: 90,
-      maxWidth: 400
+      maxWidth: 400,
+      columnActionsMode: ColumnActionsMode.disabled
     },
     {
       key: "includeInCv",
@@ -109,7 +110,8 @@ const Experience = (props) => {
       isResizable: false,
       minWidth: 40,
       maxWidth: 40,
-      data: "boolean"
+      data: "boolean",
+      columnActionsMode: ColumnActionsMode.disabled
     }
   ];
 
@@ -413,28 +415,68 @@ const Experience = (props) => {
                 }}>
                   <ScrollablePane>
                     <CvTextField
-                      label="Opdracht"
+                      label={createHelpIcon({
+                        label: "Opdracht",
+                        content:
+                          <Text>
+                            Net als bij je profielschets beschrijf je hier waar nodig zaken in de derde persoon.
+                            <br/>vermijd dus woorden als <em>ik</em>, <em>mij</em> etc.
+                            <br/>Geef een situatieschets waarin je de opdracht bij de klant omschrijft.
+                            <br/>In veel gevallen kan je hierbij de tekst gebruiken uit je opdrachtmanagementformulier.
+                          </Text>
+                      })}
                       field={`assignment.${props.locale}`}
                       instanceContext={experienceContext}
                       multiline
                       autoAdjustHeight
                     />
                     <CvTextField
-                      label="Activiteiten"
+                      label={createHelpIcon({
+                        label: "Taken/werkzaamheden",
+                        content:
+                          <Text>
+                            Geef hier een duidelijke opsomming van alle werkzaamheden
+                            <br/>die een bijdrage leveren aan het resultaat van je opdracht.
+                          </Text>
+                      })}
                       field={`activities.${props.locale}`}
                       instanceContext={experienceContext}
                       multiline
                       autoAdjustHeight
                     />
                     <CvTextField
-                      label="Resultaten"
+                      label={createHelpIcon({
+                        label: "Resultaat",
+                        content:
+                          <Text>
+                            Een opsomming van de belangrijkste behaalde resultaten (individueel en als team/project).
+                          </Text>
+                      })}
                       field={`results.${props.locale}`}
                       instanceContext={experienceContext}
                       multiline
                       autoAdjustHeight
                     />
                     <CvTextField
-                      label="Werkomgeving"
+                      label={createHelpIcon({
+                        label: "Werkomgeving",
+                        content:
+                          <Text>
+                            Denk hierbij aan de toegepaste methode/werkwijze
+                            <br/>en technische omgeving zoals bijvoorbeeld:
+                            <ul>
+                              <li>Agile Scrum</li>
+                              <li>TMap</li>
+                              <li>CI/CD</li>
+                              <li>Java</li>
+                              <li>Selenium</li>
+                              <li>Tosca</li>
+                              <li>JOSF</li>
+                              <li>Microsoft stack</li>
+                              <li>Oracle Cloud</li>
+                            </ul>
+                          </Text>
+                      })}
                       field={`keywords.${props.locale}`}
                       instanceContext={experienceContext}
                       multiline

@@ -111,7 +111,7 @@ const Search = (props) => {
 
   const renderSkillResult = (item) =>
     item.skills.length > 0
-      ? `${"* ".repeat(item.skillLevel).trim()} (${item.skills.length})`
+      ? `${"&#x2605; ".repeat(item.skillLevel).trim()} (${item.skills.length})`
       : "";
 
   const renderExperienceResult = (item) =>
@@ -339,7 +339,7 @@ const Search = (props) => {
                         <tr key={skill._id}>
                           <td width="30%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
                           <td width="60%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], highlightFormattingSpecs)}</td>
-                          <td width="10%" align="right">{"* ".repeat(skill.skillLevel).trim()}</td>
+                          <td width="10%" align="right">{"&#x2605; ".repeat(skill.skillLevel).trim()}</td>
                         </tr>
                       )
                     }

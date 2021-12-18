@@ -6,6 +6,7 @@ import { changeInstance } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
+import { createHelpIcon } from "../widgets/CvHelpIcon";
 import * as commonUtils from "../../utils/CommonUtils";
 
 const Profile = (props) => {
@@ -74,14 +75,30 @@ const Profile = (props) => {
         <Stack
           styles={{ root: { width: "50%" } }}>
           <CvTextField
-            label="Profielschets"
+            label={createHelpIcon({
+              label: "Profielschets",
+              content:
+                <Text>
+                  Geef een omschrijving van jezelf en je belangrijkste persoonlijke eigenschappen
+                  <br/>en je professionele skills en ervaring.
+                  <br/>Deze tekst schrijf je in de derde persoon.
+                </Text>
+            })}
             field={`profile.${props.locale}`}
             instanceContext={cvContext}
             multiline
             autoAdjustHeight
           />
           <CvTextField
-            label="Interesses"
+            label={createHelpIcon({
+              label: "Interesses",
+              content:
+                <Text>
+                  Beschrijf hier alleen hobby&apos;s en/of interesses die jou als persoon typeren.
+                  <br/>Geen simpele opsomming van voor de hand liggende bezigheden
+                  <br/>zoals uitgaan met vrienden.
+                </Text>
+            })}
             field={`interests.${props.locale}`}
             instanceContext={cvContext}
             multiline

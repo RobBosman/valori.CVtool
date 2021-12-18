@@ -11,6 +11,7 @@ import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
+import { createHelpIcon } from "../widgets/CvHelpIcon";
 
 const entityName = "reference";
 
@@ -178,7 +179,14 @@ const Reference = (props) => {
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvTextField
-                label="Naam"
+                label={createHelpIcon({
+                  label: "Naam",
+                  content:
+                    <Text>
+                      Referenties mogen alleen op verzoek van een klant
+                      <br/>en/of in overleg met Sales worden getoond in het CV.
+                    </Text>
+                })}
                 field="referentName"
                 instanceContext={referenceContext}
               />

@@ -14,6 +14,7 @@ import { getEnumData, SkillCategories } from "./Enums";
 import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
 import { CvCheckbox } from "../widgets/CvCheckbox";
+import { createHelpIcon } from "../widgets/CvHelpIcon";
 
 const entityName = "skill";
 
@@ -54,7 +55,7 @@ const Skill = (props) => {
     item.description && item.description[props.locale] || commonUtils.getPlaceholder(skills, item._id, "description", props.locale);
 
   const renderSkillLevel = (item) =>
-    "* ".repeat(item.skillLevel).trim();
+    "&#x2605; ".repeat(item.skillLevel).trim();
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -223,14 +224,31 @@ const Skill = (props) => {
                 placeholder={commonUtils.getPlaceholder(skills, props.selectedSkillId, "description", props.locale)}
               />
               <CvRating
-                label="Niveau"
+                label={createHelpIcon({
+                  label: "Niveau",
+                  content:
+                    <Text>
+                      <strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Foundation</strong> - Basiskennisniveau verkregen door training. Geen (concrete) praktijkervaring
+                      <br/><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Advanced</strong> - Gevorderd niveau verkregen door training en/of aantoonbare praktijkervaring
+                      <br/><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;<strong>Expert</strong> - Specialistisch niveau met aantoonbare meerjarige ervaring
+                    </Text>
+                })}
                 field="skillLevel"
                 instanceContext={skillContext}
                 min={0}
                 max={3}
               />
               <CvTextField
-                label="Toelichting"
+                label={createHelpIcon({
+                  label: "Toelichting",
+                  content:
+                    <Text>
+                      Deze informatie is voor eigen / voor intern gebruik en wordt niet getoond op het CV.
+                      <br/>Wanneer Sales in de CV Tool zoekt naar bepaalde expertises dan kan deze informatie
+                      <br/>erg relevant zijn om een goede match te vinden bij een aanvraag.
+                      <br/>Vul dit dus zoveel mogelijk in.
+                    </Text>
+                })}
                 field={`explanation.${props.locale}`}
                 instanceContext={skillContext}
                 multiline

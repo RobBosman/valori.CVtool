@@ -13,6 +13,7 @@ import * as commonUtils from "../../utils/CommonUtils";
 import { EducationResultTypes } from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import { CvCheckbox } from "../widgets/CvCheckbox";
+import { createHelpIcon } from "../widgets/CvHelpIcon";
 
 const entityName = "training";
 
@@ -203,7 +204,14 @@ const Training = (props) => {
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
               <CvTextField
-                label="Training"
+                label={createHelpIcon({
+                  label: "Training",
+                  content:
+                    <Text>
+                      Het gaat hier om trainingen gericht op een specifiek expertisegebied binnen het vakgebied testen.
+                      <br/>Andere trainingen die hieraan gerelateerd zijn kan je hier ook opnemen. 
+                    </Text>
+                })}
                 field={`name.${props.locale}`}
                 instanceContext={trainingContext}
                 placeholder={commonUtils.getPlaceholder(trainings, props.selectedTrainingId, "name", props.locale)}

@@ -1,33 +1,29 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Callout, IconButton } from "@fluentui/react";
+import { Callout, DirectionalHint, IconButton, Stack, Text } from "@fluentui/react";
+
+export const createHelpIcon = (helpIconProps) =>
+  <Stack horizontal>
+    {helpIconProps.label}
+    <CvHelpIcon title={helpIconProps.label} { ...helpIconProps }/>
+  </Stack>;
 
 export const CvHelpIcon = (props) => {
-  
+
   const [state, setState] = React.useState({
     calloutTarget: undefined,
-    hideCalloutAfterMillis: 0,
     isCalloutVisible: false
   });
-
-  React.useEffect(() => {
-    if (state.hideCalloutAfterMillis > 0) {
-      const hideTimeoutId = setTimeout(hideCallout, state.hideCalloutAfterMillis);
-      return () => clearTimeout(hideTimeoutId);
-    }
-  }, [state.hideCalloutAfterMillis]);
 
   const showCallout = (event) =>
     setState(prevState => ({
       ...prevState,
       calloutTarget: event.target,
-      isCalloutVisible: true,
-      hideCalloutAfterMillis: props.hideAfterMillis || 5000
+      isCalloutVisible: true
     }));
-  const hideCallout = ()=>
+  const hideCallout = () =>
     setState(prevState => ({
       ...prevState,
-      hideCalloutAfterMillis: 0,
       isCalloutVisible: false
     }));
 
@@ -36,13 +32,23 @@ export const CvHelpIcon = (props) => {
       <IconButton
         iconProps={{ iconName: "InfoSolid" }}
         disbled={props.disabled}
-        onMouseEnter={showCallout}/>
+        style={{ height: "unset" }}
+        onClick={state.isCalloutVisible ? hideCallout : showCallout}/>
       {state.isCalloutVisible
         && <Callout
           style={{ padding: 20 }}
           target={state.calloutTarget}
+          directionalHint={DirectionalHint.topCenter}
           onDismiss={hideCallout}>
-          {props.onRenderCallout()}
+          <Stack tokens={{ childrenGap: "s2" }}>
+            <Stack horizontal horizontalAlign="space-between" verticalAlign="baseline">
+              <Text variant="xLarge">{props.title}</Text>
+              <IconButton
+                iconProps={{ iconName: "Cancel" }}
+                onClick={hideCallout}/>
+            </Stack>
+            {props.content || props.renderContent()}
+          </Stack>
         </Callout>
       }
     </div>
@@ -50,7 +56,8 @@ export const CvHelpIcon = (props) => {
 };
 
 CvHelpIcon.propTypes = {
-  onRenderCallout: PropTypes.func,
-  hideAfterMillis: PropTypes.number,
+  title: PropTypes.string,
+  content: PropTypes.object,
+  renderContent: PropTypes.func,
   disabled: PropTypes.bool
 };
