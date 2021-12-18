@@ -55,7 +55,7 @@ const Skill = (props) => {
     item.description && item.description[props.locale] || commonUtils.getPlaceholder(skills, item._id, "description", props.locale);
 
   const renderSkillLevel = (item) =>
-    "&#x2605; ".repeat(item.skillLevel).trim();
+    "\u2605 ".repeat(item.skillLevel).trim();
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
