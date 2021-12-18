@@ -46,7 +46,7 @@ internal object HealthChecker {
                             healthStatus.complete(Status.OK())
                         },
                         {
-                            log.warn("MongoDB is not available.", it)
+                            log.warn("MongoDB is not available: ${it.message}")
                             healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
                         })
             }
@@ -61,7 +61,7 @@ internal object HealthChecker {
                             healthStatus.complete(Status.OK())
                         },
                         {
-                            log.warn("OpenID provider is not available.", it)
+                            log.warn("OpenID provider is not available: ${it.message}")
                             healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
                         })
             }

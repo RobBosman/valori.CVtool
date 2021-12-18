@@ -26,7 +26,7 @@ abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
                     handleRequest(it)
                 },
                 {
-                    log.error("Vertx error in ${javaClass.name}")
+                    log.error("Vertx error in ${javaClass.name}", it)
                     startPromise.tryFail(it)
                 }
             )

@@ -38,12 +38,12 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
                                 handleRequest(it, mongoDatabase)
                             },
                             {
-                                log.error("Vertx error processing MongoDB save request: ${it.message}.")
+                                log.error("Vertx error processing MongoDB save request.", it)
                             }
                         )
                 },
                 {
-                    log.error("Error connecting to MongoDB")
+                    log.error("Error connecting to MongoDB", it)
                     startPromise.fail(it)
                 }
             )

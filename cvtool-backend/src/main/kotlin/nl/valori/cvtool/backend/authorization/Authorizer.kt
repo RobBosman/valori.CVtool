@@ -113,8 +113,9 @@ internal object Authorizer {
             .filter { it.match(address, messageData, authInfo) }
             .toSet()
         if (matchedIntentions.isEmpty()) {
-            log.error("No matching intention found for address '$address'.")
-            error("No matching intention found for address '$address'.")
+            val errorMessage = "No matching intention found for address '$address'."
+            log.error(errorMessage)
+            error(errorMessage)
         }
 
         val prohibitedIntentionNames = REQUIRED_AUTHORIZATION_LEVELS.entries

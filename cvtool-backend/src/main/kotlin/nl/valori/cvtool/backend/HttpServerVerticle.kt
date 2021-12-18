@@ -38,7 +38,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
                     startPromise.complete()
                 },
                 {
-                    log.error("Error starting server on http://${httpConfig.authority}/")
+                    log.error("Error starting server on http://${httpConfig.authority}/", it)
                     startPromise.fail(it)
                 }
             )
@@ -49,7 +49,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
         router
             .get("/health*")
             .handler(HealthChecker.getHandler(vertx, config()))
-            .failureHandler { log.error("Error handling health-check request", it) }
+            .failureHandler { log.warn("Error handling health-check request") }
         router
             .mountSubRouter(
                 "/eventbus",

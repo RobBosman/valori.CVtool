@@ -51,7 +51,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     log.info("Successfully connected to OpenID Provider")
                 },
                 {
-                    log.error("Vertx error: ${it.message}")
+                    log.error("Vertx error", it)
                     startPromise.fail(it)
                 }
             )
@@ -70,7 +70,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     handler.accept(it, oauth2)
                 },
                 {
-                    log.error("Vertx error processing authentication request: ${it.message}")
+                    log.error("Vertx error processing authentication request.", it)
                 }
             )
 
@@ -151,7 +151,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     }
                 },
                 {
-                    log.error("Health of is not OK", it)
+                    log.warn("Health is not OK: ${it.message}")
                     message.fail(RECIPIENT_FAILURE.toInt(), it.message)
                 }
             )
