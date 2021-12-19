@@ -2,8 +2,8 @@ package nl.valori.cvtool.backend.cv
 
 object XslUtils {
 
-    // The width in this table are in mm, based on the Arial 10pt font used in MS-Word.
-    private val WIDTH_MAP = mapOf(
+    // The widths in this table are in mm. They are based on the Arial 10pt font used in MS-Word.
+    private val ARIAL_WIDTH_MAP = mapOf(
         "ijl" to 0.75,
         "Ift, /" to 1.00,
         "r.-()" to 1.20,
@@ -17,15 +17,17 @@ object XslUtils {
         "W" to 3.30
     )
 
+    private fun Char.getWidth() =
+        ARIAL_WIDTH_MAP.entries
+            .find { (x, _) -> x.contains(this) }
+            ?.value
+            ?: 1.0
+
     private fun String.getWidth(letterWidth: Double): Double =
         toCharArray()
-            .map { c ->
-                val scaleFactor = WIDTH_MAP.entries
-                    .find { (x, _) -> x.contains(c) }
-                    ?.value ?: 1.0
-                letterWidth * scaleFactor
-            }
-            .reduce { l, r -> l + r }
+            .map { c -> letterWidth * c.getWidth() }
+            .reduceOrNull { l, r -> l + r }
+            ?: 0.0
 
     /**
      * Search for the letter-index at 42.5 mm using table WIDTH_MAP.
