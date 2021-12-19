@@ -10,7 +10,7 @@ import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.jsonToXml
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.util.Base64
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -29,14 +29,14 @@ internal class CvGenerateVerticle : BasicVerticle(CV_GENERATE_ADDRESS) {
         internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20201130.xsd"
         internal val allLocales = setOf("nl_NL", "uk_UK")
 
+        private fun loadBytes(location: String) =
+            CvGenerateVerticle::class.java.getResource(location)!!.readBytes()
+
         private val xslIncludesMap = mapOf(
             "common.xsl" to loadBytes("/docx/Valori/common.xsl"),
             "common-nl_NL.xsl" to loadBytes("/docx/Valori/nl_NL/common-nl_NL.xsl"),
             "common-uk_UK.xsl" to loadBytes("/docx/Valori/uk_UK/common-uk_UK.xsl")
         )
-
-        private fun loadBytes(location: String) =
-            CvGenerateVerticle::class.java.getResource(location)!!.readBytes()
 
         private val transformerFactory =
             TransformerFactory

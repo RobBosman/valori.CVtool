@@ -81,7 +81,7 @@ export const SkillCategories = [
   },
   {
     key: "METHODS",
-    text: "Methoden",
+    text: "Methodes",
     sortIndex: 8
   },
   {

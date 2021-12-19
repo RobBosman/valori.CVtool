@@ -337,9 +337,12 @@ const Search = (props) => {
                       ?.sort((l, r) => r.skillLevel - l.skillLevel)
                       ?.map(skill =>
                         <tr key={skill._id}>
-                          <td width="30%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
-                          <td width="60%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], highlightFormattingSpecs)}</td>
+                          <td width="20%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
+                          <td width="30%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], highlightFormattingSpecs)}</td>
                           <td width="10%" align="right">{"\u2605 ".repeat(skill.skillLevel).trim()}</td>
+                          <td width="40%" align="right" style={{borderLeftStyle: "outset"}}>
+                            <em>{textFormatter.renderAndFormat(skill.explanation && skill.explanation[props.locale], highlightFormattingSpecs)}</em>
+                          </td>
                         </tr>
                       )
                     }

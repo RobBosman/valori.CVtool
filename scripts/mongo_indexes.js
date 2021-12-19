@@ -10,5 +10,5 @@ db.skill.createIndex({ cvId: 1});
 db.publication.createIndex({ cvId: 1});
 db.reference.createIndex({ cvId: 1});
 db.experience.createIndex({ cvId: 1});
-db.skill.createIndex({ 'description.nl_NL': 'text', 'description.uk_UK': 'text' });
+db.skill.createIndex({ 'description.nl_NL': 'text', 'description.uk_UK': 'text', 'explanation.nl_NL': 'text', 'explanation.uk_UK': 'text' });
 db.experience.createIndex({ '$**': 'text' });

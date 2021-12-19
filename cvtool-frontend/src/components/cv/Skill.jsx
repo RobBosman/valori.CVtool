@@ -220,7 +220,7 @@ const Skill = (props) => {
                 label="Omschrijving"
                 field={`description.${props.locale}`}
                 instanceContext={skillContext}
-                validateInput={commonUtils.isValidText(28)}
+                validateInput={commonUtils.isValidText(50)}
                 placeholder={commonUtils.getPlaceholder(skills, props.selectedSkillId, "description", props.locale)}
               />
               <CvRating
@@ -243,7 +243,7 @@ const Skill = (props) => {
                   label: "Toelichting",
                   content:
                     <Text>
-                      Deze informatie is voor eigen / voor intern gebruik en wordt niet getoond op het CV.
+                      Deze informatie is voor eigen/intern gebruik en wordt niet getoond op het CV.
                       <br/>Wanneer Sales in de CV Tool zoekt naar bepaalde expertises dan kan deze informatie
                       <br/>erg relevant zijn om een goede match te vinden bij een aanvraag.
                       <br/>Vul dit dus zoveel mogelijk in.

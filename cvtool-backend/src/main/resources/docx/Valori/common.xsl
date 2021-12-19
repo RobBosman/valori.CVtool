@@ -4,6 +4,7 @@
         xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
         xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
         xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+        xmlns:java="http://xml.apache.org/xalan/java"
         version="1.0">
 
     <!-- SKILL LEVEL -->
@@ -12,6 +13,30 @@
             <xsl:when test=". = 3"></xsl:when>
             <xsl:when test=". = 2"></xsl:when>
             <xsl:when test=". = 1"></xsl:when>
+        </xsl:choose>
+    </xsl:template>
+
+    <!-- WRAP SKILL DESCRIPTION -->
+    <xsl:template name="wrap-skill-description">
+        <xsl:param name="text"/>
+        <xsl:call-template name="convert-newlines">
+            <xsl:with-param name="text" select="java:nl.valori.cvtool.backend.cv.XslUtils.wrapText($text, 1.0, 42.0)"/>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template name="convert-newlines">
+        <xsl:param name="text"/>
+        <xsl:choose>
+            <xsl:when test="contains($text, '&#xA;')">
+                <xsl:value-of select="substring-before($text, '&#xA;')"/>
+                <w:br/>
+                <xsl:call-template name="convert-newlines">
+                    <xsl:with-param name="text" select="substring-after($text, '&#xA;')"/>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$text"/>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
@@ -115,10 +140,6 @@
                 </w:p>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
-
-    <xsl:template>
-
     </xsl:template>
 
 </xsl:stylesheet>

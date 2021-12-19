@@ -420,7 +420,7 @@ const Experience = (props) => {
                         content:
                           <Text>
                             Net als bij je profielschets beschrijf je hier waar nodig zaken in de derde persoon.
-                            <br/>vermijd dus woorden als <em>ik</em>, <em>mij</em> etc.
+                            <br/>Vermijd dus woorden als <em>ik</em>, <em>mij</em> etc.
                             <br/>Geef een situatieschets waarin je de opdracht bij de klant omschrijft.
                             <br/>In veel gevallen kan je hierbij de tekst gebruiken uit je opdrachtmanagementformulier.
                           </Text>
@@ -449,7 +449,8 @@ const Experience = (props) => {
                         label: "Resultaat",
                         content:
                           <Text>
-                            Een opsomming van de belangrijkste behaalde resultaten (individueel en als team/project).
+                            Een opsomming van de belangrijkste behaalde resultaten
+                            <br/>(individueel en als team/project).
                           </Text>
                       })}
                       field={`results.${props.locale}`}

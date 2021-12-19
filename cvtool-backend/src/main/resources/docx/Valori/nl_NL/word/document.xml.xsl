@@ -738,7 +738,9 @@
                     <w:rStyle w:val="Valori-skillChar"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:value-of select="cv:description/cv:nl_NL"/>
+                    <xsl:call-template name="wrap-skill-description">
+                        <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
+                    </xsl:call-template>
                 </w:t>
                 <w:tab/>
             </w:r>

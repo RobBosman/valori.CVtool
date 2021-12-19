@@ -738,7 +738,12 @@
                     <w:rStyle w:val="Valori-skillChar"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:apply-templates select="cv:description" mode="locale-placeholder"/>
+                    <xsl:variable name="skillDescription">
+                        <xsl:apply-templates select="cv:description" mode="locale-placeholder"/>
+                    </xsl:variable>
+                    <xsl:call-template name="wrap-skill-description">
+                        <xsl:with-param name="text" select="$skillDescription"/>
+                    </xsl:call-template>
                 </w:t>
                 <w:tab/>
             </w:r>
