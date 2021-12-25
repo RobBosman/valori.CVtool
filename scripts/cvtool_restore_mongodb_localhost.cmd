@@ -5,7 +5,6 @@ SET ENV_FILE=\secret\.env
 
 SET RESTORE_DATE=2021-12-24
 SET BACKUP_DIR=\backup\%RESTORE_DATE%
-SET VOLUME_MONGODB_BACKUP=\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\valoricvtool_mongodb_backup
 SET MONGORESTORE=C:\Program Files\MongoDB\Tools\100\bin\mongorestore
 
 SETLOCAL
