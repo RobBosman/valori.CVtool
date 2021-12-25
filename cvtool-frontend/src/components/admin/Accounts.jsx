@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text, Stack, TextField, DefaultButton, TooltipHost, Separator } from "@fluentui/react";
 import { connect } from "react-redux";
+import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
@@ -11,6 +12,7 @@ import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
 import { Authorizations, getEnumData } from "../cv/Enums";
 import ConfirmDialog from "../ConfirmDialog";
+import { createHelpIcon } from "../widgets/CvHelpIcon";
 
 const Accounts = (props) => {
 
@@ -18,6 +20,7 @@ const Accounts = (props) => {
     const combined = {};
     Object.values(accountEntity || {})
       .filter(account => account._id) // Don't show deleted accounts.
+      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
       .forEach(account => {
         const authorization = Object.values(authorizationEntity || {})
           .find(authorizationInstance => authorizationInstance.accountId === account._id);
@@ -33,8 +36,8 @@ const Accounts = (props) => {
       });
 
     // Export all accounts including their businessUnit to csv.
-    // console.log("combined", "name,email,unit\n" + Object.values(combined)
-    //   .map(c => `${c.name},${c.email},${c.businessUnit?.name || ""}`)
+    // console.log("Export to CSV", "name,email,unit\n" + Object.values(combined)
+    //   .map(c => `"${c.name}","${c.email}","${c.businessUnit?.name || ""}"`)
     //   .join("\n"));
 
     return combined;
@@ -88,6 +91,7 @@ const Accounts = (props) => {
   const BusinessUnitOptions = React.useMemo(() => {
     const buOptions = Object.values(props.businessUnitEntity || {})
       .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
+      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
       .map(businessUnit => ({ key: businessUnit._id, text: businessUnit?.name }));
     return [
       { key: null, text: "" },
@@ -106,14 +110,14 @@ const Accounts = (props) => {
       name: "Naam",
       isResizable: true,
       minWidth: 130,
-      maxWidth: 250
+      maxWidth: 220
     },
     {
       key: "businessUnit.name",
       fieldName: "businessUnit.name",
       name: "Unit",
       isResizable: true,
-      minWidth: 120
+      minWidth: 150
     },
     {
       key: "authorization.level.",
@@ -194,11 +198,6 @@ const Accounts = (props) => {
   };
 
   const selectedAccountName = props.accountEntity && props.accountEntity[props.selectedAccountId]?.name;
-  const infoText = <Text>
-    De lijst toont alleen de accountgegevens.
-    <br/><strong>Dubbel-klikken</strong> op een account haalt ook de cv-gegevens op.
-    De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
-  </Text>;
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -207,7 +206,20 @@ const Accounts = (props) => {
           <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
-                <Text variant="xxLarge">Accounts</Text>
+                <Text variant="xxLarge">
+                  {["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+                    ? createHelpIcon({
+                      label: "Accounts",
+                      content:
+                        <Text>
+                          Deze lijst toont alleen de accountgegevens.
+                          <br/><strong>Dubbel-klikken</strong> op een account haalt ook de cv-gegevens op.
+                          <br/>De CV-menu items worden dan geënabled zodat je naar de details van het cv kunt navigeren.
+                        </Text>
+                    })
+                    : "Accounts"
+                  }
+                </Text>
                 <Stack horizontal
                   tokens={{ childrenGap: "s1" }}>
                   <TextField
@@ -239,12 +251,7 @@ const Accounts = (props) => {
           </td>
 
           <td valign="top" style={tdStyle}>
-            {["SALES"].includes(props.authInfo.authorizationLevel)
-              && <Stack styles={editStyles}>
-                {infoText}
-              </Stack>
-            }
-            {["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
+            {["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
               && <Stack styles={editStyles}>
                 <CvTextField
                   label="Naam"
@@ -258,13 +265,15 @@ const Accounts = (props) => {
                   instanceContext={combinedContext()}
                   disabled={true}
                 />
-                <CvDropdown
-                  label="Unit"
-                  field="businessUnit._id"
-                  instanceContext={combinedContext(switchBusinessUnitOfAccount)}
-                  options={BusinessUnitOptions}
-                  styles={{ dropdown: { width: 200 } }}
-                />
+                {["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
+                  && <CvDropdown
+                    label="Unit"
+                    field="businessUnit._id"
+                    instanceContext={combinedContext(switchBusinessUnitOfAccount)}
+                    options={BusinessUnitOptions}
+                    styles={{ dropdown: { width: 200 } }}
+                  />
+                }
                 {["ADMIN"].includes(props.authInfo.authorizationLevel)
                   && <CvDropdown
                     label="Autorisatie"
@@ -303,8 +312,6 @@ const Accounts = (props) => {
                       </TooltipHost>
                     }
                   </Stack>
-                  <Separator vertical/>
-                  {infoText}
                 </Stack>
               </Stack>
             }

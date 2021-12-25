@@ -71,6 +71,12 @@ const Profile = (props) => {
               styles={{ root: { width: "100%" } }}
             />
           </Stack>
+          <CvTextField
+            label="E-mail"
+            field="email"
+            instanceContext={accountContext}
+            disabled={true}
+          />
         </Stack>
         <Stack
           styles={{ root: { width: "50%" } }}>
