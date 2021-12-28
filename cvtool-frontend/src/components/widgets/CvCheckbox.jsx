@@ -32,7 +32,7 @@ CvCheckbox.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired,
   defaultValue: PropTypes.bool,
-  label: PropTypes.string,
+  label: PropTypes.any,
   disabled: PropTypes.bool,
   styles: PropTypes.object
 };

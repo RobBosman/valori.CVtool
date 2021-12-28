@@ -92,6 +92,6 @@ CvDatePicker.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.any,
   styles: PropTypes.object
 };

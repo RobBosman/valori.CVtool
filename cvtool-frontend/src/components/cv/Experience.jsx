@@ -10,9 +10,9 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { CvDatePicker } from "../widgets/CvDatePicker";
-import ConfirmDialog from "../ConfirmDialog";
 import { CvFormattedText } from "../widgets/CvFormattedText";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
+import ConfirmDialog from "../ConfirmDialog";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as preview from "./Preview";
 
@@ -23,10 +23,9 @@ const Experience = (props) => {
   const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
   const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
 
-  const [state, setState] = React.useState({
-    isConfirmDialogVisible: false,
-    draggedItem: undefined
-  });
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+  const [draggedItem, setDraggedItem] = React.useState(undefined);
 
   const experienceContext = React.useMemo(() => ({
     locale: props.locale,
@@ -142,32 +141,32 @@ const Experience = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedExperienceId) {
-      setState(prevState => ({ ...prevState, isConfirmDialogVisible: true }));
+      setConfirmDialogVisible(true);
     }
   };
   const onDeleteConfirmed = () => {
-    setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
+    setConfirmDialogVisible(false);
     if (props.selectedExperienceId) {
       props.replaceExperience(props.selectedExperienceId, {});
       props.setSelectedExperienceId(undefined);
     }
   };
   const onDeleteCancelled = () =>
-    setState(prevState => ({ ...prevState, isConfirmDialogVisible: false }));
+    setConfirmDialogVisible(false);
 
   const dragDropEvents = {
     canDrop: () => isEditable,
     canDrag: () => isEditable,
-    onDragStart: (item) => setState(prevState => ({ ...prevState, draggedItem: item })),
-    onDragEnd: () => setState(prevState => ({ ...prevState, draggedItem: undefined })),
+    onDragStart: (item) => setDraggedItem(item),
+    onDragEnd: () => setDraggedItem(undefined),
     onDragEnter: () => "", // return string is the css classes that will be added to the entering element.
     onDragLeave: () => { },
     onDrop: (targetItem) => {
-      const draggedItemKey = state.draggedItem._id;
-      if (state.draggedItem && targetItem._id !== draggedItemKey) {
+      const draggedItemKey = draggedItem._id;
+      if (draggedItem && targetItem._id !== draggedItemKey) {
         const insertIndex = experiences.indexOf(targetItem);
         const items = experiences.filter(item => item._id !== draggedItemKey);
-        items.splice(insertIndex, 0, state.draggedItem);
+        items.splice(insertIndex, 0, draggedItem);
         updateSortIndexes(items);
       }
     }
@@ -185,8 +184,6 @@ const Experience = (props) => {
       props.replaceExperiences(reIndexedItems);
     }
   };
-
-  const [previewVisible, setPreviewVisible] = React.useState(false);
 
   const viewStyles = {
     root: {
@@ -320,7 +317,7 @@ const Experience = (props) => {
                       title="Definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
-                      isVisible={state.isConfirmDialogVisible}
+                      isVisible={isConfirmDialogVisible}
                       onProceed={onDeleteConfirmed}
                       onCancel={onDeleteCancelled}
                     />
@@ -357,7 +354,7 @@ const Experience = (props) => {
                     />
                   </Stack>
                   <Modal
-                    isOpen={previewVisible}
+                    isOpen={isPreviewVisible}
                     onDismiss={() => setPreviewVisible(false)}
                     isModeless={true}
                     dragOptions={{
@@ -380,7 +377,7 @@ const Experience = (props) => {
                   <PrimaryButton
                     text="Preview"
                     iconProps={{ iconName: "EntryView" }}
-                    onClick={() => setPreviewVisible(!previewVisible)}
+                    onClick={() => setPreviewVisible(!isPreviewVisible)}
                     style={{ top: "28px" }}
                   />
                 </Stack>

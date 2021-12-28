@@ -17,29 +17,27 @@ export const CvTextField = (props) => {
     return val || props.defaultValue || "";
   }, [instance, props.field, props.defaultValue]);
 
-  const [state, setState] = React.useState({
-    errorMessage: ""
-  });
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   React.useEffect(() => {
-    if (state.errorMessage) {
+    if (errorMessage) {
       const timeoutId = setTimeout(() =>
-        setState(prevState => ({ ...prevState, errorMessage: "" })),
+        setErrorMessage(""),
       3000);
       return () => clearTimeout(timeoutId);
     }
-  }, [state.errorMessage]);
+  }, [errorMessage]);
 
   const onChange = (event) => {
     if (props.validateInput) {
       const validationMessage = props.validateInput(event.target.value);
       if (validationMessage) {
-        setState(prevState => ({ ...prevState, errorMessage: validationMessage }));
+        setErrorMessage(validationMessage);
         return;
       }
     }
-    if (state.errorMessage) {
-      setState(prevState => ({ ...prevState, errorMessage: "" }));
+    if (errorMessage) {
+      setErrorMessage("");
     }
     let instanceToBeSaved;
     const fieldPath = props.field.split(".");
@@ -75,7 +73,7 @@ export const CvTextField = (props) => {
       value={value}
       styles={props.styles}
       onChange={!isReadOnly && onChange}
-      errorMessage={state.errorMessage}
+      errorMessage={errorMessage}
     />
   );
 };
@@ -84,7 +82,7 @@ CvTextField.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.any,
   disabled: PropTypes.bool,
   readOnly: PropTypes.bool,
   placeholder: PropTypes.string,

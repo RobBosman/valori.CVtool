@@ -36,7 +36,7 @@ CvComboBox.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.any,
   options: PropTypes.any.isRequired,
   allowFreeform: PropTypes.bool,
   styles: PropTypes.object

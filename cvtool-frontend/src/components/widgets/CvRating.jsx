@@ -37,8 +37,8 @@ export const CvRating = (props) => {
 CvRating.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string,
-  defaultValue: PropTypes.string,
-  label: PropTypes.string,
+  defaultValue: PropTypes.number,
+  label: PropTypes.any,
   min: PropTypes.number,
   max: PropTypes.number
 };

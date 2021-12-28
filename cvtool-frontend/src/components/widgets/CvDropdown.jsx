@@ -61,7 +61,7 @@ CvDropdown.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired,
   defaultValue: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.any,
   disabled: PropTypes.bool,
   options: PropTypes.any.isRequired,
   styles: PropTypes.object

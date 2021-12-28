@@ -40,103 +40,103 @@ const CvTopBar = (props) => {
     </CommandBarButton>
   );
 
-  const [state, setState] = React.useState({});
+  const [items, setItems] = React.useState([]);
+  const [farItems, setFarItems] = React.useState([]);
+
   React.useLayoutEffect(() => {
     const isDirty = props.isConnected && props.hasSafeData
         && props.lastEditedTimestamp
         && !props.lastSavedTimestamp || props.lastEditedTimestamp > props.lastSavedTimestamp;
-    setState({
-      items: [
-        {
-          key: "connected",
-          text: "",
-          iconProps: { iconName: props.isConnected ? "PlugConnected" : "PlugDisconnected" },
-          commandBarButtonAs: TooltipButton,
-          style: { background: props.isConnected ? "initial" : semanticColors.severeWarningBackground },
-          tooltipText: props.isConnected ? "Verbonden met de backend server" : "Geen verbinding met de backend server"
-        },
-        {
-          key: "save",
-          text: props.lastSavedTimestamp?.toLocaleTimeString() || "-",
-          iconProps: { iconName: "CloudUpload" },
-          disabled: !isDirty,
-          onClick: props.save,
-          commandBarButtonAs: TooltipButton,
-          style: { background: isDirty ? semanticColors.warningBackground : "initial" },
-          tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
+    setItems([
+      {
+        key: "connected",
+        text: "",
+        iconProps: { iconName: props.isConnected ? "PlugConnected" : "PlugDisconnected" },
+        commandBarButtonAs: TooltipButton,
+        style: { background: props.isConnected ? "initial" : semanticColors.severeWarningBackground },
+        tooltipText: props.isConnected ? "Verbonden met de backend server" : "Geen verbinding met de backend server"
+      },
+      {
+        key: "save",
+        text: props.lastSavedTimestamp?.toLocaleTimeString() || "-",
+        iconProps: { iconName: "CloudUpload" },
+        disabled: !isDirty,
+        onClick: props.save,
+        commandBarButtonAs: TooltipButton,
+        style: { background: isDirty ? semanticColors.warningBackground : "initial" },
+        tooltipText: isDirty ? "Bezig met opslaan..." : "Alle wijzigingen zijn opgeslagen"
+      }
+    ]);
+    setFarItems([
+      {
+        key: "locale",
+        text: props.locale === "uk_UK" ? "Engels" : "Nederlands",
+        commandBarButtonAs: LocaleButton,
+        iconProps: { iconName: "LocaleLanguage" },
+        locale: props.locale,
+        subMenuProps: {
+          items: [
+            {
+              key: "nl_NL",
+              text: "Nederlands",
+              onClick: selectLocale
+            },
+            {
+              key: "uk_UK",
+              text: "Engels",
+              onClick: selectLocale
+            }
+          ]
         }
-      ],
-      farItems: [
-        {
-          key: "locale",
-          text: props.locale === "uk_UK" ? "Engels" : "Nederlands",
-          commandBarButtonAs: LocaleButton,
-          iconProps: { iconName: "LocaleLanguage" },
-          locale: props.locale,
-          subMenuProps: {
-            items: [
-              {
-                key: "nl_NL",
-                text: "Nederlands",
-                onClick: selectLocale
-              },
-              {
-                key: "uk_UK",
-                text: "Engels",
-                onClick: selectLocale
+      },
+      {
+        key: "globalNav",
+        text: props.account?.name || "",
+        iconProps: { iconName: "GlobalNavButton" },
+        iconOnly: false,
+        subMenuProps: {
+          items: [
+            {
+              key: "theme",
+              text: "Theme",
+              iconProps: { iconName: "Brightness" },
+              subMenuProps: {
+                items: [
+                  createThemeItem("default", "Standaard"),
+                  createThemeItem("valoriBlue", "Valori - Blauw"),
+                  createThemeItem("valoriOrange", "Valori - Oranje")
+                ]
               }
-            ]
-          }
-        },
-        {
-          key: "globalNav",
-          text: props.account?.name || "",
-          iconProps: { iconName: "GlobalNavButton" },
-          iconOnly: false,
-          subMenuProps: {
-            items: [
-              {
-                key: "theme",
-                text: "Theme",
-                iconProps: { iconName: "Brightness" },
-                subMenuProps: {
-                  items: [
-                    createThemeItem("default", "Standaard"),
-                    createThemeItem("valoriBlue", "Valori - Blauw"),
-                    createThemeItem("valoriOrange", "Valori - Oranje")
-                  ]
-                }
-              },
-              {
-                key: "help",
-                text: "Help",
-                iconProps: { iconName: "Help" },
-                subMenuProps: {
-                  items: [
-                    {
-                      key: "emailMe",
-                      text: "Problemen? Mail even!",
-                      iconProps: { iconName: "NewMail" },
-                      onClick: onOpenEmail
-                    }
-                  ]
-                }
-              },
-              {
-                key: "loginDivider",
-                itemType: ContextualMenuItemType.Divider
-              },
-              {
-                key: "logout",
-                text: "Uitloggen",
-                iconProps: { iconName: "SignOut" },
-                onClick: props.requestToLogout
+            },
+            {
+              key: "help",
+              text: "Help",
+              iconProps: { iconName: "Help" },
+              subMenuProps: {
+                items: [
+                  {
+                    key: "emailMe",
+                    text: "Problemen? Mail even!",
+                    iconProps: { iconName: "NewMail" },
+                    onClick: onOpenEmail
+                  }
+                ]
               }
-            ]
-          }
+            },
+            {
+              key: "loginDivider",
+              itemType: ContextualMenuItemType.Divider
+            },
+            {
+              key: "logout",
+              text: "Uitloggen",
+              iconProps: { iconName: "SignOut" },
+              onClick: props.requestToLogout
+            }
+          ]
         }
-      ]
-    });
+      }
+    ]);
   }, [props.isConnected, props.hasSafeData, props.account, props.locale, props.lastEditedTimestamp, props.lastSavedTimestamp, currentTheme]);
 
   const styles = {
@@ -149,8 +149,8 @@ const CvTopBar = (props) => {
 
   return (
     <CommandBar
-      items={state.items}
-      farItems={state.farItems}
+      items={items}
+      farItems={farItems}
       styles={styles}
     />
   );

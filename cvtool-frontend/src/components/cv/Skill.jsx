@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, Modal, ContextualMenu, IconButton, PrimaryButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -10,11 +10,12 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvRating } from "../widgets/CvRating";
 import { CvComboBox } from "../widgets/CvComboBox";
-import { getEnumData, SkillCategories } from "./Enums";
-import * as commonUtils from "../../utils/CommonUtils";
-import ConfirmDialog from "../ConfirmDialog";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
+import ConfirmDialog from "../ConfirmDialog";
+import * as enums from "./Enums";
+import * as commonUtils from "../../utils/CommonUtils";
+import * as preview from "./Preview";
 
 const entityName = "skill";
 
@@ -36,7 +37,8 @@ const Skill = (props) => {
     props.selectedCvId && Object.values(props.skillEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
       .sort((l, r) => {
-        let compare = (getEnumData(SkillCategories, l.category)?.sortIndex || 0) - (getEnumData(SkillCategories, r.category)?.sortIndex || 0);
+        let compare = (enums.getEnumData(enums.SkillCategories, l.category)?.sortIndex || 0)
+          - (enums.getEnumData(enums.SkillCategories, r.category)?.sortIndex || 0);
         if (compare === 0) {
           compare = (r.skillLevel || 0) - (l.skillLevel || 0);
         }
@@ -49,7 +51,7 @@ const Skill = (props) => {
   [props.skillEntity, props.selectedCvId]);
 
   const renderSkill = (item) =>
-    getEnumData(SkillCategories, item.category)?.text || "";
+    enums.getEnumData(enums.SkillCategories, item.category)?.text || "";
 
   const renderDescription = (item) =>
     item.description && item.description[props.locale] || commonUtils.getPlaceholder(skills, item._id, "description", props.locale);
@@ -101,7 +103,7 @@ const Skill = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground} = useTheme();
+  const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -117,11 +119,20 @@ const Skill = (props) => {
       height: "calc(100vh - 170px)"
     }
   };
+  const previewStyles = {
+    root: {
+      background: viewPaneBackground,
+      padding: 20
+    }
+  };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+  const [previewHeight, setPreviewHeight] = React.useState(0);
+
   const selectedItemFields = React.useCallback(() => {
     const selectedSkill = skills.find(skill => skill._id === props.selectedSkillId);
     return selectedSkill && {
@@ -162,6 +173,136 @@ const Skill = (props) => {
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
+
+
+
+
+
+
+  const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1.0, color: valoriBlue };
+
+  React.useEffect(() => {
+    // Adjust the height of the preview window to exactly fit all skills.
+    const timeoutId = isPreviewVisible && setTimeout(() => {
+      const skillsPreview = document.getElementById("skillsPreview");
+      if (isPreviewVisible && skillsPreview) {
+        const previewBox = skillsPreview.getBoundingClientRect();
+        let flexWidth = 0;
+        let flexHeight = 0;
+        let smallestHeight = 999999;
+        let largestHeight = 0;
+        [ ...skillsPreview.childNodes ]
+          .map(childNode => childNode.getBoundingClientRect())
+          .forEach(box => {
+            flexWidth = Math.max(flexWidth, box.right - previewBox.left);
+            flexHeight = Math.max(flexHeight, box.bottom - previewBox.top);
+            smallestHeight = Math.min(smallestHeight, box.height);
+            largestHeight = Math.max(largestHeight, box.height);
+          });
+        console.log("previewBox", previewBox, [ ...skillsPreview.childNodes ].map(childNode => childNode.getBoundingClientRect()));
+        console.log("\tflexWidth", flexWidth);
+        console.log("\tflexHeight", flexHeight);
+        console.log("\tsmallestHeight", smallestHeight);
+        console.log("\tlargestHeight", largestHeight);
+
+        let newHeight = previewHeight;
+        if (skillsPreview.childNodes.length === 3) {
+          newHeight = largestHeight;
+          console.log("\tA) 3 children; set to largestHeight");
+        } else if (flexWidth > previewBox.width + 10) {
+          // Increase flex container height.
+          newHeight = Math.max(previewHeight + smallestHeight, largestHeight);
+          console.log("\tB) flexWidth > previewBox.width + 10; increase");
+        } else if (flexWidth < previewBox.width - 10) {
+          // Decrease flex container height.
+          newHeight = previewBox.height - 10;
+          console.log("\tC) flexWidth < previewBox.width - 10; decrease");
+        } else if (flexHeight < previewBox.height - 10) {
+          // Tune flex container height.
+          newHeight = flexHeight + 20;
+          console.log("\tD) flexHeight < previewBox.height - 10; tune");
+        } else {
+          console.log("\tE) no changes");
+        }
+        if (newHeight !== previewHeight) {
+          console.log("\t\tnewHeight", newHeight);
+          setPreviewHeight(newHeight);
+        }
+      }
+    },
+    10);
+    // at the close:
+    return () => timeoutId && clearTimeout(timeoutId);
+  },
+  [skills, isPreviewVisible, previewHeight]);
+
+  const renderPreview = React.useCallback(() => {
+
+    const renderSkill = (skill) =>
+      <tr key={skill._id}>
+        <td width="157px">{skill.description && skill.description[props.locale]}</td>
+        <td width="41px" align="right"><strong>{renderSkillLevel(skill)}</strong></td>
+      </tr>;
+
+    const renderSkillsOfCategory = (category, skillsOfCategory) =>
+      <div key={category.key}>
+        <table style={{ ...previewTextStyles, borderCollapse: "collapse" }}>
+          <tbody>
+            <tr>
+              <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>{category.text}</td>
+            </tr>
+            {skillsOfCategory.map(renderSkill)}
+          </tbody>
+        </table>
+      </div>;
+
+    return <Stack
+      styles={{
+        root: {
+          backgroundColor: "white",
+          borderColor: valoriYellow,
+          borderWidth: 1,
+          borderStyle: "solid none none none",
+          width: 650,
+          height: 500
+        }
+      }}
+      tokens={{ childrenGap: "l1"}}>
+      <div
+        id="skillsPreview"
+        style={{
+          display: "flex",
+          flex: "0 1 auto",
+          flexDirection: "column",
+          flexWrap: "wrap",
+          gap: "10px 5px",
+          height: previewHeight,
+          overflow: "hidden"
+        }}>
+        {enums.SkillCategories
+          .sort((l, r) => l.sortIndex - r.sortIndex)
+          .map(category => [
+            category,
+            skills.filter(skill => skill.includeInCv && skill.category === category.key)
+          ])
+          .filter(([, skillsOfCategory]) => skillsOfCategory.length > 0)
+          .map(([category, skillsOfCategory]) => renderSkillsOfCategory(category, skillsOfCategory))}
+      </div>
+      <Stack horizontal tokens={{ childrenGap: "55px"}}>
+        <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foundation</Text>
+        <Text style={previewTextStyles}><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advanced</Text>
+        <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expert</Text>
+      </Stack>
+    </Stack>;
+  },
+  [skills, props.locale, previewHeight]);
+  
+
+
+
+
+
+
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -209,13 +350,42 @@ const Skill = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <CvComboBox
-                label="Categorie"
-                field="category"
-                instanceContext={skillContext}
-                options={SkillCategories}
-                styles={{ root: { width: 160 } }}
-              />
+              <Stack horizontal horizontalAlign="space-between">
+                <CvComboBox
+                  label="Categorie"
+                  field="category"
+                  instanceContext={skillContext}
+                  options={enums.SkillCategories}
+                  styles={{ root: { width: 160 } }}
+                />
+                <Modal
+                  isOpen={isPreviewVisible}
+                  onDismiss={() => setPreviewVisible(false)}
+                  isModeless={true}
+                  dragOptions={{
+                    moveMenuItemText: "Move",
+                    closeMenuItemText: "Close",
+                    menu: ContextualMenu
+                  }}
+                  styles={{ root: { overflow: "hidden", margin: "-8px" } }}>
+                  <Stack styles={previewStyles}>
+                    <Stack horizontal horizontalAlign="space-between">
+                      <Text variant="xxLarge">Preview</Text>
+                      <IconButton
+                        iconProps={{ iconName: "Cancel" }}
+                        onClick={() => setPreviewVisible(false)}
+                      />
+                    </Stack>
+                    {renderPreview()}
+                  </Stack>
+                </Modal>
+                <PrimaryButton
+                  text="Preview"
+                  iconProps={{ iconName: "EntryView" }}
+                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  style={{ top: "28px" }}
+                />
+              </Stack>
               <CvTextField
                 label="Omschrijving"
                 field={`description.${props.locale}`}
