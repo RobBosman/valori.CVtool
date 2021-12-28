@@ -132,6 +132,7 @@ const Skill = (props) => {
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const [isPreviewVisible, setPreviewVisible] = React.useState(false);
   const [previewHeight, setPreviewHeight] = React.useState(0);
+  const [previewFlexBoxHeight, setPreviewFlexBoxHeight] = React.useState(0);
 
   const selectedItemFields = React.useCallback(() => {
     const selectedSkill = skills.find(skill => skill._id === props.selectedSkillId);
@@ -175,10 +176,8 @@ const Skill = (props) => {
     setConfirmDialogVisible(false);
 
 
-
-
-
-
+  const flexGapHorizontal = 10;
+  const flexGapVertical = 5;
   const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1.0, color: valoriBlue };
 
   React.useEffect(() => {
@@ -186,48 +185,89 @@ const Skill = (props) => {
     const timeoutId = isPreviewVisible && setTimeout(() => {
       const skillsPreview = document.getElementById("skillsPreview");
       if (isPreviewVisible && skillsPreview) {
-        const previewBox = skillsPreview.getBoundingClientRect();
-        let flexWidth = 0;
-        let flexHeight = 0;
-        let smallestHeight = 999999;
-        let largestHeight = 0;
-        [ ...skillsPreview.childNodes ]
-          .map(childNode => childNode.getBoundingClientRect())
-          .forEach(box => {
-            flexWidth = Math.max(flexWidth, box.right - previewBox.left);
-            flexHeight = Math.max(flexHeight, box.bottom - previewBox.top);
-            smallestHeight = Math.min(smallestHeight, box.height);
-            largestHeight = Math.max(largestHeight, box.height);
-          });
-        console.log("previewBox", previewBox, [ ...skillsPreview.childNodes ].map(childNode => childNode.getBoundingClientRect()));
-        console.log("\tflexWidth", flexWidth);
-        console.log("\tflexHeight", flexHeight);
-        console.log("\tsmallestHeight", smallestHeight);
-        console.log("\tlargestHeight", largestHeight);
 
-        let newHeight = previewHeight;
-        if (skillsPreview.childNodes.length === 3) {
-          newHeight = largestHeight;
-          console.log("\tA) 3 children; set to largestHeight");
-        } else if (flexWidth > previewBox.width + 10) {
-          // Increase flex container height.
-          newHeight = Math.max(previewHeight + smallestHeight, largestHeight);
-          console.log("\tB) flexWidth > previewBox.width + 10; increase");
-        } else if (flexWidth < previewBox.width - 10) {
-          // Decrease flex container height.
-          newHeight = previewBox.height - 10;
-          console.log("\tC) flexWidth < previewBox.width - 10; decrease");
-        } else if (flexHeight < previewBox.height - 10) {
-          // Tune flex container height.
-          newHeight = flexHeight + 20;
-          console.log("\tD) flexHeight < previewBox.height - 10; tune");
-        } else {
-          console.log("\tE) no changes");
+        const flexContainer = skillsPreview.getBoundingClientRect();
+
+        // Start by getting an array of heights of each category-block.
+        // Use a sliding window of size n to determine the minimum required height of the flex container.
+        // Start value of n = 1. If the resulting height appears too small, increase n and try again.
+        // Search for a resulting height that is just higher than the current flex container height.
+
+        const flexBoxes = [ ...skillsPreview.childNodes ]
+          .map(childNode => childNode.getBoundingClientRect());
+        const flexBoxHeights = flexBoxes
+          .map(flexBox => flexBox.height);
+        const flexBoxWidth = flexBoxes
+          .map(flexBox => flexBox.width)
+          .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
+        const largestFlexBoxHeight = flexBoxHeights
+          .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
+        const totalFlexBoxHeight = flexBoxHeights
+          .reduce((acc, h) => acc + h, 0); // aggregate
+        const largestFlexBoxLeft = flexBoxes
+          .map(flexBox => flexBox.left - flexContainer.left)
+          .reduce((acc, l) => l > acc ? l : acc, 0); // get max value
+        const flexContainerHeight = flexBoxes
+          .map(flexBox => flexBox.bottom - flexContainer.top)
+          .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
+
+        const targetFlexBoxOffset = (flexBoxWidth + flexGapHorizontal) * 2;
+
+        // The resulting height must be at least as high as:
+        // * the highest flexBox and
+        // * the total height of all flexBoxes, divided by the number of columns.
+        const minimunHeight = Math.max(
+          largestFlexBoxHeight,
+          flexBoxHeights.reduce((acc, h) => acc + h, 0) / 3); // get total value and divide by 3
+
+        if (skillsPreview.childNodes.length <= 3) {
+          // Fixed layout.
+          setPreviewHeight(largestFlexBoxHeight);
         }
-        if (newHeight !== previewHeight) {
-          console.log("\t\tnewHeight", newHeight);
+
+        else if (largestFlexBoxLeft < targetFlexBoxOffset) {
+          // The flex container is not wide enough, so we must decrease its height.
+          // Great reset!
+          setPreviewHeight(minimunHeight);
+        }
+        
+        else if (largestFlexBoxLeft > targetFlexBoxOffset) {
+          // The flex container is too wide, so we must increase its height.
+          const minimunNewHeight = Math.max(minimunHeight, previewHeight);
+          const potentialHeights = new Set();
+
+          const partitionToWindows = (inputArray, windowSize) =>
+            Array.from(
+              { length: inputArray.length - (windowSize - 1) },
+              (_, index) => inputArray.slice(index, index + windowSize));
+
+          for (let windowSize = 1; windowSize < flexBoxHeights.length; windowSize++) {
+            partitionToWindows(flexBoxHeights, windowSize) // array of arrays with n heights each
+              .map(window => window.reduce((acc, h) => acc + h, 0) + (windowSize - 1) * flexGapVertical) // array of aggregated heights
+              .forEach(height => potentialHeights.add(height));
+          }
+
+          const newHeight = [ ...potentialHeights ]
+            .filter(height => height > minimunNewHeight)
+            .reduce((acc, h) => h < acc ? h : acc, Infinity); // get min value
           setPreviewHeight(newHeight);
         }
+
+        else if (largestFlexBoxLeft === targetFlexBoxOffset) {
+          // The width of the flex container is okay.
+          if (flexContainerHeight < previewHeight) {
+            // The flex container is too high.
+            // Fine-tune its height.
+            setPreviewHeight(flexContainerHeight);
+          }
+          else if (totalFlexBoxHeight !== previewFlexBoxHeight) {
+            // However, the number of skills has changed.
+            // Great reset!
+            setPreviewHeight(minimunHeight);
+          }
+        }
+        
+        setPreviewFlexBoxHeight(totalFlexBoxHeight);
       }
     },
     10);
@@ -272,10 +312,10 @@ const Skill = (props) => {
         id="skillsPreview"
         style={{
           display: "flex",
-          flex: "0 1 auto",
+          flex: "0 0 auto",
           flexDirection: "column",
           flexWrap: "wrap",
-          gap: "10px 5px",
+          gap: `${flexGapVertical}px ${flexGapHorizontal}px`,
           height: previewHeight,
           overflow: "hidden"
         }}>
