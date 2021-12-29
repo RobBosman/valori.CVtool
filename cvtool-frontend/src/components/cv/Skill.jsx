@@ -175,7 +175,6 @@ const Skill = (props) => {
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
 
-
   const flexGapHorizontal = 10;
   const flexGapVertical = 5;
   const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1.0, color: valoriBlue };
@@ -187,12 +186,6 @@ const Skill = (props) => {
       if (isPreviewVisible && skillsPreview) {
 
         const flexContainer = skillsPreview.getBoundingClientRect();
-
-        // Start by getting an array of heights of each category-block.
-        // Use a sliding window of size n to determine the minimum required height of the flex container.
-        // Start value of n = 1. If the resulting height appears too small, increase n and try again.
-        // Search for a resulting height that is just higher than the current flex container height.
-
         const flexBoxes = [ ...skillsPreview.childNodes ]
           .map(childNode => childNode.getBoundingClientRect());
         const flexBoxHeights = flexBoxes
@@ -214,11 +207,9 @@ const Skill = (props) => {
         const targetFlexBoxOffset = (flexBoxWidth + flexGapHorizontal) * 2;
 
         // The resulting height must be at least as high as:
-        // * the highest flexBox and
-        // * the total height of all flexBoxes, divided by the number of columns.
-        const minimunHeight = Math.max(
-          largestFlexBoxHeight,
-          flexBoxHeights.reduce((acc, h) => acc + h, 0) / 3); // get total value and divide by 3
+        // - the highest flexBox and
+        // - the total height of all flexBoxes, divided by the number of columns.
+        const minimunHeight = Math.max(largestFlexBoxHeight, totalFlexBoxHeight / 3);
 
         if (skillsPreview.childNodes.length <= 3) {
           // Fixed layout.
@@ -274,29 +265,37 @@ const Skill = (props) => {
     // at the close:
     return () => timeoutId && clearTimeout(timeoutId);
   },
-  [skills, isPreviewVisible, previewHeight]);
+  [skills, isPreviewVisible, previewHeight, previewFlexBoxHeight]);
 
-  const renderPreview = React.useCallback(() => {
+  const renderPreviewDescription = (skill) => {
+    const text = skill.description && skill.description[props.locale] || "";
+    return preview.wrapText(text, 42.5);
+  };
 
-    const renderSkill = (skill) =>
-      <tr key={skill._id}>
-        <td width="157px">{skill.description && skill.description[props.locale]}</td>
-        <td width="41px" align="right"><strong>{renderSkillLevel(skill)}</strong></td>
-      </tr>;
+  const renderPreviewSkill = (skill) =>
+    <tr key={skill._id}>
+      <td width="157px" style={{ maxWidth: 157, overflowX: "hidden" }}>
+        {renderPreviewDescription(skill)}
+      </td>
+      <td width="41px" align="right" valign="bottom">
+        <strong>{renderSkillLevel(skill)}</strong>
+      </td>
+    </tr>;
 
-    const renderSkillsOfCategory = (category, skillsOfCategory) =>
-      <div key={category.key}>
-        <table style={{ ...previewTextStyles, borderCollapse: "collapse" }}>
-          <tbody>
-            <tr>
-              <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>{category.text}</td>
-            </tr>
-            {skillsOfCategory.map(renderSkill)}
-          </tbody>
-        </table>
-      </div>;
+  const renderPreviewSkillsOfCategory = (category, skillsOfCategory) =>
+    <div key={category.key}>
+      <table style={{ ...previewTextStyles, borderCollapse: "collapse" }}>
+        <tbody>
+          <tr>
+            <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>{category.text}</td>
+          </tr>
+          {skillsOfCategory.map(renderPreviewSkill)}
+        </tbody>
+      </table>
+    </div>;
 
-    return <Stack
+  const renderPreview = React.useCallback(() =>
+    <Stack
       styles={{
         root: {
           backgroundColor: "white",
@@ -304,7 +303,7 @@ const Skill = (props) => {
           borderWidth: 1,
           borderStyle: "solid none none none",
           width: 650,
-          height: 500
+          height: 400
         }
       }}
       tokens={{ childrenGap: "l1"}}>
@@ -323,26 +322,21 @@ const Skill = (props) => {
           .sort((l, r) => l.sortIndex - r.sortIndex)
           .map(category => [
             category,
-            skills.filter(skill => skill.includeInCv && skill.category === category.key)
+            skills
+              .filter(skill => skill.category === category.key)
+              .filter(skill => commonUtils.isFilledLocaleField(skill.description))
+              .filter(skill => skill.includeInCv)
           ])
           .filter(([, skillsOfCategory]) => skillsOfCategory.length > 0)
-          .map(([category, skillsOfCategory]) => renderSkillsOfCategory(category, skillsOfCategory))}
+          .map(([category, skillsOfCategory]) => renderPreviewSkillsOfCategory(category, skillsOfCategory))}
       </div>
       <Stack horizontal tokens={{ childrenGap: "55px"}}>
         <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foundation</Text>
         <Text style={previewTextStyles}><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advanced</Text>
         <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expert</Text>
       </Stack>
-    </Stack>;
-  },
+    </Stack>,
   [skills, props.locale, previewHeight]);
-  
-
-
-
-
-
-
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -398,7 +392,8 @@ const Skill = (props) => {
                   options={enums.SkillCategories}
                   styles={{ root: { width: 160 } }}
                 />
-                <Modal
+                {isPreviewVisible
+                && <Modal
                   isOpen={isPreviewVisible}
                   onDismiss={() => setPreviewVisible(false)}
                   isModeless={true}
@@ -419,6 +414,7 @@ const Skill = (props) => {
                     {renderPreview()}
                   </Stack>
                 </Modal>
+                }
                 <PrimaryButton
                   text="Preview"
                   iconProps={{ iconName: "EntryView" }}

@@ -20,7 +20,7 @@
     <xsl:template name="wrap-skill-description">
         <xsl:param name="text"/>
         <xsl:call-template name="convert-newlines">
-            <xsl:with-param name="text" select="java:nl.valori.cvtool.backend.cv.XslUtils.wrapText($text, 1.0, 42.0)"/>
+            <xsl:with-param name="text" select="java:nl.valori.cvtool.backend.cv.XslUtils.wrapText($text, 42.0)"/>
         </xsl:call-template>
     </xsl:template>
 

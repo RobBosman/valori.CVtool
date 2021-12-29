@@ -1,5 +1,6 @@
 package nl.valori.cvtool.backend.cv
 
+// NB - The implementation of this class has a JavaScript counterpart, see Preview.jsx.
 object XslUtils {
 
     // The widths in this table are in mm. They are based on the Arial 10pt font used in MS-Word.
@@ -23,9 +24,9 @@ object XslUtils {
             ?.value
             ?: 1.0
 
-    private fun String.getWidth(letterWidth: Double): Double =
+    private fun String.getWidth(): Double =
         toCharArray()
-            .map { c -> letterWidth * c.getWidth() }
+            .map { it.getWidth() }
             .reduceOrNull { l, r -> l + r }
             ?: 0.0
 
@@ -35,15 +36,15 @@ object XslUtils {
      * If the text is longer than that, then replace the last space *before* that index with a newline.
      */
     @JvmStatic
-    fun wrapText(text: String, letterWidth: Double, wrapWidth: Double): String {
+    fun wrapText(text: String, wrapWidth: Double): String {
 
-        val spaceWidth = " ".getWidth(letterWidth)
+        val spaceWidth = " ".getWidth()
 
         var buildUpWidth = 0.0
         var wrappedText = ""
         text.split(" ", "\t", "\n")
             .forEach { fragmentText ->
-                val fragmentWidth = fragmentText.getWidth(letterWidth)
+                val fragmentWidth = fragmentText.getWidth()
 
                 if (buildUpWidth + spaceWidth + fragmentWidth > wrapWidth) {
                     wrappedText = "$wrappedText\n$fragmentText".trim()

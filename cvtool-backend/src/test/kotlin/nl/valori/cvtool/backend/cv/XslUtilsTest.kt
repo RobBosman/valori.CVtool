@@ -10,7 +10,7 @@ internal class XslUtilsTest {
     fun testWrapText1000() {
         assertEquals(
             "A B C d e f G H I j k l M N O p q r S T U v w x Y Z",
-            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1.0, 1000.0)
+            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1000.0)
         )
     }
 
@@ -20,7 +20,7 @@ internal class XslUtilsTest {
             "A B C d e f G H I j\n" +
                     "k l M N O p q r S T\n" +
                     "U v w x Y Z",
-            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1.0, 30.0)
+            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 30.0)
         )
     }
 
@@ -32,7 +32,7 @@ internal class XslUtilsTest {
                     "N O p q r S\n" +
                     "T U v w x Y\n" +
                     "Z",
-            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1.0, 20.0)
+            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 20.0)
         )
     }
 
@@ -48,7 +48,7 @@ internal class XslUtilsTest {
                     "T U v\n" +
                     "w x Y\n" +
                     "Z",
-            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1.0, 10.0)
+            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 10.0)
         )
     }
 
@@ -81,7 +81,7 @@ internal class XslUtilsTest {
                     "x\n" +
                     "Y\n" +
                     "Z",
-            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1.0, 1.0)
+            wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1.0)
         )
     }
 
@@ -89,7 +89,7 @@ internal class XslUtilsTest {
     fun testWrapText_SecuritySSLcertificaten() {
         assertEquals(
             "Security, SSL, certificaten",
-            wrapText("Security, SSL, certificaten", 1.0, 42.0)
+            wrapText("Security, SSL, certificaten", 42.0)
         )
     }
 
@@ -98,7 +98,7 @@ internal class XslUtilsTest {
         assertEquals(
             "Business Process\n" +
                     "Modelling",
-            wrapText("Business Process Modelling", 1.0, 42.0)
+            wrapText("Business Process Modelling", 42.0)
         )
     }
 }

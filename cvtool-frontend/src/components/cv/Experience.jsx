@@ -353,7 +353,8 @@ const Experience = (props) => {
                       instanceContext={experienceContext}
                     />
                   </Stack>
-                  <Modal
+                  {isPreviewVisible
+                  && <Modal
                     isOpen={isPreviewVisible}
                     onDismiss={() => setPreviewVisible(false)}
                     isModeless={true}
@@ -374,6 +375,7 @@ const Experience = (props) => {
                       {renderPreview()}
                     </Stack>
                   </Modal>
+                  }
                   <PrimaryButton
                     text="Preview"
                     iconProps={{ iconName: "EntryView" }}
