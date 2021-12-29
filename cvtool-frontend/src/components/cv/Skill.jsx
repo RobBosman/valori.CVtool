@@ -320,17 +320,19 @@ const Skill = (props) => {
           height: previewHeight,
           overflow: "hidden"
         }}>
-        {enums.SkillCategories
-          .sort((l, r) => l.sortIndex - r.sortIndex)
-          .map(category => [
-            category,
-            skills
-              .filter(skill => skill.category === category.key)
-              .filter(skill => commonUtils.isFilledLocaleField(skill.description))
-              .filter(skill => skill.includeInCv)
-          ])
-          .filter(([, skillsOfCategory]) => skillsOfCategory.length > 0)
-          .map(([category, skillsOfCategory]) => renderPreviewSkillsOfCategory(category, skillsOfCategory))}
+        {
+          enums.SkillCategories
+            .sort((l, r) => l.sortIndex - r.sortIndex)
+            .map(category => [
+              category,
+              skills
+                .filter(skill => skill.category === category.key)
+                .filter(skill => commonUtils.isFilledLocaleField(skill.description))
+                .filter(skill => skill.includeInCv)
+            ])
+            .filter(([, skillsOfCategory]) => skillsOfCategory.length > 0)
+            .map(([category, skillsOfCategory]) => renderPreviewSkillsOfCategory(category, skillsOfCategory))
+        }
       </div>
       <Stack horizontal tokens={{ childrenGap: "55px"}}>
         <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foundation</Text>

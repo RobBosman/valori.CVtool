@@ -3,8 +3,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Stack, Text } from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
+import { useTheme } from "../../services/ui/ui-services";
 
 const CvTitle = (props) => {
+  
+  const {valoriYellow} = useTheme();
 
   const formatDate = (dateText) => {
     try {
@@ -38,11 +41,11 @@ const CvTitle = (props) => {
           : null
         }
         {memo.role
-          ? <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
+          ? <Text variant="large" style={{ color: valoriYellow }}>{"//"}</Text>
           : null
         }
         <Text variant="large">{memo.dateOfBirth}</Text>
-        <Text variant="large" style={{ color: "#f39900" }}>{"//"}</Text>
+        <Text variant="large" style={{ color: valoriYellow }}>{"//"}</Text>
         <Text variant="large">{memo.residence}</Text>
       </Stack>
     </Stack>

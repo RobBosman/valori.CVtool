@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, Modal, ContextualMenu, IconButton, PrimaryButton, StackItem } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -12,6 +12,7 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
+import { CvFormattedText } from "../widgets/CvFormattedText";
 
 const entityName = "reference";
 
@@ -71,7 +72,7 @@ const Reference = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground} = useTheme();
+  const {viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -87,11 +88,19 @@ const Reference = (props) => {
       height: "calc(100vh - 170px)"
     }
   };
+  const previewStyles = {
+    root: {
+      background: viewPaneBackground,
+      padding: 20
+    }
+  };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+
   const selectedItemFields = React.useCallback(() => {
     const selectedReference = references.find(reference => reference._id === props.selectedReferenceId);
     return selectedReference && {
@@ -131,6 +140,52 @@ const Reference = (props) => {
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
+
+  const renderPreviewReference = (reference) =>
+    <Stack>
+      <Text
+        field="referentName"
+        style={{
+          backgroundColor: "white",
+          color: valoriYellow,
+          fontWeight: "bold"
+        }}>
+        {`${reference.referentName} \u2500 ${commonUtils.getValueOrFallback(reference, "referentFunction", props.locale)}`}
+      </Text>
+      <CvFormattedText
+        field={`description.${props.locale}`}
+        instanceContext={{ ...referenceContext, instanceId: reference._id }}
+        markDown={true}
+        textComponentStyle={{
+          backgroundColor: "white",
+          color: valoriBlue,
+          padding: 0
+        }}
+      />
+    </Stack>;
+
+  const renderPreview = React.useCallback(() =>
+    <Stack
+      styles={{
+        root: {
+          backgroundColor: "white",
+          borderColor: valoriYellow,
+          borderWidth: 1,
+          borderStyle: "solid none none none",
+          width: 610,
+          height: 350,
+          overflow: "auto"
+        }
+      }}
+      tokens={{ childrenGap: "5px"}}>
+      {
+        references
+          .filter(reference => isFilledReference(reference))
+          .filter(reference => reference.includeInCv)
+          .map(reference => renderPreviewReference(reference))
+      }
+    </Stack>,
+  [references, props.locale]);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -178,18 +233,52 @@ const Reference = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <CvTextField
-                label={createHelpIcon({
-                  label: "Naam",
-                  content:
-                    <Text>
-                      Referenties mogen alleen op verzoek van een klant
-                      <br/>en/of in overleg met Sales worden getoond in het CV.
-                    </Text>
-                })}
-                field="referentName"
-                instanceContext={referenceContext}
-              />
+              <Stack horizontal horizontalAlign="space-between"
+                tokens={{ childrenGap: "l1" }}>
+                <StackItem grow>
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Naam",
+                      content:
+                        <Text>
+                          Referenties mogen alleen op verzoek van een klant
+                          <br/>en/of in overleg met Sales worden getoond in het CV.
+                        </Text>
+                    })}
+                    field="referentName"
+                    instanceContext={referenceContext}
+                  />
+                </StackItem>
+                {isPreviewVisible
+                  && <Modal
+                    isOpen={isPreviewVisible}
+                    onDismiss={() => setPreviewVisible(false)}
+                    isModeless={true}
+                    dragOptions={{
+                      moveMenuItemText: "Move",
+                      closeMenuItemText: "Close",
+                      menu: ContextualMenu
+                    }}
+                    styles={{ root: { margin: "-8px" } }}>
+                    <Stack styles={previewStyles}>
+                      <Stack horizontal horizontalAlign="space-between">
+                        <Text variant="xxLarge">Preview</Text>
+                        <IconButton
+                          iconProps={{ iconName: "Cancel" }}
+                          onClick={() => setPreviewVisible(false)}
+                        />
+                      </Stack>
+                      {renderPreview()}
+                    </Stack>
+                  </Modal>
+                }
+                <PrimaryButton
+                  text="Preview"
+                  iconProps={{ iconName: "EntryView" }}
+                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  style={{ top: "28px" }}
+                />
+              </Stack>
               <CvTextField
                 label="Functie"
                 field={`referentFunction.${props.locale}`}
