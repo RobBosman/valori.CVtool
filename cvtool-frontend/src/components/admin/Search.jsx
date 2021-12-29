@@ -35,7 +35,7 @@ const Search = (props) => {
 
   const highlightFormattingSpecs = props.searchText
     ?.trim()
-    ?.split(/\s+/)
+    ?.split(/\s+/g)
     ?.map(keyword => ({
       textToMatch: keyword,
       wordBreakBefore: true,

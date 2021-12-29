@@ -46,15 +46,15 @@ object XslUtils {
             .forEach { fragmentText ->
                 val fragmentWidth = fragmentText.getWidth()
 
-                if (buildUpWidth + spaceWidth + fragmentWidth > wrapWidth) {
-                    wrappedText = "$wrappedText\n$fragmentText".trim()
-                    buildUpWidth = fragmentWidth
-                } else if (wrappedText.isEmpty()) {
+                if (wrappedText.isEmpty()) {
                     wrappedText = fragmentText
                     buildUpWidth = fragmentWidth
-                } else {
+                } else if (buildUpWidth + spaceWidth + fragmentWidth <= wrapWidth) {
                     wrappedText += " $fragmentText"
                     buildUpWidth += spaceWidth + fragmentWidth
+                } else {
+                    wrappedText = "$wrappedText\n$fragmentText".trim()
+                    buildUpWidth = fragmentWidth
                 }
             }
 

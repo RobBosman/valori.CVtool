@@ -61,12 +61,12 @@ const ARIAL_WIDTH_MAP = {
 };
 
 const getCharWidth = (ch) => {
-  const key = Object.keys(ARIAL_WIDTH_MAP)
-    .find(key => key.includes(ch));
-  return key && key[1] || 1.0;
+  const entry = Object.entries(ARIAL_WIDTH_MAP)
+    .find(([key]) => key.includes(ch));
+  return entry && entry[1] || 1.0;
 };
 
-const getWidth = (text) =>
+const getTextWidth = (text) =>
   [...text]
     .map(c => getCharWidth(c))
     .reduce((acc, c) => acc + c, 0.0);
@@ -78,26 +78,26 @@ const getWidth = (text) =>
  *
  * NB - The implementation of this function has a Kotlin counterpart, see XsUtils.kt.
  */
-export const wrapText = (text, wrapWidth) => {
+export const wrapText = (text, wrapWidth = 42.0) => {
 
   const spaceWidth = getCharWidth(" ");
 
   let buildUpWidth = 0.0;
   let wrappedText = "";
   text
-    .split(/ \t\n/)
+    .split(/\s+/g)
     .forEach(fragmentText => {
-      const fragmentWidth = getWidth(fragmentText);
+      const fragmentWidth = getTextWidth(fragmentText);
 
-      if (buildUpWidth + spaceWidth + fragmentWidth > wrapWidth) {
-        wrappedText = `${wrappedText}\n${fragmentText}`.trim();
-        buildUpWidth = fragmentWidth;
-      } else if (wrappedText.length === 0) {
+      if (wrappedText.length === 0) {
         wrappedText = fragmentText;
         buildUpWidth = fragmentWidth;
-      } else {
+      } else if (buildUpWidth + spaceWidth + fragmentWidth <= wrapWidth) {
         wrappedText += ` ${fragmentText}`;
         buildUpWidth += spaceWidth + fragmentWidth;
+      } else {
+        wrappedText = `${wrappedText}\n${fragmentText}`.trim();
+        buildUpWidth = fragmentWidth;
       }
     });
 

@@ -179,102 +179,104 @@ const Skill = (props) => {
   const flexGapVertical = 5;
   const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1.0, color: valoriBlue };
 
-  React.useEffect(() => {
-    // Adjust the height of the preview window to exactly fit all skills.
-    const timeoutId = isPreviewVisible && setTimeout(() => {
-      const skillsPreview = document.getElementById("skillsPreview");
-      if (isPreviewVisible && skillsPreview) {
+  const adjustFlexLayout = React.useCallback(() => {
+    const skillsPreview = document.getElementById("skillsPreview");
+    if (isPreviewVisible && skillsPreview) {
 
-        const flexContainer = skillsPreview.getBoundingClientRect();
-        const flexBoxes = [ ...skillsPreview.childNodes ]
-          .map(childNode => childNode.getBoundingClientRect());
-        const flexBoxHeights = flexBoxes
-          .map(flexBox => flexBox.height);
-        const flexBoxWidth = flexBoxes
-          .map(flexBox => flexBox.width)
-          .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
-        const largestFlexBoxHeight = flexBoxHeights
-          .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
-        const totalFlexBoxHeight = flexBoxHeights
-          .reduce((acc, h) => acc + h, 0); // aggregate
-        const largestFlexBoxLeft = flexBoxes
-          .map(flexBox => flexBox.left - flexContainer.left)
-          .reduce((acc, l) => l > acc ? l : acc, 0); // get max value
-        const flexContainerHeight = flexBoxes
-          .map(flexBox => flexBox.bottom - flexContainer.top)
-          .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
+      const flexContainer = skillsPreview.getBoundingClientRect();
+      const flexBoxes = [ ...skillsPreview.childNodes ]
+        .map(childNode => childNode.getBoundingClientRect());
+      const flexBoxHeights = flexBoxes
+        .map(flexBox => flexBox.height);
+      const flexBoxWidth = flexBoxes
+        .map(flexBox => flexBox.width)
+        .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
+      const largestFlexBoxHeight = flexBoxHeights
+        .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
+      const totalFlexBoxHeight = flexBoxHeights
+        .reduce((acc, h) => acc + h, 0); // aggregate
+      const largestFlexBoxLeft = flexBoxes
+        .map(flexBox => flexBox.left - flexContainer.left)
+        .reduce((acc, l) => l > acc ? l : acc, 0); // get max value
+      const flexContainerHeight = flexBoxes
+        .map(flexBox => flexBox.bottom - flexContainer.top)
+        .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
 
-        const targetFlexBoxOffset = (flexBoxWidth + flexGapHorizontal) * 2;
+      const targetFlexBoxOffset = (flexBoxWidth + flexGapHorizontal) * 2;
 
-        // The resulting height must be at least as high as:
-        // - the highest flexBox and
-        // - the total height of all flexBoxes, divided by the number of columns.
-        const minimunHeight = Math.max(largestFlexBoxHeight, totalFlexBoxHeight / 3);
+      // The resulting height must be at least as high as:
+      // - the highest flexBox and
+      // - the total height of all flexBoxes, divided by the number of columns.
+      const minimunHeight = Math.max(largestFlexBoxHeight, totalFlexBoxHeight / 3);
 
-        if (skillsPreview.childNodes.length <= 3) {
-          // Fixed layout.
-          setPreviewHeight(largestFlexBoxHeight);
-        }
+      if (skillsPreview.childNodes.length <= 3) {
+        // Fixed layout.
+        setPreviewHeight(largestFlexBoxHeight);
+      }
 
-        else if (largestFlexBoxLeft < targetFlexBoxOffset) {
-          // The flex container is not wide enough, so we must decrease its height.
-          // Great reset!
-          setPreviewHeight(minimunHeight);
-        }
-        
-        else if (largestFlexBoxLeft > targetFlexBoxOffset) {
-          // The flex container is too wide, so we must increase its height.
-          const minimunNewHeight = Math.max(minimunHeight, previewHeight);
-          const potentialHeights = new Set();
+      else if (largestFlexBoxLeft < targetFlexBoxOffset) {
+        // The flex container is not wide enough, so we must decrease its height.
+        // Great reset!
+        setPreviewHeight(minimunHeight);
+      }
+      
+      else if (largestFlexBoxLeft > targetFlexBoxOffset) {
+        // The flex container is too wide, so we must increase its height.
+        const minimunNewHeight = Math.max(minimunHeight, previewHeight);
+        const potentialHeights = new Set();
 
-          const partitionToWindows = (inputArray, windowSize) =>
-            Array.from(
-              { length: inputArray.length - (windowSize - 1) },
-              (_, index) => inputArray.slice(index, index + windowSize));
+        const partitionToWindows = (inputArray, windowSize) =>
+          Array.from(
+            { length: inputArray.length - (windowSize - 1) },
+            (_, index) => inputArray.slice(index, index + windowSize));
 
-          for (let windowSize = 1; windowSize < flexBoxHeights.length; windowSize++) {
-            partitionToWindows(flexBoxHeights, windowSize) // array of arrays with n heights each
-              .map(window => window.reduce((acc, h) => acc + h, 0) + (windowSize - 1) * flexGapVertical) // array of aggregated heights
-              .forEach(height => potentialHeights.add(height));
-          }
-
-          const newHeight = [ ...potentialHeights ]
+        for (let windowSize = 1; windowSize < flexBoxHeights.length; windowSize++) {
+          partitionToWindows(flexBoxHeights, windowSize) // array of arrays with n heights each
+            .map(window => window.reduce((acc, h) => acc + h, 0) + (windowSize - 1) * flexGapVertical) // array of aggregated heights
             .filter(height => height > minimunNewHeight)
+            .forEach(height => potentialHeights.add(height));
+        }
+
+        if (potentialHeights.size > 0) {
+          const newHeight = [ ...potentialHeights ]
             .reduce((acc, h) => h < acc ? h : acc, Infinity); // get min value
           setPreviewHeight(newHeight);
         }
-
-        else if (largestFlexBoxLeft === targetFlexBoxOffset) {
-          // The width of the flex container is okay.
-          if (flexContainerHeight < previewHeight) {
-            // The flex container is too high.
-            // Fine-tune its height.
-            setPreviewHeight(flexContainerHeight);
-          }
-          else if (totalFlexBoxHeight !== previewFlexBoxHeight) {
-            // However, the number of skills has changed.
-            // Great reset!
-            setPreviewHeight(minimunHeight);
-          }
-        }
-        
-        setPreviewFlexBoxHeight(totalFlexBoxHeight);
       }
-    },
-    10);
+
+      else if (largestFlexBoxLeft === targetFlexBoxOffset) {
+        // The width of the flex container is okay.
+        if (flexContainerHeight < previewHeight) {
+          // The flex container is too high.
+          // Fine-tune its height.
+          setPreviewHeight(flexContainerHeight);
+        }
+        else if (totalFlexBoxHeight !== previewFlexBoxHeight) {
+          // However, the number of skills has changed.
+          // Great reset!
+          setPreviewHeight(minimunHeight);
+        }
+      }
+      
+      setPreviewFlexBoxHeight(totalFlexBoxHeight);
+    }
+  },
+  [skills, isPreviewVisible, previewHeight, previewFlexBoxHeight]);
+
+  React.useEffect(() => {
+    // Adjust the height of the preview window to exactly fit all skills.
+    const timeoutId = isPreviewVisible && setTimeout(adjustFlexLayout, 10);
     // at the close:
     return () => timeoutId && clearTimeout(timeoutId);
   },
   [skills, isPreviewVisible, previewHeight, previewFlexBoxHeight]);
 
-  const renderPreviewDescription = (skill) => {
-    const text = skill.description && skill.description[props.locale] || "";
-    return preview.wrapText(text, 42.5);
-  };
+  const renderPreviewDescription = (skill) =>
+    preview.wrapText(skill.description && skill.description[props.locale] || "");
 
   const renderPreviewSkill = (skill) =>
     <tr key={skill._id}>
-      <td width="157px" style={{ maxWidth: 157, overflowX: "hidden" }}>
+      <td width="158px" style={{ maxWidth: 158, whiteSpace: "pre", overflowX: "hidden" }}>
         {renderPreviewDescription(skill)}
       </td>
       <td width="41px" align="right" valign="bottom">
@@ -337,6 +339,11 @@ const Skill = (props) => {
       </Stack>
     </Stack>,
   [skills, props.locale, previewHeight]);
+
+  const isValidDescription = (text) =>
+    (preview.wrapText(text).match(/\n/g) || []).length > 1 // more than two lines?
+      ? "Deze tekst beslaat meer dan twee regels"
+      : commonUtils.isValidText(50)(text);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -426,7 +433,7 @@ const Skill = (props) => {
                 label="Omschrijving"
                 field={`description.${props.locale}`}
                 instanceContext={skillContext}
-                validateInput={commonUtils.isValidText(50)}
+                validateInput={isValidDescription}
                 placeholder={commonUtils.getPlaceholder(skills, props.selectedSkillId, "description", props.locale)}
               />
               <CvRating
