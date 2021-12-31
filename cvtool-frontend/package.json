@@ -7,7 +7,7 @@
   "main": "index.html",
   "dependencies": {
     "@azure/msal-browser": "^2.20.0",
-    "@babel/runtime": "^7.16.5",
+    "@babel/runtime": "^7.16.7",
     "@fluentui/react": "^8.48.1",
     "@reduxjs/toolkit": "^1.7.1",
     "@uifabric/react-hooks": "^7.14.0",
@@ -22,16 +22,16 @@
     "rxjs": "^7.5.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.5",
+    "@babel/core": "^7.16.7",
     "@babel/eslint-parser": "^7.16.5",
-    "@babel/plugin-proposal-class-properties": "^7.16.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.16.5",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-react-constant-elements": "^7.16.5",
-    "@babel/plugin-transform-react-inline-elements": "^7.16.5",
-    "@babel/plugin-transform-runtime": "^7.16.5",
-    "@babel/preset-env": "^7.16.5",
-    "@babel/preset-react": "^7.16.5",
+    "@babel/plugin-transform-react-constant-elements": "^7.16.7",
+    "@babel/plugin-transform-react-inline-elements": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-react": "^7.16.7",
     "@svgr/webpack": "^6.1.2",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
@@ -53,7 +53,7 @@
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-middleware": "^5.3.0",
-    "webpack-dev-server": "^4.7.1",
+    "webpack-dev-server": "^4.7.2",
     "webpack-merge": "^5.8.0"
   },
   "scripts": {
