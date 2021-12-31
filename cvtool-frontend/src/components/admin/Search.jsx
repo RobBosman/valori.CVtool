@@ -4,7 +4,7 @@ import { Text, Stack, TextField, Label, Pivot, PivotItem, ScrollablePane, PivotL
 import { connect } from "react-redux";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvFormattedText } from "../widgets/CvFormattedText";
-import { getEnumData, SkillCategories } from "../cv/Enums";
+import * as enums from "../cv/Enums";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
@@ -337,7 +337,7 @@ const Search = (props) => {
                       ?.sort((l, r) => r.skillLevel - l.skillLevel)
                       ?.map(skill =>
                         <tr key={skill._id}>
-                          <td width="20%">{getEnumData(SkillCategories, skill.category)?.text || skill.category}</td>
+                          <td width="20%">{enums.getText(enums.SkillCategories, skill.category, props.locale) || skill.category}</td>
                           <td width="30%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], highlightFormattingSpecs)}</td>
                           <td width="10%" align="right">{"\u2605 ".repeat(skill.skillLevel).trim()}</td>
                           <td width="40%" align="right" style={{borderLeftStyle: "outset"}}>

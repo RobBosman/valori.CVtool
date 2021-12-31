@@ -1,3 +1,8 @@
+import PropTypes from "prop-types";
+import React from "react";
+import { Text, Stack, Modal, ContextualMenu, IconButton } from "@fluentui/react";
+import * as uiServices from "../../services/ui/ui-services";
+
 export const cvHeadings = {
   activities: "Taken/werkzaamheden:",
   results: "Resultaat:",
@@ -10,13 +15,14 @@ export const cvTextStyle = {
   lineHeight: 1.3
 };
 
-export const composeExperiencePeriod = (experience) => {
+export const composeExperiencePeriod = (experience, locale) => {
+  const separator = locale === "uk_UK" ? "." : "-";
   const beginString = experience.periodBegin
-    ? `${experience.periodBegin.substr(5, 2)}-${experience.periodBegin.substr(0, 4)}`
+    ? `${experience.periodBegin.substr(5, 2)}${separator}${experience.periodBegin.substr(0, 4)}`
     : "";
   const endString = experience.periodEnd
-    ? `${experience.periodEnd.substr(5, 2)}-${experience.periodEnd.substr(0, 4)}`
-    : "heden";
+    ? `${experience.periodEnd.substr(5, 2)}${separator}${experience.periodEnd.substr(0, 4)}`
+    : locale === "uk_UK" ? "today" : "heden";
   return `${beginString} \u2014 ${endString}`;
 };
 
@@ -36,14 +42,13 @@ export const composeExperienceDescription = (experience, locale) => {
 };
 
 export const composeExperiencePreview = (experience, locale) => ({
-  period: composeExperiencePeriod(experience),
+  period: composeExperiencePeriod(experience, locale),
   role: experience.role,
   clientOrEmployer: experience.client || experience.employer || "",
   description: {
     [locale]: composeExperienceDescription(experience, locale)
   }
 });
-
 
 // The widths in this table are in mm. They are based on the Arial 10pt font used in MS-Word.
 const ARIAL_WIDTH_MAP = {
@@ -103,3 +108,64 @@ export const wrapText = (text, wrapWidth = 42.0) => {
 
   return wrappedText;
 };
+
+
+/**
+ * React web component
+ */
+const Preview = (props) => {
+  
+  const {viewPaneBackground, valoriYellow} = uiServices.useTheme();
+
+  return (
+    <Modal
+      isOpen={props.isVisible}
+      onDismiss={props.onDismiss}
+      isModeless={true}
+      dragOptions={{
+        moveMenuItemText: "Move",
+        closeMenuItemText: "Close",
+        menu: ContextualMenu
+      }}
+      styles={{ root: { margin: "-8px" } }}>
+      <Stack styles={{
+        root: {
+          background: viewPaneBackground,
+          padding: 20
+        }}}>
+        <Stack horizontal horizontalAlign="space-between">
+          <Text variant="xxLarge">Preview</Text>
+          <IconButton
+            iconProps={{ iconName: "Cancel" }}
+            onClick={props.onDismiss}
+          />
+        </Stack>
+        <Stack
+          styles={{
+            root: {
+              backgroundColor: "white",
+              borderColor: valoriYellow,
+              borderWidth: 1,
+              borderStyle: "solid none none none",
+              overflow: "auto",
+              ...(props.rootStyles || {})
+            }
+          }}
+          tokens={{ childrenGap: "5px"}}>
+          {props.isVisible
+            && props.renderContent()
+          }
+        </Stack>
+      </Stack>
+    </Modal>
+  );
+};
+
+Preview.propTypes = {
+  rootStyles: PropTypes.object,
+  renderContent: PropTypes.func.isRequired,
+  isVisible: PropTypes.bool.isRequired,
+  onDismiss: PropTypes.func.isRequired
+};
+
+export default Preview;

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, Modal, ContextualMenu, IconButton, PrimaryButton, StackItem } from "@fluentui/react";
+import { Text, Stack, DefaultButton, PrimaryButton, StackItem } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -13,6 +13,7 @@ import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 import { CvFormattedText } from "../widgets/CvFormattedText";
+import Preview from "./Preview";
 
 const entityName = "reference";
 
@@ -56,6 +57,7 @@ const Reference = (props) => {
       key: "referentFunction",
       fieldName: `referentFunction.${props.locale}`,
       name: "Functie",
+      onRender: (item) => commonUtils.getValueOrFallback(item, "referentFunction", props.locale),
       isResizable: true,
       minWidth: 190,
       maxWidth: 400
@@ -86,12 +88,6 @@ const Reference = (props) => {
       background: editPaneBackground,
       padding: 20,
       height: "calc(100vh - 170px)"
-    }
-  };
-  const previewStyles = {
-    root: {
-      background: viewPaneBackground,
-      padding: 20
     }
   };
   const tdStyle = {
@@ -144,7 +140,6 @@ const Reference = (props) => {
   const renderPreviewReference = (reference) =>
     <Stack>
       <Text
-        field="referentName"
         style={{
           backgroundColor: "white",
           color: valoriYellow,
@@ -165,24 +160,13 @@ const Reference = (props) => {
     </Stack>;
 
   const renderPreview = React.useCallback(() =>
-    <Stack
-      styles={{
-        root: {
-          backgroundColor: "white",
-          borderColor: valoriYellow,
-          borderWidth: 1,
-          borderStyle: "solid none none none",
-          width: 610,
-          height: 350,
-          overflow: "auto"
-        }
-      }}
-      tokens={{ childrenGap: "5px"}}>
+    <Stack tokens={{ childrenGap: "5px"}}>
       {
         references
-          .filter(reference => isFilledReference(reference))
+          .filter(isFilledReference)
+          .filter(reference => commonUtils.isFilledLocaleField(reference.description))
           .filter(reference => reference.includeInCv)
-          .map(reference => renderPreviewReference(reference))
+          .map(renderPreviewReference)
       }
     </Stack>,
   [references, props.locale]);
@@ -249,29 +233,15 @@ const Reference = (props) => {
                     instanceContext={referenceContext}
                   />
                 </StackItem>
-                {isPreviewVisible
-                  && <Modal
-                    isOpen={isPreviewVisible}
-                    onDismiss={() => setPreviewVisible(false)}
-                    isModeless={true}
-                    dragOptions={{
-                      moveMenuItemText: "Move",
-                      closeMenuItemText: "Close",
-                      menu: ContextualMenu
-                    }}
-                    styles={{ root: { margin: "-8px" } }}>
-                    <Stack styles={previewStyles}>
-                      <Stack horizontal horizontalAlign="space-between">
-                        <Text variant="xxLarge">Preview</Text>
-                        <IconButton
-                          iconProps={{ iconName: "Cancel" }}
-                          onClick={() => setPreviewVisible(false)}
-                        />
-                      </Stack>
-                      {renderPreview()}
-                    </Stack>
-                  </Modal>
-                }
+                <Preview
+                  isVisible={isPreviewVisible}
+                  rootStyles={{
+                    width: 618,
+                    height: 350
+                  }}
+                  renderContent={renderPreview}
+                  onDismiss={() => setPreviewVisible(false)}
+                />
                 <PrimaryButton
                   text="Preview"
                   iconProps={{ iconName: "EntryView" }}

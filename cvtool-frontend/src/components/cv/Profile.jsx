@@ -1,12 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Stack, Text } from "@fluentui/react";
+import { PrimaryButton, Stack, StackItem, Text } from "@fluentui/react";
 import { changeInstance } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
+import { CvFormattedText } from "../widgets/CvFormattedText";
+import Preview from "./Preview";
+import * as preview from "../cv/Preview";
 import * as commonUtils from "../../utils/CommonUtils";
 
 const Profile = (props) => {
@@ -28,7 +31,7 @@ const Profile = (props) => {
     replaceInstance: props.onAccountChange,
     readOnly: !isEditable
   };
-  const {editPaneBackground} = useTheme();
+  const {editPaneBackground, valoriBlue, valoriYellow} = useTheme();
   const editStyles = {
     root: {
       background: editPaneBackground,
@@ -37,6 +40,51 @@ const Profile = (props) => {
       height: "calc(100vh - 170px)"
     }
   };
+
+  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+
+  const renderPreview = React.useCallback(() => {
+    const hasInterests = cv?.interests && cv.interests[props.locale];
+    return (
+      <Stack tokens={{ childrenGap: "5px"}}>
+        <CvFormattedText
+          field={`profile.${props.locale}`}
+          instanceContext={cvContext}
+          markDown={true}
+          textComponentStyle={{
+            backgroundColor: "white",
+            color: valoriBlue
+          }}
+        />
+        {hasInterests
+          && <Text
+            style={{
+              ...preview.cvTextStyle,
+              color: valoriBlue,
+              borderColor: valoriYellow,
+              borderBottomWidth: 1,
+              borderBottomStyle: "solid",
+              margin: "12px 8px 0 8px"
+            }}>
+            <strong>{"Interesses".toUpperCase()}</strong>
+          </Text>
+        }
+        {hasInterests
+          && <CvFormattedText
+            field={`interests.${props.locale}`}
+            instanceContext={cvContext}
+            markDown={true}
+            textComponentStyle={{
+              backgroundColor: "white",
+              color: valoriBlue,
+              paddingTop: 0
+            }}
+          />
+        }
+      </Stack>
+    );
+  },
+  [cvContext, props.locale]);
 
   return (
     <Stack styles={editStyles}>
@@ -56,30 +104,6 @@ const Profile = (props) => {
             instanceContext={cvContext}
             placeholder={commonUtils.getValueOrFallback(cv, "role", props.locale)}
           />
-          <Stack horizontal
-            tokens={{ childrenGap: "l1" }}>
-            <CvDatePicker
-              label="Geboortedatum"
-              field="dateOfBirth"
-              instanceContext={accountContext}
-              styles={{ root: { minWidth: 120 } }}
-            />
-            <CvTextField
-              label="Woonplaats"
-              field="residence"
-              instanceContext={accountContext}
-              styles={{ root: { width: "100%" } }}
-            />
-          </Stack>
-          <CvTextField
-            label="E-mail"
-            field="email"
-            instanceContext={accountContext}
-            disabled={true}
-          />
-        </Stack>
-        <Stack
-          styles={{ root: { width: "50%" } }}>
           <CvTextField
             label={createHelpIcon({
               label: "Profielschets",
@@ -95,6 +119,50 @@ const Profile = (props) => {
             multiline
             autoAdjustHeight
           />
+        </Stack>
+        <Stack
+          styles={{ root: { width: "50%" } }}>
+          <Stack horizontal horizontalAlign="space-between"
+            tokens={{ childrenGap: "l1" }}>
+            <StackItem grow>
+              <CvTextField
+                label="E-mail"
+                field="email"
+                instanceContext={accountContext}
+                readOnly={true}
+              />
+            </StackItem>
+            <Preview
+              isVisible={isPreviewVisible}
+              rootStyles={{
+                width: 662,
+                height: 450
+              }}
+              renderContent={renderPreview}
+              onDismiss={() => setPreviewVisible(false)}
+            />
+            <PrimaryButton
+              text="Preview"
+              iconProps={{ iconName: "EntryView" }}
+              onClick={() => setPreviewVisible(!isPreviewVisible)}
+              style={{ top: "28px" }}
+            />
+          </Stack>
+          <Stack horizontal
+            tokens={{ childrenGap: "l1" }}>
+            <CvDatePicker
+              label="Geboortedatum"
+              field="dateOfBirth"
+              instanceContext={accountContext}
+              styles={{ root: { minWidth: 120, maxHeight: 60 } }}
+            />
+            <CvTextField
+              label="Woonplaats"
+              field="residence"
+              instanceContext={accountContext}
+              styles={{ root: { width: "100%" } }}
+            />
+          </Stack>
           <CvTextField
             label={createHelpIcon({
               label: "Interesses",

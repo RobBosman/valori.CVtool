@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, StackItem, PrimaryButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -10,10 +10,11 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
 import * as commonUtils from "../../utils/CommonUtils";
-import { EducationResultTypes } from "./Enums";
+import * as enums from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
+import Preview from "./Preview";
 
 const entityName = "training";
 
@@ -31,7 +32,7 @@ const Training = (props) => {
   };
 
   const composePeriod = (training) =>
-    `${training.year || "heden"}`;
+    `${training.year || (props.locale === "uk_UK" ? "today" : "heden")}`;
   
   // Find all {Training} of the selected {cv}.
   const trainings = React.useMemo(() =>
@@ -48,7 +49,7 @@ const Training = (props) => {
   [props.trainingEntity, props.selectedCvId]);
 
   const renderName = (item) =>
-    item.name && item.name[props.locale] || commonUtils.getPlaceholder(trainings, item._id, "name", props.locale);
+    item.name && item.name[props.locale] || commonUtils.getValueOrFallback(item, "name", props.locale);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -96,7 +97,7 @@ const Training = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground} = useTheme();
+  const {viewPaneBackground, editPaneBackground, valoriYellow, valoriBlue} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -117,6 +118,8 @@ const Training = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+
   const selectedItemFields = React.useCallback(() => {
     const selectedTraining = trainings.find(training => training._id === props.selectedTrainingId);
     return selectedTraining && {
@@ -156,6 +159,54 @@ const Training = (props) => {
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
+
+  const renderPreviewTraining = (training) => {
+    return (
+      <tr style={{ color: valoriBlue }}>
+        <td>{commonUtils.getValueOrFallback(training, "name", props.locale)}</td>
+        <td>{training.institution}</td>
+        <td>
+          {composePeriod(training)}
+          <span style={{ color: valoriYellow }}>{" // "}</span>
+          {enums.getText(enums.EducationResultTypes, training.result, props.locale)}
+        </td>
+      </tr>
+    );
+  };
+
+  const renderPreview = React.useCallback(() => {
+    const trainingsToDisplay = trainings
+      .filter(isFilledTraining)
+      .filter(training => training.includeInCv)
+      .sort((l, r) =>
+        commonUtils.comparePrimitives(r.year, l.year)
+        || commonUtils.comparePrimitives(
+          enums.getValue(enums.EducationResultTypes, l.result)?.sortIndex || 0,
+          enums.getValue(enums.EducationResultTypes, r.result)?.sortIndex || 0)
+        || commonUtils.comparePrimitives(
+          commonUtils.getValueOrFallback(l, "name", props.locale),
+          commonUtils.getValueOrFallback(r, "name", props.locale)));
+    return trainingsToDisplay.length === 0
+      ? null
+      : <table>
+        <tbody>
+          <tr
+            style={{
+              color: valoriYellow,
+              fontWeight: "bold"
+            }}>
+            <td style={{ width: 204 }}>Training</td>
+            <td style={{ width: 208 }}>Opleidingsinstituut</td>
+            <td>Certificaat</td>
+          </tr>
+          {
+            trainingsToDisplay
+              .map(renderPreviewTraining)
+          }
+        </tbody>
+      </table>;
+  },
+  [trainings, props.locale]);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -203,19 +254,39 @@ const Training = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <CvTextField
-                label={createHelpIcon({
-                  label: "Training",
-                  content:
-                    <Text>
-                      Het gaat hier om trainingen gericht op een specifiek expertisegebied binnen het vakgebied testen.
-                      <br/>Andere trainingen die hieraan gerelateerd zijn kan je hier ook opnemen. 
-                    </Text>
-                })}
-                field={`name.${props.locale}`}
-                instanceContext={trainingContext}
-                placeholder={commonUtils.getPlaceholder(trainings, props.selectedTrainingId, "name", props.locale)}
-              />
+              <Stack horizontal horizontalAlign="space-between"
+                tokens={{ childrenGap: "l1" }}>
+                <StackItem grow>
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Training",
+                      content:
+                        <Text>
+                          Het gaat hier om trainingen gericht op een specifiek expertisegebied binnen het vakgebied testen.
+                          <br/>Andere trainingen die hieraan gerelateerd zijn kan je hier ook opnemen. 
+                        </Text>
+                    })}
+                    field={`name.${props.locale}`}
+                    instanceContext={trainingContext}
+                    placeholder={commonUtils.getPlaceholder(trainings, props.selectedTrainingId, "name", props.locale)}
+                  />
+                </StackItem>
+                <Preview
+                  isVisible={isPreviewVisible}
+                  rootStyles={{
+                    width: 620,
+                    height: 350
+                  }}
+                  renderContent={renderPreview}
+                  onDismiss={() => setPreviewVisible(false)}
+                />
+                <PrimaryButton
+                  text="Preview"
+                  iconProps={{ iconName: "EntryView" }}
+                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  style={{ top: "28px" }}
+                />
+              </Stack>
               <CvTextField
                 label="Opleidingsinstituut"
                 field="institution"
@@ -235,7 +306,7 @@ const Training = (props) => {
                   label='Resultaat'
                   field="result"
                   instanceContext={trainingContext}
-                  options={EducationResultTypes}
+                  options={enums.getOptions(enums.EducationResultTypes, props.locale)}
                   styles={{ dropdown: { width: 120 } }}
                 />
               </Stack>

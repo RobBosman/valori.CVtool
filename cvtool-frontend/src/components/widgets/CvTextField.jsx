@@ -64,7 +64,7 @@ export const CvTextField = (props) => {
   return (
     <TextField
       label={props.label}
-      placeholder={!isReadOnly && props.placeholder}
+      placeholder={!isReadOnly && props.placeholder || ""}
       multiline={props.multiline}
       autoAdjustHeight={props.autoAdjustHeight}
       disabled={props.disabled || !instance}

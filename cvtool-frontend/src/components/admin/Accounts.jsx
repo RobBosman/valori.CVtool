@@ -10,7 +10,7 @@ import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
-import { Authorizations, getEnumData } from "../cv/Enums";
+import * as enums from "../cv/Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 
@@ -92,16 +92,26 @@ const Accounts = (props) => {
     const buOptions = Object.values(props.businessUnitEntity || {})
       .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
       .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
-      .map(businessUnit => ({ key: businessUnit._id, text: businessUnit?.name }));
+      .map((businessUnit, index) => ({
+        key: businessUnit._id,
+        sortIndex: index + 1,
+        text: {
+          nl_NL: businessUnit.name
+        }
+      }));
     return [
-      { key: null, text: "" },
+      {
+        key: null,
+        sortIndex: 0,
+        text: {}
+      },
       ...buOptions
     ];
   },
   [props.businessUnitEntity]);
 
   const onRenderAuthorization = (item) =>
-    getEnumData(Authorizations, item.authorization?.level)?.text || "";
+    enums.getText(enums.Authorizations, item.authorization?.level, props.locale);
 
   const columns = [
     {
@@ -270,8 +280,8 @@ const Accounts = (props) => {
                     label="Unit"
                     field="businessUnit._id"
                     instanceContext={combinedContext(switchBusinessUnitOfAccount)}
-                    options={BusinessUnitOptions}
-                    styles={{ dropdown: { width: 200 } }}
+                    options={enums.getOptions(BusinessUnitOptions, props.locale)}
+                    styles={{ dropdown: { width: 230 } }}
                   />
                 }
                 {["ADMIN"].includes(props.authInfo.authorizationLevel)
@@ -280,22 +290,22 @@ const Accounts = (props) => {
                     field="authorization.level"
                     instanceContext={combinedContext(replaceAuthorizationInstance)}
                     disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
-                    options={Authorizations}
-                    styles={{ dropdown: { width: 200 } }}
+                    options={enums.getOptions(enums.Authorizations, props.locale)}
+                    styles={{ dropdown: { width: 230 } }}
                   />
                 }
                 <Separator/>
                 <Stack horizontal grow
                   tokens={{ childrenGap: "s1" }}>
                   <Stack verticalAlign="space-between"
-                    styles={{ root: { width: 200 } }}>
+                    styles={{ root: { width: 230 } }}>
                     <TooltipHost content="Haal de gegevens op om het CV te bewerken">
                       <DefaultButton
                         text="CV bewerken"
                         iconProps={{ iconName: "CloudDownload" }}
                         disabled={!props.selectedAccountId}
                         onClick={onFetchCv}
-                        styles={{ root: { width: 200 } }}
+                        styles={{ root: { width: 230 } }}
                       />
                     </TooltipHost>
                     {["ADMIN"].includes(props.authInfo.authorizationLevel)
@@ -307,7 +317,7 @@ const Accounts = (props) => {
                           iconProps={{ iconName: "Delete" }}
                           disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                           onClick={onDeleteAccount}
-                          styles={{ root: { width: 200, color: semanticColors.severeWarningIcon } }}
+                          styles={{ root: { width: 230, color: semanticColors.severeWarningIcon } }}
                         />
                       </TooltipHost>
                     }

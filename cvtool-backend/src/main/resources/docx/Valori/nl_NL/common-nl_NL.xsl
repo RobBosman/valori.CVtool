@@ -58,7 +58,7 @@
         <xsl:choose>
             <xsl:when test=". = 'DIPLOMA'">diploma</xsl:when>
             <xsl:when test=". = 'CERTIFICATE'">certificaat</xsl:when>
-            <xsl:when test=". = 'ONGOING'">bezig</xsl:when>
+            <xsl:when test=". = 'ONGOING'">nog bezig</xsl:when>
             <xsl:when test=". = 'CANCELED'">afgebroken</xsl:when>
             <xsl:when test=". = 'NOT_APPLICABLE'">nvt</xsl:when>
             <xsl:otherwise>

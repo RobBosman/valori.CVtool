@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, PrimaryButton, StackItem } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -10,10 +10,11 @@ import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import { CvDropdown } from "../widgets/CvDropdown";
 import * as commonUtils from "../../utils/CommonUtils";
-import { EducationResultTypes } from "./Enums";
+import * as enums from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
+import Preview from "./Preview";
 
 const entityName = "education";
 
@@ -31,24 +32,22 @@ const Education = (props) => {
   };
 
   const composePeriod = (education) => 
-    `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || "heden"}`;
+    `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || (props.locale === "uk_UK" ? "today" : "heden")}`;
   
   // Find all {Education} of the selected {cv}.
   const educations = React.useMemo(() =>
     props.selectedCvId && Object.values(props.educationEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
-      .sort((l, r) => {
-        let compare = commonUtils.comparePrimitives(composePeriod(r), composePeriod(l));
-        if (compare === 0) {
-          compare = commonUtils.comparePrimitives(l.name || "", r.name || "");
-        }
-        return compare;
-      })
+      .sort((l, r) =>
+        commonUtils.comparePrimitives(composePeriod(r), composePeriod(l))
+        || commonUtils.comparePrimitives(
+          commonUtils.getValueOrFallback(l, "name", props.locale),
+          commonUtils.getValueOrFallback(r, "name", props.locale)))
       || [],
   [props.educationEntity, props.selectedCvId]);
 
   const renderName = (item) =>
-    item.name && item.name[props.locale] || commonUtils.getPlaceholder(educations, item._id, "name", props.locale);
+    item.name && item.name[props.locale] || commonUtils.getValueOrFallback(item, "name", props.locale);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -96,7 +95,7 @@ const Education = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground} = useTheme();
+  const {viewPaneBackground, editPaneBackground, valoriYellow, valoriBlue} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -117,6 +116,8 @@ const Education = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+
   const selectedItemFields = React.useCallback(() => {
     const selectedEducation = educations.find(education => education._id === props.selectedEducationId);
     return selectedEducation && {
@@ -156,6 +157,54 @@ const Education = (props) => {
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
+
+  const renderPreviewEducation = (education) => {
+    return (
+      <tr style={{ color: valoriBlue }}>
+        <td>{commonUtils.getValueOrFallback(education, "name", props.locale)}</td>
+        <td>{education.institution}</td>
+        <td>
+          {composePeriod(education)}
+          <span style={{ color: valoriYellow }}>{" // "}</span>
+          {enums.getText(enums.EducationResultTypes, education.result, props.locale)}
+        </td>
+      </tr>
+    );
+  };
+
+  const renderPreview = React.useCallback(() => {
+    const educationsToDisplay = educations
+      .filter(isFilledEducation)
+      .filter(education => education.includeInCv)
+      .sort((l, r) =>
+        commonUtils.comparePrimitives(r.yearTo, l.yearTo)
+        || commonUtils.comparePrimitives(
+          enums.getValue(enums.EducationResultTypes, l.result)?.sortIndex || 0,
+          enums.getValue(enums.EducationResultTypes, r.result)?.sortIndex || 0)
+        || commonUtils.comparePrimitives(
+          commonUtils.getValueOrFallback(l, "name", props.locale),
+          commonUtils.getValueOrFallback(r, "name", props.locale)));
+    return educationsToDisplay.length === 0
+      ? null
+      : <table>
+        <tbody>
+          <tr
+            style={{
+              color: valoriYellow,
+              fontWeight: "bold"
+            }}>
+            <td style={{ width: 204 }}>Opleiding</td>
+            <td style={{ width: 208 }}>Onderwijsinstelling</td>
+            <td>Diploma</td>
+          </tr>
+          {
+            educationsToDisplay
+              .map(renderPreviewEducation)
+          }
+        </tbody>
+      </table>;
+  },
+  [educations, props.locale]);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -203,21 +252,41 @@ const Education = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <CvTextField
-                label={createHelpIcon({
-                  label: "Opleiding",
-                  content:
-                    <Text>
-                      Je vermeldt hier eventueel je opleiding in het voortgezet onderwijs
-                      <br/>en daarnaast HBO en/of WO studies.
-                      <br/>Indien je hier andere vak-/beroepsgerichte opleidingen wilt vermelden,
-                      <br/>stem dit dan eerst even af met je leidinggevende.
-                    </Text>
-                })}
-                field={`name.${props.locale}`}
-                instanceContext={educationContext}
-                placeholder={commonUtils.getPlaceholder(educations, props.selectedEducationId, "name", props.locale)}
-              />
+              <Stack horizontal horizontalAlign="space-between"
+                tokens={{ childrenGap: "l1" }}>
+                <StackItem grow>
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Opleiding",
+                      content:
+                        <Text>
+                          Je vermeldt hier eventueel je opleiding in het voortgezet onderwijs
+                          <br/>en daarnaast HBO en/of WO studies.
+                          <br/>Indien je hier andere vak-/beroepsgerichte opleidingen wilt vermelden,
+                          <br/>stem dit dan eerst even af met je leidinggevende.
+                        </Text>
+                    })}
+                    field={`name.${props.locale}`}
+                    instanceContext={educationContext}
+                    placeholder={commonUtils.getPlaceholder(educations, props.selectedEducationId, "name", props.locale)}
+                  />
+                </StackItem>
+                <Preview
+                  isVisible={isPreviewVisible}
+                  rootStyles={{
+                    width: 620,
+                    height: 350
+                  }}
+                  renderContent={renderPreview}
+                  onDismiss={() => setPreviewVisible(false)}
+                />
+                <PrimaryButton
+                  text="Preview"
+                  iconProps={{ iconName: "EntryView" }}
+                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  style={{ top: "28px" }}
+                />
+              </Stack>
               <CvTextField
                 label="Onderwijsinstelling"
                 field="institution"
@@ -245,7 +314,7 @@ const Education = (props) => {
                   label='Resultaat'
                   field="result"
                   instanceContext={educationContext}
-                  options={EducationResultTypes}
+                  options={enums.getOptions(enums.EducationResultTypes, props.locale)}
                   styles={{ dropdown: { width: 120 } }}
                 />
               </Stack>

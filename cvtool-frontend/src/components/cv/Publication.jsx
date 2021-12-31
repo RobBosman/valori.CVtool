@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, StackItem, PrimaryButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -12,6 +12,7 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 import ConfirmDialog from "../ConfirmDialog";
 import * as commonUtils from "../../utils/CommonUtils";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
+import Preview from "./Preview";
 
 const entityName = "publication";
 
@@ -47,6 +48,7 @@ const Publication = (props) => {
       key: "title",
       fieldName: `title.${props.locale}`,
       name: "Titel",
+      onRender: (item) => commonUtils.getValueOrFallback(item, "title", props.locale),
       isResizable: true,
       minWidth: 150,
       maxWidth: 400
@@ -71,7 +73,7 @@ const Publication = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground} = useTheme();
+  const {viewPaneBackground, editPaneBackground, valoriYellow, valoriBlue} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -92,6 +94,8 @@ const Publication = (props) => {
   };
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+
   const selectedItemFields = React.useCallback(() => {
     const selectedPublication = publications.find(publication => publication._id === props.selectedPublicationId);
     return selectedPublication && {
@@ -131,6 +135,45 @@ const Publication = (props) => {
   };
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
+
+  const renderPreviewPublcation = (publication) => {
+    return (
+      <tr style={{ color: valoriBlue }}>
+        <td>{commonUtils.getValueOrFallback(publication, "title", props.locale)}</td>
+        <td>{publication.media}</td>
+        <td>{publication.year}</td>
+        <td>{commonUtils.getValueOrFallback(publication, "description", props.locale)}</td>
+      </tr>
+    );
+  };
+
+  const renderPreview = React.useCallback(() => {
+    const publicationsToDisplay = publications
+      .filter(isFilledPublication)
+      .filter(education => education.includeInCv)
+      .sort((l, r) => commonUtils.comparePrimitives(r.year, l.year));
+    return publicationsToDisplay.length === 0
+      ? null
+      : <table>
+        <tbody>
+          <tr
+            style={{
+              color: valoriYellow,
+              fontWeight: "bold"
+            }}>
+            <td style={{ width: 201 }}>Titel</td>
+            <td style={{ width: 150 }}>Media</td>
+            <td style={{ width: 46 }}>Jaar</td>
+            <td>Omschrijving</td>
+          </tr>
+          {
+            publicationsToDisplay
+              .map(renderPreviewPublcation)
+          }
+        </tbody>
+      </table>;
+  },
+  [publications, props.locale]);
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -178,19 +221,39 @@ const Publication = (props) => {
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>
-              <CvTextField
-                label={createHelpIcon({
-                  label: "Titel",
-                  content:
-                    <Text>
-                      Indien relevant, neemt je hier de publicaties op
-                      <br/>die in het (recente) verleden hebt geplaatst.
-                    </Text>
-                })}
-                field={`title.${props.locale}`}
-                instanceContext={publicationContext}
-                placeholder={commonUtils.getPlaceholder(publications, props.selectedPublicationId, "title", props.locale)}
-              />
+              <Stack horizontal horizontalAlign="space-between"
+                tokens={{ childrenGap: "l1" }}>
+                <StackItem grow>
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Titel",
+                      content:
+                        <Text>
+                          Indien relevant, neemt je hier de publicaties op
+                          <br/>die in het (recente) verleden hebt geplaatst.
+                        </Text>
+                    })}
+                    field={`title.${props.locale}`}
+                    instanceContext={publicationContext}
+                    placeholder={commonUtils.getPlaceholder(publications, props.selectedPublicationId, "title", props.locale)}
+                  />
+                </StackItem>
+                <Preview
+                  isVisible={isPreviewVisible}
+                  rootStyles={{
+                    width: 618,
+                    height: 350
+                  }}
+                  renderContent={renderPreview}
+                  onDismiss={() => setPreviewVisible(false)}
+                />
+                <PrimaryButton
+                  text="Preview"
+                  iconProps={{ iconName: "EntryView" }}
+                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  style={{ top: "28px" }}
+                />
+              </Stack>
               <CvTextField
                 label="Media"
                 field="media"

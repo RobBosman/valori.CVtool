@@ -1,92 +1,166 @@
-export const getEnumData = (enumArray, key) =>
+export const getValue = (enumArray, key) =>
   enumArray.find(entry => entry.key === key);
+
+export const getTextFromValue = (enumData, locale) =>
+  enumData?.text && enumData.text[locale] || enumData?.text?.nl_NL || "";
+
+export const getText = (enumArray, key, locale) =>
+  getTextFromValue(getValue(enumArray, key), locale);
+
+export const getOptions = (enumArray, locale) =>
+  enumArray
+    .sort((l, r) => l.sortIndex - r.sortIndex)
+    .map(enumValue => ({
+      key: enumValue.key,
+      text: getTextFromValue(enumValue, locale)
+    }));
 
 export const Authorizations = [
   {
     key: "CONSULTANT",
-    text: "-"
+    sortIndex: 0,
+    text: {
+      nl_NL: "-"
+    }
   },
   {
     key: "ADMIN",
-    text: "Admin"
+    sortIndex: 1,
+    text: {
+      nl_NL: "Beheer",
+      uk_UK: "Admin"
+    }
   },
   {
     key: "UNIT_LEAD",
-    text: "Unit Lead"
+    sortIndex: 2,
+    text: {
+      nl_NL: "Unit Lead"
+    }
   },
   {
     key: "SALES",
-    text: "Sales"
+    sortIndex: 3,
+    text: {
+      nl_NL: "Sales"
+    }
   }
 ];
 
 export const EducationResultTypes = [
   {
     key: "DIPLOMA",
-    text: "diploma"
+    sortIndex: 0,
+    text: {
+      nl_NL: "diploma",
+      uk_UK: "diploma"
+    }
   },
   {
     key: "CERTIFICATE",
-    text: "certificaat"
+    sortIndex: 1,
+    text: {
+      nl_NL: "certificaat",
+      uk_UK: "certificate"
+    }
   },
   {
     key: "ONGOING",
-    text: "nog bezig"
+    sortIndex: 2,
+    text: {
+      nl_NL: "nog bezig",
+      uk_UK: "ongoing"
+    }
   },
   {
     key: "CANCELED",
-    text: "afgebroken"
+    sortIndex: 3,
+    text: {
+      nl_NL: "afgebroken",
+      uk_UK: "cancelled"
+    }
   },
   {
     key: "NOT_APPLICABLE",
-    text: "n.v.t."
+    sortIndex: 4,
+    text: {
+      nl_NL: "nvt",
+      uk_UK: "n/a"
+    }
   }
 ];
 
 export const SkillCategories = [
   {
     key: "LANGUAGES",
-    text: "Talen",
-    sortIndex: 1
+    sortIndex: 0,
+    text: {
+      nl_NL: "Talen",
+      uk_UK: "Languages"
+    }
   },
   {
     key: "BRANCHES",
-    text: "Branches",
-    sortIndex: 2
+    sortIndex: 1,
+    text: {
+      nl_NL: "Branches",
+      uk_UK: "Branches"
+    }
   },
   {
     key: "EXPERTISE",
-    text: "Expertises",
-    sortIndex: 3
+    sortIndex: 2,
+    text: {
+      nl_NL: "Expertises",
+      uk_UK: "Expertises"
+    }
   },
   {
     key: "DATABASES",
-    text: "Databases",
-    sortIndex: 4
+    sortIndex: 3,
+    text: {
+      nl_NL: "Databases",
+      uk_UK: "Databases"
+    }
   },
   {
     key: "APPLICATIONS",
-    text: "Applicaties",
-    sortIndex: 5
+    sortIndex: 4,
+    text: {
+      nl_NL: "Applicaties",
+      uk_UK: "Applications"
+    }
   },
   {
     key: "TOOLS",
-    text: "Tools",
-    sortIndex: 6
+    sortIndex: 5,
+    text: {
+      nl_NL: "Tools",
+      uk_UK: "Tools"
+    }
   },
   {
     key: "PROGRAMMING",
-    text: "Programmeren",
-    sortIndex: 7
+    sortIndex: 6,
+    text: {
+      nl_NL: "Programmeren",
+      uk_UK: "Programming"
+    }
   },
   {
     key: "METHODS",
-    text: "Methodes",
-    sortIndex: 8
+    sortIndex: 7,
+    text: {
+      nl_NL: "Methodes",
+      uk_UK: "Methods"
+    }
   },
   {
     key: "OS_NETWORKS",
-    text: "OS & Netwerken",
-    sortIndex: 9
+    sortIndex: 8,
+    text: {
+      nl_NL: "OS & Netwerken",
+      uk_UK: "OS & Networks"
+    }
   }
 ];

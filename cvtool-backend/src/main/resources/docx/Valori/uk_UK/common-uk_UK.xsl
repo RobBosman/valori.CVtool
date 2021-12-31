@@ -71,7 +71,7 @@
         <xsl:choose>
             <xsl:when test=". = 'DIPLOMA'">diploma</xsl:when>
             <xsl:when test=". = 'CERTIFICATE'">certificate</xsl:when>
-            <xsl:when test=". = 'ONGOING'">busy</xsl:when>
+            <xsl:when test=". = 'ONGOING'">ongoing</xsl:when>
             <xsl:when test=". = 'CANCELED'">cancelled</xsl:when>
             <xsl:when test=". = 'NOT_APPLICABLE'">n/a</xsl:when>
             <xsl:otherwise>

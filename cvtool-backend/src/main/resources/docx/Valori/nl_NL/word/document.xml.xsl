@@ -61,8 +61,7 @@
                             <w:footerReference w:type="first" r:id="rId10"/>
                             <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
                             <w:pgMar w:top="2835" w:right="991" w:bottom="1701" w:left="1701" w:header="1276"
-                                     w:footer="641"
-                                     w:gutter="0"/>
+                                     w:footer="641" w:gutter="0"/>
                             <w:cols w:space="708"/>
                             <w:titlePg/>
                             <w:docGrid w:linePitch="360"/>
@@ -113,8 +112,7 @@
                             <w:type w:val="continuous"/>
                             <w:pgSz w:w="11906" w:h="16838" w:code="9"/>
                             <w:pgMar w:top="1843" w:right="991" w:bottom="1701" w:left="1701" w:header="714"
-                                     w:footer="641"
-                                     w:gutter="0"/>
+                                     w:footer="641" w:gutter="0"/>
                             <w:cols w:num="3" w:space="238"/>
                             <w:titlePg/>
                             <w:docGrid w:linePitch="360"/>
@@ -191,8 +189,7 @@
                             <w:right w:w="0" w:type="dxa"/>
                         </w:tblCellMar>
                         <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0"
-                                   w:noHBand="0"
-                                   w:noVBand="1"/>
+                                   w:noHBand="0" w:noVBand="1"/>
                     </w:tblPr>
                     <w:tblGrid>
                         <w:gridCol w:w="3071"/>
@@ -205,8 +202,7 @@
                                 <w:tcW w:w="3164" w:type="dxa"/>
                             </w:tcPr>
                             <w:p w14:paraId="0BF044E4" w14:textId="0D364EF6" w:rsidR="00F15DA6"
-                                 w:rsidRDefault="00F15DA6"
-                                 w:rsidP="00F15DA6">
+                                 w:rsidRDefault="00F15DA6" w:rsidP="00F15DA6">
                                 <w:pPr>
                                     <w:pStyle w:val="Kop2"/>
                                     <w:outlineLvl w:val="1"/>
@@ -221,8 +217,7 @@
                                 <w:tcW w:w="3164" w:type="dxa"/>
                             </w:tcPr>
                             <w:p w14:paraId="1B8FA0EB" w14:textId="06FE1258" w:rsidR="00F15DA6"
-                                 w:rsidRDefault="00F15DA6"
-                                 w:rsidP="00F15DA6">
+                                 w:rsidRDefault="00F15DA6" w:rsidP="00F15DA6">
                                 <w:pPr>
                                     <w:pStyle w:val="Kop2"/>
                                     <w:outlineLvl w:val="1"/>
@@ -237,8 +232,7 @@
                                 <w:tcW w:w="3164" w:type="dxa"/>
                             </w:tcPr>
                             <w:p w14:paraId="701D12C9" w14:textId="71E2D10A" w:rsidR="00F15DA6"
-                                 w:rsidRDefault="00F15DA6"
-                                 w:rsidP="00F15DA6">
+                                 w:rsidRDefault="00F15DA6" w:rsidP="00F15DA6">
                                 <w:pPr>
                                     <w:pStyle w:val="Kop2"/>
                                     <w:outlineLvl w:val="1"/>
@@ -286,8 +280,7 @@
                                 <w:right w:w="0" w:type="dxa"/>
                             </w:tblCellMar>
                             <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0"
-                                       w:noHBand="0"
-                                       w:noVBand="1"/>
+                                       w:noHBand="0" w:noVBand="1"/>
                         </w:tblPr>
                         <w:tblGrid>
                             <w:gridCol w:w="3071"/>
@@ -300,8 +293,7 @@
                                     <w:tcW w:w="3164" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="3A478FD2" w14:textId="4AEE9AAE" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -316,8 +308,7 @@
                                     <w:tcW w:w="3164" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="66652E0C" w14:textId="2130757E" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -346,7 +337,7 @@
                         </w:tr>
                         <xsl:apply-templates select="$educations">
                             <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
-                            <xsl:sort select="cv:result" data-type="number"/>
+                            <xsl:sort select="cv:result"/>
                         </xsl:apply-templates>
                     </w:tbl>
                 </xsl:if>
@@ -383,8 +374,7 @@
                                 <w:right w:w="0" w:type="dxa"/>
                             </w:tblCellMar>
                             <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0"
-                                       w:noHBand="0"
-                                       w:noVBand="1"/>
+                                       w:noHBand="0" w:noVBand="1"/>
                         </w:tblPr>
                         <w:tblGrid>
                             <w:gridCol w:w="3071"/>
@@ -397,8 +387,7 @@
                                     <w:tcW w:w="3164" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="47102961" w14:textId="549871FC" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -413,8 +402,7 @@
                                     <w:tcW w:w="3164" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="5210430E" w14:textId="77777777" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -429,8 +417,7 @@
                                     <w:tcW w:w="3164" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="54E9619A" w14:textId="45D64A8B" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -443,7 +430,7 @@
                         </w:tr>
                         <xsl:apply-templates select="$trainings">
                             <xsl:sort select="cv:year" data-type="number" order="descending"/>
-                            <xsl:sort select="cv:result" data-type="number"/>
+                            <xsl:sort select="cv:result"/>
                         </xsl:apply-templates>
                     </w:tbl>
                 </xsl:if>
@@ -481,8 +468,7 @@
                                 <w:right w:w="0" w:type="dxa"/>
                             </w:tblCellMar>
                             <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0"
-                                       w:noHBand="0"
-                                       w:noVBand="1"/>
+                                       w:noHBand="0" w:noVBand="1"/>
                         </w:tblPr>
                         <w:tblGrid>
                             <w:gridCol w:w="3119"/>
@@ -496,8 +482,7 @@
                                     <w:tcW w:w="3164" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="594EC8C1" w14:textId="30B63790" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -512,8 +497,7 @@
                                     <w:tcW w:w="2268" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="3E786C01" w14:textId="6055BD31" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -528,8 +512,7 @@
                                     <w:tcW w:w="708" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="0B2114F9" w14:textId="30FD0186" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="001860B4">
+                                     w:rsidRDefault="001860B4" w:rsidP="001860B4">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -544,8 +527,7 @@
                                     <w:tcW w:w="3119" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="2CD43EAD" w14:textId="13C86D98" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="001860B4">
+                                     w:rsidRDefault="001860B4" w:rsidP="001860B4">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>
@@ -614,8 +596,7 @@
                                 <w:right w:w="0" w:type="dxa"/>
                             </w:tblCellMar>
                             <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0"
-                                       w:noHBand="0"
-                                       w:noVBand="1"/>
+                                       w:noHBand="0" w:noVBand="1"/>
                         </w:tblPr>
                         <w:tblGrid>
                             <w:gridCol w:w="9214"/>
@@ -663,8 +644,7 @@
                             <w:right w:w="0" w:type="dxa"/>
                         </w:tblCellMar>
                         <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0"
-                                   w:noHBand="0"
-                                   w:noVBand="1"/>
+                                   w:noHBand="0" w:noVBand="1"/>
                     </w:tblPr>
                     <w:tblGrid>
                         <w:gridCol w:w="2051"/>
@@ -695,8 +675,7 @@
         <xsl:variable name="skills" select="cv:skill[cv:includeInCv = 'true'][cv:category = $category]"/>
         <xsl:if test="$skills">
             <w:p w14:paraId="6097DCCD" w14:textId="4767636E" w:rsidR="00BF29B7" w:rsidRPr="00C14BDE"
-                 w:rsidRDefault="008317EA"
-                 w:rsidP="00C14BDE">
+                 w:rsidRDefault="008317EA" w:rsidP="00C14BDE">
                 <w:pPr>
                     <w:pStyle w:val="Kop2"/>
                 </w:pPr>
@@ -844,7 +823,7 @@
                         <w:t>
                             <xsl:if test="$yearFrom">
                                 <xsl:value-of select="$yearFrom"/>
-                                <xsl:text> – </xsl:text>
+                                <xsl:text xml:space="preserve"> – </xsl:text>
                             </xsl:if>
                             <xsl:choose>
                                 <xsl:when test="$yearTo">

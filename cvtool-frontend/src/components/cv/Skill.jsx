@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, Modal, ContextualMenu, IconButton, PrimaryButton } from "@fluentui/react";
+import { Text, Stack, DefaultButton, PrimaryButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
@@ -15,7 +15,7 @@ import { createHelpIcon } from "../widgets/CvHelpIcon";
 import ConfirmDialog from "../ConfirmDialog";
 import * as enums from "./Enums";
 import * as commonUtils from "../../utils/CommonUtils";
-import * as preview from "./Preview";
+import Preview, * as preview from "./Preview";
 
 const entityName = "skill";
 
@@ -36,25 +36,22 @@ const Skill = (props) => {
   const skills = React.useMemo(() =>
     props.selectedCvId && Object.values(props.skillEntity || {})
       .filter(instance => instance.cvId === props.selectedCvId)
-      .sort((l, r) => {
-        let compare = (enums.getEnumData(enums.SkillCategories, l.category)?.sortIndex || 0)
-          - (enums.getEnumData(enums.SkillCategories, r.category)?.sortIndex || 0);
-        if (compare === 0) {
-          compare = (r.skillLevel || 0) - (l.skillLevel || 0);
-        }
-        if (compare === 0) {
-          compare = commonUtils.comparePrimitives(l.description && l.description[props.locale] || "", r.description && r.description[props.locale] || "");
-        }
-        return compare;
-      })
+      .sort((l, r) =>
+        commonUtils.comparePrimitives(
+          enums.getValue(enums.SkillCategories, l.category)?.sortIndex || 0,
+          enums.getValue(enums.SkillCategories, r.category)?.sortIndex || 0)
+        || commonUtils.comparePrimitives(r.skillLevel || 0, l.skillLevel || 0)
+        || commonUtils.comparePrimitives(
+          commonUtils.getValueOrFallback(l, "description", props.locale),
+          commonUtils.getValueOrFallback(r, "description", props.locale)))
       || [],
   [props.skillEntity, props.selectedCvId]);
 
   const renderSkill = (item) =>
-    enums.getEnumData(enums.SkillCategories, item.category)?.text || "";
+    enums.getText(enums.SkillCategories, item.category, props.locale);
 
   const renderDescription = (item) =>
-    item.description && item.description[props.locale] || commonUtils.getPlaceholder(skills, item._id, "description", props.locale);
+    item.description && item.description[props.locale] || commonUtils.getValueOrFallback(item, "description", props.locale);
 
   const renderSkillLevel = (item) =>
     "\u2605 ".repeat(item.skillLevel).trim();
@@ -117,12 +114,6 @@ const Skill = (props) => {
       background: editPaneBackground,
       padding: 20,
       height: "calc(100vh - 170px)"
-    }
-  };
-  const previewStyles = {
-    root: {
-      background: viewPaneBackground,
-      padding: 20
     }
   };
   const tdStyle = {
@@ -272,14 +263,14 @@ const Skill = (props) => {
   [skills, isPreviewVisible, previewHeight, previewFlexBoxHeight]);
 
   const renderPreviewDescription = (skill) =>
-    preview.wrapText(skill.description && skill.description[props.locale] || "");
+    preview.wrapText(commonUtils.getValueOrFallback(skill, "description", props.locale));
 
   const renderPreviewSkill = (skill) =>
     <tr key={skill._id}>
-      <td width="158px" style={{ maxWidth: 158, whiteSpace: "pre", overflowX: "hidden" }}>
+      <td style={{ width: 158, maxWidth: 158, whiteSpace: "pre", overflowX: "hidden" }}>
         {renderPreviewDescription(skill)}
       </td>
-      <td width="41px" align="right" valign="bottom">
+      <td style={{ width: 41, textAlign: "right", verticalAlign: "bottom" }}>
         <strong>{renderSkillLevel(skill)}</strong>
       </td>
     </tr>;
@@ -289,9 +280,17 @@ const Skill = (props) => {
       <table style={{ ...previewTextStyles, borderCollapse: "collapse" }}>
         <tbody>
           <tr>
-            <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>{category.text}</td>
+            <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>
+              {enums.getTextFromValue(category, props.locale)}
+            </td>
           </tr>
-          {skillsOfCategory.map(renderPreviewSkill)}
+          {skillsOfCategory
+            .sort((l, r) =>
+              commonUtils.comparePrimitives(r.skillLevel || 0, l.skillLevel || 0)
+              || commonUtils.comparePrimitives(
+                commonUtils.getValueOrFallback(l, "description", props.locale),
+                commonUtils.getValueOrFallback(r, "description", props.locale)))
+            .map(renderPreviewSkill)}
         </tbody>
       </table>
     </div>;
@@ -300,12 +299,7 @@ const Skill = (props) => {
     <Stack
       styles={{
         root: {
-          backgroundColor: "white",
-          borderColor: valoriYellow,
-          borderWidth: 1,
-          borderStyle: "solid none none none",
-          width: 650,
-          height: 400
+          width: 650
         }
       }}
       tokens={{ childrenGap: "l1"}}>
@@ -326,8 +320,8 @@ const Skill = (props) => {
             .map(category => [
               category,
               skills
+                .filter(isFilledSkill)
                 .filter(skill => skill.category === category.key)
-                .filter(skill => commonUtils.isFilledLocaleField(skill.description))
                 .filter(skill => skill.includeInCv)
             ])
             .filter(([, skillsOfCategory]) => skillsOfCategory.length > 0)
@@ -398,32 +392,17 @@ const Skill = (props) => {
                   label="Categorie"
                   field="category"
                   instanceContext={skillContext}
-                  options={enums.SkillCategories}
-                  styles={{ root: { width: 160 } }}
+                  options={enums.getOptions(enums.SkillCategories, props.locale)}
+                  styles={{ root: { width: 180 } }}
                 />
-                {isPreviewVisible
-                && <Modal
-                  isOpen={isPreviewVisible}
-                  onDismiss={() => setPreviewVisible(false)}
-                  isModeless={true}
-                  dragOptions={{
-                    moveMenuItemText: "Move",
-                    closeMenuItemText: "Close",
-                    menu: ContextualMenu
+                <Preview
+                  isVisible={isPreviewVisible}
+                  rootStyles={{
+                    height: 400
                   }}
-                  styles={{ root: { overflow: "hidden", margin: "-8px" } }}>
-                  <Stack styles={previewStyles}>
-                    <Stack horizontal horizontalAlign="space-between">
-                      <Text variant="xxLarge">Preview</Text>
-                      <IconButton
-                        iconProps={{ iconName: "Cancel" }}
-                        onClick={() => setPreviewVisible(false)}
-                      />
-                    </Stack>
-                    {renderPreview()}
-                  </Stack>
-                </Modal>
-                }
+                  renderContent={renderPreview}
+                  onDismiss={() => setPreviewVisible(false)}
+                />
                 <PrimaryButton
                   text="Preview"
                   iconProps={{ iconName: "EntryView" }}

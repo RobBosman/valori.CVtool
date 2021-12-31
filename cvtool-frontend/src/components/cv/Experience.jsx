@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, Modal, ContextualMenu, IconButton, ColumnActionsMode } from "@fluentui/react";
+import { Text, Stack, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, ColumnActionsMode } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -14,7 +14,7 @@ import { CvFormattedText } from "../widgets/CvFormattedText";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 import ConfirmDialog from "../ConfirmDialog";
 import * as commonUtils from "../../utils/CommonUtils";
-import * as preview from "./Preview";
+import Preview, * as preview from "./Preview";
 
 const entityName = "experience";
 
@@ -48,7 +48,7 @@ const Experience = (props) => {
   const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
 
   const renderRole = (item) =>
-    item.role && item.role[props.locale] || commonUtils.getPlaceholder(experiences, item._id, "role", props.locale);
+    item.role && item.role[props.locale] || commonUtils.getValueOrFallback(item, "role", props.locale);
 
   const renderClient = (item) =>
     item.client || item.employer;
@@ -72,7 +72,7 @@ const Experience = (props) => {
             <br/>waarin werkervaringen in je cv komen te staan.
           </Text>
       }),
-      onRender: preview.composeExperiencePeriod,
+      onRender: (item) => preview.composeExperiencePeriod(item, props.locale),
       isResizable: false,
       minWidth: 110,
       maxWidth: 110,
@@ -117,14 +117,15 @@ const Experience = (props) => {
   const selectedItemFields = React.useCallback(() => {
     const selectedExperience = experiences.find(experience => experience._id === props.selectedExperienceId);
     return selectedExperience && {
-      Periode: preview.composeExperiencePeriod(selectedExperience),
+      Periode: preview.composeExperiencePeriod(selectedExperience, props.locale),
       Opdrachtgever: selectedExperience.client
     };
   },
   [experiences, props.selectedExperienceId]);
 
   const isFilledExperience = (experience) =>
-    experience.periodBegin || experience.client || commonUtils.isFilledLocaleField(experience.assignment, experience.activities, experience.results, experience.keywords);
+    experience.periodBegin || experience.client
+    || commonUtils.isFilledLocaleField(experience.assignment, experience.activities, experience.results, experience.keywords);
 
   const onAddItem = () => {
     let newExperience = experiences.find(experience => !isFilledExperience(experience));
@@ -200,13 +201,6 @@ const Experience = (props) => {
       height: "calc(100vh - 170px)"
     }
   };
-  const previewStyles = {
-    root: {
-      background: viewPaneBackground,
-      padding: 20,
-      height: "calc(100vh - 300px)"
-    }
-  };
   const tdStyle = {
     width: "calc(50vw - 98px)"
   };
@@ -216,76 +210,57 @@ const Experience = (props) => {
       .find(experience => experience._id === props.selectedExperienceId);
     const previewContext = {
       entity: {
-        [props.selectedExperienceId]: experience && preview.composeExperiencePreview(experience, props.locale)
+        [props.selectedExperienceId]: {
+          composedDescription: experience && preview.composeExperienceDescription(experience, props.locale)
+        }
       },
       instanceId: props.selectedExperienceId
     };
-    return <Stack horizontal
-      styles={{
-        root: {
-          backgroundColor: "white",
-          borderColor: valoriYellow,
-          borderWidth: 1,
-          borderStyle: "solid none solid none",
-          overflow: "auto"
-        }
-      }}>
-      <Stack
-        styles={{
-          root: {
-            width: 140
-          }
-        }}>
-        <CvFormattedText
-          field="period"
-          instanceContext={previewContext}
-          markDown={false}
-          textComponentStyle={{
-            backgroundColor: "white",
-            color: valoriBlue,
-            padding: 0
-          }}
-        />
-        <CvFormattedText
-          field={`role.${props.locale}`}
-          instanceContext={previewContext}
-          markDown={false}
-          textComponentStyle={{
-            backgroundColor: "white",
-            color: valoriYellow,
-            padding: 0
-          }}
-        />
-        <CvFormattedText
-          field="clientOrEmployer"
-          instanceContext={previewContext}
-          markDown={false}
-          textComponentStyle={{
-            backgroundColor: "white",
-            color: valoriYellow,
-            padding: 0
-          }}
-        />
-      </Stack>
-      <CvFormattedText
-        field={`description.${props.locale}`}
-        instanceContext={previewContext}
-        markDown={true}
-        textComponentStyle={{
-          backgroundColor: "white",
-          color: valoriBlue,
-          paddingTop: 0
-        }}
+    return experience
+      ? <Stack horizontal
         styles={{
           root: {
             borderColor: valoriYellow,
-            borderWidth: 1,
-            borderLeftStyle: "dashed",
-            width: 492
+            borderBottomWidth: 1,
+            borderBottomStyle: "solid"
           }
-        }}
-      />
-    </Stack>;
+        }}>
+        <Stack
+          styles={{
+            root: {
+              width: 140
+            }
+          }}>
+          <Text style={{ color: valoriBlue }}>
+            {preview.composeExperiencePeriod(experience, props.locale)}
+          </Text>
+          <Text style={{ color: valoriYellow }}>
+            {commonUtils.getValueOrFallback(experience, "role", props.locale)}
+          </Text>
+          <Text style={{ color: valoriYellow }}>
+            {experience.client || experience.employer || ""}
+          </Text>
+        </Stack>
+        <CvFormattedText
+          field="composedDescription"
+          instanceContext={previewContext}
+          markDown={true}
+          textComponentStyle={{
+            backgroundColor: "white",
+            color: valoriBlue,
+            paddingTop: 0
+          }}
+          styles={{
+            root: {
+              borderColor: valoriYellow,
+              borderWidth: 1,
+              borderLeftStyle: "dashed",
+              width: 492
+            }
+          }}
+        />
+      </Stack>
+      : null;
   },
   [experiences, props.selectedExperienceId, props.locale]);
 
@@ -353,29 +328,15 @@ const Experience = (props) => {
                       instanceContext={experienceContext}
                     />
                   </Stack>
-                  {isPreviewVisible
-                  && <Modal
-                    isOpen={isPreviewVisible}
-                    onDismiss={() => setPreviewVisible(false)}
-                    isModeless={true}
-                    dragOptions={{
-                      moveMenuItemText: "Move",
-                      closeMenuItemText: "Close",
-                      menu: ContextualMenu
+                  <Preview
+                    isVisible={isPreviewVisible}
+                    rootStyles={{
+                      width: 632,
+                      height: "calc(100vh - 300px)"
                     }}
-                    styles={{ root: { overflow: "hidden", margin: "-8px" } }}>
-                    <Stack styles={previewStyles}>
-                      <Stack horizontal horizontalAlign="space-between">
-                        <Text variant="xxLarge">Preview</Text>
-                        <IconButton
-                          iconProps={{ iconName: "Cancel" }}
-                          onClick={() => setPreviewVisible(false)}
-                        />
-                      </Stack>
-                      {renderPreview()}
-                    </Stack>
-                  </Modal>
-                  }
+                    renderContent={renderPreview}
+                    onDismiss={() => setPreviewVisible(false)}
+                  />
                   <PrimaryButton
                     text="Preview"
                     iconProps={{ iconName: "EntryView" }}
