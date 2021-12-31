@@ -220,6 +220,7 @@ const Experience = (props) => {
       ? <Stack horizontal
         styles={{
           root: {
+            backgroundColor: "white",
             borderColor: valoriYellow,
             borderBottomWidth: 1,
             borderBottomStyle: "solid"
