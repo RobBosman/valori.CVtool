@@ -14,7 +14,7 @@ import * as enums from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
-import Preview from "./Preview";
+import Preview, * as preview from "./Preview";
 
 const entityName = "education";
 
@@ -186,16 +186,24 @@ const Education = (props) => {
           commonUtils.getValueOrFallback(r, "name", props.locale)));
     return educationsToDisplay.length === 0
       ? null
-      : <table>
+      : <table style={{
+        ...preview.cvTextStyle
+      }}>
         <tbody>
           <tr
             style={{
               color: valoriYellow,
               fontWeight: "bold"
             }}>
-            <td style={{ width: 204 }}>Opleiding</td>
-            <td style={{ width: 208 }}>Onderwijsinstelling</td>
-            <td>Diploma</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Opleiding</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Onderwijsinstelling</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Diploma</td>
           </tr>
           {
             educationsToDisplay
@@ -274,7 +282,7 @@ const Education = (props) => {
                 <Preview
                   isVisible={isPreviewVisible}
                   rootStyles={{
-                    width: 620,
+                    width: 615,
                     height: 350
                   }}
                   renderContent={renderPreview}

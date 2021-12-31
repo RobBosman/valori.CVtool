@@ -8,8 +8,7 @@ import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 import { CvFormattedText } from "../widgets/CvFormattedText";
-import Preview from "./Preview";
-import * as preview from "../cv/Preview";
+import Preview, * as preview from "../cv/Preview";
 import * as commonUtils from "../../utils/CommonUtils";
 
 const Profile = (props) => {
@@ -135,7 +134,7 @@ const Profile = (props) => {
             <Preview
               isVisible={isPreviewVisible}
               rootStyles={{
-                width: 662,
+                width: 629,
                 height: 450
               }}
               renderContent={renderPreview}

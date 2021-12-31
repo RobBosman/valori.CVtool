@@ -267,39 +267,52 @@ const Skill = (props) => {
 
   const renderPreviewSkill = (skill) =>
     <tr key={skill._id}>
-      <td style={{ width: 158, maxWidth: 158, whiteSpace: "pre", overflowX: "hidden" }}>
+      <td style={{
+        width: 156, // ~ 42.5 mm
+        maxWidth: 156,
+        whiteSpace: "pre",
+        overflowX: "hidden"
+      }}>
         {renderPreviewDescription(skill)}
       </td>
-      <td style={{ width: 41, textAlign: "right", verticalAlign: "bottom" }}>
+      <td style={{
+        width: 41,
+        textAlign: "right",
+        verticalAlign: "bottom"
+      }}>
         <strong>{renderSkillLevel(skill)}</strong>
       </td>
     </tr>;
 
   const renderPreviewSkillsOfCategory = (category, skillsOfCategory) =>
-    <div key={category.key}>
-      <table style={{ ...previewTextStyles, borderCollapse: "collapse" }}>
-        <tbody>
-          <tr>
-            <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>
-              {enums.getTextFromValue(category, props.locale)}
-            </td>
-          </tr>
-          {skillsOfCategory
-            .sort((l, r) =>
-              commonUtils.comparePrimitives(r.skillLevel || 0, l.skillLevel || 0)
-              || commonUtils.comparePrimitives(
-                commonUtils.getValueOrFallback(l, "description", props.locale),
-                commonUtils.getValueOrFallback(r, "description", props.locale)))
-            .map(renderPreviewSkill)}
-        </tbody>
-      </table>
-    </div>;
+    <table
+      key={category.key}
+      style={{
+        ...previewTextStyles,
+        borderCollapse: "collapse"
+      }}>
+      <tbody>
+        <tr>
+          <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>
+            {enums.getTextFromValue(category, props.locale)}
+          </td>
+        </tr>
+        {skillsOfCategory
+          .sort((l, r) =>
+            commonUtils.comparePrimitives(r.skillLevel || 0, l.skillLevel || 0)
+            || commonUtils.comparePrimitives(
+              commonUtils.getValueOrFallback(l, "description", props.locale),
+              commonUtils.getValueOrFallback(r, "description", props.locale)))
+          .map(renderPreviewSkill)}
+      </tbody>
+    </table>;
 
   const renderPreview = React.useCallback(() =>
     <Stack
       styles={{
         root: {
-          width: 650
+          margin: 8,
+          overflow: "hidden"
         }
       }}
       tokens={{ childrenGap: "l1"}}>
@@ -311,8 +324,8 @@ const Skill = (props) => {
           flexDirection: "column",
           flexWrap: "wrap",
           gap: `${flexGapVertical}px ${flexGapHorizontal}px`,
-          height: previewHeight,
-          overflow: "hidden"
+          width: 623,
+          height: previewHeight
         }}>
         {
           enums.SkillCategories

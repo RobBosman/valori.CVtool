@@ -14,7 +14,7 @@ import * as enums from "./Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
-import Preview from "./Preview";
+import Preview, * as preview from "./Preview";
 
 const entityName = "training";
 
@@ -162,7 +162,9 @@ const Training = (props) => {
 
   const renderPreviewTraining = (training) => {
     return (
-      <tr style={{ color: valoriBlue }}>
+      <tr style={{
+        color: valoriBlue
+      }}>
         <td>{commonUtils.getValueOrFallback(training, "name", props.locale)}</td>
         <td>{training.institution}</td>
         <td>
@@ -188,16 +190,24 @@ const Training = (props) => {
           commonUtils.getValueOrFallback(r, "name", props.locale)));
     return trainingsToDisplay.length === 0
       ? null
-      : <table>
+      : <table style={{
+        ...preview.cvTextStyle
+      }}>
         <tbody>
           <tr
             style={{
               color: valoriYellow,
               fontWeight: "bold"
             }}>
-            <td style={{ width: 204 }}>Training</td>
-            <td style={{ width: 208 }}>Opleidingsinstituut</td>
-            <td>Certificaat</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Training</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Opleidingsinstituut</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Certificaat</td>
           </tr>
           {
             trainingsToDisplay
@@ -274,7 +284,7 @@ const Training = (props) => {
                 <Preview
                   isVisible={isPreviewVisible}
                   rootStyles={{
-                    width: 620,
+                    width: 615,
                     height: 350
                   }}
                   renderContent={renderPreview}

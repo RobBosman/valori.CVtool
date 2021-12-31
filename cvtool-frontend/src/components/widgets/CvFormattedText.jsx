@@ -89,8 +89,6 @@ export const CvFormattedText = (props) => {
 
   const textComponentStyle = {
     ...preview.cvTextStyle,
-    backgroundColor: instance ? semanticColors.inputBackground : semanticColors.disabledBackground,
-    padding: 8,
     ...props.textComponentStyle
   };
 
@@ -104,8 +102,12 @@ export const CvFormattedText = (props) => {
         </Label>
       }
       <Text
-        style={textComponentStyle}>
-        {textFormatter.renderAndFormat(value, formattingSpecs, props.textComponentStyle)}
+        style={{
+          backgroundColor: instance ? semanticColors.inputBackground : semanticColors.disabledBackground,
+          padding: 8,
+          ...textComponentStyle
+        }}>
+        {textFormatter.renderAndFormat(value, formattingSpecs, textComponentStyle)}
       </Text>
     </Stack>
   );

@@ -12,7 +12,7 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 import ConfirmDialog from "../ConfirmDialog";
 import * as commonUtils from "../../utils/CommonUtils";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
-import Preview from "./Preview";
+import Preview, * as preview from "./Preview";
 
 const entityName = "publication";
 
@@ -51,7 +51,7 @@ const Publication = (props) => {
       onRender: (item) => commonUtils.getValueOrFallback(item, "title", props.locale),
       isResizable: true,
       minWidth: 150,
-      maxWidth: 400
+      maxWidth: 300
     },
     {
       key: "media",
@@ -154,17 +154,25 @@ const Publication = (props) => {
       .sort((l, r) => commonUtils.comparePrimitives(r.year, l.year));
     return publicationsToDisplay.length === 0
       ? null
-      : <table>
+      : <table style={{ ...preview.cvTextStyle }}>
         <tbody>
           <tr
             style={{
               color: valoriYellow,
               fontWeight: "bold"
             }}>
-            <td style={{ width: 201 }}>Titel</td>
-            <td style={{ width: 150 }}>Media</td>
-            <td style={{ width: 46 }}>Jaar</td>
-            <td>Omschrijving</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Titel</td>
+            <td style={{
+              width: 157 // = 2363/1440 inch
+            }}>Media</td>
+            <td style={{
+              width: 47 // = 708/1440 inch
+            }}>Jaar</td>
+            <td style={{
+              width: 205 // = 3071/1440 inch
+            }}>Omschrijving</td>
           </tr>
           {
             publicationsToDisplay
@@ -241,7 +249,7 @@ const Publication = (props) => {
                 <Preview
                   isVisible={isPreviewVisible}
                   rootStyles={{
-                    width: 618,
+                    width: 614, // = 9213/1440 inch
                     height: 350
                   }}
                   renderContent={renderPreview}

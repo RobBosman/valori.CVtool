@@ -13,7 +13,7 @@ import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 import { CvFormattedText } from "../widgets/CvFormattedText";
-import Preview from "./Preview";
+import Preview, * as preview from "./Preview";
 
 const entityName = "reference";
 
@@ -141,6 +141,7 @@ const Reference = (props) => {
     <Stack>
       <Text
         style={{
+          ...preview.cvTextStyle,
           backgroundColor: "white",
           color: valoriYellow,
           fontWeight: "bold"
@@ -236,7 +237,7 @@ const Reference = (props) => {
                 <Preview
                   isVisible={isPreviewVisible}
                   rootStyles={{
-                    width: 618,
+                    width: 614, // = 9213/1440 inch
                     height: 350
                   }}
                   renderContent={renderPreview}

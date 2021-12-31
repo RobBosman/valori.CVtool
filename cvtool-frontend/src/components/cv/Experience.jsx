@@ -228,16 +228,16 @@ const Experience = (props) => {
         <Stack
           styles={{
             root: {
-              width: 140
+              width: 131 // = 1972/1440 inch
             }
           }}>
-          <Text style={{ color: valoriBlue }}>
+          <Text style={{ ...preview.cvTextStyle, color: valoriBlue }}>
             {preview.composeExperiencePeriod(experience, props.locale)}
           </Text>
-          <Text style={{ color: valoriYellow }}>
+          <Text style={{ ...preview.cvTextStyle, color: valoriYellow }}>
             {commonUtils.getValueOrFallback(experience, "role", props.locale)}
           </Text>
-          <Text style={{ color: valoriYellow }}>
+          <Text style={{ ...preview.cvTextStyle, color: valoriYellow }}>
             {experience.client || experience.employer || ""}
           </Text>
         </Stack>
@@ -255,7 +255,7 @@ const Experience = (props) => {
               borderColor: valoriYellow,
               borderWidth: 1,
               borderLeftStyle: "dashed",
-              width: 492
+              width: 483 // = 7241/1440 inch
             }
           }}
         />
@@ -331,7 +331,7 @@ const Experience = (props) => {
                   <Preview
                     isVisible={isPreviewVisible}
                     rootStyles={{
-                      width: 632,
+                      width: 614, // = 9213/1440 inch
                       height: "calc(100vh - 300px)"
                     }}
                     renderContent={renderPreview}
