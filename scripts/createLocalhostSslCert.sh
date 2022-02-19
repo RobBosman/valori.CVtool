@@ -17,7 +17,7 @@ STOREPASS=KeyStorePassword
     -keyalg RSA \
     -keysize 2048 \
     -sigalg SHA256withRSA \
-    -validity 365
+    -validity 36500
 
 #keytool \
 #    -keystore ${KEYSTORE} \
