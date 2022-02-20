@@ -2,6 +2,8 @@
 
 JAVA_HOME="/mnt/c/Program Files/Java/jdk-17"
 HOSTNAME=localhost
+KEYSIZE=2048
+VALIDITY=3650
 KEYSTORE=keystore.p12
 STORETYPE=PKCS12
 STOREPASS=KeyStorePassword
@@ -15,9 +17,9 @@ STOREPASS=KeyStorePassword
     -dname "CN=${HOSTNAME},OU=QA Consulting,O=Valori,L=Utrecht,ST=Utrecht,C=NL" \
     -ext "san=dns:${HOSTNAME},ip:127.0.0.1,ip:::1" \
     -keyalg RSA \
-    -keysize 2048 \
+    -keysize ${KEYSIZE} \
     -sigalg SHA256withRSA \
-    -validity 36500
+    -validity ${VALIDITY}
 
 #keytool \
 #    -keystore ${KEYSTORE} \
@@ -30,6 +32,3 @@ STOREPASS=KeyStorePassword
 openssl pkcs12 -in ${KEYSTORE} -nocerts -out ${HOSTNAME}-privkey-with-password.pem -passin pass:${STOREPASS} -passout pass:${STOREPASS}
 openssl rsa -in ${HOSTNAME}-privkey-with-password.pem -out ${HOSTNAME}-privkey.pem -passin pass:${STOREPASS}
 openssl pkcs12 -in ${KEYSTORE} -clcerts -nokeys -out ${HOSTNAME}-fullchain.pem -passin pass:${STOREPASS}
-
-# Generate a cert for DH params (takes a long time!)
-openssl dhparam -out dhparam.pem 4096
