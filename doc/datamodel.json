@@ -21,7 +21,11 @@
   },
   "cv": {
     "_id": "ID",
-    "accountId": "ID",
+    "accountId": "ID"
+  },
+  "characteristics": {
+    "_id": "ID",
+    "cvId": "ID",
     "role": {
       "[locale]": "STRING"
     },
@@ -32,7 +36,8 @@
       "[locale]": "STRING"
     },
     "workingSince": "YEAR",
-    "inItSince": "YEAR"
+    "inItSince": "YEAR",
+    "includeInCv": "BOOLEAN"
   },
   "education": {
     "_id": "ID",
@@ -43,7 +48,8 @@
     "institution": "STRING",
     "yearFrom": "YEAR",
     "yearTo": "YEAR",
-    "result": "ENUM_EDUCATION_RESULT"
+    "result": "ENUM_EDUCATION_RESULT",
+    "includeInCv": "BOOLEAN"
   },
   "training": {
     "_id": "ID",
@@ -53,7 +59,8 @@
     },
     "institution": "STRING",
     "year": "YEAR",
-    "result": "ENUM_EDUCATION_RESULT"
+    "result": "ENUM_EDUCATION_RESULT",
+    "includeInCv": "BOOLEAN"
   },
   "skill": {
     "_id": "ID",
@@ -62,7 +69,8 @@
     "description": {
       "[locale]": "STRING"
     },
-    "skillLevel": "NUMBER"
+    "skillLevel": "NUMBER",
+    "includeInCv": "BOOLEAN"
   },
   "publication": {
     "_id": "ID",

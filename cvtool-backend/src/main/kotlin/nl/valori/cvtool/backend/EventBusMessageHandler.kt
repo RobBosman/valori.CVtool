@@ -68,7 +68,11 @@ internal object EventBusMessageHandler {
                     )
             }
             SOCKET_ERROR -> {
-                log.error("Socket error for remote address ${bridgeEvent.socket().remoteAddress()}: ${bridgeEvent.rawMessage.encodePrettily()}")
+                log.error("Socket error" +
+                        "\n\tlocal address ${bridgeEvent.socket().localAddress()}" +
+                        "\n\tremote address ${bridgeEvent.socket().remoteAddress()}" +
+                        "\n\theaders: ${bridgeEvent.socket().headers()}" +
+                        "\n\tmessage: ${bridgeEvent.rawMessage.encodePrettily()}")
                 bridgeEvent.complete(false)
             }
             else -> bridgeEvent.complete(true)

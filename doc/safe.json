@@ -31,7 +31,13 @@
   "cv": {
     "uuid-cv-1": {
       "_id": "uuid-cv-1",
-      "accountId": "uuid-account-1",
+      "accountId": "uuid-account-1"
+    }
+  },
+  "characteristics": {
+    "uuid-profile-1": {
+      "_id": "uuid-characteristics-1",
+      "cvId": "uuid-cv-1",
       "role": {
         "nl_NL": "senior software developer"
       },
@@ -42,7 +48,8 @@
         "nl_NL": "best divers"
       },
       "workingSince": 1990,
-      "inItSince": 1990
+      "inItSince": 1990,
+      "includeInCv": true
     }
   },
   "education": {
@@ -55,7 +62,8 @@
       "institution": "Bataafse Kamp",
       "yearFrom": 1984,
       "yearTo": 1988,
-      "result": "DIPLOMA"
+      "result": "DIPLOMA",
+      "includeInCv": true
     }
   },
   "training": {
@@ -67,7 +75,8 @@
       },
       "institution": "Bataafse Kamp",
       "year": 1988,
-      "result": "DIPLOMA"
+      "result": "DIPLOMA",
+      "includeInCv": true
     }
   },
   "publication": {
@@ -112,7 +121,8 @@
         "nl_NL": "Java",
         "uk_UK": "Java"
       },
-      "skillLevel": 5
+      "skillLevel": 3,
+      "includeInCv": true
     },
     "uuid-skill-2": {
       "_id": "uuid-skill-2",
@@ -122,7 +132,8 @@
         "nl_NL": "Javascript",
         "uk_UK": "Javascript"
       },
-      "skillLevel": 4
+      "skillLevel": 3,
+      "includeInCv": true
     },
     "uuid-skill-3": {
       "_id": "uuid-skill-3",
@@ -132,7 +143,8 @@
         "nl_NL": "Bankwezen",
         "uk_UK": "Banking"
       },
-      "skillLevel": 3
+      "skillLevel": 2,
+      "includeInCv": true
     },
     "uuid-skill-4": {
       "_id": "uuid-skill-4",
@@ -142,7 +154,8 @@
         "nl_NL": "Nederlands",
         "uk_UK": "Dutch"
       },
-      "skillLevel": 5
+      "skillLevel": 3,
+      "includeInCv": true
     }
   },
   "experience": {
