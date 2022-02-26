@@ -6,6 +6,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.bridge.BridgeEventType.PUBLISH
 import io.vertx.ext.bridge.BridgeEventType.SEND
+import io.vertx.ext.bridge.BridgeEventType.SOCKET_ERROR
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.reactivex.core.Vertx
@@ -65,6 +66,10 @@ internal object EventBusMessageHandler {
                             bridgeEvent.complete(false)
                         }
                     )
+            }
+            SOCKET_ERROR -> {
+                log.error("Socket error for remote address ${bridgeEvent.socket().remoteAddress()}: ${bridgeEvent.rawMessage.encodePrettily()}")
+                bridgeEvent.complete(false)
             }
             else -> bridgeEvent.complete(true)
         }

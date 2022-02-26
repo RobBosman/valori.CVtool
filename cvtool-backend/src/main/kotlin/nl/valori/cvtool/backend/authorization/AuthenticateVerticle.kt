@@ -1,6 +1,7 @@
 package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
+import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
@@ -13,6 +14,7 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.concurrent.atomic.AtomicLong
 import java.util.function.BiConsumer
 
@@ -42,6 +44,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .setClientSecret(clientIdAndSecret[1])
             )
             .observeOn(Schedulers.io())
+            .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 {
                     handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, it)
@@ -151,8 +154,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     }
                 },
                 {
-                    log.warn("Health is not OK: ${it.message}")
-                    message.fail(RECIPIENT_FAILURE.toInt(), it.message)
+                    val rootCause = if (it is CompositeException) it.cause.cause ?: it.cause else it
+                    val unhealthySinceMillis = if (lastOpenIDConnectionAtMillis.get() > 0)
+                        System.currentTimeMillis() - lastOpenIDConnectionAtMillis.get() else 0
+                    log.warn("Health is not OK since ${unhealthySinceMillis / 1000} seconds: ${rootCause.message}")
+                    message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
                 }
             )
     }

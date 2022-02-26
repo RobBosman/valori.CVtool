@@ -15,6 +15,7 @@ import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import org.bson.Document
 import org.slf4j.LoggerFactory
+import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.stream.Collectors.toList
 
 const val MONGODB_SAVE_ADDRESS = "mongodb.save"
@@ -26,6 +27,7 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
     override fun start(startPromise: Promise<Void>) {
         MongoConnection
             .connectToDatabase(config())
+            .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 { mongoDatabase ->
                     startPromise.complete()

@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>cvtool-frontend</artifactId>
+    <packaging>pom</packaging>
     <description>Frontend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
     <properties>

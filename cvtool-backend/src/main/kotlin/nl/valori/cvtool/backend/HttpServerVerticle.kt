@@ -7,6 +7,7 @@ import io.vertx.reactivex.ext.web.Router
 import nl.valori.cvtool.backend.system.HealthChecker
 import org.slf4j.LoggerFactory
 import java.net.URL
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 internal class HttpServerVerticle : AbstractVerticle() {
 
@@ -32,6 +33,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .requestHandler(createRouter())
             .exceptionHandler { log.debug("Unexpected error in HttpServer: ${it.message}.", it) }
             .rxListen()
+            .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 {
                     log.info("Listening on http://${httpConfig.authority}/health and /eventbus")

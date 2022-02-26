@@ -12,6 +12,7 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.cv.DOLLAR
 import org.bson.BsonDocument
 import org.slf4j.LoggerFactory
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 const val MONGODB_FETCH_ADDRESS = "mongodb.fetch"
 
@@ -22,6 +23,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
     override fun start(startPromise: Promise<Void>) {
         MongoConnection
             .connectToDatabase(config())
+            .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 { mongoDatabase ->
                     startPromise.complete()
