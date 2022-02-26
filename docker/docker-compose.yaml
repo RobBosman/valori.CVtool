@@ -36,19 +36,11 @@ services:
       - type: volume
         source: mongodb_config
         target: /data/configdb
-    healthcheck:
-      test: echo 'curl --connect-timeout 10 --silent --show-error http://localhost:${MONGO_PORT}/' | grep "It looks like you are trying to access MongoDB over HTTP on the native driver port."
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
 
   ######################################################################################################################
   cvtool-backend:
     container_name: cvtool-backend
     image: bransom/cvtool-backend
-    depends_on:
-      - mongodb
     restart: always
     environment:
       - CONTROL_CONNECTION_STRING=http://localhost:${CONTROL_PORT}/
@@ -70,8 +62,6 @@ services:
   cvtool-frontend:
     container_name: cvtool-frontend
     image: bransom/cvtool-frontend
-    depends_on:
-      - cvtool-backend
     restart: always
     environment:
       - HTTP_HOST=${HTTP_HOST}
