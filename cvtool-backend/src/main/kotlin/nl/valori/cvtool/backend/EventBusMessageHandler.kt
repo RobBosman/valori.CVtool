@@ -38,7 +38,7 @@ internal object EventBusMessageHandler {
     internal fun create(vertx: Vertx) =
         SockJSHandler.create(vertx)
             .bridge(createBridgeOptions()) { bridgeEventHandler(vertx, it) }
-            .errorHandler(500, { log.info("errorHandler -- ${it}") })
+            .errorHandler(500) { log.info("errorHandler -- $it") }
 
     private fun createBridgeOptions() =
         SockJSBridgeOptions()
@@ -72,7 +72,6 @@ internal object EventBusMessageHandler {
                     )
             }
             SOCKET_IDLE -> {
-                log.info("Closing idle socket")
                 bridgeEvent.socket().close()
                 bridgeEvent.complete(true)
             }
