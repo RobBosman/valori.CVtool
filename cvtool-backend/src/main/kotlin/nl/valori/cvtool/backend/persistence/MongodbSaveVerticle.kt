@@ -27,6 +27,7 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
     override fun start(startPromise: Promise<Void>) {
         MongoConnection
             .connectToDatabase(config())
+            .doOnError { log.warn("Cannot start verticle: ${it.message}") }
             .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 { mongoDatabase ->

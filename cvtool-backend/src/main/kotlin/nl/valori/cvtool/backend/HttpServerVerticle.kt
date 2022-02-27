@@ -33,6 +33,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .requestHandler(createRouter())
             .exceptionHandler { log.debug("Unexpected error in HttpServer: ${it.message}.", it) }
             .rxListen()
+            .doOnError { log.warn("Cannot start verticle: ${it.message}") }
             .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 {

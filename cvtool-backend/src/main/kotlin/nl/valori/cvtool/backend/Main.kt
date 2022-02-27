@@ -81,6 +81,9 @@ object Main {
         vertx.deployVerticle(verticleClass.java.name, deploymentOptions) { deploymentResult ->
             if (deploymentResult.succeeded()) {
                 verticleDeploymentStates[verticleClass] = "UP"
+                if (verticleDeploymentStates.filterValues { it != "UP" }.isEmpty()) {
+                    log.info("Successfully started all verticles")
+                }
             } else {
                 verticleDeploymentStates[verticleClass] = deploymentResult.cause().message ?: "UNKNOWN ERROR"
                 log.error("Error deploying ${verticleClass.simpleName}", deploymentResult.cause())

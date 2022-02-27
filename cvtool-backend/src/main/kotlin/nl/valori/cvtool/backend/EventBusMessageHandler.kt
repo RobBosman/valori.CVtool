@@ -7,6 +7,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.bridge.BridgeEventType.PUBLISH
 import io.vertx.ext.bridge.BridgeEventType.SEND
 import io.vertx.ext.bridge.BridgeEventType.SOCKET_ERROR
+import io.vertx.ext.bridge.BridgeEventType.SOCKET_IDLE
 import io.vertx.ext.bridge.PermittedOptions
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions
 import io.vertx.reactivex.core.Vertx
@@ -35,10 +36,13 @@ internal object EventBusMessageHandler {
     private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
     internal fun create(vertx: Vertx) =
-        SockJSHandler.create(vertx).bridge(createBridgeOptions()) { bridgeEventHandler(vertx, it) }
+        SockJSHandler.create(vertx)
+            .bridge(createBridgeOptions()) { bridgeEventHandler(vertx, it) }
+            .errorHandler(500, { log.info("errorHandler -- ${it}") })
 
     private fun createBridgeOptions() =
         SockJSBridgeOptions()
+            .setPingTimeout(10_000) // 10 seconds
             .addInboundPermitted(PermittedOptions().setAddress(AUTH_INFO_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
@@ -62,17 +66,24 @@ internal object EventBusMessageHandler {
                             bridgeEvent.complete(true)
                         },
                         {
-                            log.warn("Event bridge message was not authenticated: ${it.message}")
+                            log.warn("Error handling BridgeEvent: ${it.message}")
                             bridgeEvent.complete(false)
                         }
                     )
             }
+            SOCKET_IDLE -> {
+                log.info("Closing idle socket")
+                bridgeEvent.socket().close()
+                bridgeEvent.complete(true)
+            }
             SOCKET_ERROR -> {
-                log.error("Socket error" +
-                        "\n\tlocal address ${bridgeEvent.socket().localAddress()}" +
-                        "\n\tremote address ${bridgeEvent.socket().remoteAddress()}" +
-                        "\n\theaders: ${bridgeEvent.socket().headers()}" +
-                        "\n\tmessage: ${bridgeEvent.rawMessage.encodePrettily()}")
+                log.error(
+                    "Socket error" +
+                            "\n\tlocal address: ${bridgeEvent.socket().localAddress()}" +
+                            "\n\tremote address: ${bridgeEvent.socket().remoteAddress()}" +
+                            "\n\tweb user: ${bridgeEvent.socket().webUser()}" +
+                            "\n\theaders: ${bridgeEvent.socket().headers()}"
+                )
                 bridgeEvent.complete(false)
             }
             else -> bridgeEvent.complete(true)
@@ -169,6 +180,9 @@ internal object EventBusMessageHandler {
                     JsonObject(it.getMessageHeader("authInfo")).toAuthInfo(),
                     JsonObject(it.getMessageHeader("oldData"))
                 )
+            }
+            .doOnError {
+                log.warn("Authentication error: ${it.message}\n\t-- ${bridgeEvent.getMessageHeader("authInfo")}")
             }
 
     private fun auditLog(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> =

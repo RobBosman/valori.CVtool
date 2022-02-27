@@ -44,6 +44,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .setClientSecret(clientIdAndSecret[1])
             )
             .observeOn(Schedulers.io())
+            .doOnError { log.warn("Cannot start verticle: ${it.message}") }
             .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 {
