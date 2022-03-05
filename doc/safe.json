@@ -28,16 +28,10 @@
       "level": "ADMIN"
     }
   },
-  "cv": {
-    "uuid-cv-1": {
-      "_id": "uuid-cv-1",
-      "accountId": "uuid-account-1"
-    }
-  },
   "characteristics": {
     "uuid-profile-1": {
       "_id": "uuid-characteristics-1",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "role": {
         "nl_NL": "senior software developer"
       },
@@ -55,7 +49,7 @@
   "education": {
     "uuid-education-1": {
       "_id": "uuid-education-1",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "name": {
         "nl_NL": "Atheneum-B"
       },
@@ -69,7 +63,7 @@
   "training": {
     "uuid-education-1": {
       "_id": "uuid-education-1",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "name": {
         "nl_NL": "Atheneum-B"
       },
@@ -82,7 +76,7 @@
   "publication": {
     "uuid-publication-1": {
       "_id": "uuid-publication-1",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "year": 1972,
       "media": "Schoolkrant",
       "title": {
@@ -99,7 +93,7 @@
   "reference": {
     "uuid-reference-1": {
       "_id": "uuid-reference-1",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "referentName": "Jeroen Sanders",
       "referentFunction": {
         "nl_NL": "Manager",
@@ -115,7 +109,7 @@
   "skill": {
     "uuid-skill-1": {
       "_id": "uuid-skill-1",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "category": "PROGRAMMING",
       "description": {
         "nl_NL": "Java",
@@ -126,7 +120,7 @@
     },
     "uuid-skill-2": {
       "_id": "uuid-skill-2",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "category": "PROGRAMMING",
       "description": {
         "nl_NL": "Javascript",
@@ -137,7 +131,7 @@
     },
     "uuid-skill-3": {
       "_id": "uuid-skill-3",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "category": "BRANCHES",
       "description": {
         "nl_NL": "Bankwezen",
@@ -148,7 +142,7 @@
     },
     "uuid-skill-4": {
       "_id": "uuid-skill-4",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "category": "LANGUAGES",
       "description": {
         "nl_NL": "Nederlands",
@@ -161,7 +155,7 @@
   "experience": {
     "uuid-experience-1": {
       "_id": "uuid-experience-1",
-      "cvId": "uuid-cv-1",
+      "accountId": "uuid-account-1",
       "periodBegin": "2020-01-01",
       "periodEnd": "2099-12-31",
       "employer": "Valori",

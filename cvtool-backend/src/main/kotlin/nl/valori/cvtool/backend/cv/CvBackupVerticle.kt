@@ -12,7 +12,7 @@ import nl.valori.cvtool.backend.cv.CvGenerateVerticle.Companion.allLocales
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import java.io.ByteArrayOutputStream
 import java.lang.System.nanoTime
-import java.util.Base64
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import kotlin.collections.component1
@@ -23,6 +23,7 @@ const val ALL_CVS_GENERATE_ADDRESS = "all.cvs.generate"
 
 internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
 
+    // Ensure that cv generation is throttled to prevent connection timeouts.
     private val permitSubject = BehaviorSubject.createDefault(1)
 
     /**
@@ -50,10 +51,12 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
                     .toFlowable()
                     .doOnComplete { permitSubject.onNext(1) }
             }
-            .reduceWith({ HashMap<String, String>() }, { allGeneratedCvs, generatedCv ->
-                allGeneratedCvs[generatedCv.getString("fileName")] = generatedCv.getString("docxB64")
-                allGeneratedCvs
-            })
+            .reduceWith(
+                { HashMap<String, String>() },
+                { allGeneratedCvs, generatedCv ->
+                    allGeneratedCvs[generatedCv.getString("fileName")] = generatedCv.getString("docxB64")
+                    allGeneratedCvs
+                })
             .subscribe(
                 { allGeneratedCvs ->
                     log.info("Generated and zipped ${allGeneratedCvs.size} cvs in ${(nanoTime() - startNanos) / 1_000_000} ms")

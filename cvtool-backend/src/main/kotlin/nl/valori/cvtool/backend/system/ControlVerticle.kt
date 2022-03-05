@@ -2,6 +2,8 @@ package nl.valori.cvtool.backend.system
 
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
+import io.vertx.core.http.HttpHeaders.CONTENT_DISPOSITION
+import io.vertx.core.http.HttpHeaders.CONTENT_TYPE
 import io.vertx.core.http.HttpHeaders.TRANSFER_ENCODING
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.json.JsonObject
@@ -38,6 +40,7 @@ internal class ControlVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     startPromise.complete()
+                    log.info("All cv data can be converted via http://${configConfig.authority}/convertCvData")
                     log.info("All cvs can be downloaded via http://${configConfig.authority}/all-docx.zip")
                 },
                 {
@@ -61,7 +64,7 @@ internal class ControlVerticle : AbstractVerticle() {
                                 .setStatusCode(HTTP_OK)
                                 .putHeader(TRANSFER_ENCODING, "application/zip")
                                 .putHeader(TRANSFER_ENCODING, "chunked")
-                                .putHeader("Content-Disposition", "attachment; filename=\"all-docx.zip\"")
+                                .putHeader(CONTENT_DISPOSITION, "attachment; filename=\"all-docx.zip\"")
                                 .send(zipBytes)
                         },
                         {
@@ -72,6 +75,28 @@ internal class ControlVerticle : AbstractVerticle() {
                         }
                     )
             }
+
+        router
+            .route("/convertCvData")
+            .handler { context ->
+                vertx.eventBus()
+                    .rxRequest<JsonObject>(CONVERT_CV_DATA_ADDRESS, null, deliveryOptions)
+                    .subscribe(
+                        {
+                            context.response()
+                                .setStatusCode(HTTP_OK)
+                                .putHeader(CONTENT_TYPE, "application/json")
+                                .send(it.body().encodePrettily())
+                        },
+                        {
+                            log.error("Error converting cv data", it)
+                            context.response()
+                                .setStatusCode(HTTP_INTERNAL_ERROR)
+                                .end()
+                        }
+                    )
+            }
+
         return router
     }
 }

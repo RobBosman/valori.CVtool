@@ -6,12 +6,12 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.addEntity
+import nl.valori.cvtool.backend.ModelUtils.composeCharacteristicsInstance
 import nl.valori.cvtool.backend.ModelUtils.composeCvDataCriteria
-import nl.valori.cvtool.backend.ModelUtils.composeCvInstance
 import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
-import java.util.UUID
+import java.util.*
 
 const val CV_FETCH_ADDRESS = "cv.fetch"
 
@@ -76,7 +76,7 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
         return when (cvIds.size) {
             0 -> {
                 val cvId = UUID.randomUUID().toString()
-                val saveRequest = JsonObject().addEntity("cv", composeCvInstance(cvId, accountId))
+                val saveRequest = JsonObject().addEntity("cv", composeCharacteristicsInstance(cvId, accountId))
                 vertx.eventBus()
                     .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
                     .map { cvId }

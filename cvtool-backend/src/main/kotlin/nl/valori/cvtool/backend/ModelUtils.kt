@@ -8,7 +8,14 @@ object ModelUtils {
 
     val ACCOUNT_RELATED_ENTITY_NAMES = listOf(
         "authorization",
-        "cv"
+        "cv",
+        "characteristics",
+        "education",
+        "training",
+        "skill",
+        "publication",
+        "reference",
+        "experience"
     )
 
     val CV_RELATED_ENTITY_NAMES = listOf(
@@ -40,7 +47,7 @@ object ModelUtils {
             }"""
         )
 
-    fun composeCvInstance(id: String, accountId: String) =
+    fun composeCharacteristicsInstance(id: String, accountId: String) =
         JsonObject(
             """{
                 "_id": "$id",
@@ -54,14 +61,15 @@ object ModelUtils {
     fun composeCvDataCriteria(accountId: String, cvId: String?) =
         JsonObject(
             """{
-                "cv": [{ "_id": "$cvId" }],
                 "account": [{ "_id": "$accountId" }],
-                "education": [{ "cvId": "$cvId" }],
-                "training": [{ "cvId": "$cvId" }],
-                "skill": [{ "cvId": "$cvId" }],
-                "publication": [{ "cvId": "$cvId" }],
-                "reference": [{ "cvId": "$cvId" }],
-                "experience": [{ "cvId": "$cvId" }]
+                "cv": [{ "_id": "$cvId" }],
+                "characteristics": [{ "accountId": "$accountId" }],
+                "education": [{ "accountId": "$accountId" }, { "cvId": "$cvId" }],
+                "training": [{ "accountId": "$accountId" }, { "cvId": "$cvId" }],
+                "skill": [{ "accountId": "$accountId" }, { "cvId": "$cvId" }],
+                "publication": [{ "accountId": "$accountId" }, { "cvId": "$cvId" }],
+                "reference": [{ "accountId": "$accountId" }, { "cvId": "$cvId" }],
+                "experience": [{ "accountId": "$accountId" }, { "cvId": "$cvId" }]
             }"""
         )
 

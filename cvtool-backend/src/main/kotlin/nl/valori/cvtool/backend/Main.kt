@@ -19,6 +19,7 @@ import nl.valori.cvtool.backend.persistence.AccountDeleteVerticle
 import nl.valori.cvtool.backend.persistence.MongodbFetchVerticle
 import nl.valori.cvtool.backend.persistence.MongodbSaveVerticle
 import nl.valori.cvtool.backend.system.ControlVerticle
+import nl.valori.cvtool.backend.system.CvDataConverterVerticle
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
@@ -39,7 +40,8 @@ object Main {
         CvFetchVerticle::class,
         CvSearchVerticle::class,
         CvBackupVerticle::class,
-        CvHistoryVerticle::class
+        CvHistoryVerticle::class,
+        CvDataConverterVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy
         .associateWith { "not started" }
