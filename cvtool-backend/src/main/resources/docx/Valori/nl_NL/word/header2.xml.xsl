@@ -179,7 +179,7 @@
                 </w:pPr>
                 <w:r>
                     <w:t>
-                        <xsl:value-of select="cv:cv/cv:role/cv:nl_NL"/>
+                        <xsl:value-of select="cv:characteristics/cv:role/cv:nl_NL"/>
                     </w:t>
                 </w:r>
                 <w:r w:rsidRPr="007C6954">

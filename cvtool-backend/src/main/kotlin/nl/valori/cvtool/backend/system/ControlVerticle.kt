@@ -3,7 +3,6 @@ package nl.valori.cvtool.backend.system
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.http.HttpHeaders.CONTENT_DISPOSITION
-import io.vertx.core.http.HttpHeaders.CONTENT_TYPE
 import io.vertx.core.http.HttpHeaders.TRANSFER_ENCODING
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.json.JsonObject
@@ -85,7 +84,9 @@ internal class ControlVerticle : AbstractVerticle() {
                         {
                             context.response()
                                 .setStatusCode(HTTP_OK)
-                                .putHeader(CONTENT_TYPE, "application/json")
+                                .putHeader(TRANSFER_ENCODING, "application/json")
+                                .putHeader(TRANSFER_ENCODING, "chunked")
+                                .putHeader(CONTENT_DISPOSITION, "attachment; filename=\"conversion-result.json\"")
                                 .send(it.body().encodePrettily())
                         },
                         {

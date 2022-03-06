@@ -36,7 +36,7 @@
                         <w:t>Profile</w:t>
                     </w:r>
                 </w:p>
-                <xsl:apply-templates select="cv:cv/cv:profile/cv:uk_UK" mode="markdown"/>
+                <xsl:apply-templates select="cv:characteristics/cv:profile/cv:uk_UK" mode="markdown"/>
                 <!--
 
                 SKILLS
@@ -547,7 +547,7 @@
                 INTERESTS
 
                 -->
-                <xsl:variable name="interests" select="cv:cv/cv:interests/cv:uk_UK"/>
+                <xsl:variable name="interests" select="cv:characteristics/cv:interests/cv:uk_UK"/>
                 <xsl:if test="$interests">
                     <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">

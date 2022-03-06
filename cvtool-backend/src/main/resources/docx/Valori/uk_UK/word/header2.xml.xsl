@@ -179,7 +179,7 @@
                 </w:pPr>
                 <w:r>
                     <w:t>
-                        <xsl:apply-templates select="cv:cv/cv:role" mode="locale-placeholder"/>
+                        <xsl:apply-templates select="cv:characteristics/cv:role" mode="locale-placeholder"/>
                     </w:t>
                 </w:r>
                 <w:r w:rsidRPr="007C6954">

@@ -37,7 +37,7 @@ class CvDataConverterVerticle : BasicVerticle(CONVERT_CV_DATA_ADDRESS) {
             .subscribe(
                 { resultJson ->
                     log.info("Successfully converted cv data of all accounts.")
-                    message.reply(JsonObject().put("result", resultJson))
+                    message.reply(resultJson)
                 },
                 {
                     val errorMsg = "Error converting cv data: ${it.message}"
@@ -152,7 +152,7 @@ class CvDataConverterVerticle : BasicVerticle(CONVERT_CV_DATA_ADDRESS) {
         // Copy entity 'cv' to 'characteristics'.
         cvData.put("characteristics", cvData.getJsonObject("cv"))
 
-        // Delete any cv instances.
+        // Delete cv instances.
         val cvEntity = JsonObject()
         cvData.getInstanceIds("cv")
             .map { cvId -> cvEntity.put(cvId, JsonObject()) }
@@ -173,6 +173,7 @@ class CvDataConverterVerticle : BasicVerticle(CONVERT_CV_DATA_ADDRESS) {
 
     private fun mergeConvertedCvEntities(entities: JsonObject, cvData: JsonObject): JsonObject {
         listOf(
+            "cv",
             "characteristics",
             "education",
             "training",
