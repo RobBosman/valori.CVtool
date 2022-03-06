@@ -18,8 +18,8 @@ const entityName = "publication";
 
 const Publication = (props) => {
 
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+  const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
+  const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
   const publicationContext = {
     entity: props.publicationEntity,
@@ -29,13 +29,13 @@ const Publication = (props) => {
     readOnly: !isEditable
   };
   
-  // Find all {Publication} of the selected {cv}.
+  // Find all {Publication} of the selected {account}.
   const publications = React.useMemo(() =>
-    props.selectedCvId && Object.values(props.publicationEntity || {})
-      .filter(instance => instance.cvId === props.selectedCvId)
+    props.selectedAccountId && Object.values(props.publicationEntity || {})
+      .filter(instance => instance.accountId === props.selectedAccountId)
       .sort((l, r) => r.year - l.year)
       || [],
-  [props.publicationEntity, props.selectedCvId]);
+  [props.publicationEntity, props.selectedAccountId]);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -113,7 +113,7 @@ const Publication = (props) => {
     if (!newPublication) {
       newPublication = {
         _id: createUuid(),
-        cvId: props.selectedCvId,
+        accountId: props.selectedAccountId,
         includeInCv: true
       };
       props.replacePublication(newPublication._id, newPublication);
@@ -198,7 +198,7 @@ const Publication = (props) => {
                     <DefaultButton
                       text="Toevoegen"
                       iconProps={{ iconName: "Add" }}
-                      disabled={!props.selectedCvId}
+                      disabled={!hasCharacteristics}
                       onClick={onAddItem}
                     />
                     <DefaultButton
@@ -299,8 +299,8 @@ const Publication = (props) => {
 Publication.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  selectedAccountId: PropTypes.string,
+  characteristicsEntity: PropTypes.object,
   publicationEntity: PropTypes.object,
   replacePublication: PropTypes.func.isRequired,
   selectedPublicationId: PropTypes.string,
@@ -310,8 +310,8 @@ Publication.propTypes = {
 const select = (store) => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
-  selectedCvId: store.ui.selectedId.cv,
+  selectedAccountId: store.ui.selectedId.account,
+  characteristicsEntity: store.safe.content.characteristics,
   publicationEntity: store.safe.content[entityName],
   selectedPublicationId: store.ui.selectedId[entityName]
 });

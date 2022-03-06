@@ -3,7 +3,6 @@ import { from, merge, of } from "rxjs";
 import * as rx from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as safeActions from "../safe/safe-actions";
-import * as uiActions from "../ui/ui-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
 
@@ -49,10 +48,7 @@ export const cvEpics = [
     ofType(cvActions.fetchCvByAccountId.type),
     rx.map(action => action.payload),
     rx.mergeMap(accountId => cvServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
-    rx.mergeMap(fetchedCv => of(
-      safeActions.resetEntities(fetchedCv),
-      uiActions.setSelectedId("cv", Object.keys(fetchedCv.cv)[0])
-    ))
+    rx.map(fetchedCv => safeActions.resetEntities(fetchedCv))
   ),
 
   // Fetch cv history from the backend server.

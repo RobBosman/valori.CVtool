@@ -13,20 +13,20 @@ import * as commonUtils from "../../utils/CommonUtils";
 
 const Profile = (props) => {
 
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+  const characteristics = Object.values(props.characteristicsEntity || {}).find(instance => instance.accountId === props.selectedAccountId);
+  const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
 
-  const cvContext = {
+  const characteristicsContext = {
     locale: props.locale,
-    entity: props.cvEntity,
-    instanceId: props.selectedCvId,
-    replaceInstance: props.onCvChange,
+    entity: props.characteristicsEntity,
+    instanceId: characteristics?._id,
+    replaceInstance: props.onCharacteristicsChange,
     readOnly: !isEditable
   };
   const accountContext = {
     locale: props.locale,
     entity: props.accountEntity,
-    instanceId: cv?.accountId,
+    instanceId: props.selectedAccountId,
     replaceInstance: props.onAccountChange,
     readOnly: !isEditable
   };
@@ -43,12 +43,12 @@ const Profile = (props) => {
   const [isPreviewVisible, setPreviewVisible] = React.useState(false);
 
   const renderPreview = React.useCallback(() => {
-    const hasInterests = cv?.interests && cv.interests[props.locale];
+    const hasInterests = characteristics?.interests && characteristics.interests[props.locale];
     return (
       <Stack tokens={{ childrenGap: "5px"}}>
         <CvFormattedText
           field={`profile.${props.locale}`}
-          instanceContext={cvContext}
+          instanceContext={characteristicsContext}
           markDown={true}
           textComponentStyle={{
             backgroundColor: "white",
@@ -71,7 +71,7 @@ const Profile = (props) => {
         {hasInterests
           && <CvFormattedText
             field={`interests.${props.locale}`}
-            instanceContext={cvContext}
+            instanceContext={characteristicsContext}
             markDown={true}
             textComponentStyle={{
               backgroundColor: "white",
@@ -83,7 +83,7 @@ const Profile = (props) => {
       </Stack>
     );
   },
-  [cvContext, props.locale]);
+  [characteristicsContext, props.locale]);
 
   return (
     <Stack styles={editStyles}>
@@ -100,8 +100,8 @@ const Profile = (props) => {
           <CvTextField
             label="Rol"
             field={`role.${props.locale}`}
-            instanceContext={cvContext}
-            placeholder={commonUtils.getValueOrFallback(cv, "role", props.locale)}
+            instanceContext={characteristicsContext}
+            placeholder={commonUtils.getValueOrFallback(characteristics, "role", props.locale)}
           />
           <CvTextField
             label={createHelpIcon({
@@ -114,7 +114,7 @@ const Profile = (props) => {
                 </Text>
             })}
             field={`profile.${props.locale}`}
-            instanceContext={cvContext}
+            instanceContext={characteristicsContext}
             multiline
             autoAdjustHeight
           />
@@ -173,7 +173,7 @@ const Profile = (props) => {
                 </Text>
             })}
             field={`interests.${props.locale}`}
-            instanceContext={cvContext}
+            instanceContext={characteristicsContext}
             multiline
             autoAdjustHeight
           />
@@ -186,24 +186,24 @@ const Profile = (props) => {
 Profile.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  characteristicsEntity: PropTypes.object,
+  selectedAccountId: PropTypes.string,
   accountEntity: PropTypes.object,
-  onCvChange: PropTypes.func.isRequired,
-  onAccountChange: PropTypes.func.isRequired
+  onAccountChange: PropTypes.func.isRequired,
+  onCharacteristicsChange: PropTypes.func.isRequired
 };
 
 const select = (store) => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
-  selectedCvId: store.ui.selectedId.cv,
-  accountEntity: store.safe.content.account
+  selectedAccountId: store.ui.selectedId.account,
+  accountEntity: store.safe.content.account,
+  characteristicsEntity: store.safe.content.characteristics
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onCvChange: (id, instance) => dispatch(changeInstance("cv", id, instance)),
-  onAccountChange: (id, instance) => dispatch(changeInstance("account", id, instance))
+  onAccountChange: (id, instance) => dispatch(changeInstance("account", id, instance)),
+  onCharacteristicsChange: (id, instance) => dispatch(changeInstance("characteristics", id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Profile);

@@ -21,10 +21,13 @@ import BusinessUnits from "./admin/BusinessUnits";
 import Search from "./admin/Search";
 import LocaleFlag from "./widgets/LocaleFlag";
 import HistoryView from "./cv/HistoryView";
+import { hasInstances } from "../utils/CommonUtils";
 
 const ContentPage = (props) => {
 
   const locationHash = props.locationHash.split("=").shift();
+
+  const hasCharacteristics = hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
   const onFetchCvHistory = () => {
     props.fetchCvHistory(props.selectedAccountId);
@@ -41,7 +44,7 @@ const ContentPage = (props) => {
         iconProps={{ iconName: "FullHistory" }}
         title="Wijzigingshistorie"
         checked={false}
-        disabled={!props.selectedCvId}
+        disabled={!hasCharacteristics}
         onClick={onFetchCvHistory}
       />
     </Stack>;
@@ -93,7 +96,7 @@ const ContentPage = (props) => {
             url: "#profile",
             name: "Profiel",
             icon: "ContactInfo",
-            disabled: !props.selectedCvId,
+            disabled: !hasCharacteristics,
             content: <Profile />
           },
           {
@@ -101,7 +104,7 @@ const ContentPage = (props) => {
             url: "#education",
             name: "Opleidingen",
             icon: "Education",
-            disabled: !props.selectedCvId,
+            disabled: !hasCharacteristics,
             content: <Education />
           },
           {
@@ -109,7 +112,7 @@ const ContentPage = (props) => {
             url: "#training",
             name: "Trainingen",
             icon: "UserEvent",
-            disabled: !props.selectedCvId,
+            disabled: !hasCharacteristics,
             content: <Training />
           },
           {
@@ -117,7 +120,7 @@ const ContentPage = (props) => {
             url: "#skills",
             name: "Vaardigheden",
             icon: "Backlog",
-            disabled: !props.selectedCvId,
+            disabled: !hasCharacteristics,
             content: <Skill />
           },
           {
@@ -125,7 +128,7 @@ const ContentPage = (props) => {
             url: "#publications",
             name: "Publicaties",
             icon: "ReadingMode",
-            disabled: !props.selectedCvId,
+            disabled: !hasCharacteristics,
             content: <Publication />
           },
           {
@@ -133,7 +136,7 @@ const ContentPage = (props) => {
             url: "#references",
             name: "Referenties",
             icon: "ReminderGroup",
-            disabled: !props.selectedCvId,
+            disabled: !hasCharacteristics,
             content: <Reference />
           },
           {
@@ -141,13 +144,13 @@ const ContentPage = (props) => {
             url: "#experience",
             name: "Werkervaring",
             icon: "TaskLogo",
-            disabled: !props.selectedCvId,
+            disabled: !hasCharacteristics,
             content: <Experience />
           }
         ]
       }
     ],
-  [props.authInfo.authorizationLevel, props.selectedCvId]);
+  [props.authInfo.authorizationLevel, props.characteristicsEntity, props.selectedAccountId]);
 
   let renderContent = null;
   if (locationHash === "" || locationHash === "#") {
@@ -205,8 +208,8 @@ ContentPage.propTypes = {
   authInfo: PropTypes.object,
   locationHash: PropTypes.string,
   accountEntity: PropTypes.object,
+  characteristicsEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
-  selectedCvId: PropTypes.string,
   fetchCvHistory: PropTypes.func.isRequired,
   generateCv: PropTypes.func.isRequired,
   setHistoryViewVisible: PropTypes.func
@@ -217,8 +220,8 @@ const select = (store) => ({
   authInfo: store.auth.authInfo,
   locationHash: store.ui.locationHash,
   accountEntity: store.safe.content.account,
-  selectedAccountId: store.ui.selectedId.account,
-  selectedCvId: store.ui.selectedId.cv
+  characteristicsEntity: store.safe.content.characteristics,
+  selectedAccountId: store.ui.selectedId.account
 });
 
 const mapDispatchToProps = (dispatch) => ({

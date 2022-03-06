@@ -19,17 +19,17 @@ const CvTitle = (props) => {
   };
 
   const memo = React.useMemo(() => {
-    const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-    const account = props.accountEntity && props.accountEntity[cv?.accountId || props.selectedAccountId];
-    const role = commonUtils.getValueOrFallback(cv, "role", props.locale);
+    const characteristics = Object.values(props.characteristicsEntity || {}).find(instance => instance.accountId === props.selectedAccountId);
+    const account = props.accountEntity && props.accountEntity[props.selectedAccountId];
+    const role = commonUtils.getValueOrFallback(characteristics, "role", props.locale);
     return {
       name: account?.name || "<NAAM>",
-      role: role || (cv ? "<ROL>" : ""),
+      role: role || (characteristics ? "<ROL>" : ""),
       dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
       residence: account?.residence || "<WOONPLAATS>"
     };
   },
-  [props.accountEntity, props.cvEntity, props.selectedAccountId, props.selectedCvId, props.locale]);
+  [props.accountEntity, props.characteristicsEntity, props.selectedAccountId, props.locale]);
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
@@ -54,17 +54,15 @@ const CvTitle = (props) => {
 
 CvTitle.propTypes = {
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
+  characteristicsEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
-  selectedCvId: PropTypes.string,
   accountEntity: PropTypes.object
 };
 
 const select = (store) => ({
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
+  characteristicsEntity: store.safe.content.characteristics,
   selectedAccountId: store.ui.selectedId.account,
-  selectedCvId: store.ui.selectedId.cv,
   accountEntity: store.safe.content.account
 });
 

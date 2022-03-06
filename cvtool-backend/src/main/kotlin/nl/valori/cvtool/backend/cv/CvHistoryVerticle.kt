@@ -6,7 +6,6 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
-import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 
@@ -17,7 +16,7 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
     /**
      * Expected message body:
      *   {
-     *     "cvId": "id-of-cv-to-fetch-history-for"
+     *     "accountId": "id-of-cv-to-fetch-history-for"
      *   }
      *
      * Response:
@@ -31,8 +30,7 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
             .map { it.getString("accountId", "") }
             .doOnSuccess { if (it === "") error("'accountId' is not specified.") }
             .flatMap { accountId ->
-                fetchCvId(accountId)
-                    .flatMap { cvId -> fetchAuditLogs(cvId) }
+                fetchAuditLogs(accountId)
                     .flatMap { auditLogs -> addAccountNames(accountId, auditLogs) }
             }
             .subscribe(
@@ -48,30 +46,15 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
             )
     }
 
-    private fun fetchCvId(accountId: String): Single<String> {
-        val searchCriteria = JsonObject(
-            """{
-                "cv": [ { "accountId": "$accountId" } ]
-            }"""
-        )
-        return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
-            .map { it.body().getInstanceIds("cv") }
-            .map { cvIds ->
-                cvIds.elementAtOrElse(0)
-                { error("Found ${cvIds.size} cv records with accountId $accountId.") }
-            }
-    }
-
-    private fun fetchAuditLogs(cvId: String): Single<JsonObject> {
+    private fun fetchAuditLogs(accountId: String): Single<JsonObject> {
         // {
         //     "audit_log": [
-        //         { "cvId": $cvId }
+        //         { "acAccountId": $accountId }
         //     ]
         // }
         val searchCriteria = JsonObject()
             .put("audit_log", JsonArray().add(
-                JsonObject().put("cvId", cvId)))
+                JsonObject().put("cvAccountId", accountId)))
         return vertx.eventBus()
             .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
             .map { it.body() }

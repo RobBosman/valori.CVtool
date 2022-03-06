@@ -5,10 +5,9 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
-import nl.valori.cvtool.backend.ModelUtils.addEntity
 import nl.valori.cvtool.backend.ModelUtils.composeCharacteristicsInstance
 import nl.valori.cvtool.backend.ModelUtils.composeCvDataCriteria
-import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
+import nl.valori.cvtool.backend.ModelUtils.hasInstances
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import java.util.*
@@ -45,7 +44,7 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
             .just(message.body())
             .map { it.getString("accountId", "") }
             .doOnSuccess { if (it === "") error("'accountId' is not specified.") }
-            .flatMap { accountId -> fetchCvData(accountId) }
+            .flatMap { accountId -> fetchOrCreateCvData(accountId) }
             .subscribe(
                 {
                     log.debug("Successfully fetched cv data")
@@ -59,30 +58,24 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
             )
     }
 
-    private fun fetchCvData(accountId: String) =
+    private fun fetchOrCreateCvData(accountId: String) =
         vertx.eventBus()
-            .rxRequest<JsonObject>(
-                MONGODB_FETCH_ADDRESS,
-                JsonObject("""{ "cv": [{ "accountId": "$accountId" }] }"""),
-                deliveryOptions
-            )
-            .flatMap { obtainOrCreateCvId(it.body(), accountId) }
-            .map { composeCvDataCriteria(accountId, it) }
-            .flatMap { vertx.eventBus().rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, it, deliveryOptions) }
+            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, composeCvDataCriteria(accountId), deliveryOptions)
             .map { it.body() }
-
-    private fun obtainOrCreateCvId(cvEntity: JsonObject, accountId: String): Single<String> {
-        val cvIds = cvEntity.getInstanceIds("cv")
-        return when (cvIds.size) {
-            0 -> {
-                val cvId = UUID.randomUUID().toString()
-                val saveRequest = JsonObject().addEntity("cv", composeCharacteristicsInstance(cvId, accountId))
-                vertx.eventBus()
-                    .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
-                    .map { cvId }
+            .flatMap {
+                if (it.hasInstances("characteristics")) {
+                    Single.just(it)
+                } else {
+                    createAndAddCharacteristics(accountId, it)
+                }
             }
-            1 -> Single.just(cvIds.first())
-            else -> error("Found ${cvIds.size} cv records with accountId $accountId.")
-        }
+
+    private fun createAndAddCharacteristics(accountId: String, cvData: JsonObject): Single<JsonObject> {
+        val id = UUID.randomUUID().toString()
+        val characteristicsInstances = JsonObject().put(id, composeCharacteristicsInstance(id, accountId))
+        val characteristicsEntity = JsonObject().put("characteristics", characteristicsInstances)
+        return vertx.eventBus()
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, characteristicsEntity, deliveryOptions)
+            .map { cvData.put("characteristics", characteristicsInstances) }
     }
 }

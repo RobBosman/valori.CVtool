@@ -46,23 +46,19 @@ export const downloadJsonFile = (fileName, jsonData) => {
   downloadFile(fileName, blob);
 };
 
-export const composeCvForExport = (cvId, safeContent) => {
-  const cv = safeContent.cv[cvId];
-  const account = safeContent.account[cv.accountId];
+export const composeCvForExport = (accountId, safeContent) => {
+  const account = safeContent.account[accountId];
 
   const exportedCvData = {
     account: {
       [account._id]: account
-    },
-    cv: {
-      [cv._id]: cv
     }
   };
 
   Object.entries(safeContent)
     .forEach(([entityName, instanceMap]) => {
       Object.values(instanceMap)
-        .filter(instance => instance.cvId === cvId)
+        .filter(instance => instance.accountId === accountId)
         .forEach(instance => {
           if (!exportedCvData[entityName]) {
             exportedCvData[entityName] = {};
@@ -76,7 +72,7 @@ export const composeCvForExport = (cvId, safeContent) => {
   return {
     fileName: `CV_${account.name.replace(" ", "")}-${now.toLocaleString().replace(" ", "_")}.json`,
     json: {
-      cvId: cvId,
+      accountId: accountId,
       timestamp: now.toISOString(),
       content: exportedCvData
     }

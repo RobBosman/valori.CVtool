@@ -30,28 +30,20 @@ export const uiEpics = [
   ),
 
   // Reset all selected ids when switching to another account.
-  (action$, state$) => action$.pipe(
+  (action$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
     rx.map(action => action.payload),
     rx.filter(payload => payload.entityName === "account"),
     rx.map(payload => payload.selectedId),
     rx.distinctUntilChanged(),
-    rx.map(accountId => {
-      const cvEntity = state$.value.safe?.content?.cv;
-      const cvInstance = Object.values(cvEntity || {})
-        .find(cvInstance => cvInstance.accountId === accountId);
-      return uiActions.resetSelectedIds({
-        account: accountId,
-        cv: cvInstance?._id
-      });
-    })
+    rx.map(accountId => uiActions.resetSelectedIds({ account: accountId }))
   ),
 
   // Select the locationHash-instanceId when receiving cv data.
   (action$) => action$.pipe(
     ofType(safeActions.resetEntities.type),
     rx.map(action => action.payload),
-    rx.filter(entities => entities?.cv), // Only proceed when receiving cv instances.
+    rx.filter(entities => entities?.characteristics), // Only proceed when receiving characteristics instances.
     rx.mergeMap(entities => {
       const [hash, instanceId] = window.location.hash?.split("=") || ["", null];
       const entityName = Object.keys(entities).find(entityName => hash.includes(entityName));
@@ -80,11 +72,11 @@ export const uiEpics = [
     rx.ignoreElements()
   ),
 
-  // Hide the CvHistoryView dialog if the selectedAccountId or selectedCvId changed.
+  // Hide the CvHistoryView dialog if the selectedAccountId changed.
   (action$) => action$.pipe(
     ofType(uiActions.setSelectedId.type),
     rx.map(action => action.payload),
-    rx.filter(payload => ["account", "cv"].includes(payload.entityName)),
+    rx.filter(payload => ["account"].includes(payload.entityName)),
     rx.map(() => uiActions.setHistoryViewVisible(false))
   ),
 

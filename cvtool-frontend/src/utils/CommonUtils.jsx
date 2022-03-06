@@ -38,5 +38,8 @@ export const getValueOrFallback = (instance, fieldName, locale) => {
   return "";
 };
 
-export const isAccountEditable = (accountId, authInfo) =>
+export const isEditAccountAllowed = (accountId, authInfo) =>
   accountId === authInfo.accountId || ["ADMIN", "UNIT_LEAD"].includes(authInfo.authorizationLevel);
+
+export const hasInstances = (entity, accountId) =>
+  !!Object.values(entity || {}).find(instance => instance.accountId === accountId);

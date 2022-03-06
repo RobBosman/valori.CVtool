@@ -20,8 +20,8 @@ const entityName = "training";
 
 const Training = (props) => {
 
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+  const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
+  const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
   const trainingContext = {
     entity: props.trainingEntity,
@@ -34,10 +34,10 @@ const Training = (props) => {
   const composePeriod = (training) =>
     `${training.year || (props.locale === "uk_UK" ? "today" : "heden")}`;
   
-  // Find all {Training} of the selected {cv}.
+  // Find all {Training} of the selected {account}.
   const trainings = React.useMemo(() =>
-    props.selectedCvId && Object.values(props.trainingEntity || {})
-      .filter(instance => instance.cvId === props.selectedCvId)
+    props.selectedAccountId && Object.values(props.trainingEntity || {})
+      .filter(instance => instance.accountId === props.selectedAccountId)
       .sort((l, r) => {
         let compare = commonUtils.comparePrimitives(composePeriod(r), composePeriod(l));
         if (compare === 0) {
@@ -46,7 +46,7 @@ const Training = (props) => {
         return compare;
       })
       || [],
-  [props.trainingEntity, props.selectedCvId]);
+  [props.trainingEntity, props.selectedAccountId]);
 
   const renderName = (item) =>
     item.name && item.name[props.locale] || commonUtils.getValueOrFallback(item, "name", props.locale);
@@ -137,7 +137,7 @@ const Training = (props) => {
     if (!newTraining) {
       newTraining = {
         _id: createUuid(),
-        cvId: props.selectedCvId,
+        accountId: props.selectedAccountId,
         includeInCv: true
       };
       props.replaceTraining(newTraining._id, newTraining);
@@ -233,7 +233,7 @@ const Training = (props) => {
                     <DefaultButton
                       text="Toevoegen"
                       iconProps={{ iconName: "Add" }}
-                      disabled={!props.selectedCvId}
+                      disabled={!hasCharacteristics}
                       onClick={onAddItem}
                     />
                     <DefaultButton
@@ -331,8 +331,8 @@ const Training = (props) => {
 Training.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  selectedAccountId: PropTypes.string,
+  characteristicsEntity: PropTypes.object,
   trainingEntity: PropTypes.object,
   replaceTraining: PropTypes.func.isRequired,
   selectedTrainingId: PropTypes.string,
@@ -342,8 +342,8 @@ Training.propTypes = {
 const select = (store) => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
-  selectedCvId: store.ui.selectedId.cv,
+  selectedAccountId: store.ui.selectedId.account,
+  characteristicsEntity: store.safe.content.characteristics,
   trainingEntity: store.safe.content[entityName],
   selectedTrainingId: store.ui.selectedId[entityName]
 });

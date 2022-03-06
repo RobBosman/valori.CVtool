@@ -20,8 +20,8 @@ const entityName = "experience";
 
 const Experience = (props) => {
 
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+  const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
+  const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
   const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const [isPreviewVisible, setPreviewVisible] = React.useState(false);
@@ -37,13 +37,13 @@ const Experience = (props) => {
   }),
   [props.locale, props.experienceEntity, props.selectedExperienceId, props.setSelectedExperienceId, props.replaceExperience]);
 
-  // Find all {Experiences} of the selected {cv} and sort them by their sortIndex.
+  // Find all {Experiences} of the selected {account} and sort them by their sortIndex.
   const experiences = React.useMemo(() =>
-    props.selectedCvId && Object.values(props.experienceEntity || {})
-      .filter(instance => instance.cvId === props.selectedCvId)
+    props.selectedAccountId && Object.values(props.experienceEntity || {})
+      .filter(instance => instance.accountId === props.selectedAccountId)
       .sort((l, r) => (l?.sortIndex || 0) - (r?.sortIndex || 0))
     || [],
-  [props.experienceEntity, props.selectedCvId]);
+  [props.experienceEntity, props.selectedAccountId]);
 
   const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
 
@@ -132,7 +132,7 @@ const Experience = (props) => {
     if (!newExperience) {
       newExperience = {
         _id: createUuid(),
-        cvId: props.selectedCvId,
+        accountId: props.selectedAccountId,
         includeInCv: true
       };
       props.replaceExperience(newExperience._id, newExperience);
@@ -280,7 +280,7 @@ const Experience = (props) => {
                     <DefaultButton
                       text="Toevoegen"
                       iconProps={{ iconName: "Add" }}
-                      disabled={!props.selectedCvId}
+                      disabled={!hasCharacteristics}
                       onClick={onAddItem}
                     />
                     <DefaultButton
@@ -461,8 +461,8 @@ const Experience = (props) => {
 Experience.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  selectedAccountId: PropTypes.string,
+  characteristicsEntity: PropTypes.object,
   experienceEntity: PropTypes.object,
   replaceExperience: PropTypes.func.isRequired,
   replaceExperiences: PropTypes.func.isRequired,
@@ -473,8 +473,8 @@ Experience.propTypes = {
 const select = (store) => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
-  selectedCvId: store.ui.selectedId.cv,
+  selectedAccountId: store.ui.selectedId.account,
+  characteristicsEntity: store.safe.content.characteristics,
   experienceEntity: store.safe.content[entityName],
   selectedExperienceId: store.ui.selectedId[entityName]
 });

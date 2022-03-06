@@ -14,7 +14,6 @@ import * as preview from "../cv/Preview";
 // searchResult:
 // {
 //   _id: "id-account-1",
-//   cvId: "id-cv-1",
 //   name: "Rob Bosman",
 //   skills: [],
 //   skillLevel: 3,
@@ -61,7 +60,7 @@ const Search = (props) => {
       .shift()
       || 0;
     const experiences = Object.values(props.searchResultEntities?.experience || {})
-      .filter(experience => experience.cvId === cvInstance._id)
+      .filter(experience => experience.accountId === cvInstance._id)
       .map(enrichExperience);
     const toYear = experiences
       .map(experience => experience.toYear)
@@ -70,7 +69,7 @@ const Search = (props) => {
       || -1;
     return {
       _id: cvInstance.accountId,
-      cvId: cvInstance._id,
+      accountId: cvInstance._id,
       name: name,
       skills: skills,
       skillLevel: skillLevel,

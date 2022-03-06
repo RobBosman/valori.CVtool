@@ -19,8 +19,8 @@ const entityName = "reference";
 
 const Reference = (props) => {
 
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+  const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
+  const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
   const referenceContext = {
     entity: props.referenceEntity,
@@ -30,13 +30,13 @@ const Reference = (props) => {
     readOnly: !isEditable
   };
   
-  // Find all {references} of the selected {cv}.
+  // Find all {references} of the selected {account}.
   const references = React.useMemo(() =>
-    props.selectedCvId && Object.values(props.referenceEntity || {})
-      .filter(instance => instance.cvId === props.selectedCvId)
+    props.selectedAccountId && Object.values(props.referenceEntity || {})
+      .filter(instance => instance.accountId === props.selectedAccountId)
       .sort((l, r) => commonUtils.comparePrimitives(l.referentName, r.referentName))
       || [],
-  [props.referenceEntity, props.selectedCvId]);
+  [props.referenceEntity, props.selectedAccountId]);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox
@@ -114,7 +114,7 @@ const Reference = (props) => {
     if (!newReference) {
       newReference = {
         _id: createUuid(),
-        cvId: props.selectedCvId,
+        accountId: props.selectedAccountId,
         includeInCv: false
       };
       props.replaceReference(newReference._id, newReference);
@@ -187,7 +187,7 @@ const Reference = (props) => {
                     <DefaultButton
                       text="Toevoegen"
                       iconProps={{ iconName: "Add" }}
-                      disabled={!props.selectedCvId}
+                      disabled={!hasCharacteristics}
                       onClick={onAddItem}
                     />
                     <DefaultButton
@@ -275,8 +275,8 @@ const Reference = (props) => {
 Reference.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  selectedAccountId: PropTypes.string,
+  characteristicsEntity: PropTypes.object,
   referenceEntity: PropTypes.object,
   replaceReference: PropTypes.func.isRequired,
   selectedReferenceId: PropTypes.string,
@@ -286,8 +286,8 @@ Reference.propTypes = {
 const select = (store) => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
-  selectedCvId: store.ui.selectedId.cv,
+  selectedAccountId: store.ui.selectedId.account,
+  characteristicsEntity: store.safe.content.characteristics,
   referenceEntity: store.safe.content[entityName],
   selectedReferenceId: store.ui.selectedId[entityName]
 });

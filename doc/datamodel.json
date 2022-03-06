@@ -19,13 +19,9 @@
     "accountId": "ID",
     "level": "ENUM_AUTHORIZATION_LEVEL"
   },
-  "cv": {
-    "_id": "ID",
-    "accountId": "ID"
-  },
   "characteristics": {
     "_id": "ID",
-    "cvId": "ID",
+    "accountId": "ID",
     "role": {
       "[locale]": "STRING"
     },
@@ -41,7 +37,7 @@
   },
   "education": {
     "_id": "ID",
-    "cvId": "ID",
+    "accountId": "ID",
     "name": {
       "[locale]": "STRING"
     },
@@ -53,7 +49,7 @@
   },
   "training": {
     "_id": "ID",
-    "cvId": "ID",
+    "accountId": "ID",
     "name": {
       "[locale]": "STRING"
     },
@@ -64,7 +60,7 @@
   },
   "skill": {
     "_id": "ID",
-    "cvId": "ID",
+    "accountId": "ID",
     "category": "ENUM_SKILL_CATEGORY",
     "description": {
       "[locale]": "STRING"
@@ -74,7 +70,7 @@
   },
   "publication": {
     "_id": "ID",
-    "cvId": "ID",
+    "accountId": "ID",
     "year": "YEAR",
     "media": "STRING",
     "title": {
@@ -87,7 +83,7 @@
   },
   "reference": {
     "_id": "ID",
-    "cvId": "ID",
+    "accountId": "ID",
     "referentName": "STRING",
     "referentFunction": {
       "[locale]": "STRING"
@@ -99,7 +95,7 @@
   },
   "experience": {
     "_id": "ID",
-    "cvId": "ID",
+    "accountId": "ID",
     "periodBegin": "DATE",
     "periodEnd": "DATE",
     "employer": "STRING",

@@ -20,8 +20,8 @@ const entityName = "education";
 
 const Education = (props) => {
 
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+  const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
+  const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
   
   const educationContext = {
     entity: props.educationEntity,
@@ -34,17 +34,17 @@ const Education = (props) => {
   const composePeriod = (education) => 
     `${education.yearFrom ? education.yearFrom + " - " : ""}${education.yearTo || (props.locale === "uk_UK" ? "today" : "heden")}`;
   
-  // Find all {Education} of the selected {cv}.
+  // Find all {Education} of the selected {account}.
   const educations = React.useMemo(() =>
-    props.selectedCvId && Object.values(props.educationEntity || {})
-      .filter(instance => instance.cvId === props.selectedCvId)
+    props.selectedAccountId && Object.values(props.educationEntity || {})
+      .filter(instance => instance.accountId === props.selectedAccountId)
       .sort((l, r) =>
         commonUtils.comparePrimitives(composePeriod(r), composePeriod(l))
         || commonUtils.comparePrimitives(
           commonUtils.getValueOrFallback(l, "name", props.locale),
           commonUtils.getValueOrFallback(r, "name", props.locale)))
       || [],
-  [props.educationEntity, props.selectedCvId]);
+  [props.educationEntity, props.selectedAccountId]);
 
   const renderName = (item) =>
     item.name && item.name[props.locale] || commonUtils.getValueOrFallback(item, "name", props.locale);
@@ -135,7 +135,7 @@ const Education = (props) => {
     if (!newEducation) {
       newEducation = {
         _id: createUuid(),
-        cvId: props.selectedCvId,
+        accountId: props.selectedAccountId,
         includeInCv: true
       };
       props.replaceEducation(newEducation._id, newEducation);
@@ -229,7 +229,7 @@ const Education = (props) => {
                     <DefaultButton
                       text="Toevoegen"
                       iconProps={{ iconName: "Add" }}
-                      disabled={!props.selectedCvId}
+                      disabled={!hasCharacteristics}
                       onClick={onAddItem}
                     />
                     <DefaultButton
@@ -337,8 +337,8 @@ const Education = (props) => {
 Education.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  selectedAccountId: PropTypes.string,
+  characteristicsEntity: PropTypes.object,
   educationEntity: PropTypes.object,
   replaceEducation: PropTypes.func.isRequired,
   selectedEducationId: PropTypes.string,
@@ -348,8 +348,8 @@ Education.propTypes = {
 const select = (store) => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
-  selectedCvId: store.ui.selectedId.cv,
+  selectedAccountId: store.ui.selectedId.account,
+  characteristicsEntity: store.safe.content.characteristics,
   educationEntity: store.safe.content[entityName],
   selectedEducationId: store.ui.selectedId[entityName]
 });

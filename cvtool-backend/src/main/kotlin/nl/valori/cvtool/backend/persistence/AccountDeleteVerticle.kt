@@ -2,12 +2,10 @@ package nl.valori.cvtool.backend.persistence
 
 import io.reactivex.Single
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.ACCOUNT_RELATED_ENTITY_NAMES
-import nl.valori.cvtool.backend.ModelUtils.CV_RELATED_ENTITY_NAMES
 import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.ModelUtils.getInstances
 
@@ -36,10 +34,7 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
             .flatMap { accountId ->
                 fetchMetaData(accountId)
                     .flatMap { metaData ->
-                        fetchCvData(metaData)
-                            .flatMap { cvData ->
-                                deleteAccount(accountId, metaData, cvData)
-                            }
+                        deleteAccount(accountId, metaData)
                     }
             }
             .subscribe(
@@ -70,30 +65,11 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
             )
             .map { it.body() }
 
-    private fun fetchCvData(metaData: JsonObject): Single<JsonObject> {
-        val cvIdCriterion = JsonArray()
-        metaData
-            .getInstances("cv")
-            .forEach { cvIdCriterion.add(JsonObject().put("cvId", it.map["_id"])) }
-        if (cvIdCriterion.isEmpty) {
-            return Single.just(JsonObject())
-        }
-
-        val fetchCriteria = JsonObject()
-        CV_RELATED_ENTITY_NAMES
-            .forEach { fetchCriteria.put(it, cvIdCriterion) }
-        return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, fetchCriteria, deliveryOptions)
-            .map { it.body() }
-    }
-
-    private fun deleteAccount(accountId: String, metaData: JsonObject, cvData: JsonObject): Single<JsonObject> {
+    private fun deleteAccount(accountId: String, metaData: JsonObject): Single<JsonObject> {
         // Combine all cv- and account-related instances and convert them into deleteCriteria.
         val instanceIdsToDelete = HashMap<String, Set<String>>()
         ACCOUNT_RELATED_ENTITY_NAMES
             .forEach { instanceIdsToDelete[it] = metaData.getInstanceIds(it) }
-        CV_RELATED_ENTITY_NAMES
-            .forEach { instanceIdsToDelete[it] = cvData.getInstanceIds(it) }
         val deleteCriteria = convertInstanceIdsIntoDeleteCriteria(instanceIdsToDelete)
 
         // Add updateCriteria for the businessUnits.

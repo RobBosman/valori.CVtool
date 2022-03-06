@@ -12,7 +12,7 @@ export const entityNames = {
   "account": "Account",
   "authorization": "Authorizatie",
   "businessUnit": "Unit",
-  "cv": "CV gegevens",
+  "characteristics": "Profiel",
   "education": "Opleiding",
   "experience": "Werkervaring",
   "publication": "Publicatie",
@@ -44,17 +44,17 @@ const HistoryView = (props) => {
   }),
   [props.locale, props.auditLogEntity]);
 
-  // Find all {auditLogs} of the selected {cv}.
+  // Find all {auditLogs} of the selected {account}.
   const enrichedAuditLogs = React.useMemo(() =>
-    props.selectedCvId && Object.values(props.auditLogEntity || {})
-      .filter(instance => instance.cvId === props.selectedCvId)
+    props.selectedAccountId && Object.values(props.auditLogEntity || {})
+      .filter(instance => instance.accountId === props.selectedAccountId)
       .map(instance => ({
         ...instance,
         timestampMillis: -Date.parse(instance.timestamp), // The minus sign enforces initial decsending sort order.
         who: getAccountName(instance.accountId)
       }))
     || [],
-  [props.auditLogEntity, props.accountEntity, props.selectedCvId]);
+  [props.auditLogEntity, props.accountEntity, props.selectedAccountId]);
 
   const { viewPaneBackground } = useTheme();
 
@@ -145,7 +145,7 @@ HistoryView.propTypes = {
   locale: PropTypes.string.isRequired,
   accountEntity: PropTypes.object,
   auditLogEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  selectedAccountId: PropTypes.string,
   isHistoryViewVisible: PropTypes.bool.isRequired,
   setHistoryViewVisible: PropTypes.func.isRequired
 };
@@ -155,7 +155,7 @@ const select = (store) => ({
   locale: store.ui.userPrefs.locale,
   accountEntity: store.safe.content.account,
   auditLogEntity: store.safe.content[entityName],
-  selectedCvId: store.ui.selectedId.cv,
+  selectedAccountId: store.ui.selectedId.account,
   isHistoryViewVisible: store.ui.isHistoryViewVisible
 });
 

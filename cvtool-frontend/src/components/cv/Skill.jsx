@@ -21,8 +21,8 @@ const entityName = "skill";
 
 const Skill = (props) => {
 
-  const cv = props.cvEntity && props.cvEntity[props.selectedCvId];
-  const isEditable = commonUtils.isAccountEditable(cv?.accountId, props.authInfo);
+  const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
+  const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
   const skillContext = {
     entity: props.skillEntity,
@@ -32,10 +32,10 @@ const Skill = (props) => {
     readOnly: !isEditable
   };
   
-  // Find all {Skill} of the selected {cv}.
+  // Find all {Skill} of the selected account}.
   const skills = React.useMemo(() =>
-    props.selectedCvId && Object.values(props.skillEntity || {})
-      .filter(instance => instance.cvId === props.selectedCvId)
+    props.selectedAccountId && Object.values(props.skillEntity || {})
+      .filter(instance => instance.accountId === props.selectedAccountId)
       .sort((l, r) =>
         commonUtils.comparePrimitives(
           enums.getValue(enums.SkillCategories, l.category)?.sortIndex || 0,
@@ -45,7 +45,7 @@ const Skill = (props) => {
           commonUtils.getValueOrFallback(l, "description", props.locale),
           commonUtils.getValueOrFallback(r, "description", props.locale)))
       || [],
-  [props.skillEntity, props.selectedCvId]);
+  [props.skillEntity, props.selectedAccountId]);
 
   const renderSkill = (item) =>
     enums.getText(enums.SkillCategories, item.category, props.locale);
@@ -142,7 +142,7 @@ const Skill = (props) => {
     if (!newSkill) {
       newSkill = {
         _id: createUuid(),
-        cvId: props.selectedCvId,
+        accountId: props.selectedAccountId,
         skillLevel: 1,
         includeInCv: true
       };
@@ -369,7 +369,7 @@ const Skill = (props) => {
                     <DefaultButton
                       text="Toevoegen"
                       iconProps={{ iconName: "Add" }}
-                      disabled={!props.selectedCvId}
+                      disabled={!hasCharacteristics}
                       onClick={onAddItem}
                     />
                     <DefaultButton
@@ -472,8 +472,8 @@ const Skill = (props) => {
 Skill.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
-  cvEntity: PropTypes.object,
-  selectedCvId: PropTypes.string,
+  selectedAccountId: PropTypes.string,
+  characteristicsEntity: PropTypes.object,
   skillEntity: PropTypes.object,
   replaceSkill: PropTypes.func.isRequired,
   selectedSkillId: PropTypes.string,
@@ -483,8 +483,8 @@ Skill.propTypes = {
 const select = (store) => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
-  cvEntity: store.safe.content.cv,
-  selectedCvId: store.ui.selectedId.cv,
+  selectedAccountId: store.ui.selectedId.account,
+  characteristicsEntity: store.safe.content.characteristics,
   skillEntity: store.safe.content[entityName],
   selectedSkillId: store.ui.selectedId[entityName]
 });
