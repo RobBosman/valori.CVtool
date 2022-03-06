@@ -13,6 +13,7 @@ export const entityNames = {
   "authorization": "Authorizatie",
   "businessUnit": "Unit",
   "characteristics": "Profiel",
+  "cv": "Profiel",
   "education": "Opleiding",
   "experience": "Werkervaring",
   "publication": "Publicatie",
@@ -47,11 +48,11 @@ const HistoryView = (props) => {
   // Find all {auditLogs} of the selected {account}.
   const enrichedAuditLogs = React.useMemo(() =>
     props.selectedAccountId && Object.values(props.auditLogEntity || {})
-      .filter(instance => instance.accountId === props.selectedAccountId)
+      .filter(instance => instance.cvAccountId === props.selectedAccountId)
       .map(instance => ({
         ...instance,
         timestampMillis: -Date.parse(instance.timestamp), // The minus sign enforces initial decsending sort order.
-        who: getAccountName(instance.accountId)
+        who: getAccountName(instance.editorAccountId)
       }))
     || [],
   [props.auditLogEntity, props.accountEntity, props.selectedAccountId]);

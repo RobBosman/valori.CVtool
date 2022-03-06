@@ -2,7 +2,6 @@ package nl.valori.cvtool.backend.cv
 
 import io.reactivex.Single
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
@@ -46,23 +45,18 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
             )
     }
 
-    private fun fetchAuditLogs(accountId: String): Single<JsonObject> {
-        // {
-        //     "audit_log": [
-        //         { "acAccountId": $accountId }
-        //     ]
-        // }
-        val searchCriteria = JsonObject()
-            .put("audit_log", JsonArray().add(
-                JsonObject().put("cvAccountId", accountId)))
-        return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
+    private fun fetchAuditLogs(accountId: String) =
+        vertx.eventBus()
+            .rxRequest<JsonObject>(
+                MONGODB_FETCH_ADDRESS,
+                JsonObject("""{ "audit_log": [{ "cvAccountId": "$accountId" }] }"""),
+                deliveryOptions
+            )
             .map { it.body() }
-    }
 
     private fun addAccountNames(accountId: String, entities: JsonObject): Single<JsonObject> {
         val accountIds = entities.getInstances("audit_log")
-            .map { auditLog -> auditLog.getString("accountId") }
+            .map { auditLog -> auditLog.getString("editorAccountId") }
             .filter { it != accountId }
         return if (accountIds.isEmpty())
             Single.just(entities)
@@ -71,14 +65,11 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
     }
 
     private fun fetchAccounts(accountIds: List<String>): Single<JsonObject> {
-        // {
-        //     "account": [
-        //         { "_id": { "$in": [ $accountIds ] } }
-        //     ]
-        // }
-        val searchCriteria = JsonObject()
-            .put("account", JsonArray().add(JsonObject()
-                .put("_id", JsonObject().put("\$in", accountIds))))
+        val searchCriteria = JsonObject("""{
+             "account": [
+                 { "_id": { "${DOLLAR}in": [ ${accountIds.joinToString(",", "\"", "\"")} ] } }
+             ]
+        }""")
         return vertx.eventBus()
             .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
             .map { it.body() }

@@ -49,18 +49,18 @@ const Search = (props) => {
   }),
   [props.locale]);
 
-  const composeSearchResult = React.useCallback(cvInstance => {
+  const composeSearchResult = React.useCallback(accountId => {
     const name = Object.values(props.accountEntity || {})
-      .find(account => account._id === cvInstance.accountId)?.name;
+      .find(account => account._id === accountId)?.name;
     const skills = Object.values(props.searchResultEntities?.skill || {})
-      .filter(skill => skill.cvId === cvInstance._id);
+      .filter(skill => skill.accountId === accountId);
     const skillLevel = skills
       .sort((l, r) => r.skillLevel - l.skillLevel)
       .map(skill => skill.skillLevel)
       .shift()
       || 0;
     const experiences = Object.values(props.searchResultEntities?.experience || {})
-      .filter(experience => experience.accountId === cvInstance._id)
+      .filter(experience => experience.accountId === accountId)
       .map(enrichExperience);
     const toYear = experiences
       .map(experience => experience.toYear)
@@ -68,8 +68,8 @@ const Search = (props) => {
       .shift()
       || -1;
     return {
-      _id: cvInstance.accountId,
-      accountId: cvInstance._id,
+      _id: accountId,
+      accountId: accountId,
       name: name,
       skills: skills,
       skillLevel: skillLevel,
@@ -80,10 +80,20 @@ const Search = (props) => {
   [props.accountEntity, props.searchResultEntities]);
 
   const searchResultEntity = React.useMemo(() => {
+    const accountIds = new Set();
+    if (props.searchResultEntities) {
+      ["experience", "skill"]
+        .forEach(entityName => {
+          Object.values(props.searchResultEntities[entityName] || {})
+            .map(instance => instance.accountId)
+            .forEach(accountId => accountIds.add(accountId));
+        });
+    }
+
     const entity = {};
-    Object.values(props.searchResultEntities?.cv || {})
-      .map(cvInstance => composeSearchResult(cvInstance))
-      .forEach(instance => entity[instance._id] = instance);
+    accountIds.forEach(accountId => {
+      entity[accountId] = composeSearchResult(accountId);
+    });
     return entity;
   },
   [props.accountEntity, props.searchResultEntities, props.locale]);

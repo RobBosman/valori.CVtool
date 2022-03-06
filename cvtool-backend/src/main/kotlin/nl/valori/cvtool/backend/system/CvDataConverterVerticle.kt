@@ -8,6 +8,7 @@ import io.vertx.core.eventbus.ReplyFailure
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
+import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
@@ -151,11 +152,11 @@ class CvDataConverterVerticle : BasicVerticle(CONVERT_CV_DATA_ADDRESS) {
         // Copy entity 'cv' to 'characteristics'.
         cvData.put("characteristics", cvData.getJsonObject("cv"))
 
-        // TODO: Drop cv collection.
-//        val cvEntity = JsonObject()
-//        cvData.getInstanceIds("cv")
-//            .map { cvId -> cvEntity.put(cvId, JsonObject()) }
-//        cvData.put("cv", cvEntity)
+        // Delete any cv instances.
+        val cvEntity = JsonObject()
+        cvData.getInstanceIds("cv")
+            .map { cvId -> cvEntity.put(cvId, JsonObject()) }
+        cvData.put("cv", cvEntity)
 
         // Convert audit_logs.
         cvData
