@@ -19,8 +19,9 @@ const CvTitle = (props) => {
   };
 
   const memo = React.useMemo(() => {
-    const characteristics = Object.values(props.characteristicsEntity || {}).find(instance => instance.accountId === props.selectedAccountId);
     const account = props.accountEntity && props.accountEntity[props.selectedAccountId];
+    const characteristics = Object.values(props.characteristicsEntity || {})
+      .find(instance => instance.accountId === props.selectedAccountId && instance.includeInCv);
     const role = commonUtils.getValueOrFallback(characteristics, "role", props.locale);
     return {
       name: account?.name || "<NAAM>",

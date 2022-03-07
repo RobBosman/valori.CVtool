@@ -13,7 +13,8 @@ import * as commonUtils from "../../utils/CommonUtils";
 
 const Profile = (props) => {
 
-  const characteristics = Object.values(props.characteristicsEntity || {}).find(instance => instance.accountId === props.selectedAccountId);
+  const characteristics = Object.values(props.characteristicsEntity || {})
+    .find(instance => instance.accountId === props.selectedAccountId && instance.includeInCv);
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
 
   const characteristicsContext = {

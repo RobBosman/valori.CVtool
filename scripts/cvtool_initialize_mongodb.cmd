@@ -10,3 +10,5 @@ FOR /F "usebackq delims=" %%A IN (`docker ps -aqf "name=mongo"`) DO docker exec 
   mongo mongodb://%MONGO_ROOT_USERNAME%:%MONGO_ROOT_PASSWORD%@mongodb:27017/cvtool?authSource=admin ^
     --eval "%MONGO_COMMAND%"
 ENDLOCAL
+
+PAUSE

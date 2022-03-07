@@ -37,13 +37,11 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
      */
     override fun handleRequest(message: Message<JsonObject>) {
         val startNanos = nanoTime()
-        fetchAllCvInstances()
-            .toFlowable()
-            .flatMap { allCvs -> Flowable.fromIterable(allCvs.getInstances("cv")) }
-            .flatMap { cv ->
+        fetchAllCharacteristicsInstances()
+            .flatMap { characteristics ->
                 Flowable
                     .fromIterable(allLocales)
-                    .map { locale -> cv.getString("accountId") to locale }
+                    .map { locale -> characteristics.getString("accountId") to locale }
             }
             .zipWith(permitSubject.toFlowable(ERROR)) { job, _ -> job }
             .flatMap { (accountId, locale) ->
@@ -71,14 +69,16 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
             )
     }
 
-    private fun fetchAllCvInstances() =
+    private fun fetchAllCharacteristicsInstances() =
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
-                JsonObject("""{ "cv": [{}] }"""),
+                JsonObject("""{ "characteristics": [{ "includeInCv": true }] }"""),
                 deliveryOptions
             )
             .map { it.body() }
+            .toFlowable()
+            .flatMap { Flowable.fromIterable(it.getInstances("characteristics")) }
 
     private fun generateCv(accountId: String, locale: String) =
         vertx.eventBus()

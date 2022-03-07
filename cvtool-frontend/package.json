@@ -8,7 +8,7 @@
   "dependencies": {
     "@azure/msal-browser": "^2.22.0",
     "@babel/runtime": "^7.17.2",
-    "@fluentui/react": "^8.57.1",
+    "@fluentui/react": "^8.58.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@uifabric/react-hooks": "^7.14.0",
     "@vertx/eventbus-bridge-client.js": "^1.0.0",

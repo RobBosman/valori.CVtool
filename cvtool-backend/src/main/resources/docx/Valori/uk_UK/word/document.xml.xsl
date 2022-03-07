@@ -26,17 +26,20 @@
                 PROFILE
 
                 -->
-                <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949"
-                     w:rsidP="00D55949">
-                    <w:pPr>
-                        <w:pStyle w:val="Kop1"/>
-                        <w:spacing w:after="60"/>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00D55949">
-                        <w:t>Profile</w:t>
-                    </w:r>
-                </w:p>
-                <xsl:apply-templates select="cv:characteristics/cv:profile/cv:uk_UK" mode="markdown"/>
+                <xsl:variable name="profile" select="cv:characteristics[includeInCv = 'true']/cv:profile/cv:uk_UK"/>
+                <xsl:if test="$profile">
+                    <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949"
+                         w:rsidP="00D55949">
+                        <w:pPr>
+                            <w:pStyle w:val="Kop1"/>
+                            <w:spacing w:after="60"/>
+                        </w:pPr>
+                        <w:r w:rsidRPr="00D55949">
+                            <w:t>Profile</w:t>
+                        </w:r>
+                    </w:p>
+                    <xsl:apply-templates select="$profile" mode="markdown"/>
+                </xsl:if>
                 <!--
 
                 SKILLS

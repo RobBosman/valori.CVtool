@@ -47,7 +47,8 @@ object ModelUtils {
                 "accountId": "$accountId",
                 "role": {},
                 "profile": {},
-                "interests": {}
+                "interests": {},
+                "includeInCv": true
             }"""
         )
 

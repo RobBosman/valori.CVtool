@@ -42,4 +42,5 @@ export const isEditAccountAllowed = (accountId, authInfo) =>
   accountId === authInfo.accountId || ["ADMIN", "UNIT_LEAD"].includes(authInfo.authorizationLevel);
 
 export const hasInstances = (entity, accountId) =>
-  !!Object.values(entity || {}).find(instance => instance.accountId === accountId);
+  Object.values(entity || {})
+    .some(instance => instance.accountId === accountId && instance.includeInCv);

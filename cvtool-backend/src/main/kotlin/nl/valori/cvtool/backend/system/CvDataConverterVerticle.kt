@@ -151,6 +151,8 @@ class CvDataConverterVerticle : BasicVerticle(CONVERT_CV_DATA_ADDRESS) {
 
         // Copy entity 'cv' to 'characteristics'.
         cvData.put("characteristics", cvData.getJsonObject("cv"))
+        cvData.getInstances("characteristics")
+            .forEach { it.put("includeInCv", true) }
 
         // Delete cv instances.
         val cvEntity = JsonObject()
