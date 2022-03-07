@@ -26,7 +26,7 @@
                 PROFILE
 
                 -->
-                <xsl:variable name="profile" select="cv:characteristics[includeInCv = 'true']/cv:profile/cv:nl_NL"/>
+                <xsl:variable name="profile" select="cv:characteristics[cv:includeInCv = 'true']/cv:profile/cv:nl_NL"/>
                 <xsl:if test="$profile">
                     <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949"
                          w:rsidP="00D55949">
@@ -551,7 +551,7 @@
                 INTERESTS
 
                 -->
-                <xsl:variable name="interests" select="cv:characteristics/cv:interests/cv:nl_NL"/>
+                <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:nl_NL"/>
                 <xsl:if test="$interests">
                     <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
