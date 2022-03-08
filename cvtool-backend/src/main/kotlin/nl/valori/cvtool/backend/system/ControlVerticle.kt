@@ -75,29 +75,6 @@ internal class ControlVerticle : AbstractVerticle() {
                     )
             }
 
-        router
-            .route("/convertCvData")
-            .handler { context ->
-                vertx.eventBus()
-                    .rxRequest<JsonObject>(CONVERT_CV_DATA_ADDRESS, null, deliveryOptions)
-                    .subscribe(
-                        {
-                            context.response()
-                                .setStatusCode(HTTP_OK)
-                                .putHeader(TRANSFER_ENCODING, "application/json")
-                                .putHeader(TRANSFER_ENCODING, "chunked")
-                                .putHeader(CONTENT_DISPOSITION, "attachment; filename=\"conversion-result.json\"")
-                                .send(it.body().encodePrettily())
-                        },
-                        {
-                            log.error("Error converting cv data", it)
-                            context.response()
-                                .setStatusCode(HTTP_INTERNAL_ERROR)
-                                .end()
-                        }
-                    )
-            }
-
         return router
     }
 }

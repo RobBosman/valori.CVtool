@@ -4,8 +4,8 @@ import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.backend.ModelUtils.toJsonObject
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.ADMIN
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
-import nl.valori.cvtool.backend.authorization.AuthorizationLevel.UNIT_LEAD
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.SALES
+import nl.valori.cvtool.backend.authorization.AuthorizationLevel.UNIT_LEAD
 import nl.valori.cvtool.backend.authorization.intention.IntentionDeleteAccount
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllAccounts
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllAuthorizations

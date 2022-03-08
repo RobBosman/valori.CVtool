@@ -5,7 +5,6 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
-import nl.valori.cvtool.backend.ModelUtils.ACCOUNT_RELATED_ENTITY_NAMES
 import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.ModelUtils.getInstances
 
@@ -68,7 +67,15 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
     private fun deleteAccount(accountId: String, metaData: JsonObject): Single<JsonObject> {
         // Combine all cv- and account-related instances and convert them into deleteCriteria.
         val instanceIdsToDelete = HashMap<String, Set<String>>()
-        ACCOUNT_RELATED_ENTITY_NAMES
+        listOf(
+            "authorization",
+            "characteristics",
+            "education",
+            "training",
+            "skill",
+            "publication",
+            "reference",
+            "experience")
             .forEach { instanceIdsToDelete[it] = metaData.getInstanceIds(it) }
         val deleteCriteria = convertInstanceIdsIntoDeleteCriteria(instanceIdsToDelete)
 

@@ -5,8 +5,6 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
-import nl.valori.cvtool.backend.ModelUtils.composeCharacteristicsInstance
-import nl.valori.cvtool.backend.ModelUtils.composeCvDataCriteria
 import nl.valori.cvtool.backend.ModelUtils.hasInstances
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
@@ -78,4 +76,28 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
             .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, characteristicsEntity, deliveryOptions)
             .map { cvData.put("characteristics", characteristicsInstances) }
     }
+
+    private fun composeCvDataCriteria(accountId: String) =
+        JsonObject(
+            """{
+                "account": [{ "_id": "$accountId" }],
+                "characteristics": [{ "accountId": "$accountId" }],
+                "education": [{ "accountId": "$accountId" }],
+                "training": [{ "accountId": "$accountId" }],
+                "skill": [{ "accountId": "$accountId" }],
+                "publication": [{ "accountId": "$accountId" }],
+                "reference": [{ "accountId": "$accountId" }],
+                "experience": [{ "accountId": "$accountId" }]
+            }""")
+
+    private fun composeCharacteristicsInstance(id: String, accountId: String) =
+        JsonObject(
+            """{
+                "_id": "$id",
+                "accountId": "$accountId",
+                "role": {},
+                "profile": {},
+                "interests": {},
+                "includeInCv": true
+            }""")
 }

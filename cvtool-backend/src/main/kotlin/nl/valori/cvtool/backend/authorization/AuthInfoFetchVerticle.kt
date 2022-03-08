@@ -6,14 +6,12 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.addEntity
-import nl.valori.cvtool.backend.ModelUtils.composeAccountInstance
-import nl.valori.cvtool.backend.ModelUtils.composeAuthorizationInstance
 import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
-import java.util.UUID
+import java.util.*
 
 const val AUTH_INFO_FETCH_ADDRESS = "authInfo.fetch"
 
@@ -95,6 +93,24 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
             .map { accountInstance }
     }
+
+    private fun composeAccountInstance(id: String, email: String, name: String) =
+        JsonObject(
+            """{
+                "_id": "$id",
+                "email": "${email.uppercase()}",
+                "name": "$name",
+                "dateOfBirth": "",
+                "residence": ""
+            }""")
+
+    private fun composeAuthorizationInstance(id: String, accountId: String, level: String) =
+        JsonObject(
+            """{
+                "_id": "$id",
+                "accountId": "$accountId",
+                "level": "$level"
+            }""")
 
     private fun addAuthorizationLevelAndCvIds(authInfo: AuthInfo) =
         vertx.eventBus()

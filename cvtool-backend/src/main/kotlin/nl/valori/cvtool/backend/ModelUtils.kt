@@ -6,65 +6,8 @@ import javax.xml.stream.XMLStreamWriter
 
 object ModelUtils {
 
-    val ACCOUNT_RELATED_ENTITY_NAMES = listOf(
-        "authorization",
-        "characteristics",
-        "education",
-        "training",
-        "skill",
-        "publication",
-        "reference",
-        "experience"
-    )
-
     fun JsonObject.hasInstances(entityName: String) =
         !getJsonObject(entityName, JsonObject()).isEmpty
-
-    fun composeAccountInstance(id: String, email: String, name: String) =
-        JsonObject(
-            """{
-                "_id": "$id",
-                "email": "${email.uppercase()}",
-                "name": "$name",
-                "dateOfBirth": "",
-                "residence": ""
-            }"""
-        )
-
-    fun composeAuthorizationInstance(id: String, accountId: String, level: String) =
-        JsonObject(
-            """{
-                "_id": "$id",
-                "accountId": "$accountId",
-                "level": "$level"
-            }"""
-        )
-
-    fun composeCharacteristicsInstance(id: String, accountId: String) =
-        JsonObject(
-            """{
-                "_id": "$id",
-                "accountId": "$accountId",
-                "role": {},
-                "profile": {},
-                "interests": {},
-                "includeInCv": true
-            }"""
-        )
-
-    fun composeCvDataCriteria(accountId: String) =
-        JsonObject(
-            """{
-                "account": [{ "_id": "$accountId" }],
-                "characteristics": [{ "accountId": "$accountId" }],
-                "education": [{ "accountId": "$accountId" }],
-                "training": [{ "accountId": "$accountId" }],
-                "skill": [{ "accountId": "$accountId" }],
-                "publication": [{ "accountId": "$accountId" }],
-                "reference": [{ "accountId": "$accountId" }],
-                "experience": [{ "accountId": "$accountId" }]
-            }"""
-        )
 
     fun JsonObject.addEntity(entity: String, instance: JsonObject): JsonObject =
         put(entity, JsonObject().put(instance.getString("_id"), instance))

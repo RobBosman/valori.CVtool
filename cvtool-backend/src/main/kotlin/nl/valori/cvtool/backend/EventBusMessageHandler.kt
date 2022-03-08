@@ -76,13 +76,7 @@ internal object EventBusMessageHandler {
                 bridgeEvent.complete(true)
             }
             SOCKET_ERROR -> {
-                log.error(
-                    "Socket error" +
-                            "\n\tlocal address: ${bridgeEvent.socket().localAddress()}" +
-                            "\n\tremote address: ${bridgeEvent.socket().remoteAddress()}" +
-                            "\n\tweb user: ${bridgeEvent.socket().webUser()}" +
-                            "\n\theaders: ${bridgeEvent.socket().headers()}"
-                )
+                log.error("Socket error. Remote IP ${bridgeEvent.socket().headers()["X-Forwarded-For"]}")
                 bridgeEvent.complete(false)
             }
             else -> bridgeEvent.complete(true)

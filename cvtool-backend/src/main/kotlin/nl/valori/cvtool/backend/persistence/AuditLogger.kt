@@ -7,7 +7,7 @@ import io.vertx.reactivex.core.Vertx
 import nl.valori.cvtool.backend.ModelUtils.toJsonObject
 import nl.valori.cvtool.backend.authorization.AuthInfo
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 internal object AuditLogger {
 
