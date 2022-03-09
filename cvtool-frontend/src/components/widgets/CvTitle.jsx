@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Stack, Text } from "@fluentui/react";
+import { HoverCard, HoverCardType, Stack, Text } from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
 import { useTheme } from "../../services/ui/ui-services";
 
@@ -24,6 +24,7 @@ const CvTitle = (props) => {
       .find(instance => instance.accountId === props.selectedAccountId && instance.includeInCv);
     const role = commonUtils.getValueOrFallback(characteristics, "role", props.locale);
     return {
+      email: account?.email,
       name: account?.name || "<NAAM>",
       role: role || (characteristics ? "<ROL>" : ""),
       dateOfBirth: account?.dateOfBirth && formatDate(account.dateOfBirth) || "<GEBOORTEDATUM>",
@@ -34,7 +35,12 @@ const CvTitle = (props) => {
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
-      <Text variant="xxLarge">{memo.name}</Text>
+      <HoverCard
+        type={HoverCardType.plain}
+        plainCardProps={{ onRenderPlainCard: () => <p style={{margin: 10}}>{memo.email}</p> }}
+        instantOpenOnClick={true}>
+        <Text variant="xxLarge">{memo.name}</Text>
+      </HoverCard>
       <Stack horizontal
         tokens={{ childrenGap: "l1" }}>
         {memo.role
