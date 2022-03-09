@@ -4,17 +4,15 @@ import nl.valori.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.backend.authorization.TestData
 import nl.valori.cvtool.backend.authorization.TestData.authInfoTom
 import nl.valori.cvtool.backend.authorization.TestData.messageDeleteAccountPascal
-import nl.valori.cvtool.backend.authorization.TestData.messageFetchCvByAccountIdPascal
-import nl.valori.cvtool.backend.authorization.TestData.messageFetchCvByAccountIdTom
-import nl.valori.cvtool.backend.authorization.TestData.messageFetchCvByCvIdPascal
-import nl.valori.cvtool.backend.authorization.TestData.messageFetchCvByCvIdTom
+import nl.valori.cvtool.backend.authorization.TestData.messageFetchCharacteristicsByAccountIdPascal
+import nl.valori.cvtool.backend.authorization.TestData.messageFetchCharacteristicsByAccountIdTom
 import nl.valori.cvtool.backend.authorization.TestData.messageFetchSkillPascal
 import nl.valori.cvtool.backend.authorization.TestData.messageFetchSkillTom
 import nl.valori.cvtool.backend.authorization.TestData.messageGenerateCvPascal
 import nl.valori.cvtool.backend.authorization.TestData.messageGenerateCvTom
 import nl.valori.cvtool.backend.authorization.TestData.messageSaveAuthorizationPascal
-import nl.valori.cvtool.backend.authorization.TestData.messageSaveCvPascal
-import nl.valori.cvtool.backend.authorization.TestData.messageSaveCvTom
+import nl.valori.cvtool.backend.authorization.TestData.messageSaveCharacteristicsPascal
+import nl.valori.cvtool.backend.authorization.TestData.messageSaveCharacteristicsTom
 import nl.valori.cvtool.backend.authorization.TestData.messageSaveSkillPascal
 import nl.valori.cvtool.backend.authorization.TestData.messageSaveSkillTom
 import nl.valori.cvtool.backend.authorization.TestData.messageSearchCvData
@@ -75,17 +73,10 @@ internal class IntentionDeleteAccountTest {
     }
 
     @Test
-    fun testFetchOwnCv() {
-        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchCvByCvIdTom, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCvByCvIdTom, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchCvByCvIdTom, authInfoTom))
-    }
-
-    @Test
-    fun testFetchOwnCvByAccountId() {
-        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchCvByAccountIdTom, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCvByAccountIdTom, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchCvByAccountIdTom, authInfoTom))
+    fun testFetchOwnCharacteristics() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdTom, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdTom, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchCharacteristicsByAccountIdTom, authInfoTom))
     }
 
     @Test
@@ -96,10 +87,10 @@ internal class IntentionDeleteAccountTest {
     }
 
     @Test
-    fun testSaveOwnCv() {
-        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveCvTom, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveCvTom, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCvTom, authInfoTom))
+    fun testSaveOwnCharacteristics() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveCharacteristicsTom, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveCharacteristicsTom, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCharacteristicsTom, authInfoTom))
     }
 
     @Test
@@ -125,17 +116,10 @@ internal class IntentionDeleteAccountTest {
     }
 
     @Test
-    fun testFetchOtherCvByCvId() {
-        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchCvByCvIdPascal, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCvByCvIdPascal, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchCvByCvIdPascal, authInfoTom))
-    }
-
-    @Test
-    fun testFetchOtherCvByAccountId() {
-        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchCvByAccountIdPascal, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCvByAccountIdPascal, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchCvByAccountIdPascal, authInfoTom))
+    fun testFetchOtherCharacteristicsByAccountId() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdPascal, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdPascal, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchCharacteristicsByAccountIdPascal, authInfoTom))
     }
 
     @Test
@@ -146,10 +130,10 @@ internal class IntentionDeleteAccountTest {
     }
 
     @Test
-    fun testSaveOtherCv() {
-        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveCvPascal, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveCvPascal, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCvPascal, authInfoTom))
+    fun testSaveOtherCharacteristics() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveCharacteristicsPascal, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveCharacteristicsPascal, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveCharacteristicsPascal, authInfoTom))
     }
 
     @Test

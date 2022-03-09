@@ -2,10 +2,9 @@ package nl.valori.cvtool.backend.authorization
 
 import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.backend.authorization.TestData.authInfoTom
-import nl.valori.cvtool.backend.authorization.TestData.messageFetchCvByCvIdPascal
-import nl.valori.cvtool.backend.authorization.TestData.messageFetchCvByCvIdTom
-import nl.valori.cvtool.backend.authorization.TestData.messageSaveCvPascal
-import nl.valori.cvtool.backend.authorization.TestData.messageSaveCvTom
+import nl.valori.cvtool.backend.authorization.TestData.messageFetchCharacteristicsByAccountIdTom
+import nl.valori.cvtool.backend.authorization.TestData.messageSaveCharacteristicsPascal
+import nl.valori.cvtool.backend.authorization.TestData.messageSaveCharacteristicsTom
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import org.junit.jupiter.api.Test
@@ -17,12 +16,12 @@ internal class AuthorizerTest {
 
     private val messageDeleteNothing = JsonObject(
         """{
-            "cv": {
-                "cv-id-of-tom": {
-                    "_id": "cv-id-of-tom"
+            "characteristics": {
+                "characteristics-id-of-tom": {
+                    "_id": "characteristics-id-of-tom"
                 },
-                "cv-id-of-pascal": {
-                    "_id": "cv-id-of-pascal"
+                "characteristics-id-of-pascal": {
+                    "_id": "characteristics-id-of-pascal"
                 }
                 },
                 "skill": {
@@ -38,9 +37,9 @@ internal class AuthorizerTest {
 
     private val messageDeleteAll = JsonObject(
         """{
-            "cv": {
-                "cv-id-of-tom": {},
-                "cv-id-of-pascal": {}
+            "characteristics": {
+                "characteristics-id-of-tom": {},
+                "characteristics-id-of-pascal": {}
             },
             "skill": {
                 "skill-id-of-tom": {},
@@ -51,9 +50,9 @@ internal class AuthorizerTest {
 
     private val expectedQuery = JsonObject(
         """{
-            "cv": [
-                "cv-id-of-tom",
-                "cv-id-of-pascal"
+            "characteristics": [
+                "characteristics-id-of-tom",
+                "characteristics-id-of-pascal"
             ],
             "skill": [
                 "skill-id-of-tom",
@@ -77,10 +76,9 @@ internal class AuthorizerTest {
 
     @Test
     fun testAuthorize() {
-        assertAllowed(MONGODB_FETCH_ADDRESS, messageFetchCvByCvIdTom, authInfoTom)
-        assertAllowed(MONGODB_SAVE_ADDRESS, messageSaveCvTom, authInfoTom)
-        assertProhibited(MONGODB_FETCH_ADDRESS, messageFetchCvByCvIdPascal, authInfoTom)
-        assertProhibited(MONGODB_SAVE_ADDRESS, messageSaveCvPascal, authInfoTom)
+        assertAllowed(MONGODB_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdTom, authInfoTom)
+        assertAllowed(MONGODB_SAVE_ADDRESS, messageSaveCharacteristicsTom, authInfoTom)
+        assertProhibited(MONGODB_SAVE_ADDRESS, messageSaveCharacteristicsPascal, authInfoTom)
     }
 
     private fun assertAllowed(address: String, messageData: Any?, authInfo: AuthInfo) {
@@ -100,19 +98,19 @@ internal class AuthorizerTest {
     fun testReplaceEntityInstances() {
         val sourceJson = JsonObject(
             """{
-                "cv": {
-                    "cv-id-of-tom": {
-                        "_id": "cv-id-of-tom",
+                "characteristics": {
+                    "characteristics-id-of-tom": {
+                        "_id": "characteristics-id-of-tom",
                         "accountId": "account-id-of-tom",
                         "key": "value"
                     },
-                    "cv-id-of-pascal": {}
+                    "characteristics-id-of-pascal": {}
                 },
                 "skill": {
                     "skill-id-of-tom": {},
                     "skill-id-of-pascal": {
                         "_id": "skill-id-of-pascal",
-                        "cvId": "cv-id-of-pascal",
+                        "accountId": "account-id-of-pascal",
                         "key": "value"
                     }
                 }
@@ -120,9 +118,9 @@ internal class AuthorizerTest {
         )
         val replacementJson = JsonObject(
             """{
-                "cv": {
-                    "cv-id-of-pascal": {
-                        "_id": "cv-id-of-pascal",
+                "characteristics": {
+                    "characteristics-id-of-pascal": {
+                        "_id": "characteristics-id-of-pascal",
                         "accountId": "account-id-of-pascal",
                         "key": "value"
                     }
@@ -130,7 +128,7 @@ internal class AuthorizerTest {
                 "skill": {
                     "skill-id-of-tom": {
                         "_id": "skill-id-of-tom",
-                        "cvId": "cv-id-of-tom",
+                        "accountId": "account-id-of-tom",
                         "key": "value"
                     }
                 }
@@ -138,14 +136,14 @@ internal class AuthorizerTest {
         )
         val resultJson = JsonObject(
             """{
-                "cv": {
-                    "cv-id-of-tom": {
-                        "_id": "cv-id-of-tom",
+                "characteristics": {
+                    "characteristics-id-of-tom": {
+                        "_id": "characteristics-id-of-tom",
                         "accountId": "account-id-of-tom",
                         "key": "value"
                     },
-                    "cv-id-of-pascal": {
-                        "_id": "cv-id-of-pascal",
+                    "characteristics-id-of-pascal": {
+                        "_id": "characteristics-id-of-pascal",
                         "accountId": "account-id-of-pascal",
                         "key": "value"
                     }
@@ -153,12 +151,12 @@ internal class AuthorizerTest {
                 "skill": {
                     "skill-id-of-tom": {
                         "_id": "skill-id-of-tom",
-                        "cvId": "cv-id-of-tom",
+                        "accountId": "account-id-of-tom",
                         "key": "value"
                        },
                     "skill-id-of-pascal": {
                         "_id": "skill-id-of-pascal",
-                        "cvId": "cv-id-of-pascal",
+                        "accountId": "account-id-of-pascal",
                         "key": "value"
                     }
                 }

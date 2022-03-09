@@ -21,15 +21,15 @@ internal class IntentionAllTest {
             ],
             "authorization": [{}],
             "businessUnit": [{}],
-            "cv": [
+            "characteristics": [
                 { "accountId": "account-id-of-tom" },
                 { "accountId": "account-id-of-pascal" },
-                { "_id": "cv-id-of-tom" },
-                { "_id": "cv-id-of-pascal" }
+                { "_id": "characteristics-id-of-tom" },
+                { "_id": "characteristics-id-of-pascal" }
             ],
             "skill": [
-                { "cvId": "cv-id-of-tom" },
-                { "cvId": "cv-id-of-pascal" }
+                { "accountId": "account-id-of-tom" },
+                { "accountId": "account-id-of-pascal" }
             ],
             "searchText": "search-text"
         }"""
@@ -53,14 +53,14 @@ internal class IntentionAllTest {
                     "contactPerson": "Pascal Klankman"
                 }
             },
-            "cv": {
-                "cv-id-of-tom": {
-                    "_id": "cv-id-of-tom",
+            "characteristics": {
+                "characteristics-id-of-tom": {
+                    "_id": "characteristics-id-of-tom",
                     "accountId": "account-id-of-tom",
                     "key": "value"
                 },
-                "cv-id-of-pascal": {
-                    "_id": "cv-id-of-pascal",
+                "characteristics-id-of-pascal": {
+                    "_id": "characteristics-id-of-pascal",
                     "accountId": "account-id-of-pascal",
                     "key": "value"
                 }
@@ -68,12 +68,12 @@ internal class IntentionAllTest {
             "skill": {
                 "skill-id-of-tom": {
                     "_id": "skill-id-of-tom",
-                    "cvId": "cv-id-of-tom",
+                    "accountId": "account-id-of-tom",
                     "key": "value"
                 },
                 "skill-id-of-pascal": {
                     "_id": "skill-id-of-pascal",
-                    "cvId": "cv-id-of-pascal",
+                    "accountId": "account-id-of-pascal",
                     "key": "value"
                 }
             }

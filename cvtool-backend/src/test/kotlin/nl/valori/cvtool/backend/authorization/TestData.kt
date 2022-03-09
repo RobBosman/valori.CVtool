@@ -11,8 +11,7 @@ internal object TestData {
                 "email": "tom@vrt.be",
                 "name": "Tom Testerom",
                 "accountId": "account-id-of-tom",
-                "authorizationLevel": "CONSULTANT",
-                "cvIds": ["cv-id-of-tom"]
+                "authorizationLevel": "CONSULTANT"
             }"""
         ).toAuthInfo()
 
@@ -53,27 +52,15 @@ internal object TestData {
         }"""
     )
 
-    val messageFetchCvByAccountIdTom = JsonObject(
+    val messageFetchCharacteristicsByAccountIdTom = JsonObject(
         """{
-            "cv": [{ "accountId": "account-id-of-tom" }]
+            "characteristics": [{ "accountId": "account-id-of-tom" }]
         }"""
     )
 
-    val messageFetchCvByAccountIdPascal = JsonObject(
+    val messageFetchCharacteristicsByAccountIdPascal = JsonObject(
         """{
-            "cv": [{ "accountId": "account-id-of-pascal" }]
-        }"""
-    )
-
-    val messageFetchCvByCvIdTom = JsonObject(
-        """{
-            "cv": [{ "_id": "cv-id-of-tom" }]
-        }"""
-    )
-
-    val messageFetchCvByCvIdPascal = JsonObject(
-        """{
-            "cv": [{ "_id": "cv-id-of-pascal" }]
+            "characteristics": [{ "accountId": "account-id-of-pascal" }]
         }"""
     )
 
@@ -85,21 +72,21 @@ internal object TestData {
 
     val messageFetchSkillTom = JsonObject(
         """{
-            "skill": [{ "cvId": "cv-id-of-tom" }]
+            "skill": [{ "accountId": "account-id-of-tom" }]
         }"""
     )
 
     val messageFetchSkillPascal = JsonObject(
         """{
-            "skill": [{ "cvId": "cv-id-of-pascal" }]
+            "skill": [{ "accountId": "account-id-of-pascal" }]
         }"""
     )
 
-    val messageSaveCvTom = JsonObject(
+    val messageSaveCharacteristicsTom = JsonObject(
         """{
-            "cv": {
-                "cv-id-of-tom": {
-                    "_id": "cv-id-of-tom",
+            "characteristics": {
+                "characteristics-id-of-tom": {
+                    "_id": "characteristics-id-of-tom",
                     "accountId": "account-id-of-tom",
                     "key": "value"
                 }
@@ -107,11 +94,11 @@ internal object TestData {
         }"""
     )
 
-    val messageSaveCvPascal = JsonObject(
+    val messageSaveCharacteristicsPascal = JsonObject(
         """{
-            "cv": {
-                "cv-id-of-pascal": {
-                    "_id": "cv-id-of-pascal",
+            "characteristics": {
+                "characteristics-id-of-pascal": {
+                    "_id": "characteristics-id-of-pascal",
                     "accountId": "account-id-of-pascal",
                     "key": "value"
                 }
@@ -124,7 +111,7 @@ internal object TestData {
             "skill": {
                 "skill-id-of-tom": {
                     "_id": "skill-id-of-tom",
-                    "cvId": "cv-id-of-tom",
+                    "accountId": "account-id-of-tom",
                     "key": "value"
                 }
             }
@@ -136,7 +123,7 @@ internal object TestData {
             "skill": {
                 "skill-id-of-pascal": {
                     "_id": "skill-id-of-pascal",
-                    "cvId": "cv-id-of-pascal",
+                    "accountId": "account-id-of-pascal",
                     "key": "value"
                 }
             }

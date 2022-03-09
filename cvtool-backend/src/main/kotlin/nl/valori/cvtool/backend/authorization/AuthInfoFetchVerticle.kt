@@ -6,7 +6,6 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.addEntity
-import nl.valori.cvtool.backend.ModelUtils.getInstanceIds
 import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
@@ -29,8 +28,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
      *     "email": "P.Puk@Valori.nl",
      *     "name": "Pietje Puk",
      *     "authorizationLevel": "SALES",
-     *     "accountId": "1111-2222-5555-7777",
-     *     "cvIds": ["2222-7777-5555-1111"]
+     *     "accountId": "1111-2222-5555-7777"
      *   }
      */
     override fun handleRequest(message: Message<JsonObject>) {
@@ -38,7 +36,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .just(message.body())
             .map(::createAuthInfo)
             .flatMap(::addAccountInfo)
-            .flatMap(::addAuthorizationLevelAndCvIds)
+            .flatMap(::addAuthorizationLevel)
             .map(AuthInfo::toJson)
             .subscribe(
                 {
@@ -112,14 +110,13 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                 "level": "$level"
             }""")
 
-    private fun addAuthorizationLevelAndCvIds(authInfo: AuthInfo) =
+    private fun addAuthorizationLevel(authInfo: AuthInfo) =
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject(
                     """{
-                        "authorization": [{ "accountId": "${authInfo.accountId}" }],
-                        "cv": [{ "accountId": "${authInfo.accountId}" }]
+                        "authorization": [{ "accountId": "${authInfo.accountId}" }]
                     }"""
                 ),
                 deliveryOptions
@@ -130,6 +127,5 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                         .map { authorizationLevel -> authorizationLevel.getString("level", "") }
                         .first()
                     )
-                    .withCvIds(it.body().getInstanceIds("cv"))
             }
 }

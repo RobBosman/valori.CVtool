@@ -49,22 +49,13 @@ internal object IntentionUpdateOwnCv : Intention {
             "authorization" -> {
                 // not applicable for IntentionUpdateOwnCv
             }
-            "cv" -> {
-                // Only consider 'own' cvIds.
-                if (instancesMap.keys.any(authInfo.cvIds::contains))
-                    return true
-            }
             else -> {
                 instancesMap.values
                     .mapNotNull { toJsonObject(it) }
                     .forEach { instance ->
                         val accountId = instance.map["accountId"]
-                        val cvId = instance.map["cvId"]
                         // Only consider 'own' accountId.
                         if (accountId == authInfo.accountId)
-                            return true
-                        // Only consider 'own' cvIds.
-                        if (authInfo.cvIds.contains(cvId))
                             return true
                     }
             }

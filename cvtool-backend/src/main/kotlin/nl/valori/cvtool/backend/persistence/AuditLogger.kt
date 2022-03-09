@@ -35,7 +35,7 @@ internal object AuditLogger {
         else
             Single.just(Unit)
 
-    private fun composeAuditLog(messageBody: JsonObject, oldData: JsonObject, accountId: String): JsonObject {
+    private fun composeAuditLog(messageBody: JsonObject, oldData: JsonObject, editorAccountId: String): JsonObject {
         val auditLog = JsonObject()
         messageBody.map.entries
             .forEach { (entityName, newInstances) ->
@@ -53,7 +53,7 @@ internal object AuditLogger {
                                 val id = UUID.randomUUID().toString()
                                 val auditInstance = composeAuditInstance(
                                     id,
-                                    accountId,
+                                    editorAccountId,
                                     entityName,
                                     oldInstanceOrNull,
                                     newInstanceOrNull
@@ -68,21 +68,21 @@ internal object AuditLogger {
 
     private fun composeAuditInstance(
         id: String,
-        accountId: String,
+        editorAccountId: String,
         entityName: String,
         oldInstance: JsonObject?,
         newInstance: JsonObject?
     ): JsonObject {
         val instance = (oldInstance ?: newInstance)!!
-        val cvId = if (entityName === "cv") instance.getString("_id") else instance.getString("cvId", "")
+        val cvAccountId = instance.getString("accountId", "")
         return JsonObject()
             .put("_id", id)
-            .put("accountId", accountId)
+            .put("editorAccountId", editorAccountId)
+            .put("cvAccountId", if (cvAccountId !== "") cvAccountId else null)
             .put("timestamp", LocalDateTime.now().toString())
             .put("entity", entityName)
             .put("oldInstance", oldInstance)
             .put("newInstance", newInstance)
             .put("instanceId", instance.getString("_id"))
-            .put("cvId", if (cvId !== "") cvId else null)
     }
 }

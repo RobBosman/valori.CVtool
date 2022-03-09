@@ -18,8 +18,7 @@ internal object IntentionReadOwnCv : Intention {
             ?: return false
 
         if ((address == CV_FETCH_ADDRESS || address == CV_HISTORY_ADDRESS || address == CV_GENERATE_ADDRESS)
-            && bodyJson.map["accountId"] == authInfo.accountId
-        )
+            && bodyJson.map["accountId"] == authInfo.accountId)
             return true
 
         if (address != MONGODB_FETCH_ADDRESS)
@@ -54,14 +53,6 @@ internal object IntentionReadOwnCv : Intention {
                 if (authInfo.accountId == criterionMap["_id"])
                     return true
             }
-            "cv" -> {
-                // Only consider 'own' accountId.
-                if (authInfo.accountId == criterionMap["accountId"])
-                    return true
-                // Only consider 'own' cv.
-                if (authInfo.cvIds.contains(criterionMap["_id"]))
-                    return true
-            }
             "authorization" -> {
                 // not applicable for IntentionReadOwnCv
             }
@@ -71,9 +62,6 @@ internal object IntentionReadOwnCv : Intention {
             else -> {
                 // Only consider 'own' accountId.
                 if (authInfo.accountId == criterionMap["accountId"])
-                    return true
-                // Only consider 'own' cvIds.
-                if (authInfo.cvIds.contains(criterionMap["cvId"]))
                     return true
             }
         }

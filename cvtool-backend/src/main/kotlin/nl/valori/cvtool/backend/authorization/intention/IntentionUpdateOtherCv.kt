@@ -50,22 +50,13 @@ internal object IntentionUpdateOtherCv : Intention {
             "businessUnit" -> {
                 // not applicable for IntentionUpdateOtherCv
             }
-            "cv" -> {
-                // Referring to 'other' cvIds?
-                if (!authInfo.cvIds.containsAll(instancesMap.keys))
-                    return true
-            }
             else -> {
                 instancesMap.values
                     .mapNotNull { toJsonObject(it) }
                     .forEach { instance ->
                         val accountId = instance.map["accountId"]
-                        val cvId = instance.map["cvId"]
                         // Only consider 'own' accountId.
                         if (accountId != null && accountId != authInfo.accountId)
-                            return true
-                        // Only allow 'own' cvIds.
-                        if (cvId != null && !authInfo.cvIds.contains(cvId))
                             return true
                     }
             }

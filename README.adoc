@@ -140,6 +140,21 @@ Data retention is 120 days.
    { "level": { "$eq": "EE_LEAD" } },
    { "$set": { "level": "UNIT_LEAD" } });
 
+ db.audit_log.updateMany({}, {"$rename": {"accountId": "editorAccountId"}});
+ db.audit_log.updateMany({}, {"$rename": {"cvId": "cvAccountId"}});
+ db.audit_log.find({
+    $and: [
+      { cvAccountId: null },
+      { entity: { $nin: ["account", "authorization", "businessUnit"] } }
+    ]
+   })
+   .forEach(elem =>
+      db.audit_log.updateOne(
+        { _id: elem._id },
+        { $set: { cvAccountId: elem.editorAccountId } }
+      )
+   );
+
  db.experience.find(
    {"$text": {"$search": "c#"}},
    {"score": {$meta: "textScore"}}

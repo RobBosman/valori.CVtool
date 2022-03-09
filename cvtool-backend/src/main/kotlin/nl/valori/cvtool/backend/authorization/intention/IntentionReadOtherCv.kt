@@ -25,10 +25,8 @@ internal object IntentionReadOtherCv : Intention {
         }
 
         if (address == CV_SEARCH_ADDRESS
-            && bodyJson.map["searchText"] != null
-        ) {
+            && bodyJson.map["searchText"] != null)
             return true
-        }
 
         if (address != MONGODB_FETCH_ADDRESS)
             return false
@@ -69,10 +67,6 @@ internal object IntentionReadOtherCv : Intention {
             "businessUnit" -> {
                 // not applicable for IntentionReadOtherCv
             }
-            "cv" -> {
-                if (checkIntentionOfCv(criterionMap, authInfo))
-                    return true
-            }
             else -> {
                 if (checkIntentionOfOtherEntity(criterionMap, authInfo))
                     return true
@@ -82,39 +76,15 @@ internal object IntentionReadOtherCv : Intention {
         return false
     }
 
-    private fun checkIntentionOfCv(
-        criterionMap: Map<String, Any>,
-        authInfo: AuthInfo
-    ): Boolean {
-        val accountId = criterionMap["accountId"]
-        val cvId = criterionMap["_id"]
-        // 'Read all' queries also match here.
-        if (accountId == null && cvId == null)
-            return true
-        // Only consider 'other' accountId.
-        if (accountId != null && authInfo.accountId != accountId)
-            return true
-        // Only consider 'other' cv.
-        if (cvId != null && !authInfo.cvIds.contains(cvId))
-            return true
-
-        return false
-    }
-
     private fun checkIntentionOfOtherEntity(
         criterionMap: Map<String, Any>,
         authInfo: AuthInfo
     ): Boolean {
         val accountId = criterionMap["accountId"]
-        val cvId = criterionMap["cvId"]
+            ?: return true
         // 'Read all' queries also match here.
-        if (accountId == null && cvId == null)
-            return true
         // Only consider 'other' accountId.
-        if (accountId != null && authInfo.accountId != accountId)
-            return true
-        // Only consider 'other' cvIds.
-        if (cvId != null && !authInfo.cvIds.contains(cvId))
+        if (authInfo.accountId != accountId)
             return true
 
         return false
