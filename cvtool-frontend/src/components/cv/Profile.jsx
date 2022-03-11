@@ -140,7 +140,10 @@ const Profile = (props) => {
     return (
       <Stack
         tokens={{ childrenGap: "5px"}}
-        styles={{ root: { backgroundColor: "white" } }}>
+        styles={{ root: {
+          backgroundColor: "white",
+          overflowY: "auto"
+        } }}>
         <Text style={previewHeadingStyle}>
           <strong>{"Profielschets".toUpperCase()}</strong>
         </Text>
@@ -219,7 +222,7 @@ const Profile = (props) => {
       maxWidth: "calc(100vw - 200px)"
     }
   };
-  const viewCharacteristicsStyles = {
+  const viewStyles = {
     root: {
       background: viewPaneBackground,
       padding: 20,
@@ -227,12 +230,13 @@ const Profile = (props) => {
       height: "calc(100vh - 273px)"
     }
   };
-  const editCharacteristicsStyles = {
+  const editStyles = {
     root: {
       background: editPaneBackground,
       padding: 20,
       maxWidth: "calc(100vw - 200px)",
-      height: "calc(100vh - 273px)"
+      height: "calc(100vh - 273px)",
+      overflowY: "auto"
     }
   };
   const tdStyle = {
@@ -271,7 +275,7 @@ const Profile = (props) => {
 
         <tr>
           <td valign="top" style={tdStyle}>
-            <Stack styles={viewCharacteristicsStyles}>
+            <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Profiel</Text>
@@ -311,7 +315,7 @@ const Profile = (props) => {
 
           <td valign="top" style={tdStyle}>
             {isEditable
-              ? <Stack styles={editCharacteristicsStyles}>
+              ? <Stack styles={editStyles}>
                 <Stack horizontal horizontalAlign="space-between"
                   tokens={{ childrenGap: "l1" }}>
                   <StackItem grow>
@@ -374,7 +378,7 @@ const Profile = (props) => {
                   autoAdjustHeight
                 />
               </Stack>
-              : <Stack styles={editCharacteristicsStyles}>
+              : <Stack styles={editStyles}>
                 {renderPreviewContent()}
               </Stack>
             }

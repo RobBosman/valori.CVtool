@@ -223,7 +223,8 @@ const Experience = (props) => {
             backgroundColor: "white",
             borderColor: valoriYellow,
             borderBottomWidth: 1,
-            borderBottomStyle: "solid"
+            borderBottomStyle: "solid",
+            overflowY: "auto"
           }
         }}>
         <Stack
