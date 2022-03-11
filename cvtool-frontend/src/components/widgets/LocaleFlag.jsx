@@ -7,7 +7,7 @@ import ukFlagPng from "../../static/icon-flag-UK.png";
 const LocaleFlag = (props) => (
   <img
     src={props.locale === "uk_UK" ? ukFlagPng : nlFlagPng}
-    alt={props.locale?.substr(3) || "NL"}
+    alt={props.locale?.substring(3) || "NL"}
   />
 );
 

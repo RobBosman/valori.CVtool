@@ -21,7 +21,7 @@ export const CvDatePicker = (props) => {
 
   const {entity, instanceId, replaceInstance, locale, readOnly} = props.instanceContext;
   const instance = entity && entity[instanceId];
-  const localeForDate = locale?.substr(0, 2);
+  const localeForDate = locale?.substring(0, 2);
 
   const correctDateForTimezone = (date) => {
     if (date) {
@@ -35,7 +35,7 @@ export const CvDatePicker = (props) => {
 
   const formatDateForStorage = (date) => {
     try {
-      return correctDateForTimezone(date).toISOString().substr(0, 10); // yyyy-mm-dd
+      return correctDateForTimezone(date).toISOString().substring(0, 10); // yyyy-mm-dd
     } catch (error) {
       return "";
     }

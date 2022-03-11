@@ -44,7 +44,7 @@ const Search = (props) => {
 
   const enrichExperience = React.useCallback(experience => ({
     ...experience,
-    toYear: parseInt((experience.periodEnd || today).substr(0, 4)),
+    toYear: parseInt((experience.periodEnd || today).substring(0, 4)),
     ...preview.composeExperiencePreview(experience, props.locale)
   }),
   [props.locale]);

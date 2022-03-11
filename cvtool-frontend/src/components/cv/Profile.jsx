@@ -93,10 +93,20 @@ const Profile = (props) => {
   const previewTitleStyle = {
     ...preview.cvTextStyle,
     color: valoriBlue,
+    padding: "0 2px 0 2px"
+  };
+  const previewDashesStyle = {
+    ...preview.cvTextStyle,
+    color: valoriYellow,
+    padding: "0 2px 0 2px"
+  };
+  const previewHeadingStyle = {
+    ...preview.cvTextStyle,
+    color: valoriBlue,
     borderColor: valoriYellow,
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
-    margin: "12px 8px 0 8px"
+    padding: "12px 8px 0 8px"
   };
   const previewTextStyle = {
     backgroundColor: "white",
@@ -104,28 +114,42 @@ const Profile = (props) => {
     paddingTop: 0
   };
 
-  const renderPreview = React.useCallback(() => {
+  const renderPreviewTitle = React.useCallback(() => {
+    const account = Object.values(props.accountEntity || []).find(acc => acc._id === props.selectedAccountId);
+    const characteristicsInCv = characteristics.find(characs => characs.includeInCv);
+    return (
+      <Stack horizontalAlign="end">
+        <Text style={{ ...previewTitleStyle, fontSize: "20pt", padding: "8px 8px 0 8px" }}>{account?.name?.toUpperCase()}</Text>
+        <Stack horizontal>
+          <Text style={previewTitleStyle}>{commonUtils.getValueOrFallback(characteristicsInCv, "role", props.locale)?.toUpperCase()}</Text>
+          <Text style={previewDashesStyle}>{"//"}</Text>
+          <Text style={previewTitleStyle}>{preview.formatDate(account?.dateOfBirth)}</Text>
+          <Text style={previewDashesStyle}>{"//"}</Text>
+          <Text style={previewTitleStyle}>{account?.residence?.toUpperCase()}</Text>
+          <Text style={{ ...previewDashesStyle, padding: "0 8px 24px 2px" }}>{"//"}</Text>
+        </Stack>
+      </Stack>
+    );
+  },
+  [props.accountEntity, props.selectedAccountId, characteristics, props.locale]);
+
+  const renderPreviewContent = React.useCallback(() => {
     const characteristicsInCv = characteristics.find(characs => characs.includeInCv);
     const characteristicsInCvCotext = { ...characteristicsContext, instanceId: characteristicsInCv?._id };
-    const hasProfile = characteristicsInCv?.profile && characteristicsInCv.profile[props.locale];
     const hasInterests = characteristicsInCv?.interests && characteristicsInCv.interests[props.locale];
     return (
-      <Stack tokens={{ childrenGap: "5px"}}>
-        {hasProfile
-          && <Text style={previewTitleStyle}>
-            <strong>{"Profielschets".toUpperCase()}</strong>
-          </Text>
-        }
-        {hasProfile
-          && <CvFormattedText
-            field={`profile.${props.locale}`}
-            instanceContext={characteristicsInCvCotext}
-            markDown={true}
-            textComponentStyle={previewTextStyle}
-          />
-        }
+      <Stack tokens={{ childrenGap: "5px"}} styles={{ root: { backgroundColor: "white" } }}>
+        <Text style={previewHeadingStyle}>
+          <strong>{"Profielschets".toUpperCase()}</strong>
+        </Text>
+        <CvFormattedText
+          field={`profile.${props.locale}`}
+          instanceContext={characteristicsInCvCotext}
+          markDown={true}
+          textComponentStyle={previewTextStyle}
+        />
         {hasInterests
-          && <Text style={previewTitleStyle}>
+          && <Text style={previewHeadingStyle}>
             <strong>{"Interesses".toUpperCase()}</strong>
           </Text>
         }
@@ -250,28 +274,28 @@ const Profile = (props) => {
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Profiel</Text>
                 {isEditable
-                  && <Stack horizontal
-                    tokens={{ childrenGap: "l1" }}>
-                    <DefaultButton
-                      text="Toevoegen"
-                      iconProps={{ iconName: "Add" }}
-                      onClick={onAddItem}
-                    />
-                    <DefaultButton
-                      text="Verwijderen"
-                      iconProps={{ iconName: "Delete" }}
-                      disabled={!props.selectedCharacteristicsId || characteristics.length < 2}
-                      onClick={onDeleteItem}
-                    />
-                    <ConfirmDialog
-                      title="Definitief verwijderen?"
-                      primaryButtonText="Verwijderen"
-                      selectedItemFields={selectedItemFields}
-                      isVisible={isConfirmDialogVisible}
-                      onProceed={onDeleteConfirmed}
-                      onCancel={onDeleteCancelled}
-                    />
-                  </Stack>
+                && <Stack horizontal
+                  tokens={{ childrenGap: "l1" }}>
+                  <DefaultButton
+                    text="Toevoegen"
+                    iconProps={{ iconName: "Add" }}
+                    onClick={onAddItem}
+                  />
+                  <DefaultButton
+                    text="Verwijderen"
+                    iconProps={{ iconName: "Delete" }}
+                    disabled={!props.selectedCharacteristicsId || characteristics.length < 2}
+                    onClick={onDeleteItem}
+                  />
+                  <ConfirmDialog
+                    title="Definitief verwijderen?"
+                    primaryButtonText="Verwijderen"
+                    selectedItemFields={selectedItemFields}
+                    isVisible={isConfirmDialogVisible}
+                    onProceed={onDeleteConfirmed}
+                    onCancel={onDeleteCancelled}
+                  />
+                </Stack>
                 }
               </Stack>
               <CvDetailsList
@@ -284,64 +308,74 @@ const Profile = (props) => {
           </td>
 
           <td valign="top" style={tdStyle}>
-            <Stack styles={editCharacteristicsStyles}>
-              <Stack horizontal horizontalAlign="space-between"
-                tokens={{ childrenGap: "l1" }}>
-                <StackItem grow>
-                  <CvTextField
-                    label="Rol"
-                    field={`role.${props.locale}`}
-                    instanceContext={characteristicsContext}
-                    placeholder={commonUtils.getPlaceholder(characteristics, props.selectedCharacteristicsId, "role", props.locale)}
+            {isEditable
+              ? <Stack styles={editCharacteristicsStyles}>
+                <Stack horizontal horizontalAlign="space-between"
+                  tokens={{ childrenGap: "l1" }}>
+                  <StackItem grow>
+                    <CvTextField
+                      label="Rol"
+                      field={`role.${props.locale}`}
+                      instanceContext={characteristicsContext}
+                      placeholder={commonUtils.getPlaceholder(characteristics, props.selectedCharacteristicsId, "role", props.locale)}
+                    />
+                  </StackItem>
+                  <Preview
+                    isVisible={isPreviewVisible}
+                    rootStyles={{
+                      width: 629,
+                      height: 450
+                    }}
+                    renderContent={() =>
+                      <div>
+                        {renderPreviewTitle()}
+                        {renderPreviewContent()}
+                      </div>
+                    }
+                    onDismiss={() => setPreviewVisible(false)}
                   />
-                </StackItem>
-                <Preview
-                  isVisible={isPreviewVisible}
-                  rootStyles={{
-                    width: 629,
-                    height: 450
-                  }}
-                  renderContent={renderPreview}
-                  onDismiss={() => setPreviewVisible(false)}
+                  <PrimaryButton
+                    text="Preview"
+                    iconProps={{ iconName: "EntryView" }}
+                    onClick={() => setPreviewVisible(!isPreviewVisible)}
+                    style={{ top: "28px" }}
+                  />
+                </Stack>
+                <CvTextField
+                  label={createHelpIcon({
+                    label: "Profielschets",
+                    content:
+                      <Text>
+                        Geef een omschrijving van jezelf en je belangrijkste persoonlijke eigenschappen
+                        <br/>en je professionele skills en ervaring.
+                        <br/>Deze tekst schrijf je in de derde persoon.
+                      </Text>
+                  })}
+                  field={`profile.${props.locale}`}
+                  instanceContext={characteristicsContext}
+                  multiline
+                  autoAdjustHeight
                 />
-                <PrimaryButton
-                  text="Preview"
-                  iconProps={{ iconName: "EntryView" }}
-                  onClick={() => setPreviewVisible(!isPreviewVisible)}
-                  style={{ top: "28px" }}
+                <CvTextField
+                  label={createHelpIcon({
+                    label: "Interesses",
+                    content:
+                      <Text>
+                        Beschrijf hier alleen hobby&apos;s en/of interesses die jou als persoon typeren.
+                        <br/>Geen simpele opsomming van voor de hand liggende bezigheden
+                        <br/>zoals uitgaan met vrienden.
+                      </Text>
+                  })}
+                  field={`interests.${props.locale}`}
+                  instanceContext={characteristicsContext}
+                  multiline
+                  autoAdjustHeight
                 />
               </Stack>
-              <CvTextField
-                label={createHelpIcon({
-                  label: "Profielschets",
-                  content:
-                    <Text>
-                      Geef een omschrijving van jezelf en je belangrijkste persoonlijke eigenschappen
-                      <br/>en je professionele skills en ervaring.
-                      <br/>Deze tekst schrijf je in de derde persoon.
-                    </Text>
-                })}
-                field={`profile.${props.locale}`}
-                instanceContext={characteristicsContext}
-                multiline
-                autoAdjustHeight
-              />
-              <CvTextField
-                label={createHelpIcon({
-                  label: "Interesses",
-                  content:
-                    <Text>
-                      Beschrijf hier alleen hobby&apos;s en/of interesses die jou als persoon typeren.
-                      <br/>Geen simpele opsomming van voor de hand liggende bezigheden
-                      <br/>zoals uitgaan met vrienden.
-                    </Text>
-                })}
-                field={`interests.${props.locale}`}
-                instanceContext={characteristicsContext}
-                multiline
-                autoAdjustHeight
-              />
-            </Stack>
+              : <Stack styles={editCharacteristicsStyles}>
+                {renderPreviewContent()}
+              </Stack>
+            }
           </td>
         </tr>
       </tbody>

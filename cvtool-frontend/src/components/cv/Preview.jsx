@@ -15,13 +15,22 @@ export const cvTextStyle = {
   lineHeight: 1.3
 };
 
+export const formatDate = (dateText) => {
+  try {
+    const isoDate = new Date(dateText).toISOString();
+    return `${isoDate.substring(8, 10)}-${isoDate.substring(5, 7)}-${isoDate.substring(0, 4)}`; // yyyy-mm-dd
+  } catch (error) {
+    return dateText;
+  }
+};
+
 export const composeExperiencePeriod = (experience, locale) => {
   const separator = locale === "uk_UK" ? "." : "-";
   const beginString = experience.periodBegin
-    ? `${experience.periodBegin.substr(5, 2)}${separator}${experience.periodBegin.substr(0, 4)}`
+    ? `${experience.periodBegin.substring(5, 7)}${separator}${experience.periodBegin.substring(0, 4)}`
     : "";
   const endString = experience.periodEnd
-    ? `${experience.periodEnd.substr(5, 2)}${separator}${experience.periodEnd.substr(0, 4)}`
+    ? `${experience.periodEnd.substring(5, 7)}${separator}${experience.periodEnd.substring(0, 4)}`
     : locale === "uk_UK" ? "today" : "heden";
   return `${beginString} \u2014 ${endString}`;
 };

@@ -60,7 +60,7 @@ const HistoryView = (props) => {
   const { viewPaneBackground } = useTheme();
 
   const onRenderTimestampMillis = React.useCallback(item =>
-    formatTimestampMillis(-item.timestampMillis, props.locale?.substr(0, 2)),
+    formatTimestampMillis(-item.timestampMillis, props.locale?.substring(0, 2)),
   [props.locale]);
 
   const onRenderWhat = (item) =>

@@ -4,19 +4,11 @@ import { connect } from "react-redux";
 import { HoverCard, HoverCardType, Stack, Text } from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
 import { useTheme } from "../../services/ui/ui-services";
+import { formatDate } from "../cv/Preview";
 
 const CvTitle = (props) => {
   
   const {valoriYellow} = useTheme();
-
-  const formatDate = (dateText) => {
-    try {
-      const isoDate = new Date(dateText).toISOString();
-      return `${isoDate.substr(8, 2)}-${isoDate.substr(5, 2)}-${isoDate.substr(0, 4)}`; // yyyy-mm-dd
-    } catch (error) {
-      return dateText;
-    }
-  };
 
   const memo = React.useMemo(() => {
     const account = props.accountEntity && props.accountEntity[props.selectedAccountId];
