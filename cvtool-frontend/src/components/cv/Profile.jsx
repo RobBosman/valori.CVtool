@@ -138,7 +138,9 @@ const Profile = (props) => {
     const characteristicsInCvCotext = { ...characteristicsContext, instanceId: characteristicsInCv?._id };
     const hasInterests = characteristicsInCv?.interests && characteristicsInCv.interests[props.locale];
     return (
-      <Stack tokens={{ childrenGap: "5px"}} styles={{ root: { backgroundColor: "white" } }}>
+      <Stack
+        tokens={{ childrenGap: "5px"}}
+        styles={{ root: { backgroundColor: "white" } }}>
         <Text style={previewHeadingStyle}>
           <strong>{"Profielschets".toUpperCase()}</strong>
         </Text>
@@ -274,28 +276,28 @@ const Profile = (props) => {
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Profiel</Text>
                 {isEditable
-                && <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
-                  <DefaultButton
-                    text="Toevoegen"
-                    iconProps={{ iconName: "Add" }}
-                    onClick={onAddItem}
-                  />
-                  <DefaultButton
-                    text="Verwijderen"
-                    iconProps={{ iconName: "Delete" }}
-                    disabled={!props.selectedCharacteristicsId || characteristics.length < 2}
-                    onClick={onDeleteItem}
-                  />
-                  <ConfirmDialog
-                    title="Definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                  />
-                </Stack>
+                  && <Stack horizontal
+                    tokens={{ childrenGap: "l1" }}>
+                    <DefaultButton
+                      text="Toevoegen"
+                      iconProps={{ iconName: "Add" }}
+                      onClick={onAddItem}
+                    />
+                    <DefaultButton
+                      text="Verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedCharacteristicsId || characteristics.length < 2}
+                      onClick={onDeleteItem}
+                    />
+                    <ConfirmDialog
+                      title="Definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={isConfirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                    />
+                  </Stack>
                 }
               </Stack>
               <CvDetailsList
