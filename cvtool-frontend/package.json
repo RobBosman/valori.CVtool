@@ -7,8 +7,8 @@
   "main": "index.html",
   "dependencies": {
     "@azure/msal-browser": "^2.22.1",
-    "@babel/runtime": "^7.17.2",
-    "@fluentui/react": "^8.60.3",
+    "@babel/runtime": "^7.17.7",
+    "@fluentui/react": "^8.62.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@uifabric/react-hooks": "^7.14.0",
     "@vertx/eventbus-bridge-client.js": "^1.0.0",
@@ -22,7 +22,7 @@
     "rxjs": "^7.5.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.5",
+    "@babel/core": "^7.17.7",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
@@ -39,9 +39,9 @@
     "babel-loader": "^8.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clean-webpack-plugin": "^4.0.0",
-    "eslint": "^8.10.0",
+    "eslint": "^8.11.0",
     "eslint-plugin-html": "^6.2.0",
-    "eslint-plugin-react": "^7.29.3",
+    "eslint-plugin-react": "^7.29.4",
     "file-loader": "^6.1.1",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
