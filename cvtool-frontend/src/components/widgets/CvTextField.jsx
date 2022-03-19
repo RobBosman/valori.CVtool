@@ -8,6 +8,8 @@ export const CvTextField = (props) => {
   
   const instance = entity && entity[instanceId];
 
+  const isReadOnly = props.readOnly || readOnly;
+
   const value = React.useMemo(() => {
     let val = instance;
     props.field.split(".")
@@ -27,6 +29,38 @@ export const CvTextField = (props) => {
       return () => clearTimeout(timeoutId);
     }
   }, [errorMessage]);
+
+  const textFieldRef = React.useRef(null);
+
+  const getScrollParent = (node) => {
+    const isScrollable = (node) => {
+      const overflowY = window.getComputedStyle(node).overflowY;
+      return overflowY === "scroll" || overflowY === "auto";
+    };
+    while (node instanceof HTMLElement && (!isScrollable(node) || node.scrollHeight <= node.clientHeight)) {
+      node = node.parentNode;
+    }
+    return node;
+  };
+
+  // Override the TextField.autoAdjustHeight feature to prevent unexpected scrolling,
+  // see also https://github.com/microsoft/fluentui/issues/16653.
+  const adjustHeight = React.useCallback(() => {
+    const domTextField = textFieldRef?.current?._textElement?.current;
+    if (domTextField && props.autoAdjustHeight && !textFieldRef.current.props.autoAdjustHeight) {
+      const domScrollableContainer = getScrollParent(domTextField.parentNode);
+      const scrollTop = domScrollableContainer?.scrollTop;
+
+      domTextField.style.height = ""; // NB - resetting the height may cause unexpected scrolling.
+      domTextField.style.height = domTextField.scrollHeight + "px";
+
+      if (scrollTop> 0) {
+        domScrollableContainer.scrollTop = scrollTop;
+      }
+    }
+  }, [textFieldRef, isReadOnly, props.multiline, props.autoAdjustHeight]);
+
+  React.useEffect(adjustHeight, [value]);
 
   const onChange = (event) => {
     if (props.validateInput) {
@@ -59,14 +93,13 @@ export const CvTextField = (props) => {
     replaceInstance && replaceInstance(instanceId, instanceToBeSaved);
   };
 
-  const isReadOnly = props.readOnly || readOnly;
-
   return (
     <TextField
+      componentRef={textFieldRef}
       label={props.label}
       placeholder={!isReadOnly && props.placeholder || ""}
       multiline={props.multiline}
-      autoAdjustHeight={props.autoAdjustHeight}
+      autoAdjustHeight={props.autoAdjustHeight && (isReadOnly || !props.multiline)}
       disabled={props.disabled || !instance}
       readOnly={isReadOnly}
       borderless={isReadOnly}

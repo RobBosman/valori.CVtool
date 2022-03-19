@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, StackItem, ScrollablePane, Separator, PrimaryButton, ColumnActionsMode } from "@fluentui/react";
+import { Text, Stack, DefaultButton, StackItem, Separator, PrimaryButton, ColumnActionsMode } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
@@ -223,8 +223,7 @@ const Experience = (props) => {
             backgroundColor: "white",
             borderColor: valoriYellow,
             borderBottomWidth: 1,
-            borderBottomStyle: "solid",
-            overflowY: "auto"
+            borderBottomStyle: "solid"
           }
         }}>
         <Stack
@@ -375,77 +374,75 @@ const Experience = (props) => {
                   overflowY: "auto",
                   height: "inherit"
                 }}>
-                  <ScrollablePane>
-                    <CvTextField
-                      label={createHelpIcon({
-                        label: "Opdracht",
-                        content:
-                          <Text>
-                            Net als bij je profielschets beschrijf je hier waar nodig zaken in de derde persoon.
-                            <br/>Vermijd dus woorden als <em>ik</em>, <em>mij</em> etc.
-                            <br/>Geef een situatieschets waarin je de opdracht bij de klant omschrijft.
-                            <br/>In veel gevallen kan je hierbij de tekst gebruiken uit je opdrachtmanagementformulier.
-                          </Text>
-                      })}
-                      field={`assignment.${props.locale}`}
-                      instanceContext={experienceContext}
-                      multiline
-                      autoAdjustHeight
-                    />
-                    <CvTextField
-                      label={createHelpIcon({
-                        label: "Taken/werkzaamheden",
-                        content:
-                          <Text>
-                            Geef hier een duidelijke opsomming van alle werkzaamheden
-                            <br/>die een bijdrage leveren aan het resultaat van je opdracht.
-                          </Text>
-                      })}
-                      field={`activities.${props.locale}`}
-                      instanceContext={experienceContext}
-                      multiline
-                      autoAdjustHeight
-                    />
-                    <CvTextField
-                      label={createHelpIcon({
-                        label: "Resultaat",
-                        content:
-                          <Text>
-                            Een opsomming van de belangrijkste behaalde resultaten
-                            <br/>(individueel en als team/project).
-                          </Text>
-                      })}
-                      field={`results.${props.locale}`}
-                      instanceContext={experienceContext}
-                      multiline
-                      autoAdjustHeight
-                    />
-                    <CvTextField
-                      label={createHelpIcon({
-                        label: "Werkomgeving",
-                        content:
-                          <Text>
-                            Denk hierbij aan de toegepaste methode/werkwijze
-                            <br/>en technische omgeving zoals bijvoorbeeld:
-                            <ul>
-                              <li>Agile Scrum</li>
-                              <li>TMap</li>
-                              <li>CI/CD</li>
-                              <li>Java</li>
-                              <li>Selenium</li>
-                              <li>Tosca</li>
-                              <li>JOSF</li>
-                              <li>Microsoft stack</li>
-                              <li>Oracle Cloud</li>
-                            </ul>
-                          </Text>
-                      })}
-                      field={`keywords.${props.locale}`}
-                      instanceContext={experienceContext}
-                      multiline
-                      autoAdjustHeight
-                    />
-                  </ScrollablePane>
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Opdracht",
+                      content:
+                        <Text>
+                          Net als bij je profielschets beschrijf je hier waar nodig zaken in de derde persoon.
+                          <br/>Vermijd dus woorden als <em>ik</em>, <em>mij</em> etc.
+                          <br/>Geef een situatieschets waarin je de opdracht bij de klant omschrijft.
+                          <br/>In veel gevallen kan je hierbij de tekst gebruiken uit je opdrachtmanagementformulier.
+                        </Text>
+                    })}
+                    field={`assignment.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Taken/werkzaamheden",
+                      content:
+                        <Text>
+                          Geef hier een duidelijke opsomming van alle werkzaamheden
+                          <br/>die een bijdrage leveren aan het resultaat van je opdracht.
+                        </Text>
+                    })}
+                    field={`activities.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Resultaat",
+                      content:
+                        <Text>
+                          Een opsomming van de belangrijkste behaalde resultaten
+                          <br/>(individueel en als team/project).
+                        </Text>
+                    })}
+                    field={`results.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
+                  <CvTextField
+                    label={createHelpIcon({
+                      label: "Werkomgeving",
+                      content:
+                        <Text>
+                          Denk hierbij aan de toegepaste methode/werkwijze
+                          <br/>en technische omgeving zoals bijvoorbeeld:
+                          <ul>
+                            <li>Agile Scrum</li>
+                            <li>TMap</li>
+                            <li>CI/CD</li>
+                            <li>Java</li>
+                            <li>Selenium</li>
+                            <li>Tosca</li>
+                            <li>JOSF</li>
+                            <li>Microsoft stack</li>
+                            <li>Oracle Cloud</li>
+                          </ul>
+                        </Text>
+                    })}
+                    field={`keywords.${props.locale}`}
+                    instanceContext={experienceContext}
+                    multiline
+                    autoAdjustHeight
+                  />
                 </div>
               </Stack>
               : <Stack styles={editStyles}>

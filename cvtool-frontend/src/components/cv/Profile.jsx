@@ -141,8 +141,7 @@ const Profile = (props) => {
       <Stack
         tokens={{ childrenGap: "5px"}}
         styles={{ root: {
-          backgroundColor: "white",
-          overflowY: "auto"
+          backgroundColor: "white"
         } }}>
         <Text style={previewHeadingStyle}>
           <strong>{"Profielschets".toUpperCase()}</strong>

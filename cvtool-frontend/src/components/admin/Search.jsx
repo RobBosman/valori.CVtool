@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField, Label, Pivot, PivotItem, ScrollablePane, PivotLinkFormat } from "@fluentui/react";
+import { Text, Stack, TextField, Label, Pivot, PivotItem, PivotLinkFormat } from "@fluentui/react";
 import { connect } from "react-redux";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvFormattedText } from "../widgets/CvFormattedText";
@@ -210,60 +210,58 @@ const Search = (props) => {
         overflowY: "auto",
         height: "inherit"
       }}>
-        <ScrollablePane>
-          <Stack
-            styles={{
-              root: {
-                borderColor: valoriYellow,
-                borderWidth: 1,
-                borderStyle: "solid dashed none none"
-              }
-            }}>
-            <CvFormattedText
-              field="period"
-              instanceContext={experienceContext}
-              markDown={false}
-              formattingSpecs={highlightFormattingSpecs}
-              textComponentStyle={{
-                paddingBottom: 0
-              }}
-            />
-            <CvFormattedText
-              field={`role.${props.locale}`}
-              instanceContext={experienceContext}
-              markDown={false}
-              formattingSpecs={highlightFormattingSpecs}
-              textComponentStyle={{
-                color: valoriYellow,
-                paddingTop: 0,
-                paddingBottom: 0
-              }}
-            />
-            <CvFormattedText
-              field="clientOrEmployer"
-              instanceContext={experienceContext}
-              markDown={false}
-              formattingSpecs={highlightFormattingSpecs}
-              textComponentStyle={{
-                color: valoriYellow,
-                paddingTop: 0
-              }}
-            />
-          </Stack>
+        <Stack
+          styles={{
+            root: {
+              borderColor: valoriYellow,
+              borderWidth: 1,
+              borderStyle: "solid dashed none none"
+            }
+          }}>
           <CvFormattedText
-            field={`description.${props.locale}`}
+            field="period"
             instanceContext={experienceContext}
-            markDown={true}
+            markDown={false}
             formattingSpecs={highlightFormattingSpecs}
-            styles={{
-              root: {
-                borderColor: valoriYellow,
-                borderWidth: 1,
-                borderStyle: "solid none solid dashed"
-              }
+            textComponentStyle={{
+              paddingBottom: 0
             }}
           />
-        </ScrollablePane>
+          <CvFormattedText
+            field={`role.${props.locale}`}
+            instanceContext={experienceContext}
+            markDown={false}
+            formattingSpecs={highlightFormattingSpecs}
+            textComponentStyle={{
+              color: valoriYellow,
+              paddingTop: 0,
+              paddingBottom: 0
+            }}
+          />
+          <CvFormattedText
+            field="clientOrEmployer"
+            instanceContext={experienceContext}
+            markDown={false}
+            formattingSpecs={highlightFormattingSpecs}
+            textComponentStyle={{
+              color: valoriYellow,
+              paddingTop: 0
+            }}
+          />
+        </Stack>
+        <CvFormattedText
+          field={`description.${props.locale}`}
+          instanceContext={experienceContext}
+          markDown={true}
+          formattingSpecs={highlightFormattingSpecs}
+          styles={{
+            root: {
+              borderColor: valoriYellow,
+              borderWidth: 1,
+              borderStyle: "solid none solid dashed"
+            }
+          }}
+        />
       </div>
     </Stack>;
   };

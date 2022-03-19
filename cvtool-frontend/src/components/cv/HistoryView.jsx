@@ -119,7 +119,10 @@ const HistoryView = (props) => {
         closeMenuItemText: "Close",
         menu: ContextualMenu
       }}
-      styles={{ root: { overflow: "hidden", margin: "-8px" } }}>
+      styles={{ root: {
+        margin: "-8px",
+        overflow: "hidden"
+      } }}>
       <Stack styles={historyViewStyles}>
         <Stack horizontal horizontalAlign="space-between">
           <Text variant="xxLarge">Wijzigingshistorie</Text>
