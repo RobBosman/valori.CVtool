@@ -267,13 +267,13 @@ const Accounts = (props) => {
                   label="Naam"
                   field="name"
                   instanceContext={combinedContext()}
-                  disabled={true}
+                  readOnly={true}
                 />
                 <CvTextField
                   label="E-mail"
                   field="email"
                   instanceContext={combinedContext()}
-                  disabled={true}
+                  readOnly={true}
                 />
                 {["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
                   && <CvDropdown
