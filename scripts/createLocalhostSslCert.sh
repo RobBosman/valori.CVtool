@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-JAVA_HOME="/mnt/c/Program Files/Java/jdk-17"
+JAVA_HOME="/mnt/c/Program Files/Java/jdk-18"
 HOSTNAME=localhost
 KEYSIZE=2048
 VALIDITY=3650

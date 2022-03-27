@@ -1,7 +1,7 @@
 ########################################################################################################################
 # Compose a container for building the frontend and backend.
 ########################################################################################################################
-FROM openjdk:17-alpine as builder
+FROM openjdk:18-alpine as builder
 
 # Add maven and binutils for objcopy, needed by jlink.
 RUN apk --update add \
