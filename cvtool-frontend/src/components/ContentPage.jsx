@@ -212,7 +212,7 @@ ContentPage.propTypes = {
   selectedAccountId: PropTypes.string,
   fetchCvHistory: PropTypes.func.isRequired,
   generateCv: PropTypes.func.isRequired,
-  setHistoryViewVisible: PropTypes.func
+  setHistoryViewVisible: PropTypes.func.isRequired
 };
 
 const select = (store) => ({

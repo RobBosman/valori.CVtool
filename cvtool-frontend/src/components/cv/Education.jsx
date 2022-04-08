@@ -160,7 +160,8 @@ const Education = (props) => {
 
   const renderPreviewEducation = (education) => {
     return (
-      <tr style={{ color: valoriBlue }}>
+      <tr key={education._id}
+        style={{ color: valoriBlue }}>
         <td>{commonUtils.getValueOrFallback(education, "name", props.locale)}</td>
         <td>{education.institution}</td>
         <td>

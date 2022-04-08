@@ -130,18 +130,23 @@ const Preview = (props) => {
     <Modal
       isOpen={props.isVisible}
       onDismiss={props.onDismiss}
-      isModeless={true}
+      // TODO: isModeless={true}
       dragOptions={{
         moveMenuItemText: "Move",
         closeMenuItemText: "Close",
         menu: ContextualMenu
       }}
-      styles={{ root: { margin: "-8px" } }}>
+      styles={{
+        root: {
+          margin: "-8px"
+        }
+      }}>
       <Stack styles={{
         root: {
           background: viewPaneBackground,
           padding: 20
-        }}}>
+        }
+      }}>
         <Stack horizontal horizontalAlign="space-between">
           <Text variant="xxLarge">Preview</Text>
           <IconButton

@@ -1,8 +1,10 @@
 /**
  * @jest-environment jsdom
  */
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
 import { loadTheme } from "@fluentui/react";
 import fluentUITheme from "../../../static/themes/fluentUI.json";
@@ -13,14 +15,19 @@ import * as uiServices from "../ui-services";
 describe("ui-services.test", () => {
 
   let _container = null;
+  let _reactRoot = null;
 
   beforeEach(() => {
     _container = document.createElement("div");
     document.body.appendChild(_container);
+    _reactRoot = createRoot(_container);
   });
 
   afterEach(() => {
-    unmountComponentAtNode(_container);
+    act(() => {
+      _reactRoot.unmount();
+    });
+    _reactRoot = null;
     _container.remove();
     _container = null;
   });
@@ -29,12 +36,12 @@ describe("ui-services.test", () => {
     const TestComp = () => {
       const {viewPaneBackground} = uiServices.useTheme();
       return (
-        <div id="testTarget" style={{ background: viewPaneBackground}} />
+        <div id="testTarget" style={{ background: viewPaneBackground }} />
       );
     };
 
     act(() => {
-      render(<TestComp />, _container);
+      _reactRoot.render(<TestComp />);
     });
     const testTarget = document.getElementById("testTarget");
     expect(testTarget.style.background)
