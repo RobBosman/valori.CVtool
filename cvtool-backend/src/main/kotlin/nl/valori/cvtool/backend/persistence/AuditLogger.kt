@@ -7,6 +7,7 @@ import io.vertx.reactivex.core.Vertx
 import nl.valori.cvtool.backend.ModelUtils.toJsonObject
 import nl.valori.cvtool.backend.authorization.AuthInfo
 import java.time.LocalDateTime
+import java.time.ZoneOffset.UTC
 import java.util.*
 
 internal object AuditLogger {
@@ -79,7 +80,7 @@ internal object AuditLogger {
             .put("_id", id)
             .put("editorAccountId", editorAccountId)
             .put("cvAccountId", if (cvAccountId !== "") cvAccountId else null)
-            .put("timestamp", LocalDateTime.now().toString())
+            .put("timestamp", LocalDateTime.now(UTC).toString())
             .put("entity", entityName)
             .put("oldInstance", oldInstance)
             .put("newInstance", newInstance)

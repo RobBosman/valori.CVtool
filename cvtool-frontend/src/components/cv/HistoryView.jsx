@@ -7,6 +7,7 @@ import * as uiActions from "../../services/ui/ui-actions";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 
 const entityName = "audit_log";
+const timezoneOffsetMillis = new Date().getTimezoneOffset() * 60000;
 
 export const entityNames = {
   "account": "Account",
@@ -24,8 +25,8 @@ export const entityNames = {
 
 const HistoryView = (props) => {
 
-  const formatTimestampMillis = (timestampMillis, locale) => {
-    const date = new Date(timestampMillis);
+  const formatTimestampMillis = (timestampMillisUTC, locale) => {
+    const date = new Date(timestampMillisUTC - timezoneOffsetMillis);
     return `${date.toLocaleDateString(locale)} ${date.toLocaleTimeString(locale)}`;
   };
 
@@ -113,16 +114,19 @@ const HistoryView = (props) => {
     <Modal
       isOpen={props.isHistoryViewVisible}
       onDismiss={() => props.setHistoryViewVisible(false)}
-      isModeless={true}
+      isModeless={false}
+      isBlocking={false}
       dragOptions={{
         moveMenuItemText: "Move",
         closeMenuItemText: "Close",
         menu: ContextualMenu
       }}
-      styles={{ root: {
-        margin: "-8px",
-        overflow: "hidden"
-      } }}>
+      styles={{
+        root: {
+          margin: "-8px",
+          overflow: "hidden"
+        }
+      }}>
       <Stack styles={historyViewStyles}>
         <Stack horizontal horizontalAlign="space-between">
           <Text variant="xxLarge">Wijzigingshistorie</Text>
