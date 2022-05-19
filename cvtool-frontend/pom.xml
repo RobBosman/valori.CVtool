@@ -19,7 +19,7 @@
         <dependency-check-maven.version>6.5.3</dependency-check-maven.version>
         <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <nodejs.version>v16.14.2</nodejs.version>
+        <nodejs.version>v16.15.0</nodejs.version>
     </properties>
 
     <build>
@@ -31,14 +31,13 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>.</directory>
+                            <directory>${project.basedir}</directory>
                             <includes>
                                 <include>npm-audit.txt</include>
                                 <include>npm-outdated.txt</include>
                                 <include>stats.json</include>
                                 <directory>dist/**</directory>
                                 <directory>node/**</directory>
-                                <directory>node_modules/**</directory>
                             </includes>
                         </fileset>
                     </filesets>

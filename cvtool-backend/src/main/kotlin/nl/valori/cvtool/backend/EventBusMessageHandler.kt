@@ -42,7 +42,7 @@ internal object EventBusMessageHandler {
 
     private fun createBridgeOptions() =
         SockJSBridgeOptions()
-            .setPingTimeout(10_000) // 10 seconds
+            .setPingTimeout(60_000) // 60 seconds
             .addInboundPermitted(PermittedOptions().setAddress(AUTH_INFO_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))

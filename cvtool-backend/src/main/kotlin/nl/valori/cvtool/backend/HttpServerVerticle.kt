@@ -54,10 +54,8 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .handler(HealthChecker.getHandler(vertx, config()))
             .failureHandler { log.warn("Error handling health-check request") }
         router
-            .mountSubRouter(
-                "/eventbus",
-                EventBusMessageHandler.create(vertx)
-            )
+            .route("/eventbus/*")
+            .subRouter(EventBusMessageHandler.create(vertx))
         return router
     }
 }

@@ -4,6 +4,7 @@ import * as rx from "rxjs/operators";
 
 const CONNECT_URL = "/eventbus";
 const CONNECT_OPTIONS = {
+  vertxbus_ping_interval: 30000, // Ping the server every 30 seconds
   vertxbus_reconnect_attempts_max: Infinity, // Max reconnect attempts
   vertxbus_reconnect_delay_min: 500, // Initial delay (in ms) before first reconnect attempt
   vertxbus_reconnect_delay_max: 5000, // Max delay (in ms) between reconnect attempts
