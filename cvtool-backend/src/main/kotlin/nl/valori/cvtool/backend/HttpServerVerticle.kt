@@ -4,6 +4,8 @@ import io.vertx.core.Promise
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
+import io.vertx.reactivex.ext.web.RoutingContext
+import io.vertx.reactivex.ext.web.handler.BodyHandler
 import nl.valori.cvtool.backend.system.HealthChecker
 import org.slf4j.LoggerFactory
 import java.net.URL
@@ -50,12 +52,25 @@ internal class HttpServerVerticle : AbstractVerticle() {
     private fun createRouter(): Router {
         val router = Router.router(vertx)
         router
-            .get("/health*")
+            .errorHandler(500) { log.warn("errorHandler -- $it") }
+            .route()
+            .failureHandler(::handleFailure)
+            .handler(BodyHandler.create())
+
+        router
+            .get("/health/*")
             .handler(HealthChecker.getHandler(vertx, config()))
-            .failureHandler { log.warn("Error handling health-check request") }
         router
             .route("/eventbus/*")
             .subRouter(EventBusMessageHandler.create(vertx))
         return router
+    }
+
+    private fun handleFailure(routingContext: RoutingContext) {
+        log.warn("Error handling request: ${routingContext.failure().message}")
+        routingContext.response()
+            .putHeader("Content-type", "application/json; charset=utf-8")
+            .setStatusCode(500)
+            .end(routingContext.failure().message ?: "internal server error")
     }
 }

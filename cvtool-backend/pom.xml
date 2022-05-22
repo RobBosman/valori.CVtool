@@ -19,7 +19,7 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <mongodb-driver-reactivestreams.version>4.6.0</mongodb-driver-reactivestreams.version>
-        <vertx.version>4.2.7</vertx.version>
+        <vertx.version>4.3.0</vertx.version>
     </properties>
 
     <build>

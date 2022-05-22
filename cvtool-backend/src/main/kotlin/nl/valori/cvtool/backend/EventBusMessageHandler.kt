@@ -38,7 +38,6 @@ internal object EventBusMessageHandler {
     internal fun create(vertx: Vertx) =
         SockJSHandler.create(vertx)
             .bridge(createBridgeOptions()) { bridgeEventHandler(vertx, it) }
-            .errorHandler(500) { log.info("errorHandler -- $it") }
 
     private fun createBridgeOptions() =
         SockJSBridgeOptions()
@@ -76,7 +75,7 @@ internal object EventBusMessageHandler {
                 bridgeEvent.complete(true)
             }
             SOCKET_ERROR -> {
-                log.error("Socket error. Remote IP ${bridgeEvent.socket().headers()["X-Forwarded-For"]}")
+                log.warn("Socket error\n\t${bridgeEvent.rawMessage.encodePrettily()}")
                 bridgeEvent.complete(false)
             }
             else -> bridgeEvent.complete(true)
