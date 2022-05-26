@@ -110,13 +110,13 @@ internal class CvGenerateVerticle : BasicVerticle(CV_GENERATE_ADDRESS) {
             }
             .subscribe(
                 {
-                    log.debug("Successfully generated cv data")
+                    log.debug("Successfully generated $locale cv data")
                     message.reply(it)
                 },
                 {
-                    val errorMsg = "Error generating cv data: ${it.message}"
+                    val errorMsg = "Error generating $locale cv data: ${it.message}"
                     log.warn(errorMsg)
-                    message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
+                    message.fail(RECIPIENT_FAILURE.toInt(),  errorMsg)
                 }
             )
     }

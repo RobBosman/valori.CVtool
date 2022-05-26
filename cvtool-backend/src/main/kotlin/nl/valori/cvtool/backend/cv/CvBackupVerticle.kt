@@ -55,10 +55,10 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
                     allGeneratedCvs[generatedCv.getString("fileName")] = generatedCv.getString("docxB64")
                     allGeneratedCvs
                 })
+            .map { it to createZip(it) }
             .subscribe(
-                { allGeneratedCvs ->
+                { (allGeneratedCvs, zipBytes) ->
                     log.info("Generated and zipped ${allGeneratedCvs.size} cvs in ${(nanoTime() - startNanos) / 1_000_000} ms")
-                    val zipBytes = createZip(allGeneratedCvs)
                     message.reply(JsonObject().put("zipBytes", zipBytes))
                 },
                 {
@@ -88,6 +88,12 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
                 deliveryOptions
             )
             .map { it.body() }
+            .onErrorReturn { createErrorCv(accountId, locale, it) }
+
+    private fun createErrorCv(accountId: String, locale: String, t: Throwable) =
+        JsonObject()
+            .put("fileName", "ERROR-CV_${locale.substring(3)}_$accountId.txt")
+            .put("docxB64", String(Base64.getEncoder().encode("Error generating $locale cv:\n$t".encodeToByteArray())))
 
     private fun createZip(allGeneratedCvs: Map<String, String>): ByteArray {
         val zipBytes = ByteArrayOutputStream()

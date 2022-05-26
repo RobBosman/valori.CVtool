@@ -155,6 +155,8 @@ Data retention is 120 days.
       )
    );
 
+Full text search:
+
  db.experience.find(
    {"$text": {"$search": "c#"}},
    {"score": {$meta: "textScore"}}
@@ -164,3 +166,20 @@ Data retention is 120 days.
    {"$text": {"$search": "c#"}},
    {"score": {"$meta": "textScore"}}
  ).sort({"score": {"$meta": "textScore"}})
+
+Find `characteristics` that have no associated `account`:
+
+ db.characteristics.aggregate( [
+     {
+       $lookup: {
+         from: "account",
+         localField: "accountId",
+         foreignField: "_id",
+         as: "tassociated_account"
+       }
+     },
+     {
+       $match: { "associated_account.0": { $exists: false } }
+     }
+   ]
+ )

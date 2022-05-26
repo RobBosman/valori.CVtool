@@ -105,7 +105,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     message.reply(it)
                 },
                 {
-                    log.warn("Error authenticating: ${it.message}")
+                    val errorMsg = "Error authenticating: ${it.message}"
+                    log.warn(errorMsg)
                     message.fail(RECIPIENT_FAILURE.toInt(), it.message)
                 }
             )

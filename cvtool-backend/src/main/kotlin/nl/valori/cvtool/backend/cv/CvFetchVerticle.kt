@@ -60,6 +60,7 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
         vertx.eventBus()
             .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, composeCvDataCriteria(accountId), deliveryOptions)
             .map { it.body() }
+            .doOnSuccess { if (!it.hasInstances("account")) error("AccountId '$accountId' is unknown") }
             .flatMap {
                 if (it.hasInstances("characteristics")) {
                     Single.just(it)

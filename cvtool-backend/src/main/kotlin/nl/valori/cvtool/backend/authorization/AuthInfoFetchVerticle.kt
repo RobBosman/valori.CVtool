@@ -44,7 +44,8 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                     message.reply(it)
                 },
                 {
-                    log.warn(it.message)
+                    val errorMsg = "Error fetching accountInfo: ${it.message}"
+                    log.warn(errorMsg)
                     message.fail(RECIPIENT_FAILURE.toInt(), it.message)
                 }
             )

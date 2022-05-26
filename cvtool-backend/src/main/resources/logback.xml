@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true">
+<configuration scan="true"
+               xmlns="http://ch.qos.logback/xml/ns/logback">
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <Pattern>%d{ISO8601} %-31logger{30} [%20.20thread] %-5level - %msg%n%ex</Pattern>
+            <pattern>%d{ISO8601} %-31logger{30} [%20.20thread] %-5level - %msg%n%ex</pattern>
         </encoder>
     </appender>
 
+    <logger name="nl.valori.cvtool" level="INFO"/>
+
     <!-- set default log level and appender -->
-    <root level="info">
+    <root level="WARN">
         <appender-ref ref="STDOUT"/>
     </root>
 
