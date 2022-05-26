@@ -331,6 +331,7 @@ const Experience = (props) => {
                   </Stack>
                   <Preview
                     isVisible={isPreviewVisible}
+                    isModeless={true}
                     rootStyles={{
                       width: 614, // = 9213/1440 inch
                       height: "calc(100vh - 300px)"

@@ -411,6 +411,7 @@ const Skill = (props) => {
                 <Preview
                   isVisible={isPreviewVisible}
                   rootStyles={{
+                    width: 638,
                     height: 400
                   }}
                   renderContent={renderPreview}
