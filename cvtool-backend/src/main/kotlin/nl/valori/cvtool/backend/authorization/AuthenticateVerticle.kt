@@ -86,7 +86,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
      *
      * Response:
      *   {
-     *     "email": "P.Puk@Valori.nl",
+     *     "email": "P.Puk@valori.nl",
      *     "name": "Pietje Puk",
      *   }
      *

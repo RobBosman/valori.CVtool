@@ -17,7 +17,7 @@ const LoginPage = (props) => {
   };
 
   const onOpenAppsPage = () =>
-    window.open("https://account.activedirectory.windowsazure.com/r/#/applications", "blank");
+    window.open("https://myapplications.microsoft.com/", "blank");
 
   return (
     <Stack>

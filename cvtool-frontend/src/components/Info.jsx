@@ -36,7 +36,7 @@ const Info = () => {
           <li><u>AutoSave</u>: Alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
-        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:RobBosman@Valori.nl?subject=CVtool" target="blank">RobBosman@Valori.nl</Link>.
+        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank">RobBosman@valori.nl</Link>.
         <br/>
         <br/>Enjoy!
         <br/>Rob
