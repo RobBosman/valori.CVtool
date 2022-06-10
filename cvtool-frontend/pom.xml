@@ -11,39 +11,17 @@
     </parent>
 
     <artifactId>cvtool-frontend</artifactId>
-    <packaging>pom</packaging>
     <description>Frontend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
     <properties>
         <target.environment>PROD</target.environment>
         <dependency-check-maven.version>6.5.3</dependency-check-maven.version>
         <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
-        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <nodejs.version>v16.15.0</nodejs.version>
+        <nodejs.version>v16.15.1</nodejs.version>
     </properties>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>${maven-clean-plugin.version}</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${project.basedir}</directory>
-                            <includes>
-                                <include>npm-audit.txt</include>
-                                <include>npm-outdated.txt</include>
-                                <include>stats.json</include>
-                                <directory>dist/**</directory>
-                                <directory>node/**</directory>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
@@ -54,7 +32,7 @@
                             <directory>src</directory>
                         </fileSet>
                         <fileSet>
-                            <directory>dist</directory>
+                            <directory>target/classes/public</directory>
                         </fileSet>
                     </scanSet>
                     <format>ALL</format>
@@ -90,7 +68,7 @@
                         </goals>
                         <phase>compile</phase>
                         <configuration>
-                            <arguments>install --no-optional --no-audit --legacy-peer-deps</arguments>
+                            <arguments>install --omit=optional --no-audit --legacy-peer-deps</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -100,7 +78,7 @@
                         </goals>
                         <phase>prepare-package</phase>
                         <configuration>
-                            <arguments>run-script lint</arguments>
+                            <arguments>run-script lint:verify</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -120,7 +98,7 @@
                         </goals>
                         <phase>prepare-package</phase>
                         <configuration>
-                            <arguments>run-script build</arguments>
+                            <arguments>run-script build:prod</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -130,7 +108,7 @@
                         </goals>
                         <phase>verify</phase>
                         <configuration>
-                            <arguments>run-script npm-outdated</arguments>
+                            <arguments>run-script npm:outdated</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -140,7 +118,7 @@
                         </goals>
                         <phase>verify</phase>
                         <configuration>
-                            <arguments>run-script npm-audit</arguments>
+                            <arguments>run-script npm:audit</arguments>
                         </configuration>
                     </execution>
                 </executions>

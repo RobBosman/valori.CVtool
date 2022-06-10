@@ -1,9 +1,7 @@
-"use strict";
-
-module.exports = {
+export default {
   env: {
     browser: true,
-    es2020: true,
+    es6: true,
     node: true
   },
   extends: [
@@ -57,7 +55,6 @@ module.exports = {
     ]
   },
   ignorePatterns: [
-    "dist/**",
     "node/**",
     "node_modules/**",
     "target/**"

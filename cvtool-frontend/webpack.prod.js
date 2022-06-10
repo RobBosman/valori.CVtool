@@ -1,54 +1,12 @@
-const { merge } = require("webpack-merge");
-const common = require("./webpack.common.js");
-const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import {merge} from "webpack-merge";
+import {CleanWebpackPlugin} from "clean-webpack-plugin";
+import {composeCommonConfig} from "./webpack.common.js";
 
-module.exports = merge(common, {
-  mode: "production",
+export default merge(composeCommonConfig("production"), {
   devtool: "source-map",
   plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      title: "CVtool",
-      template: path.resolve(__dirname, "src", "static", "index.html"),
-      inject: true,
-      favicon: path.resolve(__dirname, "src", "static", "favicon.ico")
-    }),
+    new CleanWebpackPlugin()
   ],
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /(Headless.*|dist|node|node_modules|target)/,
-        use: {
-          loader: require.resolve("babel-loader"),
-          options: {
-            envName: "production",
-            env: {
-              production: {
-                only: [
-                  "src"
-                ],
-                plugins: [
-                  [
-                    "transform-react-remove-prop-types",
-                    {
-                      removeImport: false
-                    }
-                  ],
-                  "@babel/plugin-transform-react-inline-elements",
-                  "@babel/plugin-transform-react-constant-elements"
-                ]
-              }
-            },
-            cacheDirectory: true,
-            cacheCompression: false
-          }
-        }
-      }
-    ]
-  },
   optimization: {
     splitChunks: {
       chunks: "all",

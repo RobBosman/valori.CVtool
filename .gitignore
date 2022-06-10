@@ -5,12 +5,9 @@ secret/setenv.cmd
 target/
 node/
 node_modules/
-dist/
-coverage/
 HeadlessChrome_*/
 debug.log
-npm-audit.txt
-npm-outdated.txt
+npm-*.txt
 stats.json
 *.p12
 *.pem

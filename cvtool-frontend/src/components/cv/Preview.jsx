@@ -125,32 +125,17 @@ export const wrapText = (text, wrapWidth = 42.0) => {
 const Preview = (props) => {
   
   const {viewPaneBackground, valoriYellow} = uiServices.useTheme();
-  const modalStyles = props.isModeless
-    ? {
-      main: {
-        top: "calc(-100vh + 95px)",
-        left: `calc(50vw - ${((props.rootStyles.width || 0) + 80) / 2}px - 20px)`
-      },
-      root: {
-        width: (props.rootStyles.width || 0) + 80,
-        height: isNaN(props.rootStyles.height)
-          ? props.rootStyles.height.replace(")", " + 110px)")
-          : props.rootStyles.height + 110,
-        margin: "-8px"
-      }
-    }
-    : {
-      root: {
-        margin: "-8px"
-      }
-    };
 
   return (
     <Modal
       isOpen={props.isVisible}
       onDismiss={props.onDismiss}
-      isModeless={props.isModeless}
-      styles={modalStyles}
+      isModeless={true}
+      styles={{
+        root: {
+          margin: "-8px"
+        }
+      }}
       dragOptions={{
         moveMenuItemText: "Move",
         closeMenuItemText: "Close",
@@ -191,7 +176,6 @@ const Preview = (props) => {
 };
 
 Preview.propTypes = {
-  isModeless: PropTypes.bool,
   rootStyles: PropTypes.object,
   renderContent: PropTypes.func.isRequired,
   isVisible: PropTypes.bool.isRequired,

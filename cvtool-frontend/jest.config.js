@@ -1,7 +1,6 @@
-"use strict";
+import {defaults} from "jest-config";
 
-const {defaults} = require("jest-config");
-module.exports = {
+export default {
 
   moduleFileExtensions: [...defaults.moduleFileExtensions, "jsx"],
 

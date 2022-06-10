@@ -1,8 +1,8 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
-export const fetchCvByAccountId = createAction("FECTH_CV_BY_ACCOUNT_ID");
-export const fetchCvHistory = createAction("FECTH_CV_HYSTORY");
+export const fetchCvByAccountId = createAction("FETCH_CV_BY_ACCOUNT_ID");
+export const fetchCvHistory = createAction("FETCH_CV_HISTORY");
 export const searchCvData = createAction("SEARCH_CV_DATA");
 export const setSearchResult = createAction("SET_SEARCH_RESULT");
 export const resetSearchData = createAction("RESET_SEARCH_DATA", () => ({}));

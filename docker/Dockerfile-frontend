@@ -31,4 +31,4 @@ MAINTAINER RobBosman@valori.nl
 COPY --from=builder /build/docker/default.conf.template /etc/nginx/templates/
 
 # Copy the executable code.
-COPY --from=builder /build/cvtool-frontend/dist/. /www/cvtool-frontend
+COPY --from=builder /build/cvtool-frontend/target/classes/public/. /www/cvtool-frontend

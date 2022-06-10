@@ -27,7 +27,6 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 * Add `./node` to the PATH environment variable.
 * Add these patterns to the _Search: Exclude_ settings:
 
-    **/dist
     **/node
     **/target
 
