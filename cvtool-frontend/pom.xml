@@ -32,7 +32,7 @@
                             <directory>src</directory>
                         </fileSet>
                         <fileSet>
-                            <directory>target/classes/public</directory>
+                            <directory>target/classes</directory>
                         </fileSet>
                     </scanSet>
                     <format>ALL</format>

@@ -30,5 +30,7 @@ MAINTAINER RobBosman@valori.nl
 # Copy nginx configuration.
 COPY --from=builder /build/docker/default.conf.template /etc/nginx/templates/
 
-# Copy the executable code.
-COPY --from=builder /build/cvtool-frontend/target/classes/public/. /www/cvtool-frontend
+# Copy and unzip the jar with frontend code.
+COPY --from=builder /build/cvtool-frontend/target/*.jar /
+RUN unzip /*.jar -d /www/cvtool-frontend
+RUN rm /*.jar

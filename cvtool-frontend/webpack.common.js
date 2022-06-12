@@ -14,7 +14,7 @@ export const composeCommonConfig = devOrProdMode => ({
   entry: path.resolve(__dirname, "src", "app.jsx"),
   output: {
     filename: "js/[name].[contenthash:8].bundle.js",
-    path: path.resolve(__dirname, "target/classes/public")
+    path: path.resolve(__dirname, "target/classes")
   },
 
   plugins: [
@@ -83,7 +83,7 @@ export const composeCommonConfig = devOrProdMode => ({
   },
 
   devServer: {
-    static: "./target/classes/public",
+    static: "./target/classes",
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "*"
