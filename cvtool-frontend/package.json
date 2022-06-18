@@ -8,15 +8,15 @@
   "sideEffects": false,
   "main": "target/classes/index.htm",
   "dependencies": {
-    "@azure/msal-browser": "^2.24.0",
-    "@fluentui/react": "^8.72.0",
+    "@azure/msal-browser": "^2.26.0",
+    "@fluentui/react": "^8.76.1",
     "@redux-devtools/extension": "^3.2.2",
     "@reduxjs/toolkit": "^1.8.1",
     "@uifabric/react-hooks": "^7.14.2",
     "@vertx/eventbus-bridge-client.js": "^1.0.0-3-SNAPSHOT",
     "buffer": "^6.0.3",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-redux": "^8.0.1",
     "redux": "^4.2.0",
     "redux-observable": "^2.0.0",
@@ -40,7 +40,7 @@
     "rimraf": "^3.0.2",
     "url-loader": "^4.1.1",
     "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2",
+    "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.2"
   },
   "scripts": {
