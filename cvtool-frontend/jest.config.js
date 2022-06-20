@@ -7,6 +7,11 @@ export default {
   // For a detailed explanation regarding each configuration property, visit:
   // https://jestjs.io/docs/en/configuration.html
 
+  // The glob patterns Jest uses to detect test files
+  // testMatch: [
+  //   "**/__tests__/**/*.[jt]s?(x)",
+  //   "**/?(*.)+(spec|test).[tj]s?(x)"
+  // ],
 
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -25,7 +30,7 @@ export default {
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
-    "src/**/*.jsx"
+    "src/main/**/*.jsx"
   ],
 
   // The directory where Jest should output its coverage files
@@ -150,12 +155,6 @@ export default {
 
   // Adds a location field to test results
   // testLocationInResults: false,
-
-  // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
-  // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [

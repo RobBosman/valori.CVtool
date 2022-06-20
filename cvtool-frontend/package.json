@@ -6,6 +6,7 @@
   "version": "1.0.0",
   "type": "module",
   "sideEffects": false,
+  "source": "src/main/js/index.html",
   "main": "target/classes/index.htm",
   "dependencies": {
     "@azure/msal-browser": "^2.26.0",

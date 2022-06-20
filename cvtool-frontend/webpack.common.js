@@ -11,7 +11,7 @@ const require = createRequire(import.meta.url);
 export const composeCommonConfig = devOrProdMode => ({
   mode: devOrProdMode,
 
-  entry: path.resolve(__dirname, "src", "app.jsx"),
+  entry: path.resolve(__dirname, "src/main/js", "app.jsx"),
   output: {
     filename: "js/[name].[contenthash:8].bundle.js",
     path: path.resolve(__dirname, "target/classes")
@@ -20,9 +20,9 @@ export const composeCommonConfig = devOrProdMode => ({
   plugins: [
     new HtmlWebpackPlugin({
       title: "CVtool",
-      template: path.resolve(__dirname, "src", "index.html"),
+      template: path.resolve(__dirname, "src/main/js/index.html"),
       inject: true,
-      favicon: path.resolve(__dirname, "src", "static", "favicon.ico")
+      favicon: path.resolve(__dirname, "src/main/js/static", "favicon.ico")
     })
   ],
   module: {
