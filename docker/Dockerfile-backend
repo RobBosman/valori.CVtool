@@ -40,5 +40,5 @@ MAINTAINER RobBosman@valori.nl
 COPY --from=builder /build/java /java
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
 
-# Start haveged and run the CVtool app.
+# Run the CVtool backend app.
 CMD /java/bin/java -jar /cvtool-fat.jar
