@@ -130,7 +130,8 @@ const Preview = (props) => {
     <Modal
       isOpen={props.isVisible}
       onDismiss={props.onDismiss}
-      isModeless={false}
+      isModeless={true}
+      isBlocking={false}
       styles={{
         root: {
           margin: "-8px"
