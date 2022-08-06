@@ -59,11 +59,24 @@ export const CvDatePicker = (props) => {
         return new Date(match[1], match[2] - 1, match[1]); // y, m, d
       }
   };
+  
+  // Set the value *after* the screen is fully rendered.
+  // This is to prevent a bug that occurs in the Experience screen:
+  // if you set focus to a DatePicker text field and then switch to another Experience,
+  // the 'old' date that is still in the DatePicker is applied to the newly selected Experience.
+  // The bug behaves slightly differently for filled and empty dates.
+  const [value, setValue] = React.useState("");
+  const [idOpenForChange, setIdOpenForChange] = React.useState(0);
+  React.useEffect(() => {
+    setValue(parseDateFromStorage(instance && instance[props.field] || props.defaultValue || ""));
+    setIdOpenForChange(instanceId);
+  },
+  [instance, props.field, props.defaultValue]);
 
   const onChange = (newDate) =>
-    replaceInstance && replaceInstance(instanceId, { ...instance, [props.field]: formatDateForStorage(newDate) });
-  
-  const value = parseDateFromStorage(instance && instance[props.field] || props.defaultValue || "");
+    (idOpenForChange === instanceId)
+      && replaceInstance
+      && replaceInstance(instanceId, { ...instance, [props.field]: formatDateForStorage(newDate) });
 
   return readOnly
     ? <TextField
