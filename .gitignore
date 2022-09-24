@@ -3,6 +3,7 @@ secret/setenv.cmd
 *.iml
 .vscode/
 target/
+/cvtool-backend/dependency-reduced-pom.xml
 node/
 node_modules/
 HeadlessChrome_*/
