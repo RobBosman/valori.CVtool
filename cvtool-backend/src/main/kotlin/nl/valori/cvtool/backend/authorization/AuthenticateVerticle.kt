@@ -151,16 +151,16 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     lastOpenIDConnectionAtMillis.set(System.currentTimeMillis())
-                    if (!wasHealthyRecently) {
+                    if (!wasHealthyRecently)
                         message.reply(it)
-                    }
                 },
                 {
-                    val rootCause = if (it is CompositeException) it.cause.cause ?: it.cause else it
-                    val unhealthySinceMillis = if (lastOpenIDConnectionAtMillis.get() > 0)
+                    val unhealthyAfterMillis = if (lastOpenIDConnectionAtMillis.get() > 0)
                         System.currentTimeMillis() - lastOpenIDConnectionAtMillis.get() else 0
-                    log.warn("Health is not OK since ${unhealthySinceMillis / 1000} seconds: ${rootCause.message}")
-                    message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
+                    val rootCause = if (it is CompositeException) it.cause.cause ?: it.cause else it
+                    log.warn("Became unhealthy after ${unhealthyAfterMillis / 1000} seconds: ${rootCause.message}")
+                    if (!wasHealthyRecently)
+                        message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
                 }
             )
     }
