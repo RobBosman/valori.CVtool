@@ -11,6 +11,7 @@ import { CvFormattedText } from "../widgets/CvFormattedText";
 import Preview, * as preview from "../cv/Preview";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as uiActions from "../../services/ui/ui-actions";
+import * as errorActions from "../../services/error/error-actions";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import ConfirmDialog from "../ConfirmDialog";
 import { createUuid } from "../../services/safe/safe-services";
@@ -201,7 +202,12 @@ const Profile = (props) => {
 
   const onDeleteItem = () => {
     if (props.selectedCharacteristicsId && characteristics.length >= 2) {
-      setConfirmDialogVisible(true);
+      // Only allow deleting a characteristic that is not included in the cv.
+      if (characteristics.find(characs => characs._id === props.selectedCharacteristicsId)?.includeInCv) {
+        props.showError("Een Profiel dat als 'In cv' is gemarkeerd kan niet worden verwijderd.");
+      } else {
+        setConfirmDialogVisible(true);
+      }
     }
   };
   const onDeleteConfirmed = () => {
@@ -412,7 +418,8 @@ const select = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
   replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance)),
   replaceCharacteristics: (id, instance) => dispatch(changeInstance("characteristics", id, instance)),
-  setSelectedCharacteristicsId: (id) => dispatch(uiActions.setSelectedId("characteristics", id))
+  setSelectedCharacteristicsId: (id) => dispatch(uiActions.setSelectedId("characteristics", id)),
+  showError: (errorMessage) => dispatch(errorActions.setLastError(errorMessage, errorActions.ErrorSources.USER_ACTION))
 });
 
 export default connect(select, mapDispatchToProps)(Profile);

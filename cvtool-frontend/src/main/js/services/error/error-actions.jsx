@@ -3,7 +3,8 @@ const { reducerRegistry } = require("../../redux/reducerRegistry");
 
 export const ErrorSources = {
   REDUX_MIDDLEWARE: "REDUX_MIDDLEWARE",
-  WINDOW_ERROR_EVENT: "WINDOW_ERROR_EVENT"
+  WINDOW_ERROR_EVENT: "WINDOW_ERROR_EVENT",
+  USER_ACTION: "USER_ACTION"
 };
 
 export const setLastError = createAction("SET_LAST_ERROR",
