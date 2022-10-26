@@ -15,35 +15,27 @@
 
     <properties>
         <target.environment>PROD</target.environment>
-        <dependency-check-maven.version>7.1.1</dependency-check-maven.version>
+        <dependency-check-maven.version>7.3.0</dependency-check-maven.version>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-        <nodejs.version>v16.17.1</nodejs.version>
+        <nodejs.version>v18.12.0</nodejs.version>
     </properties>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${dependency-check-maven.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
                 <configuration>
-                    <scanSet>
-                        <fileSet>
-                            <directory>src</directory>
-                        </fileSet>
-                        <fileSet>
-                            <directory>target/classes</directory>
-                        </fileSet>
-                    </scanSet>
-                    <format>ALL</format>
+                    <filesets>
+                        <fileset>
+                            <directory>.</directory>
+                            <includes>
+                                <include>*.txt</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>aggregate</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
@@ -120,6 +112,30 @@
                         <configuration>
                             <arguments>run-script npm:audit</arguments>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${dependency-check-maven.version}</version>
+                <configuration>
+                    <scanSet>
+                        <fileSet>
+                            <directory>src</directory>
+                        </fileSet>
+                        <fileSet>
+                            <directory>target/classes</directory>
+                        </fileSet>
+                    </scanSet>
+                    <format>ALL</format>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

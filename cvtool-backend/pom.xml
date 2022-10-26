@@ -17,7 +17,7 @@
         <kotlin.version>1.7.20</kotlin.version>
         <logback-classic.version>1.4.4</logback-classic.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-shade-plugin.version>3.3.0</maven-shade-plugin.version>
+        <maven-shade-plugin.version>3.4.0</maven-shade-plugin.version>
         <mongodb-driver-reactivestreams.version>4.8.0-beta0</mongodb-driver-reactivestreams.version>
         <vertx.version>4.3.4</vertx.version>
     </properties>
@@ -25,7 +25,24 @@
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>.</directory>
+                            <includes>
+                                <include>dependency-reduced-pom.xml</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -14,8 +14,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <kotlin.code.style>official</kotlin.code.style>
+        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
         <maven.compiler.release>18</maven.compiler.release>
-        <versions-maven-plugin.version>2.11.0</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
     </properties>
 
     <modules>
