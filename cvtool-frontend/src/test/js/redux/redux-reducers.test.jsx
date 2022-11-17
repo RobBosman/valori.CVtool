@@ -8,11 +8,11 @@ describe("redux-reducers.test", () => {
     {
       value: 313
     },
-    {
-      [dummyAction]: (state, action) => {
+    builder => builder
+      .addCase(dummyAction, (state, action) => {
         state.value = action.payload;
-      },
-    });
+      })
+  );
 
   let _store;
   let _reducerRegistry;

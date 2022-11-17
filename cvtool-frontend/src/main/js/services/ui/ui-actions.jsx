@@ -18,40 +18,39 @@ reducerRegistry.register(
       selectedId: {},
       isHistoryViewVisible: false
     },
-    {
-      [setLocationHash]: (state, action) => ({
+    builder => builder
+      .addCase(setLocationHash, (state, action) => ({
         ...state,
         locationHash: action.payload
-      }),
-      [setLocale]: (state, action) => ({
+      }))
+      .addCase(setLocale, (state, action) => ({
         ...state,
         userPrefs: {
           ...state.userPrefs,
           locale: action.payload
         }
-      }),
-      [setTheme]: (state, action) => ({
+      }))
+      .addCase(setTheme, (state, action) => ({
         ...state,
         userPrefs: {
           ...state.userPrefs,
           theme: action.payload
         }
-      }),
-      [setSelectedId]: (state, action) => ({
+      }))
+      .addCase(setSelectedId, (state, action) => ({
         ...state,
         selectedId: {
           ...state.selectedId,
           [action.payload.entityName]: action.payload.selectedId
         }
-      }),
-      [resetSelectedIds]: (state, action) => ({
+      }))
+      .addCase(resetSelectedIds, (state, action) => ({
         ...state,
         selectedId: action.payload
-      }),
-      [setHistoryViewVisible]: (state, action) => ({
+      }))
+      .addCase(setHistoryViewVisible, (state, action) => ({
         ...state,
         isHistoryViewVisible: action.payload
-      })
-    }
+      }))
   )
 );

@@ -14,11 +14,11 @@
     <description>Backend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
     <properties>
-        <kotlin.version>1.7.20</kotlin.version>
+        <kotlin.version>1.8.0-Beta</kotlin.version>
         <logback-classic.version>1.4.4</logback-classic.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.4.0</maven-shade-plugin.version>
-        <mongodb-driver-reactivestreams.version>4.8.0-beta0</mongodb-driver-reactivestreams.version>
+        <mongodb-driver-reactivestreams.version>4.8.0</mongodb-driver-reactivestreams.version>
         <vertx.version>4.3.4</vertx.version>
     </properties>
 

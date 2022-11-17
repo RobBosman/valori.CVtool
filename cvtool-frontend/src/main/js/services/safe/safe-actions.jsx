@@ -20,8 +20,8 @@ reducerRegistry.register(
       dirty: {},
       lastSavedTimestamp: new Date()
     },
-    {
-      [resetEntities]: (state, action) => {
+    builder => builder
+      .addCase(resetEntities, (state, action) => {
         if (action.payload) {
           Object.entries(action.payload)
             .forEach(([entityName, instances]) => {
@@ -35,18 +35,17 @@ reducerRegistry.register(
           state.lastEditedTimestamp = null;
           state.lastSavedTimestamp = new Date();
         }
-      },
-      [changeInstances]: (state, action) => {
+      })
+      .addCase(changeInstances, (state, action) => {
         action.payload.instances
           .forEach(instance => updateInstance(action.payload.entity, instance._id, instance, new Date(), state));
-      },
-      [changeInstance]: (state, action) => {
+      })
+      .addCase(changeInstance, (state, action) => {
         updateInstance(action.payload.entity, action.payload.instanceId, action.payload.instance, new Date(), state);
-      },
-      [setLastSavedTimestamp]: (state, action) => {
+      })
+      .addCase(setLastSavedTimestamp, (state, action) => {
         updateDirtyState(action.payload, state);
-      }
-    }
+      })
   )
 );
 

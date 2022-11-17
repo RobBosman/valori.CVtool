@@ -23,15 +23,14 @@ reducerRegistry.register(
     {
       loginState: LoginStates.LOGGED_OUT
     },
-    {
-      [setLoginState]: (state, action) => ({
+    builder => builder
+      .addCase(setLoginState, (state, action) => ({
         ...state,
         loginState: action.payload
-      }),
-      [setAuthInfo]: (state, action) => ({
+      }))
+      .addCase(setAuthInfo, (state, action) => ({
         ...state,
         authInfo: action.payload
-      })
-    }
+      }))
   )
 );

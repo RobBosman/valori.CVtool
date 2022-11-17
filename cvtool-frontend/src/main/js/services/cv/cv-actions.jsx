@@ -15,24 +15,23 @@ reducerRegistry.register(
     {
       searchText: ""
     },
-    {
-      [generateCv]: (state) => ({
+    builder => builder
+      .addCase(generateCv, (state) => ({
         ...state,
         generateCvTimestamp: new Date()
-      }),
-      [searchCvData]: (state, action) => ({
+      }))
+      .addCase(searchCvData, (state, action) => ({
         ...state,
         searchText: action.payload
-      }),
-      [setSearchResult]: (state, action) => ({
+      }))
+      .addCase(setSearchResult, (state, action) => ({
         ...state,
         searchResult: action.payload
-      }),
-      [resetSearchData]: (state) => ({
+      }))
+      .addCase(resetSearchData, (state) => ({
         ...state,
         searchText: "",
         searchResult: undefined
-      })
-    }
+      }))
   )
 );

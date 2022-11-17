@@ -14,17 +14,17 @@ describe("redux-epics.test", () => {
       value2: "176-176",
       value3: "176-176"
     },
-    {
-      [dummyAction1]: (state, action) => {
+    builder => builder
+      .addCase(dummyAction1, (state, action) => {
         state.value1 = action.payload;
-      },
-      [dummyAction2]: (state, action) => {
+      })
+      .addCase(dummyAction2, (state, action) => {
         state.value2 = action.payload;
-      },
-      [dummyAction3]: (state, action) => {
+      })
+      .addCase(dummyAction3, (state, action) => {
         state.value3 = action.payload;
-      }
-    });
+      })
+  );
   const testActions = [
     dummyAction1("176-167"),
     dummyAction2("176-617"),
