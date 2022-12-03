@@ -6,7 +6,8 @@ import io.reactivex.schedulers.Schedulers
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
-import io.vertx.ext.auth.oauth2.OAuth2FlowType.AUTH_JWT
+import io.vertx.ext.auth.authentication.TokenCredentials
+import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
@@ -113,7 +114,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
         oauth2
-            .rxAuthenticate(JsonObject().put("access_token", jwt))
+            .rxAuthenticate(TokenCredentials(jwt))
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
@@ -139,13 +140,13 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
         oauth2
             // Send a dummy authorization request to the OpenID Provider.
-            // The OpenID Provider will respond an error and thus 'prove' that the connection is still OK.
-            .rxAuthenticate(JsonObject().put("code", AUTH_JWT.grantType))
+            // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
+            .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
             .map { "" }
             .onErrorReturn {
-                if (it.message?.contains("invalid_grant") != true)
+                if (it.message?.contains("invalid_request") != true)
                     throw it
-                // The expected error response. Don't propagate the error, only the message String.
+                // The expected error response. Don't propagate the error itself, only the message String.
                 it.message
             }
             .subscribe(
