@@ -14,6 +14,8 @@
     <description>Frontend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
 
     <properties>
+        <skip-building-frontend>false</skip-building-frontend>
+
         <target.environment>PROD</target.environment>
         <dependency-check-maven.version>7.3.0</dependency-check-maven.version>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
@@ -27,6 +29,7 @@
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>${maven-clean-plugin.version}</version>
                 <configuration>
+                    <excludeDefaultDirectories>${skip-building-frontend}</excludeDefaultDirectories>
                     <filesets>
                         <fileset>
                             <directory>.</directory>
@@ -42,6 +45,9 @@
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>${frontend-maven-plugin.version}</version>
+                <configuration>
+                    <skip>${skip-building-frontend}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <id>install-node-and-npm</id>
@@ -121,6 +127,7 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>${dependency-check-maven.version}</version>
                 <configuration>
+                    <skip>${skip-building-frontend}</skip>
                     <scanSet>
                         <fileSet>
                             <directory>src</directory>
@@ -141,4 +148,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>skip-building-frontend</id>
+            <properties>
+                <skip-building-frontend>true</skip-building-frontend>
+            </properties>
+        </profile>
+    </profiles>
 </project>
