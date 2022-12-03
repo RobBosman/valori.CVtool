@@ -15,11 +15,11 @@
 
     <properties>
         <kotlin.version>1.8.0-Beta</kotlin.version>
-        <logback-classic.version>1.4.4</logback-classic.version>
+        <logback-classic.version>1.4.5</logback-classic.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.4.0</maven-shade-plugin.version>
         <mongodb-driver-reactivestreams.version>4.8.0</mongodb-driver-reactivestreams.version>
-        <vertx.version>4.3.4</vertx.version>
+        <vertx.version>4.3.5</vertx.version>
     </properties>
 
     <build>
