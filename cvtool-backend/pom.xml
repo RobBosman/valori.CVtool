@@ -11,10 +11,10 @@
     </parent>
 
     <artifactId>cvtool-backend</artifactId>
-    <description>Backend of CVtool-app to enter and maintain cv's (curricula vitae)</description>
+    <description>Backend of CVtool-app to enter and maintain cvs (curricula vitae)</description>
 
     <properties>
-        <kotlin.version>1.8.0-RC2</kotlin.version>
+        <kotlin.version>1.8.0</kotlin.version>
         <logback-classic.version>1.4.5</logback-classic.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.4.0</maven-shade-plugin.version>

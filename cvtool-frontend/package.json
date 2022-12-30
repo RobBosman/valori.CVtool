@@ -10,7 +10,7 @@
   "main": "target/classes/index.htm",
   "dependencies": {
     "@azure/msal-browser": "^2.32.1",
-    "@fluentui/react": "^8.104.0",
+    "@fluentui/react": "^8.104.1",
     "@redux-devtools/extension": "^3.2.3",
     "@reduxjs/toolkit": "^1.9.1",
     "@uifabric/react-hooks": "^7.16.4",
