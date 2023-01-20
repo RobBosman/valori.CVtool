@@ -14,10 +14,12 @@ import * as preview from "../cv/Preview";
 const onLinkClick = setSelectedExperienceIdFunc =>
   item => setSelectedExperienceIdFunc(item?.props?.itemKey);
 
-const SearchText = props =>
-  <Text style={{ fontFamily: "Courier New, sans-serif", background: semanticColors.inputBackground }}>
+const SearchText = props => {
+  const { semanticColors } = uiServices.useTheme();
+  return <Text style={{ fontFamily: "Courier New, sans-serif", background: semanticColors.inputBackground }}>
     &nbsp;{props.children}&nbsp;
   </Text>;
+};
 
 const FoundText = props =>
   <Text>
