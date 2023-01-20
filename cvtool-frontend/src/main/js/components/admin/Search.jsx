@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField, Label, Pivot, PivotItem, PivotLinkFormat } from "@fluentui/react";
+import { Text, Stack, TextField, Label, Pivot, PivotItem } from "@fluentui/react";
 import { connect } from "react-redux";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvFormattedText } from "../widgets/CvFormattedText";
@@ -11,6 +11,19 @@ import * as uiServices from "../../services/ui/ui-services";
 import * as textFormatter from "../../utils/TextFormatter";
 import * as preview from "../cv/Preview";
 
+const onLinkClick = setSelectedExperienceIdFunc =>
+  item => setSelectedExperienceIdFunc(item?.props?.itemKey);
+
+const SearchText = props =>
+  <Text style={{ fontFamily: "Courier New, sans-serif", background: semanticColors.inputBackground }}>
+    &nbsp;{props.children}&nbsp;
+  </Text>;
+
+const FoundText = props =>
+  <Text>
+    &quot;<em>{props.children}</em>&quot;
+  </Text>;
+
 // searchResult:
 // {
 //   _id: "id-account-1",
@@ -20,7 +33,7 @@ import * as preview from "../cv/Preview";
 //   experiences: [],
 //   experienceYear: 2020
 // }
-const Search = (props) => {
+const Search = props => {
 
   const { semanticColors, markHighlightBackground, editPaneBackground, viewPaneBackground, valoriYellow } = uiServices.useTheme();
   const today = new Date().toISOString();
@@ -266,16 +279,6 @@ const Search = (props) => {
     </Stack>;
   };
 
-  const SearchText = (p) =>
-    <Text style={{ fontFamily: "Courier New, sans-serif", background: semanticColors.inputBackground }}>
-      &nbsp;{p.children}&nbsp;
-    </Text>;
-
-  const FoundText = (p) =>
-    <Text>
-      &quot;<em>{p.children}</em>&quot;
-    </Text>;
-
   const infoText =
     <Text>
       Vul één of meer zoektermen in, gescheiden door spaties.
@@ -361,9 +364,9 @@ const Search = (props) => {
                   </Label>
                 }
                 <Pivot
-                  linkFormat={PivotLinkFormat.tabs}
+                  linkFormat="tabs"
                   selectedKey={props.selectedExperienceId}
-                  onLinkClick={(item) => props.setSelectedExperienceId(item?.props?.itemKey)}>
+                  onLinkClick={onLinkClick(props.setSelectedExperienceId)}>
                   {selectedSearchResult
                     .experiences
                     ?.sort((l, r) => r.toYear - l.toYear)

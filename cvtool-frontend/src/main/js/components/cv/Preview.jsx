@@ -40,7 +40,7 @@ export const composeExperienceDescription = (experience, locale) => {
   const activities = experience.activities && experience.activities[locale]?.trim() || "";
   const results = experience.results && experience.results[locale]?.trim() || "";
   const keywords = experience.keywords && experience.keywords[locale]?.trim() || "";
-  var composedText = assignment;
+  let composedText = assignment;
   if (activities)
     composedText += `\n${cvHeadings.activities}\n${activities}`;
   if (results)

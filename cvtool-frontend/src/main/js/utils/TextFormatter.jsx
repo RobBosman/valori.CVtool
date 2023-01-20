@@ -72,16 +72,3 @@ const recursivelyRenderAndFormat = (fullText, formattingSpecs, defaultStyle, ren
  */
 export const renderAndFormat = (fullText = "", formattingSpecs = [], defaultStyle = {}) =>
   recursivelyRenderAndFormat(fullText, formattingSpecs, defaultStyle, { paragraph: 0, isStartOfLine: true });
-
-export const getTextFragment = (fullText = "", targetText = "", maxLength) => {
-  const index = fullText.indexOf(targetText);
-  const fragmentStartIndex = Math.max(0, index - (maxLength - targetText.length) / 2);
-  let textFragment = fullText.slice(fragmentStartIndex, fragmentStartIndex + maxLength);
-  if (fragmentStartIndex > 0) {
-    textFragment = `...${textFragment}`;
-  }
-  if (fullText.length > fragmentStartIndex + maxLength) {
-    textFragment = `${textFragment}...`;
-  }
-  return textFragment;
-};

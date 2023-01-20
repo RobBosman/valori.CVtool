@@ -9,7 +9,18 @@ import * as uiServices from "../../services/ui/ui-services";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import LocaleFlag from "../widgets/LocaleFlag";
 
-const CvTopBar = (props) => {
+const LocaleButton = props => (
+  <CommandBarButton {...props}>
+    <LocaleFlag/>
+  </CommandBarButton>
+);
+const TooltipButton = props => (
+    <TooltipHost content={props.tooltipText}>
+      <CommandBarButton {...props}/>
+    </TooltipHost>
+  );
+
+const CvTopBar = props => {
   
   const currentTheme = getTheme();
   const { semanticColors } = uiServices.useTheme();
@@ -22,23 +33,11 @@ const CvTopBar = (props) => {
     onClick: () => props.setTheme(theme)
   });
 
-  const TooltipButton = (p) => (
-    <TooltipHost content={p.tooltipText}>
-      <CommandBarButton {...p}/>
-    </TooltipHost>
-  );
-
   const selectLocale = (_event, item) =>
     props.setLocale(item?.key);
 
   const onOpenEmail = () =>
     window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank");
-
-  const LocaleButton = (p) => (
-    <CommandBarButton {...p}>
-      <LocaleFlag/>
-    </CommandBarButton>
-  );
 
   const [items, setItems] = React.useState([]);
   const [farItems, setFarItems] = React.useState([]);

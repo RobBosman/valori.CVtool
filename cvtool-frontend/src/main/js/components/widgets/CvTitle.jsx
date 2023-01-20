@@ -6,7 +6,7 @@ import * as commonUtils from "../../utils/CommonUtils";
 import { useTheme } from "../../services/ui/ui-services";
 import { formatDate } from "../cv/Preview";
 
-const CvTitle = (props) => {
+const CvTitle = props => {
   
   const {valoriYellow} = useTheme();
 
@@ -24,12 +24,13 @@ const CvTitle = (props) => {
     };
   },
   [props.accountEntity, props.characteristicsEntity, props.selectedAccountId, props.locale]);
+  const plainCard = <p style={{margin: 10}}>{memo.email}</p>;
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
       <HoverCard
         type={HoverCardType.plain}
-        plainCardProps={{ onRenderPlainCard: () => <p style={{margin: 10}}>{memo.email}</p> }}
+        plainCardProps={{ onRenderPlainCard: () => plainCard }}
         instantOpenOnClick={true}>
         <Text variant="xxLarge">{memo.name}</Text>
       </HoverCard>

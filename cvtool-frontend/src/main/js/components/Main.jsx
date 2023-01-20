@@ -7,7 +7,6 @@ import LoginPage from "./LoginPage";
 import ContentPage from "./ContentPage";
 import ErrorDialog from "./ErrorDialog";
 import {appVersion} from "../app";
-// import "./ThemeExposer";
 
 const versionStyle = {
   position: "fixed",
