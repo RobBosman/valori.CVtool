@@ -30,6 +30,10 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
     **/node
     **/target
 
+== Tips and tricks
+
+See xref:doc/tips-and-tricks.adoc[here].
+
 == Configure server
 
 See `scripts/clean_install_BladeVPS.sh`.
