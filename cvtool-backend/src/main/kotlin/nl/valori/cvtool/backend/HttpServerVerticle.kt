@@ -8,7 +8,7 @@ import io.vertx.reactivex.ext.web.RoutingContext
 import io.vertx.reactivex.ext.web.handler.BodyHandler
 import nl.valori.cvtool.backend.system.HealthChecker
 import org.slf4j.LoggerFactory
-import java.net.URL
+import java.net.URI
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 internal class HttpServerVerticle : AbstractVerticle() {
@@ -20,7 +20,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
         //   HTTP_CONNECTION_STRING=http://<HOST_NAME>:<PORT>/
         //   HTTP_CONNECTION_STRING=http://www.example.com:80/
         val connectionString = config().getString("HTTP_CONNECTION_STRING")
-        val httpConfig = URL(connectionString)
+        val httpConfig = URI(connectionString).toURL()
         if (httpConfig.protocol != "http")
             error("Invalid protocol: expected 'http' but found '${httpConfig.protocol}'.")
         val httpPort = if (httpConfig.port > 0) httpConfig.port else httpConfig.defaultPort

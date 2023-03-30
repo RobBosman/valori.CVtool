@@ -14,7 +14,7 @@ import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
-import java.net.URL
+import java.net.URI
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.concurrent.atomic.AtomicLong
 import java.util.function.BiConsumer
@@ -34,7 +34,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
         val connectionString = config().getString("AUTH_CONNECTION_STRING")
         val openIdSite = connectionString.substringBefore("?")
-        val clientIdAndSecret = URL(connectionString).query.split(":")
+        val clientIdAndSecret = URI(connectionString).query.split(":")
 
         // Connect to OpenID Provider.
         OpenIDConnectAuth

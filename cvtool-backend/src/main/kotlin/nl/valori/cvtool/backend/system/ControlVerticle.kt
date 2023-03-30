@@ -13,7 +13,7 @@ import nl.valori.cvtool.backend.cv.ALL_CVS_GENERATE_ADDRESS
 import org.slf4j.LoggerFactory
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
 import java.net.HttpURLConnection.HTTP_OK
-import java.net.URL
+import java.net.URI
 
 internal class ControlVerticle : AbstractVerticle() {
 
@@ -24,7 +24,7 @@ internal class ControlVerticle : AbstractVerticle() {
         // Environment variables:
         //   CONTROL_CONNECTION_STRING=http://<HOST_NAME>:<PORT>/
         //   CONTROL_CONNECTION_STRING=http://localhost:88/
-        val configConfig = URL(config().getString("CONTROL_CONNECTION_STRING"))
+        val configConfig = URI(config().getString("CONTROL_CONNECTION_STRING"))
 
         vertx
             .createHttpServer(
