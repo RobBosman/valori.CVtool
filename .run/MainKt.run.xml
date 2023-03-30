@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
     <envs>
+      <env name="AUTH_CONNECTION_STRING" value="https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663/v2.0?348af39a-f707-4090-bb0a-9e4dca6e4138:svW8Q~Hsj0PLvgtmSHyRUzxK5NeFzOGomgq3.aFv" />
       <env name="CONTROL_CONNECTION_STRING" value="http://localhost:88/" />
       <env name="HTTP_CONNECTION_STRING" value="http://localhost:80/" />
-      <env name="AUTH_CONNECTION_STRING" value="https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663/v2.0?348af39a-f707-4090-bb0a-9e4dca6e4138:_L2w?hG1ugvVch2i7GVC.Nji_50a64N? " />
       <env name="MONGO_CONNECTION_STRING" value="mongodb://localhost:27017/cvtool" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="nl.valori.cvtool.backend.MainKt" />
