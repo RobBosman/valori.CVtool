@@ -1,7 +1,7 @@
 ########################################################################################################################
 # Compose a container for building the CVtool-backend.
 ########################################################################################################################
-FROM openjdk:19-alpine as builder
+FROM openjdk:21-alpine as builder
 
 # Add git, maven and binutils, needed by jlink.
 RUN apk --update add \

@@ -71,6 +71,9 @@ Data retention is 120 days.
  scripts/cvtool_initialize_mongodb.sh
  # Restart CVtool-frontend server to load a new certificate
  docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
+ # Update linux packages
+ apt-get -y update
+ apt-get -y upgrade
 
 === Build and publish docker images
 
