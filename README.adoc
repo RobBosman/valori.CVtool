@@ -1,15 +1,34 @@
 = Valori CVtool
+:toc:
 
 React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.valori.nl/[cvtool.valori.nl].
 
-== Development environment
+== How to
 
-=== _Pre-requisites_
+=== Renew Microsoft Azure client secret
+
+The current client secret will expire at 2025-03-31.
+
+1. Go to the https://portal.azure.com/#home[Microsoft Azure Portal]
+2. Search for 'Valori CVtool'
+3. Under _Azure Active Directory_ select *Valori CVtool application*
+4. Select _Certificates and secrets_
+5. Add a new secret called 'client secret'. +
+You will now have two of them, remember which is the new one!
+6. Copy the secret value and secure it, because it will be visible only now.
+7. On the CVtool server, edit the file `/secret/.env` and replace the value of `OAUTH_CLIENT_SECRET` with the new secret.
+8. Redeploy everything with _docker-compose_.
+9. Verify if all still works fine and then
+10. On the Microsoft Azure Portal, delete the old 'client secret'.
+
+=== Set up development environment
+
+==== _Pre-requisites_
 
 * Windows 10 Home
 * Virtualization in BIOS enabled
 
-=== _Download and install the following_
+==== _Download and install the following_
 
 * https://jdk.java.net/[Java OpenJDK]
 * https://git-scm.com/[Git (for Windows)]
@@ -20,7 +39,7 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 * https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker Desktop]
 * https://www.bitvise.com/ssh-client-download[BitWise SSH client]
 
-=== _Setup Visual Studio Code_
+==== _Setup Visual Studio Code_
 
 * Install ESlint plugin
 * Open project subdirectory `/cvtool-frontend/`
@@ -30,7 +49,7 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
     **/node
     **/target
 
-== Tips and tricks
+==== Tips and tricks
 
 See xref:doc/tips-and-tricks.adoc[here].
 
@@ -40,7 +59,7 @@ See `scripts/clean_install_BladeVPS.sh`.
 
 Create file `/secret/.env`, make it inaccessible for 'outsiders' and fill-in secrets, see `scripts\.env.example`.
 
-== Configure SSL for local development
+=== Configure SSL for local development
 
 1. Get yourself an SSL certificate in pem-format (see `scripts\*.sh`).
 2. Make sure the Docker volumes for letsencrypt are present (run `docker\docker-compose.yaml` if needed).
