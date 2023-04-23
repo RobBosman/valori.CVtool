@@ -19,10 +19,12 @@ RUN git clone https://github.com/RobBosman/valori.CVtool.git .
 RUN mvn --projects cvtool-backend --also-make clean verify
 
 # Move the executable code to a suitable location.
-RUN mv cvtool-backend/target/*-jar-with-dependencies.jar cvtool-fat.jar
+RUN mv cvtool-backend/target/*.jar cvtool.jar
+# Copy all dependencies.
+RUN cp cvtool-backend/target/lib/ lib
 
 # Strip-off all overhead and bundle everything into a stand-alone executable.
-RUN jdeps --print-module-deps --ignore-missing-deps cvtool-fat.jar > java.modules
+RUN jdeps --print-module-deps --ignore-missing-deps cvtool.jar > java.modules
 RUN jlink --compress 2 --strip-debug --no-header-files --no-man-pages \
     --add-modules $(cat java.modules) \
     --output java/
@@ -38,7 +40,8 @@ MAINTAINER RobBosman@valori.nl
 
 # Copy the executable code.
 COPY --from=builder /build/java /java
-COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
+COPY --from=builder /build/cvtool.jar /cvtool.jar
+COPY --from=builder /build/lib/ /lib
 
 # Run the CVtool backend app.
-CMD /java/bin/java -jar /cvtool-fat.jar
+CMD /java/bin/java -jar /cvtool.jar
