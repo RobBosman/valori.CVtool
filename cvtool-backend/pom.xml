@@ -17,8 +17,7 @@
         <kotlin.version>1.8.20</kotlin.version>
         <logback-classic.version>1.4.7</logback-classic.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.5.0</maven-dependency-plugin.version>
-        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-assemblt-plugin.version>3.5.0</maven-assemblt-plugin.version>
         <mongodb-driver-reactivestreams.version>4.9.1</mongodb-driver-reactivestreams.version>
         <vertx.version>4.4.1</vertx.version>
     </properties>
@@ -81,38 +80,26 @@
             </plugin>
 
             <plugin>
-                <!-- Make jar runnable. -->
+                <!-- Create a fat jar. -->
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assemblt-plugin.version}</version>
                 <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                     <archive>
                         <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>nl.valori.cvtool.backend.MainKt</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <!-- Store all dependencies in a /lib/ directory. -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven-dependency-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <overWriteReleases>true</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
