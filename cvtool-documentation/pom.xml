@@ -13,11 +13,6 @@
     <artifactId>cvtool-documentation</artifactId>
     <description>Documentation and other info of the CVtool-app</description>
 
-    <properties>
-        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.javascript.lcov.reportPaths>target/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
-    </properties>
-
     <dependencies>
         <!-- Add all dependent modules here, to ensure that they are included in the test coverage report. -->
         <dependency>
