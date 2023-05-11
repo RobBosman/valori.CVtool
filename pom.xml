@@ -8,21 +8,58 @@
     <artifactId>cvtool</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>app to enter and maintain cv's (curricula vitae)</description>
+    <description>app to enter and maintain cvs (curricula vitae)</description>
+
+    <modules>
+        <module>cvtool-backend</module>
+        <module>cvtool-frontend</module>
+        <module>cvtool-documentation</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <kotlin.code.style>official</kotlin.code.style>
+
+        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
         <maven.compiler.release>18</maven.compiler.release>
         <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
     </properties>
 
-    <modules>
-        <module>cvtool-backend</module>
-        <module>cvtool-frontend</module>
-    </modules>
+    <profiles>
+        <profile>
+            <id>maven-test-coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <formats>
+                                        <format>XML</format>
+                                    </formats>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <reporting>
         <plugins>

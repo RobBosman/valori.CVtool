@@ -6,17 +6,12 @@ Initialize local SonarQube server:
 
 * Start Docker and execute this command:
 ....
-docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
+docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 --restart always sonarqube:latest
 ....
 * Open a browser and go to http://localhost:9000/.
 * Login with _admin_ / _admin_ and change the password.
-* Create a _Run Configuration_ in IDEA for the following Maven task:
-....
-mvn sonar:sonar -P maven-sonarqube-localhost
-....
-
-image::run-configuration-mvn-SonarQube.png[Run SonarQube, 650]
-
+* Go to http://localhost:9000/admin/users and generate a token. +
+(Make sure you keep a copy of the token available.)
 * Edit your local Maven config file `settings.xml` (see http://localhost:9000/documentation/analysis/scan/sonarscanner-for-maven/[here]) and add
 ....
 <settings>
@@ -29,15 +24,20 @@ image::run-configuration-mvn-SonarQube.png[Run SonarQube, 650]
             <id>maven-sonarqube-localhost</id>
             <properties>
                 <sonar.host.url>http://localhost:9000/</sonar.host.url>
-                <sonar.login>admin</sonar.login>
-                <sonar.password>[YOUR_SONARQUBE_LOCALHOST_ADMIN_PASSWORD]</sonar.password>
+                <sonar.token>[YOUR_SONARQUBE_LOCALHOST_ADMIN_TOKEN]</sonar.token>
             </properties>
         </profile>
     </profiles>
 </settings>
 ....
 
-Make sure you ran `mvn clean verify` before executing the Maven sonar task.
+* Create a _Run Configuration_ in IDEA for the following Maven task:
+....
+mvn clean verify sonar:sonar -P maven-test-coverage,maven-sonarqube-localhost
+....
+
+image::run-configuration-mvn-SonarQube.png[Run SonarQube, 650]
+
 After the Maven task has completed, the scan results are available in http://localhost:9000/[your local SonarQube] in project *cvtool*.
 
 IMPORTANT: The database of this local SonarQube only lives in the *sonarqube* Docker container. +
@@ -48,5 +48,5 @@ You can safely stop and start the container, but _do not delete it_ if you want 
 You can install the SonarLint plugin in IntelliJ and connect to your SonarQube at http://localhost:9000/.
 That allows you to easily jump to the associated source code when reviewing issues in SonarQube.
 
-When creating the _SonarQube connection_, select *Login / Password* and enter +
-`admin` / `[YOUR_SONARQUBE_LOCALHOST_ADMIN_PASSWORD]`.
+When creating the _SonarQube connection_, select *Token* and enter +
+`[YOUR_SONARQUBE_LOCALHOST_ADMIN_TOKEN]`.

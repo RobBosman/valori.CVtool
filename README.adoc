@@ -51,7 +51,7 @@ You will now have two of them, remember which is the new one!
 
 ==== Tips and tricks
 
-See xref:doc/tips-and-tricks.adoc[here].
+See xref:cvtool-documentation/tips-and-tricks.adoc[here].
 
 == Configure server
 

@@ -10,12 +10,15 @@
           </option>
           <option name="goals">
             <list>
+              <option value="clean" />
+              <option value="verify" />
               <option value="sonar:sonar" />
             </list>
           </option>
           <option name="pomFileName" />
           <option name="profilesMap">
             <map>
+              <entry key="maven-test-coverage" value="true" />
               <entry key="maven-sonarqube-localhost" value="true" />
             </map>
           </option>
