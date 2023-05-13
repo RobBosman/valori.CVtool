@@ -30,10 +30,6 @@
     <profiles>
         <profile>
             <id>maven-test-coverage</id>
-            <properties>
-                <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-                <sonar.javascript.lcov.reportPaths>target/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
-            </properties>
             <build>
                 <plugins>
                     <plugin>

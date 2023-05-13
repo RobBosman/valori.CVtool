@@ -19,6 +19,7 @@
 
         <sonar.sources>src/main/js</sonar.sources>
         <sonar.tests>src/test/js</sonar.tests>
+        <sonar.javascript.lcov.reportPaths>target/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
 
         <dependency-check-maven.version>8.1.2</dependency-check-maven.version>
         <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
