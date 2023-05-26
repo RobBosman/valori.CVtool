@@ -96,19 +96,22 @@ const Search = props => {
 
   const searchResultEntity = React.useMemo(() => {
     const accountIds = new Set();
+    const knownAccountIds = Object.values(props.accountEntity || {}).map(account => account._id);
     if (props.searchResultEntities) {
       ["experience", "skill"]
         .forEach(entityName => {
           Object.values(props.searchResultEntities[entityName] || {})
             .map(instance => instance.accountId)
+            .filter(accountId => knownAccountIds.includes(accountId)) // TODO: fix this server-side!
             .forEach(accountId => accountIds.add(accountId));
         });
     }
 
     const entity = {};
-    accountIds.forEach(accountId => {
-      entity[accountId] = composeSearchResult(accountId);
-    });
+    accountIds
+      .forEach(accountId => {
+        entity[accountId] = composeSearchResult(accountId);
+      });
     return entity;
   },
   [props.accountEntity, props.searchResultEntities, props.locale]);

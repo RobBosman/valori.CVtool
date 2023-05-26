@@ -199,7 +199,7 @@ Find `characteristics` that have no associated `account`:
          from: "account",
          localField: "accountId",
          foreignField: "_id",
-         as: "tassociated_account"
+         as: "associated_account"
        }
      },
      {
