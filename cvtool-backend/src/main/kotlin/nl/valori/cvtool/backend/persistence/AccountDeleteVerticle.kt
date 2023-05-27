@@ -55,17 +55,31 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
                 MONGODB_FETCH_ADDRESS,
                 JsonObject(
                     """{
-                        "authorization": [{ "accountId": "$accountId" }],
-                        "cv": [{ "accountId": "$accountId" }],
-                        "businessUnit": [{}]
-                    }"""
+                            "authorization": [{ "accountId": "$accountId" }],
+                            "characteristics": [{ "accountId": "$accountId" }],
+                            "education": [{ "accountId": "$accountId" }],
+                            "training": [{ "accountId": "$accountId" }],
+                            "skill": [{ "accountId": "$accountId" }],
+                            "publication": [{ "accountId": "$accountId" }],
+                            "reference": [{ "accountId": "$accountId" }],
+                            "experience": [{ "accountId": "$accountId" }],
+                            "businessUnit": [{}]
+                        }"""
                 ),
                 deliveryOptions
             )
             .map { it.body() }
 
     private fun deleteAccount(accountId: String, metaData: JsonObject): Single<JsonObject> {
-        // Combine all cv- and account-related instances and convert them into deleteCriteria.
+        val combinedCriteria = composeDeleteCriteria(accountId, metaData)
+        log.debug("Deleting account $accountId:\n${combinedCriteria.encodePrettily()}")
+        return vertx.eventBus()
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, combinedCriteria, deliveryOptions)
+            .map { it.body() }
+    }
+
+    private fun composeDeleteCriteria(accountId: String, metaData: JsonObject): JsonObject {
+        // Combine all account-related instances and convert them into deleteCriteria.
         val instanceIdsToDelete = HashMap<String, Set<String>>()
         listOf(
             "authorization",
@@ -75,7 +89,8 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
             "skill",
             "publication",
             "reference",
-            "experience")
+            "experience"
+        )
             .forEach { instanceIdsToDelete[it] = metaData.getInstanceIds(it) }
         val deleteCriteria = convertInstanceIdsIntoDeleteCriteria(instanceIdsToDelete)
 
@@ -86,11 +101,7 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
 
         // And add deleteCriteria for the account-instance.
         combinedCriteria.put("account", JsonObject().put(accountId, JsonObject()))
-
-        log.debug("Deleting account $accountId:\n${combinedCriteria.encodePrettily()}")
-        return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, combinedCriteria, deliveryOptions)
-            .map { it.body() }
+        return combinedCriteria
     }
 
     private fun composeBusinessUnitUpdateCriteria(accountId: String, metaData: JsonObject): JsonObject {

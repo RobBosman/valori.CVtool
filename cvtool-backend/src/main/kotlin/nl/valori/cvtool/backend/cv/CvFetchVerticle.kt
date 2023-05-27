@@ -22,16 +22,16 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
      *
      * Response:
      *   {
-     *     "cv": {
-     *       "id-of-cv": {
-     *         "_id": "id-of-cv"
+     *     "account": {
+     *       "id-of-account": {
+     *         "_id": "id-of-account"
      *         ...
      *       }
      *     },
      *     "skill": {
      *       "id-of-skill": {
      *         "_id": "id-of-skill"
-     *         "cvId": "id-of-cv"
+     *         "accountId": "id-of-account"
      *         ...
      *       }
      *     }

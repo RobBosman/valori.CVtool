@@ -10,7 +10,7 @@
   "main": "target/classes/index.htm",
   "dependencies": {
     "@azure/msal-browser": "^2.37.0",
-    "@fluentui/react": "^8.109.6",
+    "@fluentui/react": "^8.109.7",
     "@redux-devtools/extension": "^3.2.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@uifabric/react-hooks": "^7.16.4",
@@ -24,10 +24,10 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@babel/plugin-transform-react-constant-elements": "^7.21.3",
+    "@babel/plugin-transform-react-constant-elements": "^7.22.0",
     "@babel/plugin-transform-react-inline-elements": "^7.21.0",
-    "@babel/preset-env": "^7.21.5",
-    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-env": "^7.22.2",
+    "@babel/preset-react": "^7.22.0",
     "@open-wc/eslint-config": "^10.0.0",
     "ajv": "^8.12.0",
     "babel-loader": "^9.1.2",
@@ -42,7 +42,7 @@
     "prop-types": "^15.8.1",
     "rimraf": "^5.0.1",
     "url-loader": "^4.1.1",
-    "webpack": "^5.84.0",
+    "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1",
     "webpack-dev-server": "^4.15.0"
   },

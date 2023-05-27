@@ -22,10 +22,7 @@ const escapeJsonString = (text) =>
 export const searchCvData = (searchText, sendEventFunc) =>
   searchText
     ? sendEventFunc("cv.search", { searchText: escapeJsonString(searchText) })
-      .then(message => {
-        console.log("search result", message.body);
-        return message.body;
-      })
+      .then(message => message.body)
     : Promise.resolve({});
 
 const downloadFile = (fileName, blob) => {

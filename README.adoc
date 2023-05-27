@@ -129,7 +129,7 @@ Data retention is 120 days.
  #   businessUnit
  #   account
  #   authorization
- #   cv
+ #   characteristics
  #   education
  #   training
  #   skill
@@ -191,19 +191,33 @@ Full text search:
    {"score": {"$meta": "textScore"}}
  ).sort({"score": {"$meta": "textScore"}})
 
-Find `characteristics` that have no associated `account`:
+Delete `entities` that have no associated `account`:
 
- db.characteristics.aggregate( [
-     {
-       $lookup: {
-         from: "account",
-         localField: "accountId",
-         foreignField: "_id",
-         as: "associated_account"
-       }
-     },
-     {
-       $match: { "associated_account.0": { $exists: false } }
-     }
-   ]
- )
+ [
+     "authorization",
+     "characteristics",
+     "education",
+     "training",
+     "skill",
+     "publication",
+     "reference",
+     "experience"
+ ]
+ .forEach(entityName =>
+     db.getCollection(entityName)
+       .aggregate([
+         {
+           $lookup: {
+             from: "account",
+             localField: "accountId",
+             foreignField: "_id",
+             as: "associated_account"
+           }
+         },
+         { $match: { "associated_account.0": { $exists: false } } },
+         { $project: { _id: 1, accountId: 1 } }
+       ])
+       .forEach(d =>
+           db.getCollection(entityName)
+             .deleteOne({ _id: { $eq: d._id } }))
+ );

@@ -52,7 +52,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
      * Expected message body:
      *   {
      *     entity_1: [{ _id: "XXX" }, { _id: "YYY" }],
-     *     entity_2: [{ cvId: "my-cv-id" }]
+     *     entity_2: [{ accountId: "my-account-id" }]
      *   }
      *
      * Response:
@@ -70,7 +70,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
      *     entity_2: {
      *       ZZZ: {
      *         _id: "ZZZ",
-     *         cvId: "my-cv-id",
+     *         accountId: "my-account-id",
      *         property: "value"
      *       }
      *     }
