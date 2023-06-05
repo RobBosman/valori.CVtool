@@ -136,7 +136,7 @@
                         <w:t xml:space="preserve"> </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>foundation</w:t>
+                        <w:t>basic</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
@@ -154,7 +154,7 @@
                         <w:t xml:space="preserve">     </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>expert</w:t>
+                        <w:t>experienced</w:t>
                     </w:r>
                     <w:r w:rsidR="00F63003" w:rsidRPr="00360F7D">
                         <w:br w:type="page"/>

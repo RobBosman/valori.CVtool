@@ -342,9 +342,9 @@ const Skill = (props) => {
         }
       </div>
       <Stack horizontal tokens={{ childrenGap: "55px"}}>
-        <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foundation</Text>
-        <Text style={previewTextStyles}><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advanced</Text>
-        <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expert</Text>
+        <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basis</Text>
+        <Text style={previewTextStyles}><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gevorderd</Text>
+        <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ervaren</Text>
       </Stack>
     </Stack>,
   [skills, props.locale, previewHeight]);
@@ -436,9 +436,9 @@ const Skill = (props) => {
                   label: "Niveau",
                   content:
                     <Text>
-                      <strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Foundation</strong> - Basiskennisniveau verkregen door training. Geen (concrete) praktijkervaring
-                      <br/><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Advanced</strong> - Gevorderd niveau verkregen door training en/of aantoonbare praktijkervaring
-                      <br/><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;<strong>Expert</strong> - Specialistisch niveau met aantoonbare meerjarige ervaring
+                      <strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Basis</strong> - Basiskennisniveau verkregen door training. Geen (concrete) praktijkervaring
+                      <br/><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Gevorderd</strong> - Gevorderd niveau verkregen door training en/of aantoonbare praktijkervaring
+                      <br/><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;<strong>Ervaren</strong> - Specialistisch niveau met aantoonbare meerjarige ervaring
                     </Text>
                 })}
                 field="skillLevel"
