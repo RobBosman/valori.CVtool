@@ -342,9 +342,9 @@ const Skill = (props) => {
         }
       </div>
       <Stack horizontal tokens={{ childrenGap: "55px"}}>
-        <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;basis</Text>
-        <Text style={previewTextStyles}><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gevorderd</Text>
-        <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ervaren</Text>
+        <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{props.locale === "uk_UK" ? "basic" : "basis"}</Text>
+        <Text style={previewTextStyles}><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{props.locale === "uk_UK" ? "advanced" : "gevorderd"}</Text>
+        <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{props.locale === "uk_UK" ? "experienced" : "ervaren"}</Text>
       </Stack>
     </Stack>,
   [skills, props.locale, previewHeight]);
