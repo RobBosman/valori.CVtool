@@ -107,7 +107,7 @@ export class EventBusClient {
       if (this._eventBus?.state === EventBus.OPEN) {
         this._eventBus.send(address, requestData, this.mergeHeaders(headers),
           (error, message) => error
-            ? _reject(`Onbekende fout in de backend server: ${error} ${message}`)
+            ? _reject(`Onbekende fout in de backend server: ${JSON.stringify(error)} ${message}`)
             : _resolve(message)
         );
       } else {

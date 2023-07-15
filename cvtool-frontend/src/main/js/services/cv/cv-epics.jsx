@@ -21,6 +21,7 @@ export const cvEpics = [
           rx.filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
           rx.take(1),
           rx.mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
+          rx.filter(Boolean),
           rx.tap(generatedCv => cvServices.downloadDocxFile(generatedCv.fileName, generatedCv.docxB64)),
           rx.ignoreElements()
         )
@@ -64,6 +65,7 @@ export const cvEpics = [
     ofType(cvActions.fetchDemoCv.type),
     rx.map(action => action.payload),
     rx.mergeMap(locale => cvServices.fetchDemoCvAtRemote(locale, eventBusClient.sendEvent)),
+    rx.filter(Boolean),
     rx.tap(demoCv => cvServices.downloadDocxFile(demoCv.fileName, demoCv.docxB64)),
     rx.ignoreElements()
   )

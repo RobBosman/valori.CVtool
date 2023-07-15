@@ -6,7 +6,7 @@ import io.reactivex.schedulers.Schedulers
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
-import nl.valori.cvtool.backend.BasicVerticle
+import nl.valori.cvtool.backend.DebouncingVerticle
 import nl.valori.cvtool.backend.ModelUtils.jsonToXml
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -23,7 +23,7 @@ import kotlin.collections.set
 
 const val CV_GENERATE_ADDRESS = "cv.generate"
 
-internal class CvGenerateVerticle : BasicVerticle(CV_GENERATE_ADDRESS) {
+internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     companion object {
         internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20201130.xsd"
@@ -80,6 +80,12 @@ internal class CvGenerateVerticle : BasicVerticle(CV_GENERATE_ADDRESS) {
                         }
                 }
         }
+    }
+
+    override fun getMessageFingerprint(message: Message<JsonObject>): String {
+        val accountId = JsonObject(message.headers().get("authInfo")).getString("accountId", "")
+        val body = message.body().encode()
+        return "$accountId: $body"
     }
 
     /**

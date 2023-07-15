@@ -4,12 +4,15 @@ import io.reactivex.Single
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
-import nl.valori.cvtool.backend.BasicVerticle
+import nl.valori.cvtool.backend.DebouncingVerticle
 import java.util.*
 
 const val CV_DOWNLOAD_DEMO_ADDRESS = "cv.download.demo"
 
-internal class CvDownloadDemoVerticle : BasicVerticle(CV_DOWNLOAD_DEMO_ADDRESS) {
+internal class CvDownloadDemoVerticle : DebouncingVerticle(CV_DOWNLOAD_DEMO_ADDRESS) {
+
+    override fun getMessageFingerprint(message: Message<JsonObject>): String =
+        JsonObject(message.headers().get("authInfo")).getString("accountId", "")
 
     /**
      * Expected message body:

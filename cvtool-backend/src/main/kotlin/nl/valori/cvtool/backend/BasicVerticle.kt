@@ -14,16 +14,21 @@ abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
 
     abstract fun handleRequest(message: Message<JsonObject>)
 
+    open fun validateRequest(message: Message<JsonObject>) =
+        true
+
     override fun start(startPromise: Promise<Void>) {
         vertx.eventBus()
             .consumer<JsonObject>(address)
             .toFlowable()
-            .doOnSubscribe {
-                startPromise.complete()
-            }
+            .doOnSubscribe { startPromise.complete() }
             .subscribe(
-                {
-                    handleRequest(it)
+                { message ->
+                    if (validateRequest(message)) {
+                        handleRequest(message)
+                    } else {
+                        message.reply(null)
+                    }
                 },
                 {
                     log.error("Vertx error in ${javaClass.name}", it)
