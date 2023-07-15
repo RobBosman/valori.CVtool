@@ -70,7 +70,7 @@
                         </goals>
                         <phase>compile</phase>
                         <configuration>
-                            <arguments>install --omit=optional --no-audit --legacy-peer-deps</arguments>
+                            <arguments>install --omit=optional --legacy-peer-deps</arguments>
                         </configuration>
                     </execution>
                     <execution>
