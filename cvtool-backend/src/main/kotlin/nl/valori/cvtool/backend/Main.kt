@@ -11,6 +11,7 @@ import io.vertx.reactivex.core.AbstractVerticle
 import nl.valori.cvtool.backend.authorization.AuthInfoFetchVerticle
 import nl.valori.cvtool.backend.authorization.AuthenticateVerticle
 import nl.valori.cvtool.backend.cv.CvBackupVerticle
+import nl.valori.cvtool.backend.cv.CvDownloadDemoVerticle
 import nl.valori.cvtool.backend.cv.CvFetchVerticle
 import nl.valori.cvtool.backend.cv.CvGenerateVerticle
 import nl.valori.cvtool.backend.cv.CvHistoryVerticle
@@ -39,7 +40,8 @@ object Main {
         CvFetchVerticle::class,
         CvSearchVerticle::class,
         CvBackupVerticle::class,
-        CvHistoryVerticle::class
+        CvHistoryVerticle::class,
+        CvDownloadDemoVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy
         .associateWith { "not started" }

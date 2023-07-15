@@ -8,6 +8,7 @@ export const setSearchResult = createAction("SET_SEARCH_RESULT");
 export const resetSearchData = createAction("RESET_SEARCH_DATA", () => ({}));
 export const generateCv = createAction("GENERATE_CV",
   (accountId, locale) => ({ payload: { accountId, locale } }));
+export const fetchDemoCv = createAction("FETCH_DEMO_CV");
 
 reducerRegistry.register(
   "cv",

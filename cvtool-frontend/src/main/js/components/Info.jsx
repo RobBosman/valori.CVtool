@@ -1,8 +1,11 @@
+import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, Link } from "@fluentui/react";
+import { connect } from "react-redux";
+import { Text, Stack, Link, DefaultButton, TooltipHost } from "@fluentui/react";
 import { useTheme } from "../services/ui/ui-services";
+import * as cvActions from "../services/cv/cv-actions";
 
-const Info = () => {
+const Info = (props) => {
 
   const {viewPaneBackground} = useTheme();
   const viewStyles = {
@@ -34,6 +37,17 @@ const Info = () => {
             <br/>Je kunt daar je eigen vertaling invullen, maar als je dat niet doet wordt de voor-ingevulde waarde in je cv opgenomen.</li>
           <br/>
           <li><u>AutoSave</u>: Alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
+          <br/>
+          <li><u>Voorbeeld</u>: Klik hier om een uitgewerkt voorbeeld cv te downloaden:&nbsp;
+            <TooltipHost content="Download uitgewerkt voorbeeld CV">
+              <DefaultButton
+                text="Voorbeeld CV"
+                iconProps={{ iconName: "CloudDownload" }}
+                onClick={() => props.onFetchDemoCv(props.locale)}
+                styles={{ root: { padding: 0, width: 140 } }}
+              />
+            </TooltipHost>
+          </li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
         <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank">RobBosman@valori.nl</Link>.
@@ -45,4 +59,17 @@ const Info = () => {
   );
 };
 
-export default Info;
+Info.propTypes = {
+  locale: PropTypes.string.isRequired,
+  onFetchDemoCv: PropTypes.func.isRequired
+};
+
+const select = (store) => ({
+  locale: store.ui.userPrefs.locale,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onFetchDemoCv: (locale) => dispatch(cvActions.fetchDemoCv(locale))
+});
+
+export default connect(select, mapDispatchToProps)(Info);

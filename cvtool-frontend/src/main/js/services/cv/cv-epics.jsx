@@ -57,5 +57,14 @@ export const cvEpics = [
     rx.map(action => action.payload),
     rx.mergeMap(accountId => cvServices.fetchCvHistoryFromRemote(accountId, eventBusClient.sendEvent)),
     rx.map(fetchedCvHistory => safeActions.resetEntities(fetchedCvHistory))
+  ),
+
+  // Fetch a demo-cv from the backend server.
+  (action$) => action$.pipe(
+    ofType(cvActions.fetchDemoCv.type),
+    rx.map(action => action.payload),
+    rx.mergeMap(locale => cvServices.fetchDemoCvAtRemote(locale, eventBusClient.sendEvent)),
+    rx.tap(demoCv => cvServices.downloadDocxFile(demoCv.fileName, demoCv.docxB64)),
+    rx.ignoreElements()
   )
 ];

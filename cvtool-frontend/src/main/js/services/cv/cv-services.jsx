@@ -12,6 +12,10 @@ export const generateCvAtRemote = (accountId, locale, sendEventFunc) =>
   sendEventFunc("cv.generate", { accountId, locale })
     .then(message => message.body);
 
+export const fetchDemoCvAtRemote = (locale, sendEventFunc) =>
+  sendEventFunc("cv.download.demo", { locale })
+    .then(message => message.body);
+
 const escapeJsonString = (text) =>
   text
     .replace(/\\/g, "\\\\") // escape backslashes

@@ -1,5 +1,5 @@
 server {
-  listen                         ${HTTP_PORT};
+  listen                    ${HTTP_PORT};
   listen                    [::]:${HTTP_PORT};
   server_name               ${HTTP_HOST};
 
@@ -17,7 +17,7 @@ upstream cvtool_backend {
 }
 
 server {
-  listen                         ${HTTPS_PORT} ssl;
+  listen                    ${HTTPS_PORT} ssl;
   listen                    [::]:${HTTPS_PORT} ssl;
   server_name               ${HTTP_HOST};
 

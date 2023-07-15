@@ -7,6 +7,7 @@ import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.SALES
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.UNIT_LEAD
 import nl.valori.cvtool.backend.authorization.intention.IntentionDeleteAccount
+import nl.valori.cvtool.backend.authorization.intention.IntentionDownloadDemoCv
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllAccounts
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllAuthorizations
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllBusinessUnits
@@ -35,7 +36,8 @@ internal object Authorizer {
         IntentionUpdateOtherCv to UNIT_LEAD,
         IntentionUpdateBusinessUnit to UNIT_LEAD,
         IntentionUpdateAuthorization to ADMIN,
-        IntentionDeleteAccount to ADMIN
+        IntentionDeleteAccount to ADMIN,
+        IntentionDownloadDemoCv to ADMIN
     )
 
     /**
