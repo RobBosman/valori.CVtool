@@ -59,5 +59,9 @@ internal class CvDownloadDemoVerticle : DebouncingVerticle(CV_DOWNLOAD_DEMO_ADDR
     }
 
     private fun composeFileName(locale: String) =
-        "CV_${locale.substring(3)}_VOORBEELD.docx"
+        if (locale == "uk_UK") {
+            "CV_UK_EXAMPLE.docx"
+        } else {
+            "CV_${locale.substring(3)}_VOORBEELD.docx"
+        }
 }
