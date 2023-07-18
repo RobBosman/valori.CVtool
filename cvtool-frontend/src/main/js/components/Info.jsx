@@ -43,7 +43,7 @@ const Info = (props) => {
               <DefaultButton
                 text="Voorbeeld CV"
                 iconProps={{ iconName: "CloudDownload" }}
-                onClick={() => props.onFetchDemoCv(props.locale)}
+                onClick={() => props.onFetchDemoCv(props.authInfo.accountId, props.locale)}
                 styles={{ root: { padding: 0, width: 140 } }}
               />
             </TooltipHost>
@@ -61,15 +61,17 @@ const Info = (props) => {
 
 Info.propTypes = {
   locale: PropTypes.string.isRequired,
+  authInfo: PropTypes.object,
   onFetchDemoCv: PropTypes.func.isRequired
 };
 
 const select = (store) => ({
   locale: store.ui.userPrefs.locale,
+  authInfo: store.auth.authInfo,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onFetchDemoCv: (locale) => dispatch(cvActions.fetchDemoCv(locale))
+  onFetchDemoCv: (accountId, locale) => dispatch(cvActions.fetchDemoCv(accountId, locale))
 });
 
 export default connect(select, mapDispatchToProps)(Info);

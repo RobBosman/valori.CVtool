@@ -37,7 +37,7 @@ internal object Authorizer {
         IntentionUpdateBusinessUnit to UNIT_LEAD,
         IntentionUpdateAuthorization to ADMIN,
         IntentionDeleteAccount to ADMIN,
-        IntentionDownloadDemoCv to ADMIN
+        IntentionDownloadDemoCv to CONSULTANT
     )
 
     /**

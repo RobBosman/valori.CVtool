@@ -82,11 +82,12 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         }
     }
 
-    override fun getMessageFingerprint(message: Message<JsonObject>): String {
-        val accountId = JsonObject(message.headers().get("authInfo")).getString("accountId", "")
-        val body = message.body().encode()
-        return "$accountId: $body"
-    }
+    override fun getMessageFingerprint(message: Message<JsonObject>): String? =
+        Optional
+            .ofNullable(message.headers().get("authInfo"))
+            .map { JsonObject(it).getString("accountId") }
+            .map { accountId -> "$accountId: ${message.body().encode()}" }
+            .orElse(null)
 
     /**
      * Expected message body:

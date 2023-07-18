@@ -10,7 +10,7 @@
   "main": "target/classes/index.htm",
   "dependencies": {
     "@azure/msal-browser": "^2.38.0",
-    "@fluentui/react": "^8.110.9",
+    "@fluentui/react": "^8.110.10",
     "@redux-devtools/extension": "^3.2.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@uifabric/react-hooks": "^7.16.4",
@@ -42,7 +42,7 @@
     "prop-types": "^15.8.1",
     "rimraf": "^5.0.1",
     "url-loader": "^4.1.1",
-    "webpack": "^5.88.1",
+    "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },

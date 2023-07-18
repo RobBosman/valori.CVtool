@@ -64,7 +64,7 @@ export const cvEpics = [
   (action$) => action$.pipe(
     ofType(cvActions.fetchDemoCv.type),
     rx.map(action => action.payload),
-    rx.mergeMap(locale => cvServices.fetchDemoCvAtRemote(locale, eventBusClient.sendEvent)),
+    rx.mergeMap(payload => cvServices.fetchDemoCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
     rx.filter(Boolean),
     rx.tap(demoCv => cvServices.downloadDocxFile(demoCv.fileName, demoCv.docxB64)),
     rx.ignoreElements()

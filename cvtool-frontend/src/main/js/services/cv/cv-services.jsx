@@ -12,8 +12,8 @@ export const generateCvAtRemote = (accountId, locale, sendEventFunc) =>
   sendEventFunc("cv.generate", { accountId, locale })
     .then(message => message.body);
 
-export const fetchDemoCvAtRemote = (locale, sendEventFunc) =>
-  sendEventFunc("cv.download.demo", { locale })
+export const fetchDemoCvAtRemote = (accountId, locale, sendEventFunc) =>
+  sendEventFunc("cv.download.demo", { accountId, locale })
     .then(message => message.body);
 
 const escapeJsonString = (text) =>

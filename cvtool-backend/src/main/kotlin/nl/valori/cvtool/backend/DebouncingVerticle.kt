@@ -14,13 +14,15 @@ abstract class DebouncingVerticle(address: String) : BasicVerticle(address) {
         private val debouncedFingerprints = ConcurrentHashSet<String>()
     }
 
-    abstract fun getMessageFingerprint(message: Message<JsonObject>): String
+    abstract fun getMessageFingerprint(message: Message<JsonObject>): String?
 
     open fun getDebounceDelayMillis() =
         2_000L
 
     override fun validateRequest(message: Message<JsonObject>): Boolean {
         val fingerprint = getMessageFingerprint(message)
+            ?: return true
+
         if (debouncedFingerprints.contains(fingerprint)) {
             log.debug("Ignoring ${message.address()} duplicate message [$fingerprint].")
             return false
