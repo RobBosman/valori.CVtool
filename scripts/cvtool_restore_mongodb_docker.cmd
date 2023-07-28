@@ -3,7 +3,7 @@
 ECHO "Make sure MongoDB is up and running."
 SET ENV_FILE=\secret\.env
 
-SET RESTORE_DATE=2023-05-26
+SET RESTORE_DATE=2023-07-27
 SET BACKUP_DIR=\backup\%RESTORE_DATE%
 SET VOLUME_MONGODB_BACKUP=\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\docker_mongodb_backup
 
