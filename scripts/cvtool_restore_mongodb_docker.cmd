@@ -5,7 +5,7 @@ SET ENV_FILE=\secret\.env
 
 SET RESTORE_DATE=2023-07-27
 SET BACKUP_DIR=\backup\%RESTORE_DATE%
-SET VOLUME_MONGODB_BACKUP=\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\docker_mongodb_backup
+SET VOLUME_MONGODB_BACKUP=\\wsl$\docker-desktop-data\data\docker\volumes\docker_mongodb_backup
 
 XCOPY "%BACKUP_DIR%\cvtool\*.*" "%VOLUME_MONGODB_BACKUP%\_data\%RESTORE_DATE%" /E/H/Q/I/Y
 
