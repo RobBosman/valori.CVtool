@@ -13,7 +13,7 @@ internal class CvDownloadDemoVerticle : DebouncingVerticle(CV_DOWNLOAD_DEMO_ADDR
 
     override fun getMessageFingerprint(message: Message<JsonObject>): String? =
         Optional
-            .ofNullable(message.headers().get("authInfo"))
+            .ofNullable(message.headers()["authInfo"])
             .map { JsonObject(it).getString("accountId") }
             .orElse(null)
 

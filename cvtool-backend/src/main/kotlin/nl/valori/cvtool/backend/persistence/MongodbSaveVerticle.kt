@@ -24,7 +24,7 @@ internal class MongodbSaveVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    override fun start(startPromise: Promise<Void>) {
+    override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         MongoConnection
             .connectToDatabase(config())
             .doOnError { log.warn("Cannot start verticle: ${it.message}") }

@@ -29,7 +29,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private val healthSpanMillis = 3 * 60 * 1000
     private val lastOpenIDConnectionAtMillis = AtomicLong(0L)
 
-    override fun start(startPromise: Promise<Void>) {
+    override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Environment variable:
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
         val connectionString = config().getString("AUTH_CONNECTION_STRING")

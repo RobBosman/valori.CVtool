@@ -15,7 +15,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    override fun start(startPromise: Promise<Void>) {
+    override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Environment variable:
         //   HTTP_CONNECTION_STRING=http://<HOST_NAME>:<PORT>/
         //   HTTP_CONNECTION_STRING=http://www.example.com:80/
@@ -57,8 +57,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .failureHandler(::handleFailure)
             .handler(BodyHandler.create())
 
-        router
-            .get("/health/*")
+        router["/health/*"]
             .handler(HealthChecker.getHandler(vertx, config()))
         router
             .route("/eventbus/*")

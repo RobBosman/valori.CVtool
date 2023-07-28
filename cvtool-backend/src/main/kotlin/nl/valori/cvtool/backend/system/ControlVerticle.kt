@@ -20,7 +20,7 @@ internal class ControlVerticle : AbstractVerticle() {
     private val log = LoggerFactory.getLogger(javaClass)
     private val deliveryOptions = DeliveryOptions().setSendTimeout(30_000)
 
-    override fun start(startPromise: Promise<Void>) {
+    override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Environment variables:
         //   CONTROL_CONNECTION_STRING=http://<HOST_NAME>:<PORT>/
         //   CONTROL_CONNECTION_STRING=http://localhost:88/

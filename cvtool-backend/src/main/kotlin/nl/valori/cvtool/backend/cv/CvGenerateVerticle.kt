@@ -84,7 +84,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     override fun getMessageFingerprint(message: Message<JsonObject>): String? =
         Optional
-            .ofNullable(message.headers().get("authInfo"))
+            .ofNullable(message.headers()["authInfo"])
             .map { JsonObject(it).getString("accountId") }
             .map { accountId -> "$accountId: ${message.body().encode()}" }
             .orElse(null)
@@ -141,7 +141,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     internal fun xmlToDocx(xmlBytes: ByteArray, locale: String) =
         Flowable
-            .fromIterable(docxPartNamesXslTemplatesMap[locale]!!.entries)
+            .fromIterable(docxPartNamesXslTemplatesMap[locale]?.entries)
             .parallel()
             .runOn(Schedulers.computation())
             .map { entry -> entry.key to xslTransform(xmlBytes, entry.value) }
