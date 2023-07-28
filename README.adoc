@@ -30,7 +30,7 @@ You will now have two of them, remember which is the new one!
 
 ==== _Download and install the following_
 
-* https://jdk.java.net/[Java OpenJDK]
+* https://adoptium.net/[Java OpenJDK]
 * https://git-scm.com/[Git (for Windows)]
 * https://www.jetbrains.com/idea/download/#section=windows[IntelliJ IDEA Community Edition]
 * https://code.visualstudio.com/docs/?dv=win[Visual Studio Code]
