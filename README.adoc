@@ -61,13 +61,16 @@ Create file `/secret/.env`, make it inaccessible for 'outsiders' and fill-in sec
 
 === Configure SSL for local development
 
-1. Get yourself an SSL certificate in pem-format (see `scripts\*.sh`).
-2. Make sure the Docker volumes for letsencrypt are present (run `docker\docker-compose.yaml` if needed).
-3. Copy directory `docker/letsencrypt certs` to volume _letsencrypt_certs_.
-4. Copy the SSL certificate files to the right location in volume _letsencrypt_certs_. See also the nginx configuration in `docker\default.conf.template`.
-5. Generate or download Diffie-Hellman parameters and store it in the root of volume _letsencrypt_certs_, see `docker\default.conf.template.
-6. Copy directory `docker/letsencrypt_webroot` to volume _letsencrypt_webroot_.
-7. Restart the letsencrypt container.
+1. Get yourself an SSL certificate in pem-format:
+ * `createDhParams.sh` (takes a long time)
+ * `scripts\createLocalhostSslCert.sh`
+2. Generate or download the file with Diffie-Hellman parameters and store it in the root of volume _letsencrypt_certs_, see `docker\default.conf.template.
+3. Make sure the Docker volumes for letsencrypt are present +
+ Run `docker\docker-compose.yaml` if needed.
+4. Copy `docker/letsencrypt certs/*` to volume _letsencrypt_certs_. +
+ Make sure the SSL certificate files are in the right location in volume _letsencrypt_certs_. See also the nginx configuration in `docker\default.conf.template`.
+5. Copy `docker/letsencrypt_webroot/*` to volume _letsencrypt_webroot_.
+6. Restart the letsencrypt container.
 
 == Backup/restore
 
@@ -120,7 +123,7 @@ Data retention is 120 days.
  # Volumes Linux
  /var/lib/docker/volumes/
  # Volumes Windows
- \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
+ \\wsl$\docker-desktop-data\data\docker\volumes
 
 == MongoDB
 

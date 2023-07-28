@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
 
-JAVA_HOME="/mnt/c/Program Files/Java/jdk-18"
+JAVA_HOME="/mnt/c/Program Files/Java/jdk-20.0.2+9"
 HOSTNAME=localhost
 KEYSIZE=2048
 VALIDITY=3650
 KEYSTORE=keystore.p12
 STORETYPE=PKCS12
 STOREPASS=KeyStorePassword
+TARGET_DIR=../docker/letsencrypt_certs/live
 
 # Create private+public key pair.
 "${JAVA_HOME}/bin/keytool.exe" \
@@ -21,7 +22,7 @@ STOREPASS=KeyStorePassword
     -sigalg SHA256withRSA \
     -validity ${VALIDITY}
 
-#keytool \
+#"${JAVA_HOME}/bin/keytool.exe" \
 #    -keystore ${KEYSTORE} \
 #    -storetype ${STORETYPE} \
 #    -storepass ${STOREPASS} \
@@ -30,5 +31,8 @@ STOREPASS=KeyStorePassword
 
 # Convert to PEM.
 openssl pkcs12 -in ${KEYSTORE} -nocerts -out ${HOSTNAME}-privkey-with-password.pem -passin pass:${STOREPASS} -passout pass:${STOREPASS}
-openssl rsa -in ${HOSTNAME}-privkey-with-password.pem -out ${HOSTNAME}-privkey.pem -passin pass:${STOREPASS}
-openssl pkcs12 -in ${KEYSTORE} -clcerts -nokeys -out ${HOSTNAME}-fullchain.pem -passin pass:${STOREPASS}
+openssl rsa -in ${HOSTNAME}-privkey-with-password.pem -out ${TARGET_DIR}/${HOSTNAME}/privkey.pem -passin pass:${STOREPASS}
+openssl pkcs12 -in ${KEYSTORE} -clcerts -nokeys -out ${TARGET_DIR}/${HOSTNAME}/fullchain.pem -passin pass:${STOREPASS}
+
+rm ${KEYSTORE} ${HOSTNAME}-privkey-with-password.pem
+echo New certs for ${HOSTNAME} are stored in ${TARGET_DIR}/${HOSTNAME}
