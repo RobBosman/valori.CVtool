@@ -17,10 +17,18 @@ import java.util.concurrent.TimeUnit.SECONDS
 @ExtendWith(VertxExtension::class)
 internal class HttpServerVerticleTest {
 
-    private val HOST_NAME = "localhost"
+    companion object {
+        private const val HOST_NAME = "localhost"
+    }
 
     private fun runHttpsServer(vertx: Vertx, testContext: VertxTestContext): Int {
-        val port = ServerSocket(0).use { it.localPort }
+        // Find a free port.
+        val port = ServerSocket(0)
+            .use { serverSocket ->
+                serverSocket.localPort
+            }
+
+        // Start the web server...
         vertx.deployVerticle(
             HttpServerVerticle::class.java.name,
             DeploymentOptions()
@@ -30,28 +38,31 @@ internal class HttpServerVerticleTest {
                 ),
             testContext.succeedingThenComplete()
         )
+        // ...and wait until it's ready.
+        assertTrue(testContext.awaitCompletion(2, SECONDS))
+
         return port
     }
 
     @Test
     fun testServer(vertx: Vertx, testContext: VertxTestContext) {
         val port = runHttpsServer(vertx, testContext)
+        val testUrl = "/.well-known/acme-challenge/index.html"
 
         WebClient
             .create(
                 vertx, WebClientOptions()
                     .setSsl(false)
             )
-            .get(port, HOST_NAME, "/.well-known/acme-challenge/index.html")
+            .get(port, HOST_NAME, testUrl)
             .`as`(BodyCodec.string())
             .send(testContext.succeeding { response ->
                 testContext.verify {
-                    assertTrue(response.body().contains("/.well-known/acme-challenge/index.html"))
+                    assertTrue(response.body().contains(testUrl))
                     testContext.completeNow()
                 }
             })
 
-        assertTrue(testContext.awaitCompletion(2, SECONDS))
         if (testContext.failed())
             throw testContext.causeOfFailure()
     }
