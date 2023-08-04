@@ -22,7 +22,7 @@ const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false) => {
   const allCachedAccounts = msal.getAllAccounts();
-  const cachedAccount = allCachedAccounts && allCachedAccounts[0];
+  const cachedAccount = allCachedAccounts?.[0];
   const loginConfig = {
     ...LOGIN_CONFIG,
     account: cachedAccount,

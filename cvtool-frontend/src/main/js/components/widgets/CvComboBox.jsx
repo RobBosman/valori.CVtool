@@ -5,11 +5,11 @@ import { ComboBox, TextField } from "@fluentui/react";
 export const CvComboBox = (props) => {
   
   const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
-  const instance = entity && entity[instanceId];
-  const value = instance && instance[props.field] || props.defaultValue || "";
+  const instance = entity?.[instanceId];
+  const value = instance?.[props.field] || props.defaultValue || "";
 
   const onChange = (event, option) =>
-    replaceInstance && replaceInstance(instanceId, { ...instance, [props.field]: (option?.key || event.target.value) });
+    replaceInstance?.(instanceId, { ...instance, [props.field]: (option?.key || event.target.value) });
 
   return readOnly
     ? <TextField

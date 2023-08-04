@@ -207,7 +207,7 @@ const Accounts = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const selectedAccountName = props.accountEntity && props.accountEntity[props.selectedAccountId]?.name;
+  const selectedAccountName = props.accountEntity?.[props.selectedAccountId]?.name;
 
   return (
     <table style={{ borderCollapse: "collapse" }}>

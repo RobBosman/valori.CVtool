@@ -164,7 +164,7 @@ const ContentPage = (props) => {
     renderContent = item?.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
 
-  const selectedAccountName = props.accountEntity && props.accountEntity[props.selectedAccountId]?.name;
+  const selectedAccountName = props.accountEntity?.[props.selectedAccountId]?.name;
 
   return (
     <Stack horizontal>

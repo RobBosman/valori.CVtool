@@ -31,7 +31,7 @@ const HistoryView = (props) => {
   };
 
   const getAccountName = (accountId) => {
-    const account = props.accountEntity && props.accountEntity[accountId] || {};
+    const account = props.accountEntity?.[accountId] || {};
     return account?.name || "onbekend";
   };
 

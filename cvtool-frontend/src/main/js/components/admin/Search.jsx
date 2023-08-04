@@ -351,10 +351,10 @@ const Search = props => {
                       ?.map(skill =>
                         <tr key={skill._id}>
                           <td width="20%">{enums.getText(enums.SkillCategories, skill.category, props.locale) || skill.category}</td>
-                          <td width="30%">{textFormatter.renderAndFormat(skill.description && skill.description[props.locale], highlightFormattingSpecs)}</td>
+                          <td width="30%">{textFormatter.renderAndFormat(skill.description?.[props.locale], highlightFormattingSpecs)}</td>
                           <td width="10%" align="right">{"\u2605 ".repeat(skill.skillLevel).trim()}</td>
                           <td width="40%" align="right" style={{borderLeftStyle: "outset"}}>
-                            <em>{textFormatter.renderAndFormat(skill.explanation && skill.explanation[props.locale], highlightFormattingSpecs)}</em>
+                            <em>{textFormatter.renderAndFormat(skill.explanation?.[props.locale], highlightFormattingSpecs)}</em>
                           </td>
                         </tr>
                       )

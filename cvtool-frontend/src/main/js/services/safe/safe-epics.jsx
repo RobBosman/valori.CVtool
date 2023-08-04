@@ -83,10 +83,10 @@ const extractChangedData = (safe) => {
       }
       Object.keys(dirtyInstanceIds)
         .forEach(instanceId => {
-          if (!safe.content[dirtyEntityName] || !safe.content[dirtyEntityName][instanceId]) {
-            content[dirtyEntityName][instanceId] = {};
-          } else {
+          if (safe.content[dirtyEntityName]?.[instanceId]) {
             content[dirtyEntityName][instanceId] = safe.content[dirtyEntityName][instanceId];
+          } else {
+            content[dirtyEntityName][instanceId] = {};
           }
         });
     });

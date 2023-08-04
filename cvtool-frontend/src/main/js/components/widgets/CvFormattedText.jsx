@@ -9,13 +9,13 @@ export const CvFormattedText = (props) => {
 
   const { entity, instanceId } = props.instanceContext;
 
-  const instance = entity && entity[instanceId];
+  const instance = entity?.[instanceId];
 
   const value = React.useMemo(() => {
     let val = instance;
     props.field.split(".")
       .forEach(field => {
-        val = val && val[field];
+        val = val?.[field];
       });
     return val || "";
   }, [instance, props.field]);

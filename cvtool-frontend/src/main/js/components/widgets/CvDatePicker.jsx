@@ -20,7 +20,7 @@ const datePickerStrings = {
 export const CvDatePicker = (props) => {
 
   const {entity, instanceId, replaceInstance, locale, readOnly} = props.instanceContext;
-  const instance = entity && entity[instanceId];
+  const instance = entity?.[instanceId];
   const localeForDate = locale?.substring(0, 2);
 
   const correctDateForTimezone = (date) => {
@@ -48,7 +48,7 @@ export const CvDatePicker = (props) => {
     dateString && new Date(dateString);
 
   const parseDateFromScreen = (dateString) => {
-    const match = dateString?.match(/(\d+)[^\d]+(\d+)[^\d]+(\d+)/); // 00 0 000
+    const match = dateString?.match(/^(\d+)[^\d]+(\d+)[^\d]+(\d+)$/); // 00 0 000
     if (match)
       switch (localeForDate) {
       case "nl":
@@ -68,7 +68,7 @@ export const CvDatePicker = (props) => {
   const [value, setValue] = React.useState("");
   const [idOpenForChange, setIdOpenForChange] = React.useState(0);
   React.useEffect(() => {
-    setValue(parseDateFromStorage(instance && instance[props.field] || props.defaultValue || ""));
+    setValue(parseDateFromStorage(instance?.[props.field] || props.defaultValue || ""));
     setIdOpenForChange(instanceId);
   },
   [instance, props.field, props.defaultValue]);

@@ -17,7 +17,7 @@ const LoginPage = (props) => {
   };
 
   const onOpenAppsPage = () =>
-    window.open("https://myapplications.microsoft.com/", "blank");
+    window.open("https://myapplications.microsoft.com/", "blank", "noopener");
 
   return (
     <Stack>

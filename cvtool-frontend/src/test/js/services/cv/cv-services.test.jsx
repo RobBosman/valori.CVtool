@@ -2,8 +2,8 @@ import * as cvServices from "../../../../main/js/services/cv/cv-services";
 
 describe("cv-services.test", () => {
 
-  const sendEventSuccess = (eventName) => new Promise((_resolve) => _resolve({ body: `${eventName}_resolved` }));
-  const sendEventError = (eventName) => new Promise((_resolve, _reject) => _reject(new Error(`${eventName}_rejected`)));
+  const sendEventSuccess = (eventName) => Promise.resolve({ body: `${eventName}_resolved` });
+  const sendEventError = (eventName) => Promise.reject(new Error(`${eventName}_rejected`));
 
   it("should fetchCvFromRemote success", () => {
     expect.assertions(1);

@@ -49,7 +49,7 @@ const Training = (props) => {
   [props.trainingEntity, props.selectedAccountId]);
 
   const renderName = (item) =>
-    item.name && item.name[props.locale] || commonUtils.getValueOrFallback(item, "name", props.locale);
+    item.name?.[props.locale] || commonUtils.getValueOrFallback(item, "name", props.locale);
 
   const renderInCvCheckbox = (item) =>
     <CvCheckbox

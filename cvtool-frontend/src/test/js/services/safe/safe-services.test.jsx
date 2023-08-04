@@ -2,8 +2,8 @@ import * as safeServices from "../../../../main/js/services/safe/safe-services";
 
 describe("safe-services.test", () => {
 
-  const sendEventSuccess = (eventName) => new Promise((_resolve) => _resolve({ body: `${eventName}_resolved` }));
-  const sendEventError = (eventName) => new Promise((_resolve, _reject) => _reject(new Error(`${eventName}_rejected`)));
+  const sendEventSuccess = (eventName) => Promise.resolve({ body: `${eventName}_resolved` });
+  const sendEventError = (eventName) => Promise.reject(new Error(`${eventName}_rejected`));
 
   it("should saveToRemote success", () => {
     expect.assertions(1);

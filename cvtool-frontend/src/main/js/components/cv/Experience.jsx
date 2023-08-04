@@ -48,7 +48,7 @@ const Experience = (props) => {
   const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
 
   const renderRole = (item) =>
-    item.role && item.role[props.locale] || commonUtils.getValueOrFallback(item, "role", props.locale);
+    item.role?.[props.locale] || commonUtils.getValueOrFallback(item, "role", props.locale);
 
   const renderClient = (item) =>
     item.client || item.employer;

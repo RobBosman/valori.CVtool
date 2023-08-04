@@ -11,7 +11,7 @@ const CvTitle = props => {
   const {valoriYellow} = useTheme();
 
   const memo = React.useMemo(() => {
-    const account = props.accountEntity && props.accountEntity[props.selectedAccountId];
+    const account = props.accountEntity?.[props.selectedAccountId];
     const characteristics = Object.values(props.characteristicsEntity || {})
       .find(instance => instance.accountId === props.selectedAccountId && instance.includeInCv);
     const role = commonUtils.getValueOrFallback(characteristics, "role", props.locale);
@@ -24,13 +24,13 @@ const CvTitle = props => {
     };
   },
   [props.accountEntity, props.characteristicsEntity, props.selectedAccountId, props.locale]);
-  const plainCard = <p style={{margin: 10}}>{memo.email}</p>;
+  const renderPlainCard = () => <p style={{margin: 10}}>{memo.email}</p>;
 
   return (
     <Stack styles={{ root: { textTransform: "uppercase", color: "#999999" } }}>
       <HoverCard
         type={HoverCardType.plain}
-        plainCardProps={{ onRenderPlainCard: () => plainCard }}
+        plainCardProps={{ onRenderPlainCard: renderPlainCard }}
         instantOpenOnClick={true}>
         <Text variant="xxLarge">{memo.name}</Text>
       </HoverCard>

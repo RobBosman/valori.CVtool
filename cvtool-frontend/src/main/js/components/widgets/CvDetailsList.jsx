@@ -55,7 +55,7 @@ export const CvDetailsList = (props) => {
       fieldName: column?.fieldName,
       isSortedDescending: column.isSorted && !column.isSortedDescending
     });
-    return orgOnColumnClick && orgOnColumnClick(event, column);
+    return orgOnColumnClick?.(event, column);
   };
 
   const sortableColumns = React.useMemo(() =>
@@ -67,7 +67,7 @@ export const CvDetailsList = (props) => {
           isSorted: isSortColumn,
           isSortedDescending: isSortColumn && sortingBy?.isSortedDescending,
           onRender: fieldPath.length === 2
-            ? instance => instance[fieldPath[0]] && instance[fieldPath[0]][fieldPath[1]]
+            ? instance => instance[fieldPath[0]]?.[fieldPath[1]]
             : column.onRender,
           ...column,
           onColumnClick: onSort(column.onColumnClick)

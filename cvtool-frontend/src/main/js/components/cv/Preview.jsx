@@ -36,10 +36,10 @@ export const composeExperiencePeriod = (experience, locale) => {
 };
 
 export const composeExperienceDescription = (experience, locale) => {
-  const assignment = experience.assignment && experience.assignment[locale]?.trim() || "";
-  const activities = experience.activities && experience.activities[locale]?.trim() || "";
-  const results = experience.results && experience.results[locale]?.trim() || "";
-  const keywords = experience.keywords && experience.keywords[locale]?.trim() || "";
+  const assignment = experience.assignment?.[locale]?.trim() || "";
+  const activities = experience.activities?.[locale]?.trim() || "";
+  const results = experience.results?.[locale]?.trim() || "";
+  const keywords = experience.keywords?.[locale]?.trim() || "";
   let composedText = assignment;
   if (activities)
     composedText += `\n${cvHeadings.activities}\n${activities}`;
@@ -77,7 +77,7 @@ const ARIAL_WIDTH_MAP = {
 const getCharWidth = (ch) => {
   const entry = Object.entries(ARIAL_WIDTH_MAP)
     .find(([key]) => key.includes(ch));
-  return entry && entry[1] || 1.0;
+  return entry?.[1] || 1.0;
 };
 
 const getTextWidth = (text) =>

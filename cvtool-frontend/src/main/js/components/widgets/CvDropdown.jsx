@@ -5,17 +5,17 @@ import { Dropdown, TextField } from "@fluentui/react";
 export const CvDropdown = (props) => {
   
   const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
-  const instance = entity && entity[instanceId];
+  const instance = entity?.[instanceId];
 
   let value;
   let valueInstance;
   const fieldPath = props.field.split(".");
   if (fieldPath.length === 2) {
-    valueInstance = instance && instance[fieldPath[0]];
-    value = valueInstance && valueInstance[fieldPath[1]];
+    valueInstance = instance?.[fieldPath[0]];
+    value = valueInstance?.[fieldPath[1]];
   } else {
     valueInstance = instance;
-    value = valueInstance && valueInstance[fieldPath[0]];
+    value = valueInstance?.[fieldPath[0]];
   }
   value = value || props.defaultValue || "";
 

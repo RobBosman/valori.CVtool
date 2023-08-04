@@ -51,7 +51,7 @@ const Skill = (props) => {
     enums.getText(enums.SkillCategories, item.category, props.locale);
 
   const renderDescription = (item) =>
-    item.description && item.description[props.locale] || commonUtils.getValueOrFallback(item, "description", props.locale);
+    item.description?.[props.locale] || commonUtils.getValueOrFallback(item, "description", props.locale);
 
   const renderSkillLevel = (item) =>
     "\u2605 ".repeat(item.skillLevel).trim();

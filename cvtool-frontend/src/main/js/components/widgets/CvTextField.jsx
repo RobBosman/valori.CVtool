@@ -6,7 +6,7 @@ export const CvTextField = (props) => {
 
   const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
   
-  const instance = entity && entity[instanceId];
+  const instance = entity?.[instanceId];
 
   const isReadOnly = props.readOnly || readOnly;
 
@@ -14,7 +14,7 @@ export const CvTextField = (props) => {
     let val = instance;
     props.field.split(".")
       .forEach(field => {
-        val = val && val[field];
+        val = val?.[field];
       });
     return val || props.defaultValue || "";
   }, [instance, props.field, props.defaultValue]);
@@ -90,7 +90,7 @@ export const CvTextField = (props) => {
         [fieldPath[0]]: event.target.value
       };
     }
-    replaceInstance && replaceInstance(instanceId, instanceToBeSaved);
+    replaceInstance?.(instanceId, instanceToBeSaved);
   };
 
   return (

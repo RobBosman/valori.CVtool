@@ -37,7 +37,7 @@ const CvTopBar = props => {
     props.setLocale(item?.key);
 
   const onOpenEmail = () =>
-    window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank");
+    window.open("mailto:RobBosman@valori.nl?subject=CVtool", "blank", "noopener");
 
   const [items, setItems] = React.useState([]);
   const [farItems, setFarItems] = React.useState([]);
