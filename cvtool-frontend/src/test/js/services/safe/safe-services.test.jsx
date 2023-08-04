@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import * as safeServices from "../../../../main/js/services/safe/safe-services";
 
 describe("safe-services.test", () => {
