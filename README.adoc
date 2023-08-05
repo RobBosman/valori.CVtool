@@ -31,13 +31,13 @@ You will now have two of them, remember which is the new one!
 ==== _Download and install the following_
 
 * https://adoptium.net/[Java OpenJDK]
-* https://git-scm.com/[Git (for Windows)]
+* https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker Desktop]
+* https://git-scm.com/[Git] (or use the git-version installed in WSL2)
 * https://www.jetbrains.com/idea/download/#section=windows[IntelliJ IDEA Community Edition]
 * https://code.visualstudio.com/docs/?dv=win[Visual Studio Code]
 * https://www.mongodb.com/try/download/community[MongoDB Community server]
 * https://www.mongodb.com/try/download/compass[MongoDB Compass]
 * https://www.mongodb.com/try/download/database-tools[MongoDB Database Tools]
-* https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker Desktop]
 * https://www.bitvise.com/ssh-client-download[BitWise SSH client]
 
 ==== _Setup Visual Studio Code_

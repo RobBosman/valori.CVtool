@@ -11,10 +11,10 @@ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000
 * Open a browser and go to http://localhost:9000/.
 * Login with _admin_ / _admin_ and change the password.
 * Go to http://localhost:9000/admin/users and generate a token. +
-(Make sure you keep a copy of the token available.)
+Make sure you keep a copy of the token available.
 * Edit your local Maven config file `settings.xml` (see http://localhost:9000/documentation/analysis/scan/sonarscanner-for-maven/[here]) and add
 ....
-<settings>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
     <pluginGroups>
         <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
     </pluginGroups>
