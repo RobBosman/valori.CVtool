@@ -1,10 +1,24 @@
 = Tips & tricks
 
+== Run MongoDB locally
+
+Use `docker compose` to start the CVtool application as usual, and then stop/kill the _cvtool-frontend_ and _cvtool-backend_ containers:
+
+[source,sh]
+....
+docker compose -f docker-compose.yaml --env-file=/secret/.env up -d
+docker container stop \
+  "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" \
+  "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
+....
+
 == Run SonarQube locally
 
 Initialize local SonarQube server:
 
-* Start Docker and execute this command:
+* Start Docker and execute this command
+
+[source,sh]
 ....
 docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 --restart always sonarqube:latest
 ....
@@ -13,6 +27,8 @@ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000
 * Go to http://localhost:9000/admin/users and generate a token. +
 Make sure you keep a copy of the token available.
 * Edit your local Maven config file `settings.xml` (see http://localhost:9000/documentation/analysis/scan/sonarscanner-for-maven/[here]) and add
+
+[source,xml]
 ....
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
     <pluginGroups>

@@ -7,7 +7,7 @@
     {
       "id": "18456469-4246-469c-9ad9-c6c758302350",
       "connectionOptions": {
-        "connectionString": "mongodb://root@localhost:27117/cvtool?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
+        "connectionString": "mongodb://root@localhost:27017/cvtool?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
       },
       "favorite": {
         "name": "localhost - Docker",
@@ -18,7 +18,7 @@
           "$numberLong": "1685184239290"
         }
       },
-      "connectionSecrets": "AAE3u1SB1bsZYq+gCuWDdno3HxnI2YUjGIoDi7HMcg5z4SgwJDhxfzMlJ8RdaWacTG2vjmOiysduRdPPARIIOKWSkWgLOolmTskubDgZ27+NtyHzSU4quOQgUgYT9iukLjolSSPdVz0zpSg6D8U="
+      "connectionSecrets": "AAHRzG74TlKtCOwDU9MAbSADXLRgk6iI+dSWM44D5q9hHOATrhclqVDlBVLP3vrK8XsQjTC+6865N/N8mzkRet/rdc4FEH3bjsz5ZeB6URtyg7/kHyAphKe0PLYT/MROlfEQY/alz9jKgQjW6yk="
     },
     {
       "id": "8e142f0c-7ec4-4e22-8bd7-1a753b7ac397",
@@ -34,22 +34,7 @@
           "$numberLong": "1685184482858"
         }
       },
-      "connectionSecrets": "AAGZgHbtL8qZMexhNOm8NvMtb6dpl/Gu8ik3LvoSmBklmouNiL4TtK7Z+ZlFZ1OKu13MVhkhKSLgmJ9Zlk9uroFPjbcd/qN/PyFaNFY79QnyM2ZM4r9uwsByRKfBjhfkG0yjz9/3D5hwcsnPRA=="
-    },
-    {
-      "id": "74344d6d-bf6d-4506-b9ae-1fc4794b51f7",
-      "connectionOptions": {
-        "connectionString": "mongodb://localhost:27017/?readPreference=primary&ssl=false&directConnection=true"
-      },
-      "favorite": {
-        "name": "Localhost"
-      },
-      "lastUsed": {
-        "$date": {
-          "$numberLong": "1689706512754"
-        }
-      },
-      "connectionSecrets": "AAGkHmi2yNHJJg+ES1sA3yuV56cq5ZgkzKXZRRx8HbgKkt+EbSIMIJ+WYAE388Eu3DeG37F7hCLHyAgcr8gIpQ=="
+      "connectionSecrets": "AAGpVoAm5yzeR7KHetYH/B5+LEWkdLu8BZGjaObz1NlZ2fuHWvXa7v1M31bAlqpSYjOHI+c9dGq0tHzMx2seagDCIiymtmZi1snkbvjYbcnJFvZCj+ewhfD2UokUv7RPEu8SUeBO2xJcbv8Esg=="
     }
   ]
 }
