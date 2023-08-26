@@ -19,6 +19,7 @@ const LOGIN_CONFIG = {
 };
 
 const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
+await msal.initialize();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false) => {
   const allCachedAccounts = msal.getAllAccounts();
