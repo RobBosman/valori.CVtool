@@ -22,9 +22,9 @@
         <kotlin.code.style>official</kotlin.code.style>
 
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
-        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
-        <maven.compiler.release>18</maven.compiler.release>
-        <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
+        <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
+        <maven.compiler.release>20</maven.compiler.release>
+        <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
     </properties>
 
     <profiles>
