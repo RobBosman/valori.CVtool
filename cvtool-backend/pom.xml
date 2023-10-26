@@ -16,13 +16,6 @@
     <properties>
         <sonar.sources>src/main/kotlin</sonar.sources>
         <sonar.tests>src/test/kotlin</sonar.tests>
-
-        <kotlin.version>1.9.10</kotlin.version>
-        <logback-classic.version>1.4.11</logback-classic.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
-        <mongodb-driver-reactivestreams.version>4.10.2</mongodb-driver-reactivestreams.version>
-        <vertx.version>4.4.5</vertx.version>
     </properties>
 
     <build>
