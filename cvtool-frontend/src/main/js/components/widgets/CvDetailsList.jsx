@@ -6,13 +6,13 @@ import * as commonUtils from "../../utils/CommonUtils";
 export const CvDetailsList = (props) => {
 
   const { instanceId, setSelectedInstanceId } = props.instanceContext;
-  const getKey = (item) => item?._id;
+  const getItemId = (item) => item?._id;
   
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
   const [selection] = React.useState(new Selection({
     items: props.items,
-    getKey: getKey,
-    onSelectionChanged: () => setSelectedInstanceId(getKey(selection.getSelection()[0]))
+    getKey: getItemId,
+    onSelectionChanged: () => setSelectedInstanceId(getItemId(selection.getSelection()[0]))
   }));
   const [sortingBy, setSortingBy] = React.useState({
     fieldName: props.columns[0]?.fieldName,
@@ -22,7 +22,7 @@ export const CvDetailsList = (props) => {
   // Re-select current item when navigating back to this page.
   React.useLayoutEffect(() => {
     props.items
-      .map(getKey)
+      .map(getItemId)
       .forEach(key => selection.setKeySelected(key, key === instanceId), false);
   }, [props.items, instanceId]);
 
@@ -91,7 +91,6 @@ export const CvDetailsList = (props) => {
           columns={sortableColumns}
           items={sortedItems}
           setKey={props.setKey}
-          getKey={getKey}
           selection={selection}
           selectionMode={props.selectionMode === undefined ? SelectionMode.single : props.selectionMode}
           isHeaderVisible={true}
