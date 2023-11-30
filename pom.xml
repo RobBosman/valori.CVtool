@@ -25,13 +25,13 @@
         <frontend-maven-plugin.version>1.14.2</frontend-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <kotlin.version>2.0.0-Beta1</kotlin.version>
-        <logback-classic.version>1.4.11</logback-classic.version>
+        <logback-classic.version>1.4.13</logback-classic.version>
         <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
         <maven.compiler.release>20</maven.compiler.release>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
         <mongodb-driver-reactivestreams.version>4.11.1</mongodb-driver-reactivestreams.version>
-        <nodejs.version>v20.9.0</nodejs.version>
+        <nodejs.version>v20.10.0</nodejs.version>
         <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
         <vertx.version>4.5.0</vertx.version>
     </properties>
