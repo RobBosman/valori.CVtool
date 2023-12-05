@@ -17,7 +17,7 @@ describe("error-epics.test", () => {
     const epicMiddleware = createEpicMiddleware();
     _store = configureStore({
       reducer: reducerRegistry.getRootReducer(),
-      middleware: [epicMiddleware]
+      middleware: getDefaultMiddleware => getDefaultMiddleware().concat([epicMiddleware])
     });
     epicMiddleware.run(_epicRegistry.rootEpic);
     _epicRegistry.register(...errorEpics);

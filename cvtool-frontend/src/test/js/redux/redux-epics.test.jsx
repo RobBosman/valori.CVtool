@@ -57,7 +57,7 @@ describe("redux-epics.test", () => {
     const epicMiddleware = createEpicMiddleware();
     _store = configureStore({
       reducer: dummyReducer,
-      middleware: [epicMiddleware]
+      middleware: getDefaultMiddleware => getDefaultMiddleware().concat([epicMiddleware])
     });
 
     _dispatchedActions = [];

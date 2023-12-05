@@ -6,12 +6,10 @@ import { epicRegistry } from "./epicRegistry";
 
 const epicMiddleware = createEpicMiddleware();
 
-const composeEnhancers = composeWithDevTools(); // see EnhancerOptions
-
 export const store = configureStore({
   reducer: reducerRegistry.getRootReducer(),
-  middleware: [epicMiddleware],
-  enhancer: composeEnhancers
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([epicMiddleware]),
+  enhancers: getDefaultEnhancers => getDefaultEnhancers().concat(composeWithDevTools)
 });
 
 reducerRegistry.setChangeListener((rootReducer) => store.replaceReducer(rootReducer));
