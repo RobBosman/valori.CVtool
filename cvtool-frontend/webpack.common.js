@@ -27,26 +27,16 @@ export const composeCommonConfig = devOrProdMode => ({
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx)$/i,
         exclude: /(Headless.*|node|node_modules|target)/,
         use: {
-          loader: require.resolve("babel-loader"),
+          loader: require.resolve("url-loader"),
           options: {
             envName: devOrProdMode,
             env: {
               production: {
                 only: [
                   "src"
-                ],
-                plugins: [
-                  [
-                    "transform-react-remove-prop-types",
-                    {
-                      removeImport: devOrProdMode === 'development'
-                    }
-                  ],
-                  "@babel/plugin-transform-react-constant-elements",
-                  "@babel/plugin-transform-react-inline-elements"
                 ]
               }
             },
