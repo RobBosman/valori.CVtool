@@ -39,7 +39,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Prevent SSL handshake timeouts. Especially when establishing remote connections from virtual environments.
         oauth2Options.httpClientOptions
             .setSslHandshakeTimeoutUnit(MILLISECONDS)
-            .setSslHandshakeTimeout(5_000)
+            .setSslHandshakeTimeout(20_000)
 
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
@@ -142,6 +142,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 // It's the expected error response. Don't propagate the error itself, only the message String.
                 it.message
             }
+            .retry(1)
             .subscribe(
                 {
                     message.reply(it)

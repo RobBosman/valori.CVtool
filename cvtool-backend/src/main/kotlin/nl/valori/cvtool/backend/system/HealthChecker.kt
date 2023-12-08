@@ -8,7 +8,6 @@ import nl.valori.cvtool.backend.Main
 import nl.valori.cvtool.backend.authorization.AUTHENTICATE_HEALTH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MongoConnection
 import org.slf4j.LoggerFactory
-import java.util.concurrent.TimeUnit.MILLISECONDS
 
 internal object HealthChecker {
 
@@ -40,7 +39,6 @@ internal object HealthChecker {
             .register("MongoDB", 5_000) { healthStatus ->
                 MongoConnection
                     .connectToDatabase(config)
-                    .timeout(2_000, MILLISECONDS)
                     .subscribe(
                         {
                             healthStatus.tryComplete(Status.OK())
@@ -52,10 +50,9 @@ internal object HealthChecker {
             }
 
             // Check if the OpenID provider is up and running.
-            .register("OpenID", 5_000) { healthStatus ->
+            .register("OpenID", 10_000) { healthStatus ->
                 vertx.eventBus()
                     .rxRequest<JsonObject>(AUTHENTICATE_HEALTH_ADDRESS, null)
-                    .timeout(2_000, MILLISECONDS)
                     .subscribe(
                         {
                             healthStatus.tryComplete(Status.OK())
