@@ -27,7 +27,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val lastHealthyAtMillis = AtomicLong(0)
-    private val maxUnhealthySuppressMillis = 3 * 60 * 1000L
+    private val maxUnhealthySuppressMillis = 5 * 60 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Environment variable:
@@ -157,7 +157,10 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                         log.warn("Last healthy ${healthyMillis / 1000} seconds ago: ${rootCause.message}", rootCause)
                         message.reply("")
                     } else {
+                        // Report the failure...
                         message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
+                        // ...and start suppressing for a while again.
+                        lastHealthyAtMillis.set(System.currentTimeMillis())
                     }
                 }
             )
