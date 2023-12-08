@@ -48,8 +48,12 @@ object MongoConnection {
     }
 
     fun connectToDatabase(config: JsonObject): Single<MongoDatabase> {
-        // Connect to MongoDB only once, using the first config. Subsequent calls to this function will use the same connection.
-        configSubject.onNext(config)
+        // Connect to MongoDB only once, using the first config.
+        // Subsequent calls to this function will use the same connection.
+        if (!configSubject.hasComplete()) {
+            configSubject.onNext(config)
+            configSubject.onComplete()
+        }
         return mongodbSubject
             .singleOrError()
             .flatMap { mongoDatabase ->
