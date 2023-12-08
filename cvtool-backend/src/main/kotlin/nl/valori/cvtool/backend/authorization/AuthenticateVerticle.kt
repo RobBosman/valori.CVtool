@@ -26,8 +26,8 @@ const val AUTH_DOMAIN = "Valori.nl"
 internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
-    private val healthSpanMillis = 3 * 60 * 1000
-    private val lastOpenIDConnectionAtMillis = AtomicLong(0L)
+    private val lastHealthyAtMillis = AtomicLong(0)
+    private val maxUnhealthySuppressMillis = 3 * 60 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Environment variable:
@@ -52,6 +52,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, it)
                     handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
 
+                    lastHealthyAtMillis.set(System.currentTimeMillis())
                     startPromise.complete()
                     log.info("Successfully connected to OpenID Provider")
                 },
@@ -102,7 +103,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     log.debug("Authenticated successfully.")
-                    lastOpenIDConnectionAtMillis.set(System.currentTimeMillis())
+                    lastHealthyAtMillis.set(System.currentTimeMillis())
                     message.reply(it)
                 },
                 {
@@ -144,25 +145,20 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             }
             .subscribe(
                 {
-                    lastOpenIDConnectionAtMillis.set(System.currentTimeMillis())
+                    lastHealthyAtMillis.set(System.currentTimeMillis())
                     message.reply(it)
                 },
                 {
-                    val unhealthyAfterMillis = if (lastOpenIDConnectionAtMillis.get() > 0)
-                        System.currentTimeMillis() - lastOpenIDConnectionAtMillis.get() else 0
                     val rootCause = if (it is CompositeException) it.cause.cause ?: it.cause else it
-                    log.warn(
-                        "Still unhealthy after ${unhealthyAfterMillis / 1000} seconds: ${rootCause.message}",
-                        rootCause
-                    )
 
-                    // Check if health has been OK during the past few minutes.
-                    val wasHealthyRecently =
-                        lastOpenIDConnectionAtMillis.get() + healthSpanMillis > System.currentTimeMillis()
-                    if (wasHealthyRecently)
+                    // Check if we've been healthy within the past few minutes. If so, then ignore this error.
+                    val healthyMillis = System.currentTimeMillis() - lastHealthyAtMillis.get()
+                    if (healthyMillis < maxUnhealthySuppressMillis) {
+                        log.warn("Last healthy ${healthyMillis / 1000} seconds ago: ${rootCause.message}", rootCause)
                         message.reply("")
-                    else
+                    } else {
                         message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
+                    }
                 }
             )
 }
