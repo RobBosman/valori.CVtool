@@ -15,8 +15,8 @@ object MongoConnection {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    private val configSubject: Subject<JsonObject> = ReplaySubject.create()
-    private val mongodbSubject: Subject<MongoDatabase> = ReplaySubject.create()
+    private val configSubject: Subject<JsonObject> = ReplaySubject.create(1)
+    private val mongodbSubject: Subject<MongoDatabase> = ReplaySubject.create(1)
 
     init {
         // Connect to MongoDB only once, using the first config available.
@@ -55,6 +55,7 @@ object MongoConnection {
             configSubject.onComplete()
         }
         return mongodbSubject
+            .take(1)
             .singleOrError()
             .flatMap { mongoDatabase ->
                 Flowable
