@@ -45,6 +45,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
             .observeOn(Schedulers.io())
+            .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 {
@@ -112,7 +113,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             )
 
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
-        oauth2.rxAuthenticate(TokenCredentials(jwt))
+        oauth2
+            .rxAuthenticate(TokenCredentials(jwt))
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
@@ -129,9 +131,10 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             }
 
     private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
-    // Send an invalid authorization request to the OpenID Provider.
-        // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
-        oauth2.rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
+        oauth2
+            // Send an invalid authorization request to the OpenID Provider.
+            // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
+            .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
             .map { "" }
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
