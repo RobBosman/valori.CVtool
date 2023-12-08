@@ -67,7 +67,7 @@ internal object EventBusMessageHandler {
                             bridgeEvent.complete(true)
                         },
                         {
-                            log.warn("Error handling BridgeEvent: ${it.message}")
+                            log.warn("Error handling BridgeEvent: ${it.message}", it)
                             bridgeEvent.complete(false)
                         }
                     )

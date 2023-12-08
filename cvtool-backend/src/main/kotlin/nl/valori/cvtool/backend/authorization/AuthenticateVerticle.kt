@@ -130,39 +130,39 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("name", name)
             }
 
-    private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) {
-
-        // Check if health has been OK during the past few minutes.
-        val wasHealthyRecently = lastOpenIDConnectionAtMillis.get() + healthSpanMillis > System.currentTimeMillis()
-        if (wasHealthyRecently) {
-            message.reply("")
-        }
-
+    private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
         oauth2
-            // Send a dummy authorization request to the OpenID Provider.
+            // Send an invalid authorization request to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
             .map { "" }
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
                     throw it
-                // The expected error response. Don't propagate the error itself, only the message String.
+                // It's the expected error response. Don't propagate the error itself, only the message String.
                 it.message
             }
             .subscribe(
                 {
                     lastOpenIDConnectionAtMillis.set(System.currentTimeMillis())
-                    if (!wasHealthyRecently)
-                        message.reply(it)
+                    message.reply(it)
                 },
                 {
                     val unhealthyAfterMillis = if (lastOpenIDConnectionAtMillis.get() > 0)
                         System.currentTimeMillis() - lastOpenIDConnectionAtMillis.get() else 0
                     val rootCause = if (it is CompositeException) it.cause.cause ?: it.cause else it
-                    log.warn("Became unhealthy after ${unhealthyAfterMillis / 1000} seconds: ${rootCause.message}")
-                    if (!wasHealthyRecently)
+                    log.warn(
+                        "Still unhealthy after ${unhealthyAfterMillis / 1000} seconds: ${rootCause.message}",
+                        rootCause
+                    )
+
+                    // Check if health has been OK during the past few minutes.
+                    val wasHealthyRecently =
+                        lastOpenIDConnectionAtMillis.get() + healthSpanMillis > System.currentTimeMillis()
+                    if (wasHealthyRecently)
+                        message.reply("")
+                    else
                         message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
                 }
             )
-    }
 }

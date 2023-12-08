@@ -61,7 +61,7 @@ internal object HealthChecker {
                             healthStatus.complete(Status.OK())
                         },
                         {
-                            log.warn("OpenID provider is not available: ${it.message}, it")
+                            log.warn("OpenID provider is not available: ${it.message}", it)
 // TODO: fix health check
 //                            healthStatus.complete(Status.KO(JsonObject().put("error", it.message)))
                             healthStatus.complete(Status.OK())
