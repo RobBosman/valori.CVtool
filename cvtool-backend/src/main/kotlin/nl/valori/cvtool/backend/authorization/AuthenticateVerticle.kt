@@ -65,16 +65,18 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setClientId(clientIdAndSecret[0])
             .setClientSecret(clientIdAndSecret[1])
         // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
-        oauth2Options.httpClientOptions
-            .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
-            .setSslHandshakeTimeoutUnit(MILLISECONDS)
-//            .setConnectTimeout(oauth2ConnectTimeoutMillis)
-//            .setKeepAlive(false)
-//            .setTcpKeepAlive(false)
+//        oauth2Options.httpClientOptions
+//            .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
+//            .setSslHandshakeTimeoutUnit(MILLISECONDS)
 
         // Obtain a connection to the OpenID Provider.
-        OpenIDConnectAuth
-            .rxDiscover(vertx, oauth2Options)
+        Single.just(1)
+            .delay(10_000, MILLISECONDS)
+            .flatMap {
+                log.info("Here we go!")
+                OpenIDConnectAuth
+                    .rxDiscover(vertx, oauth2Options)
+            }
             .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
