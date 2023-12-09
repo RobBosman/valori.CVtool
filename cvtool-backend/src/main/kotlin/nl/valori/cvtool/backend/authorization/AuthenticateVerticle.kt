@@ -28,7 +28,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
-    private val oauth2SslTimeoutMillis = 10_000L
+    private val oauth2SslTimeoutMillis = 30_000L
     private val oauth2RetryAfterMillis = 5_000L
     private val oauth2RefreshIntervalMillis = 2 * 60 * 1000L
 
@@ -84,8 +84,12 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     log.error("Cannot connect to OpenID Provider: ${it.message}", it)
                 }
             )
-
     }
+
+    private fun oauth2Single() =
+        oauth2Subject
+            .take(1)
+            .singleOrError()
 
     private fun handleVertxEvents(
         eventAddress: String,
@@ -153,16 +157,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("name", name)
             }
 
-    private fun oauth2Single() =
-        oauth2Subject
-            .take(1)
-            .singleOrError()
-
     private fun handleHealthRequest(message: Message<JsonObject>) =
         oauth2Single()
             // Send an invalid authorization request to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
-            .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret")) }
+            .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY-${Math.random()}", "no-secret")) }
             .map { "" }
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
