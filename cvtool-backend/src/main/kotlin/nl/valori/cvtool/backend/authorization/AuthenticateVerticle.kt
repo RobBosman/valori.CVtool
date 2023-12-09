@@ -69,7 +69,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
             .setSslHandshakeTimeoutUnit(MILLISECONDS)
 //            .setConnectTimeout(oauth2ConnectTimeoutMillis)
-            .setKeepAlive(false)
+            .setKeepAlive(true)
+            .setKeepAliveTimeout(30)
 
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
