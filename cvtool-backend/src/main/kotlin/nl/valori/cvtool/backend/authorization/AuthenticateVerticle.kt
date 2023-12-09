@@ -28,6 +28,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
+    private val oauth2ConnectTimeoutMillis = 30_000
     private val oauth2SslTimeoutMillis = 30_000L
     private val oauth2RetryAfterMillis = 5_000L
     private val oauth2RefreshIntervalMillis = 2 * 60 * 1000L
@@ -67,14 +68,15 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2Options.httpClientOptions
             .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
             .setSslHandshakeTimeoutUnit(MILLISECONDS)
+            .setConnectTimeout(oauth2ConnectTimeoutMillis)
 
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
             .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
-            .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
-            .repeatWhen { it.delay(oauth2RefreshIntervalMillis, MILLISECONDS) } // Refresh regularly.
+//            .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
+//            .repeatWhen { it.delay(oauth2RefreshIntervalMillis, MILLISECONDS) } // Refresh regularly.
             .subscribe(
                 {
                     oauth2Subject.onNext(it)
@@ -163,7 +165,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY-${Math.random()}", "no-secret")) }
             .map {
-                log.info("Health test response:\n\t${it.principal()?.encodePrettily()}\n\t${it.attributes()?.encodePrettily()}}")
+                log.info(
+                    "Health test response:\n\t${it.principal()?.encodePrettily()}\n\t${
+                        it.attributes()?.encodePrettily()
+                    }}"
+                )
                 ""
             }
             .onErrorReturn {
