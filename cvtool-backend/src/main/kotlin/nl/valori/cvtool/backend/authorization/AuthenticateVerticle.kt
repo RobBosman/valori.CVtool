@@ -2,7 +2,6 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.ReplaySubject
 import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
@@ -28,8 +27,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
-    private val oauth2RetryAfterMillis = 5_000L
-    private val oauth2RefreshAfterMillis = 2 * 5 * 1000L
+    private val oauth2RetryAfterMillis = 10_000L
+    private val oauth2RefreshAfterMillis = 2 * 60 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Configure the connection to the OpenId Provider and refresh it regularly.
@@ -66,14 +65,14 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
-            .observeOn(Schedulers.io())
+//            .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
-//            .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
+            .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
             .repeatWhen { it.delay(oauth2RefreshAfterMillis, MILLISECONDS) } // Refresh regularly.
             .subscribe(
                 {
                     oauth2Subject.onNext(it)
-                    log.info("Refreshed connection to OpenID Provider")
+                    log.info("Successfully refreshed connection to OpenID Provider")
                 },
                 {
                     log.error("Cannot connect to OpenID Provider: ${it.message}", it)
