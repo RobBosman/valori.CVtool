@@ -10,13 +10,13 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.authentication.TokenCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
-import io.vertx.ext.auth.oauth2.Oauth2Credentials
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URI
+import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.function.Consumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
@@ -65,8 +65,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setClientSecret(clientIdAndSecret[1])
         // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
         oauth2Options.httpClientOptions
-//            .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
-//            .setSslHandshakeTimeoutUnit(MILLISECONDS)
+            .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
+            .setSslHandshakeTimeoutUnit(MILLISECONDS)
             .setConnectTimeout(oauth2ConnectTimeoutMillis)
 
         // Obtain a connection to the OpenID Provider.
@@ -162,7 +162,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2Single()
             // Send an invalid authorization request to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
-            .flatMap { it.rxAuthenticate(Oauth2Credentials()) }
+            .flatMap { it.rxAuthenticate(TokenCredentials("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiIzNDhhZjM5YS1mNzA3LTQwOTAtYmIwYS05ZTRkY2E2ZTQxMzgiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vYjQ0ZWQ0NDYtYmRkNC00NmFiLWE1YjMtOTVjY2RiN2Q0NjYzL3YyLjAiLCJpYXQiOjE3MDIxNTI4NDIsIm5iZiI6MTcwMjE1Mjg0MiwiZXhwIjoxNzAyMTU2NzQyLCJhaW8iOiJBV1FBbS84VkFBQUEzTTJvbnYxcTg5WitTc2RzSVpaTUhZa25ISEc3RHpkcjVkNjdzNkZkd3dPcnk2ZG5IdFdwTHpPbE5IY1BWTE5EaUdDQWRyVld5QS9UaXRtRHlrcGNveDlxRTdjQjRLRGMvQTJoZW1hcmxuMVc2WHN4ckQxNUFTRzhZbmdBbnJkTCIsIm5hbWUiOiJSb2IgQm9zbWFuIiwibm9uY2UiOiIzOWE2NWI0Ny0yZTczLTRmYjMtYWE0NS01OTQzNWFjM2ZhYzQiLCJvaWQiOiJkNDVkZWExNy05ZGJlLTQxNDctYTk2Yy1kNThhMzhjNjU2MWQiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJSb2JCb3NtYW5AVmFsb3JpLm5sIiwicmgiOiIwLkFRVUFSdFJPdE5TOXEwYWxzNVhNMjMxR1k1cnppalFIOTVCQXV3cWVUY3B1UVRnRkFOYy4iLCJzdWIiOiJDb0d6QWdyQml4Ty0wSnp3eVpOdzJ1SGhWVTlRNFRNdThmU1Q3VmJQeHpNIiwidGlkIjoiYjQ0ZWQ0NDYtYmRkNC00NmFiLWE1YjMtOTVjY2RiN2Q0NjYzIiwidXRpIjoiWDRBZ1R5bnNDVWlENkVZUGZmVXRBQSIsInZlciI6IjIuMCJ9.gToUPALnIVEvx-M9Ac708r70A_SCoFB2ADHrFQ0Isk-TACoxC5wIM1HZ_Rig2iMU8xDSZDMSY5PG6dTDjHtzpuqytyRxResR0G70N8nvR_MZmnq5shtI7g45fzuKxl5pduM2DR566qO3Sh95wf5v1iGEvbUt6_rFFXuNem5TWmWKxPze80_F2sdpAW0XGf0TNkvoQ1CJ2IAyyk7HL0PYvHxrK93bHG0lUxZ41ART0kTZDJ5g-WuVX--em1o5Mk1ELrnAVOlMPyJMzdKvd84ijus3WrdSlfWYal0HfEcqhalW3t0rfEelg4HNch0kwRYFWviaPxHLnjfaR_APYqy2Ag")) }
             .map { "" } // Convert Single<User> to Single<String>.
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
