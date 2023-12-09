@@ -7,7 +7,6 @@ import io.reactivex.subjects.ReplaySubject
 import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
-import io.vertx.core.http.HttpClientOptions
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.authentication.TokenCredentials
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
@@ -29,9 +28,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
-    private val oauth2TimeoutMillis = 3_000L
     private val oauth2RetryAfterMillis = 5_000L
-    private val oauth2RefreshAfterMillis = 2 * 60 * 1000L
+    private val oauth2RefreshAfterMillis = 2 * 5 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Configure the connection to the OpenId Provider and refresh it regularly.
@@ -64,20 +62,13 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setSite(connectionString.substringBefore("?"))
             .setClientId(clientIdAndSecret[0])
             .setClientSecret(clientIdAndSecret[1])
-            .setHttpClientOptions(
-                // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
-                HttpClientOptions()
-                    .setConnectTimeout(oauth2TimeoutMillis.toInt())
-                    .setSslHandshakeTimeout(oauth2TimeoutMillis)
-                    .setSslHandshakeTimeoutUnit(MILLISECONDS)
-            )
 
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
             .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
-            .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
+//            .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
             .repeatWhen { it.delay(oauth2RefreshAfterMillis, MILLISECONDS) } // Refresh regularly.
             .subscribe(
                 {
