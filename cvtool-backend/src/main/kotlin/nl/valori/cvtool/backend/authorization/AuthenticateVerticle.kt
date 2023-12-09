@@ -29,10 +29,9 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
-    private val oauth2ConnectTimeoutMillis = 30_000
-    private val oauth2SslTimeoutMillis = 30_000L
+    private val oauth2TimeoutMillis = 3_000
     private val oauth2RetryAfterMillis = 5_000L
-    private val oauth2RefreshIntervalMillis = 2 * 60 * 1000L
+    private val oauth2RefreshAfterMillis = 2 * 60 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Configure the connection to the OpenId Provider and refresh it regularly.
@@ -68,8 +67,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setHttpClientOptions(
                 // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
                 HttpClientOptions()
-                    .setConnectTimeout(oauth2ConnectTimeoutMillis)
-                    .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
+                    .setConnectTimeout(oauth2TimeoutMillis)
+                    .setSslHandshakeTimeout(oauth2TimeoutMillis.toLong())
                     .setSslHandshakeTimeoutUnit(MILLISECONDS)
             )
 
@@ -79,7 +78,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
-//            .repeatWhen { it.delay(oauth2RefreshIntervalMillis, MILLISECONDS) } // Refresh regularly.
+            .repeatWhen { it.delay(oauth2RefreshAfterMillis, MILLISECONDS) } // Refresh regularly.
             .subscribe(
                 {
                     oauth2Subject.onNext(it)
