@@ -162,14 +162,17 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             // Send an invalid authorization request to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY-${Math.random()}", "no-secret")) }
-            .map { "" }
+            .map {
+                log.info("Health test response:\n\t${it.principal()?.encodePrettily()}\n\t${it.attributes()?.encodePrettily()}}")
+                ""
+            }
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
                     throw it
                 // It's the expected error response. Don't propagate the error itself, only the message String.
+                log.info("Expected error response: ", it)
                 it.message
             }
-            .retry(1)
             .subscribe(
                 {
                     message.reply(it)
