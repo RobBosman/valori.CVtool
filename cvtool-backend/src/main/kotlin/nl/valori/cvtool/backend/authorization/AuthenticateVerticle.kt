@@ -9,15 +9,14 @@ import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.authentication.TokenCredentials
-import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
+import io.vertx.ext.auth.oauth2.Oauth2Credentials
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URI
-import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.function.Consumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
@@ -66,8 +65,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setClientSecret(clientIdAndSecret[1])
         // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
         oauth2Options.httpClientOptions
-            .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
-            .setSslHandshakeTimeoutUnit(MILLISECONDS)
+//            .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
+//            .setSslHandshakeTimeoutUnit(MILLISECONDS)
             .setConnectTimeout(oauth2ConnectTimeoutMillis)
 
         // Obtain a connection to the OpenID Provider.
@@ -163,15 +162,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2Single()
             // Send an invalid authorization request to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
-            .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY-${Math.random()}", "no-secret")) }
-            .map {
-                log.info(
-                    "Health test response:\n\t${it.principal()?.encodePrettily()}\n\t${
-                        it.attributes()?.encodePrettily()
-                    }}"
-                )
-                ""
-            }
+            .flatMap { it.rxAuthenticate(Oauth2Credentials()) }
+            .map { "" } // Convert Single<User> to Single<String>.
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
                     throw it
