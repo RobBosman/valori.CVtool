@@ -29,7 +29,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
-    private val oauth2TimeoutMillis = 3_000
+    private val oauth2TimeoutMillis = 3_000L
     private val oauth2RetryAfterMillis = 5_000L
     private val oauth2RefreshAfterMillis = 2 * 60 * 1000L
 
@@ -67,8 +67,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setHttpClientOptions(
                 // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
                 HttpClientOptions()
-                    .setConnectTimeout(oauth2TimeoutMillis)
-                    .setSslHandshakeTimeout(oauth2TimeoutMillis.toLong())
+                    .setConnectTimeout(oauth2TimeoutMillis.toInt())
+                    .setSslHandshakeTimeout(oauth2TimeoutMillis)
                     .setSslHandshakeTimeoutUnit(MILLISECONDS)
             )
 
