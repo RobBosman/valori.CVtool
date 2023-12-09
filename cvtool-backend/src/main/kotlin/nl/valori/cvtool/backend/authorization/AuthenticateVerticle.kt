@@ -9,6 +9,7 @@ import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.authentication.TokenCredentials
+import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
@@ -74,7 +75,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .rxDiscover(vertx, oauth2Options)
             .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
-//            .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
+            .retryWhen {
+                it
+                    .delay(oauth2RetryAfterMillis, MILLISECONDS)
+                    .doOnEach { log.info("Retrying because of ") }
+            } // Keep retrying on error.
 //            .repeatWhen { it.delay(oauth2RefreshIntervalMillis, MILLISECONDS) } // Refresh regularly.
             .subscribe(
                 {
@@ -160,9 +165,9 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private fun handleHealthRequest(message: Message<JsonObject>) =
         oauth2Single()
-            // Send an invalid authorization request to the OpenID Provider.
+            // Send an invalid authorization request (expired JWT) to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
-            .flatMap { it.rxAuthenticate(TokenCredentials("eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiIzNDhhZjM5YS1mNzA3LTQwOTAtYmIwYS05ZTRkY2E2ZTQxMzgiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vYjQ0ZWQ0NDYtYmRkNC00NmFiLWE1YjMtOTVjY2RiN2Q0NjYzL3YyLjAiLCJpYXQiOjE3MDIxNTI4NDIsIm5iZiI6MTcwMjE1Mjg0MiwiZXhwIjoxNzAyMTU2NzQyLCJhaW8iOiJBV1FBbS84VkFBQUEzTTJvbnYxcTg5WitTc2RzSVpaTUhZa25ISEc3RHpkcjVkNjdzNkZkd3dPcnk2ZG5IdFdwTHpPbE5IY1BWTE5EaUdDQWRyVld5QS9UaXRtRHlrcGNveDlxRTdjQjRLRGMvQTJoZW1hcmxuMVc2WHN4ckQxNUFTRzhZbmdBbnJkTCIsIm5hbWUiOiJSb2IgQm9zbWFuIiwibm9uY2UiOiIzOWE2NWI0Ny0yZTczLTRmYjMtYWE0NS01OTQzNWFjM2ZhYzQiLCJvaWQiOiJkNDVkZWExNy05ZGJlLTQxNDctYTk2Yy1kNThhMzhjNjU2MWQiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJSb2JCb3NtYW5AVmFsb3JpLm5sIiwicmgiOiIwLkFRVUFSdFJPdE5TOXEwYWxzNVhNMjMxR1k1cnppalFIOTVCQXV3cWVUY3B1UVRnRkFOYy4iLCJzdWIiOiJDb0d6QWdyQml4Ty0wSnp3eVpOdzJ1SGhWVTlRNFRNdThmU1Q3VmJQeHpNIiwidGlkIjoiYjQ0ZWQ0NDYtYmRkNC00NmFiLWE1YjMtOTVjY2RiN2Q0NjYzIiwidXRpIjoiWDRBZ1R5bnNDVWlENkVZUGZmVXRBQSIsInZlciI6IjIuMCJ9.gToUPALnIVEvx-M9Ac708r70A_SCoFB2ADHrFQ0Isk-TACoxC5wIM1HZ_Rig2iMU8xDSZDMSY5PG6dTDjHtzpuqytyRxResR0G70N8nvR_MZmnq5shtI7g45fzuKxl5pduM2DR566qO3Sh95wf5v1iGEvbUt6_rFFXuNem5TWmWKxPze80_F2sdpAW0XGf0TNkvoQ1CJ2IAyyk7HL0PYvHxrK93bHG0lUxZ41ART0kTZDJ5g-WuVX--em1o5Mk1ELrnAVOlMPyJMzdKvd84ijus3WrdSlfWYal0HfEcqhalW3t0rfEelg4HNch0kwRYFWviaPxHLnjfaR_APYqy2Ag")) }
+            .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret")) }
             .map { "" } // Convert Single<User> to Single<String>.
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
@@ -177,6 +182,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 },
                 {
                     val rootCause = if (it is CompositeException) it.cause.cause ?: it.cause else it
+                    log.info("Unexpected error response: ", it)
                     message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
                 }
             )
