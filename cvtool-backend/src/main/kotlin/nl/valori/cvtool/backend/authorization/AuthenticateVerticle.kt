@@ -7,6 +7,7 @@ import io.reactivex.subjects.ReplaySubject
 import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
+import io.vertx.core.http.HttpClientOptions
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.authentication.TokenCredentials
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
@@ -64,19 +65,17 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setSite(connectionString.substringBefore("?"))
             .setClientId(clientIdAndSecret[0])
             .setClientSecret(clientIdAndSecret[1])
-        // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
-//        oauth2Options.httpClientOptions
-//            .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
-//            .setSslHandshakeTimeoutUnit(MILLISECONDS)
+            .setHttpClientOptions(
+                // Prevent SSL handshake timeouts, especially when establishing remote connections from virtual environments.
+                HttpClientOptions()
+                    .setConnectTimeout(oauth2ConnectTimeoutMillis)
+                    .setSslHandshakeTimeout(oauth2SslTimeoutMillis)
+                    .setSslHandshakeTimeoutUnit(MILLISECONDS)
+            )
 
         // Obtain a connection to the OpenID Provider.
-        Single.just(1)
-            .delay(10_000, MILLISECONDS)
-            .flatMap {
-                log.info("Here we go!")
-                OpenIDConnectAuth
-                    .rxDiscover(vertx, oauth2Options)
-            }
+        OpenIDConnectAuth
+            .rxDiscover(vertx, oauth2Options)
             .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
