@@ -58,8 +58,9 @@ internal object HealthChecker {
                     .map { "" } // Convert Single<User> to Single<String>.
                     .doOnSuccess { openIDUnhealthyStreak.set(0) }
                     .onErrorReturn {
-                        if (openIDUnhealthyStreak.addAndGet(1) < 10) {
-                            log.info("Suppressing OpenID errors")
+                        // Suppress the first 30 errors (=30 minutes), to give the system time to recover.
+                        if (openIDUnhealthyStreak.addAndGet(1) < 30) {
+                            log.info("Suppressing OpenID error #${openIDUnhealthyStreak.get()}")
                             it.message
                         } else
                             throw it

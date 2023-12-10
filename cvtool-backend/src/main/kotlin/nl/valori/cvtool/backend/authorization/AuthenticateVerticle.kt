@@ -2,7 +2,6 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
-import io.reactivex.schedulers.Schedulers
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
@@ -15,7 +14,6 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URI
-import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.function.BiConsumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
@@ -40,9 +38,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
-            .subscribeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
-            .retryWhen { it.delay(5_000L, MILLISECONDS) } // Keep retrying on error.
             .subscribe(
                 {
                     // Provide the connection to the vertx handlers.
@@ -132,10 +128,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
             .map { "" } // Convert Single<User> to Single<String>.
-            .onErrorReturn {
-                // If it's the expected error response, then don't propagate the error itself, only the message String.
-                if (it.message?.contains("invalid_request") == true) it.message else throw it
-            }
+            // If it's the expected error response, then don't propagate the error itself, only the message String.
+            .onErrorReturn { if (it.message?.contains("invalid_request") == true) it.message else throw it }
             .subscribe(
                 {
                     message.reply(it)
