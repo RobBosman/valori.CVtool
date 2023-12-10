@@ -31,10 +31,9 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
     private val oauth2SslTimeoutMillis = 30_000L
     private val oauth2RetryAfterMillis = 5_000L
-    private val oauth2RefreshAfterMillis = 10 * 60 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
-        // Configure the connection to the OpenId Provider and refresh it regularly.
+        // Configure the connection to the OpenId Provider.
         configureOauth2Connection(config())
 
         // Wait for Oauth2 to connect and then finalize startup.
@@ -71,10 +70,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
-            .subscribeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
-            .repeatWhen { it.delay(oauth2RefreshAfterMillis, MILLISECONDS) } // Refresh regularly.
             .subscribe(
                 {
                     oauth2Subject.onNext(it)
@@ -90,7 +87,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2Subject
             .take(1)
             .singleOrError()
-            .observeOn(Schedulers.io())
 
     private fun handleVertxEvents(
         eventAddress: String,
@@ -142,6 +138,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private fun authenticateJwt(jwt: String) =
         oauth2Single()
+            .observeOn(Schedulers.io())
             .flatMap { it.rxAuthenticate(TokenCredentials(jwt)) }
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
@@ -162,6 +159,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2Single()
             // Send an invalid authorization request (expired JWT) to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
+            .observeOn(Schedulers.io())
             .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret")) }
             .map { "" } // Convert Single<User> to Single<String>.
             .onErrorReturn {
