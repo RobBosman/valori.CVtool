@@ -2,6 +2,7 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
+import io.reactivex.schedulers.Schedulers
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
@@ -38,6 +39,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
+            .subscribeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .subscribe(
                 {
@@ -107,6 +109,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
         oauth2
             .rxAuthenticate(TokenCredentials(jwt))
+            .subscribeOn(Schedulers.io())
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
@@ -127,6 +130,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             // Send an invalid authorization request (expired JWT) to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
+            .subscribeOn(Schedulers.io())
             .map { "" } // Convert Single<User> to Single<String>.
             // If it's the expected error response, then don't propagate the error itself, only the message String.
             .onErrorReturn { if (it.message?.contains("invalid_request") == true) it.message else throw it }
