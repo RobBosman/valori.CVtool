@@ -28,8 +28,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
-    private val oauth2RetryAfterMillis = 10_000L
-    private val oauth2RefreshAfterMillis = 2 * 60 * 1000L
+    private val oauth2RetryAfterMillis = 5_000L
+    private val oauth2RefreshAfterMillis = 5 * 1 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Configure the connection to the OpenId Provider and refresh it regularly.
