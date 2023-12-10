@@ -71,6 +71,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
+            .subscribeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
             .repeatWhen { it.delay(oauth2RefreshAfterMillis, MILLISECONDS) } // Refresh regularly.
