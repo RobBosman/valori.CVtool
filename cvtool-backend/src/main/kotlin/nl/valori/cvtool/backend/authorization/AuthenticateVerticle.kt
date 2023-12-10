@@ -2,6 +2,7 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.ReplaySubject
 import io.reactivex.subjects.Subject
 import io.vertx.core.Promise
@@ -65,7 +66,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Obtain a connection to the OpenID Provider.
         OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
-//            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
             .retryWhen { it.delay(oauth2RetryAfterMillis, MILLISECONDS) } // Keep retrying on error.
             .repeatWhen { it.delay(oauth2RefreshAfterMillis, MILLISECONDS) } // Refresh regularly.
@@ -84,6 +85,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2Subject
             .take(1)
             .singleOrError()
+            .observeOn(Schedulers.io())
 
     private fun handleVertxEvents(
         eventAddress: String,
