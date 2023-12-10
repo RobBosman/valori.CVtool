@@ -50,9 +50,11 @@ internal object HealthChecker {
             }
 
             // Check if the OpenID provider is up and running.
-            .register("OpenID", 10_000) { healthStatus ->
+            .register("OpenID", 5_000) { healthStatus ->
                 vertx.eventBus()
                     .rxRequest<JsonObject>(AUTHENTICATE_HEALTH_ADDRESS, null)
+                    .map { "" } // Convert Single<User> to Single<String>.
+                    .onErrorReturn { if (suppressingErrorsOfOpenID()) "" else throw it }
                     .subscribe(
                         {
                             healthStatus.tryComplete(Status.OK())
@@ -62,4 +64,9 @@ internal object HealthChecker {
                             healthStatus.tryComplete(Status.KO(JsonObject().put("error", it.message)))
                         })
             }
+
+    private fun suppressingErrorsOfOpenID(): Boolean {
+        log.info("Suppressing OpenID errors")
+        return true
+    }
 }
