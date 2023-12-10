@@ -29,11 +29,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
     private val oauth2Subject: Subject<OAuth2Auth> = ReplaySubject.create(1)
     private val oauth2RetryAfterMillis = 5_000L
-    private val oauth2RefreshAfterMillis = 5 * 1 * 1000L
+    private val oauth2RefreshAfterMillis = 10 * 60 * 1000L
 
     override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Configure the connection to the OpenId Provider and refresh it regularly.
-        initOauth2Connection(config())
+        configureOauth2Connection(config())
 
         // Wait for Oauth2 to connect and then finalize startup.
         oauth2Single()
@@ -53,7 +53,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             )
     }
 
-    private fun initOauth2Connection(config: JsonObject) {
+    private fun configureOauth2Connection(config: JsonObject) {
         // Environment variable:
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
         val connectionString = config.getString("AUTH_CONNECTION_STRING")
@@ -85,7 +85,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2Subject
             .take(1)
             .singleOrError()
-            .observeOn(Schedulers.io())
 
     private fun handleVertxEvents(
         eventAddress: String,
@@ -138,6 +137,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private fun authenticateJwt(jwt: String) =
         oauth2Single()
             .flatMap { it.rxAuthenticate(TokenCredentials(jwt)) }
+            .observeOn(Schedulers.io())
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
@@ -158,6 +158,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             // Send an invalid authorization request (expired JWT) to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .flatMap { it.rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret")) }
+            .observeOn(Schedulers.io())
             .map { "" } // Convert Single<User> to Single<String>.
             .onErrorReturn {
                 if (it.message?.contains("invalid_request") != true)
