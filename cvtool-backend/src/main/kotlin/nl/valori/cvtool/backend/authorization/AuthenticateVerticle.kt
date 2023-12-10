@@ -133,11 +133,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
             .map { "" } // Convert Single<User> to Single<String>.
             .onErrorReturn {
-                if (it.message?.contains("invalid_request") != true)
-                    throw it
-                // It's the expected error response. Don't propagate the error itself, only the message String.
-                log.info("Expected error response: ", it)
-                it.message
+                // If it's the expected error response, then don't propagate the error itself, only the message String.
+                if (it.message?.contains("invalid_request") == true) it.message else throw it
             }
             .subscribe(
                 {
@@ -145,7 +142,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 },
                 {
                     val rootCause = if (it is CompositeException) it.cause.cause ?: it.cause else it
-                    log.info("Unexpected error response: ", it)
+                    log.warn("Unexpected error response: ", it)
                     message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
                 }
             )
