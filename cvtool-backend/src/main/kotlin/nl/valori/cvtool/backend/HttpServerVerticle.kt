@@ -9,7 +9,6 @@ import io.vertx.reactivex.ext.web.handler.BodyHandler
 import nl.valori.cvtool.backend.system.HealthChecker
 import org.slf4j.LoggerFactory
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
-import java.net.HttpURLConnection.HTTP_OK
 import java.net.URI
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -58,32 +57,6 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .route()
             .failureHandler(::handleFailure)
             .handler(BodyHandler.create())
-
-        router
-            .route("/health/restart-backend")
-            .handler { context ->
-                log.warn("Restarting Docker container 'bransom/cvtool-backend'...")
-                val process = Runtime.getRuntime()
-                    .exec( // sh docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')"
-                        arrayOf(
-                            "sh",
-                            "docker",
-                            "container",
-                            "restart",
-                            "\"$(docker ps -aqf 'ancestor=bransom/cvtool-backend')\""
-                        )
-                    )
-                process.waitFor()
-                if (process.exitValue() == 0) {
-                    context.response()
-                        .setStatusCode(HTTP_OK)
-                        .end("Done!")
-                } else {
-                    context.response()
-                        .setStatusCode(HTTP_INTERNAL_ERROR)
-                        .end("Nope.")
-                }
-            }
 
         router
             .route("/health/*")

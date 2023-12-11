@@ -33,6 +33,7 @@ object Main {
         CvGenerateVerticle::class,
         ControlVerticle::class,
         HttpServerVerticle::class,
+        AuthenticateVerticle::class,
         MongodbFetchVerticle::class,
         MongodbSaveVerticle::class,
         AuthInfoFetchVerticle::class,
@@ -41,8 +42,7 @@ object Main {
         CvSearchVerticle::class,
         CvBackupVerticle::class,
         CvHistoryVerticle::class,
-        CvDownloadDemoVerticle::class,
-        AuthenticateVerticle::class
+        CvDownloadDemoVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy
         .associateWith { "not started" }
