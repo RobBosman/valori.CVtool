@@ -10,6 +10,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.authentication.TokenCredentials
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
+import io.vertx.ext.auth.oauth2.providers.AzureADAuth
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
@@ -26,11 +27,15 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     companion object {
         private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
-        fun parseConnectionString(connectionString: String): Array<String> {
+        fun parseConnectionString(connectionString: String): Map<String, String> {
             val connectionUri = URI(connectionString)
             val tenant = connectionUri.path.split("/")[1]
             val clientIdAndSecret = connectionUri.query.split(":")
-            return arrayOf(tenant, clientIdAndSecret[0], clientIdAndSecret[1])
+            return mapOf(
+                "tenant" to tenant,
+                "clientId" to clientIdAndSecret[0],
+                "secret" to clientIdAndSecret[1]
+            )
         }
     }
 
@@ -38,14 +43,15 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Configure the connection to the OpenId Provider.
         // Environment variable:
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
-        val connectionString = config().getString("AUTH_CONNECTION_STRING")
-        val configParams = parseConnectionString(connectionString)
+        val configParams = parseConnectionString(config().getString("AUTH_CONNECTION_STRING"))
         val oauth2Options = OAuth2Options()
-            .setTenant(configParams[0])
-            .setClientId(configParams[1])
-            .setClientSecret(configParams[2])
+            .setTenant(configParams["tenant"])
+            .setClientId(configParams["clientId"])
+            .setClientSecret(configParams["secret"])
 
-        io.vertx.ext.auth.oauth2.providers.AzureADAuth
+        Thread.sleep(5_000)
+
+        AzureADAuth
             .discover(vertx.delegate, oauth2Options)
             .onSuccess {
                 log.info("Joepie!")
