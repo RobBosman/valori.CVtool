@@ -66,6 +66,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
                 val process = Runtime.getRuntime()
                     .exec(
                         arrayOf(
+                            "sh",
                             "docker",
                             "container",
                             "restart",
