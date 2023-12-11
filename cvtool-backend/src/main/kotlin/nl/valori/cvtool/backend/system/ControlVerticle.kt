@@ -11,7 +11,6 @@ import io.vertx.reactivex.core.buffer.Buffer
 import io.vertx.reactivex.ext.web.Router
 import nl.valori.cvtool.backend.cv.ALL_CVS_GENERATE_ADDRESS
 import org.slf4j.LoggerFactory
-import java.lang.Runtime.getRuntime
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
 import java.net.HttpURLConnection.HTTP_OK
 import java.net.URI
@@ -52,8 +51,7 @@ internal class ControlVerticle : AbstractVerticle() {
 
     private fun createRouter(): Router {
         val router = Router.router(vertx)
-        router
-            .route("/all-docx.zip")
+        router["/all-docx.zip"]
             .handler { context ->
                 vertx.eventBus()
                     .rxRequest<JsonObject>(ALL_CVS_GENERATE_ADDRESS, null, deliveryOptions)
@@ -75,24 +73,6 @@ internal class ControlVerticle : AbstractVerticle() {
                         }
                     )
             }
-
-        router
-            .route("/restart-backend")
-            .handler { context ->
-                log.warn("Restarting Docker container 'bransom/cvtool-backend'...")
-                getRuntime().exec(
-                    arrayOf(
-                        "docker",
-                        "container",
-                        "restart",
-                        "\"$(docker ps -aqf 'ancestor=bransom/cvtool-backend')\""
-                    )
-                )
-                context.response()
-                    .setStatusCode(HTTP_OK)
-                    .end()
-            }
-
         return router
     }
 }

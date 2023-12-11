@@ -8,6 +8,8 @@ import io.vertx.reactivex.ext.web.RoutingContext
 import io.vertx.reactivex.ext.web.handler.BodyHandler
 import nl.valori.cvtool.backend.system.HealthChecker
 import org.slf4j.LoggerFactory
+import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
+import java.net.HttpURLConnection.HTTP_OK
 import java.net.URI
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -52,15 +54,32 @@ internal class HttpServerVerticle : AbstractVerticle() {
     private fun createRouter(): Router {
         val router = Router.router(vertx)
         router
-            .errorHandler(500) { log.warn("errorHandler -- $it") }
+            .errorHandler(HTTP_INTERNAL_ERROR) { log.warn("errorHandler -- $it") }
             .route()
             .failureHandler(::handleFailure)
             .handler(BodyHandler.create())
 
+        router["/restart-backend"]
+            .handler { context ->
+                log.warn("Restarting Docker container 'bransom/cvtool-backend'...")
+                val process = Runtime.getRuntime()
+                    .exec(
+                        arrayOf(
+                            "docker",
+                            "container",
+                            "restart",
+                            "\"$(docker ps -aqf 'ancestor=bransom/cvtool-backend')\""
+                        )
+                    )
+                context.response()
+                    .setStatusCode(if (process.exitValue() == 0) HTTP_OK else HTTP_INTERNAL_ERROR)
+                    .end()
+            }
+
         router["/health/*"]
             .handler(HealthChecker.getHandler(vertx, config()))
-        router
-            .route("/eventbus/*")
+
+        router["/eventbus/*"]
             .subRouter(EventBusMessageHandler.create(vertx))
         return router
     }
