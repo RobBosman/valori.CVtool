@@ -30,7 +30,6 @@ object Main {
 
     private val log = LoggerFactory.getLogger(javaClass)
     private val verticlesToDeploy = listOf(
-        AuthenticateVerticle::class,
         CvGenerateVerticle::class,
         ControlVerticle::class,
         HttpServerVerticle::class,
@@ -42,7 +41,8 @@ object Main {
         CvSearchVerticle::class,
         CvBackupVerticle::class,
         CvHistoryVerticle::class,
-        CvDownloadDemoVerticle::class
+        CvDownloadDemoVerticle::class,
+        AuthenticateVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy
         .associateWith { "not started" }
@@ -89,7 +89,7 @@ object Main {
                 }
             } else {
                 verticleDeploymentStates[verticleClass] = deploymentResult.cause().message ?: "UNKNOWN ERROR"
-                log.error("Error deploying ${verticleClass.simpleName}", deploymentResult.cause())
+                log.error("Error deploying ${verticleClass.simpleName}: ${deploymentResult.cause().message}")
             }
         }
 }
