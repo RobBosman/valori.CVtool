@@ -1,6 +1,5 @@
 package nl.valori.cvtool.backend.authorization
 
-//import io.vertx.ext.auth.oauth2.OAuth2Auth
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
 import io.reactivex.schedulers.Schedulers
@@ -10,10 +9,10 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.authentication.TokenCredentials
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
-import io.vertx.ext.auth.oauth2.providers.AzureADAuth
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
+import io.vertx.reactivex.ext.auth.oauth2.providers.AzureADAuth
 import org.slf4j.LoggerFactory
 import java.net.URI
 import java.util.function.BiConsumer
@@ -49,46 +48,24 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .setClientId(configParams["clientId"])
             .setClientSecret(configParams["secret"])
 
-        Thread.sleep(5_000)
-
+        // Obtain config settings from the OpenID Provider.
         AzureADAuth
-            .discover(vertx.delegate, oauth2Options)
-            .onSuccess {
-                log.info("Joepie!")
+            .rxDiscover(vertx, oauth2Options)
+            .doOnError { log.warn("Error configuring OpenID: ${it.message}", it) }
+            .subscribe(
+                {
+                    // Provide the connection to the vertx handlers.
+                    handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, it)
+                    handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
 
-                val rxOath2 = OAuth2Auth(it)
-                // Provide the connection to the vertx handlers.
-                handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, rxOath2)
-                handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, rxOath2)
-
-                startPromise.complete()
-                log.info("Successfully configured the connection to OpenID Provider")
-            }
-            .onFailure {
-                log.warn("Oeps!", it)
-                startPromise.fail(it)
-            }
-
-
-//        // Obtain a connection to the OpenID Provider.
-//        AzureADAuth
-//            .rxDiscover(vertx, oauth2Options)
-//            .subscribeOn(Schedulers.io())
-//            .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
-//            .subscribe(
-//                {
-//                    // Provide the connection to the vertx handlers.
-//                    handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, it)
-//                    handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
-//
-//                    startPromise.tryComplete()
-//                    log.info("Successfully configured the connection to OpenID Provider")
-//                },
-//                {
-//                    log.error("Cannot start verticle: ${it.message}", it)
-//                    startPromise.tryFail(it)
-//                }
-//            )
+                    startPromise.complete()
+                    log.info("Successfully configured OpenID")
+                },
+                {
+                    log.error("Cannot start verticle: ${it.message}", it)
+                    startPromise.fail(it)
+                }
+            )
     }
 
     private fun handleVertxEvents(

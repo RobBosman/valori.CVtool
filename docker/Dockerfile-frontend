@@ -1,7 +1,7 @@
 ########################################################################################################################
 # Compose a container for building the CVtool-frontend.
 ########################################################################################################################
-FROM eclipse-temurin:17-jdk-alpine as builder
+FROM eclipse-temurin:21-jdk-alpine as builder
 
 # Add git, maven and binutils, needed by nodejs.
 RUN apk --update add \
