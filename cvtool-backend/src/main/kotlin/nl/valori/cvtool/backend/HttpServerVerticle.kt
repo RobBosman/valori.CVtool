@@ -59,7 +59,8 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .failureHandler(::handleFailure)
             .handler(BodyHandler.create())
 
-        router["/restart-backend"]
+        router
+            .route("/health/restart-backend")
             .handler { context ->
                 log.warn("Restarting Docker container 'bransom/cvtool-backend'...")
                 val process = Runtime.getRuntime()
@@ -71,15 +72,24 @@ internal class HttpServerVerticle : AbstractVerticle() {
                             "\"$(docker ps -aqf 'ancestor=bransom/cvtool-backend')\""
                         )
                     )
-                context.response()
-                    .setStatusCode(if (process.exitValue() == 0) HTTP_OK else HTTP_INTERNAL_ERROR)
-                    .end()
+                process.waitFor()
+                if (process.exitValue() == 0) {
+                    context.response()
+                        .setStatusCode(HTTP_OK)
+                        .end("Done!")
+                } else {
+                    context.response()
+                        .setStatusCode(HTTP_INTERNAL_ERROR)
+                        .end("Nope.")
+                }
             }
 
-        router["/health/*"]
+        router
+            .route("/health/*")
             .handler(HealthChecker.getHandler(vertx, config()))
 
-        router["/eventbus/*"]
+        router
+            .route("/eventbus/*")
             .subRouter(EventBusMessageHandler.create(vertx))
         return router
     }

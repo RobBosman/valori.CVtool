@@ -51,7 +51,8 @@ internal class ControlVerticle : AbstractVerticle() {
 
     private fun createRouter(): Router {
         val router = Router.router(vertx)
-        router["/all-docx.zip"]
+        router
+            .route("/all-docx.zip")
             .handler { context ->
                 vertx.eventBus()
                     .rxRequest<JsonObject>(ALL_CVS_GENERATE_ADDRESS, null, deliveryOptions)
