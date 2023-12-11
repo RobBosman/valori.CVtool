@@ -12,7 +12,7 @@ import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
-import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
+import io.vertx.reactivex.ext.auth.oauth2.providers.AzureADAuth
 import org.slf4j.LoggerFactory
 import java.net.URI
 import java.util.function.BiConsumer
@@ -32,12 +32,24 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         val connectionString = config().getString("AUTH_CONNECTION_STRING")
         val clientIdAndSecret = URI(connectionString).query.split(":")
         val oauth2Options = OAuth2Options()
-            .setSite(connectionString.substringBefore("?"))
+//            .setSite(connectionString.substringBefore("?"))
             .setClientId(clientIdAndSecret[0])
             .setClientSecret(clientIdAndSecret[1])
+            .setTenant("b44ed446-bdd4-46ab-a5b3-95ccdb7d4663")
+
+        io.vertx.ext.auth.oauth2.providers.AzureADAuth
+            .discover(
+                vertx.delegate,
+                OAuth2Options()
+                    .setClientId("348af39a-f707-4090-bb0a-9e4dca6e4138")
+                    .setClientSecret("svW8Q~Hsj0PLvgtmSHyRUzxK5NeFzOGomgq3.aFv")
+                    .setTenant("b44ed446-bdd4-46ab-a5b3-95ccdb7d4663")
+            )
+            .onSuccess { oauth2 -> log.info("Joepie!") }
+            .onFailure { log.warn("Oeps!", it) }
 
         // Obtain a connection to the OpenID Provider.
-        OpenIDConnectAuth
+        AzureADAuth
             .rxDiscover(vertx, oauth2Options)
             .subscribeOn(Schedulers.io())
             .doOnError { log.warn("Error connecting to OpenID Provider: ${it.message}", it) }
