@@ -27,7 +27,7 @@
         <kotlin.version>2.0.0-Beta1</kotlin.version>
         <logback-classic.version>1.4.14</logback-classic.version>
         <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
         <mongodb-driver-reactivestreams.version>4.11.1</mongodb-driver-reactivestreams.version>
