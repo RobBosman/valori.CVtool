@@ -51,7 +51,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Obtain config settings from the OpenID Provider.
         AzureADAuth
             .rxDiscover(vertx, oauth2Options)
-            .doOnError { log.warn("Error configuring OpenID: ${it.message}", it) }
             .subscribe(
                 {
                     // Provide the connection to the vertx handlers.
@@ -62,7 +61,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     log.info("Successfully configured OpenID")
                 },
                 {
-                    log.error("Cannot start verticle: ${it.message}", it)
+                    log.error("Error configuring OpenID: ${it.message}", it)
                     startPromise.fail(it)
                 }
             )

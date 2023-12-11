@@ -64,7 +64,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .handler { context ->
                 log.warn("Restarting Docker container 'bransom/cvtool-backend'...")
                 val process = Runtime.getRuntime()
-                    .exec(
+                    .exec( // sh docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')"
                         arrayOf(
                             "sh",
                             "docker",

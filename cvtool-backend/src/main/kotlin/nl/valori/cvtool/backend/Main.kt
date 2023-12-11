@@ -4,6 +4,7 @@ import io.vertx.config.ConfigRetriever
 import io.vertx.config.ConfigRetrieverOptions
 import io.vertx.config.ConfigStoreOptions
 import io.vertx.core.DeploymentOptions
+import io.vertx.core.ThreadingModel.WORKER
 import io.vertx.core.Vertx
 import io.vertx.core.VertxOptions
 import io.vertx.core.json.JsonObject
@@ -29,10 +30,10 @@ object Main {
 
     private val log = LoggerFactory.getLogger(javaClass)
     private val verticlesToDeploy = listOf(
-        CvGenerateVerticle::class, // Start with this one because it takes some time to initialize all XSL-stuff.
+        AuthenticateVerticle::class,
+        CvGenerateVerticle::class,
         ControlVerticle::class,
         HttpServerVerticle::class,
-        AuthenticateVerticle::class,
         MongodbFetchVerticle::class,
         MongodbSaveVerticle::class,
         AuthInfoFetchVerticle::class,
@@ -67,7 +68,7 @@ object Main {
             .getConfig { config ->
                 val deploymentOptions = DeploymentOptions()
                     .setConfig(config.result())
-                    .setWorker(true)
+                    .setThreadingModel(WORKER)
                 verticlesToDeploy
                     .forEach {
                         deployVerticle(vertx, it, deploymentOptions)
