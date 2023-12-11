@@ -28,10 +28,10 @@ object MongoConnection {
                 {
                     mongodbSubject.onNext(it)
                     mongodbSubject.onComplete()
-                    log.info("Successfully configured the connection to MongoDB")
+                    log.info("Successfully configured MongoDB")
                 },
                 {
-                    log.error("Error configuring the connection to MongoDB", it)
+                    log.error("Error configuring MongoDB", it)
                 }
             )
     }
