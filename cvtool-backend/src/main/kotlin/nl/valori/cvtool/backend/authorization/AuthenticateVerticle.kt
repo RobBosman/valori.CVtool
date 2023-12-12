@@ -2,7 +2,6 @@ package nl.valori.cvtool.backend.authorization
 
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
-import io.reactivex.schedulers.Schedulers
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
@@ -12,7 +11,7 @@ import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
-import io.vertx.reactivex.ext.auth.oauth2.providers.AzureADAuth
+import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URI
 import java.util.function.BiConsumer
@@ -27,10 +26,12 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
 
         fun parseConnectionString(connectionString: String): Map<String, String> {
+            val site = connectionString.substringBefore("?")
             val connectionUri = URI(connectionString)
             val tenant = connectionUri.path.split("/")[1]
             val clientIdAndSecret = connectionUri.query.split(":")
             return mapOf(
+                "site" to site,
                 "tenant" to tenant,
                 "clientId" to clientIdAndSecret[0],
                 "secret" to clientIdAndSecret[1]
@@ -44,12 +45,12 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
         val configParams = parseConnectionString(config().getString("AUTH_CONNECTION_STRING"))
         val oauth2Options = OAuth2Options()
-            .setTenant(configParams["tenant"])
+            .setSite(configParams["site"])
             .setClientId(configParams["clientId"])
             .setClientSecret(configParams["secret"])
 
         // Obtain config settings from the OpenID Provider.
-        AzureADAuth
+        OpenIDConnectAuth
             .rxDiscover(vertx, oauth2Options)
             .subscribe(
                 {
@@ -119,7 +120,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
         oauth2
             .rxAuthenticate(TokenCredentials(jwt))
-            .subscribeOn(Schedulers.io())
+//            .subscribeOn(Schedulers.io())
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
@@ -140,7 +141,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             // Send an invalid authorization request (expired JWT) to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
-            .subscribeOn(Schedulers.io())
+//            .subscribeOn(Schedulers.io())
             .map { "" } // Convert Single<User> to Single<String>.
             // If it's the expected error response, then don't propagate the error itself, only the message String.
             .onErrorReturn { if (it.message?.contains("invalid_request") == true) it.message else throw it }
