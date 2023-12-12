@@ -8,12 +8,10 @@ import nl.valori.cvtool.backend.Main
 import nl.valori.cvtool.backend.authorization.AUTHENTICATE_HEALTH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MongoConnection
 import org.slf4j.LoggerFactory
-import java.util.concurrent.atomic.AtomicLong
 
 internal object HealthChecker {
 
     private val log = LoggerFactory.getLogger(javaClass)
-    private val openIDUnhealthyStreak = AtomicLong(0)
 
     fun getHandler(vertx: Vertx, config: JsonObject): HealthCheckHandler =
         HealthCheckHandler
@@ -55,16 +53,6 @@ internal object HealthChecker {
             .register("OpenID", 5_000) { healthStatus ->
                 vertx.eventBus()
                     .rxRequest<JsonObject>(AUTHENTICATE_HEALTH_ADDRESS, null)
-                    .map { "" } // Convert Single<User> to Single<String>.
-                    .doOnSuccess { openIDUnhealthyStreak.set(0) }
-                    .onErrorReturn {
-                        // Suppress the first 30 errors (=30 minutes), to give the system time to recover.
-                        if (openIDUnhealthyStreak.addAndGet(1) < 30) {
-                            log.info("Suppressing OpenID error #${openIDUnhealthyStreak.get()}")
-                            it.message
-                        } else
-                            throw it
-                    }
                     .subscribe(
                         {
                             healthStatus.tryComplete(Status.OK())

@@ -21,8 +21,8 @@ object MongoConnection {
     init {
         // Connect to MongoDB only once, using the first config available.
         configSubject
-            .observeOn(Schedulers.io())
             .take(1)
+            .observeOn(Schedulers.io())
             .map { getMongoDatabase(it) }
             .subscribe(
                 {
@@ -60,8 +60,8 @@ object MongoConnection {
             .flatMap { mongoDatabase ->
                 Flowable
                     .defer { mongoDatabase.runCommand(Document("ping", 1)) }
+                    .subscribeOn(Schedulers.io())
                     .singleOrError()
-                    .observeOn(Schedulers.io())
                     .map { mongoDatabase }
             }
     }
