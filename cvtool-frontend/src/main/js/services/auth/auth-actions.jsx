@@ -5,7 +5,7 @@ export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
 export const authenticate = createAction("AUTHENTICATE", () => ({}));
 export const refreshAuthentication = createAction("SET_AUTHENTICATION_RESULT");
-export const fetchAuthInfo = createAction("FETCH_AUTHT_INFO");
+export const fetchAuthInfo = createAction("FETCH_AUTH_INFO");
 export const setLoginState = createAction("SET_LOGIN_STATE");
 export const setAuthInfo = createAction("SET_AUTH_INFO");
 

@@ -10,7 +10,7 @@
   "main": "target/classes/index.htm",
   "dependencies": {
     "@azure/msal-browser": "^3.5.0",
-    "@fluentui/react": "^8.113.0",
+    "@fluentui/react": "^8.113.1",
     "@reduxjs/toolkit": "^2.0.0",
     "@uifabric/react-hooks": "^7.16.4",
     "@vertx/eventbus-bridge-client.js": "^1.0.0-3-SNAPSHOT",
@@ -18,7 +18,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",
-    "redux-observable": "^2.0.0",
+    "redux-observable": "^3.0.0-rc.2",
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
@@ -31,7 +31,7 @@
     "babel-loader": "^9.1.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clean-webpack-plugin": "^4.0.0",
-    "eslint": "^8.54.0",
+    "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.0.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.4",
