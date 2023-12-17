@@ -14,6 +14,7 @@ import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
 import java.net.URI
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.BiConsumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
@@ -24,6 +25,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     companion object {
         private val log = LoggerFactory.getLogger(AuthenticateVerticle::class.java)
+        private const val MAX_IGNORED_HEALTH_ERRORS = 5
+        private val numIgnoredHealthErrors = AtomicInteger(0)
 
         fun parseConnectionString(connectionString: String): Map<String, String> {
             val site = connectionString.substringBefore("?")
@@ -120,7 +123,6 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
         oauth2
             .rxAuthenticate(TokenCredentials(jwt))
-//            .subscribeOn(Schedulers.io())
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
@@ -141,10 +143,12 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             // Send an invalid authorization request (expired JWT) to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
             .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
-//            .subscribeOn(Schedulers.io())
             .map { "" } // Convert Single<User> to Single<String>.
             // If it's the expected error response, then don't propagate the error itself, only the message String.
-            .onErrorReturn { if (it.message?.contains("invalid_request") == true) it.message else throw it }
+            .onErrorReturn { if (isExpectedAuthenticationError(it)) it.message else throw it }
+            // Ignore auth errors for a few minutes to prevent the health checker to trigger false positives.
+            .doOnSuccess { numIgnoredHealthErrors.set(0) }
+            .onErrorReturn { if (shouldIgnoreHealthError()) it.message else throw it }
             .subscribe(
                 {
                     message.reply(it)
@@ -155,4 +159,10 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     message.fail(RECIPIENT_FAILURE.toInt(), rootCause.message)
                 }
             )
+
+    private fun isExpectedAuthenticationError(throwable: Throwable) =
+        throwable.message?.contains("invalid_request") == true
+
+    private fun shouldIgnoreHealthError(): Boolean =
+        numIgnoredHealthErrors.getAndIncrement() < MAX_IGNORED_HEALTH_ERRORS
 }
