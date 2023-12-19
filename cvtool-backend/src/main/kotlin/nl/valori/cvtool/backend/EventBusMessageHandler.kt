@@ -67,8 +67,8 @@ internal object EventBusMessageHandler {
                             bridgeEvent.complete(true)
                         },
                         {
-                            log.warn("Error handling BridgeEvent: ${it.message}", it)
-                            bridgeEvent.complete(false)
+                            log.warn("Error handling BridgeEvent: ${it.message}")
+                            bridgeEvent.complete(true)
                         }
                     )
             }
@@ -78,7 +78,7 @@ internal object EventBusMessageHandler {
             }
             SOCKET_ERROR -> {
                 log.warn("Socket error: ${bridgeEvent.rawMessage}")
-                bridgeEvent.complete(false)
+                bridgeEvent.complete(true)
             }
             else -> bridgeEvent.complete(true)
         }
