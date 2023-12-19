@@ -38,7 +38,7 @@ export const safeEpics = [
     ofType(safeActions.save.type),
     rx.map(action => action.payload),
     rx.filter(saveEnforced => saveEnforced || state$.value.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
-    rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp
+    rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimeString
       || utils.parseTimeString(state$.value.safe.lastEditedTimeString) > utils.parseTimeString(state$.value.safe.lastSavedTimeString)),
     rx.switchMap(() => {
       const saveTimeString = new Date().toISOString();

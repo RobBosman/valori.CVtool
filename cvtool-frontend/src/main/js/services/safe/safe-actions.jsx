@@ -80,8 +80,7 @@ const updateDirtyState = (lastSavedTimeString, safe) => {
       if (safe.dirty[entityName]) {
         Object.entries(dirtyInstances)
           .forEach(([instanceId, timeString]) => {
-            const timestamp = utils.parseTimeString(timeString);
-            if (timestamp <= lastSavedTimestamp) {
+            if (utils.parseTimeString(timeString) <= lastSavedTimestamp) {
               updateSafeObject(entityName, instanceId, null, safe.dirty);
             }
           });
