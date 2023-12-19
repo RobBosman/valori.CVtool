@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemType, TooltipHost } from "@fluentui/react";
+import * as utils from "../../utils/CommonUtils";
 import * as authActions from "../../services/auth/auth-actions";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as uiActions from "../../services/ui/ui-actions";
@@ -173,8 +174,8 @@ const select = (store) => ({
   account: store.auth.authInfo,
   isConnected: store.eventBus.connectionState === ConnectionStates.CONNECTED,
   hasSafeData: Object.keys(store.safe.content).length > 0,
-  lastEditedTimestamp: store.safe.lastEditedTimestamp,
-  lastSavedTimestamp: store.safe.lastSavedTimestamp
+  lastEditedTimestamp: utils.parseTimeString(store.safe.lastEditedTimeString),
+  lastSavedTimestamp: utils.parseTimeString(store.safe.lastSavedTimeString)
 });
 
 const mapDispatchToProps = (dispatch) => ({

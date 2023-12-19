@@ -1,6 +1,7 @@
 import { from, of, merge, EMPTY } from "rxjs";
 import * as rx from "rxjs/operators";
 import { ofType } from "redux-observable";
+import * as utils from "../../utils/CommonUtils";
 import * as errorActions from "../error/error-actions";
 import * as eventBusActions from "../eventBus/eventBus-actions";
 import * as eventBusServices from "../eventBus/eventBus-services";
@@ -31,7 +32,8 @@ export const authEpics = [
           of(safeActions.save(false)),
           state$.pipe(
             // ...and wait for the data to be saved.
-            rx.filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
+            rx.filter(state => !state.safe?.lastEditedTimeString
+               || utils.parseTimeString(state.safe.lastSavedTimeString) >= utils.parseTimeString(state.safe.lastEditedTimeString)),
             rx.take(1),
             rx.mergeMap(() => of(
               authActions.setLoginState(authActions.LoginStates.LOGGING_OUT),
@@ -50,10 +52,10 @@ export const authEpics = [
     ofType(authActions.authenticate.type),
     rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider()).pipe(
       rx.mergeMap(authenticationResult => of(
-        authActions.refreshAuthentication(authenticationResult),
+        authActions.refreshAuthentication(JSON.stringify(authenticationResult)),
         // When requested to login then fetch the authInfo data.
         authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
-        authActions.fetchAuthInfo(authenticationResult)
+        authActions.fetchAuthInfo(JSON.stringify(authenticationResult))
       )),
       rx.catchError((error, source$) => merge(
         of(
@@ -69,14 +71,16 @@ export const authEpics = [
   (action$, state$) => action$.pipe(
     ofType(authActions.refreshAuthentication.type),
     rx.map(action => action.payload),
-    rx.switchMap(authenticationResult => {
+    rx.switchMap(authenticationResultJson => {
       // Abort any refreshing when logged out.
       const loginState = state$.value.auth?.loginState;
-      if (!authenticationResult
+      if (!authenticationResultJson
         || loginState === authActions.LoginStates.LOGGED_OUT
         || loginState === authActions.LoginStates.LOGGING_OUT) {
         return EMPTY;
       }
+
+      const authenticationResult = JSON.parse(authenticationResultJson);
       
       // Check if the JWT is still valid the next few minutes.
       const remainingSeconds = (authenticationResult.idTokenClaims?.exp || 0) - (new Date().getTime() / 1000);
@@ -85,7 +89,7 @@ export const authEpics = [
         : from(authServices.authenticateAtOpenIdProvider(true)); // Get a new token.
       return next$.pipe(
         rx.delay(AUTHENTICATION_VERIFY_MILLIS), // Repeat this check every few minutes.
-        rx.map(refreshedAuthenticationResult => authActions.refreshAuthentication(refreshedAuthenticationResult)),
+        rx.map(refreshedAuthenticationResult => authActions.refreshAuthentication(JSON.stringify(refreshedAuthenticationResult))),
         rx.catchError((error, source$) => merge(
           of(
             errorActions.setLastError(`Her-authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
@@ -100,7 +104,7 @@ export const authEpics = [
   // Fetch the authInfo. But first ensure the EventBus is connected.
   (action$) => action$.pipe(
     ofType(authActions.fetchAuthInfo.type),
-    rx.map(action => action.payload),
+    rx.map(action => JSON.parse(action.payload)),
     rx.switchMap(authenticationResult => eventBusServices.eventBusClient.monitorConnectionState().pipe(
       // Fetch the authInfo data as soon as the EventBus is connected.
       rx.filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),

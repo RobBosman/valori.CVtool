@@ -11,6 +11,9 @@ export const compareItemsByField = (l, r, field) => {
     : comparePrimitives(l?.[field] || "", r?.[field] || "");
 };
 
+export const parseTimeString = timeString =>
+  timeString ? new Date(timeString) : null;
+
 export const isValidYear = (value) =>
   isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
 

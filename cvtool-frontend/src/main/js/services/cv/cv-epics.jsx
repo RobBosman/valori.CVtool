@@ -2,6 +2,7 @@ import { ofType } from "redux-observable";
 import { from, merge, of } from "rxjs";
 import * as rx from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
+import * as utils from "../../utils/CommonUtils";
 import * as safeActions from "../safe/safe-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
@@ -18,7 +19,8 @@ export const cvEpics = [
         of(safeActions.save(false)),
         state$.pipe(
           // ...and wait for the data to be saved.
-          rx.filter(state => !state.safe?.lastEditedTimestamp || state.safe.lastSavedTimestamp >= state.safe.lastEditedTimestamp),
+          rx.filter(state => !state.safe?.lastEditedTimeString
+             || utils.parseTimeString(state.safe.lastSavedTimeString) >= utils.parseTimeString(state.safe.lastEditedTimeString)),
           rx.take(1),
           rx.mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
           rx.filter(Boolean),

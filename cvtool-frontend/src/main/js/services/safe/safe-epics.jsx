@@ -1,5 +1,6 @@
 import { ofType } from "redux-observable";
 import * as rx from "rxjs/operators";
+import * as utils from "../../utils/CommonUtils";
 import * as eventBusServices from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
@@ -16,8 +17,8 @@ export const safeEpics = [
 
   // Auto-save 2 seconds after the last edit.
   (_, state$) => state$.pipe(
-    rx.map(state => state.safe?.lastEditedTimestamp),
-    rx.filter(timestamp => timestamp),
+    rx.map(state => state.safe?.lastEditedTimeString),
+    rx.filter(timeString => timeString),
     rx.distinctUntilChanged(),
     rx.debounceTime(2000),
     rx.map(() => safeActions.save(false))
@@ -37,12 +38,13 @@ export const safeEpics = [
     ofType(safeActions.save.type),
     rx.map(action => action.payload),
     rx.filter(saveEnforced => saveEnforced || state$.value.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
-    rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp || state$.value.safe.lastEditedTimestamp > state$.value.safe.lastSavedTimestamp),
+    rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimestamp
+      || utils.parseTimeString(state$.value.safe.lastEditedTimeString) > utils.parseTimeString(state$.value.safe.lastSavedTimeString)),
     rx.switchMap(() => {
-      const saveTimestamp = new Date();
+      const saveTimeString = new Date().toISOString();
       return safeServices
         .saveToRemote(extractChangedData(state$.value.safe), eventBusServices.eventBusClient.sendEvent)
-        .then(() => safeActions.setLastSavedTimestamp(saveTimestamp));
+        .then(() => safeActions.setLastSavedTimeString(saveTimeString));
     })
   ),
 

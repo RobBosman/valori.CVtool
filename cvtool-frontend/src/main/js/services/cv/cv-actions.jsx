@@ -20,7 +20,7 @@ reducerRegistry.register(
     builder => builder
       .addCase(generateCv, (state) => ({
         ...state,
-        generateCvTimestamp: new Date()
+        generateCvTimeString: new Date().toISOString()
       }))
       .addCase(searchCvData, (state, action) => ({
         ...state,

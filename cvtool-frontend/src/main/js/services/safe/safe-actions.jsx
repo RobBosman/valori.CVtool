@@ -1,5 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
+import * as utils from "../../utils/CommonUtils";
 
 export const fetchAllInstances = createAction("FECTH_ALL_INSTANCES");
 export const save = createAction("SAVE");
@@ -10,7 +11,7 @@ export const changeInstances = createAction("CHANGE_INSTANCES",
   (entity, instances) => ({ payload: { entity, instances } }));
 export const changeInstance = createAction("CHANGE_INSTANCE",
   (entity, instanceId, instance) => ({ payload: { entity, instanceId, instance } }));
-export const setLastSavedTimestamp = createAction("SET_LAST_SAVED_TIMESTAMP");
+export const setLastSavedTimeString = createAction("SET_LAST_SAVED_TIME_STRING");
 
 reducerRegistry.register(
   "safe",
@@ -18,7 +19,7 @@ reducerRegistry.register(
     {
       content: {},
       dirty: {},
-      lastSavedTimestamp: new Date()
+      lastSavedTimeString: new Date().toISOString()
     },
     builder => builder
       .addCase(resetEntities, (state, action) => {
@@ -32,8 +33,8 @@ reducerRegistry.register(
         } else {
           state.content = {};
           state.dirty = {};
-          state.lastEditedTimestamp = null;
-          state.lastSavedTimestamp = new Date();
+          state.lastEditedTimeString = null;
+          state.lastSavedTimeString = new Date().toISOString();
         }
       })
       .addCase(changeInstances, (state, action) => {
@@ -43,7 +44,7 @@ reducerRegistry.register(
       .addCase(changeInstance, (state, action) => {
         updateInstance(action.payload.entity, action.payload.instanceId, action.payload.instance, new Date(), state);
       })
-      .addCase(setLastSavedTimestamp, (state, action) => {
+      .addCase(setLastSavedTimeString, (state, action) => {
         updateDirtyState(action.payload, state);
       })
   )
@@ -51,9 +52,9 @@ reducerRegistry.register(
 
 const updateInstance = (entityName, instanceId, instance, timestamp, safe) => {
   updateSafeObject(entityName, instanceId, instance, safe.content);
-  updateSafeObject(entityName, instanceId, timestamp, safe.dirty);
+  updateSafeObject(entityName, instanceId, JSON.stringify(timestamp), safe.dirty);
   if (timestamp) {
-    safe.lastEditedTimestamp = timestamp;
+    safe.lastEditedTimeString = timestamp.toISOString();
   }
 };
 
@@ -71,13 +72,15 @@ const updateSafeObject = (entityName, instanceId, value, safeObject) => {
   }
 };
 
-const updateDirtyState = (lastSavedTimestamp, safe) => {
-  safe.lastSavedTimestamp = lastSavedTimestamp;
+const updateDirtyState = (lastSavedTimeString, safe) => {
+  safe.lastSavedTimeString = lastSavedTimeString;
+  const lastSavedTimestamp = utils.parseTimeString(lastSavedTimeString);
   Object.entries(safe.dirty)
     .forEach(([entityName, dirtyInstances]) => {
       if (safe.dirty[entityName]) {
         Object.entries(dirtyInstances)
-          .forEach(([instanceId, timestamp]) => {
+          .forEach(([instanceId, timeString]) => {
+            const timestamp = utils.parseTimeString(timeString);
             if (timestamp <= lastSavedTimestamp) {
               updateSafeObject(entityName, instanceId, null, safe.dirty);
             }

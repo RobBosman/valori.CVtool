@@ -1,4 +1,5 @@
 import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
+import * as utils from "../../../../main/js/utils/CommonUtils";
 import * as safeActions from "../../../../main/js/services/safe/safe-actions";
 
 describe("safe-actions.test", () => {
@@ -63,8 +64,8 @@ describe("safe-actions.test", () => {
 
   it("should reduce setLastSavedTimestamp", () => {
     const timestamp = new Date("1970-04-01");
-    const state = _reducer(undefined, safeActions.setLastSavedTimestamp(timestamp));
-    expect(state.safe.lastSavedTimestamp)
-      .toBe(timestamp);
+    const state = _reducer(undefined, safeActions.setLastSavedTimeString(timestamp.toISOString()));
+    expect(utils.parseTimeString(state.safe.lastSavedTimeString))
+      .toStrictEqual(timestamp);
   });
 });

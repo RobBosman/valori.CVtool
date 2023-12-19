@@ -1,11 +1,13 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
+// Epic actions:
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
 export const authenticate = createAction("AUTHENTICATE", () => ({}));
 export const refreshAuthentication = createAction("SET_AUTHENTICATION_RESULT");
 export const fetchAuthInfo = createAction("FETCH_AUTH_INFO");
+// Reducer actions:
 export const setLoginState = createAction("SET_LOGIN_STATE");
 export const setAuthInfo = createAction("SET_AUTH_INFO");
 
