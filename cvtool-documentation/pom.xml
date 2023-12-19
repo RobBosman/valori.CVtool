@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>cvtool-documentation</artifactId>
+    <packaging>pom</packaging>
     <description>Documentation and other info of the CVtool-app</description>
 
     <dependencies>
