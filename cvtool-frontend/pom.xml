@@ -15,6 +15,7 @@
 
     <properties>
         <skip-building-frontend>false</skip-building-frontend>
+        <skip-dependency-check>false</skip-dependency-check>
         <target.environment>PROD</target.environment>
 
         <sonar.sources>src/main/js</sonar.sources>
@@ -126,23 +127,24 @@
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
                 <version>${dependency-check-maven.version}</version>
-                <configuration>
-                    <skip>${skip-building-frontend}</skip>
-                    <scanSet>
-                        <fileSet>
-                            <directory>src</directory>
-                        </fileSet>
-                        <fileSet>
-                            <directory>target/classes</directory>
-                        </fileSet>
-                    </scanSet>
-                    <format>ALL</format>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>aggregate</goal>
+                            <goal>check</goal>
                         </goals>
+                        <configuration>
+                            <failBuildOnCVSS>8</failBuildOnCVSS>
+                            <nvdApiKey>afdeca8f-d36c-48f3-af6a-14b0eb192754</nvdApiKey>
+                            <scanSet>
+                                <fileSet>
+                                    <directory>src</directory>
+                                </fileSet>
+                                <fileSet>
+                                    <directory>target/classes</directory>
+                                </fileSet>
+                            </scanSet>
+                            <skip>${skip-dependency-check}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -154,6 +156,7 @@
             <id>skip-building-frontend</id>
             <properties>
                 <skip-building-frontend>true</skip-building-frontend>
+                <skip-dependency-check>true</skip-dependency-check>
             </properties>
         </profile>
     </profiles>
