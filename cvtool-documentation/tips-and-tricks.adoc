@@ -20,7 +20,7 @@ Initialize local SonarQube server:
 
 [source,sh]
 ....
-docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 --restart always sonarqube:latest
+docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
 ....
 * Open a browser and go to http://localhost:9000/.
 * Login with _admin_ / _admin_ and change the password.
