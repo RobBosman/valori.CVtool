@@ -3,7 +3,6 @@ secret/setenv.cmd
 *.iml
 .vscode/
 target/
-/cvtool-backend/dependency-reduced-pom.xml
 node/
 node_modules/
 HeadlessChrome_*/
@@ -13,6 +12,8 @@ stats.json
 *.p12
 *.pem
 .env
+/cvtool-backend/dependency-reduced-pom.xml
+/cvtool-frontend/dependency-check-report.html
 /conversion/src/main/resources/*.xml
 /conversion/src/main/resources/*.json
 /exported/

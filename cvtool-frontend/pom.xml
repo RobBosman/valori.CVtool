@@ -133,8 +133,9 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <failBuildOnCVSS>8</failBuildOnCVSS>
+                            <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
                             <nvdApiKey>afdeca8f-d36c-48f3-af6a-14b0eb192754</nvdApiKey>
+                            <outputDirectory>.</outputDirectory>
                             <scanSet>
                                 <fileSet>
                                     <directory>src</directory>
