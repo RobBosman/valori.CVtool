@@ -35,6 +35,7 @@
                         <fileset>
                             <directory>.</directory>
                             <includes>
+                                <include>dependency-check-report.html</include>
                                 <include>*.txt</include>
                             </includes>
                         </fileset>
