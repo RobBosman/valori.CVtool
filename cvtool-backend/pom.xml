@@ -13,11 +13,6 @@
     <artifactId>cvtool-backend</artifactId>
     <description>Backend of CVtool-app to enter and maintain cvs (curricula vitae)</description>
 
-    <properties>
-        <sonar.sources>src/main/kotlin</sonar.sources>
-        <sonar.tests>src/test/kotlin</sonar.tests>
-    </properties>
-
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>

@@ -18,12 +18,14 @@
         <skip-dependency-check>false</skip-dependency-check>
         <target.environment>PROD</target.environment>
 
-        <sonar.sources>src/main/js</sonar.sources>
-        <sonar.tests>src/test/js</sonar.tests>
+        <sonar.javascript.file.suffixes>.js,.jsx</sonar.javascript.file.suffixes>
         <sonar.javascript.lcov.reportPaths>target/coverage/lcov.info</sonar.javascript.lcov.reportPaths>
     </properties>
 
     <build>
+        <sourceDirectory>src/main/js</sourceDirectory>
+        <testSourceDirectory>src/test/js</testSourceDirectory>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
