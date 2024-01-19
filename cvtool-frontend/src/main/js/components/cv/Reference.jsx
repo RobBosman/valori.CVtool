@@ -94,8 +94,8 @@ const Reference = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [previewVisible, setPreviewVisible] = React.useState(false);
 
   const selectedItemFields = React.useCallback(() => {
     const selectedReference = references.find(reference => reference._id === props.selectedReferenceId);
@@ -200,7 +200,7 @@ const Reference = (props) => {
                       title="Definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
-                      isVisible={isConfirmDialogVisible}
+                      isVisible={confirmDialogVisible}
                       onProceed={onDeleteConfirmed}
                       onCancel={onDeleteCancelled}
                     />
@@ -235,7 +235,7 @@ const Reference = (props) => {
                   />
                 </StackItem>
                 <Preview
-                  isVisible={isPreviewVisible}
+                  isVisible={previewVisible}
                   rootStyles={{
                     width: 614, // = 9213/1440 inch
                     height: 350
@@ -246,7 +246,7 @@ const Reference = (props) => {
                 <PrimaryButton
                   text="Preview"
                   iconProps={{ iconName: "EntryView" }}
-                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  onClick={() => setPreviewVisible(!previewVisible)}
                   style={{ top: "28px" }}
                 />
               </Stack>

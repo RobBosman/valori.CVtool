@@ -14,16 +14,16 @@ import * as preview from "../cv/Preview";
 const onLinkClick = setSelectedExperienceIdFunc =>
   item => setSelectedExperienceIdFunc(item?.props?.itemKey);
 
-const SearchText = props => {
+const SearchText = properties => {
   const { semanticColors } = uiServices.useTheme();
   return <Text style={{ fontFamily: "Courier New, sans-serif", background: semanticColors.inputBackground }}>
-    &nbsp;{props.children}&nbsp;
+    &nbsp;{properties.children}&nbsp;
   </Text>;
 };
 
-const FoundText = props =>
+const FoundText = properties =>
   <Text>
-    &quot;<em>{props.children}</em>&quot;
+    &quot;<em>{properties.children}</em>&quot;
   </Text>;
 
 // searchResult:
@@ -70,7 +70,7 @@ const Search = props => {
     const skills = Object.values(props.searchResultEntities?.skill || {})
       .filter(skill => skill.accountId === accountId);
     const skillLevel = skills
-      .sort((l, r) => r.skillLevel - l.skillLevel)
+      .toSorted((l, r) => r.skillLevel - l.skillLevel)
       .map(skill => skill.skillLevel)
       .shift()
       || 0;

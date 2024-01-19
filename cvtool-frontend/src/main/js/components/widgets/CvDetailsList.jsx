@@ -9,7 +9,7 @@ export const CvDetailsList = (props) => {
   const getItemId = (item) => item?._id;
   
   // Keep track of {selection} so we can use it outside the context of the DetailsList.
-  const [selection] = React.useState(new Selection({
+  const [selection, setSelection] = React.useState(new Selection({
     items: props.items,
     getKey: getItemId,
     onSelectionChanged: () => setSelectedInstanceId(getItemId(selection.getSelection()[0]))

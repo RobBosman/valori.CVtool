@@ -31,7 +31,7 @@ export const composeExperiencePeriod = (experience, locale) => {
     : "";
   const endString = experience.periodEnd
     ? `${experience.periodEnd.substring(5, 7)}${separator}${experience.periodEnd.substring(0, 4)}`
-    : locale === "uk_UK" ? "today" : "heden";
+    : locale === "uk_UK" && "today" || "heden";
   return `${beginString} \u2014 ${endString}`;
 };
 

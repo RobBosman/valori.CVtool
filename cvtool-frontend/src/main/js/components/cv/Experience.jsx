@@ -23,8 +23,8 @@ const Experience = (props) => {
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
   const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [previewVisible, setPreviewVisible] = React.useState(false);
   const [draggedItem, setDraggedItem] = React.useState(undefined);
 
   const experienceContext = React.useMemo(() => ({
@@ -293,7 +293,7 @@ const Experience = (props) => {
                       title="Definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
-                      isVisible={isConfirmDialogVisible}
+                      isVisible={confirmDialogVisible}
                       onProceed={onDeleteConfirmed}
                       onCancel={onDeleteCancelled}
                     />
@@ -330,7 +330,7 @@ const Experience = (props) => {
                     />
                   </Stack>
                   <Preview
-                    isVisible={isPreviewVisible}
+                    isVisible={previewVisible}
                     rootStyles={{
                       width: 614, // = 9213/1440 inch
                       height: "calc(100vh - 300px)"
@@ -341,7 +341,7 @@ const Experience = (props) => {
                   <PrimaryButton
                     text="Preview"
                     iconProps={{ iconName: "EntryView" }}
-                    onClick={() => setPreviewVisible(!isPreviewVisible)}
+                    onClick={() => setPreviewVisible(!previewVisible)}
                     style={{ top: "28px" }}
                   />
                 </Stack>

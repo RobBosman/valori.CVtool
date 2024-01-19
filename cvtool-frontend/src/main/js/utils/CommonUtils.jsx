@@ -1,7 +1,13 @@
 export const comparePrimitives = (l, r) => {
   const L = typeof l === "string" ? l.toUpperCase() : l;
   const R = typeof r === "string" ? r.toUpperCase() : r;
-  return L < R ? -1 : L > R ? 1 : 0;
+  if (L < R) {
+    return -1;
+  } else if (L > R) {
+    return 1;
+  } else {
+    return 0;
+  }
 };
 
 export const compareItemsByField = (l, r, field) => {
@@ -14,8 +20,15 @@ export const compareItemsByField = (l, r, field) => {
 export const parseTimeString = timeString =>
   timeString ? new Date(timeString) : null;
 
-export const isValidYear = (value) =>
-  isNaN(value) ? "Voer een jaartal in" : value.length > 4 ? "Maximaal vier cijfers" : "";
+export const isValidYear = (value) => {
+  if (isNaN(value)) {
+    return "Voer een jaartal in";
+  } else if (value.length > 4) {
+    return "Maximaal vier cijfers";
+  } else {
+    return "Maximaal vier cijfers" : "";
+  }
+};
 
 export const isValidText = (maxSize) =>
   value => value.length > maxSize ? `Maximaal ${maxSize} tekens` : "";

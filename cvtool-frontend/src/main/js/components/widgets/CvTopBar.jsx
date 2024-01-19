@@ -10,14 +10,14 @@ import * as uiServices from "../../services/ui/ui-services";
 import { ConnectionStates } from "../../services/eventBus/eventBus-services";
 import LocaleFlag from "../widgets/LocaleFlag";
 
-const LocaleButton = props => (
-  <CommandBarButton {...props}>
+const LocaleButton = properties => (
+  <CommandBarButton {...properties}>
     <LocaleFlag/>
   </CommandBarButton>
 );
-const TooltipButton = props => (
-    <TooltipHost content={props.tooltipText}>
-      <CommandBarButton {...props}/>
+const TooltipButton = properties => (
+    <TooltipHost content={properties.tooltipText}>
+      <CommandBarButton {...properties}/>
     </TooltipHost>
   );
 

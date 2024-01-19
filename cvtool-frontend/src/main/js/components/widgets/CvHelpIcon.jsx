@@ -11,7 +11,7 @@ export const createHelpIcon = (helpIconProps) =>
 export const CvHelpIcon = (props) => {
 
   const [calloutTarget, setCalloutTarget] = React.useState(undefined);
-  const [isCalloutVisible, setCalloutVisible] = React.useState(false);
+  const [calloutVisible, setCalloutVisible] = React.useState(false);
 
   const showCallout = (event) => {
     setCalloutTarget(event.target);
@@ -26,8 +26,8 @@ export const CvHelpIcon = (props) => {
         iconProps={{ iconName: "InfoSolid" }}
         disbled={props.disabled}
         style={{ height: "unset" }}
-        onClick={isCalloutVisible ? hideCallout : showCallout}/>
-      {isCalloutVisible
+        onClick={calloutVisible ? hideCallout : showCallout}/>
+      {calloutVisible
         && <Callout
           style={{ padding: 20 }}
           target={calloutTarget}

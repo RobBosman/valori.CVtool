@@ -7,11 +7,8 @@ export class ReducerRegistry {
     this._reducers = {};
   }
 
-  getRootReducer = () => {
-    return Object.keys(this._reducers).length === 0
-      ? (state = {}) => state
-      : combineReducers(this._reducers);
-  };
+  getRootReducer = () =>
+    combineReducers(this._reducers);
 
   register = (name, reducer) => {
     this._reducers = {

@@ -178,7 +178,9 @@ const ContentPage = (props) => {
           onRenderGroupHeader={onRenderGroupHeader}
         />
         <TooltipHost
-          content={`Download CV${selectedAccountName ? ` van ${selectedAccountName}` : ""} als MS-Word document`}>
+          content={selectedAccountName
+              ? `Download CV van ${selectedAccountName} als MS-Word document`
+              : "Download CV als MS-Word document"}>
           <PrimaryButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}

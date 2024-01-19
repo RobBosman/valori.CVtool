@@ -89,7 +89,7 @@ const Profile = (props) => {
     }
   ];
 
-  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+  const [previewVisible, setPreviewVisible] = React.useState(false);
 
   const previewTitleStyle = {
     ...preview.cvTextStyle,
@@ -171,7 +171,7 @@ const Profile = (props) => {
   },
   [characteristics, characteristicsContext, props.locale]);
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
 
   const selectedItemFields = React.useCallback(() => {
     const selectedCharacteristics = characteristics.find(characs => characs._id === props.selectedCharacteristicsId);
@@ -302,7 +302,7 @@ const Profile = (props) => {
                       title="Definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
-                      isVisible={isConfirmDialogVisible}
+                      isVisible={confirmDialogVisible}
                       onProceed={onDeleteConfirmed}
                       onCancel={onDeleteCancelled}
                     />
@@ -332,7 +332,7 @@ const Profile = (props) => {
                     />
                   </StackItem>
                   <Preview
-                    isVisible={isPreviewVisible}
+                    isVisible={previewVisible}
                     rootStyles={{
                       width: 629,
                       height: 450
@@ -348,7 +348,7 @@ const Profile = (props) => {
                   <PrimaryButton
                     text="Preview"
                     iconProps={{ iconName: "EntryView" }}
-                    onClick={() => setPreviewVisible(!isPreviewVisible)}
+                    onClick={() => setPreviewVisible(!previewVisible)}
                     style={{ top: "28px" }}
                   />
                 </Stack>
@@ -403,7 +403,8 @@ Profile.propTypes = {
   replaceAccount: PropTypes.func.isRequired,
   replaceCharacteristics: PropTypes.func.isRequired,
   selectedCharacteristicsId: PropTypes.string,
-  setSelectedCharacteristicsId: PropTypes.func.isRequired
+  setSelectedCharacteristicsId: PropTypes.func.isRequired,
+  showError: PropTypes.func.isRequired
 };
 
 const select = (store) => ({

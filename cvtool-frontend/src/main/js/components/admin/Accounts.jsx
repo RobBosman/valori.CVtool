@@ -162,7 +162,7 @@ const Accounts = (props) => {
     }
   };
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedItemFields = React.useCallback(() => {
     const selectedAccount = combined.instances.find(businessUnit => businessUnit._id === props.selectedAccountId);
     return selectedAccount && {
@@ -243,7 +243,7 @@ const Accounts = (props) => {
                     title="Account en cv-gegevens definitief verwijderen?"
                     primaryButtonText="Verwijderen"
                     selectedItemFields={selectedItemFields}
-                    isVisible={isConfirmDialogVisible}
+                    isVisible={confirmDialogVisible}
                     onProceed={onDeleteConfirmed}
                     onCancel={onDeleteCancelled}
                     styles={{ main: { backgroundColor: semanticColors.severeWarningBackground } }}

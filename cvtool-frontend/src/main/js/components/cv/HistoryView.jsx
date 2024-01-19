@@ -35,8 +35,17 @@ const HistoryView = (props) => {
     return account?.name || "onbekend";
   };
 
-  const summarizeAuditLog = (auditLog) =>
-    `${entityNames[auditLog.entity]} ${auditLog.oldInstance ? auditLog.newInstance ? "gewijzigd" : "verwijderd" : "toegevoegd"}`;
+  const summarizeAuditLog = (auditLog) => {
+    let performedAction;
+      if (!auditLog.oldInstance) {
+          performedAction = "toegevoegd";
+      } else if (auditLog.newInstance) {
+          performedAction = "gewijzigd";
+      } else {
+          performedAction = "verwijderd";
+      }
+      return `${entityNames[auditLog.entity]} ${performedAction}`
+    };
 
   const auditLogContext = React.useMemo(() => ({
     locale: props.locale,
@@ -149,7 +158,6 @@ const HistoryView = (props) => {
 };
 
 HistoryView.propTypes = {
-  authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
   accountEntity: PropTypes.object,
   auditLogEntity: PropTypes.object,
@@ -159,7 +167,6 @@ HistoryView.propTypes = {
 };
 
 const select = (store) => ({
-  authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
   accountEntity: store.safe.content.account,
   auditLogEntity: store.safe.content[entityName],

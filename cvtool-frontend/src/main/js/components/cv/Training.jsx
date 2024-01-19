@@ -117,8 +117,8 @@ const Training = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [previewVisible, setPreviewVisible] = React.useState(false);
 
   const selectedItemFields = React.useCallback(() => {
     const selectedTraining = trainings.find(training => training._id === props.selectedTrainingId);
@@ -247,7 +247,7 @@ const Training = (props) => {
                       title="Definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
-                      isVisible={isConfirmDialogVisible}
+                      isVisible={confirmDialogVisible}
                       onProceed={onDeleteConfirmed}
                       onCancel={onDeleteCancelled}
                     />
@@ -283,7 +283,7 @@ const Training = (props) => {
                   />
                 </StackItem>
                 <Preview
-                  isVisible={isPreviewVisible}
+                  isVisible={previewVisible}
                   rootStyles={{
                     width: 615,
                     height: 350
@@ -294,7 +294,7 @@ const Training = (props) => {
                 <PrimaryButton
                   text="Preview"
                   iconProps={{ iconName: "EntryView" }}
-                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  onClick={() => setPreviewVisible(!previewVisible)}
                   style={{ top: "28px" }}
                 />
               </Stack>

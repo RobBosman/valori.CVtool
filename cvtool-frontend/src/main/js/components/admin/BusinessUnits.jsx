@@ -74,7 +74,7 @@ const BusinessUnits = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedItemFields = React.useCallback(() => {
     const selectedBusinessUnit = businessUnits.find(businessUnit => businessUnit._id === props.selectedBusinessUnitId);
     return selectedBusinessUnit && {
@@ -141,7 +141,7 @@ const BusinessUnits = (props) => {
                       title="Definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
-                      isVisible={isConfirmDialogVisible}
+                      isVisible={confirmDialogVisible}
                       onProceed={onDeleteConfirmed}
                       onCancel={onDeleteCancelled}
                     />
@@ -187,7 +187,6 @@ const BusinessUnits = (props) => {
 
 BusinessUnits.propTypes = {
   authInfo: PropTypes.object,
-  accountEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   selectedBusinessUnitId: PropTypes.string,
   setSelectedBusinessUnitId: PropTypes.func.isRequired,
@@ -196,7 +195,6 @@ BusinessUnits.propTypes = {
 
 const select = (store) => ({
   authInfo: store.auth.authInfo,
-  accountEntity: store.safe.content.account,
   businessUnitEntity: store.safe.content[entityName],
   selectedBusinessUnitId: store.ui.selectedId[entityName]
 });

@@ -120,8 +120,8 @@ const Skill = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const [isConfirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
-  const [isPreviewVisible, setPreviewVisible] = React.useState(false);
+  const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
+  const [previewVisible, setPreviewVisible] = React.useState(false);
   const [previewHeight, setPreviewHeight] = React.useState(0);
   const [previewFlexBoxHeight, setPreviewFlexBoxHeight] = React.useState(0);
 
@@ -172,7 +172,7 @@ const Skill = (props) => {
 
   const adjustFlexLayout = React.useCallback(() => {
     const skillsPreview = document.getElementById("skillsPreview");
-    if (isPreviewVisible && skillsPreview) {
+    if (previewVisible && skillsPreview) {
 
       const flexContainer = skillsPreview.getBoundingClientRect();
       const flexBoxes = [ ...skillsPreview.childNodes ]
@@ -252,15 +252,15 @@ const Skill = (props) => {
       setPreviewFlexBoxHeight(totalFlexBoxHeight);
     }
   },
-  [skills, isPreviewVisible, previewHeight, previewFlexBoxHeight]);
+  [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
 
   React.useEffect(() => {
     // Adjust the height of the preview window to exactly fit all skills.
-    const timeoutId = isPreviewVisible && setTimeout(adjustFlexLayout, 10);
+    const timeoutId = previewVisible && setTimeout(adjustFlexLayout, 10);
     // at the close:
     return () => timeoutId && clearTimeout(timeoutId);
   },
-  [skills, isPreviewVisible, previewHeight, previewFlexBoxHeight]);
+  [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
 
   const renderPreviewDescription = (skill) =>
     preview.wrapText(commonUtils.getValueOrFallback(skill, "description", props.locale));
@@ -329,7 +329,7 @@ const Skill = (props) => {
         }}>
         {
           enums.SkillCategories
-            .sort((l, r) => l.sortIndex - r.sortIndex)
+            .toSorted((l, r) => l.sortIndex - r.sortIndex)
             .map(category => [
               category,
               skills
@@ -382,7 +382,7 @@ const Skill = (props) => {
                       title="Definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
-                      isVisible={isConfirmDialogVisible}
+                      isVisible={confirmDialogVisible}
                       onProceed={onDeleteConfirmed}
                       onCancel={onDeleteCancelled}
                     />
@@ -409,7 +409,7 @@ const Skill = (props) => {
                   styles={{ root: { width: 180 } }}
                 />
                 <Preview
-                  isVisible={isPreviewVisible}
+                  isVisible={previewVisible}
                   rootStyles={{
                     width: 638,
                     height: 400
@@ -420,7 +420,7 @@ const Skill = (props) => {
                 <PrimaryButton
                   text="Preview"
                   iconProps={{ iconName: "EntryView" }}
-                  onClick={() => setPreviewVisible(!isPreviewVisible)}
+                  onClick={() => setPreviewVisible(!previewVisible)}
                   style={{ top: "28px" }}
                 />
               </Stack>
