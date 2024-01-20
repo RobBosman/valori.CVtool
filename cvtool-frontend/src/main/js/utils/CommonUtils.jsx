@@ -26,7 +26,7 @@ export const isValidYear = (value) => {
   } else if (value.length > 4) {
     return "Maximaal vier cijfers";
   } else {
-    return "Maximaal vier cijfers" : "";
+    return "";
   }
 };
 
