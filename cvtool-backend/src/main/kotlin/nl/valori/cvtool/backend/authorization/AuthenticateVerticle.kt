@@ -42,7 +42,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         }
     }
 
-    override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
+    override fun start(startPromise: Promise<Void>) { // NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Configure the connection to the OpenId Provider.
         // Environment variable:
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>

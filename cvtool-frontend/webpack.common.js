@@ -84,7 +84,7 @@ export const composeCommonConfig = devOrProdMode => ({
   devServer: {
     static: "./target/classes",
     headers: {
-      "Access-Control-Allow-Origin": "*",  //NOSONAR - configure CORS for local development
+      "Access-Control-Allow-Origin": "*",  // NOSONAR - configure CORS for local development
       "Access-Control-Allow-Headers": "*"
     },
     open: true,

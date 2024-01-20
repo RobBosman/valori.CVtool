@@ -31,8 +31,8 @@ const Skill = (props) => {
     replaceInstance: props.replaceSkill,
     readOnly: !isEditable
   };
-  
-  // Find all {Skill} of the selected account}.
+
+  // Find all {Skill} of the selected account.
   const skills = React.useMemo(() =>
     props.selectedAccountId && Object.values(props.skillEntity || {})
       .filter(instance => instance.accountId === props.selectedAccountId)
@@ -44,8 +44,8 @@ const Skill = (props) => {
         || commonUtils.comparePrimitives(
           commonUtils.getValueOrFallback(l, "description", props.locale),
           commonUtils.getValueOrFallback(r, "description", props.locale)))
-      || [],
-  [props.skillEntity, props.selectedAccountId]);
+    || [],
+    [props.skillEntity, props.selectedAccountId]);
 
   const renderSkill = (item) =>
     enums.getText(enums.SkillCategories, item.category, props.locale);
@@ -132,7 +132,7 @@ const Skill = (props) => {
       Omschrijving: commonUtils.getValueOrFallback(selectedSkill, "description", props.locale)
     };
   },
-  [skills, props.selectedSkillId, props.locale]);
+    [skills, props.selectedSkillId, props.locale]);
 
   const isFilledSkill = (skill) =>
     skill.category || commonUtils.isFilledLocaleField(skill.description);
@@ -170,89 +170,98 @@ const Skill = (props) => {
   const flexGapVertical = 5;
   const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1.0, color: valoriBlue };
 
+  const adjustPreviewHeight = (minimumHeight, previewHeight, flexBoxHeights) => {
+    // The flex container is too wide, so we must increase its height.
+    const minimumNewHeight = Math.max(minimumHeight, previewHeight);
+    const potentialHeights = new Set();
+
+    const partitionToWindows = (inputArray, windowSize) =>
+      Array.from(
+        { length: inputArray.length - (windowSize - 1) },
+        (_, index) => inputArray.slice(index, index + windowSize));
+
+    for (let windowSize = 1; windowSize < flexBoxHeights.length; windowSize++) {
+      partitionToWindows(flexBoxHeights, windowSize) // array of arrays with n heights each
+        .map(window => window.reduce((acc, h) => acc + h, 0) + (windowSize - 1) * flexGapVertical) // array of aggregated heights
+        .filter(height => height > minimumNewHeight)
+        .forEach(height => potentialHeights.add(height));
+    }
+
+    if (potentialHeights.size > 0) {
+      const newHeight = [...potentialHeights]
+        .reduce((acc, h) => h < acc ? h : acc, Infinity); // get min value
+      setPreviewHeight(newHeight);
+    }
+  }
+
+  const getFlexBoxDimensions = (flexBoxes, flexContainer, flexBoxHeights) => ({
+    flexBoxWidth: flexBoxes
+      .map(flexBox => flexBox.width)
+      .reduce((acc, h) => h > acc ? h : acc, 0), // get max value
+    largestFlexBoxHeight: flexBoxHeights
+      .reduce((acc, h) => h > acc ? h : acc, 0), // get max value
+    totalFlexBoxHeight: flexBoxHeights
+      .reduce((acc, h) => acc + h, 0), // aggregate
+    largestFlexBoxLeft: flexBoxes
+      .map(flexBox => flexBox.left - flexContainer.left)
+      .reduce((acc, l) => l > acc ? l : acc, 0), // get max value
+    flexContainerHeight: flexBoxes
+      .map(flexBox => flexBox.bottom - flexContainer.top)
+      .reduce((acc, h) => h > acc ? h : acc, 0) // get max value
+  });
+
   const adjustFlexLayout = React.useCallback(() => {
     const skillsPreview = document.getElementById("skillsPreview");
     if (previewVisible && skillsPreview) {
 
-      const flexContainer = skillsPreview.getBoundingClientRect();
-      const flexBoxes = [ ...skillsPreview.childNodes ]
+      const flexBoxes = [...skillsPreview.childNodes]
         .map(childNode => childNode.getBoundingClientRect());
+      const flexContainer = skillsPreview.getBoundingClientRect();
       const flexBoxHeights = flexBoxes
         .map(flexBox => flexBox.height);
-      const flexBoxWidth = flexBoxes
-        .map(flexBox => flexBox.width)
-        .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
-      const largestFlexBoxHeight = flexBoxHeights
-        .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
-      const totalFlexBoxHeight = flexBoxHeights
-        .reduce((acc, h) => acc + h, 0); // aggregate
-      const largestFlexBoxLeft = flexBoxes
-        .map(flexBox => flexBox.left - flexContainer.left)
-        .reduce((acc, l) => l > acc ? l : acc, 0); // get max value
-      const flexContainerHeight = flexBoxes
-        .map(flexBox => flexBox.bottom - flexContainer.top)
-        .reduce((acc, h) => h > acc ? h : acc, 0); // get max value
 
-      const targetFlexBoxOffset = (flexBoxWidth + flexGapHorizontal) * 2;
+      const flexBoxDimensions = getFlexBoxDimensions(flexBoxes, flexContainer, flexBoxHeights);
+
+      const targetFlexBoxOffset = (flexBoxDimensions.flexBoxWidth + flexGapHorizontal) * 2;
 
       // The resulting height must be at least as high as:
       // - the highest flexBox and
       // - the total height of all flexBoxes, divided by the number of columns.
-      const minimunHeight = Math.max(largestFlexBoxHeight, totalFlexBoxHeight / 3);
+      const minimumHeight = Math.max(flexBoxDimensions.largestFlexBoxHeight, flexBoxDimensions.totalFlexBoxHeight / 3);
 
       if (skillsPreview.childNodes.length <= 3) {
         // Fixed layout.
-        setPreviewHeight(largestFlexBoxHeight);
+        setPreviewHeight(flexBoxDimensions.largestFlexBoxHeight);
       }
 
-      else if (largestFlexBoxLeft < targetFlexBoxOffset) {
+      else if (flexBoxDimensions.largestFlexBoxLeft < targetFlexBoxOffset) {
         // The flex container is not wide enough, so we must decrease its height.
         // Great reset!
-        setPreviewHeight(minimunHeight);
-      }
-      
-      else if (largestFlexBoxLeft > targetFlexBoxOffset) {
-        // The flex container is too wide, so we must increase its height.
-        const minimunNewHeight = Math.max(minimunHeight, previewHeight);
-        const potentialHeights = new Set();
-
-        const partitionToWindows = (inputArray, windowSize) =>
-          Array.from(
-            { length: inputArray.length - (windowSize - 1) },
-            (_, index) => inputArray.slice(index, index + windowSize));
-
-        for (let windowSize = 1; windowSize < flexBoxHeights.length; windowSize++) {
-          partitionToWindows(flexBoxHeights, windowSize) // array of arrays with n heights each
-            .map(window => window.reduce((acc, h) => acc + h, 0) + (windowSize - 1) * flexGapVertical) // array of aggregated heights
-            .filter(height => height > minimunNewHeight)
-            .forEach(height => potentialHeights.add(height));
-        }
-
-        if (potentialHeights.size > 0) {
-          const newHeight = [ ...potentialHeights ]
-            .reduce((acc, h) => h < acc ? h : acc, Infinity); // get min value
-          setPreviewHeight(newHeight);
-        }
+        setPreviewHeight(minimumHeight);
       }
 
-      else if (largestFlexBoxLeft === targetFlexBoxOffset) {
+      else if (flexBoxDimensions.largestFlexBoxLeft > targetFlexBoxOffset) {
+        adjustPreviewHeight(minimumHeight, previewHeight, flexBoxHeights);
+      }
+
+      else if (flexBoxDimensions.largestFlexBoxLeft === targetFlexBoxOffset) {
         // The width of the flex container is okay.
-        if (flexContainerHeight < previewHeight) {
+        if (flexBoxDimensions.flexContainerHeight < previewHeight) {
           // The flex container is too high.
           // Fine-tune its height.
-          setPreviewHeight(flexContainerHeight);
+          setPreviewHeight(flexBoxDimensions.flexContainerHeight);
         }
-        else if (totalFlexBoxHeight !== previewFlexBoxHeight) {
+        else if (flexBoxDimensions.totalFlexBoxHeight !== previewFlexBoxHeight) {
           // However, the number of skills has changed.
           // Great reset!
-          setPreviewHeight(minimunHeight);
+          setPreviewHeight(minimumHeight);
         }
       }
-      
-      setPreviewFlexBoxHeight(totalFlexBoxHeight);
+
+      setPreviewFlexBoxHeight(flexBoxDimensions.totalFlexBoxHeight);
     }
   },
-  [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
+    [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
 
   React.useEffect(() => {
     // Adjust the height of the preview window to exactly fit all skills.
@@ -260,7 +269,7 @@ const Skill = (props) => {
     // at the close:
     return () => timeoutId && clearTimeout(timeoutId);
   },
-  [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
+    [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
 
   const renderPreviewDescription = (skill) =>
     preview.wrapText(commonUtils.getValueOrFallback(skill, "description", props.locale));
@@ -315,7 +324,7 @@ const Skill = (props) => {
           overflow: "hidden"
         }
       }}
-      tokens={{ childrenGap: "l1"}}>
+      tokens={{ childrenGap: "l1" }}>
       <div
         id="skillsPreview"
         style={{
@@ -341,13 +350,13 @@ const Skill = (props) => {
             .map(([category, skillsOfCategory]) => renderPreviewSkillsOfCategory(category, skillsOfCategory))
         }
       </div>
-      <Stack horizontal tokens={{ childrenGap: "55px"}}>
+      <Stack horizontal tokens={{ childrenGap: "55px" }}>
         <Text style={previewTextStyles}><strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{props.locale === "uk_UK" ? "basic" : "basis"}</Text>
         <Text style={previewTextStyles}><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{props.locale === "uk_UK" ? "advanced" : "gevorderd"}</Text>
         <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{props.locale === "uk_UK" ? "experienced" : "ervaren"}</Text>
       </Stack>
     </Stack>,
-  [skills, props.locale, previewHeight]);
+    [skills, props.locale, previewHeight]);
 
   const isValidDescription = (text) =>
     (preview.wrapText(text).match(/\n/g) || []).length > 1 // more than two lines?
@@ -437,8 +446,8 @@ const Skill = (props) => {
                   content:
                     <Text>
                       <strong>&#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Basis</strong> - Basiskennisniveau verkregen door training. Geen (concrete) praktijkervaring
-                      <br/><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Gevorderd</strong> - Gevorderd niveau verkregen door training en/of aantoonbare praktijkervaring
-                      <br/><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;<strong>Ervaren</strong> - Specialistisch niveau met aantoonbare meerjarige ervaring
+                      <br /><strong>&#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Gevorderd</strong> - Gevorderd niveau verkregen door training en/of aantoonbare praktijkervaring
+                      <br /><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;<strong>Ervaren</strong> - Specialistisch niveau met aantoonbare meerjarige ervaring
                     </Text>
                 })}
                 field="skillLevel"
@@ -452,9 +461,9 @@ const Skill = (props) => {
                   content:
                     <Text>
                       Deze informatie is voor eigen/intern gebruik en wordt niet getoond op het CV.
-                      <br/>Wanneer Sales in de CV Tool zoekt naar bepaalde expertises dan kan deze informatie
-                      <br/>erg relevant zijn om een goede match te vinden bij een aanvraag.
-                      <br/>Vul dit dus zoveel mogelijk in.
+                      <br />Wanneer Sales in de CV Tool zoekt naar bepaalde expertises dan kan deze informatie
+                      <br />erg relevant zijn om een goede match te vinden bij een aanvraag.
+                      <br />Vul dit dus zoveel mogelijk in.
                     </Text>
                 })}
                 field={`explanation.${props.locale}`}

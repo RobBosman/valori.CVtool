@@ -105,7 +105,6 @@ export class EventBusClient {
   sendEvent = (address, requestData, headers = {}) =>
     new Promise((_resolve, _reject) => {
       if (this._eventBus?.state === EventBus.OPEN) {
-        // console.debug("sendEvent:", address, requestData);
         this._eventBus.send(address, requestData, this.mergeHeaders(headers),
           (error, message) => error
             ? _reject(new Error(`Onbekende fout in de backend server: ${JSON.stringify(error)} ${message}`))

@@ -17,7 +17,7 @@ abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
     open fun validateRequest(message: Message<JsonObject>) =
         true
 
-    override fun start(startPromise: Promise<Void>) { //NOSONAR - Promise<Void> is defined in AbstractVerticle
+    override fun start(startPromise: Promise<Void>) { // NOSONAR - Promise<Void> is defined in AbstractVerticle
         vertx.eventBus()
             .consumer<JsonObject>(address)
             .toFlowable()

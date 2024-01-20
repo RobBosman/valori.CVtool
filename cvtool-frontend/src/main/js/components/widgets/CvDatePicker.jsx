@@ -17,48 +17,48 @@ const datePickerStrings = {
   invalidInputErrorMessage: "Ongeldig datumformaat."
 };
 
+const correctDateForTimezone = (date) => {
+  if (date) {
+    const correctedDate = new Date(date);
+    correctedDate.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // prevent timezone offset errors
+    return correctedDate;
+  } else {
+    return date;
+  }
+};
+
+const formatDateForStorage = (date) => {
+  try {
+    return correctDateForTimezone(date).toISOString().substring(0, 10); // yyyy-mm-dd
+  } catch (error) {
+    return "";
+  }
+};
+
+const parseDateFromStorage = (dateString) =>
+  dateString && new Date(dateString);
+
 export const CvDatePicker = (props) => {
 
   const {entity, instanceId, replaceInstance, locale, readOnly} = props.instanceContext;
   const instance = entity?.[instanceId];
   const localeForDate = locale?.substring(0, 2);
 
-  const correctDateForTimezone = (date) => {
-    if (date) {
-      const correctedDate = new Date(date);
-      correctedDate.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // prevent timezone offset errors
-      return correctedDate;
-    } else {
-      return date;
+const formatDateForScreen = (date) =>
+  date && correctDateForTimezone(date).toLocaleDateString(localeForDate) || "";
+
+const parseDateFromScreen = (dateString) => {
+  const match = dateString?.match(/^(\d+)[^\d]+(\d+)[^\d]+(\d+)$/); // 00 0 000
+  if (match)
+    switch (localeForDate) {
+    case "nl":
+      return new Date(match[3], match[2] - 1, match[1]); // d, m, y
+    case "uk":
+      return new Date(match[3], match[1], match[2] - 1); // m, d, y
+    default:
+      return new Date(match[1], match[2] - 1, match[1]); // y, m, d
     }
-  };
-
-  const formatDateForStorage = (date) => {
-    try {
-      return correctDateForTimezone(date).toISOString().substring(0, 10); // yyyy-mm-dd
-    } catch (error) {
-      return "";
-    }
-  };
-
-  const formatDateForScreen = (date) =>
-    date && correctDateForTimezone(date).toLocaleDateString(localeForDate) || "";
-
-  const parseDateFromStorage = (dateString) =>
-    dateString && new Date(dateString);
-
-  const parseDateFromScreen = (dateString) => {
-    const match = dateString?.match(/^(\d+)[^\d]+(\d+)[^\d]+(\d+)$/); // 00 0 000
-    if (match)
-      switch (localeForDate) {
-      case "nl":
-        return new Date(match[3], match[2] - 1, match[1]); // d, m, y
-      case "uk":
-        return new Date(match[3], match[1], match[2] - 1); // m, d, y
-      default:
-        return new Date(match[1], match[2] - 1, match[1]); // y, m, d
-      }
-  };
+};
   
   // Set the value *after* the screen is fully rendered.
   // This is to prevent a bug that occurs in the Experience screen:
