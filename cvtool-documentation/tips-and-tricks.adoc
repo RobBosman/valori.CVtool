@@ -2,12 +2,12 @@
 
 == Run MongoDB locally
 
-Use `docker-compose` to start the CVtool application as usual, and then stop/kill the _cvtool-frontend_ and _cvtool-backend_ containers:
+Use `docker compose` to start the CVtool application as usual, and then stop/kill the _cvtool-frontend_ and _cvtool-backend_ containers:
 
 [source,sh]
 ....
-docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
-docker-container stop \
+docker compose -f docker-compose.yaml --env-file=/secret/.env up -d
+docker container stop \
   "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" \
   "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
 ....

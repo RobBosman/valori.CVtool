@@ -71,7 +71,7 @@ crontab -e
 # Install MongoDB and CVtool and run letsencrypt to obtain SSL certs. (Restart CVtool server to load a new certificate.)
 docker pull bransom/cvtool-backend
 docker pull bransom/cvtool-frontend
-docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
+docker compose -f docker-compose.yaml --env-file=/secret/.env up -d
 docker container prune -f
 docker image prune -f
 
