@@ -33,7 +33,7 @@
         <mongodb-driver-reactivestreams.version>5.0.0-beta0</mongodb-driver-reactivestreams.version>
         <nodejs.version>v20.11.0</nodejs.version>
         <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
-        <vertx.version>4.5.1</vertx.version>
+        <vertx.version>4.5.2</vertx.version>
     </properties>
 
     <profiles>
