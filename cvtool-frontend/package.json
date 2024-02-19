@@ -9,9 +9,9 @@
   "source": "src/main/js/index.html",
   "main": "target/classes/index.htm",
   "dependencies": {
-    "@azure/msal-browser": "^3.7.1",
-    "@fluentui/react": "^8.115.3",
-    "@reduxjs/toolkit": "^2.1.0",
+    "@azure/msal-browser": "^3.10.0",
+    "@fluentui/react": "^8.115.6",
+    "@reduxjs/toolkit": "^2.2.1",
     "@uifabric/react-hooks": "^7.16.4",
     "@vertx/eventbus-bridge-client.js": "^1.0.0-3-SNAPSHOT",
     "buffer": "^6.0.3",
@@ -40,9 +40,9 @@
     "prop-types": "^15.8.1",
     "rimraf": "^5.0.5",
     "url-loader": "^4.1.1",
-    "webpack": "^5.90.1",
+    "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^5.0.2"
   },
   "scripts": {
     "run:dev": "webpack serve --config webpack.dev.js",
