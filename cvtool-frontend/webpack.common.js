@@ -89,12 +89,11 @@ export const composeCommonConfig = devOrProdMode => ({
     },
     open: true,
     port: 8000,
-    proxy: {
-      "/eventbus": {
-        target: "http://localhost:80/",
-        secure: false,
-        changeOrigin: true
+    proxy: [
+      {
+        context: ["/eventbus"],
+        target: "http://localhost:80/"
       }
-    }
+    ]
   }
 });
