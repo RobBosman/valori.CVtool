@@ -12,7 +12,7 @@ export const CvPhoto = (props) => {
   const photoProps = {
     alt: "Pasfoto",
     src: photoB64,
-    imageFit: ImageFit.centerContain,
+    imageFit: ImageFit.centerCover,
     styles: prps => ({
       root: {
         border: '1px solid ' + prps.theme.palette.neutralSecondary
@@ -23,15 +23,18 @@ export const CvPhoto = (props) => {
   };
 
   const fileUploadHandler = e => {
-    const fileReader = new FileReader();
-    fileReader.onloadend = () => {
-      const instanceToBeSaved = {
-        ...instance,
-        [props.field]: fileReader.result
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => {
+        const instanceToBeSaved = {
+          ...instance,
+          [props.field]: fileReader.result
+        };
+        replaceInstance?.(instanceId, instanceToBeSaved);
       };
-      replaceInstance?.(instanceId, instanceToBeSaved);
-    };
-    fileReader.readAsDataURL(e.target.files[0]);
+      fileReader.readAsDataURL(selectedFile);
+    }
   };
 
   return (
