@@ -10,7 +10,7 @@ import {appVersion} from "../app";
 
 const versionStyle = {
   position: "fixed",
-  right: 10,
+  right: 30,
   bottom: 10,
   fontSize: "small",
   color: "#888888",

@@ -5,7 +5,7 @@ import { useId } from "@uifabric/react-hooks";
 
 export const CvRating = (props) => {
 
-  const {entity, instanceId, replaceInstance,readOnly} = props.instanceContext;
+  const {entity, instanceId, replaceInstance, readOnly} = props.instanceContext;
   const instance = entity?.[instanceId];
 
   const value = instance?.[props.field] || props.defaultValue || 0;
@@ -23,7 +23,7 @@ export const CvRating = (props) => {
       >{props.label}</Label>
       <Rating
         id={ratingId}
-        min={props.min}
+        allowZeroStars={props.allowZeroStars}
         max={props.max}
         disabled={!instance}
         rating={value}
@@ -39,6 +39,6 @@ CvRating.propTypes = {
   field: PropTypes.string,
   defaultValue: PropTypes.number,
   label: PropTypes.any,
-  min: PropTypes.number,
+  allowZeroStars: PropTypes.number,
   max: PropTypes.number
 };

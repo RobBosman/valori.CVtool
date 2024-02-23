@@ -8,6 +8,7 @@ import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 import { CvFormattedText } from "../widgets/CvFormattedText";
+import { CvPhoto } from "../widgets/CvPhoto";
 import Preview, * as preview from "../cv/Preview";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as uiActions from "../../services/ui/ui-actions";
@@ -15,6 +16,7 @@ import * as errorActions from "../../services/error/error-actions";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import ConfirmDialog from "../ConfirmDialog";
 import { createUuid } from "../../services/safe/safe-services";
+import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const Profile = (props) => {
 
@@ -46,6 +48,8 @@ const Profile = (props) => {
     replaceInstance: props.replaceAccount,
     readOnly: !isEditable
   };
+
+  const isPhotoAvailable = props.accountEntity?.[props.selectedAccountId]?.photo;
 
   const {editPaneBackground, viewPaneBackground, valoriBlue, valoriYellow} = useTheme();
 
@@ -253,26 +257,39 @@ const Profile = (props) => {
       <tbody>
         <tr>
           <td colSpan={2}>
-            <Stack horizontal
+            <Stack horizontal horizontalAlign="space-between"
               styles={editAccountStyles}
               tokens={{ childrenGap: "l1" }}>
-              <CvTextField
-                label="Naam"
-                field="name"
+              <Stack vertical>
+                <Stack horizontal
+                  tokens={{ childrenGap: "l1" }}>
+                  <CvTextField
+                    label="Naam"
+                    field="name"
+                    instanceContext={accountContext}
+                    styles={{ root: { minWidth: 300 } }}
+                  />
+                  <CvDatePicker
+                    label="Geboortedatum"
+                    field="dateOfBirth"
+                    instanceContext={accountContext}
+                    styles={{ root: { width: 120, maxHeight: 60 } }}
+                  />
+                </Stack>
+                <CvTextField
+                  label="Woonplaats"
+                  field="residence"
+                  instanceContext={accountContext}
+                  styles={{ root: { minWidth: 300 } }}
+                />
+              </Stack>
+              <CvPhoto
+                label={createHelpIcon({
+                  label: "Foto",
+                  content: <Text>Upload een foto van jezelf.</Text>
+                })}
+                field="photo"
                 instanceContext={accountContext}
-                styles={{ root: { minWidth: 300 } }}
-              />
-              <CvDatePicker
-                label="Geboortedatum"
-                field="dateOfBirth"
-                instanceContext={accountContext}
-                styles={{ root: { minWidth: 120, maxHeight: 60 } }}
-              />
-              <CvTextField
-                label="Woonplaats"
-                field="residence"
-                instanceContext={accountContext}
-                styles={{ root: { minWidth: 300 } }}
               />
             </Stack>
           </td>
@@ -381,6 +398,16 @@ const Profile = (props) => {
                   instanceContext={characteristicsContext}
                   multiline
                   autoAdjustHeight
+                />
+                <CvCheckbox
+                  label={createHelpIcon({
+                    label: "Foto in cv opnemen",
+                    content: <Text>Geef hier aan of je foto in het cv-document moet worden opgenomen.</Text>
+                  })}
+                  field="includePhotoInCv"
+                  instanceContext={characteristicsContext}
+                  disabled={!isPhotoAvailable}
+                  styles={{ root: { paddingTop: 15 } }}
                 />
               </Stack>
               : <Stack styles={editStyles}>
