@@ -1,29 +1,25 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Image, ImageFit, Label, Stack } from "@fluentui/react";
+import { DefaultButton, Image, ImageFit, Label, Stack } from "@fluentui/react";
 
 export const CvPhoto = (props) => {
 
   const {entity, instanceId, replaceInstance} = props.instanceContext;
   const instance = entity?.[instanceId];
 
-  const photoB64 = instance?.[props.field] || "";
+  const photoB64 = instance?.[props.field];
 
   const photoProps = {
-    alt: "Pasfoto",
     src: photoB64,
+    alt: "Foto",
     imageFit: ImageFit.centerCover,
-    styles: prps => ({
-      root: {
-        border: '1px solid ' + prps.theme.palette.neutralSecondary
-      }
-    }),
+    styles: prps => ({ root: { border: '1px solid ' + prps.theme.palette.neutralSecondary } }),
     width: "10em",
     height: "10em"
   };
 
-  const fileUploadHandler = e => {
-    const selectedFile = e.target.files[0];
+  const handleFileUpload = e => {
+    const selectedFile= e.target.files[0];
     if (selectedFile) {
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
@@ -32,9 +28,18 @@ export const CvPhoto = (props) => {
           [props.field]: fileReader.result
         };
         replaceInstance?.(instanceId, instanceToBeSaved);
+        e.target.value = "";
       };
       fileReader.readAsDataURL(selectedFile);
     }
+  };
+
+  const onDeletePhoto = () => {
+    const instanceToBeSaved = {
+      ...instance,
+      [props.field]: null
+    };
+    replaceInstance?.(instanceId, instanceToBeSaved);
   };
 
   return (
@@ -43,7 +48,13 @@ export const CvPhoto = (props) => {
         <Stack.Item align="end">
           <Label>{props.label}</Label>
         </Stack.Item>
-        <input type="file" onChange={fileUploadHandler}></input>
+        <input type="file" onChange={handleFileUpload}></input>
+        <DefaultButton
+          text="Foto verwijderen"
+          iconProps={{ iconName: "Delete" }}
+          disabled={!photoB64}
+          onClick={onDeletePhoto}
+        />
       </Stack>
       <Image {...photoProps}></Image>
     </Stack>

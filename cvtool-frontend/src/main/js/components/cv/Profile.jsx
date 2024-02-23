@@ -197,7 +197,8 @@ const Profile = (props) => {
       newCharacteristics = {
         _id: createUuid(),
         accountId: props.selectedAccountId,
-        includeInCv: false
+        includeInCv: false,
+        includePhotoInCv: true
       };
       selectCharacteristicsInCv(newCharacteristics);
     }
