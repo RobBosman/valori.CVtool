@@ -452,7 +452,7 @@ const Skill = (props) => {
                 })}
                 field="skillLevel"
                 instanceContext={skillContext}
-                min={0}
+                allowZeroStars={true}
                 max={3}
               />
               <CvTextField

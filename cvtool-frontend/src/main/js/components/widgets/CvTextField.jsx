@@ -76,7 +76,7 @@ export const CvTextField = (props) => {
     let instanceToBeSaved;
     const fieldPath = props.field.split(".");
     if (fieldPath.length === 2) {
-      let subInstance = instance[fieldPath[0]] || {};
+      const subInstance = instance[fieldPath[0]] || {};
       instanceToBeSaved = {
         ...instance,
         [fieldPath[0]]: {
