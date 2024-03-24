@@ -38,13 +38,12 @@ export const eventBusEpics = [
   
   // Add or delete EventBus headers.
   (action$) => action$.pipe(
-    ofType(authActions.refreshAuthentication.type),
+    ofType(authActions.setTokens.type),
     rx.map(action => action.payload),
     rx.filter(payload => payload),
-    rx.map(payload => JSON.parse(payload).idToken),
-    rx.map(jwt =>
-      jwt
-        ? eventBusClient.upsertDefaultHeaders({ Authorization: `Bearer ${jwt}` })
+    rx.map(({idToken}) =>
+    idToken
+        ? eventBusClient.upsertDefaultHeaders({ Authorization: `Bearer ${idToken}` })
         : eventBusClient.deleteDefaultHeaders({ Authorization: "" })
     ),
     rx.ignoreElements()

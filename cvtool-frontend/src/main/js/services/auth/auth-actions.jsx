@@ -5,9 +5,12 @@ import { reducerRegistry } from "../../redux/reducerRegistry";
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
 export const authenticate = createAction("AUTHENTICATE", () => ({}));
-export const refreshAuthentication = createAction("SET_AUTHENTICATION_RESULT");
-export const fetchAuthInfo = createAction("FETCH_AUTH_INFO");
+export const refreshAuthenticationBefore = createAction("REFRESH_AUTHENTICATION_BEFORE");
+export const fetchAuthInfo = createAction("FETCH_AUTH_INFO",
+  (email, name) => ({ payload: { email: email, name: name } }));
 // Reducer actions:
+export const setTokens = createAction("SET_TOKENS",
+  (idToken, accessToken) => ({ payload: { idToken: idToken, accessToken: accessToken } }));
 export const setLoginState = createAction("SET_LOGIN_STATE");
 export const setAuthInfo = createAction("SET_AUTH_INFO");
 
@@ -26,6 +29,11 @@ reducerRegistry.register(
       loginState: LoginStates.LOGGED_OUT
     },
     builder => builder
+      .addCase(setTokens, (state, action) => ({
+        ...state,
+        idToken: action.payload.idToken,
+        accessToken: action.payload.accessToken
+      }))
       .addCase(setLoginState, (state, action) => ({
         ...state,
         loginState: action.payload
