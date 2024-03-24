@@ -34,6 +34,22 @@ export const CvPhoto = (props) => {
     }
   };
 
+  const onFetchPhoto = () => {
+
+    console.log("authenticationResult", authenticationResult);
+    const response = fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+        headers: { Authorization: `Bearer ${authenticationResult.accessToken}` },
+      })
+      .then(response => response.blob())
+      .then(responseBlob => console.log("responseBlob", responseBlob));
+
+    const instanceToBeSaved = {
+      ...instance,
+      [props.field]: null
+    };
+    replaceInstance?.(instanceId, instanceToBeSaved);
+  };
+
   const onDeletePhoto = () => {
     const instanceToBeSaved = {
       ...instance,
@@ -49,6 +65,13 @@ export const CvPhoto = (props) => {
           <Label>{props.label}</Label>
         </Stack.Item>
         <input type="file" onChange={handleFileUpload}></input>
+        <DefaultButton
+          primary={true}
+          text="Foto ophalen"
+          iconProps={{ iconName: "Info" }}
+          disabled={!photoB64}
+          onClick={onFetchPhoto}
+        />
         <DefaultButton
           text="Foto verwijderen"
           iconProps={{ iconName: "Delete" }}

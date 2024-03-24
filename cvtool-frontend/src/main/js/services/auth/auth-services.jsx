@@ -14,7 +14,7 @@ const OAUTH2_CONFIG = {
   }
 };
 const LOGIN_CONFIG = {
-  scopes: ["openid"],
+  scopes: ["openid", "User.Read"],
   forceRefresh: false // Set this to "true" to skip a cached token and go to the backend server to get a new token.
 };
 
