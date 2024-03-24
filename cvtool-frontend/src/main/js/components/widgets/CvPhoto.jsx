@@ -21,33 +21,32 @@ export const CvPhoto = (props) => {
   const handleFileUpload = e => {
     const selectedFile= e.target.files[0];
     if (selectedFile) {
-      const fileReader = new FileReader();
-      fileReader.onloadend = () => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
         const instanceToBeSaved = {
           ...instance,
-          [props.field]: fileReader.result
+          [props.field]: reader.result
         };
         replaceInstance?.(instanceId, instanceToBeSaved);
         e.target.value = "";
       };
-      fileReader.readAsDataURL(selectedFile);
+      reader.readAsDataURL(selectedFile);
     }
   };
 
-  const onFetchPhoto = () => {
-
-    console.log("authenticationResult", authenticationResult);
-    const response = fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-        headers: { Authorization: `Bearer ${authenticationResult.accessToken}` },
-      })
-      .then(response => response.blob())
-      .then(responseBlob => console.log("responseBlob", responseBlob));
-
-    const instanceToBeSaved = {
-      ...instance,
-      [props.field]: null
-    };
-    replaceInstance?.(instanceId, instanceToBeSaved);
+  const onFetchProfilePhoto = () => {
+    props.fetchProfilePhoto()
+      .then(photoBlob => {
+        const reader = new FileReader();
+        reader.readAsDataURL(photoBlob);
+        reader.onloadend = () => {
+          const instanceToBeSaved = {
+            ...instance,
+            [props.field]: reader.result
+          };
+          replaceInstance?.(instanceId, instanceToBeSaved);
+        }
+      });
   };
 
   const onDeletePhoto = () => {
@@ -67,10 +66,9 @@ export const CvPhoto = (props) => {
         <input type="file" onChange={handleFileUpload}></input>
         <DefaultButton
           primary={true}
-          text="Foto ophalen"
+          text="Valori profielfoto ophalen"
           iconProps={{ iconName: "Info" }}
-          disabled={!photoB64}
-          onClick={onFetchPhoto}
+          onClick={onFetchProfilePhoto}
         />
         <DefaultButton
           text="Foto verwijderen"
@@ -87,5 +85,6 @@ export const CvPhoto = (props) => {
 CvPhoto.propTypes = {
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired,
-  label: PropTypes.any
+  label: PropTypes.any,
+  fetchProfilePhoto: PropTypes.func.isRequired
 };

@@ -13,6 +13,9 @@ import * as authServices from "./auth-services";
 const AUTHENTICATION_VERIFY_MILLIS = 5 * 60 * 1000; // 5 minutes
 const AUTHENTICATION_REFRESH_SECONDS = 15 * 60; // 15 minutes
 
+const getTokenExpiration = authenticationResult =>
+ authenticationResult.idTokenClaims?.exp || 0;
+
 export const authEpics = [
 
   // Handle requests to login or logout.
@@ -37,9 +40,10 @@ export const authEpics = [
             rx.take(1),
             rx.mergeMap(() => of(
               authActions.setLoginState(authActions.LoginStates.LOGGING_OUT),
-              // Then delete the authInfo data and disconnect the EventBus.
+              // Then delete the auth data and disconnect the EventBus.
+              authActions.setTokens(undefined, undefined),
               authActions.setAuthInfo(undefined),
-              authActions.refreshAuthentication(undefined),
+              authActions.refreshAuthenticationBefore(undefined),
               eventBusActions.requestEventBusConnection(false)
             ))
           )
@@ -52,10 +56,11 @@ export const authEpics = [
     ofType(authActions.authenticate.type),
     rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider()).pipe(
       rx.mergeMap(authenticationResult => of(
-        authActions.refreshAuthentication(JSON.stringify(authenticationResult)),
+        authActions.setTokens(authenticationResult.idToken, authenticationResult.accessToken),
+        authActions.refreshAuthenticationBefore(getTokenExpiration(authenticationResult)),
         // When requested to login then fetch the authInfo data.
         authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
-        authActions.fetchAuthInfo(JSON.stringify(authenticationResult))
+        authActions.fetchAuthInfo(authenticationResult.account.username, authenticationResult.account.name)
       )),
       rx.catchError((error, source$) => merge(
         of(
@@ -69,27 +74,27 @@ export const authEpics = [
 
   // Check every 5 minutes if the JWT is still valid for at least five more minutes.
   (action$, state$) => action$.pipe(
-    ofType(authActions.refreshAuthentication.type),
+    ofType(authActions.refreshAuthenticationBefore.type),
     rx.map(action => action.payload),
-    rx.switchMap(authenticationResultJson => {
+    rx.switchMap(idTokenClaimsExp => {
       // Abort any refreshing when logged out.
       const loginState = state$.value.auth?.loginState;
-      if (!authenticationResultJson
+      if (!idTokenClaimsExp
         || loginState === authActions.LoginStates.LOGGED_OUT
         || loginState === authActions.LoginStates.LOGGING_OUT) {
         return EMPTY;
       }
 
-      const authenticationResult = JSON.parse(authenticationResultJson);
-      
       // Check if the JWT is still valid the next few minutes.
-      const remainingSeconds = (authenticationResult.idTokenClaims?.exp || 0) - (new Date().getTime() / 1000);
+      const remainingSeconds = idTokenClaimsExp - (new Date().getTime() / 1000);
       const next$ = (remainingSeconds > AUTHENTICATION_REFRESH_SECONDS)
-        ? of(authenticationResult) // Keep using the same token.
-        : from(authServices.authenticateAtOpenIdProvider(true)); // Get a new token.
+        ? of(idTokenClaimsExp) // Keep using the same token.
+        : from(authServices.authenticateAtOpenIdProvider(true) // Get a new token.
+            .then(authResult => getTokenExpiration(authResult))
+          );
       return next$.pipe(
         rx.delay(AUTHENTICATION_VERIFY_MILLIS), // Repeat this check every few minutes.
-        rx.map(refreshedAuthenticationResult => authActions.refreshAuthentication(JSON.stringify(refreshedAuthenticationResult))),
+        rx.map(exp => authActions.refreshAuthenticationBefore(exp)),
         rx.catchError((error, source$) => merge(
           of(
             errorActions.setLastError(`Her-authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
@@ -104,12 +109,12 @@ export const authEpics = [
   // Fetch the authInfo. But first ensure the EventBus is connected.
   (action$) => action$.pipe(
     ofType(authActions.fetchAuthInfo.type),
-    rx.map(action => JSON.parse(action.payload)),
-    rx.switchMap(authenticationResult => eventBusServices.eventBusClient.monitorConnectionState().pipe(
+    rx.map(action => action.payload),
+    rx.switchMap(({email, name}) => eventBusServices.eventBusClient.monitorConnectionState().pipe(
       // Fetch the authInfo data as soon as the EventBus is connected.
       rx.filter(connectionState => connectionState === eventBusServices.ConnectionStates.CONNECTED),
       rx.take(1), // Connect once; don't automatically fetch authInfo at future reconnects.
-      rx.mergeMap(() => authServices.fetchAuthInfoFromRemote(authenticationResult, eventBusServices.eventBusClient.sendEvent)),
+      rx.mergeMap(() => authServices.fetchAuthInfoFromRemote(email, name, eventBusServices.eventBusClient.sendEvent)),
       rx.map(authInfo => authActions.setAuthInfo(authInfo)),
       rx.catchError((error, source$) => merge(
         of(

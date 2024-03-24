@@ -13,6 +13,7 @@ const OAUTH2_CONFIG = {
     storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge.
   }
 };
+
 const LOGIN_CONFIG = {
   scopes: ["openid", "User.Read"],
   forceRefresh: false // Set this to "true" to skip a cached token and go to the backend server to get a new token.
@@ -44,18 +45,17 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false) => {
       });
 };
 
-export const fetchAuthInfoFromRemote = (authenticationResult, sendEvent) => {
-  const {account} = authenticationResult;
-  return sendEvent("authInfo.fetch",
+export const fetchAuthInfoFromRemote = (email, name, sendEvent) =>
+  sendEvent("authInfo.fetch",
     {
-      email: account.username,
-      name: account.name || account.username.split("@")[0]
-    })
-    .then(message => {
-      const authInfo = message.body;
-      if (!authInfo) {
-        throw new Error("Authentication error: message.body contains no authInfo");
-      }
-      return authInfo;
-    });
-};
+      email: email,
+      name: name || email.split("@")[0]
+    }
+  )
+  .then(message => {
+    const authInfo = message.body;
+    if (!authInfo) {
+      throw new Error("Authentication error: message.body contains no authInfo");
+    }
+    return authInfo;
+  });

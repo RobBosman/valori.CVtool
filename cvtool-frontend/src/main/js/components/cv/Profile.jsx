@@ -253,6 +253,13 @@ const Profile = (props) => {
     width: "calc(50vw - 98px)"
   };
 
+  const fetchProfilePhoto = () => {
+    return fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+        headers: { Authorization: `Bearer ${props.accessToken}` },
+      })
+      .then(response => response.blob());
+  };
+
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -291,6 +298,7 @@ const Profile = (props) => {
                 })}
                 field="photo"
                 instanceContext={accountContext}
+                fetchProfilePhoto={fetchProfilePhoto}
               />
             </Stack>
           </td>
@@ -436,6 +444,7 @@ Profile.propTypes = {
 };
 
 const select = (store) => ({
+  accessToken: store.auth.accessToken,
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
   selectedAccountId: store.ui.selectedId.account,
