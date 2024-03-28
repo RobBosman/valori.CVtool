@@ -108,7 +108,7 @@
                     <xsl:with-param name="category">OS_NETWORKS</xsl:with-param>
                 </xsl:call-template>
 
-                <w:p w14:paraId="68712A30" w14:textId="77777777" w:rsidR="00660A7D" w:rsidRDefault="00660A7D"
+                <w:p w14:paraId="68712A30" w14:textId="77777777" w:rsidR="0027209A" w:rsidRDefault="0027209A"
                      w:rsidP="00666ED6">
                     <w:pPr>
                         <w:sectPr w:rsidR="00660A7D" w:rsidSect="00660A7D">
@@ -326,8 +326,7 @@
                                     <w:tcW w:w="3071" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="52A47C7E" w14:textId="4A1C98C1" w:rsidR="001860B4"
-                                     w:rsidRDefault="001860B4"
-                                     w:rsidP="000B7B5E">
+                                     w:rsidRDefault="001860B4" w:rsidP="000B7B5E">
                                     <w:pPr>
                                         <w:pStyle w:val="Kop2"/>
                                         <w:outlineLvl w:val="1"/>

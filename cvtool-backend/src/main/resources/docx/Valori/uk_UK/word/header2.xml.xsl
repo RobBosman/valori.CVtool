@@ -24,16 +24,81 @@
 
     <xsl:template match="cv:root">
         <w:hdr mc:Ignorable="w14 wp14">
-            <w:p w14:paraId="422E78F8" w14:textId="292300FC" w:rsidR="006E0130" w:rsidRDefault="00A2340C"
-                 w:rsidP="007C6954">
+            <w:p w14:paraId="422E78F8" w14:textId="3E9FE7A8" w:rsidR="006E0130" w:rsidRPr="00585C2D"
+                 w:rsidRDefault="00585C2D" w:rsidP="007C6954">
                 <w:pPr>
                     <w:pStyle w:val="Titel"/>
                     <w:jc w:val="right"/>
                 </w:pPr>
-                <w:r w:rsidRPr="00FD53E1">
+                <w:r>
                     <w:rPr>
                         <w:noProof/>
-                        <w:lang w:eastAsia="nl-NL"/>
+                    </w:rPr>
+                    <w:drawing>
+                        <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
+                                   relativeHeight="251663872"
+                                   behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="58102F43"
+                                   wp14:editId="5EBD1D5B">
+                            <wp:simplePos x="0" y="0"/>
+                            <wp:positionH relativeFrom="margin">
+                                <wp:posOffset>4421505</wp:posOffset>
+                            </wp:positionH>
+                            <wp:positionV relativeFrom="paragraph">
+                                <wp:posOffset>-440690</wp:posOffset>
+                            </wp:positionV>
+                            <wp:extent cx="1430655" cy="1430655"/>
+                            <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                            <wp:wrapSquare wrapText="bothSides"/>
+                            <wp:docPr id="1076116984" name="pasfoto" descr="pasfoto"/>
+                            <wp:cNvGraphicFramePr>
+                                <a:graphicFrameLocks noChangeAspect="1"/>
+                            </wp:cNvGraphicFramePr>
+                            <a:graphic>
+                                <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                                    <pic:pic>
+                                        <pic:nvPicPr>
+                                            <pic:cNvPr id="1076116984" name="pasfoto" descr="pasfoto"/>
+                                            <pic:cNvPicPr/>
+                                        </pic:nvPicPr>
+                                        <pic:blipFill>
+                                            <a:blip r:embed="rId3">
+                                                <a:extLst>
+                                                    <a:ext>
+                                                        <xsl:attribute name="uri">
+                                                            {28A0092B-C50C-407E-A947-70E740481C1C}
+                                                        </xsl:attribute>
+                                                        <a14:useLocalDpi val="0"/>
+                                                    </a:ext>
+                                                </a:extLst>
+                                            </a:blip>
+                                            <a:stretch>
+                                                <a:fillRect/>
+                                            </a:stretch>
+                                        </pic:blipFill>
+                                        <pic:spPr>
+                                            <a:xfrm>
+                                                <a:off x="0" y="0"/>
+                                                <a:ext cx="1430655" cy="1430655"/>
+                                            </a:xfrm>
+                                            <a:prstGeom prst="rect">
+                                                <a:avLst/>
+                                            </a:prstGeom>
+                                        </pic:spPr>
+                                    </pic:pic>
+                                </a:graphicData>
+                            </a:graphic>
+                            <wp14:sizeRelH relativeFrom="margin">
+                                <wp14:pctWidth>0</wp14:pctWidth>
+                            </wp14:sizeRelH>
+                            <wp14:sizeRelV relativeFrom="margin">
+                                <wp14:pctHeight>0</wp14:pctHeight>
+                            </wp14:sizeRelV>
+                        </wp:anchor>
+                    </w:drawing>
+                </w:r>
+                <w:r w:rsidR="00A2340C" w:rsidRPr="00FD53E1">
+                    <w:rPr>
+                        <w:noProof/>
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -62,7 +127,7 @@
                                             <pic:cNvPicPr/>
                                         </pic:nvPicPr>
                                         <pic:blipFill>
-                                            <a:blip r:embed="rId1">
+                                            <a:blip r:embed="rId2">
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
@@ -100,7 +165,6 @@
                 <w:r w:rsidR="004229AA" w:rsidRPr="00FD53E1">
                     <w:rPr>
                         <w:noProof/>
-                        <w:lang w:eastAsia="nl-NL"/>
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -129,7 +193,7 @@
                                             <pic:cNvPicPr/>
                                         </pic:nvPicPr>
                                         <pic:blipFill>
-                                            <a:blip r:embed="rId2" cstate="print">
+                                            <a:blip r:embed="rId1" cstate="print">
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
@@ -164,36 +228,35 @@
                         </wp:anchor>
                     </w:drawing>
                 </w:r>
-                <w:r w:rsidR="00D94787" w:rsidRPr="00FD53E1">
+                <w:r w:rsidR="00D94787" w:rsidRPr="00585C2D">
                     <w:t>
                         <xsl:value-of select="cv:account/cv:name"/>
                     </w:t>
                 </w:r>
             </w:p>
-            <w:p w14:paraId="3EE983D6" w14:textId="01CA2A7A" w:rsidR="007C6954" w:rsidRPr="007C6954"
-                 w:rsidRDefault="007C6954"
-                 w:rsidP="007C6954">
+            <w:p w14:paraId="3EE983D6" w14:textId="01CA2A7A" w:rsidR="007C6954" w:rsidRPr="00585C2D"
+                 w:rsidRDefault="007C6954" w:rsidP="007C6954">
                 <w:pPr>
                     <w:pStyle w:val="Subtitel"/>
                     <w:jc w:val="right"/>
                 </w:pPr>
-                <w:r>
+                <w:r w:rsidRPr="00585C2D">
                     <w:t>
                         <xsl:apply-templates select="cv:characteristics/cv:role" mode="locale-placeholder"/>
                     </w:t>
                 </w:r>
-                <w:r w:rsidRPr="007C6954">
+                <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
                         <w:rStyle w:val="Valori-geel"/>
                     </w:rPr>
                     <w:t xml:space="preserve"> // </w:t>
                 </w:r>
-                <w:r>
+                <w:r w:rsidRPr="00585C2D">
                     <w:t>
                         <xsl:apply-templates select="cv:account/cv:dateOfBirth" mode="date-numeric"/>
                     </w:t>
                 </w:r>
-                <w:r w:rsidRPr="007C6954">
+                <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
                         <w:rStyle w:val="Valori-geel"/>
                     </w:rPr>
@@ -204,7 +267,7 @@
                         <xsl:value-of select="cv:account/cv:residence"/>
                     </w:t>
                 </w:r>
-                <w:r w:rsidRPr="007C6954">
+                <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
                         <w:rStyle w:val="Valori-geel"/>
                     </w:rPr>
