@@ -10,7 +10,8 @@ import nl.valori.cvtool.backend.DebouncingVerticle
 import nl.valori.cvtool.backend.ModelUtils.jsonToXml
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.util.*
+import java.util.Base64
+import java.util.Optional
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -38,6 +39,10 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             "common-uk_UK.xsl" to loadBytes("/docx/Valori/uk_UK/common-uk_UK.xsl")
         )
 
+        private val b64BinaryEntryNames = setOf(
+            "word/media/passport.photo"
+        )
+
         private val transformerFactory =
             TransformerFactory
                 .newInstance()
@@ -55,11 +60,13 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
         private fun createDocxPartNamesXslTemplatesMap(locale: String) =
             mapOf(
+                "[Content_Types].xml" to createXslTemplate("/docx/Valori/$locale/[Content_Types].xml.xsl"),
                 "docProps/core.xml" to createXslTemplate("/docx/Valori/$locale/docProps/core.xml.xsl"),
                 "word/document.xml" to createXslTemplate("/docx/Valori/$locale/word/document.xml.xsl"),
                 "word/footer1.xml" to createXslTemplate("/docx/Valori/$locale/word/footer1.xml.xsl"),
                 "word/footer2.xml" to createXslTemplate("/docx/Valori/$locale/word/footer2.xml.xsl"),
-                "word/header2.xml" to createXslTemplate("/docx/Valori/$locale/word/header2.xml.xsl")
+                "word/header2.xml" to createXslTemplate("/docx/Valori/$locale/word/header2.xml.xsl"),
+                "word/media/passport.photo" to createXslTemplate("/docx/Valori/$locale/word/media/passport.photo.xsl")
             )
 
         private val docxTemplate = loadBytes("/docx/Valori/template.docx")
@@ -123,7 +130,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 {
                     val errorMsg = "Error generating $locale cv data: ${it.message}"
                     log.warn(errorMsg)
-                    message.fail(RECIPIENT_FAILURE.toInt(),  errorMsg)
+                    message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
                 }
             )
     }
@@ -150,7 +157,18 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 map[docxEntryName] = xsltBytes
                 map
             }
-            .map { xsltMap ->
+            .doOnSuccess {
+                // Convert Base64 encoded entries, e.g. images, to binary data.
+                b64BinaryEntryNames.forEach { b64BinaryEntryName ->
+                    val binaryB64 = it[b64BinaryEntryName]
+                    if (binaryB64 != null && binaryB64.isNotEmpty()) {
+                        it[b64BinaryEntryName] = Base64.getDecoder().decode(String(binaryB64))
+                    } else {
+                        it.remove(b64BinaryEntryName)
+                    }
+                }
+            }
+            .map { preRenderedEntries ->
                 val docxBytes = ByteArrayOutputStream()
                 ZipOutputStream(docxBytes)
                     .use { docxOutputStream ->
@@ -160,7 +178,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                                 while (entry != null) {
 
                                     docxOutputStream.putNextEntry(ZipEntry(entry.name))
-                                    docxOutputStream.write(xsltMap.getOrElse(entry.name) { zipIn.readAllBytes() })
+                                    docxOutputStream.write(preRenderedEntries.getOrElse(entry.name) { zipIn.readAllBytes() })
                                     docxOutputStream.closeEntry()
 
                                     zipIn.closeEntry()
@@ -174,10 +192,11 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
     private fun composeFileName(cvEntities: JsonObject, locale: String): String {
         val name = when (val accountInstances = cvEntities.getValue("account")) {
             is JsonObject -> accountInstances.map.values
-                .filterIsInstance(JsonObject::class.java)
+                .filterIsInstance<JsonObject>()
                 .first()
                 .getString("name")
                 .replace(" ", "")
+
             else -> ""
         }
         return "CV_${locale.substring(3)}_$name.docx"

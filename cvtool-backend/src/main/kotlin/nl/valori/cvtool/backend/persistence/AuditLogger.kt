@@ -8,7 +8,7 @@ import nl.valori.cvtool.backend.ModelUtils.toJsonObject
 import nl.valori.cvtool.backend.authorization.AuthInfo
 import java.time.LocalDateTime
 import java.time.ZoneOffset.UTC
-import java.util.*
+import java.util.UUID
 
 internal object AuditLogger {
 

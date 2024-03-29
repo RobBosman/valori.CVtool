@@ -5,7 +5,8 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.DebouncingVerticle
-import java.util.*
+import java.util.Base64
+import java.util.Optional
 
 const val CV_DOWNLOAD_DEMO_ADDRESS = "cv.download.demo"
 
