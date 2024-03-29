@@ -842,7 +842,7 @@
                         <w:rPr>
                             <w:rStyle w:val="Valori-geel"/>
                         </w:rPr>
-                        <w:t xml:space="preserve"> // </w:t>
+                        <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00666ED6">
                         <w:t>
@@ -903,7 +903,7 @@
                         <w:rPr>
                             <w:rStyle w:val="Valori-geel"/>
                         </w:rPr>
-                        <w:t xml:space="preserve"> // </w:t>
+                        <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00666ED6">
                         <w:t>
