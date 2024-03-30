@@ -66,15 +66,18 @@ export const fetchAuthInfoFromRemote = (email, name, sendEvent) =>
   });
 
   export const fetchProfilePhoto = accessToken =>
-    fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    .then(response =>
+    authenticateAtOpenIdProvider(true, true)
+    .then(() =>
+      fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    }))
+    .then(response => response.blob())
+    .then(responseBlob =>
       new Promise((resolve, reject) => {
         try {
           const reader = new FileReader();
           reader.onloadend = () => resolve(reader.result);
-          reader.readAsDataURL(response.blob());
+          reader.readAsDataURL(responseBlob);
         } catch (e) {
           reject(e);
         }

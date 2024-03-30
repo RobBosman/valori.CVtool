@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { connect } from "react-redux";
 import { DefaultButton, Image, ImageFit, Label, Stack } from "@fluentui/react";
+import * as authActions from "../../services/auth/auth-actions";
 
-export const CvPhoto = (props) => {
+const CvPhoto = (props) => {
 
   const {entity, instanceId, replaceInstance} = props.instanceContext;
   const instance = entity?.[instanceId];
@@ -34,21 +36,6 @@ export const CvPhoto = (props) => {
     }
   };
 
-  const onFetchProfilePhoto = () => {
-    props.fetchProfilePhoto()
-      .then(photoBlob => {
-        const reader = new FileReader();
-        reader.readAsDataURL(photoBlob);
-        reader.onloadend = () => {
-          const instanceToBeSaved = {
-            ...instance,
-            [props.field]: reader.result
-          };
-          replaceInstance?.(instanceId, instanceToBeSaved);
-        }
-      });
-  };
-
   const onDeletePhoto = () => {
     const instanceToBeSaved = {
       ...instance,
@@ -68,7 +55,7 @@ export const CvPhoto = (props) => {
           primary={true}
           text="Valori profielfoto ophalen"
           iconProps={{ iconName: "Info" }}
-          onClick={onFetchProfilePhoto}
+          onClick={props.fetchProfilePhoto}
         />
         <DefaultButton
           text="Foto verwijderen"
@@ -88,3 +75,15 @@ CvPhoto.propTypes = {
   label: PropTypes.any,
   fetchProfilePhoto: PropTypes.func.isRequired
 };
+
+const select = (store) => ({
+  selectedAccountId: store.ui.selectedId.account,
+  accountEntity: store.safe.content.account
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchProfilePhoto: () => dispatch(authActions.fetchProfilePhoto()),
+  replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance))
+});
+
+export default connect(select, mapDispatchToProps)(CvPhoto);

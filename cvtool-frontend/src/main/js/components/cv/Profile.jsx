@@ -8,12 +8,11 @@ import { CvDatePicker } from "../widgets/CvDatePicker";
 import { CvTextField } from "../widgets/CvTextField";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 import { CvFormattedText } from "../widgets/CvFormattedText";
-import { CvPhoto } from "../widgets/CvPhoto";
+import CvPhoto from "../widgets/CvPhoto";
 import Preview, * as preview from "../cv/Preview";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as errorActions from "../../services/error/error-actions";
-import * as authActions from "../../services/auth/auth-actions";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import ConfirmDialog from "../ConfirmDialog";
 import { createUuid } from "../../services/safe/safe-services";
@@ -290,7 +289,6 @@ const Profile = (props) => {
                 })}
                 field="photo"
                 instanceContext={accountContext}
-                fetchProfilePhoto={props.fetchProfilePhoto}
               />
             </Stack>
           </td>
@@ -427,7 +425,6 @@ Profile.propTypes = {
   characteristicsEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
   accountEntity: PropTypes.object,
-  fetchProfilePhoto: PropTypes.func.isRequired,
   replaceAccount: PropTypes.func.isRequired,
   replaceCharacteristics: PropTypes.func.isRequired,
   selectedCharacteristicsId: PropTypes.string,
@@ -445,7 +442,6 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchProfilePhoto: () => dispatch(authActions.fetchProfilePhoto()),
   replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance)),
   replaceCharacteristics: (id, instance) => dispatch(changeInstance("characteristics", id, instance)),
   setSelectedCharacteristicsId: (id) => dispatch(uiActions.setSelectedId("characteristics", id)),
