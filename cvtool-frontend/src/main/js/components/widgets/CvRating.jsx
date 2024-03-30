@@ -39,6 +39,6 @@ CvRating.propTypes = {
   field: PropTypes.string,
   defaultValue: PropTypes.number,
   label: PropTypes.any,
-  allowZeroStars: PropTypes.number,
+  allowZeroStars: PropTypes.bool,
   max: PropTypes.number
 };
