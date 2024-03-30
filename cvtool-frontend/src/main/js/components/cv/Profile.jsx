@@ -13,6 +13,7 @@ import Preview, * as preview from "../cv/Preview";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as errorActions from "../../services/error/error-actions";
+import * as authActions from "../../services/auth/auth-actions";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import ConfirmDialog from "../ConfirmDialog";
 import { createUuid } from "../../services/safe/safe-services";
@@ -48,8 +49,6 @@ const Profile = (props) => {
     replaceInstance: props.replaceAccount,
     readOnly: !isEditable
   };
-
-  const isPhotoAvailable = props.accountEntity?.[props.selectedAccountId]?.photo;
 
   const {editPaneBackground, viewPaneBackground, valoriBlue, valoriYellow} = useTheme();
 
@@ -253,13 +252,6 @@ const Profile = (props) => {
     width: "calc(50vw - 98px)"
   };
 
-  const fetchProfilePhoto = () => {
-    return fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-        headers: { Authorization: `Bearer ${props.accessToken}` },
-      })
-      .then(response => response.blob());
-  };
-
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -298,7 +290,7 @@ const Profile = (props) => {
                 })}
                 field="photo"
                 instanceContext={accountContext}
-                fetchProfilePhoto={fetchProfilePhoto}
+                fetchProfilePhoto={props.fetchProfilePhoto}
               />
             </Stack>
           </td>
@@ -415,7 +407,6 @@ const Profile = (props) => {
                   })}
                   field="includePhotoInCv"
                   instanceContext={characteristicsContext}
-                  disabled={!isPhotoAvailable}
                   styles={{ root: { paddingTop: 15 } }}
                 />
               </Stack>
@@ -436,6 +427,7 @@ Profile.propTypes = {
   characteristicsEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
   accountEntity: PropTypes.object,
+  fetchProfilePhoto: PropTypes.func.isRequired,
   replaceAccount: PropTypes.func.isRequired,
   replaceCharacteristics: PropTypes.func.isRequired,
   selectedCharacteristicsId: PropTypes.string,
@@ -444,7 +436,6 @@ Profile.propTypes = {
 };
 
 const select = (store) => ({
-  accessToken: store.auth.accessToken,
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
   selectedAccountId: store.ui.selectedId.account,
@@ -454,6 +445,7 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  fetchProfilePhoto: () => dispatch(authActions.fetchProfilePhoto()),
   replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance)),
   replaceCharacteristics: (id, instance) => dispatch(changeInstance("characteristics", id, instance)),
   setSelectedCharacteristicsId: (id) => dispatch(uiActions.setSelectedId("characteristics", id)),

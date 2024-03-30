@@ -14,22 +14,27 @@ const OAUTH2_CONFIG = {
   }
 };
 
-const LOGIN_CONFIG = {
-  scopes: ["openid", "User.Read"],
-  forceRefresh: false // Set this to "true" to skip a cached token and go to the backend server to get a new token.
-};
+const getLoginConfig = (readUserProfile) => ({
+  scopes: [
+    "openid",
+    readUserProfile && "User.Read"
+  ].filter(Boolean),
+  forceRefresh: false
+});
 
 const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
 await msal.initialize();
 
-export const authenticateAtOpenIdProvider = (forceRefresh = false) => {
+export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const allCachedAccounts = msal.getAllAccounts();
   const cachedAccount = allCachedAccounts?.[0];
   const loginConfig = {
-    ...LOGIN_CONFIG,
+    ...getLoginConfig(readUserProfile),
     account: cachedAccount,
-    forceRefresh: forceRefresh
+    forceRefresh: forceRefresh // Set this to "true" to skip a cached token and obtain a new one.
   };
+
+  console.log("loginConfig: ", loginConfig);
 
   return (!cachedAccount)
     ? msal.acquireTokenPopup(loginConfig)
@@ -59,3 +64,19 @@ export const fetchAuthInfoFromRemote = (email, name, sendEvent) =>
     }
     return authInfo;
   });
+
+  export const fetchProfilePhoto = accessToken =>
+    fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    .then(response =>
+      new Promise((resolve, reject) => {
+        try {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(response.blob());
+        } catch (e) {
+          reject(e);
+        }
+      })
+    );

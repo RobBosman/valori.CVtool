@@ -8,11 +8,13 @@ export const authenticate = createAction("AUTHENTICATE", () => ({}));
 export const refreshAuthenticationBefore = createAction("REFRESH_AUTHENTICATION_BEFORE");
 export const fetchAuthInfo = createAction("FETCH_AUTH_INFO",
   (email, name) => ({ payload: { email: email, name: name } }));
+export const fetchProfilePhoto = createAction("FETCH_PROFILE_PHOTO");
 // Reducer actions:
 export const setTokens = createAction("SET_TOKENS",
   (idToken, accessToken) => ({ payload: { idToken: idToken, accessToken: accessToken } }));
 export const setLoginState = createAction("SET_LOGIN_STATE");
 export const setAuthInfo = createAction("SET_AUTH_INFO");
+export const setProfilePhoto = createAction("SET_PROFILE_PHOTO");
 
 export const LoginStates = {
   LOGGED_OUT: "LOGGED_OUT",
@@ -41,6 +43,10 @@ reducerRegistry.register(
       .addCase(setAuthInfo, (state, action) => ({
         ...state,
         authInfo: action.payload
+      }))
+      .addCase(setProfilePhoto, (state, action) => ({
+        ...state,
+        profilePhotoB64: action.payload
       }))
   )
 );

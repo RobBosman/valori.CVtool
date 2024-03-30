@@ -154,5 +154,16 @@ export const authEpics = [
       }
       return of(...actions);
     })
+  ),
+
+  // Fetch the profile photo.
+  (action$, state$) => action$.pipe(
+    ofType(authActions.fetchProfilePhoto.type),
+    rx.map(action => action.payload),
+    rx.switchMap(() => {
+      const accessToken = state$.value.auth?.accessToken;
+      return authServices.fetchProfilePhoto(accessToken);
+    }),
+    rx.map(profilePhotoB64 => authActions.setProfilePhoto(profilePhotoB64))
   )
 ];
