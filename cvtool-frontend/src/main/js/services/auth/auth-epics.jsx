@@ -41,7 +41,7 @@ export const authEpics = [
             rx.mergeMap(() => of(
               authActions.setLoginState(authActions.LoginStates.LOGGING_OUT),
               // Then delete the auth data and disconnect the EventBus.
-              authActions.setTokens(undefined, undefined),
+              authActions.setAuthResult(undefined),
               authActions.setAuthInfo(undefined),
               authActions.refreshAuthenticationBefore(undefined),
               eventBusActions.requestEventBusConnection(false)
@@ -54,21 +54,20 @@ export const authEpics = [
   // Authenticate at the OpenID provider.
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
-    rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider()).pipe(
-      rx.mergeMap(authenticationResult => of(
-        authActions.setTokens(authenticationResult.idToken, authenticationResult.accessToken),
-        authActions.refreshAuthenticationBefore(getTokenExpiration(authenticationResult)),
-        // When requested to login then fetch the authInfo data.
-        authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
-        authActions.fetchAuthInfo(authenticationResult.account.username, authenticationResult.account.name)
-      )),
-      rx.catchError((error, source$) => merge(
-        of(
-          errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
-          authActions.requestLogout()
-        ),
-        source$
-      ))
+    rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider())),
+    rx.mergeMap(authenticationResult => of(
+      authActions.setAuthResult(JSON.stringify(authenticationResult)),
+      authActions.refreshAuthenticationBefore(getTokenExpiration(authenticationResult)),
+      // When requested to login then fetch the authInfo data.
+      authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
+      authActions.fetchAuthInfo(authenticationResult.account.username, authenticationResult.account.name)
+    )),
+    rx.catchError((error, source$) => merge(
+      of(
+        errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+        authActions.requestLogout()
+      ),
+      source$
     ))
   ),
 
@@ -160,10 +159,23 @@ export const authEpics = [
   (action$, state$) => action$.pipe(
     ofType(authActions.fetchProfilePhoto.type),
     rx.map(action => action.payload),
-    rx.switchMap(() => {
-      const accessToken = state$.value.auth?.accessToken;
-      return authServices.fetchProfilePhoto(accessToken);
-    }),
-    rx.map(profilePhotoB64 => authActions.setProfilePhoto(profilePhotoB64))
+    rx.switchMap(accountInstanceId => {
+      const authResult = state$.value.auth?.authResult;
+
+      return !authResult?.scopes.includes("User.Read")
+        ? from(authServices.authenticateAtOpenIdProvider(true, true) // first authorize,
+            .then(() => authActions.fetchProfilePhoto(accountInstanceId)) // then retry
+          )
+        : from(authServices.fetchProfilePhoto(authResult.accessToken)
+            .then(profilePhotoB64 => {
+              const accountInstance = state$.value.safe.content.account[accountInstanceId];
+              const instanceToBeSaved = {
+                ...accountInstance,
+                photo: profilePhotoB64
+              };
+              return safeActions.changeInstance("account", accountInstanceId, instanceToBeSaved);
+            })
+          );
+    })
   )
 ];

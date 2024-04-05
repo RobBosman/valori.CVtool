@@ -15,10 +15,7 @@ const OAUTH2_CONFIG = {
 };
 
 const getLoginConfig = (readUserProfile) => ({
-  scopes: [
-    "openid",
-    readUserProfile && "User.Read"
-  ].filter(Boolean),
+  scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"],
   forceRefresh: false
 });
 
@@ -34,18 +31,17 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
     forceRefresh: forceRefresh // Set this to "true" to skip a cached token and obtain a new one.
   };
 
-  console.log("loginConfig: ", loginConfig);
-
   return (!cachedAccount)
     ? msal.acquireTokenPopup(loginConfig)
     : msal.acquireTokenSilent(loginConfig)
       .catch(error => {
-        if (error instanceof MSAL.InteractionRequiredAuthError) {
+        if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
+          console.log("Error acquiring token:", error);
           // Fallback to interaction mode when silent call fails.
           return msal.acquireTokenPopup(loginConfig);
         } else {
-          console.warn(error);
-          return Promise.resolve();
+          console.error("Error acquiring token:", error);
+          return Promise.reject(error);
         }
       });
 };
@@ -66,20 +62,17 @@ export const fetchAuthInfoFromRemote = (email, name, sendEvent) =>
   });
 
   export const fetchProfilePhoto = accessToken =>
-    authenticateAtOpenIdProvider(true, true)
-    .then(() =>
-      fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-    }))
+    fetch('https://graph.microsoft.com/v1.0/me/photo/$value', { headers: { Authorization: `Bearer ${accessToken}` } })
     .then(response => response.blob())
     .then(responseBlob =>
       new Promise((resolve, reject) => {
         try {
           const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
           reader.readAsDataURL(responseBlob);
+          reader.onloadend = () => resolve(reader.result);
         } catch (e) {
           reject(e);
         }
       })
     );
+  

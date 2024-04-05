@@ -10,11 +10,9 @@ export const fetchAuthInfo = createAction("FETCH_AUTH_INFO",
   (email, name) => ({ payload: { email: email, name: name } }));
 export const fetchProfilePhoto = createAction("FETCH_PROFILE_PHOTO");
 // Reducer actions:
-export const setTokens = createAction("SET_TOKENS",
-  (idToken, accessToken) => ({ payload: { idToken: idToken, accessToken: accessToken } }));
+export const setAuthResult = createAction("SET_AUTH_RESULT");
 export const setLoginState = createAction("SET_LOGIN_STATE");
 export const setAuthInfo = createAction("SET_AUTH_INFO");
-export const setProfilePhoto = createAction("SET_PROFILE_PHOTO");
 
 export const LoginStates = {
   LOGGED_OUT: "LOGGED_OUT",
@@ -31,10 +29,9 @@ reducerRegistry.register(
       loginState: LoginStates.LOGGED_OUT
     },
     builder => builder
-      .addCase(setTokens, (state, action) => ({
+      .addCase(setAuthResult, (state, action) => ({
         ...state,
-        idToken: action.payload.idToken,
-        accessToken: action.payload.accessToken
+        authResult: action.payload ? JSON.parse(action.payload) : undefined
       }))
       .addCase(setLoginState, (state, action) => ({
         ...state,
@@ -43,10 +40,6 @@ reducerRegistry.register(
       .addCase(setAuthInfo, (state, action) => ({
         ...state,
         authInfo: action.payload
-      }))
-      .addCase(setProfilePhoto, (state, action) => ({
-        ...state,
-        profilePhotoB64: action.payload
       }))
   )
 );

@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { DefaultButton, Image, ImageFit, Label, Stack } from "@fluentui/react";
 import * as authActions from "../../services/auth/auth-actions";
+import * as safeActions from "../../services/safe/safe-actions";
 
 const CvPhoto = (props) => {
 
@@ -21,7 +22,7 @@ const CvPhoto = (props) => {
   };
 
   const handleFileUpload = e => {
-    const selectedFile= e.target.files[0];
+    const selectedFile = e.target.files[0];
     if (selectedFile) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -35,6 +36,9 @@ const CvPhoto = (props) => {
       reader.readAsDataURL(selectedFile);
     }
   };
+
+  const onFetchProfilePhoto = () =>
+    props.fetchProfilePhoto(instanceId);
 
   const onDeletePhoto = () => {
     const instanceToBeSaved = {
@@ -55,7 +59,7 @@ const CvPhoto = (props) => {
           primary={true}
           text="Valori profielfoto ophalen"
           iconProps={{ iconName: "Info" }}
-          onClick={props.fetchProfilePhoto}
+          onClick={onFetchProfilePhoto}
         />
         <DefaultButton
           text="Foto verwijderen"
@@ -82,7 +86,7 @@ const select = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchProfilePhoto: () => dispatch(authActions.fetchProfilePhoto()),
+  fetchProfilePhoto: id => dispatch(authActions.fetchProfilePhoto(id)),
   replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance))
 });
 
