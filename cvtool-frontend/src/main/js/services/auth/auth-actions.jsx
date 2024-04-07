@@ -8,7 +8,8 @@ export const authenticate = createAction("AUTHENTICATE", () => ({}));
 export const refreshAuthenticationBefore = createAction("REFRESH_AUTHENTICATION_BEFORE");
 export const fetchAuthInfo = createAction("FETCH_AUTH_INFO",
   (email, name) => ({ payload: { email: email, name: name } }));
-export const fetchProfilePhoto = createAction("FETCH_PROFILE_PHOTO");
+  export const requestReadProfileConsent = createAction("REQUEST_READ_PROFILE_CONSENT");
+  export const fetchProfilePhoto = createAction("FETCH_PROFILE_PHOTO");
 // Reducer actions:
 export const setAuthResult = createAction("SET_AUTH_RESULT");
 export const setLoginState = createAction("SET_LOGIN_STATE");

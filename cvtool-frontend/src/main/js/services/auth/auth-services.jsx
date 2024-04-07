@@ -31,12 +31,12 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
     forceRefresh: forceRefresh // Set this to "true" to skip a cached token and obtain a new one.
   };
 
-  return (!cachedAccount)
+  return (!cachedAccount || (forceRefresh && readUserProfile))
     ? msal.acquireTokenPopup(loginConfig)
     : msal.acquireTokenSilent(loginConfig)
       .catch(error => {
         if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
-          console.log("Error acquiring token:", error);
+          console.log("Error acquiring silent token:", error);
           // Fallback to interaction mode when silent call fails.
           return msal.acquireTokenPopup(loginConfig);
         } else {

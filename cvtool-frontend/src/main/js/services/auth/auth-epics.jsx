@@ -54,13 +54,13 @@ export const authEpics = [
   // Authenticate at the OpenID provider.
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
-    rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider())),
-    rx.mergeMap(authenticationResult => of(
-      authActions.setAuthResult(JSON.stringify(authenticationResult)),
-      authActions.refreshAuthenticationBefore(getTokenExpiration(authenticationResult)),
+    rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider(false))),
+    rx.mergeMap(authResult => of(
+      authActions.setAuthResult(JSON.stringify(authResult)),
+      authActions.refreshAuthenticationBefore(getTokenExpiration(authResult)),
       // When requested to login then fetch the authInfo data.
       authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
-      authActions.fetchAuthInfo(authenticationResult.account.username, authenticationResult.account.name)
+      authActions.fetchAuthInfo(authResult.account.username, authResult.account.name)
     )),
     rx.catchError((error, source$) => merge(
       of(
@@ -155,27 +155,47 @@ export const authEpics = [
     })
   ),
 
+  // Request consent to read the user's profile.
+  (action$) => action$.pipe(
+    ofType(authActions.requestReadProfileConsent.type),
+    rx.switchMap(() => authServices.authenticateAtOpenIdProvider(true, true)),
+    rx.map(authResult => authActions.setAuthResult(JSON.stringify(authResult))),
+    rx.catchError((error, source$) => merge(
+      of(errorActions.setLastError(`Ophalen profielfoto is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
+      source$
+    ))
+  ),
+
   // Fetch the profile photo.
   (action$, state$) => action$.pipe(
     ofType(authActions.fetchProfilePhoto.type),
     rx.map(action => action.payload),
     rx.switchMap(accountInstanceId => {
-      const authResult = state$.value.auth?.authResult;
+      const hasConsent = state =>
+        state.auth?.authResult?.scopes?.includes("User.Read");
 
-      return !authResult?.scopes.includes("User.Read")
-        ? from(authServices.authenticateAtOpenIdProvider(true, true) // first authorize,
-            .then(() => authActions.fetchProfilePhoto(accountInstanceId)) // then retry
+      if (!hasConsent(state$.value)) {
+        // Request authorization and wait for consent before retrying.
+        return merge(
+          of(authActions.requestReadProfileConsent()),
+          state$.pipe(
+            rx.filter(state => hasConsent(state)),
+            rx.take(1),
+            rx.map(() => authActions.fetchProfilePhoto(accountInstanceId))
           )
-        : from(authServices.fetchProfilePhoto(authResult.accessToken)
-            .then(profilePhotoB64 => {
-              const accountInstance = state$.value.safe.content.account[accountInstanceId];
-              const instanceToBeSaved = {
-                ...accountInstance,
-                photo: profilePhotoB64
-              };
-              return safeActions.changeInstance("account", accountInstanceId, instanceToBeSaved);
-            })
-          );
+        );
+      }
+
+      return from(authServices.fetchProfilePhoto(state$.value.auth?.authResult.accessToken)
+        .then(profilePhotoB64 => {
+          const accountInstance = state$.value.safe.content.account[accountInstanceId];
+          const instanceToBeSaved = {
+            ...accountInstance,
+            photo: profilePhotoB64
+          };
+          return safeActions.changeInstance("account", accountInstanceId, instanceToBeSaved);
+        })
+      );
     })
   )
 ];
