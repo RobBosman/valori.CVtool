@@ -2,16 +2,19 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 import * as utils from "../../utils/CommonUtils";
 
+// Epic actions:
 export const fetchAllInstances = createAction("FECTH_ALL_INSTANCES");
 export const save = createAction("SAVE");
 export const deleteAccount = createAction("DELETE_ACCOUNT");
-
+export const setProfilePhoto = createAction("SET_PROFILE_PHOTO",
+  (profilePhotoB64, accountInstanceId) => ({ payload: { profilePhotoB64, accountInstanceId } }));
+// Reducer actions:
 export const resetEntities = createAction("RESET_ENTITIES");
 export const changeInstances = createAction("CHANGE_INSTANCES",
   (entity, instances) => ({ payload: { entity, instances } }));
 export const changeInstance = createAction("CHANGE_INSTANCE",
   (entity, instanceId, instance) => ({ payload: { entity, instanceId, instance } }));
-export const setLastSavedTimeString = createAction("SET_LAST_SAVED_TIME_STRING");
+  export const setLastSavedTimeString = createAction("SET_LAST_SAVED_TIME_STRING");
 
 reducerRegistry.register(
   "safe",

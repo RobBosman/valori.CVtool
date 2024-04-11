@@ -187,14 +187,7 @@ export const authEpics = [
       }
 
       return from(authServices.fetchProfilePhoto(state$.value.auth?.authResult.accessToken)
-        .then(profilePhotoB64 => {
-          const accountInstance = state$.value.safe.content.account[accountInstanceId];
-          const instanceToBeSaved = {
-            ...accountInstance,
-            photo: profilePhotoB64
-          };
-          return safeActions.changeInstance("account", accountInstanceId, instanceToBeSaved);
-        })
+        .then(profilePhotoB64 => safeActions.setProfilePhoto(profilePhotoB64, accountInstanceId))
       );
     })
   )

@@ -1,3 +1,4 @@
+import { of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as rx from "rxjs/operators";
 import * as utils from "../../utils/CommonUtils";
@@ -72,6 +73,36 @@ export const safeEpics = [
         },
         businessUnit: businessUnitInstancess
       });
+    })
+  ),
+
+  // Add the uploaded/fetched profile photo to the account.
+  (action$, state$) => action$.pipe(
+    ofType(safeActions.setProfilePhoto.type),
+    rx.map(action => action.payload),
+    rx.switchMap(({profilePhotoB64, accountInstanceId}) => {
+      const accountInstance = state$.value.safe.content.account[accountInstanceId];
+      const instanceToBeSaved = {
+        ...accountInstance,
+        photo: profilePhotoB64,
+        includePhotoInCv: true
+      };
+      return of(safeActions.changeInstance("account", accountInstanceId, instanceToBeSaved));
+    }),
+  ),
+
+  // Set 'includePhotoInCv' to true if a profile photo is uploaded/fetched.
+  (action$, state$) => action$.pipe(
+    ofType(safeActions.setProfilePhoto.type),
+    rx.map(action => action.payload.accountInstanceId),
+    rx.switchMap(accountInstanceId => {
+      const characteristicsInstance = Object.values(state$.value.safe.content.characteristics)
+        .find(instance => instance.accountId == accountInstanceId);
+      const instanceToBeSaved = {
+        ...characteristicsInstance,
+        includePhotoInCv: true
+      };
+      return of(safeActions.changeInstance("characteristics", characteristicsInstance._id, instanceToBeSaved));
     })
   )
 ];

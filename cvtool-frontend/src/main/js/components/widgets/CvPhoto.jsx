@@ -3,7 +3,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { DefaultButton, Image, ImageFit, Label, Stack } from "@fluentui/react";
 import * as authActions from "../../services/auth/auth-actions";
-import * as safeActions from "../../services/safe/safe-actions";
 
 const CvPhoto = (props) => {
 
@@ -49,18 +48,21 @@ const CvPhoto = (props) => {
   };
 
   return (
-    <Stack horizontal>
-      <Stack vertical verticalAlign="space-between">
-        <Stack.Item align="end">
-          <Label>{props.label}</Label>
-        </Stack.Item>
-        <input type="file" onChange={handleFileUpload}></input>
-        <DefaultButton
-          primary={true}
-          text="Valori profielfoto ophalen"
-          iconProps={{ iconName: "Info" }}
-          onClick={onFetchProfilePhoto}
-        />
+    <Stack horizontal tokens={{ childrenGap: "l1" }}>
+      <Label>{props.label}</Label>
+      <Image {...photoProps}></Image>
+      <Stack vertical verticalAlign="space-between"
+        tokens={{ childrenGap: "l1" }}>
+        <Stack vertical tokens={{ childrenGap: "l1" }}>
+          <input type="file" onChange={handleFileUpload}></input>
+          <DefaultButton
+            primary={true}
+            text="Valori profielfoto ophalen"
+            iconProps={{ iconName: "Info" }}
+            disabled={props.authInfo.accountId != instanceId}
+            onClick={onFetchProfilePhoto}
+          />
+        </Stack>
         <DefaultButton
           text="Foto verwijderen"
           iconProps={{ iconName: "Delete" }}
@@ -68,12 +70,12 @@ const CvPhoto = (props) => {
           onClick={onDeletePhoto}
         />
       </Stack>
-      <Image {...photoProps}></Image>
     </Stack>
   )
 };
 
 CvPhoto.propTypes = {
+  authInfo: PropTypes.object,
   instanceContext: PropTypes.object.isRequired,
   field: PropTypes.string.isRequired,
   label: PropTypes.any,
@@ -81,6 +83,7 @@ CvPhoto.propTypes = {
 };
 
 const select = (store) => ({
+  authInfo: store.auth.authInfo,
   selectedAccountId: store.ui.selectedId.account,
   accountEntity: store.safe.content.account
 });

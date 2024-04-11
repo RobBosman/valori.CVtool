@@ -285,7 +285,7 @@ const Profile = (props) => {
               <CvPhoto
                 label={createHelpIcon({
                   label: "Foto",
-                  content: <Text>Upload een foto van jezelf.</Text>
+                  content: <Text>Optioneel: voeg je (pas)foto toe.</Text>
                 })}
                 field="photo"
                 instanceContext={accountContext}
