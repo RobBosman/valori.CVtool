@@ -4,7 +4,6 @@ import { Text, Stack, DefaultButton, PrimaryButton, StackItem } from "@fluentui/
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
-import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
@@ -113,7 +112,7 @@ const Reference = (props) => {
     let newReference = references.find(publication => !isFilledReference(publication));
     if (!newReference) {
       newReference = {
-        _id: createUuid(),
+        _id: commonUtils.createUuid(),
         accountId: props.selectedAccountId,
         includeInCv: false
       };

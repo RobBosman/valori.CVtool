@@ -60,3 +60,17 @@ export const isEditAccountAllowed = (accountId, authInfo) =>
 export const hasInstances = (entity, accountId) =>
   Object.values(entity || {})
     .some(instance => instance.accountId === accountId && instance.includeInCv);
+
+const getRandomByte = () => {
+  const buf = new Uint8Array(1);
+  crypto.getRandomValues(buf);
+  return buf[0] & 15;
+};
+
+// Use this function to create a unique object id (UUID).
+export const createUuid = () =>
+  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = getRandomByte();
+    const v = c == "x" ? r : (r & 3 | 8);
+    return v.toString(16);
+  });

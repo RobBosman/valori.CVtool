@@ -2,13 +2,13 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Text, Stack, DefaultButton, SelectionMode } from "@fluentui/react";
 import { connect } from "react-redux";
-import { setSelectedId } from "../../services/ui/ui-actions";
+import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
+import { setSelectedId } from "../../services/ui/ui-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
-import { createUuid } from "../../services/safe/safe-services";
 
 const entityName = "businessUnit";
 
@@ -91,7 +91,7 @@ const BusinessUnits = (props) => {
     let newBusinessUnit = businessUnits.find(businessUnit => !isFilledBusinessUnit(businessUnit));
     if (!newBusinessUnit) {
       newBusinessUnit = {
-        _id: createUuid(),
+        _id: commonUtils.createUuid(),
         accountIds: []
       };
       props.replaceBusinessUnit(newBusinessUnit._id, newBusinessUnit);

@@ -54,7 +54,7 @@ export const authEpics = [
   // Authenticate at the OpenID provider.
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
-    rx.switchMap(() => from(authServices.authenticateAtOpenIdProvider(false))),
+    rx.switchMap(() => authServices.authenticateAtOpenIdProvider(false)),
     rx.mergeMap(authResult => of(
       authActions.setAuthResult(JSON.stringify(authResult)),
       authActions.refreshAuthenticationBefore(getTokenExpiration(authResult)),
@@ -160,10 +160,10 @@ export const authEpics = [
     ofType(authActions.requestReadProfileConsent.type),
     rx.switchMap(() => authServices.authenticateAtOpenIdProvider(true, true)),
     rx.map(authResult => authActions.setAuthResult(JSON.stringify(authResult))),
-    rx.catchError((error, source$) => merge(
-      of(errorActions.setLastError(`Ophalen profielfoto is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
-      source$
-    ))
+    rx.catchError((error, source$) => {
+      console.debug(`Profielfoto is niet opgehaald: ${error.message}`);
+      return source$;
+    })
   ),
 
   // Fetch the profile photo.
@@ -186,9 +186,8 @@ export const authEpics = [
         );
       }
 
-      return from(authServices.fetchProfilePhoto(state$.value.auth?.authResult.accessToken)
-        .then(profilePhotoB64 => safeActions.setProfilePhoto(profilePhotoB64, accountInstanceId))
-      );
+      return authServices.fetchProfilePhoto(state$.value.auth?.authResult.accessToken)
+        .then(profilePhotoB64 => safeActions.setProfilePhoto(accountInstanceId, profilePhotoB64));
     })
   )
 ];

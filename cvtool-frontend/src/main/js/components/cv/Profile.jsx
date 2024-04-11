@@ -15,7 +15,6 @@ import * as uiActions from "../../services/ui/ui-actions";
 import * as errorActions from "../../services/error/error-actions";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import ConfirmDialog from "../ConfirmDialog";
-import { createUuid } from "../../services/safe/safe-services";
 import { CvCheckbox } from "../widgets/CvCheckbox";
 
 const Profile = (props) => {
@@ -193,7 +192,7 @@ const Profile = (props) => {
     let newCharacteristics = characteristics.find(characs => !isFilledCharacteristics(characs));
     if (!newCharacteristics) {
       newCharacteristics = {
-        _id: createUuid(),
+        _id: commonUtils.createUuid(),
         accountId: props.selectedAccountId,
         includeInCv: false,
         includePhotoInCv: true

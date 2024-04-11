@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+import * as commonUtils from "../../../../main/js/utils/CommonUtils";
 import * as safeServices from "../../../../main/js/services/safe/safe-services";
 
 describe("safe-services.test", () => {
@@ -23,13 +24,13 @@ describe("safe-services.test", () => {
   });
 
   it("should create unique ids", () => {
-    const id0 = safeServices.createUuid();
+    const id0 = commonUtils.createUuid();
     expect(id0.length)
       .toBe(36);
     expect(id0.replace(/-/g, "").length)
       .toBe(32);
 
-    const id1 = safeServices.createUuid();
+    const id1 = commonUtils.createUuid();
     expect(id1.length)
       .toBe(36);
     expect(id1.replace(/-/g, "").length)

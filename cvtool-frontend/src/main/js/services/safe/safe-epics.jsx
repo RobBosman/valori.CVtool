@@ -1,7 +1,7 @@
 import { of } from "rxjs";
 import { ofType } from "redux-observable";
 import * as rx from "rxjs/operators";
-import * as utils from "../../utils/CommonUtils";
+import * as commonUtils from "../../utils/CommonUtils";
 import * as eventBusServices from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
@@ -40,7 +40,7 @@ export const safeEpics = [
     rx.map(action => action.payload),
     rx.filter(saveEnforced => saveEnforced || state$.value.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
     rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimeString
-      || utils.parseTimeString(state$.value.safe.lastEditedTimeString) > utils.parseTimeString(state$.value.safe.lastSavedTimeString)),
+      || commonUtils.parseTimeString(state$.value.safe.lastEditedTimeString) > commonUtils.parseTimeString(state$.value.safe.lastSavedTimeString)),
     rx.switchMap(() => {
       const saveTimeString = new Date().toISOString();
       return safeServices
@@ -76,6 +76,33 @@ export const safeEpics = [
     })
   ),
 
+  // Select a photo file for upload and store its content as the profile photo of the account.
+  (action$) => action$.pipe(
+    ofType(safeActions.selectPhotoToUpload.type),
+    rx.map(action => action.payload),
+    rx.switchMap(({accountInstanceId, fileSelectOptions}) =>
+      window.showOpenFilePicker(fileSelectOptions)
+        .then(([fileHandle]) => [accountInstanceId, fileHandle])
+    ),
+    rx.mergeMap(([accountInstanceId, fileHandle]) =>
+      fileHandle.getFile()
+        .then(file => [accountInstanceId, file])
+    ),
+    rx.mergeMap(([accountInstanceId, file]) =>
+      new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => resolve(reader);
+      })
+      .then(reader => [accountInstanceId, reader.result])
+    ),
+    rx.map(([accountInstanceId, photoB64]) => safeActions.setProfilePhoto(accountInstanceId, photoB64)),
+    rx.catchError((error, source$) => {
+      console.debug(`File is niet geüpload: ${error.message}`);
+      return source$;
+    })
+  ),
+
   // Add the uploaded/fetched profile photo to the account.
   (action$, state$) => action$.pipe(
     ofType(safeActions.setProfilePhoto.type),
@@ -88,7 +115,7 @@ export const safeEpics = [
         includePhotoInCv: true
       };
       return of(safeActions.changeInstance("account", accountInstanceId, instanceToBeSaved));
-    }),
+    })
   ),
 
   // Set 'includePhotoInCv' to true if a profile photo is uploaded/fetched.

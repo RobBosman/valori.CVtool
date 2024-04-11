@@ -4,7 +4,6 @@ import { Text, Stack, DefaultButton, PrimaryButton } from "@fluentui/react";
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance } from "../../services/safe/safe-actions";
-import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
@@ -141,7 +140,7 @@ const Skill = (props) => {
     let newSkill = skills.find(publication => !isFilledSkill(publication));
     if (!newSkill) {
       newSkill = {
-        _id: createUuid(),
+        _id: commonUtils.createUuid(),
         accountId: props.selectedAccountId,
         skillLevel: 1,
         includeInCv: true

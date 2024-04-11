@@ -6,8 +6,10 @@ import * as utils from "../../utils/CommonUtils";
 export const fetchAllInstances = createAction("FECTH_ALL_INSTANCES");
 export const save = createAction("SAVE");
 export const deleteAccount = createAction("DELETE_ACCOUNT");
+export const selectPhotoToUpload = createAction("SELECT_PHOTO_TO_UPLOAD",
+  (accountInstanceId, fileSelectOptions) => ({ payload: { accountInstanceId, fileSelectOptions } }));
 export const setProfilePhoto = createAction("SET_PROFILE_PHOTO",
-  (profilePhotoB64, accountInstanceId) => ({ payload: { profilePhotoB64, accountInstanceId } }));
+  (accountInstanceId, profilePhotoB64) => ({ payload: { accountInstanceId, profilePhotoB64 } }));
 // Reducer actions:
 export const resetEntities = createAction("RESET_ENTITIES");
 export const changeInstances = createAction("CHANGE_INSTANCES",

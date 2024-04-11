@@ -4,7 +4,6 @@ import { Text, Stack, DefaultButton, StackItem, Separator, PrimaryButton, Column
 import { connect } from "react-redux";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { changeInstance, changeInstances } from "../../services/safe/safe-actions";
-import { createUuid } from "../../services/safe/safe-services";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
 import { CvTextField } from "../widgets/CvTextField";
@@ -131,7 +130,7 @@ const Experience = (props) => {
     let newExperience = experiences.find(experience => !isFilledExperience(experience));
     if (!newExperience) {
       newExperience = {
-        _id: createUuid(),
+        _id: commonUtils.createUuid(),
         accountId: props.selectedAccountId,
         includeInCv: true
       };
