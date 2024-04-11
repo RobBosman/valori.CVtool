@@ -1,7 +1,8 @@
-import { of } from "rxjs";
+import { of, merge } from "rxjs";
 import { ofType } from "redux-observable";
 import * as rx from "rxjs/operators";
 import * as commonUtils from "../../utils/CommonUtils";
+import * as errorActions from "../error/error-actions";
 import * as eventBusServices from "../eventBus/eventBus-services";
 import * as safeActions from "./safe-actions";
 import * as safeServices from "./safe-services";
@@ -82,10 +83,7 @@ export const safeEpics = [
     rx.map(action => action.payload),
     rx.switchMap(({accountInstanceId, fileSelectOptions}) =>
       window.showOpenFilePicker(fileSelectOptions)
-        .then(([fileHandle]) => [accountInstanceId, fileHandle])
-    ),
-    rx.mergeMap(([accountInstanceId, fileHandle]) =>
-      fileHandle.getFile()
+        .then(([fileHandle]) => fileHandle.getFile())
         .then(file => [accountInstanceId, file])
     ),
     rx.mergeMap(([accountInstanceId, file]) =>
@@ -96,11 +94,19 @@ export const safeEpics = [
       })
       .then(reader => [accountInstanceId, reader.result])
     ),
+    rx.mergeMap(([accountInstanceId, photoB64]) =>
+      commonUtils.cropImageB64(photoB64)
+        .then(croppedPhotoB64 => [accountInstanceId, croppedPhotoB64])
+    ),
     rx.map(([accountInstanceId, photoB64]) => safeActions.setProfilePhoto(accountInstanceId, photoB64)),
-    rx.catchError((error, source$) => {
-      console.debug(`File is niet geüpload: ${error.message}`);
-      return source$;
-    })
+    rx.catchError((error, source$) =>
+      ["aborted", "cancel"].some(s => `${error}`.includes(s)) // ignore user cancellations
+        ? source$
+        : merge(
+            of(errorActions.setLastError(`Fout bij uploaden: ${error}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
+            source$
+          )
+    )
   ),
 
   // Add the uploaded/fetched profile photo to the account.
@@ -111,8 +117,7 @@ export const safeEpics = [
       const accountInstance = state$.value.safe.content.account[accountInstanceId];
       const instanceToBeSaved = {
         ...accountInstance,
-        photo: profilePhotoB64,
-        includePhotoInCv: true
+        photo: profilePhotoB64
       };
       return of(safeActions.changeInstance("account", accountInstanceId, instanceToBeSaved));
     })

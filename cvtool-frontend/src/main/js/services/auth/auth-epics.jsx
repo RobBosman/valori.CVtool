@@ -160,10 +160,7 @@ export const authEpics = [
     ofType(authActions.requestReadProfileConsent.type),
     rx.switchMap(() => authServices.authenticateAtOpenIdProvider(true, true)),
     rx.map(authResult => authActions.setAuthResult(JSON.stringify(authResult))),
-    rx.catchError((error, source$) => {
-      console.debug(`Profielfoto is niet opgehaald: ${error.message}`);
-      return source$;
-    })
+    rx.catchError((_, source$) => source$) // ignore errors (cancellations) here
   ),
 
   // Fetch the profile photo.

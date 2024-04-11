@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { Text, Stack, Link, DefaultButton, TooltipHost } from "@fluentui/react";
+import * as commonUtils from "../utils/CommonUtils";
 import { useTheme } from "../services/ui/ui-services";
 import * as cvActions from "../services/cv/cv-actions";
 
@@ -23,6 +24,11 @@ const Info = (props) => {
         <br/>Dit is de Valori <strong>CVtool</strong> waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
         <ul>
+          <li><u>Profielfoto</u>: Voeg eventueel je (pas)foto toe in de <strong>Profiel</strong> tab.
+            <br/>Als je je Valori profielfoto wilt gebruiken moet je daarvoor (eenmalig) toestemming verlenen.
+            <br/>De foto moet een resolutie van ten minste {commonUtils.MIN_PHOTO_SIZE_PX}x{commonUtils.MIN_PHOTO_SIZE_PX} pixels hebben.
+            <br/>Met de knop <em>Foto in cv opnemen</em> kun je per profiel bepalen of de foto in het cv wordt opgenomen.</li>
+          <br/>
           <li><u>Markdown lijst</u>: In veel tekstvelden kun je een opsomming maken door regels te laten beginnen met
             <br/>&apos;<strong>* </strong>&apos; of &apos;<strong>- </strong>&apos; (asterisk/streepje + spatie) voor een lijst met Valori bullets of met
             <br/>&apos;<strong># </strong>&apos; (hekje + spatie) voor een genummerde lijst.</li>
@@ -36,7 +42,7 @@ const Info = (props) => {
             <br/>Bij een aantal daarvan wordt de NL-waarde alvast voor-ingevuld, bijvoorbeeld bij vaardigheden.
             <br/>Je kunt daar je eigen vertaling invullen, maar als je dat niet doet wordt de voor-ingevulde waarde in je cv opgenomen.</li>
           <br/>
-          <li><u>AutoSave</u>: Alle wijzigingen worden na twee seconden vanzelf opgeslagen.</li>
+          <li><u>AutoSave</u>: Elke wijziging wordt na twee seconden vanzelf opgeslagen.</li>
           <br/>
           <li><u>Voorbeeld</u>: Klik hier om een uitgewerkt voorbeeld cv te downloaden:&nbsp;
             <TooltipHost content="Download uitgewerkt voorbeeld CV">

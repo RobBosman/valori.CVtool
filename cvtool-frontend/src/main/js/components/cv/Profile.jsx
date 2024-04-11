@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Checkbox, DefaultButton, PrimaryButton, Stack, StackItem, Text } from "@fluentui/react";
+import { Checkbox, DefaultButton, Image, PrimaryButton, Stack, StackItem, Text } from "@fluentui/react";
 import { changeInstance } from "../../services/safe/safe-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDatePicker } from "../widgets/CvDatePicker";
@@ -20,6 +20,11 @@ import { CvCheckbox } from "../widgets/CvCheckbox";
 const Profile = (props) => {
 
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
+
+  const account = React.useMemo(() =>
+    Object.values(props.accountEntity || {})
+      .filter(instance => instance._id === props.selectedAccountId),
+  [props.accountEntity, props.selectedAccountId]);
 
   const characteristics = React.useMemo(() =>
     Object.values(props.characteristicsEntity || {})
@@ -119,17 +124,24 @@ const Profile = (props) => {
   const renderPreviewTitle = React.useCallback(() => {
     const account = Object.values(props.accountEntity || []).find(acc => acc._id === props.selectedAccountId);
     const characteristicsInCv = characteristics.find(characs => characs.includeInCv);
+    const includePhotoInCv = characteristicsInCv.includePhotoInCv;
+    const photoProps = { src: account.photo, alt: "Profielfoto", width: "10em", height: "10em" };
     return (
-      <Stack horizontalAlign="end">
-        <Text style={{ ...previewTitleStyle, fontSize: "20pt", padding: "8px 8px 0 8px" }}>{account?.name?.toUpperCase()}</Text>
-        <Stack horizontal>
-          <Text style={previewTitleStyle}>{commonUtils.getValueOrFallback(characteristicsInCv, "role", props.locale)?.toUpperCase()}</Text>
-          <Text style={previewDashesStyle}>{"//"}</Text>
-          <Text style={previewTitleStyle}>{preview.formatDate(account?.dateOfBirth)}</Text>
-          <Text style={previewDashesStyle}>{"//"}</Text>
-          <Text style={previewTitleStyle}>{account?.residence?.toUpperCase()}</Text>
-          <Text style={{ ...previewDashesStyle, padding: "0 8px 24px 2px" }}>{"//"}</Text>
+      <Stack horizontal horizontalAlign="end" verticalAlign="center">
+        <Stack horizontalAlign="end">
+          <Text style={{ ...previewTitleStyle, fontSize: "20pt", padding: "8px 8px 0 8px" }}>{account?.name?.toUpperCase()}</Text>
+          <Stack horizontal>
+            <Text style={previewTitleStyle}>{commonUtils.getValueOrFallback(characteristicsInCv, "role", props.locale)?.toUpperCase()}</Text>
+            <Text style={previewDashesStyle}>{"//"}</Text>
+            <Text style={previewTitleStyle}>{preview.formatDate(account?.dateOfBirth)}</Text>
+            <Text style={previewDashesStyle}>{"//"}</Text>
+            <Text style={previewTitleStyle}>{account?.residence?.toUpperCase()}</Text>
+            <Text style={{ ...previewDashesStyle, padding: "0 8px 24px 2px" }}>{"//"}</Text>
+          </Stack>
         </Stack>
+        {account.photo && includePhotoInCv
+          && <Image {...photoProps}></Image>
+        }
       </Stack>
     );
   },
@@ -162,7 +174,7 @@ const Profile = (props) => {
         {hasInterests
           && <CvFormattedText
             field={`interests.${props.locale}`}
-            instanceContext={characteristicsInCvCotext}
+            instanceContext={characteristicsInCvContext}
             markDown={true}
             textComponentStyle={previewTextStyle}
           />
@@ -284,7 +296,12 @@ const Profile = (props) => {
               <CvPhoto
                 label={createHelpIcon({
                   label: "Foto",
-                  content: <Text>Optioneel: voeg je (pas)foto toe.</Text>
+                  content: <Text>
+                    Optioneel: voeg je (pas)foto toe.
+                    <br/>Als je je Valori profielfoto wilt gebruiken moet je daarvoor (eenmalig) toestemming verlenen.
+                    <br/>De foto moet een resolutie van ten minste {commonUtils.MIN_PHOTO_SIZE_PX}x{commonUtils.MIN_PHOTO_SIZE_PX} pixels hebben.
+                    <br/>Zie ook de knop <em>Foto in cv opnemen</em> in de <strong>Profiel</strong> tab.
+                    </Text>
                 })}
                 field="photo"
                 instanceContext={accountContext}

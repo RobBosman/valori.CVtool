@@ -74,3 +74,40 @@ export const createUuid = () =>
     const v = c == "x" ? r : (r & 3 | 8);
     return v.toString(16);
   });
+
+export const MIN_PHOTO_SIZE_PX = 300;
+
+export const cropImageB64 = orgImageB64 =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = orgImageB64;
+    img.onload = () => {
+
+      if (img.naturalWidth < MIN_PHOTO_SIZE_PX || img.naturalHeight < MIN_PHOTO_SIZE_PX) {
+        reject(`De resolutie van de geselecteerde foto is ${img.naturalWidth}x${img.naturalHeight} en dat is te klein.
+          Die moet ten minste ${MIN_PHOTO_SIZE_PX}x${MIN_PHOTO_SIZE_PX} pixels zijn.`);
+      }
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext('2d'); 
+
+      if (img.naturalWidth < img.naturalHeight) {
+        // portrait
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalWidth;
+        const offset = (img.naturalWidth - img.naturalHeight) / 2;
+        ctx.drawImage(img, 0, offset);
+      } else {
+        // landscape or square
+        canvas.width = img.naturalHeight;
+        canvas.height = img.naturalHeight;
+        const offset = (img.naturalHeight - img.naturalWidth) / 2;
+        ctx.drawImage(img, offset, 0);
+      }
+
+      const croppedImageB64 = canvas.toDataURL("image/png");
+      canvas.remove();
+
+      resolve(croppedImageB64);
+    }
+  });
