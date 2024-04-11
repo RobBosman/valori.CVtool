@@ -21,11 +21,6 @@ const Profile = (props) => {
 
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
 
-  const account = React.useMemo(() =>
-    Object.values(props.accountEntity || {})
-      .filter(instance => instance._id === props.selectedAccountId),
-  [props.accountEntity, props.selectedAccountId]);
-
   const characteristics = React.useMemo(() =>
     Object.values(props.characteristicsEntity || {})
       .filter(instance => instance.accountId === props.selectedAccountId),

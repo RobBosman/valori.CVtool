@@ -7,7 +7,7 @@
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
+    <xsl:template match="/cv:root">
         <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
             <Default Extension="gif" ContentType="image/gif"/>
             <Default Extension="jpg" ContentType="image/jpg"/>
@@ -45,11 +45,11 @@
             <Override PartName="/docProps/app.xml"
                       ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
 
-            <xsl:variable name="photo" select="cv:root/cv:account/cv:photo"/>
+            <xsl:variable name="photo" select="cv:account/cv:photo"/>
             <Override PartName="/word/media/passport.photo">
                 <xsl:attribute name="ContentType">
                     <xsl:choose>
-                        <xsl:when test="$photo">
+                        <xsl:when test="$photo and (cv:characteristics[cv:includeInCv = 'true']/cv:includePhotoInCv = 'true')">
                             <!-- $photo = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAg...' -->
                             <xsl:value-of select="substring-before(substring-after($photo, 'data:'), ';base64')"/>
                         </xsl:when>

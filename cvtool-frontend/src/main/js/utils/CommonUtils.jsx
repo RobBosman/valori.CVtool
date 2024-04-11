@@ -76,6 +76,7 @@ export const createUuid = () =>
   });
 
 export const MIN_PHOTO_SIZE_PX = 300;
+export const MAX_PHOTO_SIZE_PX = 600;
 
 export const cropImageB64 = orgImageB64 =>
   new Promise((resolve, reject) => {
@@ -84,25 +85,26 @@ export const cropImageB64 = orgImageB64 =>
     img.onload = () => {
 
       if (img.naturalWidth < MIN_PHOTO_SIZE_PX || img.naturalHeight < MIN_PHOTO_SIZE_PX) {
-        reject(`De resolutie van de geselecteerde foto is ${img.naturalWidth}x${img.naturalHeight} en dat is te klein.
-          Die moet ten minste ${MIN_PHOTO_SIZE_PX}x${MIN_PHOTO_SIZE_PX} pixels zijn.`);
+        reject(new Error(`De resolutie van de geselecteerde foto is ${img.naturalWidth}x${img.naturalHeight} en dat is te klein.`
+          + ` Die moet ten minste ${MIN_PHOTO_SIZE_PX}x${MIN_PHOTO_SIZE_PX} pixels zijn.`));
       }
 
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext('2d'); 
 
+      const scale = Math.min(1.0, MAX_PHOTO_SIZE_PX / Math.min(img.naturalWidth, img.naturalHeight));
       if (img.naturalWidth < img.naturalHeight) {
         // portrait
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalWidth;
-        const offset = (img.naturalWidth - img.naturalHeight) / 2;
-        ctx.drawImage(img, 0, offset);
+        canvas.width = img.naturalWidth * scale;
+        canvas.height = img.naturalWidth * scale;
+        const offset = (img.naturalWidth - img.naturalHeight) / 2 * scale;
+        ctx.drawImage(img, 0, offset, img.naturalWidth * scale, img.naturalHeight * scale);
       } else {
         // landscape or square
-        canvas.width = img.naturalHeight;
-        canvas.height = img.naturalHeight;
-        const offset = (img.naturalHeight - img.naturalWidth) / 2;
-        ctx.drawImage(img, offset, 0);
+        canvas.width = img.naturalHeight * scale;
+        canvas.height = img.naturalHeight * scale;
+        const offset = (img.naturalHeight - img.naturalWidth) / 2 * scale;
+        ctx.drawImage(img, offset, 0, img.naturalWidth * scale, img.naturalHeight * scale);
       }
 
       const croppedImageB64 = canvas.toDataURL("image/png");

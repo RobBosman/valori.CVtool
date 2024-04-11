@@ -94,16 +94,12 @@ export const safeEpics = [
       })
       .then(reader => [accountInstanceId, reader.result])
     ),
-    rx.mergeMap(([accountInstanceId, photoB64]) =>
-      commonUtils.cropImageB64(photoB64)
-        .then(croppedPhotoB64 => [accountInstanceId, croppedPhotoB64])
-    ),
     rx.map(([accountInstanceId, photoB64]) => safeActions.setProfilePhoto(accountInstanceId, photoB64)),
     rx.catchError((error, source$) =>
-      ["aborted", "cancel"].some(s => `${error}`.includes(s)) // ignore user cancellations
+      ["aborted", "cancel"].some(s => error.message.includes(s)) // ignore user cancellations
         ? source$
         : merge(
-            of(errorActions.setLastError(`Fout bij uploaden: ${error}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
+            of(errorActions.setLastError(`Fout bij uploaden: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
             source$
           )
     )
@@ -113,7 +109,12 @@ export const safeEpics = [
   (action$, state$) => action$.pipe(
     ofType(safeActions.setProfilePhoto.type),
     rx.map(action => action.payload),
-    rx.switchMap(({profilePhotoB64, accountInstanceId}) => {
+    rx.mergeMap(({accountInstanceId, profilePhotoB64}) =>
+      commonUtils.cropImageB64(profilePhotoB64)
+        .then(croppedPhotoB64 => [accountInstanceId, croppedPhotoB64])
+    ),
+    // rx.map(({accountInstanceId, profilePhotoB64}) => [accountInstanceId, profilePhotoB64]),
+    rx.switchMap(([accountInstanceId, profilePhotoB64]) => {
       const accountInstance = state$.value.safe.content.account[accountInstanceId];
       const instanceToBeSaved = {
         ...accountInstance,

@@ -30,7 +30,7 @@
                     <w:pStyle w:val="Titel"/>
                     <w:jc w:val="right"/>
                 </w:pPr>
-                <xsl:if test="cv:account/cv:photo">
+                <xsl:if test="cv:account/cv:photo and (cv:characteristics[cv:includeInCv = 'true']/cv:includePhotoInCv = 'true')">
                     <w:r>
                         <w:rPr>
                             <w:noProof/>
