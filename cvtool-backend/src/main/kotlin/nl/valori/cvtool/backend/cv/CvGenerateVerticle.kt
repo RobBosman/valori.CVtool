@@ -161,7 +161,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 // Convert Base64 encoded entries, e.g. images, to binary data.
                 b64BinaryEntryNames.forEach { b64BinaryEntryName ->
                     val binaryB64 = it[b64BinaryEntryName]
-                    if (binaryB64 != null && binaryB64.isNotEmpty()) {
+                    if (binaryB64 != null && binaryB64.isNotEmpty()) { // NOSONAR ignore SonarQube's 'advice' here
                         it[b64BinaryEntryName] = Base64.getDecoder().decode(String(binaryB64))
                     } else {
                         it.remove(b64BinaryEntryName)

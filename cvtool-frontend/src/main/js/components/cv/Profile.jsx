@@ -137,8 +137,8 @@ const Profile = (props) => {
 
   const renderPreviewContent = React.useCallback(() => {
     const characteristicsInCv = characteristics.find(characs => characs.includeInCv);
-    const characteristicsInCvCotext = { ...characteristicsContext, instanceId: characteristicsInCv?._id };
-    const hasInterests = characteristicsInCv?.interests && characteristicsInCv.interests[props.locale];
+    const characteristicsInCvContext = { ...characteristicsContext, instanceId: characteristicsInCv?._id };
+    const hasInterests = characteristicsInCv?.interests?.[props.locale];
     return (
       <Stack
         tokens={{ childrenGap: "5px"}}
@@ -150,7 +150,7 @@ const Profile = (props) => {
         </Text>
         <CvFormattedText
           field={`profile.${props.locale}`}
-          instanceContext={characteristicsInCvCotext}
+          instanceContext={characteristicsInCvContext}
           markDown={true}
           textComponentStyle={previewTextStyle}
         />

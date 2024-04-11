@@ -75,8 +75,7 @@ const parseDateFromScreen = (dateString) => {
 
   const onChange = (newDate) =>
     (idOpenForChange === instanceId)
-      && replaceInstance
-      && replaceInstance(instanceId, { ...instance, [props.field]: formatDateForStorage(newDate) });
+      && replaceInstance?.(instanceId, { ...instance, [props.field]: formatDateForStorage(newDate) });
 
   return readOnly
     ? <TextField

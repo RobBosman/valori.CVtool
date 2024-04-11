@@ -2,7 +2,7 @@ export const getValue = (enumArray, key) =>
   enumArray.find(entry => entry.key === key);
 
 export const getTextFromValue = (enumData, locale) =>
-  enumData?.text && enumData.text[locale] || enumData?.text?.nl_NL || "";
+  enumData?.text?.[locale] || enumData?.text?.nl_NL || "";
 
 export const getText = (enumArray, key, locale) =>
   getTextFromValue(getValue(enumArray, key), locale);
