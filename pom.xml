@@ -24,8 +24,8 @@
         <dependency-check-maven.version>9.0.9</dependency-check-maven.version>
         <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-        <kotlin.version>2.0.0-Beta5</kotlin.version>
-        <logback-classic.version>1.5.3</logback-classic.version>
+        <kotlin.version>2.0.0-RC1</kotlin.version>
+        <logback-classic.version>1.5.4</logback-classic.version>
         <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
         <maven.compiler.release>21</maven.compiler.release>
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
