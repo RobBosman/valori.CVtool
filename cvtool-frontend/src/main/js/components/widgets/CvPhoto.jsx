@@ -55,7 +55,7 @@ const CvPhoto = (props) => {
           />
           <DefaultButton
             text="Valori profielfoto"
-            iconProps={{ iconName: "Download" }}
+            iconProps={{ iconName: "ProfileSearch" }}
             disabled={props.authInfo.accountId != instanceId}
             onClick={onFetchProfilePhoto}
           />
