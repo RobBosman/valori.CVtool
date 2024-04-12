@@ -50,7 +50,7 @@
                 <xsl:attribute name="ContentType">
                     <xsl:choose>
                         <xsl:when test="$photo and (cv:characteristics[cv:includeInCv = 'true']/cv:includePhotoInCv = 'true')">
-                            <!-- $photo = 'data:image/png;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAg...' -->
+                            <!-- $photo = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAg...' -->
                             <xsl:value-of select="substring-before(substring-after($photo, 'data:'), ';base64')"/>
                         </xsl:when>
                         <xsl:otherwise>image/gif</xsl:otherwise> <!-- one-pixel dummy image -->

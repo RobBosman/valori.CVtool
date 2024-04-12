@@ -107,9 +107,10 @@ export const cropImageB64 = orgImageB64 =>
         ctx.drawImage(img, offset, 0, img.naturalWidth * scale, img.naturalHeight * scale);
       }
 
-      const croppedImageB64 = canvas.toDataURL("image/png");
+      const croppedImageB64 = canvas.toDataURL("image/jpeg");
       canvas.remove();
 
+      console.log(cropImageB64);
       resolve(croppedImageB64);
     };
   });
