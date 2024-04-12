@@ -48,16 +48,16 @@ const CvPhoto = (props) => {
         <Stack vertical tokens={{ childrenGap: "l1" }}>
           <DefaultButton
             primary={true}
-            text="Valori profielfoto"
-            iconProps={{ iconName: "Download" }}
-            disabled={props.authInfo.accountId != instanceId}
-            onClick={onFetchProfilePhoto}
-          />
-          <DefaultButton
             text="Foto uploaden"
             iconProps={{ iconName: "Upload" }}
             disabled={props.authInfo.accountId != instanceId}
             onClick={onFileUpload}
+          />
+          <DefaultButton
+            text="Valori profielfoto"
+            iconProps={{ iconName: "Download" }}
+            disabled={props.authInfo.accountId != instanceId}
+            onClick={onFetchProfilePhoto}
           />
         </Stack>
         <DefaultButton

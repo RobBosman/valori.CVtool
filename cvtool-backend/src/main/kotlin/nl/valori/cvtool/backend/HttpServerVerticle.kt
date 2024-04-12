@@ -33,6 +33,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
                     .setSsl(false)
                     .setCompressionSupported(true)
                     .setMaxWebSocketFrameSize(1_000_000)
+                    .setMaxWebSocketMessageSize(1_000_000)
             )
             .requestHandler(createRouter())
             .exceptionHandler { log.debug("Unexpected error in HttpServer: ${it.message}.", it) }
