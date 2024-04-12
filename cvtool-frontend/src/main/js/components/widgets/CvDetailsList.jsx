@@ -13,7 +13,7 @@ export const CvDetailsList = (props) => {
     items: props.items,
     getKey: getItemId,
     onSelectionChanged: () => setSelectedInstanceId(getItemId(selection.getSelection()[0]))
-  }))
+  }));
   const [sortingBy, setSortingBy] = React.useState({
     fieldName: props.columns[0]?.fieldName,
     isSortedDescending: props.columns[0]?.isSortedDescending

@@ -14,7 +14,7 @@ const AUTHENTICATION_VERIFY_MILLIS = 5 * 60 * 1000; // 5 minutes
 const AUTHENTICATION_REFRESH_SECONDS = 15 * 60; // 15 minutes
 
 const getTokenExpiration = authenticationResult =>
- authenticationResult.idTokenClaims?.exp || 0;
+  authenticationResult.idTokenClaims?.exp || 0;
 
 export const authEpics = [
 
@@ -89,8 +89,8 @@ export const authEpics = [
       const next$ = (remainingSeconds > AUTHENTICATION_REFRESH_SECONDS)
         ? of(idTokenClaimsExp) // Keep using the same token.
         : from(authServices.authenticateAtOpenIdProvider(true) // Get a new token.
-            .then(authResult => getTokenExpiration(authResult))
-          );
+          .then(authResult => getTokenExpiration(authResult))
+        );
       return next$.pipe(
         rx.delay(AUTHENTICATION_VERIFY_MILLIS), // Repeat this check every few minutes.
         rx.map(exp => authActions.refreshAuthenticationBefore(exp)),

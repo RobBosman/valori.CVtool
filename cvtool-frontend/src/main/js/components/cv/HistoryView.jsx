@@ -37,15 +37,15 @@ const HistoryView = (props) => {
 
   const summarizeAuditLog = (auditLog) => {
     let performedAction;
-      if (!auditLog.oldInstance) {
-          performedAction = "toegevoegd";
-      } else if (auditLog.newInstance) {
-          performedAction = "gewijzigd";
-      } else {
-          performedAction = "verwijderd";
-      }
-      return `${entityNames[auditLog.entity]} ${performedAction}`
-    };
+    if (!auditLog.oldInstance) {
+      performedAction = "toegevoegd";
+    } else if (auditLog.newInstance) {
+      performedAction = "gewijzigd";
+    } else {
+      performedAction = "verwijderd";
+    }
+    return `${entityNames[auditLog.entity]} ${performedAction}`;
+  };
 
   const auditLogContext = React.useMemo(() => ({
     locale: props.locale,

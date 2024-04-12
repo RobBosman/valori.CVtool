@@ -296,7 +296,7 @@ const Profile = (props) => {
                     <br/>Als je je Valori profielfoto wilt gebruiken moet je daarvoor (eenmalig) toestemming verlenen.
                     <br/>De foto moet een resolutie van ten minste {commonUtils.MIN_PHOTO_SIZE_PX}x{commonUtils.MIN_PHOTO_SIZE_PX} pixels hebben.
                     <br/>Zie ook de knop <em>Foto in cv opnemen</em> in de <strong>Profiel</strong> tab.
-                    </Text>
+                  </Text>
                 })}
                 field="photo"
                 instanceContext={accountContext}

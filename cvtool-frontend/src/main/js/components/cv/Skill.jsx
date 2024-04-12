@@ -44,7 +44,7 @@ const Skill = (props) => {
           commonUtils.getValueOrFallback(l, "description", props.locale),
           commonUtils.getValueOrFallback(r, "description", props.locale)))
     || [],
-    [props.skillEntity, props.selectedAccountId]);
+  [props.skillEntity, props.selectedAccountId]);
 
   const renderSkill = (item) =>
     enums.getText(enums.SkillCategories, item.category, props.locale);
@@ -131,7 +131,7 @@ const Skill = (props) => {
       Omschrijving: commonUtils.getValueOrFallback(selectedSkill, "description", props.locale)
     };
   },
-    [skills, props.selectedSkillId, props.locale]);
+  [skills, props.selectedSkillId, props.locale]);
 
   const isFilledSkill = (skill) =>
     skill.category || commonUtils.isFilledLocaleField(skill.description);
@@ -191,7 +191,7 @@ const Skill = (props) => {
         .reduce((acc, h) => h < acc ? h : acc, Infinity); // get min value
       setPreviewHeight(newHeight);
     }
-  }
+  };
 
   const getFlexBoxDimensions = (flexBoxes, flexContainer, flexBoxHeights) => ({
     flexBoxWidth: flexBoxes
@@ -260,7 +260,7 @@ const Skill = (props) => {
       setPreviewFlexBoxHeight(flexBoxDimensions.totalFlexBoxHeight);
     }
   },
-    [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
+  [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
 
   React.useEffect(() => {
     // Adjust the height of the preview window to exactly fit all skills.
@@ -268,7 +268,7 @@ const Skill = (props) => {
     // at the close:
     return () => timeoutId && clearTimeout(timeoutId);
   },
-    [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
+  [skills, previewVisible, previewHeight, previewFlexBoxHeight]);
 
   const renderPreviewDescription = (skill) =>
     preview.wrapText(commonUtils.getValueOrFallback(skill, "description", props.locale));
@@ -355,7 +355,7 @@ const Skill = (props) => {
         <Text style={previewTextStyles}><strong>&#x2605; &#x2605; &#x2605;</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{props.locale === "uk_UK" ? "experienced" : "ervaren"}</Text>
       </Stack>
     </Stack>,
-    [skills, props.locale, previewHeight]);
+  [skills, props.locale, previewHeight]);
 
   const isValidDescription = (text) =>
     (preview.wrapText(text).match(/\n/g) || []).length > 1 // more than two lines?

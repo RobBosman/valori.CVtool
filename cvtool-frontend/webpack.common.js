@@ -1,6 +1,6 @@
-import path, {dirname} from 'path';
-import {fileURLToPath} from 'url';
-import {createRequire} from 'module';
+import path, {dirname} from "path";
+import {fileURLToPath} from "url";
+import {createRequire} from "module";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,7 +42,7 @@ export const composeCommonConfig = devOrProdMode => ({
                   [
                     "transform-react-remove-prop-types",
                     {
-                      removeImport: devOrProdMode === 'development'
+                      removeImport: devOrProdMode === "development"
                     }
                   ],
                   "@babel/plugin-transform-react-constant-elements",

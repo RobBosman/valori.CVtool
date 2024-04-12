@@ -44,21 +44,21 @@ export const CvDatePicker = (props) => {
   const instance = entity?.[instanceId];
   const localeForDate = locale?.substring(0, 2);
 
-const formatDateForScreen = (date) =>
-  date && correctDateForTimezone(date).toLocaleDateString(localeForDate) || "";
+  const formatDateForScreen = (date) =>
+    date && correctDateForTimezone(date).toLocaleDateString(localeForDate) || "";
 
-const parseDateFromScreen = (dateString) => {
-  const match = dateString?.match(/^(\d+)[^\d]+(\d+)[^\d]+(\d+)$/); // 00 0 000
-  if (match)
-    switch (localeForDate) {
-    case "nl":
-      return new Date(match[3], match[2] - 1, match[1]); // d, m, y
-    case "uk":
-      return new Date(match[3], match[1], match[2] - 1); // m, d, y
-    default:
-      return new Date(match[1], match[2] - 1, match[1]); // y, m, d
-    }
-};
+  const parseDateFromScreen = (dateString) => {
+    const match = dateString?.match(/^(\d+)[^\d]+(\d+)[^\d]+(\d+)$/); // 00 0 000
+    if (match)
+      switch (localeForDate) {
+      case "nl":
+        return new Date(match[3], match[2] - 1, match[1]); // d, m, y
+      case "uk":
+        return new Date(match[3], match[1], match[2] - 1); // m, d, y
+      default:
+        return new Date(match[1], match[2] - 1, match[1]); // y, m, d
+      }
+  };
   
   // Set the value *after* the screen is fully rendered.
   // This is to prevent a bug that occurs in the Experience screen:

@@ -16,10 +16,10 @@ const LocaleButton = properties => (
   </CommandBarButton>
 );
 const TooltipButton = properties => (
-    <TooltipHost content={properties.tooltipText}>
-      <CommandBarButton {...properties}/>
-    </TooltipHost>
-  );
+  <TooltipHost content={properties.tooltipText}>
+    <CommandBarButton {...properties}/>
+  </TooltipHost>
+);
 
 const CvTopBar = props => {
   

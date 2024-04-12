@@ -15,7 +15,7 @@ const CvPhoto = (props) => {
   const photoProps = {
     src: photoB64,
     alt: "Profielfoto",
-    styles: prps => ({ root: { border: '1px solid ' + prps.theme.palette.neutralSecondary } }),
+    styles: prps => ({ root: { border: `1px solid ${prps.theme.palette.neutralSecondary}` } }),
     width: "10em",
     height: "10em"
   };
@@ -68,7 +68,7 @@ const CvPhoto = (props) => {
         />
       </Stack>
     </Stack>
-  )
+  );
 };
 
 CvPhoto.propTypes = {

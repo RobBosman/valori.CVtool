@@ -90,7 +90,7 @@ export const cropImageB64 = orgImageB64 =>
       }
 
       const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext('2d'); 
+      const ctx = canvas.getContext("2d"); 
 
       const scale = Math.min(1.0, MAX_PHOTO_SIZE_PX / Math.min(img.naturalWidth, img.naturalHeight));
       if (img.naturalWidth < img.naturalHeight) {
@@ -111,5 +111,5 @@ export const cropImageB64 = orgImageB64 =>
       canvas.remove();
 
       resolve(croppedImageB64);
-    }
+    };
   });

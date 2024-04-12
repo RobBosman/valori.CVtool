@@ -1,32 +1,32 @@
+import react from "eslint-plugin-react";
+import babelParser from "@babel/eslint-parser";
+
 export default [
   {
-    files: [
-      "**/*.js",
-      "**/*.jsx",
-      "**/*.html"
-    ],
-    ignores: [
-      "node/**",
-      "node_modules/**",
-      "target/**"
-    ],
+    files: ["**/*.js", "**/*.jsx"],
+    ignores: ["node/**", "node_modules/**", "target/**"],
     languageOptions: {
       globals: {
         Atomics: "readonly",
         SharedArrayBuffer: "readonly"
-      }
+      },
+      parser: babelParser,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        },
+        ecmaVersion: 2020,
+        sourceType: "module"
+      },
     },
     plugins: {
-      html: import("html-webpack-plugin"),
-      react: "react"
+      react: react
     },
     rules: {
       indent: ["error", 2],
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
-      semi: ["error", "always"],
-      "react/jsx-uses-react": "error",
-      "react/jsx-uses-vars": "error"
+      semi: ["error", "always"]
     },
     settings: {
       react: {

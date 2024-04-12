@@ -53,16 +53,16 @@ export const fetchAuthInfoFromRemote = (email, name, sendEvent) =>
       name: name || email.split("@")[0]
     }
   )
-  .then(message => {
-    const authInfo = message.body;
-    if (!authInfo) {
-      throw new Error("Authentication error: message.body contains no authInfo");
-    }
-    return authInfo;
-  });
+    .then(message => {
+      const authInfo = message.body;
+      if (!authInfo) {
+        throw new Error("Authentication error: message.body contains no authInfo");
+      }
+      return authInfo;
+    });
 
-  export const fetchProfilePhoto = accessToken =>
-    fetch('https://graph.microsoft.com/v1.0/me/photo/$value', { headers: { Authorization: `Bearer ${accessToken}` } })
+export const fetchProfilePhoto = accessToken =>
+  fetch("https://graph.microsoft.com/v1.0/me/photo/$value", { headers: { Authorization: `Bearer ${accessToken}` } })
     .then(response => response.blob())
     .then(responseBlob =>
       new Promise((resolve, reject) => {

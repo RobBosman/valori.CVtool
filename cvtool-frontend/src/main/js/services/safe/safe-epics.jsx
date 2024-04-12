@@ -92,16 +92,16 @@ export const safeEpics = [
         reader.readAsDataURL(file);
         reader.onloadend = () => resolve(reader);
       })
-      .then(reader => [accountInstanceId, reader.result])
+        .then(reader => [accountInstanceId, reader.result])
     ),
     rx.map(([accountInstanceId, photoB64]) => safeActions.setProfilePhoto(accountInstanceId, photoB64)),
     rx.catchError((error, source$) =>
       ["aborted", "cancel"].some(s => error.message.includes(s)) // ignore user cancellations
         ? source$
         : merge(
-            of(errorActions.setLastError(`Fout bij uploaden: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
-            source$
-          )
+          of(errorActions.setLastError(`Fout bij uploaden: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
+          source$
+        )
     )
   ),
 

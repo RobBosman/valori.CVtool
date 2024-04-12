@@ -31,7 +31,7 @@
         <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
         <mongodb-driver-reactivestreams.version>5.0.1</mongodb-driver-reactivestreams.version>
-        <nodejs.version>v20.12.0</nodejs.version>
+        <nodejs.version>v20.12.2</nodejs.version>
         <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
         <vertx.version>4.5.7</vertx.version>
     </properties>

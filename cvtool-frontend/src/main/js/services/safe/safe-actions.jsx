@@ -16,7 +16,7 @@ export const changeInstances = createAction("CHANGE_INSTANCES",
   (entity, instances) => ({ payload: { entity, instances } }));
 export const changeInstance = createAction("CHANGE_INSTANCE",
   (entity, instanceId, instance) => ({ payload: { entity, instanceId, instance } }));
-  export const setLastSavedTimeString = createAction("SET_LAST_SAVED_TIME_STRING");
+export const setLastSavedTimeString = createAction("SET_LAST_SAVED_TIME_STRING");
 
 reducerRegistry.register(
   "safe",
