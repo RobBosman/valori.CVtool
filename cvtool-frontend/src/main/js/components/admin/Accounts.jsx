@@ -89,7 +89,7 @@ const Accounts = (props) => {
   [combined.entity, props.selectedAccountId]);
 
   const BusinessUnitOptions = React.useMemo(() => {
-    const buOptions = Object.values(props.businessUnitEntity || {})
+    const options = Object.values(props.businessUnitEntity || {})
       .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
       .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
       .map((businessUnit, index) => ({
@@ -105,7 +105,7 @@ const Accounts = (props) => {
         sortIndex: 0,
         text: {}
       },
-      ...buOptions
+      ...options
     ];
   },
   [props.businessUnitEntity]);

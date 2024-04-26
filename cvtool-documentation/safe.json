@@ -1,9 +1,16 @@
 {
   "_id": "uuid-safe-1",
+  "brand": {
+    "uuid-brand-1": {
+      "_id": "uuid-brand-1",
+      "name": "Valori"
+    }
+  },
   "businessUnit": {
     "uuid-businessUnit-1": {
       "_id": "uuid-businessUnit-1",
       "name": "Quality & Architecture",
+      "brandId": "uuid-brand-1",
       "contactName": "Bob van Zeist",
       "contactEmail": "BobVanZeist@valori.nl",
       "contactPhone": "+31612345678",

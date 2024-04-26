@@ -1,7 +1,12 @@
 {
+  "brand": {
+    "_id": "ID",
+    "name": "STRING"
+  },
   "businessUnit": {
     "_id": "ID",
     "name": "STRING",
+    "brandId": "ID",
     "contactName": "STRING",
     "contactEmail": "STRING",
     "contactPhone": "STRING",

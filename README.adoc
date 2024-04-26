@@ -130,6 +130,7 @@ Data retention is 120 days.
 
 === Import/export collections
 
+ #   brand
  #   businessUnit
  #   account
  #   authorization

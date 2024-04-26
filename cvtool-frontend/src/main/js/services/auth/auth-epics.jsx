@@ -141,7 +141,8 @@ export const authEpics = [
           actions.push(
             safeActions.fetchAllInstances("account"),
             safeActions.fetchAllInstances("authorization"),
-            safeActions.fetchAllInstances("businessUnit")
+            safeActions.fetchAllInstances("businessUnit"),
+            safeActions.fetchAllInstances("brand")
           );
         }
       } else {

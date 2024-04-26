@@ -7,12 +7,30 @@ import * as safeActions from "../../services/safe/safe-actions";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
+import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
-
-const entityName = "businessUnit";
+import * as enums from "../cv/Enums";
 
 const BusinessUnits = (props) => {
+
+  const combineEntities = (brandEntity, businessUnitEntity) => {
+    const combined = {};
+    Object.values(businessUnitEntity || {})
+      .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
+      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
+      .forEach(businessUnit => {
+        combined[businessUnit._id] = {
+          ...businessUnit,
+          brand: brandEntity[businessUnit.brandId]
+        };
+      });
+    return combined;
+  };
+
+  const combinedEntities = React.useMemo(() =>
+    combineEntities(props.brandEntity, props.businessUnitEntity),
+  [props.brandEntity, props.businessUnitEntity]);
 
   const businessUnitContext = {
     entity: props.businessUnitEntity,
@@ -20,12 +38,32 @@ const BusinessUnits = (props) => {
     setSelectedInstanceId: props.setSelectedBusinessUnitId,
     replaceInstance: props.replaceBusinessUnit
   };
-  
+
   const businessUnits = React.useMemo(() =>
-    Object.values(props.businessUnitEntity || {})
-      .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
-      || [],
-  [props.businessUnitEntity]);
+    Object.values(combinedEntities) || [],
+  [props.brandEntity, props.businessUnitEntity]);
+
+  const BrandOptions = React.useMemo(() => {
+    const options = Object.values(props.brandEntity || {})
+      .filter(brand => brand._id) // Don't show deleted brands.
+      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
+      .map((brand, index) => ({
+        key: brand._id,
+        sortIndex: index + 1,
+        text: {
+          nl_NL: brand.name
+        }
+      }));
+    return [
+      {
+        key: null,
+        sortIndex: 0,
+        text: {}
+      },
+      ...options
+    ];
+  },
+  [props.brandEntity]);
 
   const columns = [
     {
@@ -35,6 +73,14 @@ const BusinessUnits = (props) => {
       isResizable: true,
       minWidth: 140,
       maxWidth: 250
+    },
+    {
+      key: "brand",
+      fieldName: "brand.name",
+      name: "Brand",
+      isResizable: true,
+      minWidth: 60,
+      maxWidth: 100
     },
     {
       key: "contactName",
@@ -114,6 +160,23 @@ const BusinessUnits = (props) => {
   const onDeleteCancelled = () =>
     setConfirmDialogVisible(false);
 
+  const combinedContext = React.useCallback(replaceInstance => ({
+    entity: combinedEntities,
+    instanceId: props.selectedBusinessUnitId,
+    setSelectedInstanceId: props.setSelectedBusinessUnitId,
+    replaceInstance: replaceInstance,
+    readOnly: !["ADMIN"].includes(props.authInfo.authorizationLevel)
+  }),
+  [combinedEntities, props.selectedBusinessUnitId, props.setSelectedBusinessUnitId]);
+
+  const changeBrandOfBusinessUnit = React.useCallback((businessUnitId, combinedInstance) => {
+    props.replaceBusinessUnit(businessUnitId, {
+      ...props.businessUnitEntity[businessUnitId],
+      brandId: combinedInstance.brandId
+    });
+  },
+  [props.businessUnitEntity, props.replaceBusinessUnit]);
+
   return (
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
@@ -164,6 +227,14 @@ const BusinessUnits = (props) => {
           { ["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
             && <td valign="top" style={tdStyle}>
               <Stack styles={editStyles}>
+                <CvDropdown
+                  label="Brand"
+                  field="brandId"
+                  instanceContext={combinedContext(changeBrandOfBusinessUnit)}
+                  options={enums.getOptions(BrandOptions, props.locale)}
+                  styles={{ dropdown: { width: 230 } }}
+                  disabled={!props.selectedBusinessUnitId}
+                />
                 <CvTextField
                   label="Unit"
                   field="name"
@@ -187,6 +258,7 @@ const BusinessUnits = (props) => {
 
 BusinessUnits.propTypes = {
   authInfo: PropTypes.object,
+  brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   selectedBusinessUnitId: PropTypes.string,
   setSelectedBusinessUnitId: PropTypes.func.isRequired,
@@ -195,13 +267,14 @@ BusinessUnits.propTypes = {
 
 const select = (store) => ({
   authInfo: store.auth.authInfo,
-  businessUnitEntity: store.safe.content[entityName],
-  selectedBusinessUnitId: store.ui.selectedId[entityName]
+  brandEntity: store.safe.content.brand,
+  businessUnitEntity: store.safe.content.businessUnit,
+  selectedBusinessUnitId: store.ui.selectedId.businessUnit
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setSelectedBusinessUnitId: (id) => dispatch(setSelectedId(entityName, id)),
-  replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance(entityName, id, instance))
+  setSelectedBusinessUnitId: (id) => dispatch(setSelectedId("businessUnit", id)),
+  replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(BusinessUnits);
