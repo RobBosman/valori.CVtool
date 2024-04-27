@@ -258,6 +258,7 @@ const BusinessUnits = props => {
 
 BusinessUnits.propTypes = {
   authInfo: PropTypes.object,
+  locale: PropTypes.string.isRequired,
   brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   selectedBusinessUnitId: PropTypes.string,
@@ -267,6 +268,7 @@ BusinessUnits.propTypes = {
 
 const select = store => ({
   authInfo: store.auth.authInfo,
+  locale: store.ui.userPrefs.locale,
   brandEntity: store.safe.content.brand,
   businessUnitEntity: store.safe.content.businessUnit,
   selectedBusinessUnitId: store.ui.selectedId.businessUnit

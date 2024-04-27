@@ -178,27 +178,23 @@ Brands.propTypes = {
   authInfo: PropTypes.object,
   locale: PropTypes.string.isRequired,
   brandEntity: PropTypes.object,
-  businessUnitEntity: PropTypes.object,
   selectedBrandId: PropTypes.string,
   setSelectedBrandId: PropTypes.func.isRequired,
   deleteBrand: PropTypes.func.isRequired,
-  replaceBrand: PropTypes.func.isRequired,
-  replaceBusinessUnit: PropTypes.func.isRequired
+  replaceBrand: PropTypes.func.isRequired
 };
 
 const select = store => ({
   authInfo: store.auth.authInfo,
   locale: store.ui.userPrefs.locale,
   brandEntity: store.safe.content.brand,
-  businessUnitEntity: store.safe.content.businessUnit,
   selectedBrandId: store.ui.selectedId.brand
 });
 
 const mapDispatchToProps = dispatch => ({
   setSelectedBrandId: id => dispatch(setSelectedId("brand", id)),
   deleteBrand: id => dispatch(safeActions.deleteBrand(id)),
-  replaceBrand: (id, instance) => dispatch(safeActions.changeInstance("brand", id, instance)),
-  replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance))
+  replaceBrand: (id, instance) => dispatch(safeActions.changeInstance("brand", id, instance))
 });
 
 export default connect(select, mapDispatchToProps)(Brands);

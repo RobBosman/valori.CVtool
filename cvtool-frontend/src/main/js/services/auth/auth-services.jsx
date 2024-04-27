@@ -41,7 +41,7 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
           return msal.acquireTokenPopup(loginConfig);
         } else {
           console.error("Error acquiring token:", error);
-          return Promise.reject(error);
+          return Promise.reject(new Error(error.message));
         }
       });
 };
@@ -70,8 +70,8 @@ export const fetchProfilePhoto = accessToken =>
           const reader = new FileReader();
           reader.readAsDataURL(responseBlob);
           reader.onloadend = () => resolve(reader.result);
-        } catch (e) {
-          reject(e);
+        } catch (error) {
+          reject(new Error(error.message));
         }
       })
     );
