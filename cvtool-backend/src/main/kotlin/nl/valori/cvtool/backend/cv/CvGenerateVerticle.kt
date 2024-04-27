@@ -29,7 +29,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     companion object {
         internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20201130.xsd"
-        internal val allLocales = setOf("nl_NL", "uk_UK")
+        internal val ALL_LOCALES = setOf("nl_NL", "uk_UK")
+        private const val DEFAULT_DOCX_TEMPLATE = "VALORI"
 
         private fun loadBytes(location: String) =
             CvGenerateVerticle::class.java.getResource(location)
@@ -117,7 +118,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         }
     }
 
-    override fun getMessageFingerprint(message: Message<JsonObject>): String? =
+    override fun getMessageFingerprint(message: Message<JsonObject>): String =
         Optional
             .ofNullable(message.headers()["authInfo"])
             .map { JsonObject(it).getString("accountId") }
@@ -145,8 +146,9 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             .flatMap(::fetchCvData)
             .flatMap { cvJson ->
                 val docxTemplate = cvJson.getInstances("brand")
-                    .first()
-                    .getString("docxTemplate")
+                    .firstOrNull()
+                    ?.getString("docxTemplate")
+                    ?: DEFAULT_DOCX_TEMPLATE
                 xmlToDocx(convertToXml(cvJson), docxTemplate, locale)
                     .map { docxBytes ->
                         JsonObject()

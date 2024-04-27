@@ -70,15 +70,17 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
                 }
             }
             .flatMap { cvData ->
-                val criteria = cvData.getInstances("businessUnit")
+                val brandId = cvData.getInstances("businessUnit")
                     .firstOrNull()
                     ?.getString("brandId", null)
-                    ?.let { brandId -> """{ "brand": [{ "_id": "$brandId" }] }""" }
-                    ?: """{ "brand": [{ "docxTemplate": "VALORI" }] }""" // Default to docxTemplate VALORI.
-                fetchBrand(JsonObject(criteria))
-                    .map { brandJson ->
-                        cvData.put("brand", brandJson.getJsonObject("brand"))
-                    }
+                if (brandId != null) {
+                    fetchBrand(JsonObject("""{ "brand": [{ "_id": "$brandId" }] }"""))
+                        .map { brandJson ->
+                            cvData.put("brand", brandJson.getJsonObject("brand"))
+                        }
+                } else {
+                    Single.just(cvData)
+                }
             }
 
     private fun composeCvDataCriteria(accountId: String) =

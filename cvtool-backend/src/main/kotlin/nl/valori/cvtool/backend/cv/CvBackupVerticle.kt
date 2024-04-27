@@ -8,7 +8,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.getInstances
-import nl.valori.cvtool.backend.cv.CvGenerateVerticle.Companion.allLocales
+import nl.valori.cvtool.backend.cv.CvGenerateVerticle.Companion.ALL_LOCALES
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import java.io.ByteArrayOutputStream
 import java.lang.System.nanoTime
@@ -38,7 +38,7 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
         fetchAllCharacteristicsInstances()
             .flatMap { characteristics ->
                 Flowable
-                    .fromIterable(allLocales)
+                    .fromIterable(ALL_LOCALES)
                     .map { locale -> characteristics.getString("accountId") to locale }
             }
             .zipWith(permitSubject.toFlowable(ERROR)) { job, _ -> job }
