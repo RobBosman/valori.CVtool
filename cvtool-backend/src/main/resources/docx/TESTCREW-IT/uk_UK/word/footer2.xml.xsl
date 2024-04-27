@@ -53,7 +53,7 @@
                             <w:t xml:space="preserve">&#xA0;// </w:t>
                         </w:r>
                         <w:r w:rsidRPr="00C0691A">
-                            <w:t>Valori</w:t>
+                            <w:t>TestCrew-IT</w:t>
                         </w:r>
                         <w:r w:rsidRPr="00C0691A">
                             <w:rPr>

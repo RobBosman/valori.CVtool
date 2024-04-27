@@ -192,7 +192,7 @@
                                 <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
                                     <pic:pic>
                                         <pic:nvPicPr>
-                                            <pic:cNvPr id="1" name="Valori - digitaal gebruik.jpg"/>
+                                            <pic:cNvPr id="1" name="TestCrew-IT - digitaal gebruik.jpg"/>
                                             <pic:cNvPicPr/>
                                         </pic:nvPicPr>
                                         <pic:blipFill>
