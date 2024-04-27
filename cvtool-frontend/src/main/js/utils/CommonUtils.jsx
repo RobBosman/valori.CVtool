@@ -110,7 +110,6 @@ export const cropImageB64 = orgImageB64 =>
       const croppedImageB64 = canvas.toDataURL("image/jpeg");
       canvas.remove();
 
-      console.log(cropImageB64);
       resolve(croppedImageB64);
     };
   });
