@@ -170,10 +170,10 @@ Data retention is 120 days.
    { "$set": { "level": "UNIT_LEAD" } });
 
  db.audit_log.updateMany({}, {"$rename": {"accountId": "editorAccountId"}});
- db.audit_log.updateMany({}, {"$rename": {"cvId": "cvAccountId"}});
+ db.audit_log.updateMany({}, {"$rename": {"cvId": "accountId"}});
  db.audit_log.find({
     $and: [
-      { cvAccountId: null },
+      { accountId: null },
       { entity: { $nin: ["account", "authorization", "businessUnit"] } }
     ]
    })

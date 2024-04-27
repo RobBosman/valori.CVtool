@@ -7,8 +7,10 @@ import * as safeActions from "../../services/safe/safe-actions";
 import { setSelectedId } from "../../services/ui/ui-actions";
 import { useTheme } from "../../services/ui/ui-services";
 import { CvDetailsList } from "../widgets/CvDetailsList";
+import { CvDropdown } from "../widgets/CvDropdown";
 import { CvTextField } from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
+import * as enums from "../cv/Enums";
 
 const Brands = props => {
 
@@ -29,7 +31,15 @@ const Brands = props => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
-      minWidth: 60
+      minWidth: 60,
+      maxWidth: 120
+    },
+    {
+      key: "docxTemplate",
+      fieldName: "docxTemplate",
+      name: "Docx template",
+      isResizable: true,
+      minWidth: 120
     }
   ];
 
@@ -57,12 +67,13 @@ const Brands = props => {
   const selectedItemFields = React.useCallback(() => {
     const selectedBrand = brands.find(brands => brands._id === props.selectedBrandId);
     return selectedBrand && {
-      Naam: selectedBrand.name
+      Naam: selectedBrand.name,
+      "Docx template": selectedBrand.docxTemplate
     };
   }, [brands, props.selectedBrandId]);
 
   const isFilledBrand = brand =>
-    brand.name;
+    brand.name || brand.docxTemplate;
 
   const onAddItem = () => {
     let newBrand = brands.find(brand => !isFilledBrand(brand));
@@ -146,6 +157,14 @@ const Brands = props => {
                   instanceContext={brandContext}
                   disabled={!props.selectedBrandId}
                 />
+                <CvDropdown
+                  label="Docx template"
+                  field="docxTemplate"
+                  instanceContext={brandContext}
+                  options={enums.getOptions(enums.DocxTemplates, props.locale)}
+                  styles={{ dropdown: { width: 230 } }}
+                  disabled={!props.selectedBrandId}
+                />
               </Stack>
             </td>
           }
@@ -157,6 +176,7 @@ const Brands = props => {
 
 Brands.propTypes = {
   authInfo: PropTypes.object,
+  locale: PropTypes.string.isRequired,
   brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   selectedBrandId: PropTypes.string,
@@ -168,6 +188,7 @@ Brands.propTypes = {
 
 const select = store => ({
   authInfo: store.auth.authInfo,
+  locale: store.ui.userPrefs.locale,
   brandEntity: store.safe.content.brand,
   businessUnitEntity: store.safe.content.businessUnit,
   selectedBrandId: store.ui.selectedId.brand

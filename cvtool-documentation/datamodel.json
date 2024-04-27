@@ -1,7 +1,8 @@
 {
   "brand": {
     "_id": "ID",
-    "name": "STRING"
+    "name": "STRING",
+    "template": "STRING"
   },
   "businessUnit": {
     "_id": "ID",

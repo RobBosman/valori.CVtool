@@ -3,7 +3,8 @@
   "brand": {
     "uuid-brand-1": {
       "_id": "uuid-brand-1",
-      "name": "Valori"
+      "name": "Valori",
+      "template": "valori"
     }
   },
   "businessUnit": {

@@ -5,6 +5,7 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
+import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.ModelUtils.hasInstances
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
@@ -68,15 +69,17 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
                     createAndAddCharacteristics(accountId, it)
                 }
             }
-
-    private fun createAndAddCharacteristics(accountId: String, cvData: JsonObject): Single<JsonObject> {
-        val id = UUID.randomUUID().toString()
-        val characteristicsInstances = JsonObject().put(id, composeCharacteristicsInstance(id, accountId))
-        val characteristicsEntity = JsonObject().put("characteristics", characteristicsInstances)
-        return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, characteristicsEntity, deliveryOptions)
-            .map { cvData.put("characteristics", characteristicsInstances) }
-    }
+            .flatMap { cvData ->
+                val criteria = cvData.getInstances("businessUnit")
+                    .firstOrNull()
+                    ?.getString("brandId", null)
+                    ?.let { brandId -> """{ "brand": [{ "_id": "$brandId" }] }""" }
+                    ?: """{ "brand": [{ "docxTemplate": "VALORI" }] }""" // Default to docxTemplate VALORI.
+                fetchBrand(JsonObject(criteria))
+                    .map { brandJson ->
+                        cvData.put("brand", brandJson.getJsonObject("brand"))
+                    }
+            }
 
     private fun composeCvDataCriteria(accountId: String) =
         JsonObject(
@@ -88,8 +91,24 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
                 "skill": [{ "accountId": "$accountId" }],
                 "publication": [{ "accountId": "$accountId" }],
                 "reference": [{ "accountId": "$accountId" }],
-                "experience": [{ "accountId": "$accountId" }]
-            }""")
+                "experience": [{ "accountId": "$accountId" }],
+                "businessUnit": [{ "accountIds": "$accountId" }]
+            }"""
+        )
+
+    private fun fetchBrand(jsonCriteria: JsonObject) =
+        vertx.eventBus()
+            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, jsonCriteria, deliveryOptions)
+            .map { it.body() }
+
+    private fun createAndAddCharacteristics(accountId: String, cvData: JsonObject): Single<JsonObject> {
+        val id = UUID.randomUUID().toString()
+        val characteristicsInstances = JsonObject().put(id, composeCharacteristicsInstance(id, accountId))
+        val characteristicsEntity = JsonObject().put("characteristics", characteristicsInstances)
+        return vertx.eventBus()
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, characteristicsEntity, deliveryOptions)
+            .map { cvData.put("characteristics", characteristicsInstances) }
+    }
 
     private fun composeCharacteristicsInstance(id: String, accountId: String) =
         JsonObject(
@@ -100,5 +119,6 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
                 "profile": {},
                 "interests": {},
                 "includeInCv": true
-            }""")
+            }"""
+        )
 }

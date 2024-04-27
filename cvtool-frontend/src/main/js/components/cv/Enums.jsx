@@ -47,6 +47,23 @@ export const Authorizations = [
   }
 ];
 
+export const DocxTemplates = [
+  {
+    key: "VALORI",
+    sortIndex: 0,
+    text: {
+      nl_NL: "VALORI"
+    }
+  // },
+  // {
+  //   key: "TESTCREW-IT",
+  //   sortIndex: 1,
+  //   text: {
+  //     nl_NL: "TESTCREW-IT"
+  //   }
+  }
+];
+
 export const EducationResultTypes = [
   {
     key: "DIPLOMA",
