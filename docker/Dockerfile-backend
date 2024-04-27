@@ -13,7 +13,7 @@ RUN mkdir /build
 WORKDIR /build
 
 # Copy the source code.
-RUN git clone https://github.com/RobBosman/valori.CVtool.git .
+RUN git clone https://github.com/RobBosman/valori.CVtool.git --branch master .
 
 # Build the backend.
 RUN mvn clean verify --projects cvtool-backend --also-make
