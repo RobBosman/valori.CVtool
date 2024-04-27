@@ -54,13 +54,13 @@ export const DocxTemplates = [
     text: {
       nl_NL: "VALORI"
     }
-  // },
-  // {
-  //   key: "TESTCREW-IT",
-  //   sortIndex: 1,
-  //   text: {
-  //     nl_NL: "TESTCREW-IT"
-  //   }
+  },
+  {
+    key: "TESTCREW-IT",
+    sortIndex: 1,
+    text: {
+      nl_NL: "TESTCREW-IT"
+    }
   }
 ];
 
