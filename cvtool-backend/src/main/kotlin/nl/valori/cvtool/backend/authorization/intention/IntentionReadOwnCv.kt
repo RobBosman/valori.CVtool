@@ -56,6 +56,9 @@ internal object IntentionReadOwnCv : Intention {
             "authorization" -> {
                 // not applicable for IntentionReadOwnCv
             }
+            "brand" -> {
+                // not applicable for IntentionReadOwnCv
+            }
             "businessUnit" -> {
                 // not applicable for IntentionReadOwnCv
             }

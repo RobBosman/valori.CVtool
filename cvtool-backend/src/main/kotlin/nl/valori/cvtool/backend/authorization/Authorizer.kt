@@ -7,14 +7,17 @@ import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.SALES
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.UNIT_LEAD
 import nl.valori.cvtool.backend.authorization.intention.IntentionDeleteAccount
+import nl.valori.cvtool.backend.authorization.intention.IntentionDeleteBrand
 import nl.valori.cvtool.backend.authorization.intention.IntentionDownloadDemoCv
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllAccounts
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllAuthorizations
+import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllBrands
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadAllBusinessUnits
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadOtherCv
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadOwnAuthInfo
 import nl.valori.cvtool.backend.authorization.intention.IntentionReadOwnCv
 import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateAuthorization
+import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateBrand
 import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateBusinessUnit
 import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateOtherCv
 import nl.valori.cvtool.backend.authorization.intention.IntentionUpdateOwnCv
@@ -30,13 +33,16 @@ internal object Authorizer {
         IntentionReadOwnCv to CONSULTANT,
         IntentionReadOtherCv to SALES,
         IntentionReadAllAccounts to SALES,
+        IntentionReadAllBrands to SALES,
         IntentionReadAllBusinessUnits to SALES,
         IntentionReadAllAuthorizations to SALES,
         IntentionUpdateOwnCv to CONSULTANT,
         IntentionUpdateOtherCv to UNIT_LEAD,
+        IntentionUpdateBrand to ADMIN,
         IntentionUpdateBusinessUnit to UNIT_LEAD,
         IntentionUpdateAuthorization to ADMIN,
         IntentionDeleteAccount to ADMIN,
+        IntentionDeleteBrand to ADMIN,
         IntentionDownloadDemoCv to CONSULTANT
     )
 

@@ -33,9 +33,9 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-internal class IntentionReadOtherCvTest {
+internal class IntentionUpdateBrandTest {
 
-    private val intentionToTest = IntentionReadOtherCv
+    private val intentionToTest = IntentionUpdateBrand
 
     @Test
     fun testNoBody() {
@@ -117,7 +117,7 @@ internal class IntentionReadOtherCvTest {
 
     @Test
     fun testGenerateOtherCv() {
-        assertTrue(intentionToTest.match(CV_FETCH_ADDRESS, messageGenerateCvPascal, authInfoTom))
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageGenerateCvPascal, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageGenerateCvPascal, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageGenerateCvPascal, authInfoTom))
     }
@@ -125,7 +125,7 @@ internal class IntentionReadOtherCvTest {
     @Test
     fun testSearchCvData() {
         assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSearchCvData, authInfoTom))
-        assertTrue(intentionToTest.match(CV_SEARCH_ADDRESS, messageSearchCvData, authInfoTom))
+        assertFalse(intentionToTest.match(CV_SEARCH_ADDRESS, messageSearchCvData, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSearchCvData, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSearchCvData, authInfoTom))
     }
@@ -133,14 +133,14 @@ internal class IntentionReadOtherCvTest {
     @Test
     fun testFetchOtherCharacteristicsByAccountId() {
         assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdPascal, authInfoTom))
-        assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdPascal, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchCharacteristicsByAccountIdPascal, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchCharacteristicsByAccountIdPascal, authInfoTom))
     }
 
     @Test
     fun testFetchOtherSkill() {
         assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchSkillPascal, authInfoTom))
-        assertTrue(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchSkillPascal, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchSkillPascal, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchSkillPascal, authInfoTom))
     }
 
@@ -162,7 +162,7 @@ internal class IntentionReadOtherCvTest {
     fun testSaveBrand() {
         assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveBrand, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveBrand, authInfoTom))
-        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveBrand, authInfoTom))
+        assertTrue(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveBrand, authInfoTom))
     }
 
     @Test
@@ -181,6 +181,7 @@ internal class IntentionReadOtherCvTest {
 
     @Test
     fun testDeleteAccount() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageDeleteAccountPascal, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageDeleteAccountPascal, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageDeleteAccountPascal, authInfoTom))
         assertFalse(intentionToTest.match(ACCOUNT_DELETE_ADDRESS, messageDeleteAccountPascal, authInfoTom))

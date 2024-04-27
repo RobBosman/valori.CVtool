@@ -196,7 +196,7 @@ const Reference = (props) => {
                       onClick={onDeleteItem}
                     />
                     <ConfirmDialog
-                      title="Definitief verwijderen?"
+                      title="Referentie definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
                       isVisible={confirmDialogVisible}

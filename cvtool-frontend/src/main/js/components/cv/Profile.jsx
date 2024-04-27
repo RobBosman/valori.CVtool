@@ -326,7 +326,7 @@ const Profile = (props) => {
                       onClick={onDeleteItem}
                     />
                     <ConfirmDialog
-                      title="Definitief verwijderen?"
+                      title="Profiel definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
                       isVisible={confirmDialogVisible}

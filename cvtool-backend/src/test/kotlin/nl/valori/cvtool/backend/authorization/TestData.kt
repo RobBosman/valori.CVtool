@@ -21,6 +21,12 @@ internal object TestData {
         }"""
     )
 
+    val messageFetchAllBrands = JsonObject(
+        """{
+            "brand": [{}]
+        }"""
+    )
+
     val messageFetchAllBusinessUnits = JsonObject(
         """{
             "businessUnit": [{}]
@@ -130,6 +136,17 @@ internal object TestData {
         }"""
     )
 
+    val messageSaveBrand = JsonObject(
+        """{
+            "brand": {
+                "brand-id": {
+                    "_id": "brand-id",
+                    "name": "Valori"
+                }
+            }
+        }"""
+    )
+
     val messageSaveBusinessUnit = JsonObject(
         """{
             "businessUnit": {
@@ -157,6 +174,14 @@ internal object TestData {
         """{
             "account": {
               "account-id-of-pascal": {}
+            }
+        }"""
+    )
+
+    val messageDeleteBrand = JsonObject(
+        """{
+            "brand": {
+              "brand-id": {}
             }
         }"""
     )

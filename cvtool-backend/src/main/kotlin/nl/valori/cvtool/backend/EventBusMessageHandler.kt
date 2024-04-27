@@ -27,6 +27,7 @@ import nl.valori.cvtool.backend.cv.CV_HISTORY_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_SEARCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
 import nl.valori.cvtool.backend.persistence.AuditLogger
+import nl.valori.cvtool.backend.persistence.BRAND_DELETE_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
@@ -50,6 +51,7 @@ internal object EventBusMessageHandler {
             .addInboundPermitted(PermittedOptions().setAddress(CV_SEARCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_DOWNLOAD_DEMO_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(ACCOUNT_DELETE_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(BRAND_DELETE_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(MONGODB_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(MONGODB_SAVE_ADDRESS))
 

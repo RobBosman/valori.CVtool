@@ -289,7 +289,7 @@ const Experience = (props) => {
                       onClick={onDeleteItem}
                     />
                     <ConfirmDialog
-                      title="Definitief verwijderen?"
+                      title="Werkervaring definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
                       isVisible={confirmDialogVisible}

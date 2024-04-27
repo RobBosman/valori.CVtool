@@ -43,6 +43,9 @@ internal object IntentionUpdateOwnCv : Intention {
                             return true
                     }
             }
+            "brand" -> {
+                // not applicable for IntentionUpdateOwnCv
+            }
             "businessUnit" -> {
                 // not applicable for IntentionUpdateOwnCv
             }

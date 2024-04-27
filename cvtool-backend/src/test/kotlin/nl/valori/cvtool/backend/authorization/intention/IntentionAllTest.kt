@@ -4,6 +4,7 @@ import io.vertx.core.json.JsonObject
 import nl.valori.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.backend.authorization.TestData.authInfoTom
 import nl.valori.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
+import nl.valori.cvtool.backend.persistence.BRAND_DELETE_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import org.junit.jupiter.api.Test
@@ -20,6 +21,7 @@ internal class IntentionAllTest {
                 { "_id": "account-id-of-tom" }
             ],
             "authorization": [{}],
+            "brand": [{}],
             "businessUnit": [{}],
             "characteristics": [
                 { "accountId": "account-id-of-tom" },
@@ -45,6 +47,12 @@ internal class IntentionAllTest {
                     "_id": "authorization-id-of-pascal",
                     "accountId": "account-id-of-pascal",
                     "name": "ADMIN"
+                }
+            },
+            "brand": {
+                "brand-id": {
+                    "_id": "brand-id",
+                    "name": "Valori"
                 }
             },
             "businessUnit": {
@@ -85,6 +93,7 @@ internal class IntentionAllTest {
         listOf(
             IntentionReadAllAccounts,
             IntentionReadAllAuthorizations,
+            IntentionReadAllBrands,
             IntentionReadAllBusinessUnits,
             IntentionReadOtherCv,
             IntentionReadOwnCv
@@ -101,6 +110,7 @@ internal class IntentionAllTest {
     fun testSaveAll() {
         listOf(
             IntentionUpdateAuthorization,
+            IntentionUpdateBrand,
             IntentionUpdateBusinessUnit,
             IntentionUpdateOwnCv,
             IntentionUpdateOtherCv
@@ -122,6 +132,10 @@ internal class IntentionAllTest {
         assertTrue(
             IntentionDeleteAccount.match(ACCOUNT_DELETE_ADDRESS, bodySaveAll, authInfoTom),
             "Testing class ${IntentionDeleteAccount.javaClass.simpleName}"
+        )
+        assertTrue(
+            IntentionDeleteBrand.match(BRAND_DELETE_ADDRESS, bodySaveAll, authInfoTom),
+            "Testing class ${IntentionDeleteBrand.javaClass.simpleName}"
         )
     }
 }

@@ -3,8 +3,10 @@ package nl.valori.cvtool.backend.authorization.intention
 import nl.valori.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.valori.cvtool.backend.authorization.TestData.authInfoTom
 import nl.valori.cvtool.backend.authorization.TestData.messageDeleteAccountPascal
+import nl.valori.cvtool.backend.authorization.TestData.messageDeleteBrand
 import nl.valori.cvtool.backend.authorization.TestData.messageFetchAllAccounts
 import nl.valori.cvtool.backend.authorization.TestData.messageFetchAllAuthorizations
+import nl.valori.cvtool.backend.authorization.TestData.messageFetchAllBrands
 import nl.valori.cvtool.backend.authorization.TestData.messageFetchAllBusinessUnits
 import nl.valori.cvtool.backend.authorization.TestData.messageFetchAuthInfoTom
 import nl.valori.cvtool.backend.authorization.TestData.messageFetchCharacteristicsByAccountIdPascal
@@ -14,6 +16,7 @@ import nl.valori.cvtool.backend.authorization.TestData.messageFetchSkillTom
 import nl.valori.cvtool.backend.authorization.TestData.messageGenerateCvPascal
 import nl.valori.cvtool.backend.authorization.TestData.messageGenerateCvTom
 import nl.valori.cvtool.backend.authorization.TestData.messageSaveAuthorizationPascal
+import nl.valori.cvtool.backend.authorization.TestData.messageSaveBrand
 import nl.valori.cvtool.backend.authorization.TestData.messageSaveBusinessUnit
 import nl.valori.cvtool.backend.authorization.TestData.messageSaveCharacteristicsPascal
 import nl.valori.cvtool.backend.authorization.TestData.messageSaveCharacteristicsTom
@@ -23,6 +26,7 @@ import nl.valori.cvtool.backend.authorization.TestData.messageSearchCvData
 import nl.valori.cvtool.backend.cv.CV_FETCH_ADDRESS
 import nl.valori.cvtool.backend.cv.CV_SEARCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
+import nl.valori.cvtool.backend.persistence.BRAND_DELETE_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import org.junit.jupiter.api.Test
@@ -45,6 +49,13 @@ internal class IntentionReadOwnAuthInfoTest {
         assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchAllAccounts, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchAllAccounts, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchAllAccounts, authInfoTom))
+    }
+
+    @Test
+    fun testFetchAllBrands() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageFetchAllBrands, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageFetchAllBrands, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageFetchAllBrands, authInfoTom))
     }
 
     @Test
@@ -148,6 +159,13 @@ internal class IntentionReadOwnAuthInfoTest {
     }
 
     @Test
+    fun testSaveBrand() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveBrand, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveBrand, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageSaveBrand, authInfoTom))
+    }
+
+    @Test
     fun testSaveBusinessUnit() {
         assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageSaveBusinessUnit, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageSaveBusinessUnit, authInfoTom))
@@ -167,5 +185,13 @@ internal class IntentionReadOwnAuthInfoTest {
         assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageDeleteAccountPascal, authInfoTom))
         assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageDeleteAccountPascal, authInfoTom))
         assertFalse(intentionToTest.match(ACCOUNT_DELETE_ADDRESS, messageDeleteAccountPascal, authInfoTom))
+    }
+
+    @Test
+    fun testDeleteBrand() {
+        assertFalse(intentionToTest.match(CV_FETCH_ADDRESS, messageDeleteBrand, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_FETCH_ADDRESS, messageDeleteBrand, authInfoTom))
+        assertFalse(intentionToTest.match(MONGODB_SAVE_ADDRESS, messageDeleteBrand, authInfoTom))
+        assertFalse(intentionToTest.match(BRAND_DELETE_ADDRESS, messageDeleteBrand, authInfoTom))
     }
 }

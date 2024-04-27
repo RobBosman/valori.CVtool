@@ -8,3 +8,8 @@ export const saveToRemote = (entities, sendEventFunc) =>
 export const deleteAccountFromRemote = (accountId, sendEventFunc) =>
   sendEventFunc("account.delete", { "account": { [accountId]: {} } })
     .then((message) => message.body);
+
+export const deleteBrandFromRemote = (brandId, sendEventFunc) =>
+  sendEventFunc("brand.delete", { "brand": { [brandId]: {} } })
+    .then((message) => message.body);
+      

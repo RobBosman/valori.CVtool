@@ -387,7 +387,7 @@ const Skill = (props) => {
                       onClick={onDeleteItem}
                     />
                     <ConfirmDialog
-                      title="Definitief verwijderen?"
+                      title="Vaardigheid definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
                       isVisible={confirmDialogVisible}

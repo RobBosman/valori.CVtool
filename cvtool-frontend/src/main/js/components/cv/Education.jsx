@@ -239,7 +239,7 @@ const Education = (props) => {
                       onClick={onDeleteItem}
                     />
                     <ConfirmDialog
-                      title="Definitief verwijderen?"
+                      title="Opleiding definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
                       isVisible={confirmDialogVisible}

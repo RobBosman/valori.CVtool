@@ -12,7 +12,7 @@ import { CvTextField } from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
 import * as enums from "../cv/Enums";
 
-const BusinessUnits = (props) => {
+const BusinessUnits = props => {
 
   const combineEntities = (brandEntity, businessUnitEntity) => {
     const combined = {};
@@ -22,7 +22,7 @@ const BusinessUnits = (props) => {
       .forEach(businessUnit => {
         combined[businessUnit._id] = {
           ...businessUnit,
-          brand: brandEntity[businessUnit.brandId]
+          brand: brandEntity?.[businessUnit.brandId]
         };
       });
     return combined;
@@ -130,7 +130,7 @@ const BusinessUnits = (props) => {
     };
   }, [businessUnits, props.selectedBusinessUnitId]);
 
-  const isFilledBusinessUnit = (businessUnit) =>
+  const isFilledBusinessUnit = businessUnit =>
     businessUnit.name || businessUnit.contactName;
 
   const onAddItem = () => {
@@ -165,7 +165,7 @@ const BusinessUnits = (props) => {
     instanceId: props.selectedBusinessUnitId,
     setSelectedInstanceId: props.setSelectedBusinessUnitId,
     replaceInstance: replaceInstance,
-    readOnly: !["ADMIN"].includes(props.authInfo.authorizationLevel)
+    readOnly: props.authInfo.authorizationLevel != "ADMIN"
   }),
   [combinedEntities, props.selectedBusinessUnitId, props.setSelectedBusinessUnitId]);
 
@@ -201,7 +201,7 @@ const BusinessUnits = (props) => {
                       onClick={onDeleteItem}
                     />
                     <ConfirmDialog
-                      title="Definitief verwijderen?"
+                      title="Business Unit definitief verwijderen?"
                       primaryButtonText="Verwijderen"
                       selectedItemFields={selectedItemFields}
                       isVisible={confirmDialogVisible}
@@ -265,15 +265,15 @@ BusinessUnits.propTypes = {
   replaceBusinessUnit: PropTypes.func.isRequired
 };
 
-const select = (store) => ({
+const select = store => ({
   authInfo: store.auth.authInfo,
   brandEntity: store.safe.content.brand,
   businessUnitEntity: store.safe.content.businessUnit,
   selectedBusinessUnitId: store.ui.selectedId.businessUnit
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setSelectedBusinessUnitId: (id) => dispatch(setSelectedId("businessUnit", id)),
+const mapDispatchToProps = dispatch => ({
+  setSelectedBusinessUnitId: id => dispatch(setSelectedId("businessUnit", id)),
   replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance))
 });
 

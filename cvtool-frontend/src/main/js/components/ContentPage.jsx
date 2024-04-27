@@ -17,6 +17,7 @@ import Training from "./cv/Training";
 import Accounts from "./admin/Accounts";
 import * as cvActions from "../services/cv/cv-actions";
 import * as uiActions from "../services/ui/ui-actions";
+import Brands from "./admin/Brands";
 import BusinessUnits from "./admin/BusinessUnits";
 import Search from "./admin/Search";
 import LocaleFlag from "./widgets/LocaleFlag";
@@ -67,6 +68,14 @@ const ContentPage = (props) => {
             name: "Accounts",
             icon: "AccountManagement",
             content: <Accounts />
+          },
+          ["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
+          && {
+            key: "#brands",
+            url: "#brands",
+            name: "Brands",
+            icon: "BullseyeTarget",
+            content: <Brands />
           },
           ["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
           && {

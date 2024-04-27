@@ -55,16 +55,16 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
                 MONGODB_FETCH_ADDRESS,
                 JsonObject(
                     """{
-                            "authorization": [{ "accountId": "$accountId" }],
-                            "characteristics": [{ "accountId": "$accountId" }],
-                            "education": [{ "accountId": "$accountId" }],
-                            "training": [{ "accountId": "$accountId" }],
-                            "skill": [{ "accountId": "$accountId" }],
-                            "publication": [{ "accountId": "$accountId" }],
-                            "reference": [{ "accountId": "$accountId" }],
-                            "experience": [{ "accountId": "$accountId" }],
-                            "businessUnit": [{}]
-                        }"""
+                        "authorization": [{ "accountId": "$accountId" }],
+                        "characteristics": [{ "accountId": "$accountId" }],
+                        "education": [{ "accountId": "$accountId" }],
+                        "training": [{ "accountId": "$accountId" }],
+                        "skill": [{ "accountId": "$accountId" }],
+                        "publication": [{ "accountId": "$accountId" }],
+                        "reference": [{ "accountId": "$accountId" }],
+                        "experience": [{ "accountId": "$accountId" }],
+                        "businessUnit": [{}]
+                    }"""
                 ),
                 deliveryOptions
             )

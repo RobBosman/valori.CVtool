@@ -50,31 +50,44 @@ export const safeEpics = [
     })
   ),
 
-  // Delete the account from the backend server.
-  (action$, state$) => action$.pipe(
+  // Delete an account from the backend server.
+  (action$) => action$.pipe(
     ofType(safeActions.deleteAccount.type),
     rx.map(action => action.payload),
     rx.mergeMap(accountId =>
       safeServices.deleteAccountFromRemote(accountId, eventBusServices.eventBusClient.sendEvent)
         .then(() => accountId)
     ),
-    rx.map(accountId => {
-      const businessUnitInstancess = {};
-      Object.values(state$.value.safe.content.businessUnit || {})
-        .filter(businessUnit => businessUnit.accountIds?.includes(accountId))
-        .forEach(businessUnit => {
-          businessUnitInstancess[businessUnit._id] = {
-            ...businessUnit,
-            accountIds: businessUnit.accountIds.filter(id => id !== accountId)
-          };
-        });
-      return safeActions.resetEntities({
-        account: {
-          [accountId]: undefined
-        },
-        businessUnit: businessUnitInstancess
-      });
-    })
+    rx.mergeMap(accountId =>
+      of(
+        safeActions.resetEntities({
+          account: {
+            [accountId]: undefined
+          }
+        }),
+        safeActions.fetchAllInstances("businessUnit")
+      )
+    )
+  ),
+
+  // Delete a brand from the backend server.
+  (action$) => action$.pipe(
+    ofType(safeActions.deleteBrand.type),
+    rx.map(action => action.payload),
+    rx.mergeMap(brandId =>
+      safeServices.deleteBrandFromRemote(brandId, eventBusServices.eventBusClient.sendEvent)
+        .then(() => brandId)
+    ),
+    rx.mergeMap(brandId =>
+      of(
+        safeActions.resetEntities({
+          brand: {
+            [brandId]: undefined
+          }
+        }),
+        safeActions.fetchAllInstances("businessUnit")
+      )
+    )
   ),
 
   // Select a photo file for upload and store its content as the profile photo of the account.

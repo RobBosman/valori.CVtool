@@ -12,6 +12,7 @@ const timezoneOffsetMillis = new Date().getTimezoneOffset() * 60000;
 export const entityNames = {
   "account": "Account",
   "authorization": "Authorizatie",
+  "brand": "Brand",
   "businessUnit": "Unit",
   "characteristics": "Profiel",
   "cv": "Profiel",

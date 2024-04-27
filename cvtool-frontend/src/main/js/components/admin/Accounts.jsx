@@ -14,7 +14,7 @@ import * as enums from "../cv/Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import { createHelpIcon } from "../widgets/CvHelpIcon";
 
-const Accounts = (props) => {
+const Accounts = props => {
 
   const combineEntities = (accountEntity, authorizationEntity, businessUnitEntity) => {
     const combined = {};
@@ -80,7 +80,7 @@ const Accounts = (props) => {
   },
   [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
 
-  const combinedContext = React.useCallback((replaceInstance) => ({
+  const combinedContext = React.useCallback(replaceInstance => ({
     entity: combined.entity,
     instanceId: props.selectedAccountId,
     setSelectedInstanceId: props.setSelectedAccountId,
@@ -110,7 +110,7 @@ const Accounts = (props) => {
   },
   [props.businessUnitEntity]);
 
-  const onRenderAuthorization = (item) =>
+  const onRenderAuthorization = item =>
     enums.getText(enums.Authorizations, item.authorization?.level, props.locale);
 
   const columns = [
@@ -346,7 +346,7 @@ Accounts.propTypes = {
   fetchCvByAccountId: PropTypes.func.isRequired
 };
 
-const select = (store) => ({
+const select = store => ({
   locale: store.ui.userPrefs.locale,
   authInfo: store.auth.authInfo,
   accountEntity: store.safe.content.account,
@@ -355,12 +355,12 @@ const select = (store) => ({
   selectedAccountId: store.ui.selectedId.account
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setSelectedAccountId: (id) => dispatch(uiActions.setSelectedId("account", id)),
-  deleteAccount: (id) => dispatch(safeActions.deleteAccount(id)),
+const mapDispatchToProps = dispatch => ({
+  setSelectedAccountId: id => dispatch(uiActions.setSelectedId("account", id)),
+  deleteAccount: id => dispatch(safeActions.deleteAccount(id)),
   replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
   replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance)),
-  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId))
+  fetchCvByAccountId: accountId => dispatch(cvActions.fetchCvByAccountId(accountId))
 });
 
 export default connect(select, mapDispatchToProps)(Accounts);

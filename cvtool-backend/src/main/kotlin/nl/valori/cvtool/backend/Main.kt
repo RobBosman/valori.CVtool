@@ -18,6 +18,7 @@ import nl.valori.cvtool.backend.cv.CvGenerateVerticle
 import nl.valori.cvtool.backend.cv.CvHistoryVerticle
 import nl.valori.cvtool.backend.cv.CvSearchVerticle
 import nl.valori.cvtool.backend.persistence.AccountDeleteVerticle
+import nl.valori.cvtool.backend.persistence.BrandDeleteVerticle
 import nl.valori.cvtool.backend.persistence.MongodbFetchVerticle
 import nl.valori.cvtool.backend.persistence.MongodbSaveVerticle
 import nl.valori.cvtool.backend.system.ControlVerticle
@@ -38,6 +39,7 @@ object Main {
         MongodbSaveVerticle::class,
         AuthInfoFetchVerticle::class,
         AccountDeleteVerticle::class,
+        BrandDeleteVerticle::class,
         CvFetchVerticle::class,
         CvSearchVerticle::class,
         CvBackupVerticle::class,
