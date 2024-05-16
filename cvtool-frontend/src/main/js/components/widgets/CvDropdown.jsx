@@ -38,7 +38,7 @@ export const CvDropdown = (props) => {
     }
   };
 
-  return readOnly
+  return readOnly || props.readOnly
     ? <TextField
       label={props.label}
       readOnly={true}

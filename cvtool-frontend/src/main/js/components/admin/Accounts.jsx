@@ -275,25 +275,23 @@ const Accounts = (props) => {
                   instanceContext={combinedContext()}
                   readOnly={true}
                 />
-                {["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
-                  && <CvDropdown
-                    label="Unit"
-                    field="businessUnit._id"
-                    instanceContext={combinedContext(switchBusinessUnitOfAccount)}
-                    options={enums.getOptions(BusinessUnitOptions, props.locale)}
-                    styles={{ dropdown: { width: 230 } }}
-                  />
-                }
-                {["ADMIN"].includes(props.authInfo.authorizationLevel)
-                  && <CvDropdown
-                    label="Autorisatie"
-                    field="authorization.level"
-                    instanceContext={combinedContext(replaceAuthorizationInstance)}
-                    disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
-                    options={enums.getOptions(enums.Authorizations, props.locale)}
-                    styles={{ dropdown: { width: 230 } }}
-                  />
-                }
+                <CvDropdown
+                  label="Unit"
+                  field="businessUnit._id"
+                  instanceContext={combinedContext(switchBusinessUnitOfAccount)}
+                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
+                  options={enums.getOptions(BusinessUnitOptions, props.locale)}
+                  styles={{ dropdown: { width: 230 } }}
+                />
+                <CvDropdown
+                  label="Autorisatie"
+                  field="authorization.level"
+                  instanceContext={combinedContext(replaceAuthorizationInstance)}
+                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
+                  disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
+                  options={enums.getOptions(enums.Authorizations, props.locale)}
+                  styles={{ dropdown: { width: 230 } }}
+                />
                 <Separator/>
                 <Stack horizontal grow
                   tokens={{ childrenGap: "s1" }}>
