@@ -80,7 +80,7 @@ const Accounts = (props) => {
   },
   [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
 
-  const combinedContext = React.useCallback((replaceInstance) => ({
+  const combinedContext = React.useCallback(replaceInstance => ({
     entity: combined.entity,
     instanceId: props.selectedAccountId,
     setSelectedInstanceId: props.setSelectedAccountId,
@@ -156,8 +156,7 @@ const Accounts = (props) => {
     setFilterText(newFilterText);
 
   const onFetchCv = () => {
-    if (["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
-      && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
+    if (props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
@@ -172,8 +171,7 @@ const Accounts = (props) => {
   }, [combined.instances, props.selectedAccountId]);
 
   const onDeleteAccount = () => {
-    if (["ADMIN"].includes(props.authInfo.authorizationLevel)
-      && props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
+    if (props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       setConfirmDialogVisible(true);
     }
   };
@@ -279,7 +277,7 @@ const Accounts = (props) => {
                   label="Unit"
                   field="businessUnit._id"
                   instanceContext={combinedContext(switchBusinessUnitOfAccount)}
-                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
+                  readOnly={!["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)}
                   options={enums.getOptions(BusinessUnitOptions, props.locale)}
                   styles={{ dropdown: { width: 230 } }}
                 />

@@ -43,7 +43,7 @@ export const CvDropdown = (props) => {
       label={props.label}
       readOnly={true}
       borderless={true}
-      value={props.options.find(option => option.key === value)?.text}
+      value={props.options.find(option => option.key === value)?.text || ""}
       disabled={props.disabled || !instance}
       styles={props.styles}
     />
@@ -63,6 +63,7 @@ CvDropdown.propTypes = {
   defaultValue: PropTypes.string,
   label: PropTypes.any,
   disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
   options: PropTypes.any.isRequired,
   styles: PropTypes.object
 };
