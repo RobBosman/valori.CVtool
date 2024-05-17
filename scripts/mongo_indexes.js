@@ -1,4 +1,4 @@
-const db = db.getSiblingDB('cvtool');
+db = db.getSiblingDB('cvtool');
 db.account.dropIndexes();
 db.account.createIndex({ email: 1}, { unique: true });
 db.authorization.dropIndexes();

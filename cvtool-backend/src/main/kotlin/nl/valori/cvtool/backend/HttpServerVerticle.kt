@@ -14,7 +14,10 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 
 internal class HttpServerVerticle : AbstractVerticle() {
 
-    private val log = LoggerFactory.getLogger(javaClass)
+    companion object {
+        private const val MAX_WEB_SOCKET_BYTES = 10_000_000
+        private val log = LoggerFactory.getLogger(HttpServerVerticle::class.java)
+    }
 
     override fun start(startPromise: Promise<Void>) { // NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Environment variable:
@@ -32,8 +35,8 @@ internal class HttpServerVerticle : AbstractVerticle() {
                     .setPort(httpPort)
                     .setSsl(false)
                     .setCompressionSupported(true)
-                    .setMaxWebSocketFrameSize(1_000_000)
-                    .setMaxWebSocketMessageSize(1_000_000)
+                    .setMaxWebSocketFrameSize(MAX_WEB_SOCKET_BYTES)
+                    .setMaxWebSocketMessageSize(MAX_WEB_SOCKET_BYTES)
             )
             .requestHandler(createRouter())
             .exceptionHandler { log.debug("Unexpected error in HttpServer: ${it.message}.", it) }

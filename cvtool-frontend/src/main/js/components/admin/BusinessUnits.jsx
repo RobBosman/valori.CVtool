@@ -187,7 +187,7 @@ const BusinessUnits = props => {
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Units</Text>
                 { ["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
-                  &&  <Stack horizontal
+                  && <Stack horizontal
                     tokens={{ childrenGap: "l1" }}>
                     <DefaultButton
                       text="Toevoegen"

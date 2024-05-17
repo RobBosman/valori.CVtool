@@ -58,7 +58,7 @@ reducerRegistry.register(
 
 const updateInstance = (entityName, instanceId, instance, timestamp, safe) => {
   updateSafeObject(entityName, instanceId, instance, safe.content);
-  updateSafeObject(entityName, instanceId, JSON.stringify(timestamp), safe.dirty);
+  updateSafeObject(entityName, instanceId, timestamp?.toISOString(), safe.dirty);
   if (timestamp) {
     safe.lastEditedTimeString = timestamp.toISOString();
   }

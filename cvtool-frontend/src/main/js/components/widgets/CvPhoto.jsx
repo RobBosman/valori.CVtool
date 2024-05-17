@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { DefaultButton, Image, Label, Stack } from "@fluentui/react";
+import { DefaultButton, Image, ImageFit, Label, Stack } from "@fluentui/react";
 import * as authActions from "../../services/auth/auth-actions";
 import * as safeActions from "../../services/safe/safe-actions";
 
@@ -17,7 +17,8 @@ const CvPhoto = (props) => {
     alt: "Profielfoto",
     styles: prps => ({ root: { border: `1px solid ${prps.theme.palette.neutralSecondary}` } }),
     width: "10em",
-    height: "10em"
+    height: "10em",
+    imageFit: ImageFit.contain
   };
 
   const onFetchProfilePhoto = () =>
