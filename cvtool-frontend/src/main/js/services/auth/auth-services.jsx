@@ -3,7 +3,7 @@ import * as MSAL from "@azure/msal-browser";
 const OAUTH2_CONFIG = {
   auth: {
     authority: "https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
-    clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
+    clientId: "_348af39a-f707-4090-bb0a-9e4dca6e4138",
     domainHint: "valori.nl",
     redirectUri: window.location.origin,
     navigateToLoginRequestUrl: false
@@ -41,7 +41,7 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
           return msal.acquireTokenPopup(loginConfig);
         } else {
           console.error("Error acquiring token:", error);
-          return Promise.reject(error);
+          return Promise.reject(new Error(`Error acquiring token: ${error.message}`));
         }
       });
 };
@@ -70,8 +70,8 @@ export const fetchProfilePhoto = accessToken =>
           const reader = new FileReader();
           reader.readAsDataURL(responseBlob);
           reader.onloadend = () => resolve(reader.result);
-        } catch (e) {
-          reject(e);
+        } catch (error) {
+          reject(new Error(`Error obtaining profile photo: ${error.message}`));
         }
       })
     );
