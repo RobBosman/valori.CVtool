@@ -3,8 +3,7 @@
  */
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-import React from "react";
-import { act } from "react-dom/test-utils";
+import React, { act } from "react";
 import { createRoot } from "react-dom/client";
 import { loadTheme } from "@fluentui/react";
 import fluentUITheme from "../../../../main/js/static/themes/fluentUI.json";

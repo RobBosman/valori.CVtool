@@ -12,11 +12,10 @@ const val CV_DOWNLOAD_DEMO_ADDRESS = "cv.download.demo"
 
 internal class CvDownloadDemoVerticle : DebouncingVerticle(CV_DOWNLOAD_DEMO_ADDRESS) {
 
-    override fun getMessageFingerprint(message: Message<JsonObject>): String? =
+    override fun getMessageFingerprint(message: Message<JsonObject>): Optional<String> =
         Optional
             .ofNullable(message.headers()["authInfo"])
             .map { JsonObject(it).getString("accountId") }
-            .orElse(null)
 
     /**
      * Expected message body:

@@ -4,6 +4,7 @@ import io.reactivex.Single
 import io.vertx.core.impl.ConcurrentHashSet
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
+import java.util.Optional
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 abstract class DebouncingVerticle(address: String) : BasicVerticle(address) {
@@ -14,13 +15,14 @@ abstract class DebouncingVerticle(address: String) : BasicVerticle(address) {
         private val debouncedFingerprints = ConcurrentHashSet<String>()
     }
 
-    abstract fun getMessageFingerprint(message: Message<JsonObject>): String?
+    abstract fun getMessageFingerprint(message: Message<JsonObject>): Optional<String>
 
     open fun getDebounceDelayMillis() =
         2_000L
 
     override fun validateRequest(message: Message<JsonObject>): Boolean {
         val fingerprint = getMessageFingerprint(message)
+            .orElse(null)
             ?: return true
 
         if (debouncedFingerprints.contains(fingerprint)) {
