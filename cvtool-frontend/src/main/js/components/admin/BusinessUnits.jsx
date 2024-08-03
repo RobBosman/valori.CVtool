@@ -181,7 +181,7 @@ const BusinessUnits = props => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
@@ -222,7 +222,7 @@ const BusinessUnits = props => {
                 }
               />
             </Stack>
-          </td>
+          </th>
 
           { ["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
             && <td valign="top" style={tdStyle}>

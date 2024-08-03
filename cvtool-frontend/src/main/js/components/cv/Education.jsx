@@ -195,15 +195,15 @@ const Education = (props) => {
               color: valoriYellow,
               fontWeight: "bold"
             }}>
-            <td style={{
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Opleiding</td>
-            <td style={{
+            }}>Opleiding</th>
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Onderwijsinstelling</td>
-            <td style={{
+            }}>Onderwijsinstelling</th>
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Diploma</td>
+            }}>Diploma</th>
           </tr>
           {
             educationsToDisplay
@@ -218,7 +218,7 @@ const Education = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
@@ -256,7 +256,7 @@ const Education = (props) => {
                 setKey={entityName}
               />
             </Stack>
-          </td>
+          </th>
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>

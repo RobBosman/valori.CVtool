@@ -309,7 +309,7 @@ const Search = props => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">Zoeken</Text>
@@ -333,7 +333,7 @@ const Search = props => {
                 onItemInvoked={onFetchCv}
               />
             </Stack>
-          </td>
+          </th>
 
           <td valign="top" style={tdStyle}>
             {selectedSearchResult
@@ -349,7 +349,7 @@ const Search = props => {
                       ?.sort((l, r) => r.skillLevel - l.skillLevel)
                       ?.map(skill =>
                         <tr key={skill._id}>
-                          <td width="20%">{enums.getText(enums.SkillCategories, skill.category, props.locale) || skill.category}</td>
+                          <th width="20%">{enums.getText(enums.SkillCategories, skill.category, props.locale) || skill.category}</th>
                           <td width="30%">{textFormatter.renderAndFormat(skill.description?.[props.locale], highlightFormattingSpecs)}</td>
                           <td width="10%" align="right">{"\u2605 ".repeat(skill.skillLevel).trim()}</td>
                           <td width="40%" align="right" style={{borderLeftStyle: "outset"}}>

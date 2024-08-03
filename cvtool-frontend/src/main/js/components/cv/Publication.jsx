@@ -160,18 +160,18 @@ const Publication = (props) => {
               color: valoriYellow,
               fontWeight: "bold"
             }}>
-            <td style={{
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Titel</td>
-            <td style={{
+            }}>Titel</th>
+            <th style={{
               width: 157 // = 2363/1440 inch
-            }}>Media</td>
-            <td style={{
+            }}>Media</th>
+            <th style={{
               width: 47 // = 708/1440 inch
-            }}>Jaar</td>
-            <td style={{
+            }}>Jaar</th>
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Omschrijving</td>
+            }}>Omschrijving</th>
           </tr>
           {
             publicationsToDisplay
@@ -186,7 +186,7 @@ const Publication = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
@@ -224,7 +224,7 @@ const Publication = (props) => {
                 setKey={entityName}
               />
             </Stack>
-          </td>
+          </th>
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>

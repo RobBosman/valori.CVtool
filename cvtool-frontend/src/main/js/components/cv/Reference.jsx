@@ -175,7 +175,7 @@ const Reference = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
@@ -213,7 +213,7 @@ const Reference = (props) => {
                 setKey={entityName}
               />
             </Stack>
-          </td>
+          </th>
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>

@@ -301,9 +301,9 @@ const Skill = (props) => {
       }}>
       <tbody>
         <tr>
-          <td colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>
+          <th colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>
             {enums.getTextFromValue(category, props.locale)}
-          </td>
+          </th>
         </tr>
         {skillsOfCategory
           .sort((l, r) =>
@@ -366,7 +366,7 @@ const Skill = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
@@ -404,7 +404,7 @@ const Skill = (props) => {
                 setKey={entityName}
               />
             </Stack>
-          </td>
+          </th>
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>

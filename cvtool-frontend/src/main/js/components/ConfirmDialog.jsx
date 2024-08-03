@@ -32,7 +32,7 @@ const ConfirmDialog = (props) => {
 
   const renderField = (key, label, value) =>
     <tr key={key}>
-      <td><strong>{label || ""}</strong></td><td>&nbsp;</td><td>{value || ""}</td>
+      <th>{label || ""}</th><td>&nbsp;</td><td>{value || ""}</td>
     </tr>;
 
   return (

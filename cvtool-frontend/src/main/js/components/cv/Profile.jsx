@@ -261,7 +261,7 @@ const Profile = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td colSpan={2}>
+          <th colSpan={2}>
             <Stack horizontal horizontalAlign="space-between"
               styles={editAccountStyles}
               tokens={{ childrenGap: "l1" }}>
@@ -302,7 +302,7 @@ const Profile = (props) => {
                 instanceContext={accountContext}
               />
             </Stack>
-          </td>
+          </th>
         </tr>
 
         <tr>

@@ -199,15 +199,15 @@ const Training = (props) => {
               color: valoriYellow,
               fontWeight: "bold"
             }}>
-            <td style={{
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Training</td>
-            <td style={{
+            }}>Training</th>
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Opleidingsinstituut</td>
-            <td style={{
+            }}>Opleidingsinstituut</th>
+            <th style={{
               width: 205 // = 3071/1440 inch
-            }}>Certificaat</td>
+            }}>Certificaat</th>
           </tr>
           {
             trainingsToDisplay
@@ -222,7 +222,7 @@ const Training = (props) => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
@@ -260,7 +260,7 @@ const Training = (props) => {
                 setKey={entityName}
               />
             </Stack>
-          </td>
+          </th>
 
           <td valign="top" style={tdStyle}>
             <Stack styles={editStyles}>

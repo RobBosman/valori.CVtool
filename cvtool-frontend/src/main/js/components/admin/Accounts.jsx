@@ -211,7 +211,7 @@ const Accounts = props => {
     <table style={{ borderCollapse: "collapse" }}>
       <tbody>
         <tr>
-          <td valign="top" style={tdStyle}>
+          <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between">
                 <Text variant="xxLarge">
@@ -256,7 +256,7 @@ const Accounts = props => {
                 onItemInvoked={onFetchCv}
               />
             </Stack>
-          </td>
+          </th>
 
           <td valign="top" style={tdStyle}>
             {["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)

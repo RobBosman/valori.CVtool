@@ -42,12 +42,12 @@ const LoginDialog = (props) => {
       <table>
         <tbody>
           <tr>
-            <td>{props.isLoggingInOpenId ? <Spinner size={SpinnerSize.small} /> : <Icon iconName="Accept" />}</td>
+            <th>{props.isLoggingInOpenId ? <Spinner size={SpinnerSize.small} /> : <Icon iconName="Accept" />}</th>
             <td>&nbsp;</td>
             <td><Label>Inloggen met je Valori account</Label></td>
           </tr>
           <tr>
-            <td>{props.isLoggingInBackend ? <Spinner size={SpinnerSize.small} /> : undefined}</td>
+            <th>{props.isLoggingInBackend ? <Spinner size={SpinnerSize.small} /> : undefined}</th>
             <td>&nbsp;</td>
             <td><Label
               disabled={!props.isLoggingInBackend}
