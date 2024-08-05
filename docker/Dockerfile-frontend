@@ -1,7 +1,7 @@
 ########################################################################################################################
 # Compose a container for building the CVtool-frontend.
 ########################################################################################################################
-FROM eclipse-temurin:21-jdk-alpine as builder
+FROM eclipse-temurin:21-jdk-alpine AS builder
 
 # Add git, maven and binutils, needed by nodejs.
 RUN apk --update add \
@@ -25,7 +25,8 @@ WORKDIR /
 # Compose the final CVtool-frontend container.
 ########################################################################################################################
 FROM nginx:alpine
-MAINTAINER RobBosman@valori.nl
+LABEL maintainer=RobBosman@valori.nl
+SHELL ["/bin/sh", "-c"]
 
 # Copy nginx configuration.
 COPY --from=builder /build/docker/default.conf.template /etc/nginx/templates/
