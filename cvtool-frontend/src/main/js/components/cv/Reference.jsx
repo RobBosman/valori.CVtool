@@ -181,29 +181,30 @@ const Reference = (props) => {
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Referenties</Text>
                 {isEditable
-                  && <Stack horizontal
-                    tokens={{ childrenGap: "l1" }}>
-                    <DefaultButton
-                      text="Toevoegen"
-                      iconProps={{ iconName: "Add" }}
-                      disabled={!hasCharacteristics}
-                      onClick={onAddItem}
-                    />
-                    <DefaultButton
-                      text="Verwijderen"
-                      iconProps={{ iconName: "Delete" }}
-                      disabled={!props.selectedReferenceId}
-                      onClick={onDeleteItem}
-                    />
-                    <ConfirmDialog
-                      title="Referentie definitief verwijderen?"
-                      primaryButtonText="Verwijderen"
-                      selectedItemFields={selectedItemFields}
-                      isVisible={confirmDialogVisible}
-                      onProceed={onDeleteConfirmed}
-                      onCancel={onDeleteCancelled}
-                    />
-                  </Stack>
+                  && <StackItem>
+                    <Stack horizontal tokens={{ childrenGap: "l1" }}>
+                      <DefaultButton
+                        text="Toevoegen"
+                        iconProps={{ iconName: "Add" }}
+                        disabled={!hasCharacteristics}
+                        onClick={onAddItem}
+                      />
+                      <DefaultButton
+                        text="Verwijderen"
+                        iconProps={{ iconName: "Delete" }}
+                        disabled={!props.selectedReferenceId}
+                        onClick={onDeleteItem}
+                      />
+                      <ConfirmDialog
+                        title="Referentie definitief verwijderen?"
+                        primaryButtonText="Verwijderen"
+                        selectedItemFields={selectedItemFields}
+                        isVisible={confirmDialogVisible}
+                        onProceed={onDeleteConfirmed}
+                        onCancel={onDeleteCancelled}
+                      />
+                    </Stack>
+                  </StackItem>
                 }
               </Stack>
               <CvDetailsList
@@ -242,12 +243,14 @@ const Reference = (props) => {
                   renderContent={renderPreview}
                   onDismiss={() => setPreviewVisible(false)}
                 />
-                <PrimaryButton
-                  text="Preview"
-                  iconProps={{ iconName: "EntryView" }}
-                  onClick={() => setPreviewVisible(!previewVisible)}
-                  style={{ top: "28px" }}
-                />
+                <StackItem>
+                  <PrimaryButton
+                    text="Preview"
+                    iconProps={{ iconName: "EntryView" }}
+                    onClick={() => setPreviewVisible(!previewVisible)}
+                    style={{ top: "28px" }}
+                  />
+                </StackItem>
               </Stack>
               <CvTextField
                 label="Functie"

@@ -220,33 +220,33 @@ const Education = (props) => {
         <tr>
           <th valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
-              <Stack horizontal horizontalAlign="space-between"
-                tokens={{ childrenGap: "l1" }}>
+              <Stack horizontal horizontalAlign="space-between" tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Opleidingen</Text>
                 {isEditable
-                  && <Stack horizontal
-                    tokens={{ childrenGap: "l1" }}>
-                    <DefaultButton
-                      text="Toevoegen"
-                      iconProps={{ iconName: "Add" }}
-                      disabled={!hasCharacteristics}
-                      onClick={onAddItem}
-                    />
-                    <DefaultButton
-                      text="Verwijderen"
-                      iconProps={{ iconName: "Delete" }}
-                      disabled={!props.selectedEducationId}
-                      onClick={onDeleteItem}
-                    />
-                    <ConfirmDialog
-                      title="Opleiding definitief verwijderen?"
-                      primaryButtonText="Verwijderen"
-                      selectedItemFields={selectedItemFields}
-                      isVisible={confirmDialogVisible}
-                      onProceed={onDeleteConfirmed}
-                      onCancel={onDeleteCancelled}
-                    />
-                  </Stack>
+                  && <StackItem>
+                    <Stack horizontal tokens={{ childrenGap: "l1" }}  align="auto">
+                      <DefaultButton
+                        text="Toevoegen"
+                        iconProps={{ iconName: "Add" }}
+                        disabled={!hasCharacteristics}
+                        onClick={onAddItem}
+                      />
+                      <DefaultButton
+                        text="Verwijderen"
+                        iconProps={{ iconName: "Delete" }}
+                        disabled={!props.selectedEducationId}
+                        onClick={onDeleteItem}
+                      />
+                      <ConfirmDialog
+                        title="Opleiding definitief verwijderen?"
+                        primaryButtonText="Verwijderen"
+                        selectedItemFields={selectedItemFields}
+                        isVisible={confirmDialogVisible}
+                        onProceed={onDeleteConfirmed}
+                        onCancel={onDeleteCancelled}
+                      />
+                    </Stack>
+                  </StackItem>
                 }
               </Stack>
               <CvDetailsList
@@ -288,12 +288,14 @@ const Education = (props) => {
                   renderContent={renderPreview}
                   onDismiss={() => setPreviewVisible(false)}
                 />
-                <PrimaryButton
-                  text="Preview"
-                  iconProps={{ iconName: "EntryView" }}
-                  onClick={() => setPreviewVisible(!previewVisible)}
-                  style={{ top: "28px" }}
-                />
+                <StackItem>
+                  <PrimaryButton
+                    text="Preview"
+                    iconProps={{ iconName: "EntryView" }}
+                    onClick={() => setPreviewVisible(!previewVisible)}
+                    style={{ top: "28px" }}
+                  />
+                </StackItem>
               </Stack>
               <CvTextField
                 label="Onderwijsinstelling"

@@ -233,7 +233,8 @@ const Profile = (props) => {
     root: {
       background: editPaneBackground,
       padding: 20,
-      maxWidth: "calc(100vw - 200px)"
+      maxWidth: "calc(100vw - 200px)",
+      textAlign: "left"
     }
   };
   const viewStyles = {
@@ -262,12 +263,9 @@ const Profile = (props) => {
       <tbody>
         <tr>
           <th colSpan={2}>
-            <Stack horizontal horizontalAlign="space-between"
-              styles={editAccountStyles}
-              tokens={{ childrenGap: "l1" }}>
+            <Stack horizontal horizontalAlign="space-between" tokens={{ childrenGap: "l1" }} styles={editAccountStyles}>
               <Stack vertical>
-                <Stack horizontal
-                  tokens={{ childrenGap: "l1" }}>
+                <Stack horizontal tokens={{ childrenGap: "l1" }}>
                   <CvTextField
                     label="Naam"
                     field="name"
@@ -308,32 +306,32 @@ const Profile = (props) => {
         <tr>
           <td valign="top" style={tdStyle}>
             <Stack styles={viewStyles}>
-              <Stack horizontal horizontalAlign="space-between"
-                tokens={{ childrenGap: "l1" }}>
+              <Stack horizontal horizontalAlign="space-between" tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Profiel</Text>
                 {isEditable
-                  && <Stack horizontal
-                    tokens={{ childrenGap: "l1" }}>
-                    <DefaultButton
-                      text="Toevoegen"
-                      iconProps={{ iconName: "Add" }}
-                      onClick={onAddItem}
-                    />
-                    <DefaultButton
-                      text="Verwijderen"
-                      iconProps={{ iconName: "Delete" }}
-                      disabled={!props.selectedCharacteristicsId || characteristics.length < 2}
-                      onClick={onDeleteItem}
-                    />
-                    <ConfirmDialog
-                      title="Profiel definitief verwijderen?"
-                      primaryButtonText="Verwijderen"
-                      selectedItemFields={selectedItemFields}
-                      isVisible={confirmDialogVisible}
-                      onProceed={onDeleteConfirmed}
-                      onCancel={onDeleteCancelled}
-                    />
-                  </Stack>
+                  && <StackItem>
+                    <Stack horizontal tokens={{ childrenGap: "l1" }}>
+                      <DefaultButton
+                        text="Toevoegen"
+                        iconProps={{ iconName: "Add" }}
+                        onClick={onAddItem}
+                      />
+                      <DefaultButton
+                        text="Verwijderen"
+                        iconProps={{ iconName: "Delete" }}
+                        disabled={!props.selectedCharacteristicsId || characteristics.length < 2}
+                        onClick={onDeleteItem}
+                      />
+                      <ConfirmDialog
+                        title="Profiel definitief verwijderen?"
+                        primaryButtonText="Verwijderen"
+                        selectedItemFields={selectedItemFields}
+                        isVisible={confirmDialogVisible}
+                        onProceed={onDeleteConfirmed}
+                        onCancel={onDeleteCancelled}
+                      />
+                    </Stack>
+                  </StackItem>
                 }
               </Stack>
               <CvDetailsList
@@ -372,12 +370,14 @@ const Profile = (props) => {
                     }
                     onDismiss={() => setPreviewVisible(false)}
                   />
-                  <PrimaryButton
-                    text="Preview"
-                    iconProps={{ iconName: "EntryView" }}
-                    onClick={() => setPreviewVisible(!previewVisible)}
-                    style={{ top: "28px" }}
-                  />
+                  <StackItem>
+                    <PrimaryButton
+                      text="Preview"
+                      iconProps={{ iconName: "EntryView" }}
+                      onClick={() => setPreviewVisible(!previewVisible)}
+                      style={{ top: "28px" }}
+                    />
+                  </StackItem>
                 </Stack>
                 <CvTextField
                   label={createHelpIcon({

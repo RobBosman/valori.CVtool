@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, SelectionMode } from "@fluentui/react";
+import { Text, Stack, DefaultButton, SelectionMode, StackItem } from "@fluentui/react";
 import { connect } from "react-redux";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
@@ -187,28 +187,29 @@ const BusinessUnits = props => {
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Units</Text>
                 { ["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
-                  && <Stack horizontal
-                    tokens={{ childrenGap: "l1" }}>
-                    <DefaultButton
-                      text="Toevoegen"
-                      iconProps={{ iconName: "Add" }}
-                      onClick={onAddItem}
-                    />
-                    <DefaultButton
-                      text="Verwijderen"
-                      iconProps={{ iconName: "Delete" }}
-                      disabled={!props.selectedBusinessUnitId}
-                      onClick={onDeleteItem}
-                    />
-                    <ConfirmDialog
-                      title="Business Unit definitief verwijderen?"
-                      primaryButtonText="Verwijderen"
-                      selectedItemFields={selectedItemFields}
-                      isVisible={confirmDialogVisible}
-                      onProceed={onDeleteConfirmed}
-                      onCancel={onDeleteCancelled}
-                    />
-                  </Stack>
+                  && <StackItem>
+                    <Stack horizontal tokens={{ childrenGap: "l1" }}>
+                      <DefaultButton
+                        text="Toevoegen"
+                        iconProps={{ iconName: "Add" }}
+                        onClick={onAddItem}
+                      />
+                      <DefaultButton
+                        text="Verwijderen"
+                        iconProps={{ iconName: "Delete" }}
+                        disabled={!props.selectedBusinessUnitId}
+                        onClick={onDeleteItem}
+                      />
+                      <ConfirmDialog
+                        title="Business Unit definitief verwijderen?"
+                        primaryButtonText="Verwijderen"
+                        selectedItemFields={selectedItemFields}
+                        isVisible={confirmDialogVisible}
+                        onProceed={onDeleteConfirmed}
+                        onCancel={onDeleteCancelled}
+                      />
+                    </Stack>
+                  </StackItem>
                 }
               </Stack>
               <CvDetailsList

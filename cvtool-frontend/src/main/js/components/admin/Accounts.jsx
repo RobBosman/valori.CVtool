@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField, DefaultButton, TooltipHost, Separator } from "@fluentui/react";
+import { Text, Stack, TextField, DefaultButton, TooltipHost, Separator, StackItem } from "@fluentui/react";
 import { connect } from "react-redux";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
@@ -228,25 +228,26 @@ const Accounts = props => {
                     : "Accounts"
                   }
                 </Text>
-                <Stack horizontal
-                  tokens={{ childrenGap: "s1" }}>
-                  <TextField
-                    label="Filter"
-                    iconProps={{ iconName: "Filter" }}
-                    underlined
-                    onChange={onFilter}
-                  />
-                  <Text variant="xSmall">{items.length} / {combined.instances.length}</Text>
-                  <ConfirmDialog
-                    title="Account en cv-gegevens definitief verwijderen?"
-                    primaryButtonText="Verwijderen"
-                    selectedItemFields={selectedItemFields}
-                    isVisible={confirmDialogVisible}
-                    onProceed={onDeleteConfirmed}
-                    onCancel={onDeleteCancelled}
-                    styles={{ main: { backgroundColor: semanticColors.severeWarningBackground } }}
-                  />
-                </Stack>
+                <StackItem>
+                  <Stack horizontal tokens={{ childrenGap: "s1" }}>
+                    <TextField
+                      label="Filter"
+                      iconProps={{ iconName: "Filter" }}
+                      underlined
+                      onChange={onFilter}
+                    />
+                    <Text variant="small">{items.length} / {combined.instances.length}</Text>
+                    <ConfirmDialog
+                      title="Account en cv-gegevens definitief verwijderen?"
+                      primaryButtonText="Verwijderen"
+                      selectedItemFields={selectedItemFields}
+                      isVisible={confirmDialogVisible}
+                      onProceed={onDeleteConfirmed}
+                      onCancel={onDeleteCancelled}
+                      styles={{ main: { backgroundColor: semanticColors.severeWarningBackground } }}
+                    />
+                  </Stack>
+                </StackItem>
               </Stack>
               <CvDetailsList
                 columns={columns}
