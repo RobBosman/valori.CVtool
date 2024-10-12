@@ -1,7 +1,7 @@
 ########################################################################################################################
 # Compose a container for building the CVtool-backend.
 ########################################################################################################################
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM eclipse-temurin:23-jdk-alpine AS builder
 
 # Add git, maven and binutils, needed by jlink.
 RUN apk --update add \
@@ -27,7 +27,7 @@ WORKDIR /
 ########################################################################################################################
 # Compose the final CVtool-backend container.
 ########################################################################################################################
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:23-jre-alpine
 LABEL maintainer=RobBosman@valori.nl
 SHELL ["/bin/sh", "-c"]
 

@@ -67,6 +67,10 @@ const Search = props => {
   const composeSearchResult = React.useCallback(accountId => {
     const name = Object.values(props.accountEntity || {})
       .find(account => account._id === accountId)?.name;
+    const educations = Object.values(props.searchResultEntities?.education || {})
+      .filter(education => education.accountId === accountId);
+    const trainings = Object.values(props.searchResultEntities?.training || {})
+      .filter(training => training.accountId === accountId);
     const skills = Object.values(props.searchResultEntities?.skill || {})
       .filter(skill => skill.accountId === accountId);
     const skillLevel = skills
@@ -82,14 +86,19 @@ const Search = props => {
       .sort((l, r) => r - l)
       .shift()
       || -1;
+    const publications = Object.values(props.searchResultEntities?.publication || {})
+      .filter(publication => publication.accountId === accountId);
     return {
       _id: accountId,
       accountId: accountId,
       name: name,
+      educations: educations,
+      trainings: trainings,
       skills: skills,
       skillLevel: skillLevel,
       experiences: experiences,
-      experienceYear: toYear
+      experienceYear: toYear,
+      publications: publications
     };
   },
   [props.accountEntity, props.searchResultEntities]);
@@ -97,7 +106,7 @@ const Search = props => {
   const searchResultEntity = React.useMemo(() => {
     const accountIds = new Set();
     if (props.searchResultEntities) {
-      ["experience", "skill"]
+      ["education", "experience", "publication", "skill", "training"]
         .forEach(entityName => {
           Object.values(props.searchResultEntities[entityName] || {})
             .map(instance => instance.accountId)
@@ -135,14 +144,21 @@ const Search = props => {
   [selectedSearchResult]);
 
   const renderSkillResult = (item) =>
-    item.skills.length > 0
+    item.skills?.length > 0
       ? `${"\u2605 ".repeat(item.skillLevel).trim()} (${item.skills.length})`
       : "";
 
   const renderExperienceResult = (item) =>
-    item.experiences.length > 0
+    item.experiences?.length > 0
       ? `${item.experienceYear} (${item.experiences.length})`
       : "";
+
+  const renderMiscellaneaResult = (item) => {
+    const totalHits = (item.educations?.length || 0) + (item.publications?.length || 0) + (item.trainings?.length || 0);
+    return totalHits > 0
+      ? `(${totalHits})`
+      : "";
+  };
 
   const columns = [
     {
@@ -167,6 +183,13 @@ const Search = props => {
       minWidth: 110,
       maxWidth: 110,
       onRender: renderExperienceResult
+    },
+    {
+      key: "miscellanea",
+      name: "Overig",
+      minWidth: 80,
+      maxWidth: 80,
+      onRender: renderMiscellaneaResult
     }
   ];
 
@@ -190,12 +213,12 @@ const Search = props => {
     width: "calc(50vw - 98px)",
     maxWidth: "calc(50vw - 98px)"
   };
-  const skillsStyle = {
-    backgroundColor: selectedSearchResult?.skills?.length > 0 ? semanticColors.inputBackground : semanticColors.disabledBackground,
+  const searchResultStyle = (hasData) => ({
+    backgroundColor: hasData > 0 ? semanticColors.inputBackground : semanticColors.disabledBackground,
     padding: 8,
     width: "100%",
     minHeight: 16
-  };
+  });
 
   const onSearch = (event) => {
     props.searchCvData(event.target.value);
@@ -339,10 +362,28 @@ const Search = props => {
             {selectedSearchResult
               ? <Stack styles={editStyles}>
                 <Label
+                  disabled={!(selectedSearchResult.educations?.length || selectedSearchResult.trainings?.length)}>
+                  Opleiding
+                </Label>
+                <table style={searchResultStyle((selectedSearchResult.educations?.length || selectedSearchResult.trainings?.length) > 0)}>
+                  <tbody>
+                    {[...(selectedSearchResult.educations || []), ...(selectedSearchResult.trainings || [])]
+                      .map(educationOrTraining =>
+                        <tr key={educationOrTraining._id}>
+                          <th width="10%">Naam</th>
+                          <td width="40%">{textFormatter.renderAndFormat(educationOrTraining.name?.[props.locale], highlightFormattingSpecs)}</td>
+                          <th width="10%">Instituut</th>
+                          <td width="40%">{textFormatter.renderAndFormat(educationOrTraining.institution, highlightFormattingSpecs)}</td>
+                        </tr>
+                      )
+                    }
+                  </tbody>
+                </table>
+                <Label
                   disabled={!selectedSearchResult.skills?.length}>
                   Vaardigheden
                 </Label>
-                <table style={skillsStyle}>
+                <table style={searchResultStyle(selectedSearchResult?.skills?.length > 0)}>
                   <tbody>
                     {selectedSearchResult
                       .skills

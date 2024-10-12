@@ -53,7 +53,7 @@
     "lint:verify": "eslint",
     "outdated:verify": "npm outdated > target/npm-outdated.txt || exit 0",
     "audit:fix": "npm audit fix",
-    "audit:verify": "npm audit > npm-audit.txt || exit 0",
+    "audit:verify": "npm audit > target/npm-audit.txt || exit 0",
     "build:prod": "rimraf target/classes && webpack --config webpack.prd.js"
   }
 }

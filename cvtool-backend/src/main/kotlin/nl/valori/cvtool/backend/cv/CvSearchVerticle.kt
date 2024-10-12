@@ -59,13 +59,18 @@ internal class CvSearchVerticle : BasicVerticle(CV_SEARCH_ADDRESS) {
             .replace("\\\"", "") // Remove (escaped) double quotes.
             .split("\\s+".toRegex())
             .filter { it.length >= 2 }
-            .joinToString(" ") { "\\\"$it\\\"" } // Add double quotes around keywords to handle 'C#' correctly.
-        val searchCriteria = JsonObject("""
+            .joinToString(" ")
+        val searchCriteria = JsonObject(
+            """
             {
+                "education": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
                 "experience": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
-                "skill": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ]
+                "publication": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
+                "skill": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
+                "training": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ]
             }
-        """)
+            """
+        )
         return vertx.eventBus()
             .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
             .map { it.body() }

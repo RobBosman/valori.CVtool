@@ -3,9 +3,9 @@
 ECHO "Make sure MongoDB is up and running."
 SET ENV_FILE=\secret\.env
 
-SET RESTORE_DATE=2024-09-12
+SET RESTORE_DATE=2024-10-11
 SET BACKUP_DIR=\backup\%RESTORE_DATE%
-SET MONGORESTORE=C:\Program Files\MongoDB\Tools\100\bin\mongorestore
+SET MONGORESTORE=C:\Program Files\MongoDB\Tools\bin\mongorestore
 
 SETLOCAL
 FOR /F "TOKENS=*" %%i in ('type %ENV_FILE%') do SET %%i

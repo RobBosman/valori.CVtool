@@ -39,7 +39,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <release>${maven.compiler.release}</release>
+                    <release>${jvm.release}</release>
                     <source>18</source>
                     <target>18</target>
                 </configuration>
@@ -66,7 +66,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>${maven.compiler.release}</jvmTarget>
+                    <jvmTarget>${jvm.release}</jvmTarget>
                 </configuration>
             </plugin>
 

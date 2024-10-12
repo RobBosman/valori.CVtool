@@ -19,25 +19,27 @@ describe("redux-reducers.test", () => {
 
   beforeEach(() => {
     _reducerRegistry = new ReducerRegistry();
+    _reducerRegistry.register("void", createReducer({}, builder => builder));
     _store = configureStore({
-      reducer: _reducerRegistry.getRootReducer()
+      reducer: _reducerRegistry.getRootReducer(),
+      middleware: getDefaultMiddleware => getDefaultMiddleware()
     });
     _reducerRegistry.setChangeListener(rootReducer => _store.replaceReducer(rootReducer));
   });
 
   it("should have empty state with no registered reducers", () => {
     _reducerRegistry.setChangeListener((rootReducer) => _store.replaceReducer(rootReducer));
-    expect(_store.getState()).toStrictEqual({});
+    expect(_store.getState()).toStrictEqual({"void": {}});
   });
 
   it("should have default state with registered reducers", () => {
     _reducerRegistry.register("dummy", dummyReducer);
-    expect(_store.getState()).toStrictEqual({dummy: {value: 313}});
+    expect(_store.getState()).toStrictEqual({dummy: {value: 313}, "void": {}});
   });
 
   it("should apply registered reducers", () => {
     _reducerRegistry.register("dummy", dummyReducer);
     _store.dispatch(dummyAction("176-761"));
-    expect(_store.getState()).toStrictEqual({dummy: {value: "176-761"}});
+    expect(_store.getState()).toStrictEqual({dummy: {value: "176-761"}, "void": {}});
   });
 });
