@@ -29,15 +29,17 @@ internal class HttpServerVerticleTest {
             }
 
         // Start the web server...
-        vertx.deployVerticle(
-            HttpServerVerticle::class.java.name,
-            DeploymentOptions()
-                .setConfig(
-                    JsonObject()
-                        .put("HTTP_CONNECTION_STRING", "http://$HOST_NAME:$port/")
-                ),
-            testContext.succeedingThenComplete()
-        )
+        vertx
+            .deployVerticle(
+                HttpServerVerticle::class.java.name,
+                DeploymentOptions()
+                    .setConfig(
+                        JsonObject()
+                            .put("HTTP_CONNECTION_STRING", "http://$HOST_NAME:$port/")
+                    )
+            )
+            .onComplete(testContext.succeedingThenComplete())
+
         // ...and wait until it's ready.
         assertTrue(testContext.awaitCompletion(2, SECONDS))
 
@@ -56,7 +58,8 @@ internal class HttpServerVerticleTest {
             )
             .get(port, HOST_NAME, testUrl)
             .`as`(BodyCodec.string())
-            .send(testContext.succeeding { response ->
+            .send()
+            .onComplete(testContext.succeeding { response ->
                 testContext.verify {
                     assertTrue(response.body().contains(testUrl))
                     testContext.completeNow()

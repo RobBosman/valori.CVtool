@@ -1,10 +1,10 @@
 package nl.valori.cvtool.backend
 
 import io.reactivex.Single
-import io.vertx.core.impl.ConcurrentHashSet
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import java.util.Optional
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
 abstract class DebouncingVerticle(address: String) : BasicVerticle(address) {
@@ -12,7 +12,7 @@ abstract class DebouncingVerticle(address: String) : BasicVerticle(address) {
     companion object {
         // This debounceMap is used to prevent the same event is processed multiple times in a (very) short time.
         // It should prevent DDoS attacks.
-        private val debouncedFingerprints = ConcurrentHashSet<String>()
+        private val debouncedFingerprints = ConcurrentHashMap.newKeySet<String>()
     }
 
     abstract fun getMessageFingerprint(message: Message<JsonObject>): Optional<String>
@@ -36,7 +36,7 @@ abstract class DebouncingVerticle(address: String) : BasicVerticle(address) {
         Single
             .just(fingerprint)
             .delay(getDebounceDelayMillis(), MILLISECONDS)
-            .subscribe( { debouncedFingerprints.remove(fingerprint) }, {} )
+            .subscribe({ debouncedFingerprints.remove(fingerprint) }, {})
 
         return true
     }

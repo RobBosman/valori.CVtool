@@ -3,7 +3,7 @@ package nl.valori.cvtool.backend.system
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.healthchecks.Status
 import io.vertx.reactivex.core.Vertx
-import io.vertx.reactivex.ext.healthchecks.HealthCheckHandler
+import io.vertx.reactivex.ext.web.healthchecks.HealthCheckHandler
 import nl.valori.cvtool.backend.Main
 import nl.valori.cvtool.backend.authorization.AUTHENTICATE_HEALTH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MongoConnection

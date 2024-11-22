@@ -23,9 +23,13 @@ import nl.valori.cvtool.backend.persistence.MongodbFetchVerticle
 import nl.valori.cvtool.backend.persistence.MongodbSaveVerticle
 import nl.valori.cvtool.backend.system.ControlVerticle
 import org.slf4j.LoggerFactory
+import java.util.concurrent.TimeUnit.MILLISECONDS
 import kotlin.reflect.KClass
 
-fun main() = Main.run()
+fun main() {
+    System.setProperty("slf4j.internal.verbosity", "WARN")
+    Main.run()
+}
 
 object Main {
 
@@ -67,9 +71,11 @@ object Main {
                             .setConfig(JsonObject())
                     )
             )
-            .getConfig { config ->
+            .config
+            .await(5_000, MILLISECONDS)
+            .let { jsonConfig ->
                 val deploymentOptions = DeploymentOptions()
-                    .setConfig(config.result())
+                    .setConfig(jsonConfig)
                     .setThreadingModel(WORKER)
                 verticlesToDeploy
                     .forEach {
@@ -83,15 +89,17 @@ object Main {
         verticleClass: KClass<out AbstractVerticle>,
         deploymentOptions: DeploymentOptions
     ) =
-        vertx.deployVerticle(verticleClass.java.name, deploymentOptions) { deploymentResult ->
-            if (deploymentResult.succeeded()) {
-                verticleDeploymentStates[verticleClass] = "UP"
-                if (verticleDeploymentStates.filterValues { it != "UP" }.isEmpty()) {
-                    log.info("Successfully started all verticles")
+        vertx
+            .deployVerticle(verticleClass.java.name, deploymentOptions)
+            .onComplete { deploymentResult ->
+                if (deploymentResult.succeeded()) {
+                    verticleDeploymentStates[verticleClass] = "UP"
+                    if (verticleDeploymentStates.filterValues { it != "UP" }.isEmpty()) {
+                        log.info("Successfully started all verticles")
+                    }
+                } else {
+                    verticleDeploymentStates[verticleClass] = deploymentResult.cause().message ?: "UNKNOWN ERROR"
+                    log.error("Error deploying ${verticleClass.simpleName}: ${deploymentResult.cause().message}")
                 }
-            } else {
-                verticleDeploymentStates[verticleClass] = deploymentResult.cause().message ?: "UNKNOWN ERROR"
-                log.error("Error deploying ${verticleClass.simpleName}: ${deploymentResult.cause().message}")
             }
-        }
 }
