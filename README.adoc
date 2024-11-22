@@ -118,6 +118,7 @@ Data retention is 120 days.
 
  # Logs
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')"
+ docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" > ~rbosman/cvtool.log 2>&1
  # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
  # System entropy
