@@ -127,6 +127,7 @@ Data retention is 120 days.
  /var/lib/docker/volumes/
  # Volumes Windows
  \\wsl$\docker-desktop-data\data\docker\volumes
+ \\wsl.localhost\docker-desktop\tmp\docker-desktop-root\var\lib\docker\volumes
 
  cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2024-05-28 ~rbosman
  cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2024-05-28 ~rbosman
