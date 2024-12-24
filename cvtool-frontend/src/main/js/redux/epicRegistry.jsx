@@ -23,7 +23,7 @@ export class EpicRegistry {
         catchError((error, source$) => {
           console.error("REDUX_MIDDLEWARE ERROR", error);
           return merge(
-            of(setLastError(`${error}`.replace(/^Error: /, ""), ErrorSources.reduxMiddleware)),
+            of(setLastError(`${error}`.replace(/^Error: /, ""), ErrorSources.reduxMiddleware, error.stack)),
             source$
           );
         })

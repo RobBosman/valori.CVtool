@@ -64,7 +64,7 @@ export const authEpics = [
     )),
     rx.catchError((error, source$) => merge(
       of(
-        errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+        errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE, error.stack),
         authActions.requestLogout()
       ),
       source$
@@ -96,7 +96,7 @@ export const authEpics = [
         rx.map(exp => authActions.refreshAuthenticationBefore(exp)),
         rx.catchError((error, source$) => merge(
           of(
-            errorActions.setLastError(`Her-authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+            errorActions.setLastError(`Her-authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE, error.stack),
             authActions.requestLogout()
           ),
           source$
@@ -117,7 +117,7 @@ export const authEpics = [
       rx.map(authInfo => authActions.setAuthInfo(authInfo)),
       rx.catchError((error, source$) => merge(
         of(
-          errorActions.setLastError(`Fout bij ophalen accountgegevens: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE),
+          errorActions.setLastError(`Fout bij ophalen accountgegevens: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE, error.stack),
           authActions.requestLogout()
         ),
         source$

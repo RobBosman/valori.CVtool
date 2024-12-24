@@ -112,7 +112,7 @@ export const safeEpics = [
       ["aborted", "cancel"].some(s => error.message.includes(s)) // ignore user cancellations
         ? source$
         : merge(
-          of(errorActions.setLastError(`Fout bij uploaden: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE)),
+          of(errorActions.setLastError(`Fout bij uploaden: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE, error.stack)),
           source$
         )
     )

@@ -8,7 +8,7 @@ export const ErrorSources = {
 };
 
 export const setLastError = createAction("SET_LAST_ERROR",
-  (message, source) => ({ payload: {message, source} }));
+  (message, source, stacktrace) => ({ payload: {message, source, stacktrace} }));
 
 reducerRegistry.register(
   "error",
@@ -20,6 +20,7 @@ reducerRegistry.register(
         lastError: {
           message: action.payload.message.substring(0, 1000),
           source: action.payload.source,
+          stacktrace: action.payload.stacktrace,
           timestamp: Date.now()
         }
       }))

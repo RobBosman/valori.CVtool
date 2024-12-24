@@ -15,7 +15,7 @@ export const eventBusEpics = [
   // Keep an eye on errors occurring in the EventBus.
   () => eventBusClient.monitorErrorMessages().pipe(
     rx.filter(errorMessage => errorMessage !== ""),
-    rx.map(errorMessage => errorActions.setLastError(errorMessage, errorActions.ErrorSources.REDUX_MIDDLEWARE))
+    rx.map(errorMessage => errorActions.setLastError(errorMessage, errorActions.ErrorSources.REDUX_MIDDLEWARE, null))
   ),
 
   // Connect or disconnect the EventBus when requested.

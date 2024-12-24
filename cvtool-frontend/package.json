@@ -47,6 +47,7 @@
   },
   "scripts": {
     "run:dev": "webpack serve --config webpack.dev.js",
+    "run:prd": "webpack serve --config webpack.prd.js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint:fix": "eslint --fix",

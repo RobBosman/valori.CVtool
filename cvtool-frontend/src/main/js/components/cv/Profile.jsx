@@ -456,7 +456,7 @@ const mapDispatchToProps = (dispatch) => ({
   replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance)),
   replaceCharacteristics: (id, instance) => dispatch(changeInstance("characteristics", id, instance)),
   setSelectedCharacteristicsId: (id) => dispatch(uiActions.setSelectedId("characteristics", id)),
-  showError: (errorMessage) => dispatch(errorActions.setLastError(errorMessage, errorActions.ErrorSources.USER_ACTION))
+  showError: (errorMessage) => dispatch(errorActions.setLastError(errorMessage, errorActions.ErrorSources.USER_ACTION, null))
 });
 
 export default connect(select, mapDispatchToProps)(Profile);
