@@ -10,7 +10,6 @@ import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
-import io.vertx.reactivex.ext.auth.authentication.Credentials
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
@@ -123,7 +122,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
         oauth2
-            .rxAuthenticate(Credentials.newInstance(TokenCredentials(jwt)))
+            .rxAuthenticate(TokenCredentials(jwt))
             .map {
                 val accessToken = it.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
@@ -143,7 +142,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         oauth2
             // Send an invalid authorization request (expired JWT) to the OpenID Provider.
             // The OpenID Provider will respond with an error and thus 'prove' that the connection is still OK.
-            .rxAuthenticate(Credentials.newInstance(UsernamePasswordCredentials("DUMMY", "no-secret")))
+            .rxAuthenticate(UsernamePasswordCredentials("DUMMY", "no-secret"))
             .map { "" } // Convert Single<User> to Single<String>.
             // If it's the expected error response, then don't propagate the error itself, only the message String.
             .onErrorReturn { if (isExpectedAuthenticationError(it)) it.message else throw it }
