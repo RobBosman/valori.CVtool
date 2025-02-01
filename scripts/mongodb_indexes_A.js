@@ -1,0 +1,16 @@
+db = db.getSiblingDB('cvtool');
+db.account.dropIndexes();
+db.account.createIndex({ email: 1 }, { unique: true });
+db.authorization.dropIndexes();
+db.authorization.createIndex({ accountId: 1 });
+db.characteristics.dropIndexes();
+db.characteristics.createIndex({ accountId: 1 });
+db.education.dropIndexes();
+db.education.createIndex({ accountId: 1 });
+db.education.createIndex({ 'institution': 'text', 'name.nl_NL': 'text', 'name.uk_UK': 'text' });
+db.training.dropIndexes();
+db.training.createIndex({ accountId: 1 });
+db.training.createIndex({ 'institution': 'text', 'name.nl_NL': 'text', 'name.uk_UK': 'text' });
+db.skill.dropIndexes();
+db.skill.createIndex({ accountId: 1 });
+db.skill.createIndex({ 'description.nl_NL': 'text', 'description.uk_UK': 'text', 'explanation.nl_NL': 'text', 'explanation.uk_UK': 'text' });

@@ -1,0 +1,11 @@
+db = db.getSiblingDB('cvtool');
+db.publication.dropIndexes();
+db.publication.createIndex({ accountId: 1 });
+db.publication.createIndex({ 'title.nl_NL': 'text', 'description.nl_NL': 'text', 'title.uk_UK': 'text', 'description.uk_UK': 'text' });
+db.reference.dropIndexes();
+db.reference.createIndex({ accountId: 1 });
+db.experience.dropIndexes();
+db.experience.createIndex({ accountId: 1 });
+db.experience.createIndex({ '$**': 'text' });
+db.audit_log.dropIndexes();
+db.audit_log.createIndex({ cvAccountId: 1, editorAccountId: 1 });
