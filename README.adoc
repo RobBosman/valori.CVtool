@@ -7,7 +7,7 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 
 === Renew Microsoft Azure client secret
 
-The current client secret will expire at 2025-03-31.
+The current client secret will #expire at 2027-01-31#.
 
 1. Go to the https://portal.azure.com/#home[Microsoft Azure Portal]
 2. Search for 'Valori CVtool'
@@ -90,6 +90,8 @@ Data retention is 120 days.
 
 === Initialize server
 
+ # Create MongoDB database 'cvtool'
+ scripts/cvtool_restore_mongodb.sh
  # Create MongoDB indexes
  scripts/cvtool_initialize_mongodb.sh
  # Restart CVtool-frontend server to load a new certificate
