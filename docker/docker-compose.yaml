@@ -16,10 +16,7 @@ services:
   ######################################################################################################################
   mongodb:
     container_name: mongodb
-    image: mongo:4.4
-    # WARNING: MongoDB 5.0+ requires a CPU with AVX support, and your current system does not appear to have that!
-    #  see https://www.mongodb.com/community/forums/t/mongodb-5-0-cpu-intel-g4650-compatibility/116610/2
-    #  see also https://github.com/docker-library/mongo/issues/485#issuecomment-891991814
+    image: mongo
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
