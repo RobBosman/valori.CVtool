@@ -9,7 +9,7 @@ docker exec "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" \
   sh -c " \
     mkdir -p /backup/${BACKUP_DATE} \
     && rm -f /backup/${BACKUP_DATE}/${BACKUP_FILE} \
-    && wget -P /backup/${BACKUP_DATE} http://localhost:${CONTROL_PORT}/${BACKUP_FILE} \
+    && wget -P /backup/${BACKUP_DATE} http://127.0.0.1:${CONTROL_PORT}/${BACKUP_FILE} \
   "
 
 lftp -c " \
