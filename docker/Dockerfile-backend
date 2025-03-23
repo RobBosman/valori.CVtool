@@ -2,8 +2,8 @@
 # Compose a container for building the CVtool-backend.
 ########################################################################################################################
 FROM eclipse-temurin:23-jdk-alpine AS builder
-RUN apt-get -y update --no-cache
-RUN apt-get -y upgrade --no-cache
+RUN apk upgrade --no-cache
+RUN apk update --no-cache
 
 # Add git, maven and binutils, needed by jlink.
 RUN apk --update add \
@@ -32,8 +32,8 @@ WORKDIR /
 FROM eclipse-temurin:23-jre-alpine
 LABEL maintainer=RobBosman@valori.nl
 SHELL ["/bin/sh", "-c"]
-RUN apt-get -y update --no-cache
-RUN apt-get -y upgrade --no-cache
+RUN apk upgrade --no-cache
+RUN apk update --no-cache
 
 # Copy the executable code.
 COPY --from=builder /build/cvtool-fat.jar /cvtool-fat.jar
