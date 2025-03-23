@@ -6,7 +6,7 @@ RUN apk upgrade --no-cache
 RUN apk update --no-cache
 
 # Add git, maven and binutils, needed by nodejs.
-RUN apk add \
+RUN apk --update add \
     binutils \
     git \
     maven
