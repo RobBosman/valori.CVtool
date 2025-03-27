@@ -76,13 +76,14 @@ internal object EventBusMessageHandler {
             }
 
             SOCKET_IDLE -> {
-                bridgeEvent.socket().close()
                 bridgeEvent.complete(true)
+                bridgeEvent.socket().close()
             }
 
             SOCKET_ERROR -> {
                 log.warn("Socket error: ${bridgeEvent.rawMessage}")
                 bridgeEvent.complete(false)
+                bridgeEvent.socket().close()
             }
 
             else -> bridgeEvent.complete(true)
