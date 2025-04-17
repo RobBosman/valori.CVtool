@@ -21,7 +21,6 @@ import javax.xml.transform.Templates
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
-import kotlin.collections.set
 
 const val CV_GENERATE_ADDRESS = "cv.generate"
 
@@ -51,8 +50,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         private fun transformerFactory(docxTemplate: String) =
             TransformerFactory
                 .newInstance()
-                .also {
-                    it.setURIResolver { href, _ ->
+                .apply {
+                    setURIResolver { href, _ ->
                         val xslt = xslIncludesMap(docxTemplate).getOrElse(href.substringAfterLast("/")) {
                             error("Cannot find XSLT $href.")
                         }
