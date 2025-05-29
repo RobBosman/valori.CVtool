@@ -20,7 +20,8 @@ export const formatDate = (dateText) => {
     const isoDate = new Date(dateText).toISOString();
     return `${isoDate.substring(8, 10)}-${isoDate.substring(5, 7)}-${isoDate.substring(0, 4)}`; // yyyy-mm-dd
   } catch (error) {
-    return dateText;
+    console.error("Error formatting date ", dateText, error);
+    return `${dateText}`;
   }
 };
 

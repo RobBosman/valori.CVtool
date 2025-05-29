@@ -31,6 +31,7 @@ const formatDateForStorage = (date) => {
   try {
     return correctDateForTimezone(date).toISOString().substring(0, 10); // yyyy-mm-dd
   } catch (error) {
+    console.error("Error formatting date", date, error);
     return "";
   }
 };
