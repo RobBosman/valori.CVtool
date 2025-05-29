@@ -12,7 +12,7 @@ import { uiEpics } from "./services/ui/ui-epics";
 import { ErrorBoundary } from "./utils/ErrorBoundary";
 import Main from "./components/Main";
 
-export const appVersion = "versie 2025-04-18";
+export const appVersion = "versie 2025-05-29";
 
 epicRegistry.register(
   ...errorEpics,

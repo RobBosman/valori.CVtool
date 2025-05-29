@@ -59,8 +59,10 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                     }
                 }
 
-        internal fun createXslTemplate(docxTemplate: String, location: String) =
-            transformerFactory(docxTemplate).newTemplates(StreamSource(ByteArrayInputStream(loadBytes(location))))
+        internal fun createXslTemplate(docxTemplate: String, location: String): Templates =
+            ByteArrayInputStream(loadBytes(location)).use {
+                transformerFactory(docxTemplate).newTemplates(StreamSource(it))
+            }
 
         private fun createDocxPartNamesXslTemplatesMap(docxTemplate: String, locale: String) =
             mapOf(
