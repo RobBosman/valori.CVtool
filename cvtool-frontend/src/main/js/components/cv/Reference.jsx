@@ -50,7 +50,15 @@ const Reference = (props) => {
       name: "Naam",
       isResizable: true,
       minWidth: 100,
-      maxWidth: 300
+      maxWidth: 280
+    },
+    {
+      key: "year",
+      fieldName: "year",
+      name: "Jaar",
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40
     },
     {
       key: "referentFunction",
@@ -253,10 +261,23 @@ const Reference = (props) => {
                 </StackItem>
               </Stack>
               <CvTextField
+                label="Jaar"
+                field="year"
+                instanceContext={referenceContext}
+                validateInput={commonUtils.isValidYear}
+                placeholder='yyyy'
+                styles={{ fieldGroup: { width: 80 } }}
+              />
+              <CvTextField
                 label="Functie"
                 field={`referentFunction.${props.locale}`}
                 instanceContext={referenceContext}
                 placeholder={commonUtils.getPlaceholder(references, props.selectedReferenceId, "referentFunction", props.locale)}
+              />
+              <CvTextField
+                label="Opdrachtgever"
+                field="client"
+                instanceContext={referenceContext}
               />
               <CvTextField
                 label="Omschrijving"

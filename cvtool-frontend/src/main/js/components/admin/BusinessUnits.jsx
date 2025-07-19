@@ -80,7 +80,7 @@ const BusinessUnits = props => {
       name: "Brand",
       isResizable: true,
       minWidth: 60,
-      maxWidth: 100
+      maxWidth: 120
     },
     {
       key: "contactName",
@@ -245,6 +245,18 @@ const BusinessUnits = props => {
                 <CvTextField
                   label="Contactpersoon"
                   field="contactName"
+                  instanceContext={businessUnitContext}
+                  disabled={!props.selectedBusinessUnitId}
+                />
+                <CvTextField
+                  label="Telefoon"
+                  field="contactPhone"
+                  instanceContext={businessUnitContext}
+                  disabled={!props.selectedBusinessUnitId}
+                />
+                <CvTextField
+                  label="Email"
+                  field="contactEmail"
                   instanceContext={businessUnitContext}
                   disabled={!props.selectedBusinessUnitId}
                 />

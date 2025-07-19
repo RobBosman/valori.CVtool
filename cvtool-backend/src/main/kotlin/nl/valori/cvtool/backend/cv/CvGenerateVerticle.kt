@@ -43,6 +43,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         private fun xslIncludesMap(docxTemplate: String) =
             mapOf(
                 "common.xsl" to loadBytes("/docx/common.xsl"),
+                "common-brand.xsl" to loadBytes("/docx/$docxTemplate/common-brand.xsl"),
                 "common-nl_NL.xsl" to loadBytes("/docx/$docxTemplate/nl_NL/common-nl_NL.xsl"),
                 "common-uk_UK.xsl" to loadBytes("/docx/$docxTemplate/uk_UK/common-uk_UK.xsl")
             )
@@ -65,36 +66,21 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             }
 
         private fun createDocxPartNamesXslTemplatesMap(docxTemplate: String, locale: String) =
-            mapOf(
-                "[Content_Types].xml" to createXslTemplate(
-                    docxTemplate,
-                    "/docx/$docxTemplate/$locale/[Content_Types].xml.xsl"
-                ),
-                "docProps/core.xml" to createXslTemplate(
-                    docxTemplate,
-                    "/docx/$docxTemplate/$locale/docProps/core.xml.xsl"
-                ),
-                "word/document.xml" to createXslTemplate(
-                    docxTemplate,
-                    "/docx/$docxTemplate/$locale/word/document.xml.xsl"
-                ),
-                "word/footer1.xml" to createXslTemplate(
-                    docxTemplate,
-                    "/docx/$docxTemplate/$locale/word/footer1.xml.xsl"
-                ),
-                "word/footer2.xml" to createXslTemplate(
-                    docxTemplate,
-                    "/docx/$docxTemplate/$locale/word/footer2.xml.xsl"
-                ),
-                "word/header2.xml" to createXslTemplate(
-                    docxTemplate,
-                    "/docx/$docxTemplate/$locale/word/header2.xml.xsl"
-                ),
-                "word/media/passport.photo" to createXslTemplate(
-                    docxTemplate,
-                    "/docx/$docxTemplate/$locale/word/media/passport.photo.xsl"
-                )
+            listOf(
+                "[Content_Types].xml",
+                "docProps/core.xml",
+                "word/_rels/footer1.xml.rels",
+                "word/_rels/footer2.xml.rels",
+                "word/document.xml",
+                "word/footer1.xml",
+                "word/footer2.xml",
+                "word/header1.xml",
+                "word/header2.xml",
+                "word/media/passport.photo"
             )
+                .associateWith { "/docx/$docxTemplate/$locale/$it.xsl" }
+                .filterValues { CvGenerateVerticle::class.java.getResource(it) != null }
+                .mapValues { (_, location) -> createXslTemplate(docxTemplate, location) }
 
         private fun docxCoreTemplate(docxTemplate: String) =
             loadBytes("/docx/$docxTemplate/coreTemplate.docx")
@@ -162,7 +148,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                     message.reply(it)
                 },
                 {
-                    val errorMsg = "Error generating $locale cv data for $accountId: ${it.message}"
+                    val errorMsg = "Error generating $locale cv data for account $accountId: ${it.message}"
                     log.warn(errorMsg)
                     message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
                 }
@@ -223,7 +209,17 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 docxBytes.toByteArray()
             }
 
+    // $BRAND_CV_$LOCALE_$ACCOUNTNAME.docx, e.g. Cerios_CV_NL_RobBosman.docx
     private fun composeFileName(cvEntities: JsonObject, locale: String): String {
+        val brand = when (val brandInstances = cvEntities.getValue("brand")) {
+            is JsonObject -> brandInstances.map.values
+                .filterIsInstance<JsonObject>()
+                .first()
+                .getString("name")
+                .replace(" ", "")
+
+            else -> ""
+        }
         val name = when (val accountInstances = cvEntities.getValue("account")) {
             is JsonObject -> accountInstances.map.values
                 .filterIsInstance<JsonObject>()
@@ -233,6 +229,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
             else -> ""
         }
-        return "CV_${locale.substring(3)}_$name.docx"
+        return listOf("CV", locale.substring(3), brand, name)
+            .filter { it.isNotBlank() }
+            .joinToString("_") + ".docx"
     }
 }
