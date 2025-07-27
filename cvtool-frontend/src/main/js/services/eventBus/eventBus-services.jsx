@@ -112,7 +112,7 @@ export class EventBusClient {
             : _resolve(message)
         );
       } else if (this.getConnectionState() === ConnectionStates.CONNECTED) {
-        _reject(new Error("De sessie met de backend server is verlopen. Log opnieuw in."));
+        _reject(new Error("De login sessie is verlopen. Log opnieuw in."));
       } else {
         _reject(new Error("De verbinding met de backend server is verbroken. Probeer het later nog eens."));
       }

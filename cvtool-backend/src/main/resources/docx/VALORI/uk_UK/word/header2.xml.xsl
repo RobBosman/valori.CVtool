@@ -67,7 +67,7 @@
                                                     <a:extLst>
                                                         <a:ext>
                                                             <xsl:attribute name="uri">
-                                                                <xsl:text>{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:text>
+                                                                <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                             </xsl:attribute>
                                                             <a14:useLocalDpi val="0"/>
                                                         </a:ext>
@@ -134,7 +134,7 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            <xsl:text>{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:text>
+                                                            <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
@@ -200,7 +200,7 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            <xsl:text>{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:text>
+                                                            <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
