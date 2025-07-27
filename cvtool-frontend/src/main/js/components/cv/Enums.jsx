@@ -49,6 +49,13 @@ export const Authorizations = [
 
 export const DocxTemplates = [
   {
+    key: "CERIOS",
+    sortIndex: 0,
+    text: {
+      nl_NL: "CERIOS"
+    }
+  },
+  {
     key: "VALORI",
     sortIndex: 2,
     text: {

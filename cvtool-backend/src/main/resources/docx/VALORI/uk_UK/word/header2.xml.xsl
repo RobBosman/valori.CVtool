@@ -67,7 +67,7 @@
                                                     <a:extLst>
                                                         <a:ext>
                                                             <xsl:attribute name="uri">
-                                                                {28A0092B-C50C-407E-A947-70E740481C1C}
+                                                                <xsl:text>{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:text>
                                                             </xsl:attribute>
                                                             <a14:useLocalDpi val="0"/>
                                                         </a:ext>
@@ -134,7 +134,7 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            {28A0092B-C50C-407E-A947-70E740481C1C}
+                                                            <xsl:text>{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:text>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
@@ -200,7 +200,7 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            {28A0092B-C50C-407E-A947-70E740481C1C}
+                                                            <xsl:text>{28A0092B-C50C-407E-A947-70E740481C1C}</xsl:text>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
@@ -245,7 +245,8 @@
                 </w:pPr>
                 <w:r w:rsidRPr="00585C2D">
                     <w:t>
-                        <xsl:apply-templates select="cv:characteristics[cv:includeInCv = 'true']/cv:role" mode="locale-placeholder"/>
+                        <xsl:apply-templates select="cv:characteristics[cv:includeInCv = 'true']/cv:role"
+                                             mode="locale-placeholder"/>
                     </w:t>
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">

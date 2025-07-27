@@ -48,16 +48,16 @@
                         </w:r>
                         <w:r w:rsidRPr="00C0691A">
                             <w:rPr>
-                                <w:rStyle w:val="TestCrew-IT-geel"/>
+                                <w:rStyle w:val="Valori-geel"/>
                             </w:rPr>
                             <w:t xml:space="preserve">&#xA0;// </w:t>
                         </w:r>
                         <w:r w:rsidRPr="00C0691A">
-                            <w:t>TestCrew-IT</w:t>
+                            <w:t>Valori</w:t>
                         </w:r>
                         <w:r w:rsidRPr="00C0691A">
                             <w:rPr>
-                                <w:rStyle w:val="TestCrew-IT-geel"/>
+                                <w:rStyle w:val="Valori-geel"/>
                             </w:rPr>
                             <w:t xml:space="preserve">&#xA0;// </w:t>
                             <w:tab/>
