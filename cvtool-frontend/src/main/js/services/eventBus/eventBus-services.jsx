@@ -69,6 +69,7 @@ export class EventBusClient {
 
     this._eventBus.onerror = (error) => {
       if (error.body === "rejected") {
+        console.warn("An error occurred on the vert.x EventBus.", error);
         this._errorMessagesSubject.next("Oeps! Er ging iets mis in de communicatie met de backend server.");
       } else {
         console.error("An error occurred on the vert.x EventBus.", error);

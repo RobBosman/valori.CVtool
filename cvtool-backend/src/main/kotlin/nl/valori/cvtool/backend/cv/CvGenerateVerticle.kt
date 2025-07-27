@@ -162,7 +162,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                     message.reply(it)
                 },
                 {
-                    val errorMsg = "Error generating $locale cv data for $accountId: ${it.message}"
+                    val errorMsg = "Error generating $locale cv data for account $accountId: ${it.message}"
                     log.warn(errorMsg)
                     message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
                 }
