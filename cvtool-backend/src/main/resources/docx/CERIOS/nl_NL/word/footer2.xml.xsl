@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
         exclude-result-prefixes="cv"
         version="1.0">
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
+    <xsl:template match="/cv:root">
         <w:ftr xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
                xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
                xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
@@ -40,8 +41,7 @@
                xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
                xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
                mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wne wp14">
-            <w:p w14:paraId="6755C19D" w14:textId="7B7732C9" w:rsidR="00307129" w:rsidRPr="002251BB" w:rsidRDefault="00307129"
-                 w:rsidP="002251BB">
+            <w:p w14:paraId="6755C19D" w14:textId="7B7732C9" w:rsidR="00307129" w:rsidRPr="002251BB" w:rsidRDefault="00307129" w:rsidP="002251BB">
                 <w:pPr>
                     <w:pStyle w:val="Voettekst"/>
                     <w:tabs>
@@ -75,16 +75,7 @@
                         <w:lang w:val="nl-NL"/>
                     </w:rPr>
                     <w:tab/>
-                    <w:t xml:space="preserve">Barend James Willem van den </w:t>
-                </w:r>
-                <w:proofErr w:type="spellStart"/>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
-                    <w:t>Nagtegaal</w:t>
+                    <w:t xml:space="preserve"><xsl:value-of select="cv:businessUnit/cv:contactName"/></w:t>
                 </w:r>
                 <w:proofErr w:type="spellEnd"/>
                 <w:r w:rsidRPr="002251BB">
@@ -94,7 +85,7 @@
                         <w:lang w:val="nl-NL"/>
                     </w:rPr>
                     <w:tab/>
-                    <w:t>06-12979061</w:t>
+                    <w:t><xsl:value-of select="cv:businessUnit/cv:contactPhone"/></w:t>
                 </w:r>
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
@@ -112,7 +103,7 @@
                             <w:szCs w:val="18"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t>barend@cerios.nl</w:t>
+                        <w:t><xsl:value-of select="cv:businessUnit/cv:contactEmail"/></w:t>
                     </w:r>
                 </w:hyperlink>
             </w:p>

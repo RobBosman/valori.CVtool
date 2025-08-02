@@ -57,7 +57,7 @@
                             <!-- $photo = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAg...' -->
                             <xsl:value-of select="substring-before(substring-after($photo, 'data:'), ';base64')"/>
                         </xsl:when>
-                        <xsl:otherwise>image/gif</xsl:otherwise> <!-- one-pixel dummy image -->
+                        <xsl:otherwise>image/png</xsl:otherwise> <!-- dummy image of one transparent pixel -->
                     </xsl:choose>
                 </xsl:attribute>
             </Override>

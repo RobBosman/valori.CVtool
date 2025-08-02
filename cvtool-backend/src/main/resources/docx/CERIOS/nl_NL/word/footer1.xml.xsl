@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
         exclude-result-prefixes="cv"
         version="1.0">
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
+    <xsl:template match="/cv:root">
         <w:ftr xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
                xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
                xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
@@ -41,8 +42,7 @@
                xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
                mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wne wp14">
             <w:p w14:paraId="7C80D9F2" w14:textId="09CEFFF0" w:rsidR="004F0464" w:rsidRPr="005815D4"
-                 w:rsidRDefault="004F0464"
-                 w:rsidP="005815D4">
+                 w:rsidRDefault="004F0464" w:rsidP="005815D4">
                 <w:pPr>
                     <w:pStyle w:val="Voettekst"/>
                     <w:tabs>
@@ -71,9 +71,8 @@
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                   relativeHeight="251659264"
-                                   behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="668DF1E3"
-                                   wp14:editId="293B53F6">
+                                   relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
+                                   wp14:anchorId="668DF1E3" wp14:editId="293B53F6">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="column">
                                 <wp:posOffset>-497844</wp:posOffset>
@@ -115,7 +114,11 @@
                                                 <a:noFill/>
                                             </a:ln>
                                             <a:extLst>
-                                                <a:ext><xsl:attribute name="uri"><xsl:value-of select="'{53640926-AAD7-44D8-BBD7-CCE9431645EC}'"/></xsl:attribute>
+                                                <a:ext>
+                                                    <xsl:attribute name="uri">
+                                                        <xsl:value-of
+                                                                select="'{53640926-AAD7-44D8-BBD7-CCE9431645EC}'"/>
+                                                    </xsl:attribute>
                                                     <a14:shadowObscured
                                                             xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"/>
                                                 </a:ext>
@@ -158,17 +161,7 @@
                         <w:lang w:val="nl-NL"/>
                     </w:rPr>
                     <w:tab/>
-                    <w:t xml:space="preserve">Barend James Willem van den </w:t>
-                </w:r>
-                <w:proofErr w:type="spellStart"/>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
-                    <w:t>Nagtegaal</w:t>
+                    <w:t xml:space="preserve"><xsl:value-of select="cv:businessUnit/cv:contactName"/></w:t>
                 </w:r>
                 <w:proofErr w:type="spellEnd"/>
                 <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
@@ -179,7 +172,7 @@
                         <w:lang w:val="nl-NL"/>
                     </w:rPr>
                     <w:tab/>
-                    <w:t>06-12979061</w:t>
+                    <w:t><xsl:value-of select="cv:businessUnit/cv:contactPhone"/></w:t>
                 </w:r>
                 <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
                     <w:rPr>
@@ -199,7 +192,7 @@
                             <w:szCs w:val="18"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t>barend@cerios.nl</w:t>
+                        <w:t><xsl:value-of select="cv:businessUnit/cv:contactEmail"/></w:t>
                     </w:r>
                 </w:hyperlink>
             </w:p>
