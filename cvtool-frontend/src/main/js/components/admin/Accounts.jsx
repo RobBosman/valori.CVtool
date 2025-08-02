@@ -16,7 +16,7 @@ import { createHelpIcon } from "../widgets/CvHelpIcon";
 
 const Accounts = props => {
 
-  const combineEntities = (accountEntity, authorizationEntity, businessUnitEntity) => {
+  const combineEntities = (accountEntity, authorizationEntity, brandEntity, businessUnitEntity) => {
     const combined = {};
     Object.values(accountEntity || {})
       .filter(account => account._id) // Don't show deleted accounts.
@@ -31,6 +31,7 @@ const Accounts = props => {
         combined[account._id] = {
           ...account,
           authorization: authorization,
+          brand: brandEntity?.[businessUnit.brandId],
           businessUnit: businessUnit
         };
       });
@@ -72,7 +73,7 @@ const Accounts = props => {
   [props.authorizationEntity, props.replaceAuthorization]);
 
   const combined = React.useMemo(() => {
-    const combinedEntity = combineEntities(props.accountEntity, props.authorizationEntity, props.businessUnitEntity);
+    const combinedEntity = combineEntities(props.accountEntity, props.authorizationEntity, props.brandEntity, props.businessUnitEntity);
     return {
       entity: combinedEntity,
       instances:Object.values(combinedEntity || {})
@@ -119,15 +120,23 @@ const Accounts = props => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
-      minWidth: 130,
+      minWidth: 110,
       maxWidth: 220
+    },
+    {
+      key: "brand",
+      fieldName: "brand.name",
+      name: "Brand",
+      isResizable: true,
+      minWidth: 60,
+      maxWidth: 120
     },
     {
       key: "businessUnit.name",
       fieldName: "businessUnit.name",
       name: "Unit",
       isResizable: true,
-      minWidth: 150
+      minWidth: 130
     },
     {
       key: "authorization.level.",
@@ -146,7 +155,8 @@ const Accounts = props => {
     let newItems = combined.instances;
     if (filterText) {
       const lowerCaseFilterText = filterText.toLowerCase();
-      newItems = combined.instances.filter(instance => `${instance.name}\n${instance.businessUnit?.name || ""}`.toLowerCase().includes(lowerCaseFilterText));
+      newItems = combined.instances.filter(instance =>
+        `${instance.name}\n${instance.brand?.name || ""}\n${instance.businessUnit?.name || ""}`.toLowerCase().includes(lowerCaseFilterText));
     }
     return newItems;
   },
@@ -348,6 +358,7 @@ const select = store => ({
   authInfo: store.auth.authInfo,
   accountEntity: store.safe.content.account,
   authorizationEntity: store.safe.content.authorization,
+  brandEntity: store.safe.content.brand,
   businessUnitEntity: store.safe.content.businessUnit,
   selectedAccountId: store.ui.selectedId.account
 });
