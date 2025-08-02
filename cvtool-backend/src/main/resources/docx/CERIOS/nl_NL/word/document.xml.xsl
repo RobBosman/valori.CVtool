@@ -136,7 +136,7 @@
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>05-04-1985</w:t>
+                                                            <w:t>[account.dateOfBirth]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -228,7 +228,7 @@
                                                                 <w:szCs w:val="58"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>Erik Kijk in de Vegte</w:t>
+                                                            <w:t>[account.name]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="0ECEF8ED" w14:textId="77777777" w:rsidR="0004532F"
@@ -358,7 +358,7 @@
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>Low Code Test Engineer</w:t>
+                                                            <w:t>[characteristics.role]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="4ED6E054" w14:textId="77777777" w:rsidR="0004532F"
@@ -428,7 +428,7 @@
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>Zeist</w:t>
+                                                            <w:t>[account.residence]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -978,22 +978,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>Erik is een bedachtzame, originele denker met een sterk
-analytisch vermogen. Hij kijkt altijd een paar stappen
-verder en
-komt zo vaak met nieuwe inzichten en oplossingen. Met
-een
-assertieve en professionele instelling streeft Erik er
-naar het
-beste uit zichzelf en de producten waar hij aan werkt te
-halen.
-Als ondernemer heeft hij brede ervaring opgedaan in
-zowel het
-voortraject (requirements, offertes, begrotingen, user
-research, stakeholder management) als de development
-(prototyping, unit testing, API testing,
-debugging) en ook de deployment (CI/CD, acceptance
-testing en operations).</w:t>
+                                                            <w:t>[characteristics.profile]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="29A94792" w14:textId="77777777" w:rsidR="0004532F"
@@ -1034,11 +1019,7 @@ testing en operations).</w:t>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve">
-Voor de rol van LowCode Tester kan Erik putten uit zijn ervaring als Developer en UX designer met oog voor usability.
-Hierdoor weet hij vanuit een breed perspectief user stories te valideren.
-Met zijn kennis van Requirements Engineering is hij in staat gedegen testplannen te schrijven en te toetsen.
-De laatste jaren heeft hij meer fascinatie ontwikkeld voor het optimaliseren en automatiseren van processen, zowel in zijn eigen werkwijze als voor eindgebruikers.</w:t>
+                                                            <w:t xml:space="preserve">[characteristics.profile]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="46C759E5" w14:textId="77777777" w:rsidR="0004532F"
@@ -1067,19 +1048,7 @@ De laatste jaren heeft hij meer fascinatie ontwikkeld voor het optimaliseren en 
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>Als tester werkt Erik zorgvuldig, gestructureerd en
-gedetailleerd maar houdt daarbij altijd zicht op de
-gehele
-context. Hij komt tot zijn recht in een signalerende
-rol, durft
-ook discussies aan te gaan als dit bevorderlijk is voor
-het
-einddoel en is van nature diplomatiek ingesteld. Hij kan
-zich
-makkelijk in verschillende perspectieven verplaatsen en
-spreekt
-de taal van verschillende betrokken stakeholders.
-                                                            </w:t>
+                                                            <w:t>[profile.profile]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -1418,7 +1387,7 @@ de taal van verschillende betrokken stakeholders.
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>Gitaar, Hardlopen, Natuur, Filosofie, Technologie</w:t>
+                                                            <w:t>[characteristics.interests]</w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -1534,11 +1503,7 @@ de taal van verschillende betrokken stakeholders.
                     </w:r>
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
-                        <w:t>Kerncompetenties</w:t>
-                    </w:r>
-                    <w:proofErr w:type="spellEnd"/>
-                    <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
-                        <w:t xml:space="preserve"> / skills</w:t>
+                        <w:t>Kerncompetenties / skills</w:t>
                     </w:r>
                     <w:r w:rsidR="00D51FD7" w:rsidRPr="001958BA">
                         <w:rPr>
@@ -1597,7 +1562,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t>Branches</w:t>
                                                         </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- PER BRANCH --><!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="337E615E" w14:textId="7B810E7F" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -1648,95 +1613,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="126A1730" w14:textId="6270E01C" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Media &amp; Marketing</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00604B30">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="03DD759F" w14:textId="466014B5" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Webdevelopment</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B" w:rsidRPr="00D51FD7">
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- REPEAT END -->
                                                     <w:p w14:paraId="60B23BCC" w14:textId="61F5FAC0" w:rsidR="00462426"
                                                          w:rsidRDefault="00462426" w:rsidP="00F503A0">
                                                         <w:pPr>
@@ -1770,7 +1647,7 @@ de taal van verschillende betrokken stakeholders.
                                                             <w:t>Expertises</w:t>
                                                         </w:r>
                                                         <w:proofErr w:type="spellEnd"/>
-                                                    </w:p>
+                                                    </w:p><!-- PER EXPERIENCE --><!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="57249782" w14:textId="5AA1A882" w:rsidR="00462426"
                                                          w:rsidRPr="002C7C28" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -1821,568 +1698,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="31D54CB0" w14:textId="417C8E6E" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Low code</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="5EEBDC72" w14:textId="70D1F3A2" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Manual Testing</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="1974D975" w14:textId="35E016A8" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Software Development</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="32C72164" w14:textId="1F87C011" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Unit Testing</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="1C58C289" w14:textId="599E0DE4" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Usability Testing</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="142BC702" w14:textId="0F6CBD12" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>UX Design</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="6E7E44E8" w14:textId="01D0390B" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Automated Testing</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="7D26666C" w14:textId="3F5EFB26" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:proofErr w:type="spellStart"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>OutSystems</w:t>
-                                                        </w:r>
-                                                        <w:proofErr w:type="spellEnd"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="45343DE3" w14:textId="54D99AF8" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Regression Testing</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="003702AA" w14:textId="167EAACC" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Requirements Engineering</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="286415FC" w14:textId="6BC397FF" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>RPA</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- REPEAT END -->
                                                     <w:p w14:paraId="56327D55" w14:textId="77777777" w:rsidR="00D51FD7"
                                                          w:rsidRDefault="00D51FD7" w:rsidP="00F503A0">
                                                         <w:pPr>
@@ -2419,7 +1735,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t>Databases</w:t>
                                                         </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- PER DATABASE --><!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="7ED64DA2" w14:textId="3DAB1266" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -2468,56 +1784,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="18E6B799" w14:textId="0D841B11" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>SQL</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="006C2A2B" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- REPEAT END -->
                                                     <w:p w14:paraId="05D8DC8E" w14:textId="77777777" w:rsidR="00462426"
                                                          w:rsidRPr="00307129" w:rsidRDefault="00462426"
                                                          w:rsidP="00F503A0">
@@ -2552,7 +1819,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t>Talenkennis</w:t>
                                                         </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- PER TAAL --><!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="5B3A185A" w14:textId="6B645726" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -2601,105 +1868,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="5EC52A7B" w14:textId="03704644" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Nederlands</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="280D7790" w14:textId="1C58ABED" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Duits</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- REPEAT END -->
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
@@ -2798,7 +1967,7 @@ de taal van verschillende betrokken stakeholders.
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"> </w:t>
+                                                            <w:t xml:space="preserve"></w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -2847,7 +2016,7 @@ de taal van verschillende betrokken stakeholders.
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"> </w:t>
+                                                            <w:t xml:space="preserve"></w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -2999,7 +2168,7 @@ de taal van verschillende betrokken stakeholders.
                                                             <w:t>Programmeren</w:t>
                                                         </w:r>
                                                         <w:proofErr w:type="spellEnd"/>
-                                                    </w:p>
+                                                    </w:p><!-- PER PROGRAMMING LANGUAGE --><!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="2818A7F0" w14:textId="555D76ED" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -3052,458 +2221,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="54EF665F" w14:textId="40248DB7" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
-                                                            <w:t>HTML CSS</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="0702B32A" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:proofErr w:type="spellStart"/>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
-                                                            <w:t>MaxMSP</w:t>
-                                                        </w:r>
-                                                        <w:proofErr w:type="spellEnd"/>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="76D10112" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
-                                                            <w:t>OOP</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="26279FF8" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>AppleScript</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="3069D917" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Javascript</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="48A6AFE4" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>REST API</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="291C1FED" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>C#</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="7580A629" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Python</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="33B4739E" w14:textId="013C945F" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>SQL</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- REPEAT END -->
                                                     <w:p w14:paraId="3C9CBA81" w14:textId="77777777" w:rsidR="00545E7E"
                                                          w:rsidRDefault="00545E7E" w:rsidP="00462426">
                                                         <w:pPr>
@@ -3536,7 +2254,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t>Methodes</w:t>
                                                         </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- PER METHOD --><!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="11BCBD6A" w14:textId="77777777" w:rsidR="00545E7E"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -3587,313 +2305,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="3020303A" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Lean/Agile</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="2B4EF247" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Scrum</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="36FF3F42" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>UML</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="29D2A3EE" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>User Research</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="0AB06773" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:proofErr w:type="spellStart"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>WireFraming</w:t>
-                                                        </w:r>
-                                                        <w:proofErr w:type="spellEnd"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="50255C7B" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>TMAP</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- REPEAT END -->
                                                     <w:p w14:paraId="2CAD987B" w14:textId="4459B293" w:rsidR="00462426"
                                                          w:rsidRDefault="00462426" w:rsidP="00545E7E">
                                                         <w:pPr>
@@ -3981,7 +2393,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t>Tools</w:t>
                                                         </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- PER TOOL --><!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="0D4A0C84" w14:textId="2F3BC595" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -4032,902 +2444,7 @@ de taal van verschillende betrokken stakeholders.
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="042F13F2" w14:textId="77777777" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Excel</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="68A4F79E" w14:textId="1D1CE968" w:rsidR="00545E7E"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Figma</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="1B8B947D" w14:textId="6E4E7395" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Prompt Engineering</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="54CC4A0A" w14:textId="2B21F79A" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Adobe Premiere</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="3C41382D" w14:textId="05926F5C" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:proofErr w:type="spellStart"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>AirTable</w:t>
-                                                        </w:r>
-                                                        <w:proofErr w:type="spellEnd"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="2D14E852" w14:textId="2D3DCB0F" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Jira</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00D51FD7">
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="46685426" w14:textId="6C83B206" w:rsidR="00545E7E"
-                                                         w:rsidRDefault="00462426" w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>JOSF</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-skillChar"/>
-                                                                <w:lang/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="1987240B" w14:textId="02F2F59A" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Notion</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="707E873F" w14:textId="308CE3D7" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>OpenCV</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="41176024" w14:textId="0104CF2F" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>Terminal</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00307129">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="38D02044" w14:textId="5171422E" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:proofErr w:type="spellStart"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Tricentis</w:t>
-                                                        </w:r>
-                                                        <w:proofErr w:type="spellEnd"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t xml:space="preserve"> Tosca</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="2372ACB8" w14:textId="76CDD4FF" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>UiPath</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="0158C46C" w14:textId="61759479" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:proofErr w:type="spellStart"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Wordpress</w:t>
-                                                        </w:r>
-                                                        <w:proofErr w:type="spellEnd"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="457411D7" w14:textId="31F364FA" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Docker</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="10DD3E33" w14:textId="60FBAB9C" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:proofErr w:type="spellStart"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Fortra</w:t>
-                                                        </w:r>
-                                                        <w:proofErr w:type="spellEnd"/>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t xml:space="preserve"> Automate</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="12A7E859" w14:textId="52B7671D" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Git</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="4E894C30" w14:textId="70B1091C" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:t>Playwright</w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00462426">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:lang w:val="en-GB"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="3D613A27" w14:textId="1BC5072D" w:rsidR="00462426"
-                                                         w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-                                                         w:rsidP="00D51FD7">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Niveau"/>
-                                                            <w:rPr>
-                                                                <w:color w:val="211A58"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:t>PostMan</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"
-                                                                          w:cs="Plus Jakarta Sans"/>
-                                                                <w:color w:val="212B46"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidR="00545E7E" w:rsidRPr="006C2A2B">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                    </w:p>
+                                                    </w:p><!-- REPEAT END -->
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
@@ -5061,7 +2578,7 @@ de taal van verschillende betrokken stakeholders.
                     </w:r>
                     <w:proofErr w:type="spellEnd"/>
                     <w:r w:rsidR="00604B30" w:rsidRPr="005815D4">
-                        <w:t xml:space="preserve"> &amp; </w:t>
+                        <w:t xml:space="preserve"> &amp;</w:t>
                     </w:r>
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidR="00604B30" w:rsidRPr="005815D4">
@@ -5125,7 +2642,7 @@ de taal van verschillende betrokken stakeholders.
                                     <w:rPr>
                                         <w:rStyle w:val="A1"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve"> </w:t>
+                                    <w:t xml:space="preserve"></w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -5154,7 +2671,7 @@ de taal van verschillende betrokken stakeholders.
                                     <w:rPr>
                                         <w:rStyle w:val="A1"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve"> </w:t>
+                                    <w:t xml:space="preserve"></w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -5229,7 +2746,7 @@ de taal van verschillende betrokken stakeholders.
                                         <w:sz w:val="18"/>
                                         <w:szCs w:val="16"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve">Master </w:t>
+                                    <w:t xml:space="preserve">Master</w:t>
                                 </w:r>
                                 <w:proofErr w:type="spellStart"/>
                                 <w:r w:rsidRPr="00CA43CD">
@@ -5247,7 +2764,7 @@ de taal van verschillende betrokken stakeholders.
                                         <w:sz w:val="18"/>
                                         <w:szCs w:val="16"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve"> </w:t>
+                                    <w:t xml:space="preserve"></w:t>
                                 </w:r>
                                 <w:proofErr w:type="spellStart"/>
                                 <w:r w:rsidRPr="00CA43CD">
@@ -5398,7 +2915,7 @@ de taal van verschillende betrokken stakeholders.
                                         <w:sz w:val="18"/>
                                         <w:szCs w:val="16"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve">Saxion </w:t>
+                                    <w:t xml:space="preserve">Saxion</w:t>
                                 </w:r>
                                 <w:proofErr w:type="spellStart"/>
                                 <w:r w:rsidRPr="00CA43CD">
@@ -5572,7 +3089,7 @@ de taal van verschillende betrokken stakeholders.
                                     <w:rPr>
                                         <w:rStyle w:val="A1"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve"> </w:t>
+                                    <w:t xml:space="preserve"></w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -5601,7 +3118,7 @@ de taal van verschillende betrokken stakeholders.
                                     <w:rPr>
                                         <w:rStyle w:val="A1"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve"> </w:t>
+                                    <w:t xml:space="preserve"></w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -5811,7 +3328,7 @@ de taal van verschillende betrokken stakeholders.
                                         <w:sz w:val="18"/>
                                         <w:szCs w:val="18"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve">Saxion </w:t>
+                                    <w:t xml:space="preserve">Saxion</w:t>
                                 </w:r>
                                 <w:proofErr w:type="spellStart"/>
                                 <w:r w:rsidRPr="00CA43CD">
@@ -6133,7 +3650,7 @@ de taal van verschillende betrokken stakeholders.
                                                                 <w:color w:val="212B46"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve">2023 </w:t>
+                                                            <w:t xml:space="preserve">2023</w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00DE51B1">
                                                             <w:rPr>
@@ -6172,7 +3689,7 @@ de taal van verschillende betrokken stakeholders.
                                                                 <w:color w:val="55DD94"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"> </w:t>
+                                                            <w:t xml:space="preserve"></w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00DE51B1">
                                                             <w:rPr>
@@ -6259,7 +3776,9 @@ de taal van verschillende betrokken stakeholders.
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
                                                             <w:t>De gemeente wilde overstappen naar een nieuw financieel
-systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectteam.
+                                                                systeem. Mijn opdracht was het aansturen van het
+                                                                testtraject
+                                                                binnen het projectteam.
                                                             </w:t>
                                                         </w:r>
                                                     </w:p>
@@ -6482,7 +4001,9 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>Tijdige oplevering van testrapportages voor de go-live</w:t>
+                                                            <w:t>Tijdige oplevering van testrapportages voor de
+                                                                go-live
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="0C968477" w14:textId="4C368119" w:rsidR="00B2333C"
@@ -6665,7 +4186,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                     </w:r>
                     <w:proofErr w:type="spellEnd"/>
                     <w:r w:rsidR="00CC7FCE">
-                        <w:t xml:space="preserve"> </w:t>
+                        <w:t xml:space="preserve"></w:t>
                     </w:r>
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidR="00CC7FCE">
@@ -6727,7 +4248,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                                     <w:rPr>
                                         <w:rStyle w:val="A1"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve"> </w:t>
+                                    <w:t xml:space="preserve"></w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -6771,7 +4292,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                                     <w:rPr>
                                         <w:rStyle w:val="A1"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve"> </w:t>
+                                    <w:t xml:space="preserve"></w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -6914,7 +4435,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                                         <w:sz w:val="18"/>
                                         <w:szCs w:val="16"/>
                                     </w:rPr>
-                                    <w:t xml:space="preserve">Freelance </w:t>
+                                    <w:t xml:space="preserve">Freelance</w:t>
                                 </w:r>
                                 <w:proofErr w:type="spellStart"/>
                                 <w:r>
@@ -7335,7 +4856,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="212B46"/>
                             <w:lang w:val="en-GB"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">2023 </w:t>
+                        <w:t xml:space="preserve">2023</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7353,7 +4874,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="55DD94"/>
                             <w:lang w:val="en-GB"/>
                         </w:rPr>
-                        <w:t xml:space="preserve"> </w:t>
+                        <w:t xml:space="preserve"></w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7363,7 +4884,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="212B46"/>
                             <w:lang w:val="en-GB"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">Paul Boomgaard </w:t>
+                        <w:t xml:space="preserve">Paul Boomgaard</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7371,7 +4892,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="55DD94"/>
                             <w:lang w:val="en-GB"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">| </w:t>
+                        <w:t xml:space="preserve">|</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7381,7 +4902,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="212B46"/>
                             <w:lang w:val="en-GB"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">Manager Services </w:t>
+                        <w:t xml:space="preserve">Manager Services</w:t>
                     </w:r>
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00CC7FCE">
@@ -7434,7 +4955,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:szCs w:val="18"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">oen Erik bij </w:t>
+                        <w:t xml:space="preserve">oen Erik bij</w:t>
                     </w:r>
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00CC7FCE">
@@ -7482,7 +5003,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="212B46"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">2023 </w:t>
+                        <w:t xml:space="preserve">2023</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7500,7 +5021,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="55DD94"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t xml:space="preserve"> </w:t>
+                        <w:t xml:space="preserve"></w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7510,7 +5031,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="212B46"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">Paul Boomgaard </w:t>
+                        <w:t xml:space="preserve">Paul Boomgaard</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7518,7 +5039,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="55DD94"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">| </w:t>
+                        <w:t xml:space="preserve">|</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00CC7FCE">
                         <w:rPr>
@@ -7528,7 +5049,7 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:color w:val="212B46"/>
                             <w:lang w:val="nl-NL"/>
                         </w:rPr>
-                        <w:t xml:space="preserve">Manager Services </w:t>
+                        <w:t xml:space="preserve">Manager Services</w:t>
                     </w:r>
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00CC7FCE">
@@ -7561,31 +5082,11 @@ systeem. Mijn opdracht was het aansturen van het testtraject binnen het projectt
                             <w:szCs w:val="18"/>
                             <w:lang/>
                         </w:rPr>
-                        <w:t>Van alle markten thuis. Graphic design,</w:t>
-                    </w:r>
-                    <w:r>
-                        <w:rPr>
-                            <w:b w:val="0"/>
-                            <w:bCs w:val="0"/>
-                            <w:color w:val="1F2A45"/>
-                            <w:sz w:val="18"/>
-                            <w:szCs w:val="18"/>
-                            <w:lang/>
-                        </w:rPr>
-                        <w:t xml:space="preserve"> </w:t>
-                    </w:r>
-                    <w:r w:rsidRPr="00CC7FCE">
-                        <w:rPr>
-                            <w:b w:val="0"/>
-                            <w:bCs w:val="0"/>
-                            <w:color w:val="1F2A45"/>
-                            <w:sz w:val="18"/>
-                            <w:szCs w:val="18"/>
-                            <w:lang/>
-                        </w:rPr>
-                        <w:t>motion graphics, Max MSP, prototyping, interaction design, kan nog wel even doorgaan. Zeer
-creatief, open minded. Fijn om mee te werken. Jammer dat ie weg is bij ons (100%FAT) :-).
-Maar we blijven samenwerken waar mogelijk!
+                        <w:t>Van alle markten thuis. Graphic design, motion graphics, Max MSP, prototyping, interaction
+                            design,
+                            kan nog wel even doorgaan. Zeer creatief, open minded. Fijn om mee te werken. Jammer dat ie
+                            weg is
+                            bij ons (100%FAT) :-). Maar we blijven samenwerken waar mogelijk!
                         </w:t>
                     </w:r>
                 </w:p>
