@@ -68,6 +68,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             listOf(
                 "[Content_Types].xml",
                 "docProps/core.xml",
+                "word/_rels/footer1.xml.rels",
+                "word/_rels/footer2.xml.rels",
                 "word/document.xml",
                 "word/footer1.xml",
                 "word/footer2.xml",
