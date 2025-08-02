@@ -13,20 +13,19 @@
     </xsl:template>
 
     <xsl:template match="cv:account">
-        <cp:coreProperties
-                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-                xmlns:dc="http://purl.org/dc/elements/1.1/"
-                xmlns:dcterms="http://purl.org/dc/terms/"
-        >
-            <dc:title/>
-            <dc:subject/>
+        <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                           xmlns:dc="http://purl.org/dc/elements/1.1/"
+                           xmlns:dcterms="http://purl.org/dc/terms/"
+                           xmlns:dcmitype="http://purl.org/dc/dcmitype/">
+            <dc:title></dc:title>
+            <dc:subject></dc:subject>
             <dc:creator>
                 <xsl:value-of select="cv:name"/>
             </dc:creator>
-            <cp:keywords/>
-            <dc:description/>
-            <cp:revision>11</cp:revision>
-            <dcterms:created xsi:type="dcterms:W3CDTF">2025-07-25T17:09:00Z</dcterms:created>
+            <cp:keywords></cp:keywords>
+            <dc:description></dc:description>
+            <cp:revision>1</cp:revision>
+            <dcterms:created xsi:type="dcterms:W3CDTF">2025-04-01T11:11:00Z</dcterms:created>
         </cp:coreProperties>
     </xsl:template>
 

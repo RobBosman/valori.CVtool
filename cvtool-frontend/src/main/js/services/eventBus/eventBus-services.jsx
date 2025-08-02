@@ -1,6 +1,8 @@
 import EventBus from "@vertx/eventbus-bridge-client.js";
 import { BehaviorSubject } from "rxjs";
 import * as rx from "rxjs/operators";
+import * as authActions from "../auth/auth-actions.jsx";
+import { store } from "../../redux/store";
 
 const CONNECT_URL = "/eventbus";
 const CONNECT_OPTIONS = {
@@ -69,8 +71,12 @@ export class EventBusClient {
 
     this._eventBus.onerror = (error) => {
       if (error.body === "rejected") {
-        console.warn("An error occurred on the vert.x EventBus.", error);
-        this._errorMessagesSubject.next("Oeps! Er ging iets mis in de communicatie met de backend server.");
+        if (this.getConnectionState() === ConnectionStates.CONNECTED) {
+          this._errorMessagesSubject.next("De sessie is verlopen. Log opnieuw in om verder te gaan.");
+          store.dispatch(authActions.requestLogout());
+        } else {
+          this._errorMessagesSubject.next("Oeps! Er ging iets mis in de communicatie met de backend server.");
+        }
       } else {
         console.error("An error occurred on the vert.x EventBus.", error);
       }
@@ -111,8 +117,6 @@ export class EventBusClient {
             ? _reject(new Error(`Onbekende fout in de backend server: ${JSON.stringify(error)} ${message}`))
             : _resolve(message)
         );
-      } else if (this.getConnectionState() === ConnectionStates.CONNECTED) {
-        _reject(new Error("De login sessie is verlopen. Log opnieuw in."));
       } else {
         _reject(new Error("De verbinding met de backend server is verbroken. Probeer het later nog eens."));
       }

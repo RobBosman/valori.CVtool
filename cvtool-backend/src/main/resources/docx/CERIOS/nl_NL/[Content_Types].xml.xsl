@@ -9,7 +9,7 @@
 
     <xsl:template match="/cv:root">
         <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-            <Default Extension="emf" ContentType="image/x-emf"/>
+            <Default Extension="photo" ContentType="application/octet-stream"/>
             <Default Extension="jpeg" ContentType="image/jpeg"/>
             <Default Extension="jpg" ContentType="image/jpeg"/>
             <Default Extension="png" ContentType="image/png"/>

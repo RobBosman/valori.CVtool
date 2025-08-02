@@ -14,8 +14,7 @@
     </xsl:template>
 
     <xsl:template match="cv:root">
-        <w:hdr xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
-               xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
+        <w:hdr xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
                xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
                xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
                xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex"
@@ -29,13 +28,13 @@
                xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d"
                xmlns:o="urn:schemas-microsoft-com:office:office"
                xmlns:oel="http://schemas.microsoft.com/office/2019/extlst"
-               xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-               xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+               xmlns:r="http://purl.oclc.org/ooxml/officeDocument/relationships"
+               xmlns:m="http://purl.oclc.org/ooxml/officeDocument/math"
                xmlns:v="urn:schemas-microsoft-com:vml"
                xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
-               xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+               xmlns:wp="http://purl.oclc.org/ooxml/drawingml/wordprocessingDrawing"
                xmlns:w10="urn:schemas-microsoft-com:office:word"
-               xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+               xmlns:w="http://purl.oclc.org/ooxml/wordprocessingml/main"
                xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
                xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
                xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"
@@ -45,34 +44,29 @@
                xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"
                xmlns:w16sdtfl="http://schemas.microsoft.com/office/word/2024/wordml/sdtformatlock"
                xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"
-               xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
                xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
                xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-               xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
-               mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wp14">
-            <w:p w14:paraId="691869DD" w14:textId="77777777" w:rsidR="00B97911" w:rsidRDefault="00000000"
-                 w:rsidP="00D51FD7">
+               mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wne wp14">
+            <w:p w14:paraId="257F922B" w14:textId="7A268496" w:rsidR="00D51FD7" w:rsidRDefault="00D51FD7" w:rsidP="00D51FD7">
                 <w:pPr>
                     <w:pStyle w:val="Koptekst"/>
-                    <w:jc w:val="right"/>
+                    <w:jc w:val="end"/>
                 </w:pPr>
                 <w:r>
                     <w:rPr>
                         <w:noProof/>
                     </w:rPr>
                     <w:drawing>
-                        <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="31FE7B5D"
-                                   wp14:editId="0ACF5EB4">
+                        <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="32B95DFD" wp14:editId="119DA304">
                             <wp:extent cx="1371600" cy="431800"/>
                             <wp:effectExtent l="0" t="0" r="0" b="0"/>
                             <wp:docPr id="1713759036" name="Graphic 15"/>
                             <wp:cNvGraphicFramePr>
-                                <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-                                                     noChangeAspect="1"/>
+                                <a:graphicFrameLocks xmlns:a="http://purl.oclc.org/ooxml/drawingml/main" noChangeAspect="1"/>
                             </wp:cNvGraphicFramePr>
-                            <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
-                                <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
-                                    <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                            <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
+                                <a:graphicData uri="http://purl.oclc.org/ooxml/drawingml/picture">
+                                    <pic:pic xmlns:pic="http://purl.oclc.org/ooxml/drawingml/picture">
                                         <pic:nvPicPr>
                                             <pic:cNvPr id="1895402170" name="Graphic 1895402170"/>
                                             <pic:cNvPicPr/>
@@ -80,14 +74,10 @@
                                         <pic:blipFill>
                                             <a:blip r:embed="rId1">
                                                 <a:extLst>
-                                                    <a:ext>
-                                                        <xsl:attribute name="uri">
-                                                            <xsl:value-of select="'{96DAC541-7B7A-43D3-8B79-37D633B846F1}'"/>
-                                                        </xsl:attribute>
-                                                        <asvg:svgBlip r:embed="rId2"
-                                                                      xmlns:asvg="http://schemas.microsoft.com/office/drawing/2016/SVG/main"
-                                                                      xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                                                                      xmlns=""/>
+                                                    <a:ext><xsl:attribute name="uri"><xsl:value-of select="'{96DAC541-7B7A-43D3-8B79-37D633B846F1}'"/></xsl:attribute>
+                                                        <asvg:svgBlip
+                                                                xmlns:asvg="http://schemas.microsoft.com/office/drawing/2016/SVG/main"
+                                                                r:embed="rId2"/>
                                                     </a:ext>
                                                 </a:extLst>
                                             </a:blip>
