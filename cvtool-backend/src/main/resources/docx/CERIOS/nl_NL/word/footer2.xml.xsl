@@ -70,6 +70,9 @@
                 </w:r>
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
+                        <w:noProof/>
+                    </w:rPr>
+                    <w:rPr>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
                         <w:lang w:val="nl-NL"/>

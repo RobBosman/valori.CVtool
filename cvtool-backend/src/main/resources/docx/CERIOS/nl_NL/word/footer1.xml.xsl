@@ -155,6 +155,9 @@
                 </w:r>
                 <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
                     <w:rPr>
+                        <w:noProof/>
+                    </w:rPr>
+                    <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>

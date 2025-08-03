@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
         exclude-result-prefixes="cv"
         version="1.0">
 
@@ -9,7 +10,8 @@
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
+    <xsl:template match="/cv:root">
+        <xsl:variable name="characteristics" select="cv:characteristics[cv:includeInCv = 'true']"/>
         <w:document xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
                     xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
                     xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
@@ -136,7 +138,9 @@
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>[account.dateOfBirth]</w:t>
+                                                            <w:t>
+                                                                <xsl:apply-templates select="cv:account/cv:dateOfBirth" mode="date-numeric"/>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -228,7 +232,9 @@
                                                                 <w:szCs w:val="58"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>[account.name]</w:t>
+                                                            <w:t>
+                                                                <xsl:value-of select="cv:account/cv:name"/>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="0ECEF8ED" w14:textId="77777777" w:rsidR="0004532F"
@@ -358,7 +364,9 @@
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>[characteristics.role]</w:t>
+                                                            <w:t>
+                                                                <xsl:value-of select="$characteristics/cv:role"/>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="4ED6E054" w14:textId="77777777" w:rsidR="0004532F"
@@ -428,7 +436,9 @@
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>[account.residence]</w:t>
+                                                            <w:t>
+                                                                <xsl:value-of select="cv:account/cv:residence"/>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -978,77 +988,10 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>[characteristics.profile]</w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="29A94792" w14:textId="77777777" w:rsidR="0004532F"
-                                                         w:rsidRDefault="0004532F" w:rsidP="0004532F">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="BasicParagraph"/>
-                                                            <w:suppressAutoHyphens/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                    </w:p>
-                                                    <w:p w14:paraId="5E2B862D" w14:textId="77777777" w:rsidR="0004532F"
-                                                         w:rsidRDefault="0004532F" w:rsidP="0004532F">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="BasicParagraph"/>
-                                                            <w:suppressAutoHyphens/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t xml:space="preserve">[characteristics.profile]</w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="46C759E5" w14:textId="77777777" w:rsidR="0004532F"
-                                                         w:rsidRDefault="0004532F" w:rsidP="0004532F">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="BasicParagraph"/>
-                                                            <w:suppressAutoHyphens/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                    </w:p>
-                                                    <w:p w14:paraId="7F38F790" w14:textId="68D06F18" w:rsidR="0004532F"
-                                                         w:rsidRDefault="0004532F" w:rsidP="0004532F">
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t>[profile.profile]</w:t>
+                                                            <w:t>
+                                                                <xsl:variable name="profile" select="$characteristics/cv:profile/cv:nl_NL"/>
+                                                                <xsl:apply-templates select="$profile" mode="markdown"/>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -1387,7 +1330,9 @@
                                                                 <w:szCs w:val="18"/>
                                                                 <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
-                                                            <w:t>[characteristics.interests]</w:t>
+                                                            <w:t>
+                                                                <xsl:value-of select="$characteristics/cv:interests"/>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -1562,7 +1507,9 @@
                                                             </w:rPr>
                                                             <w:t>Branches</w:t>
                                                         </w:r>
-                                                    </w:p><!-- PER BRANCH --><!-- REPEAT BEGIN -->
+                                                    </w:p>
+                                                    <!-- PER BRANCH -->
+                                                    <!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="337E615E" w14:textId="7B810E7F" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -1613,7 +1560,8 @@
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p><!-- REPEAT END -->
+                                                    </w:p>
+                                                    <!-- REPEAT END -->
                                                     <w:p w14:paraId="60B23BCC" w14:textId="61F5FAC0" w:rsidR="00462426"
                                                          w:rsidRDefault="00462426" w:rsidP="00F503A0">
                                                         <w:pPr>
@@ -1647,7 +1595,9 @@
                                                             <w:t>Expertises</w:t>
                                                         </w:r>
                                                         <w:proofErr w:type="spellEnd"/>
-                                                    </w:p><!-- PER EXPERIENCE --><!-- REPEAT BEGIN -->
+                                                    </w:p>
+                                                    <!-- PER EXPERIENCE -->
+                                                    <!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="57249782" w14:textId="5AA1A882" w:rsidR="00462426"
                                                          w:rsidRPr="002C7C28" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -1698,7 +1648,8 @@
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p><!-- REPEAT END -->
+                                                    </w:p>
+                                                    <!-- REPEAT END -->
                                                     <w:p w14:paraId="56327D55" w14:textId="77777777" w:rsidR="00D51FD7"
                                                          w:rsidRDefault="00D51FD7" w:rsidP="00F503A0">
                                                         <w:pPr>
@@ -1735,7 +1686,9 @@
                                                             </w:rPr>
                                                             <w:t>Databases</w:t>
                                                         </w:r>
-                                                    </w:p><!-- PER DATABASE --><!-- REPEAT BEGIN -->
+                                                    </w:p>
+                                                    <!-- PER DATABASE -->
+                                                    <!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="7ED64DA2" w14:textId="3DAB1266" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -1784,7 +1737,8 @@
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p><!-- REPEAT END -->
+                                                    </w:p>
+                                                    <!-- REPEAT END -->
                                                     <w:p w14:paraId="05D8DC8E" w14:textId="77777777" w:rsidR="00462426"
                                                          w:rsidRPr="00307129" w:rsidRDefault="00462426"
                                                          w:rsidP="00F503A0">
@@ -1819,7 +1773,9 @@
                                                             </w:rPr>
                                                             <w:t>Talenkennis</w:t>
                                                         </w:r>
-                                                    </w:p><!-- PER TAAL --><!-- REPEAT BEGIN -->
+                                                    </w:p>
+                                                    <!-- PER TAAL -->
+                                                    <!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="5B3A185A" w14:textId="6B645726" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -1868,7 +1824,8 @@
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p><!-- REPEAT END -->
+                                                    </w:p>
+                                                    <!-- REPEAT END -->
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
@@ -1951,15 +1908,6 @@
                                                             <w:spacing w:after="0pt"/>
                                                             <w:jc w:val="center"/>
                                                         </w:pPr>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
                                                         <w:r>
                                                             <w:rPr>
                                                                 <w:rStyle w:val="Valori-niveau"/>
@@ -1967,7 +1915,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"></w:t>
+                                                            <w:t xml:space="preserve"> </w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -1991,24 +1939,6 @@
                                                             </w:rPr>
                                                             <w:tab/>
                                                         </w:r>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
                                                         <w:r>
                                                             <w:rPr>
                                                                 <w:rStyle w:val="Valori-niveau"/>
@@ -2016,7 +1946,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"></w:t>
+                                                            <w:t xml:space="preserve"> </w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -2047,34 +1977,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r w:rsidRPr="00545E7E">
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t></w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:tab/>
+                                                            <w:t xml:space="preserve"> </w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -2168,7 +2071,9 @@
                                                             <w:t>Programmeren</w:t>
                                                         </w:r>
                                                         <w:proofErr w:type="spellEnd"/>
-                                                    </w:p><!-- PER PROGRAMMING LANGUAGE --><!-- REPEAT BEGIN -->
+                                                    </w:p>
+                                                    <!-- PER PROGRAMMING LANGUAGE -->
+                                                    <!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="2818A7F0" w14:textId="555D76ED" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -2221,7 +2126,8 @@
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p><!-- REPEAT END -->
+                                                    </w:p>
+                                                    <!-- REPEAT END -->
                                                     <w:p w14:paraId="3C9CBA81" w14:textId="77777777" w:rsidR="00545E7E"
                                                          w:rsidRDefault="00545E7E" w:rsidP="00462426">
                                                         <w:pPr>
@@ -2254,7 +2160,9 @@
                                                             </w:rPr>
                                                             <w:t>Methodes</w:t>
                                                         </w:r>
-                                                    </w:p><!-- PER METHOD --><!-- REPEAT BEGIN -->
+                                                    </w:p>
+                                                    <!-- PER METHOD -->
+                                                    <!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="11BCBD6A" w14:textId="77777777" w:rsidR="00545E7E"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -2305,7 +2213,8 @@
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p><!-- REPEAT END -->
+                                                    </w:p>
+                                                    <!-- REPEAT END -->
                                                     <w:p w14:paraId="2CAD987B" w14:textId="4459B293" w:rsidR="00462426"
                                                          w:rsidRDefault="00462426" w:rsidP="00545E7E">
                                                         <w:pPr>
@@ -2393,7 +2302,9 @@
                                                             </w:rPr>
                                                             <w:t>Tools</w:t>
                                                         </w:r>
-                                                    </w:p><!-- PER TOOL --><!-- REPEAT BEGIN -->
+                                                    </w:p>
+                                                    <!-- PER TOOL -->
+                                                    <!-- REPEAT BEGIN -->
                                                     <w:p w14:paraId="0D4A0C84" w14:textId="2F3BC595" w:rsidR="00462426"
                                                          w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
                                                          w:rsidP="00D51FD7">
@@ -2444,7 +2355,8 @@
                                                             </w:rPr>
                                                             <w:t></w:t>
                                                         </w:r>
-                                                    </w:p><!-- REPEAT END -->
+                                                    </w:p>
+                                                    <!-- REPEAT END -->
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
