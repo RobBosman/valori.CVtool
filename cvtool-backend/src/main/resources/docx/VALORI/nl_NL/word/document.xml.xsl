@@ -9,7 +9,8 @@
         exclude-result-prefixes="cv"
         version="1.0">
 
-    <xsl:import href="../../common.xsl"/>
+    <xsl:import href="../../../common.xsl"/>
+    <xsl:import href="../../common-brand.xsl"/>
     <xsl:import href="../common-nl_NL.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
@@ -721,6 +722,7 @@
                 <w:t>
                     <xsl:call-template name="wrap-skill-description">
                         <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
+                        <xsl:with-param name="newline"><w:br/></xsl:with-param>
                     </xsl:call-template>
                 </w:t>
                 <w:tab/>

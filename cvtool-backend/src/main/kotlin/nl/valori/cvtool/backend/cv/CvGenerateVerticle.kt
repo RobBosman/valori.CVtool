@@ -43,6 +43,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         private fun xslIncludesMap(docxTemplate: String) =
             mapOf(
                 "common.xsl" to loadBytes("/docx/common.xsl"),
+                "common-brand.xsl" to loadBytes("/docx/$docxTemplate/common-brand.xsl"),
                 "common-nl_NL.xsl" to loadBytes("/docx/$docxTemplate/nl_NL/common-nl_NL.xsl"),
                 "common-uk_UK.xsl" to loadBytes("/docx/$docxTemplate/uk_UK/common-uk_UK.xsl")
             )

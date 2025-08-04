@@ -9,7 +9,8 @@
         exclude-result-prefixes="cv"
         version="1.0">
 
-    <xsl:import href="../../common.xsl"/>
+    <xsl:import href="../../../common.xsl"/>
+    <xsl:import href="../../common-brand.xsl"/>
     <xsl:import href="../common-uk_UK.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
@@ -724,6 +725,7 @@
                     </xsl:variable>
                     <xsl:call-template name="wrap-skill-description">
                         <xsl:with-param name="text" select="$skillDescription"/>
+                        <xsl:with-param name="newline"><w:br/></xsl:with-param>
                     </xsl:call-template>
                 </w:t>
                 <w:tab/>

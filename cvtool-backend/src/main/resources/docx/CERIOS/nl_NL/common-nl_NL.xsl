@@ -38,7 +38,7 @@
     <!-- SKILL CATEGORY -->
     <xsl:template match="* | @* | text()" mode="skill-category">
         <xsl:choose>
-            <xsl:when test=". = 'LANGUAGES'">Talen</xsl:when>
+            <xsl:when test=". = 'LANGUAGES'">Talenkennis</xsl:when>
             <xsl:when test=". = 'BRANCHES'">Branches</xsl:when>
             <xsl:when test=". = 'EXPERTISE'">Expertises</xsl:when>
             <xsl:when test=". = 'DATABASES'">Databases</xsl:when>
