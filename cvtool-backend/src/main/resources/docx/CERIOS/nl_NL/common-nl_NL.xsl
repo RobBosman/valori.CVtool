@@ -56,10 +56,10 @@
     <!-- EDUCATION RESULT -->
     <xsl:template match="* | @* | text()" mode="education-result">
         <xsl:choose>
-            <xsl:when test=". = 'DIPLOMA'">diploma</xsl:when>
-            <xsl:when test=". = 'CERTIFICATE'">certificaat</xsl:when>
+            <xsl:when test=". = 'DIPLOMA'">ja</xsl:when>
+            <xsl:when test=". = 'CERTIFICATE'">ja</xsl:when>
             <xsl:when test=". = 'ONGOING'">nog bezig</xsl:when>
-            <xsl:when test=". = 'CANCELED'">afgebroken</xsl:when>
+            <xsl:when test=". = 'CANCELED'">nee</xsl:when>
             <xsl:when test=". = 'NOT_APPLICABLE'">nvt</xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="."/>
