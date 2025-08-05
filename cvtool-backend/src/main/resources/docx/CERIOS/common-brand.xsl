@@ -928,4 +928,207 @@
         </w:tr>
     </xsl:template>
 
+    <!-- PUBLICATION -->
+    <xsl:template match="cv:publication">
+        <w:p w14:paraId="723A7055" w14:textId="6537F84F" w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE"
+             w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
+            <w:pPr>
+                <w:spacing w:before="12pt"/>
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t><xsl:value-of select="cv:year"/></w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:color w:val="55DD94"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t xml:space="preserve"> | </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t>
+                    <xsl:value-of select="cv:media"/>
+                </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:color w:val="55DD94"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t xml:space="preserve"> | </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t>
+                    <xsl:value-of select="cv:title/cv:nl_NL"/>
+                </w:t>
+            </w:r>
+            <w:proofErr w:type="spellEnd"/>
+        </w:p>
+        <w:p w14:paraId="46790F11" w14:textId="2E404240" w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE"
+             w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
+            <w:pPr>
+                <w:pStyle w:val="Titel1"/>
+                <w:spacing w:after="12pt"/>
+                <w:ind w:end="276.65pt"/>
+                <w:rPr>
+                    <w:lang w:val="nl-NL"/>
+                </w:rPr>
+                <w:sectPr w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE" w:rsidSect="00CC7FCE">
+                    <w:type w:val="continuous"/>
+                    <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                    <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
+                             w:header="35.45pt"
+                             w:footer="2.85pt" w:gutter="0pt"/>
+                    <w:cols w:space="17.45pt"/>
+                    <w:docGrid w:linePitch="360"/>
+                </w:sectPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:b w:val="0"/>
+                    <w:bCs w:val="0"/>
+                    <w:color w:val="1F2A45"/>
+                    <w:sz w:val="18"/>
+                    <w:szCs w:val="18"/>
+                    <w:lang w:val="nl-NL"/>
+                </w:rPr>
+                <w:t>
+                    <xsl:apply-templates select="cv:description/cv:nl_NL" mode="markdown"/>
+                </w:t>
+            </w:r>
+        </w:p>
+    </xsl:template>
+
+    <!-- REFERENCE -->
+    <xsl:template match="cv:reference">
+        <w:p w14:paraId="723A7055" w14:textId="6537F84F" w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE"
+             w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
+            <w:pPr>
+                <w:spacing w:before="12pt"/>
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+            </w:pPr>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <!-- TODO: REFERENCE_YEAR -->
+                <w:t>REFERENCE_YEAR</w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:color w:val="55DD94"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t xml:space="preserve"> | </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t>
+                    <xsl:value-of select="cv:referentName"/>
+                </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:color w:val="55DD94"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t xml:space="preserve"> | </w:t>
+            </w:r>
+            <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                    <w:lang w:val="en-GB"/>
+                </w:rPr>
+                <w:t>
+                    <xsl:value-of select="cv:referentFunction/cv:nl_NL"/>
+                </w:t>
+            </w:r>
+            <w:proofErr w:type="spellEnd"/>
+        </w:p>
+        <w:p w14:paraId="46790F11" w14:textId="2E404240" w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE"
+             w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
+            <w:pPr>
+                <w:pStyle w:val="Titel1"/>
+                <w:spacing w:after="12pt"/>
+                <w:ind w:end="276.65pt"/>
+                <w:rPr>
+                    <w:lang w:val="nl-NL"/>
+                </w:rPr>
+                <w:sectPr w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE" w:rsidSect="00CC7FCE">
+                    <w:type w:val="continuous"/>
+                    <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                    <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
+                             w:header="35.45pt"
+                             w:footer="2.85pt" w:gutter="0pt"/>
+                    <w:cols w:space="17.45pt"/>
+                    <w:docGrid w:linePitch="360"/>
+                </w:sectPr>
+            </w:pPr>
+            <w:r>
+                <w:rPr>
+                    <w:b w:val="0"/>
+                    <w:bCs w:val="0"/>
+                    <w:color w:val="1F2A45"/>
+                    <w:sz w:val="18"/>
+                    <w:szCs w:val="18"/>
+                    <w:lang w:val="nl-NL"/>
+                </w:rPr>
+                <w:t>
+                    <xsl:apply-templates select="cv:description/cv:nl_NL" mode="markdown"/>
+                </w:t>
+            </w:r>
+        </w:p>
+    </xsl:template>
+
 </xsl:stylesheet>
