@@ -52,11 +52,29 @@ const Experience = (props) => {
   const renderClient = (item) =>
     item.client || item.employer;
 
+  const setIncludeInCv = (experienceId, newExperience) => {
+    props.replaceExperience(experienceId, { ...newExperience, includeInOverview: (newExperience.includeInCv ? false : newExperience.includeInOverview) });
+  };
+
+  const setIncludeInOverview = (experienceId, newExperience) => {
+    props.replaceExperience(experienceId, { ...newExperience, includeInCv: (newExperience.includeInOverview ? false : newExperience.includeInCv) });
+  };
+
   const renderInCvCheckbox = (item) =>
-    <CvCheckbox
-      field="includeInCv"
-      instanceContext={{ ...experienceContext, instanceId: item._id }}
-    />;
+    <Stack horizontal horizontalAlign="space-around" verticalAlign="center">
+      <CvCheckbox
+        field="includeInCv"
+        instanceContext={{ ...experienceContext, instanceId: item._id, replaceInstance: setIncludeInCv }}
+      />
+    </Stack>;
+
+  const renderInOverviewCheckbox = (item) =>
+    <Stack horizontal horizontalAlign="space-around" verticalAlign="center">
+      <CvCheckbox
+        field="includeInOverview"
+        instanceContext={{ ...experienceContext, instanceId: item._id, replaceInstance: setIncludeInOverview }}
+      />
+    </Stack>;
 
   const columns = [
     {
@@ -106,8 +124,19 @@ const Experience = (props) => {
       name: "In cv",
       onRender: renderInCvCheckbox,
       isResizable: false,
-      minWidth: 40,
-      maxWidth: 40,
+      minWidth: 30,
+      maxWidth: 30,
+      data: "boolean",
+      columnActionsMode: ColumnActionsMode.disabled
+    },
+    {
+      key: "includeInOverview",
+      fieldName: "includeInOverview",
+      name: "Overzicht",
+      onRender: renderInOverviewCheckbox,
+      isResizable: false,
+      minWidth: 65,
+      maxWidth: 65,
       data: "boolean",
       columnActionsMode: ColumnActionsMode.disabled
     }

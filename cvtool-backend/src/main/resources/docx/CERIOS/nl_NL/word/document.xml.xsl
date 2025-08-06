@@ -2521,8 +2521,7 @@
                 EXPERIENCES OVERVIEW
 
                 -->
-                <!-- TODO: EXPERIENCE_OVERVIEW_ITEMS -->
-                <xsl:variable name="experienceOverviewItems" select="cv:experience[cv:includeInCv = 'false']"/>
+                <xsl:variable name="experienceOverviewItems" select="cv:experience[cv:includeInOverview = 'true']"/>
                 <xsl:if test="$experienceOverviewItems">
                     <w:p w14:paraId="24FEE188" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                          w:rsidP="00B2333C">

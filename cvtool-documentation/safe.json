@@ -190,7 +190,8 @@
         "uk_UK": "java, Spring"
       },
       "sortIndex": 0,
-      "includeInCv": true
+      "includeInCv": true,
+      "includeInOverview": false
     }
   },
   "ENUM_ROLE": [

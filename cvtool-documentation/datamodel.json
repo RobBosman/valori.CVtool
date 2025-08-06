@@ -123,7 +123,8 @@
       "[locale]": "STRING"
     },
     "sortIndex": "NUMBER",
-    "includeInCv": "BOOLEAN"
+    "includeInCv": "BOOLEAN",
+    "includeInOverview": "BOOLEAN"
   },
   "ENUM_AUTHORIZATION_LEVEL": [
     "ADMIN",
