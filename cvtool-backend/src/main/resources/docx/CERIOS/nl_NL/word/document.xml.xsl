@@ -2251,12 +2251,6 @@
                                             <w:t>Opleidingsinstituut</w:t>
                                         </w:r>
                                         <w:proofErr w:type="spellEnd"/>
-                                        <w:r w:rsidRPr="00D51FD7">
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
-                                            <w:t xml:space="preserve"></w:t>
-                                        </w:r>
                                     </w:p>
                                 </w:tc>
                                 <w:tc>
