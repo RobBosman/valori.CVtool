@@ -344,6 +344,7 @@ Accounts.propTypes = {
   authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
   authorizationEntity: PropTypes.object,
+  brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   deleteAccount: PropTypes.func.isRequired,
   replaceAuthorization: PropTypes.func.isRequired,
