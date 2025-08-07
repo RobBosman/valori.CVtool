@@ -92,9 +92,11 @@
     "_id": "ID",
     "accountId": "ID",
     "referentName": "STRING",
+    "year": "YEAR",
     "referentFunction": {
       "[locale]": "STRING"
     },
+    "client": "YEAR",
     "description": {
       "[locale]": "STRING"
     },

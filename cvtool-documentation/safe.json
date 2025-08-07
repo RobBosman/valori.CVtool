@@ -104,10 +104,12 @@
       "_id": "uuid-reference-1",
       "accountId": "uuid-account-1",
       "referentName": "Jeroen Sanders",
+      "year": 2019,
       "referentFunction": {
         "nl_NL": "Manager",
         "uk_UK": "Manager"
       },
+      "client": "Triodos",
       "description": {
         "nl_NL": "Team lead Triodos",
         "uk_UK": "Team lead Triodos"
