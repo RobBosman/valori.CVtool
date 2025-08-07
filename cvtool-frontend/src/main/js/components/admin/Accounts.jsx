@@ -79,7 +79,7 @@ const Accounts = props => {
       instances:Object.values(combinedEntity || {})
     };
   },
-  [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
+  [props.accountEntity, props.authorizationEntity, props.brandEntity, props.businessUnitEntity]);
 
   const combinedContext = React.useCallback(replaceInstance => ({
     entity: combined.entity,
