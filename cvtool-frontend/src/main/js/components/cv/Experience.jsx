@@ -129,17 +129,6 @@ const Experience = (props) => {
       data: "boolean",
       columnActionsMode: ColumnActionsMode.disabled
     }
-//     {
-//       key: "includeInOverview",
-//       fieldName: "includeInOverview",
-//       name: "Overzicht",
-//       onRender: renderInOverviewCheckbox,
-//       isResizable: false,
-//       minWidth: 65,
-//       maxWidth: 65,
-//       data: "boolean",
-//       columnActionsMode: ColumnActionsMode.disabled
-//     }
   ];
 
   const selectedItemFields = React.useCallback(() => {
