@@ -31,7 +31,7 @@ const Accounts = props => {
         combined[account._id] = {
           ...account,
           authorization: authorization,
-          brand: brandEntity?.[businessUnit.brandId],
+          brand: brandEntity?.[businessUnit?.brandId],
           businessUnit: businessUnit
         };
       });
