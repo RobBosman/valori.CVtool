@@ -950,7 +950,9 @@
                     <w:color w:val="212B46"/>
                     <w:lang w:val="en-GB"/>
                 </w:rPr>
-                <w:t><xsl:value-of select="cv:year"/></w:t>
+                <w:t>
+                    <xsl:value-of select="cv:year"/>
+                </w:t>
             </w:r>
             <w:r w:rsidRPr="00CC7FCE">
                 <w:rPr>
@@ -1043,25 +1045,28 @@
                     <w:lang w:val="en-GB"/>
                 </w:rPr>
             </w:pPr>
-            <w:r w:rsidRPr="00CC7FCE">
-                <w:rPr>
-                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:color w:val="212B46"/>
-                    <w:lang w:val="en-GB"/>
-                </w:rPr>
-                <!-- TODO: REFERENCE_YEAR -->
-                <w:t>REFERENCE_YEAR</w:t>
-            </w:r>
-            <w:r w:rsidRPr="00CC7FCE">
-                <w:rPr>
-                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                    <w:color w:val="55DD94"/>
-                    <w:lang w:val="en-GB"/>
-                </w:rPr>
-                <w:t xml:space="preserve"> | </w:t>
-            </w:r>
+            <xsl:if test="cv:year">
+                <w:r w:rsidRPr="00CC7FCE">
+                    <w:rPr>
+                        <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                        <w:b/>
+                        <w:bCs/>
+                        <w:color w:val="212B46"/>
+                        <w:lang w:val="en-GB"/>
+                    </w:rPr>
+                    <w:t>
+                        <xsl:value-of select="cv:year"/>
+                    </w:t>
+                </w:r>
+                <w:r w:rsidRPr="00CC7FCE">
+                    <w:rPr>
+                        <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                        <w:color w:val="55DD94"/>
+                        <w:lang w:val="en-GB"/>
+                    </w:rPr>
+                    <w:t xml:space="preserve"> | </w:t>
+                </w:r>
+            </xsl:if>
             <w:r w:rsidRPr="00CC7FCE">
                 <w:rPr>
                     <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
@@ -1093,6 +1098,11 @@
                 <w:t>
                     <xsl:value-of select="cv:referentFunction/cv:nl_NL"/>
                 </w:t>
+                <xsl:if test="cv:client">
+                    <w:t>
+                        <xsl:value-of select="cv:client"/>
+                    </w:t>
+                </xsl:if>
             </w:r>
             <w:proofErr w:type="spellEnd"/>
         </w:p>

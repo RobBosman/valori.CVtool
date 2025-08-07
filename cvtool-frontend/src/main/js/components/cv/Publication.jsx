@@ -61,6 +61,14 @@ const Publication = (props) => {
       maxWidth: 400
     },
     {
+      key: "year",
+      fieldName: "year",
+      name: "Jaar",
+      isResizable: false,
+      minWidth: 40,
+      maxWidth: 40
+    },
+    {
       key: "includeInCv",
       fieldName: "includeInCv",
       name: "In cv",

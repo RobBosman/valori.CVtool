@@ -129,7 +129,7 @@ const Accounts = props => {
       name: "Brand",
       isResizable: true,
       minWidth: 60,
-      maxWidth: 120
+      maxWidth: 100
     },
     {
       key: "businessUnit.name",
