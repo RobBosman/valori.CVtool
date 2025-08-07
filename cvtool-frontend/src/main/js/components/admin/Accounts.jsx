@@ -31,7 +31,7 @@ const Accounts = props => {
         combined[account._id] = {
           ...account,
           authorization: authorization,
-          brand: brandEntity?.[businessUnit.brandId],
+          brand: brandEntity?.[businessUnit?.brandId],
           businessUnit: businessUnit
         };
       });
@@ -79,7 +79,7 @@ const Accounts = props => {
       instances:Object.values(combinedEntity || {})
     };
   },
-  [props.accountEntity, props.authorizationEntity, props.businessUnitEntity]);
+  [props.accountEntity, props.authorizationEntity, props.brandEntity, props.businessUnitEntity]);
 
   const combinedContext = React.useCallback(replaceInstance => ({
     entity: combined.entity,
@@ -344,6 +344,7 @@ Accounts.propTypes = {
   authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
   authorizationEntity: PropTypes.object,
+  brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   deleteAccount: PropTypes.func.isRequired,
   replaceAuthorization: PropTypes.func.isRequired,

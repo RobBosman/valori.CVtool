@@ -128,11 +128,11 @@
                 <w:p w14:paraId="6C7C904F" w14:textId="5AB055EC" w:rsidR="00F63003" w:rsidRDefault="00C14BDE"
                      w:rsidP="00FD53E1">
                     <w:pPr>
-                        <w:pStyle w:val="Valori-blauw"/>
+                        <w:pStyle w:val="TestCrew-IT-blauw"/>
                     </w:pPr>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="TestCrew-IT-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve"> </w:t>
                     </w:r>
@@ -141,7 +141,7 @@
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="TestCrew-IT-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve">      </w:t>
                     </w:r>
@@ -150,7 +150,7 @@
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="TestCrew-IT-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve">     </w:t>
                     </w:r>
@@ -635,10 +635,10 @@
                         <w:tblBorders>
                             <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
                             <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-                            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F29100"/>
+                            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="1F3A3D"/>
                             <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-                            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="F29100"/>
-                            <w:insideV w:val="dashed" w:sz="4" w:space="0" w:color="F29100"/>
+                            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="1F3A3D"/>
+                            <w:insideV w:val="dashed" w:sz="4" w:space="0" w:color="1F3A3D"/>
                         </w:tblBorders>
                         <w:tblLayout w:type="fixed"/>
                         <w:tblCellMar>
@@ -702,13 +702,13 @@
         <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA"
              w:rsidP="000A5FCA">
             <w:pPr>
-                <w:pStyle w:val="Valori-blauw"/>
+                <w:pStyle w:val="TestCrew-IT-blauw"/>
                 <w:tabs>
                     <w:tab w:val="clear" w:pos="2835"/>
                     <w:tab w:val="right" w:pos="3071"/>
                 </w:tabs>
                 <w:rPr>
-                    <w:rStyle w:val="Valori-niveau"/>
+                    <w:rStyle w:val="TestCrew-IT-niveau"/>
                 </w:rPr>
                 <w:keepLines/>
                 <xsl:if test="position() != $last">
@@ -717,7 +717,7 @@
             </w:pPr>
             <w:r w:rsidRPr="00752D43">
                 <w:rPr>
-                    <w:rStyle w:val="Valori-skillChar"/>
+                    <w:rStyle w:val="TestCrew-IT-skillChar"/>
                 </w:rPr>
                 <w:t>
                     <xsl:variable name="skillDescription">
@@ -725,14 +725,13 @@
                     </xsl:variable>
                     <xsl:call-template name="wrap-skill-description">
                         <xsl:with-param name="text" select="$skillDescription"/>
-                        <xsl:with-param name="newline"><w:br/></xsl:with-param>
                     </xsl:call-template>
                 </w:t>
                 <w:tab/>
             </w:r>
             <w:r w:rsidRPr="00C14BDE">
                 <w:rPr>
-                    <w:rStyle w:val="Valori-niveau"/>
+                    <w:rStyle w:val="TestCrew-IT-niveau"/>
                 </w:rPr>
                 <w:t>
                     <xsl:apply-templates select="cv:skillLevel" mode="skill-level"/>
@@ -842,7 +841,7 @@
                     </w:r>
                     <w:r w:rsidRPr="001860B4">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
@@ -903,7 +902,7 @@
                     </w:r>
                     <w:r w:rsidRPr="001860B4">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
@@ -1040,7 +1039,7 @@
                 <w:p w14:paraId="1F9BB23A" w14:textId="5CBB339A" w:rsidR="00A52C14" w:rsidRDefault="00A52C14"
                      w:rsidP="00666ED6">
                     <w:pPr>
-                        <w:pStyle w:val="Valori-blauw"/>
+                        <w:pStyle w:val="TestCrew-IT-blauw"/>
                     </w:pPr>
                     <w:r>
                         <w:t>
@@ -1055,12 +1054,12 @@
                      w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
                     <w:pPr>
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                     </w:pPr>
                     <w:r w:rsidRPr="00A52C14">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t>
                             <xsl:apply-templates select="cv:role" mode="locale-placeholder"/>
@@ -1071,7 +1070,7 @@
                      w:rsidP="00666ED6">
                     <w:r w:rsidRPr="00A52C14">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t>
                             <xsl:apply-templates select="." mode="client"/>
@@ -1097,7 +1096,7 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="TestCrew-IT-geel"/>
                             </w:rPr>
                             <w:t>Tasks/activities:</w:t>
                         </w:r>
@@ -1113,7 +1112,7 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="TestCrew-IT-geel"/>
                             </w:rPr>
                             <w:t>Results:</w:t>
                         </w:r>
@@ -1129,7 +1128,7 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="TestCrew-IT-geel"/>
                             </w:rPr>
                             <w:t>Working environment:</w:t>
                         </w:r>

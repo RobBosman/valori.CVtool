@@ -229,7 +229,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
             else -> ""
         }
-        return listOf(brand, "CV", locale.substring(3), name)
+        return listOf("CV", locale.substring(3), brand, name)
             .filter { it.isNotBlank() }
             .joinToString("_") + ".docx"
     }

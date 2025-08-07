@@ -11,7 +11,7 @@
 
     <xsl:import href="../../../common.xsl"/>
     <xsl:import href="../../common-brand.xsl"/>
-    <xsl:import href="../common-uk_UK.xsl"/>
+    <xsl:import href="../common-nl_NL.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
@@ -27,7 +27,7 @@
                 PROFILE
 
                 -->
-                <xsl:variable name="profile" select="cv:characteristics[cv:includeInCv = 'true']/cv:profile/cv:uk_UK"/>
+                <xsl:variable name="profile" select="cv:characteristics[cv:includeInCv = 'true']/cv:profile/cv:nl_NL"/>
                 <xsl:if test="$profile">
                     <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949"
                          w:rsidP="00D55949">
@@ -36,7 +36,7 @@
                             <w:spacing w:after="60"/>
                         </w:pPr>
                         <w:r w:rsidRPr="00D55949">
-                            <w:t>Profile</w:t>
+                            <w:t>Profielschets</w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$profile" mode="markdown"/>
@@ -52,7 +52,7 @@
                         <w:pStyle w:val="Kop1"/>
                     </w:pPr>
                     <w:r>
-                        <w:t>Knowledge &amp; skills</w:t>
+                        <w:t>Kennis &amp; vaardigheden</w:t>
                     </w:r>
                 </w:p>
                 <w:p w14:paraId="295EA1F8" w14:textId="77777777" w:rsidR="00BF29B7" w:rsidRDefault="00BF29B7"
@@ -128,34 +128,34 @@
                 <w:p w14:paraId="6C7C904F" w14:textId="5AB055EC" w:rsidR="00F63003" w:rsidRDefault="00C14BDE"
                      w:rsidP="00FD53E1">
                     <w:pPr>
-                        <w:pStyle w:val="Valori-blauw"/>
+                        <w:pStyle w:val="TestCrew-IT-blauw"/>
                     </w:pPr>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="TestCrew-IT-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve"> </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>basic</w:t>
+                        <w:t>basis</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="TestCrew-IT-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve">      </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>advanced</w:t>
+                        <w:t>gevorderd</w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="TestCrew-IT-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve">     </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>experienced</w:t>
+                        <w:t>ervaren</w:t>
                     </w:r>
                     <w:r w:rsidR="00F63003" w:rsidRPr="00360F7D">
                         <w:br w:type="page"/>
@@ -173,7 +173,7 @@
                     </w:pPr>
                     <w:r>
                         <w:lastRenderedPageBreak/>
-                        <w:t>Working experience</w:t>
+                        <w:t>Werkervaring</w:t>
                     </w:r>
                 </w:p>
                 <w:tbl>
@@ -212,7 +212,7 @@
                                     <w:outlineLvl w:val="1"/>
                                 </w:pPr>
                                 <w:r>
-                                    <w:t>Period</w:t>
+                                    <w:t>Periode</w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -227,7 +227,7 @@
                                     <w:outlineLvl w:val="1"/>
                                 </w:pPr>
                                 <w:r>
-                                    <w:t>Role</w:t>
+                                    <w:t>Rol</w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -242,7 +242,7 @@
                                     <w:outlineLvl w:val="1"/>
                                 </w:pPr>
                                 <w:r>
-                                    <w:t>Client</w:t>
+                                    <w:t>Opdrachtgever</w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -264,7 +264,7 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Education</w:t>
+                            <w:t>Opleidingen</w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -303,7 +303,7 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Education</w:t>
+                                        <w:t>Opleiding</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -318,7 +318,7 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Institution</w:t>
+                                        <w:t>Onderwijsinstelling</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -357,7 +357,7 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Training</w:t>
+                            <w:t>Trainingen</w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -411,7 +411,7 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Institution</w:t>
+                                        <w:t>Opleidingsinstituut</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -426,7 +426,7 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Certificate</w:t>
+                                        <w:t>Certificaat</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -450,7 +450,7 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Publications</w:t>
+                            <w:t>Publicaties</w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -491,7 +491,7 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Title</w:t>
+                                        <w:t>Titel</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -521,7 +521,7 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Year</w:t>
+                                        <w:t>Jaar</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -536,7 +536,7 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Description</w:t>
+                                        <w:t>Omschrijving</w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -551,7 +551,7 @@
                 INTERESTS
 
                 -->
-                <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:uk_UK"/>
+                <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:nl_NL"/>
                 <xsl:if test="$interests">
                     <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -560,7 +560,7 @@
                             <w:spacing w:after="60"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Interests</w:t>
+                            <w:t>Interesses</w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$interests" mode="markdown"/>
@@ -578,7 +578,7 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>References</w:t>
+                            <w:t>Referenties</w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -625,7 +625,7 @@
                     </w:pPr>
                     <w:r w:rsidRPr="008C7521">
                         <w:lastRenderedPageBreak/>
-                        <w:t>Working experience</w:t>
+                        <w:t>Werkervaring</w:t>
                     </w:r>
                 </w:p>
                 <w:tbl>
@@ -635,10 +635,10 @@
                         <w:tblBorders>
                             <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
                             <w:left w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-                            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F29100"/>
+                            <w:bottom w:val="single" w:sz="4" w:space="0" w:color="1F3A3D"/>
                             <w:right w:val="none" w:sz="0" w:space="0" w:color="auto"/>
-                            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="F29100"/>
-                            <w:insideV w:val="dashed" w:sz="4" w:space="0" w:color="F29100"/>
+                            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="1F3A3D"/>
+                            <w:insideV w:val="dashed" w:sz="4" w:space="0" w:color="1F3A3D"/>
                         </w:tblBorders>
                         <w:tblLayout w:type="fixed"/>
                         <w:tblCellMar>
@@ -691,7 +691,7 @@
             <xsl:apply-templates select="$skills">
                 <xsl:with-param name="last" select="count($skills)"/>
                 <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
-                <xsl:sort select="cv:description/cv:uk_UK"/>
+                <xsl:sort select="cv:description/cv:nl_NL"/>
             </xsl:apply-templates>
         </xsl:if>
     </xsl:template>
@@ -702,13 +702,13 @@
         <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA"
              w:rsidP="000A5FCA">
             <w:pPr>
-                <w:pStyle w:val="Valori-blauw"/>
+                <w:pStyle w:val="TestCrew-IT-blauw"/>
                 <w:tabs>
                     <w:tab w:val="clear" w:pos="2835"/>
                     <w:tab w:val="right" w:pos="3071"/>
                 </w:tabs>
                 <w:rPr>
-                    <w:rStyle w:val="Valori-niveau"/>
+                    <w:rStyle w:val="TestCrew-IT-niveau"/>
                 </w:rPr>
                 <w:keepLines/>
                 <xsl:if test="position() != $last">
@@ -717,14 +717,11 @@
             </w:pPr>
             <w:r w:rsidRPr="00752D43">
                 <w:rPr>
-                    <w:rStyle w:val="Valori-skillChar"/>
+                    <w:rStyle w:val="TestCrew-IT-skillChar"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:variable name="skillDescription">
-                        <xsl:apply-templates select="cv:description" mode="locale-placeholder"/>
-                    </xsl:variable>
                     <xsl:call-template name="wrap-skill-description">
-                        <xsl:with-param name="text" select="$skillDescription"/>
+                        <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
                         <xsl:with-param name="newline"><w:br/></xsl:with-param>
                     </xsl:call-template>
                 </w:t>
@@ -732,7 +729,7 @@
             </w:r>
             <w:r w:rsidRPr="00C14BDE">
                 <w:rPr>
-                    <w:rStyle w:val="Valori-niveau"/>
+                    <w:rStyle w:val="TestCrew-IT-niveau"/>
                 </w:rPr>
                 <w:t>
                     <xsl:apply-templates select="cv:skillLevel" mode="skill-level"/>
@@ -768,7 +765,7 @@
                      w:rsidP="001860B4">
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:role" mode="locale-placeholder"/>
+                            <xsl:value-of select="cv:role/cv:nl_NL"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -800,7 +797,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:name" mode="locale-placeholder"/>
+                            <xsl:value-of select="cv:name/cv:nl_NL"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -836,13 +833,13 @@
                                 <xsl:when test="$yearTo">
                                     <xsl:value-of select="$yearTo"/>
                                 </xsl:when>
-                                <xsl:otherwise>today</xsl:otherwise>
+                                <xsl:otherwise>heden</xsl:otherwise>
                             </xsl:choose>
                         </w:t>
                     </w:r>
                     <w:r w:rsidRPr="001860B4">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
@@ -867,7 +864,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:name" mode="locale-placeholder"/>
+                            <xsl:value-of select="cv:name/cv:nl_NL"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -897,13 +894,13 @@
                                 <xsl:when test="cv:year">
                                     <xsl:value-of select="cv:year"/>
                                 </xsl:when>
-                                <xsl:otherwise>today</xsl:otherwise>
+                                <xsl:otherwise>heden</xsl:otherwise>
                             </xsl:choose>
                         </w:t>
                     </w:r>
                     <w:r w:rsidRPr="001860B4">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
@@ -928,7 +925,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:title" mode="locale-placeholder"/>
+                            <xsl:value-of select="cv:title/cv:nl_NL"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -967,7 +964,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:value-of select="cv:description/cv:uk_UK"/>
+                            <xsl:value-of select="cv:description/cv:nl_NL"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -1022,7 +1019,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:description/cv:uk_UK" mode="markdown"/>
+                            <xsl:apply-templates select="cv:description/cv:nl_NL" mode="markdown"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -1040,7 +1037,7 @@
                 <w:p w14:paraId="1F9BB23A" w14:textId="5CBB339A" w:rsidR="00A52C14" w:rsidRDefault="00A52C14"
                      w:rsidP="00666ED6">
                     <w:pPr>
-                        <w:pStyle w:val="Valori-blauw"/>
+                        <w:pStyle w:val="TestCrew-IT-blauw"/>
                     </w:pPr>
                     <w:r>
                         <w:t>
@@ -1055,15 +1052,15 @@
                      w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
                     <w:pPr>
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                     </w:pPr>
                     <w:r w:rsidRPr="00A52C14">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t>
-                            <xsl:apply-templates select="cv:role" mode="locale-placeholder"/>
+                            <xsl:value-of select="cv:role/cv:nl_NL"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -1071,7 +1068,7 @@
                      w:rsidP="00666ED6">
                     <w:r w:rsidRPr="00A52C14">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t>
                             <xsl:apply-templates select="." mode="client"/>
@@ -1086,9 +1083,9 @@
                         <w:left w:w="113" w:type="dxa"/>
                     </w:tcMar>
                 </w:tcPr>
-                <xsl:variable name="assignment" select="cv:assignment/cv:uk_UK"/>
+                <xsl:variable name="assignment" select="cv:assignment/cv:nl_NL"/>
                 <xsl:apply-templates select="$assignment" mode="markdown"/>
-                <xsl:variable name="activities" select="cv:activities/cv:uk_UK"/>
+                <xsl:variable name="activities" select="cv:activities/cv:nl_NL"/>
                 <xsl:if test="$activities">
                     <w:p w14:paraId="4C066476" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14"
                          w:rsidP="00A52C14">
@@ -1097,14 +1094,14 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="TestCrew-IT-geel"/>
                             </w:rPr>
-                            <w:t>Tasks/activities:</w:t>
+                            <w:t>Taken/werkzaamheden:</w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$activities" mode="markdown"/>
                 </xsl:if>
-                <xsl:variable name="results" select="cv:results/cv:uk_UK"/>
+                <xsl:variable name="results" select="cv:results/cv:nl_NL"/>
                 <xsl:if test="$results">
                     <w:p w14:paraId="05A636A2" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881"
                          w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
@@ -1113,14 +1110,14 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="TestCrew-IT-geel"/>
                             </w:rPr>
-                            <w:t>Results:</w:t>
+                            <w:t>Resultaat:</w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$results" mode="markdown"/>
                 </xsl:if>
-                <xsl:variable name="keywords" select="cv:keywords/cv:uk_UK"/>
+                <xsl:variable name="keywords" select="cv:keywords/cv:nl_NL"/>
                 <xsl:if test="$keywords">
                     <w:p w14:paraId="62A3EFF7" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881"
                          w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
@@ -1129,9 +1126,9 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="TestCrew-IT-geel"/>
                             </w:rPr>
-                            <w:t>Working environment:</w:t>
+                            <w:t>Werkomgeving:</w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$keywords" mode="markdown"/>

@@ -9,7 +9,8 @@
         exclude-result-prefixes="cv"
         version="1.0">
 
-    <xsl:import href="../../common.xsl"/>
+    <xsl:import href="../../../common.xsl"/>
+    <xsl:import href="../../common-brand.xsl"/>
     <xsl:import href="../common-uk_UK.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
@@ -995,6 +996,12 @@
                         <w:t>
                             <xsl:apply-templates select="cv:referentFunction" mode="locale-placeholder"/>
                         </w:t>
+                        <xsl:if test="cv:client">
+                            <w:t xml:space="preserve"> </w:t>
+                            <w:t>
+                                <xsl:value-of select="cv:client"/>
+                            </w:t>
+                        </xsl:if>
                     </w:r>
                 </w:p>
             </w:tc>

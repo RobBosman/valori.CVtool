@@ -1096,9 +1096,10 @@
                     <w:lang w:val="en-GB"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:value-of select="cv:referentFunction/cv:nl_NL"/>
+                    <xsl:apply-templates select="cv:referentFunction" mode="locale-placeholder"/>
                 </w:t>
                 <xsl:if test="cv:client">
+                    <w:t xml:space="preserve"> </w:t>
                     <w:t>
                         <xsl:value-of select="cv:client"/>
                     </w:t>

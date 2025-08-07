@@ -986,13 +986,25 @@
                         <w:outlineLvl w:val="1"/>
                     </w:pPr>
                     <w:r w:rsidRPr="00666ED6">
+                        <xsl:if test="cv:year">
+                            <w:t>
+                                <xsl:value-of select="cv:year"/>
+                            </w:t>
+                            <w:t xml:space="preserve"> &#x2500; </w:t>
+                        </xsl:if>
                         <w:t>
                             <xsl:value-of select="cv:referentName"/>
                         </w:t>
                         <w:t xml:space="preserve"> &#x2500; </w:t>
                         <w:t>
-                            <xsl:value-of select="cv:referentFunction/cv:nl_NL"/>
+                            <xsl:apply-templates select="cv:referentFunction" mode="locale-placeholder"/>
                         </w:t>
+                        <xsl:if test="cv:client">
+                            <w:t xml:space="preserve"> </w:t>
+                            <w:t>
+                                <xsl:value-of select="cv:client"/>
+                            </w:t>
+                        </xsl:if>
                     </w:r>
                 </w:p>
             </w:tc>
