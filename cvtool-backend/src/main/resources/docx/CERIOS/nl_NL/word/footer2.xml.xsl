@@ -41,7 +41,8 @@
                xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
                xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
                mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wne wp14">
-            <w:p w14:paraId="6755C19D" w14:textId="7B7732C9" w:rsidR="00307129" w:rsidRPr="002251BB" w:rsidRDefault="00307129" w:rsidP="002251BB">
+            <w:p w14:paraId="6755C19D" w14:textId="7B7732C9" w:rsidR="00307129" w:rsidRPr="002251BB"
+                 w:rsidRDefault="00307129" w:rsidP="002251BB">
                 <w:pPr>
                     <w:pStyle w:val="Voettekst"/>
                     <w:tabs>
@@ -57,45 +58,21 @@
                     <w:rPr>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
                     </w:rPr>
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
-                    <w:t>CONTACTPERSOON</w:t>
-                </w:r>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
                         <w:noProof/>
                     </w:rPr>
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
+                    <w:t>CONTACTPERSOON</w:t>
                     <w:tab/>
                     <w:t xml:space="preserve"><xsl:value-of select="cv:businessUnit/cv:contactName"/></w:t>
-                </w:r>
-                <w:proofErr w:type="spellEnd"/>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
                     <w:tab/>
-                    <w:t><xsl:value-of select="cv:businessUnit/cv:contactPhone"/></w:t>
-                </w:r>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
+                    <w:t>
+                        <xsl:value-of select="cv:businessUnit/cv:contactPhone"/>
+                    </w:t>
                     <w:tab/>
                 </w:r>
                 <w:hyperlink r:id="rId1" w:history="1">
@@ -104,9 +81,11 @@
                             <w:rStyle w:val="Hyperlink"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
-                            <w:lang w:val="nl-NL"/>
+                            <w:noProof/>
                         </w:rPr>
-                        <w:t><xsl:value-of select="cv:businessUnit/cv:contactEmail"/></w:t>
+                        <w:t>
+                            <xsl:value-of select="cv:businessUnit/cv:contactEmail"/>
+                        </w:t>
                     </w:r>
                 </w:hyperlink>
             </w:p>

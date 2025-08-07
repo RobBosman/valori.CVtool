@@ -8,8 +8,8 @@
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
-        <xsl:apply-templates select="cv:root/cv:account"/>
+    <xsl:template match="/cv:root">
+        <xsl:apply-templates select="cv:account"/>
     </xsl:template>
 
     <xsl:template match="cv:account">
@@ -17,13 +17,13 @@
                            xmlns:dc="http://purl.org/dc/elements/1.1/"
                            xmlns:dcterms="http://purl.org/dc/terms/"
                            xmlns:dcmitype="http://purl.org/dc/dcmitype/">
-            <dc:title></dc:title>
-            <dc:subject></dc:subject>
+            <dc:title/>
+            <dc:subject/>
             <dc:creator>
                 <xsl:value-of select="cv:name"/>
             </dc:creator>
-            <cp:keywords></cp:keywords>
-            <dc:description></dc:description>
+            <cp:keywords/>
+            <dc:description/>
             <cp:revision>1</cp:revision>
             <dcterms:created xsi:type="dcterms:W3CDTF">2025-04-01T11:11:00Z</dcterms:created>
         </cp:coreProperties>

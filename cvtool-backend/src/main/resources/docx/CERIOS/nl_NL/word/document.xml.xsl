@@ -106,7 +106,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
@@ -116,7 +115,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>GEBOORTEDATUM</w:t>
                                                         </w:r>
@@ -132,7 +130,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
@@ -142,7 +139,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>
                                                                 <xsl:apply-templates select="cv:account/cv:dateOfBirth"
@@ -182,8 +178,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251664384" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="1541F9EA" wp14:editId="27C48E51">
+                                       allowOverlap="1" wp14:anchorId="1541F9EA" wp14:editId="27C48E51">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>3284193</wp:posOffset>
@@ -227,7 +222,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="58"/>
                                                                 <w:szCs w:val="58"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
@@ -237,7 +231,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="58"/>
                                                                 <w:szCs w:val="58"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>
                                                                 <xsl:value-of select="cv:account/cv:name"/>
@@ -259,8 +252,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -286,8 +278,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251666432" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="114F53A9" wp14:editId="7DE7FBAF">
+                                       allowOverlap="1" wp14:anchorId="114F53A9" wp14:editId="7DE7FBAF">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>3279775</wp:posOffset>
@@ -359,7 +350,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
@@ -369,7 +359,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>
                                                                 <xsl:value-of select="$characteristics/cv:role"/>
@@ -388,7 +377,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                         </w:pPr>
                                                     </w:p>
@@ -404,7 +392,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
@@ -414,7 +401,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>WOONPLAATS</w:t>
                                                         </w:r>
@@ -1522,10 +1508,6 @@
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">EXPERTISE</xsl:with-param>
                                                     </xsl:call-template>
-                                                    <!-- DATABASES -->
-                                                    <xsl:call-template name="skill-section">
-                                                        <xsl:with-param name="category">DATABASES</xsl:with-param>
-                                                    </xsl:call-template>
 
                                                 </wne:txbxContent>
                                             </wp:txbx>
@@ -1715,7 +1697,6 @@
                         </w:drawing>
                     </w:r>
 
-
                     <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
                         <w:rPr>
                             <w:noProof/>
@@ -1841,6 +1822,10 @@
                                                     <!-- APPLICATIONS -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">APPLICATIONS</xsl:with-param>
+                                                    </xsl:call-template>
+                                                    <!-- DATABASES -->
+                                                    <xsl:call-template name="skill-section">
+                                                        <xsl:with-param name="category">DATABASES</xsl:with-param>
                                                     </xsl:call-template>
                                                     <!-- TOOLS -->
                                                     <xsl:call-template name="skill-section">

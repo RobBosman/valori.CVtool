@@ -59,16 +59,9 @@
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
                     </w:rPr>
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:noProof/>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                    relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
@@ -138,52 +131,18 @@
                 </w:r>
                 <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
                     <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve"> </w:t>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
-                    <w:t>CONTACTPERSOON</w:t>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
                         <w:noProof/>
                     </w:rPr>
-                    <w:rPr>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
+                    <w:t>CONTACTPERSOON</w:t>
                     <w:tab/>
                     <w:t xml:space="preserve"><xsl:value-of select="cv:businessUnit/cv:contactName"/></w:t>
-                </w:r>
-                <w:proofErr w:type="spellEnd"/>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
                     <w:tab/>
-                    <w:t><xsl:value-of select="cv:businessUnit/cv:contactPhone"/></w:t>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
+                    <w:t>
+                        <xsl:value-of select="cv:businessUnit/cv:contactPhone"/>
+                    </w:t>
                     <w:tab/>
                 </w:r>
                 <w:hyperlink r:id="rId2" w:history="1">
@@ -193,9 +152,11 @@
                             <w:color w:val="FFFFFF" w:themeColor="background1"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
-                            <w:lang w:val="nl-NL"/>
+                            <w:noProof/>
                         </w:rPr>
-                        <w:t><xsl:value-of select="cv:businessUnit/cv:contactEmail"/></w:t>
+                        <w:t>
+                            <xsl:value-of select="cv:businessUnit/cv:contactEmail"/>
+                        </w:t>
                     </w:r>
                 </w:hyperlink>
             </w:p>
@@ -207,9 +168,6 @@
                     <w:tabs>
                         <w:tab w:val="start" w:pos="0pt"/>
                     </w:tabs>
-                    <w:rPr>
-                        <w:lang w:val="nl-NL"/>
-                    </w:rPr>
                 </w:pPr>
             </w:p>
         </w:ftr>
