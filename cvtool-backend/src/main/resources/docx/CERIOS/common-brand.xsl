@@ -120,6 +120,13 @@
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
+                        <w:rPr>
+                            <w:rFonts w:ascii="PlusJakartaSans-Regular"
+                                      w:hAnsi="PlusJakartaSans-Regular"
+                                      w:cs="PlusJakartaSans-Regular"/>
+                            <w:sz w:val="18"/>
+                            <w:szCs w:val="18"/>
+                        </w:rPr>
                     </w:pPr>
                     <w:r>
                         <w:rPr>
