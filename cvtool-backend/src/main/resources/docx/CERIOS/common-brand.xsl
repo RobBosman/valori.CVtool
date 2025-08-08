@@ -78,6 +78,7 @@
                             <w:szCs w:val="18"/>
                         </w:rPr>
                     </w:pPr>
+                    <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00DE51B1">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans"
@@ -90,6 +91,7 @@
                             <xsl:value-of select="substring($text, 3)"/>
                         </w:t>
                     </w:r>
+                    <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </xsl:when>
             <!-- numbered list item -->
@@ -101,6 +103,7 @@
                         <w:suppressAutoHyphens/>
                         <w:ind w:left="534" w:hanging="364"/>
                     </w:pPr>
+                    <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="PlusJakartaSans-Regular"
@@ -118,6 +121,7 @@
                             <xsl:value-of select="substring($text, 3)"/>
                         </w:t>
                     </w:r>
+                    <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </xsl:when>
             <xsl:otherwise>
@@ -135,6 +139,7 @@
                             <w:szCs w:val="18"/>
                         </w:rPr>
                     </w:pPr>
+                    <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="PlusJakartaSans-Regular"
@@ -148,6 +153,7 @@
                             <xsl:value-of select="$text"/>
                         </w:t>
                     </w:r>
+                    <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </xsl:otherwise>
         </xsl:choose>
@@ -877,39 +883,50 @@
              w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
             <w:pPr>
                 <w:spacing w:before="12pt"/>
-                <w:rPr>
-                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                    <w:b/>
-                    <w:bCs/>
-                    <w:color w:val="212B46"/>
-                </w:rPr>
             </w:pPr>
             <xsl:if test="cv:year">
                 <w:r w:rsidRPr="00CC7FCE">
+                    <w:rPr>
+                        <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                        <w:b/>
+                        <w:bCs/>
+                        <w:color w:val="212B46"/>
+                    </w:rPr>
                     <w:t>
                         <xsl:value-of select="cv:year"/>
                     </w:t>
                 </w:r>
                 <w:r w:rsidRPr="00CC7FCE">
                     <w:rPr>
+                        <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                         <w:color w:val="55DD94"/>
                     </w:rPr>
                     <w:t xml:space="preserve"> | </w:t>
                 </w:r>
             </xsl:if>
             <w:r w:rsidRPr="00CC7FCE">
+                <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
+                    <w:color w:val="212B46"/>
+                </w:rPr>
                 <w:t>
                     <xsl:value-of select="cv:referentName"/>
                 </w:t>
             </w:r>
             <w:r w:rsidRPr="00CC7FCE">
                 <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                     <w:color w:val="55DD94"/>
                 </w:rPr>
                 <w:t xml:space="preserve"> | </w:t>
             </w:r>
             <w:r w:rsidRPr="00CC7FCE">
                 <w:rPr>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                    <w:b/>
+                    <w:bCs/>
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>

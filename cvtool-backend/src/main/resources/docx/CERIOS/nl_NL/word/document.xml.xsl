@@ -2559,8 +2559,8 @@
                             <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
                                 <w:type w:val="continuous"/>
                                 <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt" w:header="35.45pt"
-                                         w:footer="2.85pt" w:gutter="0pt"/>
+                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
+                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
                                 <w:cols w:space="17.45pt"/>
                                 <w:docGrid w:linePitch="360"/>
                             </w:sectPr>
@@ -2574,8 +2574,7 @@
                                 <w:type w:val="continuous"/>
                                 <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
                                 <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                         w:header="35.45pt"
-                                         w:footer="2.85pt" w:gutter="0pt"/>
+                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
                                 <w:cols w:space="17.45pt"/>
                                 <w:docGrid w:linePitch="360"/>
                             </w:sectPr>
