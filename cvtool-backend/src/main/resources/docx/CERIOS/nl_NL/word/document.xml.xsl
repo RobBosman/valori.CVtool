@@ -2344,11 +2344,7 @@
                 <xsl:variable name="experienceOverviewItems" select="cv:experience[cv:includeInOverview = 'true']"/>
                 <xsl:if test="$experienceOverviewItems">
                     <w:p w14:paraId="24FEE188" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00B2333C">
-                        <w:pPr>
-                            <w:pStyle w:val="Titel1"/>
-                        </w:pPr>
-                    </w:p>
+                         w:rsidP="00B2333C"/>
                     <w:p w14:paraId="76CE181D" w14:textId="5E6D225C" w:rsidR="00CC7FCE" w:rsidRPr="00926161"
                          w:rsidRDefault="00065B83" w:rsidP="00926161">
                         <w:pPr>
@@ -2462,6 +2458,7 @@
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
+                                        <w:keepNext/>
                                     </w:pPr>
                                     <w:r>
                                         <w:rPr>
@@ -2498,6 +2495,7 @@
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
+                                        <w:keepNext/>
                                     </w:pPr>
                                     <w:r>
                                         <w:rPr>
@@ -2519,6 +2517,7 @@
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
+                                        <w:keepNext/>
                                     </w:pPr>
                                     <w:r>
                                         <w:rPr>

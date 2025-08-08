@@ -70,6 +70,13 @@
                             <w:numId w:val="7"/>
                         </w:numPr>
                         <w:spacing w:line="12pt" w:lineRule="auto"/>
+                        <w:rPr>
+                            <w:rFonts w:ascii="Plus Jakarta Sans"
+                                      w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
+                            <w:sz w:val="18"/>
+                            <w:szCs w:val="18"/>
+                        </w:rPr>
                     </w:pPr>
                     <w:r w:rsidRPr="00DE51B1">
                         <w:rPr>
@@ -456,18 +463,10 @@
         </w:tr>
     </xsl:template>
 
-    <!-- PUBLICATION -->
-    <xsl:template match="cv:publication">
-        <!-- TODO: PUBLICATION -->
-    </xsl:template>
-
     <!-- EXPERIENCE -->
     <xsl:template match="cv:experience">
         <w:p w14:paraId="6B031F37" w14:textId="07FFD1E2" w:rsidR="00B2333C" w:rsidRDefault="00CC7FCE"
              w:rsidP="00B2333C">
-            <w:pPr>
-                <w:pStyle w:val="Titel1"/>
-            </w:pPr>
             <w:r>
                 <w:rPr>
                     <w:noProof/>
@@ -513,9 +512,15 @@
                                                     </w:rPr>
                                                 </w:pPr>
                                                 <w:r w:rsidRPr="00DE51B1">
+                                                    <w:rPr>
+                                                        <w:rFonts w:ascii="Plus Jakarta Sans"
+                                                                  w:hAnsi="Plus Jakarta Sans"/>
+                                                        <w:b/>
+                                                        <w:bCs/>
+                                                        <w:color w:val="212B46"/>
+                                                    </w:rPr>
                                                     <w:t>
-                                                        <xsl:apply-templates select="cv:periodBegin"
-                                                                             mode="date-period"/>
+                                                        <xsl:apply-templates select="cv:periodBegin" mode="date-year"/>
                                                     </w:t>
                                                 </w:r>
                                                 <w:r w:rsidRPr="00DE51B1">
@@ -526,12 +531,21 @@
                                                 </w:r>
                                                 <w:r w:rsidRPr="00DE51B1">
                                                     <w:rPr>
+                                                        <w:rFonts w:ascii="Plus Jakarta Sans"
+                                                                  w:hAnsi="Plus Jakarta Sans"/>
                                                         <w:b/>
                                                         <w:bCs/>
                                                         <w:color w:val="212B46"/>
                                                     </w:rPr>
                                                     <w:t>
-                                                        <xsl:apply-templates select="cv:periodEnd" mode="date-period"/>
+                                                        <xsl:choose>
+                                                            <xsl:when test="cv:periodEnd">
+                                                                <xsl:apply-templates select="cv:periodEnd" mode="date-year"/>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <xsl:apply-templates select="." mode="date-today"/>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
                                                     </w:t>
                                                 </w:r>
                                                 <w:r w:rsidRPr="00DE51B1">
@@ -542,6 +556,8 @@
                                                 </w:r>
                                                 <w:r w:rsidRPr="00DE51B1">
                                                     <w:rPr>
+                                                        <w:rFonts w:ascii="Plus Jakarta Sans"
+                                                                  w:hAnsi="Plus Jakarta Sans"/>
                                                         <w:b/>
                                                         <w:bCs/>
                                                         <w:color w:val="212B46"/>
@@ -553,18 +569,13 @@
                                             </w:p>
                                             <w:p w14:paraId="1C2DEC96" w14:textId="21912888" w:rsidR="00B2333C"
                                                  w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
-                                                <w:pPr>
+                                                <w:r w:rsidRPr="00DE51B1">
                                                     <w:rPr>
                                                         <w:rFonts w:ascii="Plus Jakarta Sans"
                                                                   w:hAnsi="Plus Jakarta Sans"/>
                                                         <w:color w:val="212B46"/>
                                                         <w:sz w:val="18"/>
                                                         <w:szCs w:val="18"/>
-                                                    </w:rPr>
-                                                </w:pPr>
-                                                <w:r w:rsidRPr="00DE51B1">
-                                                    <w:rPr>
-                                                        <w:color w:val="212B46"/>
                                                     </w:rPr>
                                                     <w:t>
                                                         <xsl:value-of select="cv:role/cv:nl_NL"/>
@@ -574,7 +585,7 @@
                                             <xsl:variable name="assignment" select="cv:assignment/cv:nl_NL"/>
                                             <w:p w14:paraId="4F4CEE96" w14:textId="4FCDD30D" w:rsidR="00B2333C"
                                                  w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
-                                                <w:pPr>
+                                                <w:r w:rsidRPr="00DE51B1">
                                                     <w:rPr>
                                                         <w:rFonts w:ascii="Plus Jakarta Sans"
                                                                   w:hAnsi="Plus Jakarta Sans"/>
@@ -584,8 +595,6 @@
                                                         <w:sz w:val="22"/>
                                                         <w:szCs w:val="22"/>
                                                     </w:rPr>
-                                                </w:pPr>
-                                                <w:r w:rsidRPr="00DE51B1">
                                                     <w:t>Situatie</w:t>
                                                 </w:r>
                                             </w:p>
@@ -596,6 +605,8 @@
                                                      w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                                                     <w:pPr>
                                                         <w:spacing w:before="8pt"/>
+                                                    </w:pPr>
+                                                    <w:r w:rsidRPr="00DE51B1">
                                                         <w:rPr>
                                                             <w:rFonts w:ascii="Plus Jakarta Sans"
                                                                       w:hAnsi="Plus Jakarta Sans"/>
@@ -605,8 +616,6 @@
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
                                                         </w:rPr>
-                                                    </w:pPr>
-                                                    <w:r w:rsidRPr="00DE51B1">
                                                         <w:t>Taken</w:t>
                                                     </w:r>
                                                 </w:p>
@@ -619,6 +628,8 @@
                                                      w:rsidP="00B2333C">
                                                     <w:pPr>
                                                         <w:spacing w:before="8pt"/>
+                                                    </w:pPr>
+                                                    <w:r w:rsidRPr="00DE51B1">
                                                         <w:rPr>
                                                             <w:rFonts w:ascii="Plus Jakarta Sans"
                                                                       w:hAnsi="Plus Jakarta Sans"/>
@@ -628,8 +639,6 @@
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
                                                         </w:rPr>
-                                                    </w:pPr>
-                                                    <w:r w:rsidRPr="00DE51B1">
                                                         <w:t>Resultaten</w:t>
                                                     </w:r>
                                                 </w:p>
@@ -641,6 +650,8 @@
                                                      w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                                                     <w:pPr>
                                                         <w:spacing w:before="8pt"/>
+                                                    </w:pPr>
+                                                    <w:r w:rsidRPr="00DE51B1">
                                                         <w:rPr>
                                                             <w:rFonts w:ascii="Plus Jakarta Sans"
                                                                       w:hAnsi="Plus Jakarta Sans"/>
@@ -650,8 +661,6 @@
                                                             <w:sz w:val="21"/>
                                                             <w:szCs w:val="21"/>
                                                         </w:rPr>
-                                                    </w:pPr>
-                                                    <w:r w:rsidRPr="00DE51B1">
                                                         <w:t>Technologie &amp; tools</w:t>
                                                     </w:r>
                                                 </w:p>

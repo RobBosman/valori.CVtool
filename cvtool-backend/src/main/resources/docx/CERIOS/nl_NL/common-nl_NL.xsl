@@ -12,27 +12,14 @@
         <xsl:value-of select="substring(., 1, 4)"/>
     </xsl:template>
 
-    <!-- DATE - PERIOD -->
-    <xsl:template match="* | @* | text()" mode="date-period">
-        <xsl:value-of select="substring(., 6, 2)"/>
-        <xsl:text>-</xsl:text>
+    <!-- DATE - YEAR -->
+    <xsl:template match="* | @* | text()" mode="date-year">
         <xsl:value-of select="substring(., 1, 4)"/>
     </xsl:template>
 
-    <!-- PERIOD - BEGIN / END -->
-    <xsl:template name="period">
-        <xsl:param name="periodBegin"/>
-        <xsl:param name="periodEnd"/>
-        <xsl:if test="$periodBegin">
-            <xsl:apply-templates select="$periodBegin" mode="date-period"/>
-            <xsl:text> – </xsl:text>
-        </xsl:if>
-        <xsl:choose>
-            <xsl:when test="$periodEnd">
-                <xsl:apply-templates select="$periodEnd" mode="date-period"/>
-            </xsl:when>
-            <xsl:otherwise>heden</xsl:otherwise>
-        </xsl:choose>
+    <!-- DATE - TODAY -->
+    <xsl:template match="* | @* | text()" mode="date-today">
+        <xsl:text>heden</xsl:text>
     </xsl:template>
 
     <!-- SKILL CATEGORY -->
