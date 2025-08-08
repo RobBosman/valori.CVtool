@@ -247,13 +247,13 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
                         <w:t>
                             <xsl:value-of select="cv:name/cv:nl_NL"/>
                         </w:t>
@@ -272,13 +272,13 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
                         <w:t>
                             <xsl:value-of select="cv:institution"/>
                         </w:t>
@@ -297,15 +297,15 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
+                        <xsl:variable name="yearFrom" select="cv:yearFrom"/>
+                        <xsl:variable name="yearTo" select="cv:yearTo"/>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
-                        <xsl:variable name="yearFrom" select="cv:yearFrom"/>
-                        <xsl:variable name="yearTo" select="cv:yearTo"/>
                         <w:t>
                             <xsl:if test="$yearFrom">
                                 <xsl:value-of select="$yearFrom"/>
@@ -333,13 +333,13 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
                         <w:t>
                             <xsl:apply-templates select="cv:result" mode="education-result"/>
                         </w:t>
@@ -367,12 +367,12 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="Pa0"/>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
                         <w:t>
                             <xsl:value-of select="cv:name/cv:nl_NL"/>
                         </w:t>
@@ -391,12 +391,12 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="Pa0"/>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
                         <w:t>
                             <xsl:value-of select="cv:institution"/>
                         </w:t>
@@ -414,13 +414,13 @@
                 <w:p w14:paraId="16358336" w14:textId="77777777" w:rsidR="001405E4" w:rsidRPr="00CA43CD"
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
                         <w:t>
                             <xsl:choose>
                                 <xsl:when test="cv:year">
@@ -441,14 +441,12 @@
                 </w:tcPr>
                 <w:p w14:paraId="3E9EB30C" w14:textId="37F00EB5" w:rsidR="001405E4" w:rsidRPr="00CA43CD"
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                    <w:pPr>
+                    <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00CA43CD">
                         <w:t>
                             <xsl:apply-templates select="cv:result" mode="education-result"/>
                         </w:t>
@@ -460,6 +458,7 @@
 
     <!-- PUBLICATION -->
     <xsl:template match="cv:publication">
+        <!-- TODO: PUBLICATION -->
     </xsl:template>
 
     <!-- EXPERIENCE -->

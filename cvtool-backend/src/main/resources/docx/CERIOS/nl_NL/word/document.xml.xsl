@@ -1858,7 +1858,7 @@
                             <w:rPr>
                                 <w:noProof/>
                             </w:rPr>
-                            <w:t>Opleiding &amp; training</w:t>
+                            <w:t>Opleiding &amp; trainingen</w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
