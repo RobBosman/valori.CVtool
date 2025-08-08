@@ -2,7 +2,7 @@
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
+        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
         exclude-result-prefixes="cv"
         version="1.0">
 

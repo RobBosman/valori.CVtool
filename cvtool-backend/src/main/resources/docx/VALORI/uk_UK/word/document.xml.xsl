@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
+        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
         xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"

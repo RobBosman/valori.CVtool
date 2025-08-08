@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20201130.xsd"
+        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
         exclude-result-prefixes="cv"
         xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
         xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
@@ -2566,20 +2566,6 @@
                             </w:sectPr>
                         </w:pPr>
                     </w:p>
-                    <w:p w14:paraId="0446C0FE" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00B2333C">
-                        <w:pPr>
-                            <w:pStyle w:val="Titel1"/>
-                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
-                                <w:type w:val="continuous"/>
-                                <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
-                                <w:cols w:space="17.45pt"/>
-                                <w:docGrid w:linePitch="360"/>
-                            </w:sectPr>
-                        </w:pPr>
-                    </w:p>
                     <!--
 
                     PUBLICATIONS
@@ -2662,43 +2648,16 @@
                                 <w:t>Publicaties</w:t>
                             </w:r>
                         </w:p>
+
+                        <xsl:apply-templates select="$publications"/>
+                    </xsl:if>
+                    <xsl:if test="$publications and $references">
                         <w:p w14:paraId="3D45720F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                              w:rsidP="00CC7FCE">
                             <w:pPr>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:color w:val="212B46"/>
-                                    <w:sz w:val="28"/>
-                                    <w:szCs w:val="28"/>
-                                </w:rPr>
+                                <w:pStyle w:val="Titel1"/>
                             </w:pPr>
                         </w:p>
-                        <w:p w14:paraId="6DF0B5BD" w14:textId="77777777" w:rsidR="00CA43CD" w:rsidRPr="00D51FD7"
-                             w:rsidRDefault="00CA43CD" w:rsidP="00CC7FCE">
-                            <w:pPr>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:color w:val="212B46"/>
-                                    <w:sz w:val="28"/>
-                                    <w:szCs w:val="28"/>
-                                </w:rPr>
-                                <w:sectPr w:rsidR="00CA43CD" w:rsidRPr="00D51FD7" w:rsidSect="00CA43CD">
-                                    <w:type w:val="continuous"/>
-                                    <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                    <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                             w:header="35.45pt"
-                                             w:footer="2.85pt" w:gutter="0pt"/>
-                                    <w:cols w:space="17.45pt"/>
-                                    <w:docGrid w:linePitch="360"/>
-                                </w:sectPr>
-                            </w:pPr>
-                        </w:p>
-
-                        <xsl:apply-templates select="$publications"/>
                     </xsl:if>
                     <!--
 
@@ -2781,41 +2740,6 @@
                             <w:r w:rsidR="00CC7FCE">
                                 <w:t>Referenties</w:t>
                             </w:r>
-                        </w:p>
-                        <w:p w14:paraId="3D45720F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                             w:rsidP="00CC7FCE">
-                            <w:pPr>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:color w:val="212B46"/>
-                                    <w:sz w:val="28"/>
-                                    <w:szCs w:val="28"/>
-                                </w:rPr>
-                            </w:pPr>
-                        </w:p>
-                        <w:p w14:paraId="6DF0B5BD" w14:textId="77777777" w:rsidR="00CA43CD" w:rsidRPr="00D51FD7"
-                             w:rsidRDefault="00CA43CD" w:rsidP="00CC7FCE">
-                            <w:pPr>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:color w:val="212B46"/>
-                                    <w:sz w:val="28"/>
-                                    <w:szCs w:val="28"/>
-                                </w:rPr>
-                                <w:sectPr w:rsidR="00CA43CD" w:rsidRPr="00D51FD7" w:rsidSect="00CA43CD">
-                                    <w:type w:val="continuous"/>
-                                    <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                    <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                             w:header="35.45pt"
-                                             w:footer="2.85pt" w:gutter="0pt"/>
-                                    <w:cols w:space="17.45pt"/>
-                                    <w:docGrid w:linePitch="360"/>
-                                </w:sectPr>
-                            </w:pPr>
                         </w:p>
 
                         <xsl:apply-templates select="$references"/>

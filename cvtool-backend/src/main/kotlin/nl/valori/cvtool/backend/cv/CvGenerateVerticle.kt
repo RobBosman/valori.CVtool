@@ -27,7 +27,7 @@ const val CV_GENERATE_ADDRESS = "cv.generate"
 internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     companion object {
-        internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20201130.xsd"
+        internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20250808.xsd"
         internal val ALL_LOCALES = setOf("nl_NL", "uk_UK")
         private const val DEFAULT_DOCX_TEMPLATE = "VALORI"
 

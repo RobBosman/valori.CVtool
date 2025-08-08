@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        elementFormDefault="qualified"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+        targetNamespace="https://ns.bransom.nl/valori/cv/v20250808.xsd">
+
+    <xs:element name="root">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="account" type="Account"/>
+                <xs:element name="authorization" type="Authorization"/>
+                <xs:element name="brand" type="Brand" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="businessUnit" type="BusinessUnit" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="characteristics" type="Characteristics" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="education" type="Education" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="training" type="Training" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="skill" type="Skill" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="publication" type="Publication" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="reference" type="Reference" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:element name="experience" type="Experience" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="Account">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="photo" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="dateOfBirth" type="xs:string"/>
+            <xs:element name="residence" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Authorization">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="level">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="ADMIN"/>
+                        <xs:enumeration value="EE_LEAD"/>
+                        <xs:enumeration value="SALES"/>
+                        <xs:enumeration value="CONSULTANT"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Brand">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="docxTemplate" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="BusinessUnit">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="brandId" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="contactName" type="xs:string"/>
+            <xs:element name="contactEmail" type="xs:string"/>
+            <xs:element name="contactPhone" type="xs:string"/>
+            <xs:element name="accountIds" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Characteristics">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="role" type="LocaleString"/>
+            <xs:element name="profile" type="LocaleString"/>
+            <xs:element name="interests" type="LocaleString"/>
+            <xs:element name="workingSince" type="xs:gYear"/>
+            <xs:element name="inItSince" type="xs:gYear"/>
+            <xs:element name="includePhotoInCv" type="xs:boolean"/>
+            <xs:element name="includeInCv" type="xs:boolean"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Education">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="name" type="LocaleString"/>
+            <xs:element name="institution" type="xs:string"/>
+            <xs:element name="yearFrom" type="xs:gYear"/>
+            <xs:element name="yearTo" type="xs:gYear"/>
+            <xs:element name="result">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="DIPLOMA"/>
+                        <xs:enumeration value="CERTIFICATE"/>
+                        <xs:enumeration value="ONGOING"/>
+                        <xs:enumeration value="CANCELED"/>
+                        <xs:enumeration value="NOT_APPLICABLE"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="includeInCv" type="xs:boolean"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Training">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="name" type="LocaleString"/>
+            <xs:element name="institution" type="xs:string"/>
+            <xs:element name="year" type="xs:gYear"/>
+            <xs:element name="result">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="DIPLOMA"/>
+                        <xs:enumeration value="CERTIFICATE"/>
+                        <xs:enumeration value="ONGOING"/>
+                        <xs:enumeration value="CANCELED"/>
+                        <xs:enumeration value="NOT_APPLICABLE"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="includeInCv" type="xs:boolean"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Skill">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="category">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="LANGUAGES"/>
+                        <xs:enumeration value="BRANCHES"/>
+                        <xs:enumeration value="DATABASES"/>
+                        <xs:enumeration value="EXPERTISE"/>
+                        <xs:enumeration value="PROGRAMMING"/>
+                        <xs:enumeration value="TOOLS"/>
+                        <xs:enumeration value="APPLICATIONS"/>
+                        <xs:enumeration value="METHODS"/>
+                        <xs:enumeration value="OS_NETWORKS"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="description" type="LocaleString"/>
+            <xs:element name="skillLevel">
+                <xs:simpleType>
+                    <xs:restriction base="xs:positiveInteger">
+                        <xs:enumeration value="3"/>
+                        <xs:enumeration value="2"/>
+                        <xs:enumeration value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="explanation" type="LocaleString"/>
+            <xs:element name="includeInCv" type="xs:boolean"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Publication">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="title" type="LocaleString"/>
+            <xs:element name="media" type="xs:string"/>
+            <xs:element name="year" type="xs:gYear"/>
+            <xs:element name="description" type="LocaleString"/>
+            <xs:element name="includeInCv" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Reference">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="year" type="xs:gYear"/>
+            <xs:element name="referentName" type="xs:string"/>
+            <xs:element name="referentFunction" type="LocaleString"/>
+            <xs:element name="client" type="xs:string"/>
+            <xs:element name="description" type="LocaleString"/>
+            <xs:element name="includeInCv" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="Experience">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="accountId" type="xs:string"/>
+            <xs:element name="periodBegin" type="xs:string"/>
+            <xs:element name="periodEnd" type="xs:string"/>
+            <xs:element name="client" type="xs:string"/>
+            <xs:element name="employer" type="xs:string"/>
+            <xs:element name="role" type="LocaleString"/>
+            <xs:element name="assignment" type="LocaleString"/>
+            <xs:element name="activities" type="LocaleString"/>
+            <xs:element name="results" type="LocaleString"/>
+            <xs:element name="keywords" type="LocaleString"/>
+            <xs:element name="includeInCv" type="xs:boolean"/>
+            <xs:element name="includeInOverview" type="xs:boolean"/>
+            <xs:element name="sortIndex" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="LocaleString">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="nl_NL" type="xs:string" minOccurs="0"/>
+            <xs:element name="uk_UK" type="xs:string" minOccurs="0"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>
