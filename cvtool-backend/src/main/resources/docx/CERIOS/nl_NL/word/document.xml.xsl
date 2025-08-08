@@ -41,6 +41,9 @@
     <xsl:import href="../../common-brand.xsl"/>
     <xsl:import href="../common-nl_NL.xsl"/>
 
+    <!-- Parameter 'cv_locale' is used to select the correct language version of a text node. -->
+    <xsl:param name="cv_locale" select="'nl_UK'"/>
+
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
     <xsl:template match="/cv:root">

@@ -5,6 +5,25 @@
         xmlns:java="http://xml.apache.org/xalan/java"
         version="1.0">
 
+    <!--
+        Parameter 'cv_locale' is used to select the nl_NL or uk_UK version of a text node.
+        If cv_locale is 'uk_UK' but no uk_UK node is available, then nl_NL is used as a fallback.
+        It is set in the top-level XSL stylesheet and picked-up here.
+    -->
+    <xsl:param name="cv_locale"/>
+
+    <!-- LOCALIZED -->
+    <xsl:template match="node()" mode="localized">
+        <xsl:choose>
+            <xsl:when test="$cv_locale = 'uk_UK' and cv:uk_UK">
+                <xsl:value-of select="cv:uk_UK"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="cv:nl_NL"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <!-- SKILL LEVEL -->
     <xsl:template match="* | @* | text()" mode="skill-level">
         <xsl:choose>

@@ -10,6 +10,13 @@
         xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"
         version="1.0">
 
+    <!--
+        Parameter 'cv_locale' is used to select the nl_NL or uk_UK version of a text node.
+        If cv_locale is 'uk_UK' but no uk_UK node is available, then nl_NL is used as a fallback.
+        It is set in the top-level XSL stylesheet and picked-up here.
+    -->
+    <xsl:param name="cv_locale"/>
+
     <!-- MARKDOWN -->
     <xsl:template match="* | @* | text()" mode="markdown">
         <xsl:call-template name="format-markdown">
@@ -269,7 +276,7 @@
                             <w:szCs w:val="16"/>
                         </w:rPr>
                         <w:t>
-                            <xsl:value-of select="cv:name/cv:nl_NL"/>
+                            <xsl:apply-templates select="cv:name" mode="localized"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -389,7 +396,7 @@
                             <w:szCs w:val="18"/>
                         </w:rPr>
                         <w:t>
-                            <xsl:value-of select="cv:name/cv:nl_NL"/>
+                            <xsl:apply-templates select="cv:name" mode="localized"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -589,7 +596,7 @@
                                                         <w:szCs w:val="18"/>
                                                     </w:rPr>
                                                     <w:t>
-                                                        <xsl:value-of select="cv:role/cv:nl_NL"/>
+                                                        <xsl:apply-templates select="cv:role" mode="localized"/>
                                                     </w:t>
                                                 </w:r>
                                             </w:p>
@@ -805,7 +812,7 @@
                     </w:pPr>
                     <w:r>
                         <w:t>
-                            <xsl:value-of select="cv:role/cv:nl_NL"/>
+                            <xsl:apply-templates select="cv:role" mode="localized"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -864,7 +871,7 @@
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:apply-templates select="cv:title/cv:nl_NL"/>
+                    <xsl:apply-templates select="cv:title" mode="localized"/>
                 </w:t>
             </w:r>
         </w:p>
@@ -894,7 +901,7 @@
                     <w:szCs w:val="18"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:value-of select="cv:description/cv:nl_NL"/>
+                    <xsl:apply-templates select="cv:description" mode="localized"/>
                 </w:t>
             </w:r>
             <w:proofErr w:type="spellEnd"/>
@@ -954,7 +961,7 @@
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:apply-templates select="cv:referentFunction/cv:nl_NL"/>
+                    <xsl:apply-templates select="cv:referentFunction" mode="localized"/>
                 </w:t>
                 <xsl:if test="cv:client">
                     <w:t xml:space="preserve"> </w:t>
@@ -990,7 +997,7 @@
                     <w:szCs w:val="18"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:value-of select="cv:description/cv:nl_NL"/>
+                    <xsl:apply-templates select="cv:description" mode="localized"/>
                 </w:t>
             </w:r>
             <w:proofErr w:type="spellEnd"/>
