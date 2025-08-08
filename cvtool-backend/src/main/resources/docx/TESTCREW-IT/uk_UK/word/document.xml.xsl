@@ -551,7 +551,8 @@
                 INTERESTS
 
                 -->
-                <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:uk_UK"/>
+                <xsl:variable name="interests"
+                              select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:uk_UK"/>
                 <xsl:if test="$interests">
                     <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -723,8 +724,12 @@
                     <xsl:variable name="skillDescription">
                         <xsl:apply-templates select="cv:description" mode="locale-placeholder"/>
                     </xsl:variable>
-                    <xsl:call-template name="wrap-skill-description">
+                    <xsl:call-template name="wrap-description">
                         <xsl:with-param name="text" select="$skillDescription"/>
+                        <xsl:with-param name="maxWidthMillis" select="number(42.0)"/>
+                        <xsl:with-param name="newLine">
+                            <w:br/>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </w:t>
                 <w:tab/>

@@ -14,12 +14,14 @@
         </xsl:choose>
     </xsl:template>
 
-    <!-- WRAP SKILL DESCRIPTION -->
-    <xsl:template name="wrap-skill-description">
+    <!-- WRAP LONG DESCRIPTION -->
+    <xsl:template name="wrap-description">
         <xsl:param name="text"/>
+        <xsl:param name="maxWidthMillis"/>
         <xsl:param name="newline"/>
         <xsl:call-template name="convert-newlines">
-            <xsl:with-param name="text" select="java:nl.valori.cvtool.backend.cv.XslUtils.wrapText($text, 42.0)"/>
+            <xsl:with-param name="text"
+                            select="java:nl.valori.cvtool.backend.cv.XslUtils.wrapText($text, $maxWidthMillis)"/>
             <xsl:with-param name="newline" select="$newline"/>
         </xsl:call-template>
     </xsl:template>

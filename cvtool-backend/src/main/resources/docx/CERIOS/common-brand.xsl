@@ -70,6 +70,8 @@
                             <w:numId w:val="7"/>
                         </w:numPr>
                         <w:spacing w:line="12pt" w:lineRule="auto"/>
+                    </w:pPr>
+                    <w:r w:rsidRPr="00DE51B1">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans"
                                       w:hAnsi="Plus Jakarta Sans"/>
@@ -77,8 +79,6 @@
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r w:rsidRPr="00DE51B1">
                         <w:t>
                             <xsl:value-of select="substring($text, 3)"/>
                         </w:t>
@@ -92,6 +92,9 @@
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
+                        <w:ind w:left="534" w:hanging="364"/>
+                    </w:pPr>
+                    <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="PlusJakartaSans-Regular"
                                       w:hAnsi="PlusJakartaSans-Regular"
@@ -100,9 +103,6 @@
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
-                        <w:ind w:left="534" w:hanging="364"/>
-                    </w:pPr>
-                    <w:r>
                         <w:t>
                             <xsl:value-of select="concat($listItemNumber, '.')"/>
                         </w:t>
@@ -114,12 +114,14 @@
                 </w:p>
             </xsl:when>
             <xsl:otherwise>
-                <!-- no list item -->
+                <!-- plain text; no list item -->
                 <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
                      w:rsidRDefault="0004532F" w:rsidP="000E5868">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
+                    </w:pPr>
+                    <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="PlusJakartaSans-Regular"
                                       w:hAnsi="PlusJakartaSans-Regular"
@@ -128,8 +130,6 @@
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r>
                         <w:t>
                             <xsl:value-of select="$text"/>
                         </w:t>
@@ -150,9 +150,7 @@
                 <w:pPr>
                     <w:pStyle w:val="BasicParagraph"/>
                     <w:spacing w:line="13.80pt" w:lineRule="auto"/>
-                    <w:rPr>
-                        <w:rStyle w:val="A1"/>
-                    </w:rPr>
+                    <w:noProof/>
                 </w:pPr>
                 <w:r w:rsidRPr="00D51FD7">
                     <w:rPr>
@@ -183,7 +181,12 @@
                 <w:pStyle w:val="Niveau"/>
                 <w:rPr>
                     <w:color w:val="000000" w:themeColor="text1"/>
+                    <w:noProof/>
                 </w:rPr>
+                <w:tabs>
+                    <w:tab w:val="clear" w:pos="134.70pt"/>
+                    <w:tab w:val="end" w:pos="163.05pt"/>
+                </w:tabs>
                 <w:keepLines/>
                 <xsl:if test="position() != $last">
                     <w:keepNext/>
@@ -197,20 +200,21 @@
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:call-template name="wrap-skill-description">
+                    <xsl:call-template name="wrap-description">
                         <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
+                        <xsl:with-param name="maxWidthMillis" select="number(60.0)"/>
                         <xsl:with-param name="newline">
                             <w:br/>
                         </xsl:with-param>
                     </xsl:call-template>
                 </w:t>
-                <w:tab/>
             </w:r>
             <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
                 <w:rPr>
                     <w:rStyle w:val="Valori-niveau"/>
                     <w:color w:val="55DD94"/>
                 </w:rPr>
+                <w:tab/>
                 <w:t>
                     <xsl:apply-templates select="cv:skillLevel" mode="skill-level"/>
                 </w:t>
@@ -247,7 +251,6 @@
                             <xsl:value-of select="cv:name/cv:nl_NL"/>
                         </w:t>
                     </w:r>
-                    <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </w:tc>
             <w:tc>
@@ -822,7 +825,6 @@
                     <xsl:value-of select="cv:title/cv:nl_NL"/>
                 </w:t>
             </w:r>
-            <w:proofErr w:type="spellEnd"/>
         </w:p>
         <w:p w14:paraId="46790F11" w14:textId="2E404240" w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE"
              w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
@@ -905,7 +907,6 @@
                     </w:t>
                 </xsl:if>
             </w:r>
-            <w:proofErr w:type="spellEnd"/>
         </w:p>
         <w:p w14:paraId="46790F11" w14:textId="2E404240" w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE"
              w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">

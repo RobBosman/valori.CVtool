@@ -723,8 +723,9 @@
                     <xsl:variable name="skillDescription">
                         <xsl:apply-templates select="cv:description" mode="locale-placeholder"/>
                     </xsl:variable>
-                    <xsl:call-template name="wrap-skill-description">
+                    <xsl:call-template name="wrap-description">
                         <xsl:with-param name="text" select="$skillDescription"/>
+                        <xsl:with-param name="maxWidthMillis" select="number(60.0)"/>
                         <xsl:with-param name="newline"><w:br/></xsl:with-param>
                     </xsl:call-template>
                 </w:t>

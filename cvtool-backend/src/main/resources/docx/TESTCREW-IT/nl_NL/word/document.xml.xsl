@@ -720,8 +720,9 @@
                     <w:rStyle w:val="TestCrew-IT-skillChar"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:call-template name="wrap-skill-description">
+                    <xsl:call-template name="wrap-description">
                         <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
+                        <xsl:with-param name="maxWidthMillis" select="number(42.0)"/>
                         <xsl:with-param name="newline"><w:br/></xsl:with-param>
                     </xsl:call-template>
                 </w:t>

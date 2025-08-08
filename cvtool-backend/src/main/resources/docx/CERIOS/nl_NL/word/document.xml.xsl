@@ -100,13 +100,6 @@
                                                          w:rsidP="000E5868">
                                                         <w:pPr>
                                                             <w:spacing w:after="6pt" w:line="12pt" w:lineRule="auto"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -124,13 +117,6 @@
                                                          w:rsidP="000E5868">
                                                         <w:pPr>
                                                             <w:spacing w:after="6pt" w:line="12pt" w:lineRule="auto"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -216,13 +202,6 @@
                                                          w:rsidP="000E5868">
                                                         <w:pPr>
                                                             <w:spacing w:line="12pt" w:lineRule="auto"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                                <w:sz w:val="58"/>
-                                                                <w:szCs w:val="58"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -317,14 +296,6 @@
                                                         <w:pPr>
                                                             <w:spacing w:after="6pt" w:line="13.80pt"
                                                                        w:lineRule="auto"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -333,7 +304,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>FUNCTIE</w:t>
                                                         </w:r>
@@ -344,13 +314,6 @@
                                                         <w:pPr>
                                                             <w:spacing w:after="6pt" w:line="13.80pt"
                                                                        w:lineRule="auto"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -386,13 +349,6 @@
                                                         <w:pPr>
                                                             <w:spacing w:after="6pt" w:line="13.80pt"
                                                                        w:lineRule="auto"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -411,14 +367,6 @@
                                                         <w:pPr>
                                                             <w:spacing w:after="6pt" w:line="13.80pt"
                                                                        w:lineRule="auto"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -427,7 +375,6 @@
                                                                 <w:color w:val="FFFFFF" w:themeColor="background1"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>
                                                                 <xsl:value-of select="cv:account/cv:residence"/>
@@ -685,14 +632,8 @@
                     </w:r>
                     <w:r w:rsidR="00B11653">
                         <w:br/>
-                    </w:r>
-                    <w:r w:rsidR="00B11653">
                         <w:br/>
-                    </w:r>
-                    <w:r w:rsidR="00B11653">
                         <w:br/>
-                    </w:r>
-                    <w:r w:rsidR="00B11653">
                         <w:br/>
                     </w:r>
                 </w:p>
@@ -951,14 +892,8 @@
                                                          w:rsidP="00065B83">
                                                         <w:pPr>
                                                             <w:pStyle w:val="Titel1"/>
-                                                            <w:rPr>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="003D5A44">
-                                                            <w:rPr>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
                                                             <w:t>Persoonlijk profiel</w:t>
                                                         </w:r>
                                                     </w:p>
@@ -968,14 +903,6 @@
                                                             <w:pStyle w:val="BasicParagraph"/>
                                                             <w:suppressAutoHyphens/>
                                                             <w:spacing w:before="12pt"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r>
                                                             <w:rPr>
@@ -1142,13 +1069,7 @@
                                                 <wne:txbxContent>
                                                     <w:p w14:paraId="26ED557F" w14:textId="578660EB" w:rsidR="00D52540"
                                                          w:rsidRPr="00D52540" w:rsidRDefault="00D52540"
-                                                         w:rsidP="00D52540">
-                                                        <w:pPr>
-                                                            <w:rPr>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
-                                                    </w:p>
+                                                         w:rsidP="00D52540"/>
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
@@ -1297,14 +1218,8 @@
                                                          w:rsidP="005815D4">
                                                         <w:pPr>
                                                             <w:pStyle w:val="Titel1"/>
-                                                            <w:rPr>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="00D51FD7">
-                                                            <w:rPr>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
                                                             <w:t>Interesses</w:t>
                                                         </w:r>
                                                     </w:p>
@@ -1313,13 +1228,6 @@
                                                          w:rsidP="000E5868">
                                                         <w:pPr>
                                                             <w:spacing w:before="12pt"/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
-                                                            </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="000E5868">
                                                             <w:rPr>
@@ -1327,7 +1235,6 @@
                                                                           w:hAnsi="Plus Jakarta Sans"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>
                                                                 <xsl:value-of select="$characteristics/cv:interests"/>
@@ -1450,8 +1357,10 @@
                             </wp:anchor>
                         </w:drawing>
                     </w:r>
-                    <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
+                        <w:rPr>
+                            <w:noProof/>
+                        </w:rPr>
                         <w:t>Kerncompetenties / skills</w:t>
                     </w:r>
                     <w:r w:rsidR="00D51FD7" w:rsidRPr="001958BA">
@@ -1496,10 +1405,6 @@
                                             <wp:txbx>
                                                 <wne:txbxContent>
 
-                                                    <!-- LANGUAGES -->
-                                                    <xsl:call-template name="skill-section">
-                                                        <xsl:with-param name="category">LANGUAGES</xsl:with-param>
-                                                    </xsl:call-template>
                                                     <!-- BRANCHES -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">BRANCHES</xsl:with-param>
@@ -1507,6 +1412,14 @@
                                                     <!-- EXPERTISE -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">EXPERTISE</xsl:with-param>
+                                                    </xsl:call-template>
+                                                    <!-- DATABASES -->
+                                                    <xsl:call-template name="skill-section">
+                                                        <xsl:with-param name="category">DATABASES</xsl:with-param>
+                                                    </xsl:call-template>
+                                                    <!-- LANGUAGES -->
+                                                    <xsl:call-template name="skill-section">
+                                                        <xsl:with-param name="category">LANGUAGES</xsl:with-param>
                                                     </xsl:call-template>
 
                                                 </wne:txbxContent>
@@ -1610,16 +1523,6 @@
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
                                                             <w:t>basis</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:rFonts w:asciiTheme="minorHAnsi"
-                                                                          w:hAnsiTheme="minorHAnsi"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
                                                             <w:tab/>
                                                         </w:r>
                                                         <w:r>
@@ -1641,16 +1544,6 @@
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
                                                             <w:t>gevorderd</w:t>
-                                                        </w:r>
-                                                        <w:r>
-                                                            <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
-                                                                <w:rFonts w:asciiTheme="minorHAnsi"
-                                                                          w:hAnsiTheme="minorHAnsi"/>
-                                                                <w:color w:val="55DD94"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
                                                             <w:tab/>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00545E7E">
@@ -1696,7 +1589,6 @@
                             </wp:anchor>
                         </w:drawing>
                     </w:r>
-
                     <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
                         <w:rPr>
                             <w:noProof/>
@@ -1823,10 +1715,6 @@
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">APPLICATIONS</xsl:with-param>
                                                     </xsl:call-template>
-                                                    <!-- DATABASES -->
-                                                    <xsl:call-template name="skill-section">
-                                                        <xsl:with-param name="category">DATABASES</xsl:with-param>
-                                                    </xsl:call-template>
                                                     <!-- TOOLS -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">TOOLS</xsl:with-param>
@@ -1883,7 +1771,6 @@
                                 <w:sz w:val="26"/>
                                 <w:szCs w:val="26"/>
                                 <w:u w:val="thick" w:color="55DD94"/>
-                                <w:lang w:val="en-GB"/>
                             </w:rPr>
                             <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
                                 <w:type w:val="continuous"/>
@@ -1967,11 +1854,12 @@
                                 </wp:anchor>
                             </w:drawing>
                         </w:r>
-                        <w:proofErr w:type="spellStart"/>
                         <w:r w:rsidR="00604B30" w:rsidRPr="005815D4">
+                            <w:rPr>
+                                <w:noProof/>
+                            </w:rPr>
                             <w:t>Opleiding &amp; training</w:t>
                         </w:r>
-                        <w:proofErr w:type="spellEnd"/>
                     </w:p>
                     <w:tbl>
                         <w:tblPr>
@@ -2019,11 +1907,7 @@
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
                                         <w:pPr>
                                             <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
                                         </w:pPr>
-                                        <w:proofErr w:type="spellStart"/>
                                         <w:r w:rsidRPr="00D51FD7">
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
@@ -2041,18 +1925,13 @@
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
                                         <w:pPr>
                                             <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
                                         </w:pPr>
-                                        <w:proofErr w:type="spellStart"/>
                                         <w:r w:rsidRPr="00D51FD7">
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
                                             <w:t>Onderwijsinstelling</w:t>
                                         </w:r>
-                                        <w:proofErr w:type="spellEnd"/>
                                     </w:p>
                                 </w:tc>
                                 <w:tc>
@@ -2062,19 +1941,12 @@
                                     </w:tcPr>
                                     <w:p w14:paraId="64DFA393" w14:textId="77777777" w:rsidR="001405E4"
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                        <w:proofErr w:type="spellStart"/>
                                         <w:r w:rsidRPr="00D51FD7">
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
                                             <w:t>Periode</w:t>
                                         </w:r>
-                                        <w:proofErr w:type="spellEnd"/>
                                     </w:p>
                                 </w:tc>
                                 <w:tc>
@@ -2084,11 +1956,6 @@
                                     </w:tcPr>
                                     <w:p w14:paraId="137DCB48" w14:textId="7A3BB070" w:rsidR="001405E4"
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
-                                        </w:pPr>
                                         <w:r w:rsidRPr="00D51FD7">
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
@@ -2201,18 +2068,13 @@
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
                                         <w:pPr>
                                             <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
                                         </w:pPr>
-                                        <w:proofErr w:type="spellStart"/>
                                         <w:r w:rsidRPr="00D51FD7">
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
                                             <w:t>Trainingen</w:t>
                                         </w:r>
-                                        <w:proofErr w:type="spellEnd"/>
                                     </w:p>
                                 </w:tc>
                                 <w:tc>
@@ -2224,18 +2086,13 @@
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
                                         <w:pPr>
                                             <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
                                         </w:pPr>
-                                        <w:proofErr w:type="spellStart"/>
                                         <w:r>
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
                                             <w:t>Opleidingsinstituut</w:t>
                                         </w:r>
-                                        <w:proofErr w:type="spellEnd"/>
                                     </w:p>
                                 </w:tc>
                                 <w:tc>
@@ -2245,19 +2102,12 @@
                                     </w:tcPr>
                                     <w:p w14:paraId="5E03F854" w14:textId="77777777" w:rsidR="001405E4"
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                        <w:proofErr w:type="spellStart"/>
                                         <w:r w:rsidRPr="00D51FD7">
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
                                             <w:t>Periode</w:t>
                                         </w:r>
-                                        <w:proofErr w:type="spellEnd"/>
                                     </w:p>
                                 </w:tc>
                                 <w:tc>
@@ -2266,19 +2116,12 @@
                                     </w:tcPr>
                                     <w:p w14:paraId="2D8A2251" w14:textId="78D428AA" w:rsidR="001405E4"
                                          w:rsidRPr="00D51FD7" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A1"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                        <w:proofErr w:type="spellStart"/>
                                         <w:r>
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
                                             <w:t>Certificaat</w:t>
                                         </w:r>
-                                        <w:proofErr w:type="spellEnd"/>
                                     </w:p>
                                 </w:tc>
                             </w:tr>
@@ -2478,11 +2321,9 @@
                                 </wp:anchor>
                             </w:drawing>
                         </w:r>
-                        <w:proofErr w:type="spellStart"/>
                         <w:r w:rsidR="00B2333C">
                             <w:t>Werkervaring</w:t>
                         </w:r>
-                        <w:proofErr w:type="spellEnd"/>
                     </w:p>
                     <w:p w14:paraId="21A5DF4E" w14:textId="77777777" w:rsidR="00CA43CD" w:rsidRDefault="00CA43CD"
                          w:rsidP="00B2333C">
@@ -2576,11 +2417,9 @@
                                 </wp:anchor>
                             </w:drawing>
                         </w:r>
-                        <w:proofErr w:type="spellStart"/>
                         <w:r w:rsidR="00CC7FCE">
                             <w:t>Overige werkervaring</w:t>
                         </w:r>
-                        <w:proofErr w:type="spellEnd"/>
                     </w:p>
                     <w:tbl>
                         <w:tblPr>
@@ -2624,14 +2463,12 @@
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
                                     </w:pPr>
-                                    <w:proofErr w:type="spellStart"/>
                                     <w:r>
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
                                         <w:t>Periode</w:t>
                                     </w:r>
-                                    <w:proofErr w:type="spellEnd"/>
                                 </w:p>
                             </w:tc>
                             <w:tc>
@@ -2662,14 +2499,12 @@
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
                                     </w:pPr>
-                                    <w:proofErr w:type="spellStart"/>
                                     <w:r>
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
                                         <w:t>Opdrachtgever</w:t>
                                     </w:r>
-                                    <w:proofErr w:type="spellEnd"/>
                                 </w:p>
                             </w:tc>
                             <w:tc>
@@ -2685,14 +2520,12 @@
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
                                     </w:pPr>
-                                    <w:proofErr w:type="spellStart"/>
                                     <w:r>
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
                                         <w:t>Functie</w:t>
                                     </w:r>
-                                    <w:proofErr w:type="spellEnd"/>
                                 </w:p>
                             </w:tc>
                         </w:tr>
@@ -2827,11 +2660,9 @@
                                     </wp:anchor>
                                 </w:drawing>
                             </w:r>
-                            <w:proofErr w:type="spellStart"/>
                             <w:r w:rsidR="00CC7FCE">
                                 <w:t>Publicaties</w:t>
                             </w:r>
-                            <w:proofErr w:type="spellEnd"/>
                         </w:p>
                         <w:p w14:paraId="3D45720F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                              w:rsidP="00CC7FCE">
@@ -2843,7 +2674,6 @@
                                     <w:color w:val="212B46"/>
                                     <w:sz w:val="28"/>
                                     <w:szCs w:val="28"/>
-                                    <w:lang w:val="en-GB"/>
                                 </w:rPr>
                             </w:pPr>
                         </w:p>
@@ -2857,7 +2687,6 @@
                                     <w:color w:val="212B46"/>
                                     <w:sz w:val="28"/>
                                     <w:szCs w:val="28"/>
-                                    <w:lang w:val="en-GB"/>
                                 </w:rPr>
                                 <w:sectPr w:rsidR="00CA43CD" w:rsidRPr="00D51FD7" w:rsidSect="00CA43CD">
                                     <w:type w:val="continuous"/>
@@ -2951,11 +2780,9 @@
                                     </wp:anchor>
                                 </w:drawing>
                             </w:r>
-                            <w:proofErr w:type="spellStart"/>
                             <w:r w:rsidR="00CC7FCE">
                                 <w:t>Referenties</w:t>
                             </w:r>
-                            <w:proofErr w:type="spellEnd"/>
                         </w:p>
                         <w:p w14:paraId="3D45720F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                              w:rsidP="00CC7FCE">
@@ -2967,7 +2794,6 @@
                                     <w:color w:val="212B46"/>
                                     <w:sz w:val="28"/>
                                     <w:szCs w:val="28"/>
-                                    <w:lang w:val="en-GB"/>
                                 </w:rPr>
                             </w:pPr>
                         </w:p>
@@ -2981,7 +2807,6 @@
                                     <w:color w:val="212B46"/>
                                     <w:sz w:val="28"/>
                                     <w:szCs w:val="28"/>
-                                    <w:lang w:val="en-GB"/>
                                 </w:rPr>
                                 <w:sectPr w:rsidR="00CA43CD" w:rsidRPr="00D51FD7" w:rsidSect="00CA43CD">
                                     <w:type w:val="continuous"/>

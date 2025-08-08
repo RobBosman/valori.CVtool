@@ -551,7 +551,8 @@
                 INTERESTS
 
                 -->
-                <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:nl_NL"/>
+                <xsl:variable name="interests"
+                              select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:nl_NL"/>
                 <xsl:if test="$interests">
                     <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -720,9 +721,12 @@
                     <w:rStyle w:val="Valori-skillChar"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:call-template name="wrap-skill-description">
+                    <xsl:call-template name="wrap-description">
                         <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
-                        <xsl:with-param name="newline"><w:br/></xsl:with-param>
+                        <xsl:with-param name="maxWidthMillis" select="number(42.0)"/>
+                        <xsl:with-param name="newline">
+                            <w:br/>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </w:t>
                 <w:tab/>
