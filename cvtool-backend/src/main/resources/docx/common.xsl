@@ -15,11 +15,14 @@
     <!-- LOCALIZED -->
     <xsl:template match="node()" mode="localized">
         <xsl:choose>
-            <xsl:when test="$cv_locale = 'uk_UK' and cv:uk_UK">
+            <xsl:when test="($cv_locale = 'uk_UK') and cv:uk_UK">
                 <xsl:value-of select="cv:uk_UK"/>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="cv:nl_NL">
                 <xsl:value-of select="cv:nl_NL"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="text()"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

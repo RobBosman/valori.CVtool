@@ -42,7 +42,7 @@
     <xsl:import href="../common-nl_NL.xsl"/>
 
     <!-- Parameter 'cv_locale' is used to select the correct language version of a text node. -->
-    <xsl:param name="cv_locale" select="'nl_UK'"/>
+    <xsl:param name="cv_locale" select="'nl_NL'"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
@@ -918,7 +918,7 @@
                                                             </w:rPr>
                                                             <w:t>
                                                                 <xsl:variable name="profile"
-                                                                              select="$characteristics/cv:profile/cv:nl_NL"/>
+                                                                              select="$characteristics/cv:profile"/>
                                                                 <xsl:apply-templates select="$profile" mode="markdown"/>
                                                             </w:t>
                                                         </w:r>

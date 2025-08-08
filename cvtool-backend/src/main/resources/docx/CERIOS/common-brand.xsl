@@ -20,7 +20,9 @@
     <!-- MARKDOWN -->
     <xsl:template match="* | @* | text()" mode="markdown">
         <xsl:call-template name="format-markdown">
-            <xsl:with-param name="text" select="."/>
+            <xsl:with-param name="text">
+                <xsl:apply-templates select="." mode="localized"/>
+            </xsl:with-param>
             <xsl:with-param name="listItemNumber">0</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
@@ -188,12 +190,23 @@
                     </w:t>
                 </w:r>
             </w:p>
-            <xsl:apply-templates select="$skills">
-                <xsl:with-param name="last" select="count($skills)"/>
-                <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
-                <xsl:sort select="cv:description/cv:nl_NL"/>
-            </xsl:apply-templates>
-            <!-- Add a newline after the last skill of this category. -->
+            <xsl:choose>
+                <xsl:when test="$cv_locale = 'uk_UK'">
+                    <xsl:apply-templates select="$skills">
+                        <xsl:with-param name="last" select="count($skills)"/>
+                        <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
+                        <xsl:sort select="cv:description/cv:uk_UK"/>
+                    </xsl:apply-templates>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="$skills">
+                        <xsl:with-param name="last" select="count($skills)"/>
+                        <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
+                        <xsl:sort select="cv:description/cv:nl_NL"/>
+                    </xsl:apply-templates>
+                </xsl:otherwise>
+            </xsl:choose>
+            <!-- Add a blank line after the last skill of this category. -->
             <w:br/>
         </xsl:if>
     </xsl:template>
@@ -228,7 +241,9 @@
                 </w:rPr>
                 <w:t>
                     <xsl:call-template name="wrap-description">
-                        <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
+                        <xsl:with-param name="text">
+                            <xsl:apply-templates select="cv:description" mode="localized"/>
+                        </xsl:with-param>
                         <xsl:with-param name="maxWidthMillis" select="number(60.0)"/>
                         <xsl:with-param name="newline">
                             <w:br/>
@@ -600,7 +615,6 @@
                                                     </w:t>
                                                 </w:r>
                                             </w:p>
-                                            <xsl:variable name="assignment" select="cv:assignment/cv:nl_NL"/>
                                             <w:p w14:paraId="4F4CEE96" w14:textId="4FCDD30D" w:rsidR="00B2333C"
                                                  w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                                                 <w:r w:rsidRPr="00DE51B1">
@@ -616,9 +630,9 @@
                                                     <w:t>Situatie</w:t>
                                                 </w:r>
                                             </w:p>
-                                            <xsl:apply-templates select="$assignment" mode="markdown"/>
-                                            <xsl:variable name="activities" select="cv:activities/cv:nl_NL"/>
-                                            <xsl:if test="$activities">
+                                            <xsl:apply-templates select="cv:assignment" mode="markdown"/>
+
+                                            <xsl:if test="cv:activities">
                                                 <w:p w14:paraId="6736B730" w14:textId="3D978164" w:rsidR="00B2333C"
                                                      w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                                                     <w:pPr>
@@ -637,10 +651,10 @@
                                                         <w:t>Taken</w:t>
                                                     </w:r>
                                                 </w:p>
-                                                <xsl:apply-templates select="$activities" mode="markdown"/>
+                                                <xsl:apply-templates select="cv:activities" mode="markdown"/>
                                             </xsl:if>
-                                            <xsl:variable name="results" select="cv:results/cv:nl_NL"/>
-                                            <xsl:if test="$results">
+
+                                            <xsl:if test="cv:results">
                                                 <w:p w14:paraId="76E931EB" w14:textId="6471A0AC" w:rsidR="00B2333C"
                                                      w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C"
                                                      w:rsidP="00B2333C">
@@ -660,10 +674,10 @@
                                                         <w:t>Resultaten</w:t>
                                                     </w:r>
                                                 </w:p>
-                                                <xsl:apply-templates select="$results" mode="markdown"/>
+                                                <xsl:apply-templates select="cv:results" mode="markdown"/>
                                             </xsl:if>
-                                            <xsl:variable name="keywords" select="cv:keywords/cv:nl_NL"/>
-                                            <xsl:if test="$keywords">
+
+                                            <xsl:if test="cv:keywords">
                                                 <w:p w14:paraId="22A70B22" w14:textId="6254D1F5" w:rsidR="00B2333C"
                                                      w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                                                     <w:pPr>
@@ -682,7 +696,7 @@
                                                         <w:t>Technologie &amp; tools</w:t>
                                                     </w:r>
                                                 </w:p>
-                                                <xsl:apply-templates select="$keywords" mode="markdown"/>
+                                                <xsl:apply-templates select="cv:keywords" mode="markdown"/>
                                             </xsl:if>
                                         </wne:txbxContent>
                                     </wp:txbx>
