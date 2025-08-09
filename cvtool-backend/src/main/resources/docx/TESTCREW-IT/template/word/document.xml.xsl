@@ -10,8 +10,9 @@
         version="1.0">
 
     <xsl:import href="../../../common.xsl"/>
-    <xsl:import href="../../common-brand.xsl"/>
-    <xsl:import href="../common-nl_NL.xsl"/>
+    <xsl:import href="../../translations.xsl"/>
+    <xsl:import href="../../mappings.xsl"/>
+    <xsl:import href="../../fragments.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
@@ -720,7 +721,7 @@
                     <w:rStyle w:val="TestCrew-IT-skillChar"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:call-template name="wrap-description">
+                    <xsl:call-template name="wrap-lines">
                         <xsl:with-param name="text" select="cv:description"/>
                         <xsl:with-param name="maxWidthMillis" select="number(42.0)"/>
                         <xsl:with-param name="newline"><w:br/></xsl:with-param>

@@ -724,7 +724,7 @@
                     <xsl:variable name="skillDescription">
                         <xsl:value-of select="cv:description"/>
                     </xsl:variable>
-                    <xsl:call-template name="wrap-description">
+                    <xsl:call-template name="wrap-lines">
                         <xsl:with-param name="text" select="$skillDescription"/>
                         <xsl:with-param name="maxWidthMillis" select="number(42.0)"/>
                         <xsl:with-param name="newLine">

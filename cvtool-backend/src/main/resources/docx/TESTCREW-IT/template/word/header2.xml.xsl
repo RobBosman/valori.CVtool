@@ -14,7 +14,7 @@
         exclude-result-prefixes="cv"
         version="1.0">
 
-    <xsl:import href="../common-nl_NL.xsl"/>
+    <xsl:import href="../mappings.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 

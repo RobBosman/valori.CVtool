@@ -3,7 +3,6 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         version="1.0">
 
-    <!-- Parameter 'cv_locale' is used to select the correct language version of a text node. -->
     <xsl:param name="cv_locale"/>
 
     <!-- TRANSLATE -->
@@ -36,7 +35,7 @@
                     <xsl:when test="$text = 'Publicaties'">Publications</xsl:when>
                     <xsl:when test="$text = 'Referenties'">References</xsl:when>
 
-                    <xsl:when test="$text = 'CONTACTPERSOON'">CONTACT PERSON</xsl:when>
+                    <xsl:when test="$text = 'CONTACTPERSOON'">CONTACT</xsl:when>
                     <xsl:when test="$text = 'heden'">today</xsl:when>
                     <xsl:when test="$text = 'Situatie'">Situation</xsl:when>
                     <xsl:when test="$text = 'Taken'">Tasks</xsl:when>
@@ -51,7 +50,7 @@
                     <xsl:when test="$text = 'Tools'">References</xsl:when>
                     <xsl:when test="$text = 'Programmeren'">Programming</xsl:when>
                     <xsl:when test="$text = 'Methodes'">Methodologies</xsl:when>
-                    <xsl:when test="$text = 'OS &amp; Netwerken'">OS &amp; networks</xsl:when>
+                    <xsl:when test="$text = 'OS &amp; Netwerken'">OS &amp; Networks</xsl:when>
 
                     <xsl:when test="$text = 'ja'">yes</xsl:when>
                     <xsl:when test="$text = 'nog bezig'">busy</xsl:when>

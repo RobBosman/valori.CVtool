@@ -47,10 +47,9 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 .computeIfAbsent(docxTemplate) { templateName ->
                     mapOf(
                         "common.xsl" to loadBytes("/docx/common.xsl"),
-                        "common-brand.xsl" to loadBytes("/docx/$templateName/common-brand.xsl"),
-                        "common-nl_NL.xsl" to loadBytes("/docx/$templateName/common-nl_NL.xsl"),
-                        "common-uk_UK.xsl" to loadBytes("/docx/$templateName/common-uk_UK.xsl"),
-                        "translate.xsl" to loadBytes("/docx/$templateName/translate.xsl")
+                        "fragments.xsl" to loadBytes("/docx/$templateName/fragments.xsl"),
+                        "mappings.xsl" to loadBytes("/docx/$templateName/mappings.xsl"),
+                        "translations.xsl" to loadBytes("/docx/$templateName/translations.xsl")
                     )
                 }
 

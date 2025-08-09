@@ -2,6 +2,7 @@
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+        exclude-result-prefixes="cv"
         xmlns:w="http://purl.oclc.org/ooxml/wordprocessingml/main"
         xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
         xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
@@ -9,6 +10,9 @@
         xmlns:wp="http://purl.oclc.org/ooxml/drawingml/wordprocessingDrawing"
         xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"
         version="1.0">
+
+    <xsl:import href="translations.xsl"/>
+    <xsl:import href="mappings.xsl"/>
 
     <!-- MARKDOWN -->
     <xsl:template match="* | @* | text()" mode="markdown">
@@ -159,6 +163,18 @@
         </xsl:choose>
     </xsl:template>
 
+    <!-- CLIENT -->
+    <xsl:template match="cv:experience" mode="client">
+        <xsl:choose>
+            <xsl:when test="normalize-space(cv:client) != ''">
+                <xsl:value-of select="cv:client"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="cv:employer"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <!-- SKILL SECTION -->
     <xsl:template name="skill-section">
         <xsl:param name="category"/>
@@ -220,7 +236,7 @@
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:call-template name="wrap-description">
+                    <xsl:call-template name="wrap-lines">
                         <xsl:with-param name="text" select="cv:description"/>
                         <xsl:with-param name="maxWidthMillis" select="number(60.0)"/>
                         <xsl:with-param name="newline">
@@ -752,7 +768,7 @@
                     </w:pPr>
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:periodBegin" mode="date-period"/>
+                            <xsl:apply-templates select="cv:periodBegin" mode="date-month-year"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -778,7 +794,7 @@
                     </w:pPr>
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:periodEnd" mode="date-period"/>
+                            <xsl:apply-templates select="cv:periodEnd" mode="date-month-year"/>
                         </w:t>
                     </w:r>
                 </w:p>

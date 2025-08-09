@@ -5,7 +5,7 @@
         exclude-result-prefixes="cv"
         version="1.0">
 
-    <xsl:import href="../../translate.xsl"/>
+    <xsl:import href="../../translations.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
