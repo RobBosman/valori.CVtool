@@ -49,7 +49,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                         "common.xsl" to loadBytes("/docx/common.xsl"),
                         "common-brand.xsl" to loadBytes("/docx/$templateName/common-brand.xsl"),
                         "common-nl_NL.xsl" to loadBytes("/docx/$templateName/common-nl_NL.xsl"),
-                        "common-uk_UK.xsl" to loadBytes("/docx/$templateName/common-uk_UK.xsl")
+                        "common-uk_UK.xsl" to loadBytes("/docx/$templateName/common-uk_UK.xsl"),
+                        "translate.xsl" to loadBytes("/docx/$templateName/translate.xsl")
                     )
                 }
 

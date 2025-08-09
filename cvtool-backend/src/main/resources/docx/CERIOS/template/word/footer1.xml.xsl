@@ -5,6 +5,8 @@
         exclude-result-prefixes="cv"
         version="1.0">
 
+    <xsl:import href="../../translate.xsl"/>
+
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
     <xsl:template match="/cv:root">
@@ -136,7 +138,11 @@
                         <w:szCs w:val="18"/>
                         <w:noProof/>
                     </w:rPr>
-                    <w:t>CONTACTPERSOON</w:t>
+                    <w:t>
+                        <xsl:call-template name="translate">
+                            <xsl:with-param name="text" select="'CONTACTPERSOON'"/>
+                        </xsl:call-template>
+                    </w:t>
                     <w:tab/>
                     <w:t xml:space="preserve"><xsl:value-of select="cv:businessUnit/cv:contactName"/></w:t>
                     <w:tab/>

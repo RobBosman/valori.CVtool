@@ -38,10 +38,8 @@
 
     <xsl:import href="../../../common.xsl"/>
     <xsl:import href="../../common-brand.xsl"/>
-    <xsl:import href="../common-nl_NL.xsl"/>
-
-    <!-- Parameter 'cv_locale' is used to select the correct language version of a text node. -->
-    <xsl:param name="cv_locale"/>
+    <xsl:import href="../../common-nl_NL.xsl"/>
+    <xsl:import href="../../translate.xsl"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
@@ -118,7 +116,12 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>GEBOORTEDATUM</w:t>
+                                                            <w:t>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text"
+                                                                                    select="'GEBOORTEDATUM'"/>
+                                                                </xsl:call-template>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="4633CB24" w14:textId="3E1F5B64" w:rsidR="0004532F"
@@ -313,7 +316,11 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>FUNCTIE</w:t>
+                                                            <w:t>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text" select="'FUNCTIE'"/>
+                                                                </xsl:call-template>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="53EF3592" w14:textId="1EEB775D" w:rsidR="0004532F"
@@ -366,7 +373,11 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>WOONPLAATS</w:t>
+                                                            <w:t>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text" select="'WOONPLAATS'"/>
+                                                                </xsl:call-template>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="27B0411B" w14:textId="0DBC4122" w:rsidR="0004532F"
@@ -830,7 +841,12 @@
                                                             <w:pStyle w:val="Titel1"/>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="003D5A44">
-                                                            <w:t>Persoonlijk profiel</w:t>
+                                                            <w:t>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text"
+                                                                                    select="'Persoonlijk profiel'"/>
+                                                                </xsl:call-template>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                     <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
@@ -1210,7 +1226,12 @@
                                                                 <w:pStyle w:val="Titel1"/>
                                                             </w:pPr>
                                                             <w:r w:rsidRPr="00D51FD7">
-                                                                <w:t>Interesses</w:t>
+                                                                <w:t>
+                                                                    <xsl:call-template name="translate">
+                                                                        <xsl:with-param name="text"
+                                                                                        select="'Interesses'"/>
+                                                                    </xsl:call-template>
+                                                                </w:t>
                                                             </w:r>
                                                         </w:p>
                                                         <w:p w14:paraId="62C664D3" w14:textId="2DD59BE1"
@@ -1351,7 +1372,11 @@
                         <w:rPr>
                             <w:noProof/>
                         </w:rPr>
-                        <w:t>Kerncompetenties / skills</w:t>
+                        <w:t>
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'Kerncompetenties / skills'"/>
+                            </xsl:call-template>
+                        </w:t>
                     </w:r>
                     <w:r w:rsidR="00D51FD7" w:rsidRPr="001958BA">
                         <w:rPr>
@@ -1496,7 +1521,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"></w:t>
+                                                            <w:t xml:space="preserve"> </w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -1507,7 +1532,11 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>basis</w:t>
+                                                            <w:t>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text" select="'basis'"/>
+                                                                </xsl:call-template>
+                                                            </w:t>
                                                             <w:tab/>
                                                         </w:r>
                                                         <w:r>
@@ -1517,7 +1546,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"></w:t>
+                                                            <w:t xml:space="preserve"> </w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -1528,7 +1557,11 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>gevorderd</w:t>
+                                                            <w:t>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text" select="'gevorderd'"/>
+                                                                </xsl:call-template>
+                                                            </w:t>
                                                             <w:tab/>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00545E7E">
@@ -1538,7 +1571,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"></w:t>
+                                                            <w:t xml:space="preserve"> </w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -1549,7 +1582,11 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>ervaren</w:t>
+                                                            <w:t>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text" select="'ervaren'"/>
+                                                                </xsl:call-template>
+                                                            </w:t>
                                                         </w:r>
                                                     </w:p>
                                                 </wne:txbxContent>
@@ -1832,7 +1869,11 @@
                             <w:rPr>
                                 <w:noProof/>
                             </w:rPr>
-                            <w:t>Opleiding &amp; trainingen</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Opleiding &amp; trainingen'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -1886,7 +1927,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Opleiding</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Opleiding'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -1904,7 +1949,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Onderwijsinstelling</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Onderwijsinstelling'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -1919,7 +1968,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Periode</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Periode'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -1934,7 +1987,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Diploma</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Diploma'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -2045,7 +2102,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Trainingen</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Trainingen'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -2063,7 +2124,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Opleidingsinstituut</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Opleidingsinstituut'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -2078,7 +2143,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Periode</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Periode'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -2092,7 +2161,11 @@
                                             <w:rPr>
                                                 <w:rStyle w:val="A1"/>
                                             </w:rPr>
-                                            <w:t>Certificaat</w:t>
+                                            <w:t>
+                                                <xsl:call-template name="translate">
+                                                    <xsl:with-param name="text" select="'Certificaat'"/>
+                                                </xsl:call-template>
+                                            </w:t>
                                         </w:r>
                                     </w:p>
                                 </w:tc>
@@ -2289,7 +2362,11 @@
                             </w:drawing>
                         </w:r>
                         <w:r w:rsidR="00B2333C">
-                            <w:t>Werkervaring</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Werkervaring'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:p w14:paraId="21A5DF4E" w14:textId="77777777" w:rsidR="00CA43CD" w:rsidRDefault="00CA43CD"
@@ -2379,7 +2456,11 @@
                             </w:drawing>
                         </w:r>
                         <w:r w:rsidR="00CC7FCE">
-                            <w:t>Overige werkervaring</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Overige werkervaring'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -2429,7 +2510,11 @@
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
-                                        <w:t>Periode</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Periode'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -2466,7 +2551,11 @@
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
-                                        <w:t>Opdrachtgever</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Opdrachtgever'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -2487,7 +2576,11 @@
                                         <w:rPr>
                                             <w:rStyle w:val="A1"/>
                                         </w:rPr>
-                                        <w:t>Functie</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Functie'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -2604,7 +2697,11 @@
                                 </w:drawing>
                             </w:r>
                             <w:r w:rsidR="00CC7FCE">
-                                <w:t>Publicaties</w:t>
+                                <w:t>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'Publicaties'"/>
+                                    </xsl:call-template>
+                                </w:t>
                             </w:r>
                         </w:p>
                         <xsl:apply-templates select="$publications"/>
@@ -2695,7 +2792,11 @@
                                 </w:drawing>
                             </w:r>
                             <w:r w:rsidR="00CC7FCE">
-                                <w:t>Referenties</w:t>
+                                <w:t>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'Referenties'"/>
+                                    </xsl:call-template>
+                                </w:t>
                             </w:r>
                         </w:p>
                         <xsl:apply-templates select="$references"/>

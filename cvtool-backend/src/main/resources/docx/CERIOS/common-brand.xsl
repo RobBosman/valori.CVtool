@@ -55,13 +55,13 @@
         <xsl:param name="text"/>
         <xsl:param name="listItemNumber"/>
         <xsl:choose>
-            <!-- bullet list item -->
             <xsl:when test="substring($text, 1, 2) = '* '
                                 or substring($text, 1, 2) = '- '
                                 or substring($text, 1, 2) = '&#x2022; '
                                 or substring($text, 1, 2) = '*&#x09;'
                                 or substring($text, 1, 2) = '-&#x09;'
                                 or substring($text, 1, 2) = '&#x2022;&#x09;'">
+                <!-- bullet list item -->
                 <w:p w14:paraId="4DB0632C" w14:textId="542F4402" w:rsidR="00B2333C"
                      w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                     <w:pPr>
@@ -94,8 +94,8 @@
                     <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </xsl:when>
-            <!-- numbered list item -->
             <xsl:when test="starts-with($text, '# ')">
+                <!-- numbered list item -->
                 <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
                      w:rsidRDefault="0004532F" w:rsidP="000E5868">
                     <w:pPr>
@@ -329,7 +329,11 @@
                                 <xsl:when test="$yearTo">
                                     <xsl:value-of select="$yearTo"/>
                                 </xsl:when>
-                                <xsl:otherwise>heden</xsl:otherwise>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'heden'"/>
+                                    </xsl:call-template>
+                                </xsl:otherwise>
                             </xsl:choose>
                         </w:t>
                     </w:r>
@@ -441,7 +445,11 @@
                                 <xsl:when test="cv:year">
                                     <xsl:value-of select="cv:year"/>
                                 </xsl:when>
-                                <xsl:otherwise>heden</xsl:otherwise>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'heden'"/>
+                                    </xsl:call-template>
+                                </xsl:otherwise>
                             </xsl:choose>
                         </w:t>
                     </w:r>
@@ -606,7 +614,11 @@
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
                                                         </w:rPr>
-                                                        <w:t>Situatie</w:t>
+                                                        <w:t>
+                                                            <xsl:call-template name="translate">
+                                                                <xsl:with-param name="text" select="'Situatie'"/>
+                                                            </xsl:call-template>
+                                                        </w:t>
                                                     </w:r>
                                                 </w:p>
                                                 <xsl:apply-templates select="cv:assignment" mode="markdown"/>
@@ -628,7 +640,11 @@
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
                                                         </w:rPr>
-                                                        <w:t>Taken</w:t>
+                                                        <w:t>
+                                                            <xsl:call-template name="translate">
+                                                                <xsl:with-param name="text" select="'Taken'"/>
+                                                            </xsl:call-template>
+                                                        </w:t>
                                                     </w:r>
                                                 </w:p>
                                                 <xsl:apply-templates select="cv:activities" mode="markdown"/>
@@ -651,7 +667,11 @@
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
                                                         </w:rPr>
-                                                        <w:t>Resultaten</w:t>
+                                                        <w:t>
+                                                            <xsl:call-template name="translate">
+                                                                <xsl:with-param name="text" select="'Resultaten'"/>
+                                                            </xsl:call-template>
+                                                        </w:t>
                                                     </w:r>
                                                 </w:p>
                                                 <xsl:apply-templates select="cv:results" mode="markdown"/>
@@ -673,7 +693,12 @@
                                                             <w:sz w:val="21"/>
                                                             <w:szCs w:val="21"/>
                                                         </w:rPr>
-                                                        <w:t>Technologie &amp; tools</w:t>
+                                                        <w:t>
+                                                            <xsl:call-template name="translate">
+                                                                <xsl:with-param name="text"
+                                                                                select="'Technologie &amp; tools'"/>
+                                                            </xsl:call-template>
+                                                        </w:t>
                                                     </w:r>
                                                 </w:p>
                                                 <xsl:apply-templates select="cv:keywords" mode="markdown"/>
