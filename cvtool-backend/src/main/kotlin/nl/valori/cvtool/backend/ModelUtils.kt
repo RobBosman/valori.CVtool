@@ -96,21 +96,18 @@ object ModelUtils {
             forEach { (entityName, instances) ->
                 val localizableFields = LOCALIZABLE_FIELDS_PER_ENTITY[entityName]
                 if (localizableFields != null && instances is JsonObject) {
-                    instances
-                        .forEach { (instanceId, instance) ->
-                            if (instance is JsonObject) {
-                                instance
-                                    .forEach { (fieldName, fieldValue) ->
-                                        val localizable = localizableFields
-                                            .find { it.fieldName == fieldName }
-                                        if (localizable != null && fieldValue is JsonObject) {
-                                            val localizedText = fieldValue.getValue(locale)
-                                                ?: localizable.fallbackLocale?.let { fieldValue.getValue(it) }
-                                            instance.put(fieldName, localizedText)
-                                        }
-                                    }
+                    instances.forEach { (_, instance) ->
+                        if (instance is JsonObject) {
+                            instance.forEach { (fieldName, fieldValue) ->
+                                val localizable = localizableFields.find { it.fieldName == fieldName }
+                                if (localizable != null && fieldValue is JsonObject) {
+                                    val localizedText = fieldValue.getValue(locale)
+                                        ?: localizable.fallbackLocale?.let { fieldValue.getValue(it) }
+                                    instance.put(fieldName, localizedText)
+                                }
                             }
                         }
+                    }
                 }
             }
         }

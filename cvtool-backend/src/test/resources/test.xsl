@@ -8,8 +8,8 @@
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
-        <xsl:apply-templates select="cv:root/cv:account"/>
+    <xsl:template match="/cv:root">
+        <xsl:apply-templates select="cv:account"/>
     </xsl:template>
 
     <xsl:template match="cv:account">

@@ -13,11 +13,11 @@
       "_id": "517d43ec-b668-d33d-815b-11367b3edc9a"
     }
   },
-  "cv": {
+  "characteristics": {
     "43ec517d-68b6-3dd3-815b-3edc9a11367b": {
       "accountId": "14bfa6bb-1487-3e45-bba0-28a21ed38046",
       "workingSince": 1991,
-      "inItSince": "",
+      "inItSince": null,
       "role": {
         "nl_NL": "manager"
       },
