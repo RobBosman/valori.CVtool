@@ -10,19 +10,10 @@
         xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"
         version="1.0">
 
-    <!--
-        Parameter 'cv_locale' is used to select the nl_NL or uk_UK version of a text node.
-        If cv_locale is 'uk_UK' but no uk_UK node is available, then nl_NL is used as a fallback.
-        It is set in the top-level XSL stylesheet and picked-up here.
-    -->
-    <xsl:param name="cv_locale"/>
-
     <!-- MARKDOWN -->
     <xsl:template match="* | @* | text()" mode="markdown">
         <xsl:call-template name="format-markdown">
-            <xsl:with-param name="text">
-                <xsl:apply-templates select="." mode="localized"/>
-            </xsl:with-param>
+            <xsl:with-param name="text" select="."/>
             <xsl:with-param name="listItemNumber">0</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
@@ -190,22 +181,11 @@
                     </w:t>
                 </w:r>
             </w:p>
-            <xsl:choose>
-                <xsl:when test="$cv_locale = 'uk_UK'">
-                    <xsl:apply-templates select="$skills">
-                        <xsl:with-param name="last" select="count($skills)"/>
-                        <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
-                        <xsl:sort select="cv:description/cv:uk_UK"/>
-                    </xsl:apply-templates>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates select="$skills">
-                        <xsl:with-param name="last" select="count($skills)"/>
-                        <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
-                        <xsl:sort select="cv:description/cv:nl_NL"/>
-                    </xsl:apply-templates>
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:apply-templates select="$skills">
+                <xsl:with-param name="last" select="count($skills)"/>
+                <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
+                <xsl:sort select="cv:description"/>
+            </xsl:apply-templates>
             <!-- Add a blank line after the last skill of this category. -->
             <w:br/>
         </xsl:if>
@@ -241,9 +221,7 @@
                 </w:rPr>
                 <w:t>
                     <xsl:call-template name="wrap-description">
-                        <xsl:with-param name="text">
-                            <xsl:apply-templates select="cv:description" mode="localized"/>
-                        </xsl:with-param>
+                        <xsl:with-param name="text" select="cv:description"/>
                         <xsl:with-param name="maxWidthMillis" select="number(60.0)"/>
                         <xsl:with-param name="newline">
                             <w:br/>
@@ -291,7 +269,7 @@
                             <w:szCs w:val="16"/>
                         </w:rPr>
                         <w:t>
-                            <xsl:apply-templates select="cv:name" mode="localized"/>
+                            <xsl:value-of select="cv:name"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -411,7 +389,7 @@
                             <w:szCs w:val="18"/>
                         </w:rPr>
                         <w:t>
-                            <xsl:apply-templates select="cv:name" mode="localized"/>
+                            <xsl:value-of select="cv:name"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -611,26 +589,28 @@
                                                         <w:szCs w:val="18"/>
                                                     </w:rPr>
                                                     <w:t>
-                                                        <xsl:apply-templates select="cv:role" mode="localized"/>
+                                                        <xsl:value-of select="cv:role"/>
                                                     </w:t>
                                                 </w:r>
                                             </w:p>
-                                            <w:p w14:paraId="4F4CEE96" w14:textId="4FCDD30D" w:rsidR="00B2333C"
-                                                 w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
-                                                <w:r w:rsidRPr="00DE51B1">
-                                                    <w:rPr>
-                                                        <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                  w:hAnsi="Plus Jakarta Sans"/>
-                                                        <w:b/>
-                                                        <w:bCs/>
-                                                        <w:color w:val="212B46"/>
-                                                        <w:sz w:val="22"/>
-                                                        <w:szCs w:val="22"/>
-                                                    </w:rPr>
-                                                    <w:t>Situatie</w:t>
-                                                </w:r>
-                                            </w:p>
-                                            <xsl:apply-templates select="cv:assignment" mode="markdown"/>
+                                            <xsl:if test="cv:assignment">
+                                                <w:p w14:paraId="4F4CEE96" w14:textId="4FCDD30D" w:rsidR="00B2333C"
+                                                     w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
+                                                    <w:r w:rsidRPr="00DE51B1">
+                                                        <w:rPr>
+                                                            <w:rFonts w:ascii="Plus Jakarta Sans"
+                                                                      w:hAnsi="Plus Jakarta Sans"/>
+                                                            <w:b/>
+                                                            <w:bCs/>
+                                                            <w:color w:val="212B46"/>
+                                                            <w:sz w:val="22"/>
+                                                            <w:szCs w:val="22"/>
+                                                        </w:rPr>
+                                                        <w:t>Situatie</w:t>
+                                                    </w:r>
+                                                </w:p>
+                                                <xsl:apply-templates select="cv:assignment" mode="markdown"/>
+                                            </xsl:if>
 
                                             <xsl:if test="cv:activities">
                                                 <w:p w14:paraId="6736B730" w14:textId="3D978164" w:rsidR="00B2333C"
@@ -826,7 +806,7 @@
                     </w:pPr>
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:role" mode="localized"/>
+                            <xsl:value-of select="cv:role"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -885,7 +865,7 @@
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:apply-templates select="cv:title" mode="localized"/>
+                    <xsl:value-of select="cv:title"/>
                 </w:t>
             </w:r>
         </w:p>
@@ -915,7 +895,7 @@
                     <w:szCs w:val="18"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:apply-templates select="cv:description" mode="localized"/>
+                    <xsl:value-of select="cv:description"/>
                 </w:t>
             </w:r>
             <w:proofErr w:type="spellEnd"/>
@@ -975,7 +955,7 @@
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:apply-templates select="cv:referentFunction" mode="localized"/>
+                    <xsl:value-of select="cv:referentFunction"/>
                 </w:t>
                 <xsl:if test="cv:client">
                     <w:t xml:space="preserve"> </w:t>
@@ -1011,7 +991,7 @@
                     <w:szCs w:val="18"/>
                 </w:rPr>
                 <w:t>
-                    <xsl:apply-templates select="cv:description" mode="localized"/>
+                    <xsl:value-of select="cv:description"/>
                 </w:t>
             </w:r>
             <w:proofErr w:type="spellEnd"/>

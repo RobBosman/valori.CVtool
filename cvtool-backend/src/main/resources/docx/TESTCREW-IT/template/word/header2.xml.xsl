@@ -67,7 +67,8 @@
                                                     <a:extLst>
                                                         <a:ext>
                                                             <xsl:attribute name="uri">
-                                                                <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
+                                                                <xsl:value-of
+                                                                        select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                             </xsl:attribute>
                                                             <a14:useLocalDpi val="0"/>
                                                         </a:ext>
@@ -134,7 +135,8 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
+                                                            <xsl:value-of
+                                                                    select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
@@ -192,7 +194,7 @@
                                 <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
                                     <pic:pic>
                                         <pic:nvPicPr>
-                                            <pic:cNvPr id="1" name="Valori - digitaal gebruik.jpg"/>
+                                            <pic:cNvPr id="1" name="TestCrew-IT - digitaal gebruik.jpg"/>
                                             <pic:cNvPicPr/>
                                         </pic:nvPicPr>
                                         <pic:blipFill>
@@ -200,7 +202,8 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
+                                                            <xsl:value-of
+                                                                    select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
@@ -245,12 +248,12 @@
                 </w:pPr>
                 <w:r w:rsidRPr="00585C2D">
                     <w:t>
-                        <xsl:value-of select="cv:characteristics[cv:includeInCv = 'true']/cv:role/cv:nl_NL"/>
+                        <xsl:value-of select="cv:characteristics[cv:includeInCv = 'true']/cv:role"/>
                     </w:t>
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
-                        <w:rStyle w:val="Valori-geel"/>
+                        <w:rStyle w:val="TestCrew-IT-geel"/>
                     </w:rPr>
                     <w:t xml:space="preserve">&#xA0;// </w:t>
                 </w:r>
@@ -261,7 +264,7 @@
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
-                        <w:rStyle w:val="Valori-geel"/>
+                        <w:rStyle w:val="TestCrew-IT-geel"/>
                     </w:rPr>
                     <w:t xml:space="preserve">&#xA0;// </w:t>
                 </w:r>
@@ -272,7 +275,7 @@
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
-                        <w:rStyle w:val="Valori-geel"/>
+                        <w:rStyle w:val="TestCrew-IT-geel"/>
                     </w:rPr>
                     <w:t xml:space="preserve">&#xA0;//</w:t>
                 </w:r>

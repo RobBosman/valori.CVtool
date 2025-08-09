@@ -27,7 +27,7 @@
                 PROFILE
 
                 -->
-                <xsl:variable name="profile" select="cv:characteristics[cv:includeInCv = 'true']/cv:profile/cv:nl_NL"/>
+                <xsl:variable name="profile" select="cv:characteristics[cv:includeInCv = 'true']/cv:profile"/>
                 <xsl:if test="$profile">
                     <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949"
                          w:rsidP="00D55949">
@@ -551,7 +551,7 @@
                 INTERESTS
 
                 -->
-                <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests/cv:nl_NL"/>
+                <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests"/>
                 <xsl:if test="$interests">
                     <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -691,7 +691,7 @@
             <xsl:apply-templates select="$skills">
                 <xsl:with-param name="last" select="count($skills)"/>
                 <xsl:sort select="cv:skillLevel" data-type="number" order="descending"/>
-                <xsl:sort select="cv:description/cv:nl_NL"/>
+                <xsl:sort select="cv:description"/>
             </xsl:apply-templates>
         </xsl:if>
     </xsl:template>
@@ -721,7 +721,7 @@
                 </w:rPr>
                 <w:t>
                     <xsl:call-template name="wrap-description">
-                        <xsl:with-param name="text" select="cv:description/cv:nl_NL"/>
+                        <xsl:with-param name="text" select="cv:description"/>
                         <xsl:with-param name="maxWidthMillis" select="number(42.0)"/>
                         <xsl:with-param name="newline"><w:br/></xsl:with-param>
                     </xsl:call-template>
@@ -766,7 +766,7 @@
                      w:rsidP="001860B4">
                     <w:r>
                         <w:t>
-                            <xsl:value-of select="cv:role/cv:nl_NL"/>
+                            <xsl:value-of select="cv:role"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -798,7 +798,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:value-of select="cv:name/cv:nl_NL"/>
+                            <xsl:value-of select="cv:name"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -865,7 +865,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:value-of select="cv:name/cv:nl_NL"/>
+                            <xsl:value-of select="cv:name"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -926,7 +926,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:value-of select="cv:title/cv:nl_NL"/>
+                            <xsl:value-of select="cv:title"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -965,7 +965,7 @@
                      w:rsidP="000B7B5E">
                     <w:r>
                         <w:t>
-                            <xsl:value-of select="cv:description/cv:nl_NL"/>
+                            <xsl:value-of select="cv:description"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -998,7 +998,7 @@
                         </w:t>
                         <w:t xml:space="preserve"> &#x2500; </w:t>
                         <w:t>
-                            <xsl:apply-templates select="cv:referentFunction" mode="locale-placeholder"/>
+                            <xsl:value-of select="cv:referentFunction"/>
                         </w:t>
                         <xsl:if test="cv:client">
                             <w:t xml:space="preserve"> </w:t>
@@ -1020,7 +1020,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:t>
-                            <xsl:apply-templates select="cv:description/cv:nl_NL" mode="markdown"/>
+                            <xsl:apply-templates select="cv:description" mode="markdown"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -1061,7 +1061,7 @@
                             <w:rStyle w:val="TestCrew-IT-geel"/>
                         </w:rPr>
                         <w:t>
-                            <xsl:value-of select="cv:role/cv:nl_NL"/>
+                            <xsl:value-of select="cv:role"/>
                         </w:t>
                     </w:r>
                 </w:p>
@@ -1084,9 +1084,9 @@
                         <w:left w:w="113" w:type="dxa"/>
                     </w:tcMar>
                 </w:tcPr>
-                <xsl:variable name="assignment" select="cv:assignment/cv:nl_NL"/>
+                <xsl:variable name="assignment" select="cv:assignment"/>
                 <xsl:apply-templates select="$assignment" mode="markdown"/>
-                <xsl:variable name="activities" select="cv:activities/cv:nl_NL"/>
+                <xsl:variable name="activities" select="cv:activities"/>
                 <xsl:if test="$activities">
                     <w:p w14:paraId="4C066476" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRDefault="00A52C14"
                          w:rsidP="00A52C14">
@@ -1102,7 +1102,7 @@
                     </w:p>
                     <xsl:apply-templates select="$activities" mode="markdown"/>
                 </xsl:if>
-                <xsl:variable name="results" select="cv:results/cv:nl_NL"/>
+                <xsl:variable name="results" select="cv:results"/>
                 <xsl:if test="$results">
                     <w:p w14:paraId="05A636A2" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881"
                          w:rsidRDefault="00A52C14" w:rsidP="00A52C14">
@@ -1118,7 +1118,7 @@
                     </w:p>
                     <xsl:apply-templates select="$results" mode="markdown"/>
                 </xsl:if>
-                <xsl:variable name="keywords" select="cv:keywords/cv:nl_NL"/>
+                <xsl:variable name="keywords" select="cv:keywords"/>
                 <xsl:if test="$keywords">
                     <w:p w14:paraId="62A3EFF7" w14:textId="77777777" w:rsidR="00A52C14" w:rsidRPr="00C97881"
                          w:rsidRDefault="00A52C14" w:rsidP="00A52C14">

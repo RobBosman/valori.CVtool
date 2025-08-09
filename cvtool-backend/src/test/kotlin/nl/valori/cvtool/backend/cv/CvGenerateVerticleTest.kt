@@ -15,7 +15,7 @@ internal class CvGenerateVerticleTest {
         val xslt = CvGenerateVerticle.createXslTemplate(docxTemplate, "/test.xsl")
         val expectedResult = javaClass.getResource("/test-result-$docxTemplate.xml")!!.readBytes()
 
-        val result = CvGenerateVerticle.xslTransform(xml, xslt)
+        val result = CvGenerateVerticle.xslTransform(xml, xslt, "nl_NL")
         assertArrayEquals(expectedResult, result)
     }
 
@@ -28,7 +28,7 @@ internal class CvGenerateVerticleTest {
         val numGenerations = 100
         val startMillis = System.currentTimeMillis()
         IntStream.range(0, numGenerations).forEach {
-            generator.xmlToDocx(generator.convertToXml(json), docxTemplate, "nl_NL")
+            generator.xmlToDocx(generator.convertToDocxXml(json), docxTemplate, "nl_NL")
         }
         println("generating $numGenerations cvs took ${System.currentTimeMillis() - startMillis} ms")
     }

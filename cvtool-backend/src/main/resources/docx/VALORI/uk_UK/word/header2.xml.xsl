@@ -245,8 +245,7 @@
                 </w:pPr>
                 <w:r w:rsidRPr="00585C2D">
                     <w:t>
-                        <xsl:apply-templates select="cv:characteristics[cv:includeInCv = 'true']/cv:role"
-                                             mode="locale-placeholder"/>
+                        <xsl:value-of select="cv:characteristics[cv:includeInCv = 'true']/cv:role"/>
                     </w:t>
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">

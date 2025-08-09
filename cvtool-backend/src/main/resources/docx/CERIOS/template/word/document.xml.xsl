@@ -1,53 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
-        exclude-result-prefixes="cv"
-        xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
-        xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
-        xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
-        xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex"
-        xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex"
-        xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex"
-        xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex"
-        xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex"
-        xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink"
-        xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d"
-        xmlns:o="urn:schemas-microsoft-com:office:office"
-        xmlns:oel="http://schemas.microsoft.com/office/2019/extlst"
-        xmlns:r="http://purl.oclc.org/ooxml/officeDocument/relationships"
-        xmlns:m="http://purl.oclc.org/ooxml/officeDocument/math"
-        xmlns:v="urn:schemas-microsoft-com:vml"
-        xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
-        xmlns:wp="http://purl.oclc.org/ooxml/drawingml/wordprocessingDrawing"
-        xmlns:w10="urn:schemas-microsoft-com:office:word"
-        xmlns:w="http://purl.oclc.org/ooxml/wordprocessingml/main"
-        xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
-        xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
-        xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"
-        xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid"
-        xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"
-        xmlns:w16du="http://schemas.microsoft.com/office/word/2023/wordml/word16du"
-        xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"
-        xmlns:w16sdtfl="http://schemas.microsoft.com/office/word/2024/wordml/sdtformatlock"
-        xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"
-        xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
-        xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-        version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+                exclude-result-prefixes="cv"
+                xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex"
+                xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex"
+                xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex"
+                xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex"
+                xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex"
+                xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex"
+                xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex"
+                xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex"
+                xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink"
+                xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d"
+                xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:oel="http://schemas.microsoft.com/office/2019/extlst"
+                xmlns:r="http://purl.oclc.org/ooxml/officeDocument/relationships"
+                xmlns:m="http://purl.oclc.org/ooxml/officeDocument/math"
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
+                xmlns:wp="http://purl.oclc.org/ooxml/drawingml/wordprocessingDrawing"
+                xmlns:w10="urn:schemas-microsoft-com:office:word"
+                xmlns:w="http://purl.oclc.org/ooxml/wordprocessingml/main"
+                xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+                xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
+                xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex"
+                xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid"
+                xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml"
+                xmlns:w16du="http://schemas.microsoft.com/office/word/2023/wordml/word16du"
+                xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash"
+                xmlns:w16sdtfl="http://schemas.microsoft.com/office/word/2024/wordml/sdtformatlock"
+                xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex"
+                xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
+                xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
+                version="1.0">
 
     <xsl:import href="../../../common.xsl"/>
     <xsl:import href="../../common-brand.xsl"/>
     <xsl:import href="../common-nl_NL.xsl"/>
 
     <!-- Parameter 'cv_locale' is used to select the correct language version of a text node. -->
-    <xsl:param name="cv_locale" select="'nl_NL'"/>
+    <xsl:param name="cv_locale"/>
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
     <xsl:template match="/cv:root">
         <xsl:variable name="characteristics" select="cv:characteristics[cv:includeInCv = 'true']"/>
+        <xsl:variable name="profile" select="$characteristics/cv:profile"/>
+        <xsl:variable name="educations" select="cv:education[cv:includeInCv = 'true']"/>
+        <xsl:variable name="trainings" select="cv:training[cv:includeInCv = 'true']"/>
+        <xsl:variable name="experiences" select="cv:experience[cv:includeInCv = 'true']"/>
+        <xsl:variable name="experienceOverviewItems" select="cv:experience[cv:includeInOverview = 'true']"/>
+        <xsl:variable name="publications" select="cv:publication[cv:includeInCv = 'true']"/>
+        <xsl:variable name="references" select="cv:reference[cv:includeInCv = 'true']"/>
+
         <w:document mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du wne wp14"
                     w:conformance="strict">
             <w:body>
@@ -64,8 +71,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251668480" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="413458E8" wp14:editId="0D83563D">
+                                       allowOverlap="1" wp14:anchorId="413458E8" wp14:editId="0D83563D">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>4987412</wp:posOffset>
@@ -140,8 +146,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -389,8 +394,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -416,8 +420,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251656190" behindDoc="1" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="72854C67" wp14:editId="5C654BAF">
+                                       allowOverlap="1" wp14:anchorId="72854C67" wp14:editId="5C654BAF">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-912752</wp:posOffset>
@@ -474,8 +477,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251678720" behindDoc="1" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="41AA082E" wp14:editId="32279833">
+                                       allowOverlap="1" wp14:anchorId="41AA082E" wp14:editId="32279833">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>194310</wp:posOffset>
@@ -544,8 +546,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251660288" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="24CE036A" wp14:editId="6DEFC1A3">
+                                       allowOverlap="1" wp14:anchorId="24CE036A" wp14:editId="6DEFC1A3">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-184785</wp:posOffset>
@@ -613,8 +614,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -668,8 +668,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251689984" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="53C0D026" wp14:editId="3AB696FB">
+                                       allowOverlap="1" wp14:anchorId="53C0D026" wp14:editId="3AB696FB">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-454025</wp:posOffset>
@@ -725,70 +724,6 @@
                             </wp:anchor>
                         </w:drawing>
                     </w:r>
-                    <w:r w:rsidR="00065B83">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
-                        <w:drawing>
-                            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                       relativeHeight="251702272" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="67CF79A2" wp14:editId="50F8A87B">
-                                <wp:simplePos x="0" y="0"/>
-                                <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>-453390</wp:posOffset>
-                                </wp:positionH>
-                                <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>5931454</wp:posOffset>
-                                </wp:positionV>
-                                <wp:extent cx="827314" cy="0"/>
-                                <wp:effectExtent l="0" t="12700" r="24130" b="12700"/>
-                                <wp:wrapNone/>
-                                <wp:docPr id="405830428" name="Straight Connector 15"/>
-                                <wp:cNvGraphicFramePr/>
-                                <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
-                                    <a:graphicData
-                                            uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-                                        <wp:wsp>
-                                            <wp:cNvCnPr/>
-                                            <wp:spPr>
-                                                <a:xfrm>
-                                                    <a:off x="0" y="0"/>
-                                                    <a:ext cx="827314" cy="0"/>
-                                                </a:xfrm>
-                                                <a:prstGeom prst="line">
-                                                    <a:avLst/>
-                                                </a:prstGeom>
-                                                <a:ln>
-                                                    <a:solidFill>
-                                                        <a:srgbClr val="55DD94"/>
-                                                    </a:solidFill>
-                                                </a:ln>
-                                            </wp:spPr>
-                                            <wp:style>
-                                                <a:lnRef idx="2">
-                                                    <a:schemeClr val="accent6"/>
-                                                </a:lnRef>
-                                                <a:fillRef idx="0">
-                                                    <a:schemeClr val="accent6"/>
-                                                </a:fillRef>
-                                                <a:effectRef idx="1">
-                                                    <a:schemeClr val="accent6"/>
-                                                </a:effectRef>
-                                                <a:fontRef idx="minor">
-                                                    <a:schemeClr val="tx1"/>
-                                                </a:fontRef>
-                                            </wp:style>
-                                            <wp:bodyPr/>
-                                        </wp:wsp>
-                                    </a:graphicData>
-                                </a:graphic>
-                                <wp14:sizeRelH relativeFrom="margin">
-                                    <wp14:pctWidth>0%</wp14:pctWidth>
-                                </wp14:sizeRelH>
-                            </wp:anchor>
-                        </w:drawing>
-                    </w:r>
                     <w:r w:rsidR="001958BA" w:rsidRPr="00D52540">
                         <w:rPr>
                             <w:noProof/>
@@ -796,8 +731,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251655165" behindDoc="1" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="52B7CF1E" wp14:editId="31659129">
+                                       allowOverlap="1" wp14:anchorId="52B7CF1E" wp14:editId="31659129">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>3383915</wp:posOffset>
@@ -856,8 +790,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251669504" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="5A312803" wp14:editId="2FFD9698">
+                                       allowOverlap="1" wp14:anchorId="5A312803" wp14:editId="2FFD9698">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-545123</wp:posOffset>
@@ -917,8 +850,6 @@
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
                                                             <w:t>
-                                                                <xsl:variable name="profile"
-                                                                              select="$characteristics/cv:profile"/>
                                                                 <xsl:apply-templates select="$profile" mode="markdown"/>
                                                             </w:t>
                                                         </w:r>
@@ -928,8 +859,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -955,8 +885,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251671552" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="6159BDFF" wp14:editId="357C47DF">
+                                       allowOverlap="1" wp14:anchorId="6159BDFF" wp14:editId="357C47DF">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>2840355</wp:posOffset>
@@ -991,8 +920,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -1018,8 +946,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251674624" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="783536A8" wp14:editId="7BDDF852">
+                                       allowOverlap="1" wp14:anchorId="783536A8" wp14:editId="7BDDF852">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-546100</wp:posOffset>
@@ -1078,8 +1005,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -1105,8 +1031,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251668991" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="3D5826BC" wp14:editId="0D8C587B">
+                                       allowOverlap="1" wp14:anchorId="3D5826BC" wp14:editId="0D8C587B">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-546735</wp:posOffset>
@@ -1158,8 +1083,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -1175,100 +1099,164 @@
                             </wp:anchor>
                         </w:drawing>
                     </w:r>
-                    <w:r w:rsidR="000E5868">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
-                        <w:drawing>
-                            <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                       relativeHeight="251675648" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="4527B553" wp14:editId="74321C57">
-                                <wp:simplePos x="0" y="0"/>
-                                <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>-546100</wp:posOffset>
-                                </wp:positionH>
-                                <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>5646420</wp:posOffset>
-                                </wp:positionV>
-                                <wp:extent cx="3352800" cy="660400"/>
-                                <wp:effectExtent l="0" t="0" r="0" b="0"/>
-                                <wp:wrapNone/>
-                                <wp:docPr id="754747958" name="Text Box 9"/>
-                                <wp:cNvGraphicFramePr/>
-                                <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
-                                    <a:graphicData
-                                            uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
-                                        <wp:wsp>
-                                            <wp:cNvSpPr txBox="1"/>
-                                            <wp:spPr>
-                                                <a:xfrm>
-                                                    <a:off x="0" y="0"/>
-                                                    <a:ext cx="3352800" cy="660400"/>
-                                                </a:xfrm>
-                                                <a:prstGeom prst="rect">
-                                                    <a:avLst/>
-                                                </a:prstGeom>
-                                                <a:noFill/>
-                                                <a:ln w="6350">
+                    <xsl:if test="$characteristics/cv:interests">
+                        <w:r w:rsidR="00065B83">
+                            <w:rPr>
+                                <w:noProof/>
+                            </w:rPr>
+                            <w:drawing>
+                                <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
+                                           relativeHeight="251702272" behindDoc="0" locked="0" layoutInCell="1"
+                                           allowOverlap="1" wp14:anchorId="67CF79A2" wp14:editId="50F8A87B">
+                                    <wp:simplePos x="0" y="0"/>
+                                    <wp:positionH relativeFrom="column">
+                                        <wp:posOffset>-453390</wp:posOffset>
+                                    </wp:positionH>
+                                    <wp:positionV relativeFrom="paragraph">
+                                        <wp:posOffset>5931454</wp:posOffset>
+                                    </wp:positionV>
+                                    <wp:extent cx="827314" cy="0"/>
+                                    <wp:effectExtent l="0" t="12700" r="24130" b="12700"/>
+                                    <wp:wrapNone/>
+                                    <wp:docPr id="405830428" name="Straight Connector 15"/>
+                                    <wp:cNvGraphicFramePr/>
+                                    <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
+                                        <a:graphicData
+                                                uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                                            <wp:wsp>
+                                                <wp:cNvCnPr/>
+                                                <wp:spPr>
+                                                    <a:xfrm>
+                                                        <a:off x="0" y="0"/>
+                                                        <a:ext cx="827314" cy="0"/>
+                                                    </a:xfrm>
+                                                    <a:prstGeom prst="line">
+                                                        <a:avLst/>
+                                                    </a:prstGeom>
+                                                    <a:ln>
+                                                        <a:solidFill>
+                                                            <a:srgbClr val="55DD94"/>
+                                                        </a:solidFill>
+                                                    </a:ln>
+                                                </wp:spPr>
+                                                <wp:style>
+                                                    <a:lnRef idx="2">
+                                                        <a:schemeClr val="accent6"/>
+                                                    </a:lnRef>
+                                                    <a:fillRef idx="0">
+                                                        <a:schemeClr val="accent6"/>
+                                                    </a:fillRef>
+                                                    <a:effectRef idx="1">
+                                                        <a:schemeClr val="accent6"/>
+                                                    </a:effectRef>
+                                                    <a:fontRef idx="minor">
+                                                        <a:schemeClr val="tx1"/>
+                                                    </a:fontRef>
+                                                </wp:style>
+                                                <wp:bodyPr/>
+                                            </wp:wsp>
+                                        </a:graphicData>
+                                    </a:graphic>
+                                    <wp14:sizeRelH relativeFrom="margin">
+                                        <wp14:pctWidth>0%</wp14:pctWidth>
+                                    </wp14:sizeRelH>
+                                </wp:anchor>
+                            </w:drawing>
+                        </w:r>
+                        <w:r w:rsidR="000E5868">
+                            <w:rPr>
+                                <w:noProof/>
+                            </w:rPr>
+                            <w:drawing>
+                                <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
+                                           relativeHeight="251675648" behindDoc="0" locked="0" layoutInCell="1"
+                                           allowOverlap="1" wp14:anchorId="4527B553" wp14:editId="74321C57">
+                                    <wp:simplePos x="0" y="0"/>
+                                    <wp:positionH relativeFrom="column">
+                                        <wp:posOffset>-546100</wp:posOffset>
+                                    </wp:positionH>
+                                    <wp:positionV relativeFrom="paragraph">
+                                        <wp:posOffset>5646420</wp:posOffset>
+                                    </wp:positionV>
+                                    <wp:extent cx="3352800" cy="660400"/>
+                                    <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                                    <wp:wrapNone/>
+                                    <wp:docPr id="754747958" name="Text Box 9"/>
+                                    <wp:cNvGraphicFramePr/>
+                                    <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
+                                        <a:graphicData
+                                                uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                                            <wp:wsp>
+                                                <wp:cNvSpPr txBox="1"/>
+                                                <wp:spPr>
+                                                    <a:xfrm>
+                                                        <a:off x="0" y="0"/>
+                                                        <a:ext cx="3352800" cy="660400"/>
+                                                    </a:xfrm>
+                                                    <a:prstGeom prst="rect">
+                                                        <a:avLst/>
+                                                    </a:prstGeom>
                                                     <a:noFill/>
-                                                </a:ln>
-                                            </wp:spPr>
-                                            <wp:txbx>
-                                                <wne:txbxContent>
-                                                    <w:p w14:paraId="76C9C377" w14:textId="77777777" w:rsidR="000E5868"
-                                                         w:rsidRPr="00D51FD7" w:rsidRDefault="00D52540"
-                                                         w:rsidP="005815D4">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="Titel1"/>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="00D51FD7">
-                                                            <w:t>Interesses</w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="62C664D3" w14:textId="2DD59BE1" w:rsidR="00D52540"
-                                                         w:rsidRPr="000E5868" w:rsidRDefault="00D52540"
-                                                         w:rsidP="000E5868">
-                                                        <w:pPr>
-                                                            <w:spacing w:before="12pt"/>
-                                                        </w:pPr>
-                                                        <w:r w:rsidRPr="000E5868">
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="Plus Jakarta Sans"
-                                                                          w:hAnsi="Plus Jakarta Sans"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                            <w:t>
-                                                                <xsl:value-of select="$characteristics/cv:interests"/>
-                                                            </w:t>
-                                                        </w:r>
-                                                    </w:p>
-                                                </wne:txbxContent>
-                                            </wp:txbx>
-                                            <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
-                                                       horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
-                                                       tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
-                                                       compatLnSpc="1">
-                                                <a:prstTxWarp prst="textNoShape">
-                                                    <a:avLst/>
-                                                </a:prstTxWarp>
-                                                <a:noAutofit/>
-                                            </wp:bodyPr>
-                                        </wp:wsp>
-                                    </a:graphicData>
-                                </a:graphic>
-                                <wp14:sizeRelH relativeFrom="margin">
-                                    <wp14:pctWidth>0%</wp14:pctWidth>
-                                </wp14:sizeRelH>
-                                <wp14:sizeRelV relativeFrom="margin">
-                                    <wp14:pctHeight>0%</wp14:pctHeight>
-                                </wp14:sizeRelV>
-                            </wp:anchor>
-                        </w:drawing>
-                    </w:r>
+                                                    <a:ln w="6350">
+                                                        <a:noFill/>
+                                                    </a:ln>
+                                                </wp:spPr>
+                                                <wp:txbx>
+                                                    <wne:txbxContent>
+                                                        <w:p w14:paraId="76C9C377" w14:textId="77777777"
+                                                             w:rsidR="000E5868" w:rsidRPr="00D51FD7"
+                                                             w:rsidRDefault="00D52540" w:rsidP="005815D4">
+                                                            <w:pPr>
+                                                                <w:pStyle w:val="Titel1"/>
+                                                            </w:pPr>
+                                                            <w:r w:rsidRPr="00D51FD7">
+                                                                <w:t>Interesses</w:t>
+                                                            </w:r>
+                                                        </w:p>
+                                                        <w:p w14:paraId="62C664D3" w14:textId="2DD59BE1"
+                                                             w:rsidR="00D52540" w:rsidRPr="000E5868"
+                                                             w:rsidRDefault="00D52540" w:rsidP="000E5868">
+                                                            <w:pPr>
+                                                                <w:spacing w:before="12pt"/>
+                                                            </w:pPr>
+                                                            <w:r w:rsidRPr="000E5868">
+                                                                <w:rPr>
+                                                                    <w:rFonts w:ascii="Plus Jakarta Sans"
+                                                                              w:hAnsi="Plus Jakarta Sans"/>
+                                                                    <w:sz w:val="18"/>
+                                                                    <w:szCs w:val="18"/>
+                                                                </w:rPr>
+                                                                <w:t>
+                                                                    <xsl:value-of
+                                                                            select="$characteristics/cv:interests"/>
+                                                                </w:t>
+                                                            </w:r>
+                                                        </w:p>
+                                                    </wne:txbxContent>
+                                                </wp:txbx>
+                                                <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
+                                                           horzOverflow="overflow" vert="horz" wrap="square"
+                                                           lIns="91440" tIns="45720" rIns="91440" bIns="45720"
+                                                           numCol="1" spcCol="0" rtlCol="0" fromWordArt="0" anchor="t"
+                                                           anchorCtr="0" forceAA="0" compatLnSpc="1">
+                                                    <a:prstTxWarp prst="textNoShape">
+                                                        <a:avLst/>
+                                                    </a:prstTxWarp>
+                                                    <a:noAutofit/>
+                                                </wp:bodyPr>
+                                            </wp:wsp>
+                                        </a:graphicData>
+                                    </a:graphic>
+                                    <wp14:sizeRelH relativeFrom="margin">
+                                        <wp14:pctWidth>0%</wp14:pctWidth>
+                                    </wp14:sizeRelH>
+                                    <wp14:sizeRelV relativeFrom="margin">
+                                        <wp14:pctHeight>0%</wp14:pctHeight>
+                                    </wp14:sizeRelV>
+                                </wp:anchor>
+                            </w:drawing>
+                        </w:r>
+                    </xsl:if>
                     <w:r w:rsidR="00B11653">
                         <w:br w:type="page"/>
                     </w:r>
@@ -1303,8 +1291,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251692032" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="1ABC1FD6" wp14:editId="1FAFAECC">
+                                       allowOverlap="1" wp14:anchorId="1ABC1FD6" wp14:editId="1FAFAECC">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-635</wp:posOffset>
@@ -1373,8 +1360,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251683840" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="65A007C0" wp14:editId="5A8EF887">
+                                       allowOverlap="1" wp14:anchorId="65A007C0" wp14:editId="5A8EF887">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>-86116</wp:posOffset>
@@ -1407,7 +1393,6 @@
                                             </wp:spPr>
                                             <wp:txbx>
                                                 <wne:txbxContent>
-
                                                     <!-- BRANCHES -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">BRANCHES</xsl:with-param>
@@ -1424,14 +1409,12 @@
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">LANGUAGES</xsl:with-param>
                                                     </xsl:call-template>
-
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -1457,8 +1440,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251688960" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="7FC684E5" wp14:editId="0FFFE8B0">
+                                       allowOverlap="1" wp14:anchorId="7FC684E5" wp14:editId="0FFFE8B0">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>1812339</wp:posOffset>
@@ -1514,7 +1496,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"> </w:t>
+                                                            <w:t xml:space="preserve"></w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -1535,7 +1517,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"> </w:t>
+                                                            <w:t xml:space="preserve"></w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -1556,7 +1538,7 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t xml:space="preserve"> </w:t>
+                                                            <w:t xml:space="preserve"></w:t>
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
@@ -1575,8 +1557,7 @@
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="none" lIns="91440"
                                                        tIns="108000" rIns="91440" bIns="108000" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="ctr" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -1599,8 +1580,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251687936" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="35229AC4" wp14:editId="1074F567">
+                                       allowOverlap="1" wp14:anchorId="35229AC4" wp14:editId="1074F567">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>4514215</wp:posOffset>
@@ -1633,7 +1613,6 @@
                                             </wp:spPr>
                                             <wp:txbx>
                                                 <wne:txbxContent>
-
                                                     <!-- PROGRAMMING -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">PROGRAMMING</xsl:with-param>
@@ -1646,14 +1625,12 @@
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">OS_NETWORKS</xsl:with-param>
                                                     </xsl:call-template>
-
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -1679,8 +1656,7 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251685888" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="215EC998" wp14:editId="39E139D8">
+                                       allowOverlap="1" wp14:anchorId="215EC998" wp14:editId="39E139D8">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
                                     <wp:posOffset>2219250</wp:posOffset>
@@ -1713,7 +1689,6 @@
                                             </wp:spPr>
                                             <wp:txbx>
                                                 <wne:txbxContent>
-
                                                     <!-- APPLICATIONS -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">APPLICATIONS</xsl:with-param>
@@ -1722,14 +1697,12 @@
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">TOOLS</xsl:with-param>
                                                     </xsl:call-template>
-
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                        horzOverflow="overflow" vert="horz" wrap="square" lIns="91440"
                                                        tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                       rtlCol="0"
-                                                       fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
+                                                       rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0" forceAA="0"
                                                        compatLnSpc="1">
                                                 <a:prstTxWarp prst="textNoShape">
                                                     <a:avLst/>
@@ -1757,8 +1730,6 @@
                 EDUCATION AND TRAINING
 
                 -->
-                <xsl:variable name="educations" select="cv:education[cv:includeInCv = 'true']"/>
-                <xsl:variable name="trainings" select="cv:training[cv:includeInCv = 'true']"/>
                 <xsl:if test="$educations or $trainings">
                     <w:p w14:paraId="3B70A471" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                          w:rsidP="00604B30">
@@ -1968,12 +1939,10 @@
                                     </w:p>
                                 </w:tc>
                             </w:tr>
-
                             <xsl:apply-templates select="$educations">
                                 <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
                                 <xsl:sort select="cv:result"/>
                             </xsl:apply-templates>
-
                             <w:tr w:rsidR="001405E4" w14:paraId="5EBC8C3A" w14:textId="2BF52654" w:rsidTr="00594200">
                                 <w:trPr>
                                     <w:trHeight w:val="454"/>
@@ -2128,12 +2097,10 @@
                                     </w:p>
                                 </w:tc>
                             </w:tr>
-
                             <xsl:apply-templates select="$trainings">
                                 <xsl:sort select="cv:year" data-type="number" order="descending"/>
                                 <xsl:sort select="cv:result"/>
                             </xsl:apply-templates>
-
                             <w:tr w:rsidR="001405E4" w14:paraId="60F7DABA" w14:textId="6F3DC714" w:rsidTr="00594200">
                                 <w:trPr>
                                     <w:trHeight w:val="454"/>
@@ -2237,7 +2204,6 @@
                 EXPERIENCE
 
                 -->
-                <xsl:variable name="experiences" select="cv:experience[cv:includeInCv = 'true']"/>
                 <xsl:if test="$experiences">
                     <w:p w14:paraId="6B615F0F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                          w:rsidP="00B2333C">
@@ -2247,8 +2213,7 @@
                                 <w:type w:val="continuous"/>
                                 <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
                                 <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                         w:header="35.45pt"
-                                         w:footer="2.85pt" w:gutter="0pt"/>
+                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
                                 <w:cols w:space="17.45pt"/>
                                 <w:docGrid w:linePitch="360"/>
                             </w:sectPr>
@@ -2267,8 +2232,7 @@
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                            relativeHeight="251696128" behindDoc="0" locked="0" layoutInCell="1"
-                                           allowOverlap="1"
-                                           wp14:anchorId="0E3D2438" wp14:editId="7C3F9A4D">
+                                           allowOverlap="1" wp14:anchorId="0E3D2438" wp14:editId="7C3F9A4D">
                                     <wp:simplePos x="0" y="0"/>
                                     <wp:positionH relativeFrom="column">
                                         <wp:posOffset>-635</wp:posOffset>
@@ -2334,7 +2298,6 @@
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
                     </w:p>
-
                     <xsl:apply-templates select="$experiences">
                         <xsl:sort select="cv:sortIndex" data-type="number"/>
                     </xsl:apply-templates>
@@ -2344,7 +2307,6 @@
                 EXPERIENCES OVERVIEW
 
                 -->
-                <xsl:variable name="experienceOverviewItems" select="cv:experience[cv:includeInOverview = 'true']"/>
                 <xsl:if test="$experienceOverviewItems">
                     <w:p w14:paraId="24FEE188" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                          w:rsidP="00B2333C"/>
@@ -2513,8 +2475,7 @@
                                     <w:tcW w:w="176pt" w:type="dxa"/>
                                 </w:tcPr>
                                 <w:p w14:paraId="71D46AA5" w14:textId="5C96D0FE" w:rsidR="001405E4"
-                                     w:rsidRDefault="001405E4"
-                                     w:rsidP="00926161">
+                                     w:rsidRDefault="001405E4" w:rsidP="00926161">
                                     <w:pPr>
                                         <w:pStyle w:val="Pa0"/>
                                         <w:rPr>
@@ -2531,11 +2492,9 @@
                                 </w:p>
                             </w:tc>
                         </w:tr>
-
                         <xsl:apply-templates select="$experienceOverviewItems" mode="overview">
                             <xsl:sort select="cv:sortIndex" data-type="number"/>
                         </xsl:apply-templates>
-
                     </w:tbl>
                 </xsl:if>
                 <!--
@@ -2543,8 +2502,6 @@
                 PUBLICATIONS AND REFERENCES
 
                 -->
-                <xsl:variable name="publications" select="cv:publication[cv:includeInCv = 'true']"/>
-                <xsl:variable name="references" select="cv:reference[cv:includeInCv = 'true']"/>
                 <xsl:if test="$publications or $references">
                     <w:p w14:paraId="78E9113D" w14:textId="4F1BB34C" w:rsidR="00CC7FCE" w:rsidRPr="00926161"
                          w:rsidRDefault="00CC7FCE" w:rsidP="00926161">
@@ -2587,8 +2544,7 @@
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                                relativeHeight="251700224" behindDoc="0" locked="0" layoutInCell="1"
-                                               allowOverlap="1"
-                                               wp14:anchorId="2352FD51" wp14:editId="2E252DA5">
+                                               allowOverlap="1" wp14:anchorId="2352FD51" wp14:editId="2E252DA5">
                                         <wp:simplePos x="0" y="0"/>
                                         <wp:positionH relativeFrom="column">
                                             <wp:posOffset>-636</wp:posOffset>
@@ -2651,7 +2607,6 @@
                                 <w:t>Publicaties</w:t>
                             </w:r>
                         </w:p>
-
                         <xsl:apply-templates select="$publications"/>
                     </xsl:if>
                     <xsl:if test="$publications and $references">
@@ -2680,8 +2635,7 @@
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                                relativeHeight="251700224" behindDoc="0" locked="0" layoutInCell="1"
-                                               allowOverlap="1"
-                                               wp14:anchorId="2352FD51" wp14:editId="2E252DA5">
+                                               allowOverlap="1" wp14:anchorId="2352FD51" wp14:editId="2E252DA5">
                                         <wp:simplePos x="0" y="0"/>
                                         <wp:positionH relativeFrom="column">
                                             <wp:posOffset>-636</wp:posOffset>
@@ -2744,7 +2698,6 @@
                                 <w:t>Referenties</w:t>
                             </w:r>
                         </w:p>
-
                         <xsl:apply-templates select="$references"/>
                     </xsl:if>
                 </xsl:if>
@@ -2759,5 +2712,4 @@
             </w:body>
         </w:document>
     </xsl:template>
-
 </xsl:stylesheet>

@@ -7,6 +7,7 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.DebouncingVerticle
+import nl.valori.cvtool.backend.ModelUtils.convertToLocalizedJson
 import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.ModelUtils.jsonToXml
 import java.io.ByteArrayInputStream
@@ -40,13 +41,17 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             "word/media/passport.photo"
         )
 
+        private val cachedXslIncludesMap = mutableMapOf<String, Map<String, ByteArray>>()
         private fun xslIncludesMap(docxTemplate: String) =
-            mapOf(
-                "common.xsl" to loadBytes("/docx/common.xsl"),
-                "common-brand.xsl" to loadBytes("/docx/$docxTemplate/common-brand.xsl"),
-                "common-nl_NL.xsl" to loadBytes("/docx/$docxTemplate/nl_NL/common-nl_NL.xsl"),
-                "common-uk_UK.xsl" to loadBytes("/docx/$docxTemplate/uk_UK/common-uk_UK.xsl")
-            )
+            cachedXslIncludesMap
+                .computeIfAbsent(docxTemplate) { templateName ->
+                    mapOf(
+                        "common.xsl" to loadBytes("/docx/common.xsl"),
+                        "common-brand.xsl" to loadBytes("/docx/$templateName/common-brand.xsl"),
+                        "common-nl_NL.xsl" to loadBytes("/docx/$templateName/common-nl_NL.xsl"),
+                        "common-uk_UK.xsl" to loadBytes("/docx/$templateName/common-uk_UK.xsl")
+                    )
+                }
 
         private fun transformerFactory(docxTemplate: String) =
             TransformerFactory
@@ -61,43 +66,43 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 }
 
         internal fun createXslTemplate(docxTemplate: String, location: String): Templates =
-            ByteArrayInputStream(loadBytes(location)).use {
-                transformerFactory(docxTemplate).newTemplates(StreamSource(it))
-            }
+            ByteArrayInputStream(loadBytes(location))
+                .use {
+                    transformerFactory(docxTemplate).newTemplates(StreamSource(it))
+                }
 
-        private fun createDocxPartNamesXslTemplatesMap(docxTemplate: String, locale: String) =
-            listOf(
-                "[Content_Types].xml",
-                "docProps/core.xml",
-                "word/_rels/footer1.xml.rels",
-                "word/_rels/footer2.xml.rels",
-                "word/document.xml",
-                "word/footer1.xml",
-                "word/footer2.xml",
-                "word/header1.xml",
-                "word/header2.xml",
-                "word/media/passport.photo"
-            )
-                .associateWith { "/docx/$docxTemplate/$locale/$it.xsl" }
-                .filterValues { CvGenerateVerticle::class.java.getResource(it) != null }
-                .mapValues { (_, location) -> createXslTemplate(docxTemplate, location) }
+        private val cachedDocxPartNamesXslTemplatesMap = mutableMapOf<String, Map<String, Templates>>()
+        private fun getDocxPartNamesXslTemplatesMap(docxTemplate: String) =
+            cachedDocxPartNamesXslTemplatesMap
+                .computeIfAbsent(docxTemplate) { templateName ->
+                    listOf(
+                        "[Content_Types].xml",
+                        "docProps/core.xml",
+                        "word/_rels/footer1.xml.rels",
+                        "word/_rels/footer2.xml.rels",
+                        "word/document.xml",
+                        "word/footer1.xml",
+                        "word/footer2.xml",
+                        "word/header1.xml",
+                        "word/header2.xml",
+                        "word/media/passport.photo"
+                    )
+                        .associateWith { "/docx/$templateName/template/$it.xsl" }
+                        .filterValues { CvGenerateVerticle::class.java.getResource(it) != null }
+                        .mapValues { (_, location) -> createXslTemplate(templateName, location) }
+                }
 
-        private fun docxCoreTemplate(docxTemplate: String) =
-            loadBytes("/docx/$docxTemplate/coreTemplate.docx")
+        private fun docxTemplate(docxTemplate: String) =
+            loadBytes("/docx/$docxTemplate/template.docx")
 
-        private fun docxPartNamesXslTemplatesMap(docxTemplate: String) =
-            mapOf(
-                "nl_NL" to createDocxPartNamesXslTemplatesMap(docxTemplate, "nl_NL"),
-                "uk_UK" to createDocxPartNamesXslTemplatesMap(docxTemplate, "uk_UK"),
-            )
-
-        internal fun xslTransform(xmlBytes: ByteArray, xslTemplate: Templates): ByteArray {
+        internal fun xslTransform(xmlBytes: ByteArray, xslTemplate: Templates, locale: String): ByteArray {
             ByteArrayInputStream(xmlBytes)
                 .use { xml ->
                     ByteArrayOutputStream()
                         .use { result ->
                             xslTemplate
                                 .newTransformer()
+                                .apply { setParameter("cv_locale", locale) }
                                 .transform(StreamSource(xml), StreamResult(result))
                             return result.toByteArray()
                         }
@@ -135,7 +140,9 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                     .firstOrNull()
                     ?.getString("docxTemplate")
                     ?: DEFAULT_DOCX_TEMPLATE
-                xmlToDocx(convertToXml(cvJson), docxTemplate, locale)
+                val docxJson = convertToLocalizedJson(cvJson, locale)
+                val docxXml = convertToDocxXml(docxJson)
+                xmlToDocx(docxXml, docxTemplate, locale)
                     .map { docxBytes ->
                         JsonObject()
                             .put("fileName", composeFileName(cvJson, locale))
@@ -160,7 +167,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, deliveryOptions)
             .map { it.body() }
 
-    internal fun convertToXml(json: JsonObject): ByteArray {
+    internal fun convertToDocxXml(json: JsonObject): ByteArray {
         val writer = ByteArrayOutputStream()
         jsonToXml(json, XMLOutputFactory.newInstance().createXMLStreamWriter(writer), CV_XML_NAMESPACE)
         return writer.toByteArray()
@@ -168,10 +175,10 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     internal fun xmlToDocx(xmlBytes: ByteArray, docxTemplate: String, locale: String) =
         Flowable
-            .fromIterable(docxPartNamesXslTemplatesMap(docxTemplate)[locale]?.entries)
+            .fromIterable(getDocxPartNamesXslTemplatesMap(docxTemplate).entries)
             .parallel()
             .runOn(Schedulers.computation())
-            .map { entry -> entry.key to xslTransform(xmlBytes, entry.value) }
+            .map { entry -> entry.key to xslTransform(xmlBytes, entry.value, locale) }
             .sequential()
             .reduce(HashMap<String, ByteArray>()) { map, (docxEntryName, xsltBytes) ->
                 map[docxEntryName] = xsltBytes
@@ -192,7 +199,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 val docxBytes = ByteArrayOutputStream()
                 ZipOutputStream(docxBytes)
                     .use { docxOutputStream ->
-                        ZipInputStream(ByteArrayInputStream(docxCoreTemplate(docxTemplate)))
+                        ZipInputStream(ByteArrayInputStream(docxTemplate(docxTemplate)))
                             .use { zipIn ->
                                 var entry = zipIn.nextEntry
                                 while (entry != null) {

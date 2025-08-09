@@ -36,18 +36,6 @@
         </xsl:choose>
     </xsl:template>
 
-    <!-- LOCALE PLACEHOLDER -->
-    <xsl:template match="node()" mode="locale-placeholder">
-        <xsl:choose>
-            <xsl:when test="cv:uk_UK">
-                <xsl:value-of select="cv:uk_UK"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="cv:nl_NL"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
     <!-- SKILL CATEGORY -->
     <xsl:template match="* | @* | text()" mode="skill-category">
         <xsl:choose>
