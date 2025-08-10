@@ -92,8 +92,12 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                         .mapValues { (_, location) -> createXslTemplate(templateName, location) }
                 }
 
+        private val cachedDocxTemplate = mutableMapOf<String, ByteArray>()
         private fun docxTemplate(docxTemplate: String) =
-            loadBytes("/docx/$docxTemplate/template.docx")
+            cachedDocxTemplate
+                .computeIfAbsent(docxTemplate) { templateName ->
+                    loadBytes("/docx/$templateName/template.docx")
+                }
 
         internal fun xslTransform(xmlBytes: ByteArray, xslTemplate: Templates, locale: String): ByteArray {
             ByteArrayInputStream(xmlBytes)
@@ -236,7 +240,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
             else -> ""
         }
-        return listOf("CV", locale.substring(3), brand, name)
+        return listOf("CV", locale.substring(3), brand.ifBlank { "UIT-DIENST" }, name)
             .filter { it.isNotBlank() }
             .joinToString("_") + ".docx"
     }
