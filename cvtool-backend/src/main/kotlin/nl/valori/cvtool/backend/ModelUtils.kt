@@ -11,7 +11,7 @@ object ModelUtils {
         val fallbackLocale: String? = null
     )
 
-    private val LOCALIZABLE_FIELDS_PER_ENTITY = mapOf(
+    private val LOCALIZABLE_FIELDS_BY_ENTITY = mapOf(
         "characteristics" to setOf(
             LocalizableField("role", "nl_NL"),
             LocalizableField("profile"),
@@ -94,20 +94,21 @@ object ModelUtils {
     fun convertToLocalizedJson(json: JsonObject, locale: String) =
         json.apply {
             forEach { (entityName, instances) ->
-                val localizableFields = LOCALIZABLE_FIELDS_PER_ENTITY[entityName]
+                val localizableFields = LOCALIZABLE_FIELDS_BY_ENTITY[entityName]
                 if (localizableFields != null && instances is JsonObject) {
-                    instances.forEach { (_, instance) ->
-                        if (instance is JsonObject) {
-                            instance.forEach { (fieldName, fieldValue) ->
-                                val localizable = localizableFields.find { it.fieldName == fieldName }
-                                if (localizable != null && fieldValue is JsonObject) {
-                                    val localizedText = fieldValue.getValue(locale)
-                                        ?: localizable.fallbackLocale?.let { fieldValue.getValue(it) }
-                                    instance.put(fieldName, localizedText)
+                    instances
+                        .mapNotNull { (_, instance) -> instance as? JsonObject }
+                        .forEach { instance ->
+                            instance
+                                .forEach { (fieldName, fieldValue) ->
+                                    val localizable = localizableFields.find { it.fieldName == fieldName }
+                                    if (localizable != null && fieldValue is JsonObject) {
+                                        val localizedText = fieldValue.getValue(locale)
+                                            ?: localizable.fallbackLocale?.let { fieldValue.getValue(it) }
+                                        instance.put(fieldName, localizedText)
+                                    }
                                 }
-                            }
                         }
-                    }
                 }
             }
         }
