@@ -15,8 +15,7 @@
     <xsl:template match="cv:account">
         <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
                            xmlns:dc="http://purl.org/dc/elements/1.1/"
-                           xmlns:dcterms="http://purl.org/dc/terms/"
-                           xmlns:dcmitype="http://purl.org/dc/dcmitype/">
+                           xmlns:dcterms="http://purl.org/dc/terms/">
             <dc:title/>
             <dc:subject/>
             <dc:creator>
