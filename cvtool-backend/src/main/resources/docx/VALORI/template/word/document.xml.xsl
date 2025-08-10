@@ -3,10 +3,6 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
         exclude-result-prefixes="cv"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-        xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-        xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
         version="1.0">
 
     <xsl:import href="../../../common.xsl"/>
@@ -16,19 +12,26 @@
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
-        <xsl:apply-templates select="cv:root"/>
-    </xsl:template>
+    <xsl:template match="/cv:root">
+        <xsl:variable name="profile" select="cv:characteristics[cv:includeInCv = 'true']/cv:profile"/>
+        <xsl:variable name="educations" select="cv:education[cv:includeInCv = 'true']"/>
+        <xsl:variable name="trainings" select="cv:training[cv:includeInCv = 'true']"/>
+        <xsl:variable name="publications" select="cv:publication[cv:includeInCv = 'true']"/>
+        <xsl:variable name="interests" select="cv:characteristics[cv:includeInCv = 'true']/cv:interests"/>
+        <xsl:variable name="references" select="cv:reference[cv:includeInCv = 'true']"/>
 
-    <xsl:template match="cv:root">
-        <w:document mc:Ignorable="w14">
+        <w:document
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+                mc:Ignorable="w14">
             <w:body>
                 <!--
 
                 PROFILE
 
                 -->
-                <xsl:variable name="profile" select="cv:characteristics[cv:includeInCv = 'true']/cv:profile"/>
                 <xsl:if test="$profile">
                     <w:p w14:paraId="3BF04214" w14:textId="77777777" w:rsidR="00D55949" w:rsidRDefault="00D55949"
                          w:rsidP="00D55949">
@@ -37,7 +40,11 @@
                             <w:spacing w:after="60"/>
                         </w:pPr>
                         <w:r w:rsidRPr="00D55949">
-                            <w:t>Profielschets</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Profielschets'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$profile" mode="markdown"/>
@@ -53,7 +60,11 @@
                         <w:pStyle w:val="Kop1"/>
                     </w:pPr>
                     <w:r>
-                        <w:t>Kennis &amp; vaardigheden</w:t>
+                        <w:t>
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'Kennis &amp; vaardigheden'"/>
+                            </xsl:call-template>
+                        </w:t>
                     </w:r>
                 </w:p>
                 <w:p w14:paraId="295EA1F8" w14:textId="77777777" w:rsidR="00BF29B7" w:rsidRDefault="00BF29B7"
@@ -138,7 +149,11 @@
                         <w:t xml:space="preserve"> </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>basis</w:t>
+                        <w:t>
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'basis'"/>
+                            </xsl:call-template>
+                        </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
@@ -147,7 +162,11 @@
                         <w:t xml:space="preserve">      </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>gevorderd</w:t>
+                        <w:t>
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'gevorderd'"/>
+                            </xsl:call-template>
+                        </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
@@ -156,7 +175,11 @@
                         <w:t xml:space="preserve">     </w:t>
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
-                        <w:t>ervaren</w:t>
+                        <w:t>
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'ervaren'"/>
+                            </xsl:call-template>
+                        </w:t>
                     </w:r>
                     <w:r w:rsidR="00F63003" w:rsidRPr="00360F7D">
                         <w:br w:type="page"/>
@@ -174,7 +197,11 @@
                     </w:pPr>
                     <w:r>
                         <w:lastRenderedPageBreak/>
-                        <w:t>Werkervaring</w:t>
+                        <w:t>
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'Werkervaring'"/>
+                            </xsl:call-template>
+                        </w:t>
                     </w:r>
                 </w:p>
                 <w:tbl>
@@ -213,7 +240,11 @@
                                     <w:outlineLvl w:val="1"/>
                                 </w:pPr>
                                 <w:r>
-                                    <w:t>Periode</w:t>
+                                    <w:t>
+                                        <xsl:call-template name="translate">
+                                            <xsl:with-param name="text" select="'Periode'"/>
+                                        </xsl:call-template>
+                                    </w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -228,7 +259,11 @@
                                     <w:outlineLvl w:val="1"/>
                                 </w:pPr>
                                 <w:r>
-                                    <w:t>Rol</w:t>
+                                    <w:t>
+                                        <xsl:call-template name="translate">
+                                            <xsl:with-param name="text" select="'Rol'"/>
+                                        </xsl:call-template>
+                                    </w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -243,7 +278,11 @@
                                     <w:outlineLvl w:val="1"/>
                                 </w:pPr>
                                 <w:r>
-                                    <w:t>Opdrachtgever</w:t>
+                                    <w:t>
+                                        <xsl:call-template name="translate">
+                                            <xsl:with-param name="text" select="'Opdrachtgever'"/>
+                                        </xsl:call-template>
+                                    </w:t>
                                 </w:r>
                             </w:p>
                         </w:tc>
@@ -257,7 +296,6 @@
                 EDUCATION
 
                 -->
-                <xsl:variable name="educations" select="cv:education[cv:includeInCv = 'true']"/>
                 <xsl:if test="$educations">
                     <w:p w14:paraId="6C209D83" w14:textId="48D9D99D" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -265,7 +303,11 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Opleidingen</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Opleidingen'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -304,7 +346,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Opleiding</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Opleiding'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -319,7 +365,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Onderwijsinstelling</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Onderwijsinstelling'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -334,7 +384,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Diploma</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Diploma'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -350,7 +404,6 @@
                 TRAINING
 
                 -->
-                <xsl:variable name="trainings" select="cv:training[cv:includeInCv = 'true']"/>
                 <xsl:if test="$trainings">
                     <w:p w14:paraId="6600C847" w14:textId="2432E297" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -358,7 +411,11 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Trainingen</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Trainingen'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -397,7 +454,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Training</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Training'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -412,7 +473,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Opleidingsinstituut</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Opleidingsinstituut'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -427,7 +492,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Certificaat</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Certificaat'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -443,7 +512,6 @@
                 PUBLICATIONS
 
                 -->
-                <xsl:variable name="publications" select="cv:publication[cv:includeInCv = 'true']"/>
                 <xsl:if test="$publications">
                     <w:p w14:paraId="409CC56D" w14:textId="55003D82" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -451,7 +519,11 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Publicaties</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Publicaties'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -492,7 +564,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Titel</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Titel'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -507,7 +583,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Media</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Media'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -522,7 +602,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Jaar</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Jaar'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -537,7 +621,11 @@
                                         <w:outlineLvl w:val="1"/>
                                     </w:pPr>
                                     <w:r>
-                                        <w:t>Omschrijving</w:t>
+                                        <w:t>
+                                            <xsl:call-template name="translate">
+                                                <xsl:with-param name="text" select="'Omschrijving'"/>
+                                            </xsl:call-template>
+                                        </w:t>
                                     </w:r>
                                 </w:p>
                             </w:tc>
@@ -552,8 +640,6 @@
                 INTERESTS
 
                 -->
-                <xsl:variable name="interests"
-                              select="cv:characteristics[cv:includeInCv = 'true']/cv:interests"/>
                 <xsl:if test="$interests">
                     <w:p w14:paraId="1227FA0A" w14:textId="1961BDE8" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -562,7 +648,11 @@
                             <w:spacing w:after="60"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Interesses</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Interesses'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$interests" mode="markdown"/>
@@ -572,7 +662,6 @@
                 REFERENCES
 
                 -->
-                <xsl:variable name="references" select="cv:reference[cv:includeInCv = 'true']"/>
                 <xsl:if test="$references">
                     <w:p w14:paraId="33B477DB" w14:textId="1CC053B4" w:rsidR="001860B4" w:rsidRDefault="001860B4"
                          w:rsidP="001860B4">
@@ -580,7 +669,11 @@
                             <w:pStyle w:val="Kop1"/>
                         </w:pPr>
                         <w:r>
-                            <w:t>Referenties</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Referenties'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:tbl>
@@ -627,7 +720,11 @@
                     </w:pPr>
                     <w:r w:rsidRPr="008C7521">
                         <w:lastRenderedPageBreak/>
-                        <w:t>Werkervaring</w:t>
+                        <w:t>
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'Werkervaring'"/>
+                            </xsl:call-template>
+                        </w:t>
                     </w:r>
                 </w:p>
                 <w:tbl>
