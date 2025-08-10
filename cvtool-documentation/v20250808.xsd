@@ -208,7 +208,7 @@
         <xs:attribute name="id" type="xs:string"/>
     </xs:complexType>
 
-    <xs:complexType name="LocaleString">
+    <xs:complexType name="LocaleString" mixed="true">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element name="nl_NL" type="xs:string" minOccurs="0"/>
             <xs:element name="uk_UK" type="xs:string" minOccurs="0"/>
