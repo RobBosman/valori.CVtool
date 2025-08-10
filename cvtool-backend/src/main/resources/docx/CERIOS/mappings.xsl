@@ -35,22 +35,6 @@
         <xsl:value-of select="substring(., 1, 4)"/>
     </xsl:template>
 
-    <!-- DATE - TODAY -->
-    <xsl:template match="* | @* | text()" mode="date-today">
-        <xsl:call-template name="translate">
-            <xsl:with-param name="text" select="'heden'"/>
-        </xsl:call-template>
-    </xsl:template>
-
-    <!-- SKILL LEVEL -->
-    <xsl:template match="* | @* | text()" mode="skill-level">
-        <xsl:choose>
-            <xsl:when test=". = 3"></xsl:when>
-            <xsl:when test=". = 2"></xsl:when>
-            <xsl:when test=". = 1"></xsl:when>
-        </xsl:choose>
-    </xsl:template>
-
     <!-- SKILL CATEGORY -->
     <xsl:template match="* | @* | text()" mode="skill-category">
         <xsl:call-template name="translate">
@@ -71,6 +55,15 @@
                 </xsl:choose>
             </xsl:with-param>
         </xsl:call-template>
+    </xsl:template>
+
+    <!-- SKILL LEVEL -->
+    <xsl:template match="* | @* | text()" mode="skill-level">
+        <xsl:choose>
+            <xsl:when test=". = 3"></xsl:when>
+            <xsl:when test=". = 2"></xsl:when>
+            <xsl:when test=". = 1"></xsl:when>
+        </xsl:choose>
     </xsl:template>
 
     <!-- EDUCATION RESULT -->

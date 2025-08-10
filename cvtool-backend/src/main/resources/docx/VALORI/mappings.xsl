@@ -3,19 +3,30 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         version="1.0">
 
+    <xsl:import href="translations.xsl"/>
+
+    <xsl:param name="cv_locale"/>
+
+    <xsl:variable name="dateSeparator">
+        <xsl:choose>
+            <xsl:when test="$cv_locale = 'uk_UK'">.</xsl:when>
+            <xsl:otherwise>-</xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
     <!-- DATE - NUMERIC -->
     <xsl:template match="* | @* | text()" mode="date-numeric">
         <xsl:value-of select="substring(., 9, 2)"/>
-        <xsl:text>-</xsl:text>
+        <xsl:value-of select="$dateSeparator"/>
         <xsl:value-of select="substring(., 6, 2)"/>
-        <xsl:text>-</xsl:text>
+        <xsl:value-of select="$dateSeparator"/>
         <xsl:value-of select="substring(., 1, 4)"/>
     </xsl:template>
 
     <!-- DATE - PERIOD -->
     <xsl:template match="* | @* | text()" mode="date-period">
         <xsl:value-of select="substring(., 6, 2)"/>
-        <xsl:text>-</xsl:text>
+        <xsl:value-of select="$dateSeparator"/>
         <xsl:value-of select="substring(., 1, 4)"/>
     </xsl:template>
 
@@ -50,6 +61,15 @@
             <xsl:otherwise>
                 <xsl:value-of select="."/>
             </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <!-- SKILL LEVEL -->
+    <xsl:template match="* | @* | text()" mode="skill-level">
+        <xsl:choose>
+            <xsl:when test=". = 3"></xsl:when>
+            <xsl:when test=". = 2"></xsl:when>
+            <xsl:when test=". = 1"></xsl:when>
         </xsl:choose>
     </xsl:template>
 

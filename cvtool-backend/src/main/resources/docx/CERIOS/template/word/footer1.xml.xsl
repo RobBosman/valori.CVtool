@@ -55,7 +55,7 @@
                         <w:tab w:val="start" w:pos="340.20pt"/>
                         <w:tab w:val="start" w:pos="418.20pt"/>
                     </w:tabs>
-                    <w:ind w:end="-7.10pt"/>
+                    <w:ind w:end="-6.90pt"/>
                     <w:jc w:val="center"/>
                     <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
@@ -64,18 +64,21 @@
                     </w:rPr>
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
+                    <w:rPr>
+                        <w:noProof/>
+                    </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                    relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
-                                   wp14:anchorId="668DF1E3" wp14:editId="293B53F6">
+                                   wp14:anchorId="668DF1E3" wp14:editId="4194A046">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="column">
-                                <wp:posOffset>-497844</wp:posOffset>
+                                <wp:posOffset>-498475</wp:posOffset>
                             </wp:positionH>
                             <wp:positionV relativeFrom="page">
-                                <wp:posOffset>10170596</wp:posOffset>
+                                <wp:align>bottom</wp:align>
                             </wp:positionV>
-                            <wp:extent cx="7609161" cy="513080"/>
+                            <wp:extent cx="7608570" cy="520065"/>
                             <wp:effectExtent l="0" t="0" r="0" b="0"/>
                             <wp:wrapNone/>
                             <wp:docPr id="1735136639" name="Picture 1"/>
@@ -100,7 +103,7 @@
                                         <pic:spPr bwMode="auto">
                                             <a:xfrm>
                                                 <a:off x="0" y="0"/>
-                                                <a:ext cx="7611259" cy="513221"/>
+                                                <a:ext cx="7608570" cy="520065"/>
                                             </a:xfrm>
                                             <a:prstGeom prst="rect">
                                                 <a:avLst/>

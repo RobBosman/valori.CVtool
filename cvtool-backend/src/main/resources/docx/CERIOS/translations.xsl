@@ -12,7 +12,6 @@
             <xsl:when test="$cv_locale = 'uk_UK'">
                 <xsl:choose>
                     <xsl:when test="$text = 'GEBOORTEDATUM'">DATE OF BIRTH</xsl:when>
-                    <xsl:when test="$text = 'GEBOORTEDATUM'">DATE OF BIRTH</xsl:when>
                     <xsl:when test="$text = 'FUNCTIE'">ROLE</xsl:when>
                     <xsl:when test="$text = 'WOONPLAATS'">RESIDENCE</xsl:when>
                     <xsl:when test="$text = 'Persoonlijk profiel'">Personal profile</xsl:when>
@@ -35,7 +34,7 @@
                     <xsl:when test="$text = 'Publicaties'">Publications</xsl:when>
                     <xsl:when test="$text = 'Referenties'">References</xsl:when>
 
-                    <xsl:when test="$text = 'CONTACTPERSOON'">CONTACT</xsl:when>
+                    <xsl:when test="$text = 'CONTACTPERSOON'">CONTACT PERSON</xsl:when>
                     <xsl:when test="$text = 'heden'">today</xsl:when>
                     <xsl:when test="$text = 'Situatie'">Situation</xsl:when>
                     <xsl:when test="$text = 'Taken'">Tasks</xsl:when>

@@ -22,7 +22,7 @@
             <dc:creator>
                 <xsl:value-of select="cv:name"/>
             </dc:creator>
-            <cp:keywords/>
+            <cp:keywords>cv</cp:keywords>
             <dc:description/>
             <cp:revision>1</cp:revision>
             <dcterms:created xsi:type="dcterms:W3CDTF">2025-04-01T11:11:00Z</dcterms:created>

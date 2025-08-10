@@ -66,8 +66,7 @@
                                 or substring($text, 1, 2) = '-&#x09;'
                                 or substring($text, 1, 2) = '&#x2022;&#x09;'">
                 <!-- bullet list item -->
-                <w:p w14:paraId="4DB0632C" w14:textId="542F4402" w:rsidR="00B2333C"
-                     w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
+                <w:p w14:paraId="4DB0632C" w14:textId="542F4402" w:rsidR="00B2333C" w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                     <w:pPr>
                         <w:numPr>
                             <w:ilvl w:val="0"/>
@@ -100,8 +99,7 @@
             </xsl:when>
             <xsl:when test="starts-with($text, '# ')">
                 <!-- numbered list item -->
-                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
-                     w:rsidRDefault="0004532F" w:rsidP="000E5868">
+                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F" w:rsidRDefault="0004532F" w:rsidP="000E5868">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
@@ -130,8 +128,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <!-- plain text; no list item -->
-                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
-                     w:rsidRDefault="0004532F" w:rsidP="000E5868">
+                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F" w:rsidRDefault="0004532F" w:rsidP="000E5868">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
@@ -576,7 +573,9 @@
                                                                                      mode="date-year"/>
                                                             </xsl:when>
                                                             <xsl:otherwise>
-                                                                <xsl:apply-templates select="." mode="date-today"/>
+                                                                <xsl:call-template name="translate">
+                                                                    <xsl:with-param name="text" select="'heden'"/>
+                                                                </xsl:call-template>
                                                             </xsl:otherwise>
                                                         </xsl:choose>
                                                     </w:t>
@@ -706,8 +705,8 @@
                                                             <w:b/>
                                                             <w:bCs/>
                                                             <w:color w:val="212B46"/>
-                                                            <w:sz w:val="21"/>
-                                                            <w:szCs w:val="21"/>
+                                                            <w:sz w:val="22"/>
+                                                            <w:szCs w:val="22"/>
                                                         </w:rPr>
                                                         <w:t>
                                                             <xsl:call-template name="translate">
