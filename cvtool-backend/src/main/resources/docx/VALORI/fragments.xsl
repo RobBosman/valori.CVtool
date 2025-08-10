@@ -154,7 +154,8 @@
     <!-- SKILL -->
     <xsl:template match="cv:skill">
         <xsl:param name="last"/>
-        <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA" w:rsidP="000A5FCA">
+        <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA"
+             w:rsidP="000A5FCA">
             <w:pPr>
                 <w:pStyle w:val="Valori-blauw"/>
                 <w:tabs>
@@ -290,7 +291,11 @@
                                 <xsl:when test="$yearTo">
                                     <xsl:value-of select="$yearTo"/>
                                 </xsl:when>
-                                <xsl:otherwise>heden</xsl:otherwise>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'heden'"/>
+                                    </xsl:call-template>
+                                </xsl:otherwise>
                             </xsl:choose>
                         </w:t>
                     </w:r>
@@ -351,7 +356,11 @@
                                 <xsl:when test="cv:year">
                                     <xsl:value-of select="cv:year"/>
                                 </xsl:when>
-                                <xsl:otherwise>heden</xsl:otherwise>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'heden'"/>
+                                    </xsl:call-template>
+                                </xsl:otherwise>
                             </xsl:choose>
                         </w:t>
                     </w:r>
@@ -553,7 +562,11 @@
                             <w:rPr>
                                 <w:rStyle w:val="Valori-geel"/>
                             </w:rPr>
-                            <w:t>Taken/werkzaamheden:</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Taken/werkzaamheden:'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$activities" mode="markdown"/>
@@ -569,7 +582,11 @@
                             <w:rPr>
                                 <w:rStyle w:val="Valori-geel"/>
                             </w:rPr>
-                            <w:t>Resultaat:</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Resultaat:'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$results" mode="markdown"/>
@@ -585,7 +602,11 @@
                             <w:rPr>
                                 <w:rStyle w:val="Valori-geel"/>
                             </w:rPr>
-                            <w:t>Werkomgeving:</w:t>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Werkomgeving:'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <xsl:apply-templates select="$keywords" mode="markdown"/>

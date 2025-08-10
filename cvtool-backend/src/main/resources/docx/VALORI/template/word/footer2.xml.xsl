@@ -2,20 +2,22 @@
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-        xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
         exclude-result-prefixes="cv"
         version="1.0">
 
+    <xsl:import href="../../translations.xsl"/>
+
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
-        <xsl:apply-templates select="cv:root/cv:account"/>
+    <xsl:template match="/cv:root">
+        <xsl:apply-templates select="cv:account"/>
     </xsl:template>
 
     <xsl:template match="cv:account">
-        <w:ftr mc:Ignorable="w14">
+        <w:ftr xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+               xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+               mc:Ignorable="w14">
             <w:sdt>
                 <w:sdtPr>
                     <w:rPr>
@@ -42,7 +44,10 @@
                         </w:pPr>
                         <w:r w:rsidRPr="00C0691A">
                             <w:t>
-                                <xsl:text>Curriculum vitae van </xsl:text>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Curriculum vitae van'"/>
+                                </xsl:call-template>
+                                <xsl:text> </xsl:text>
                                 <xsl:value-of select="cv:name"/>
                             </w:t>
                         </w:r>

@@ -2,15 +2,6 @@
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-        xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
-        xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-        xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-        xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
-        xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-        xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"
-        xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
         exclude-result-prefixes="cv"
         version="1.0">
 
@@ -18,12 +9,17 @@
 
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
-    <xsl:template match="/">
-        <xsl:apply-templates select="cv:root"/>
-    </xsl:template>
-
-    <xsl:template match="cv:root">
-        <w:hdr mc:Ignorable="w14 wp14">
+    <xsl:template match="/cv:root">
+        <w:hdr xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+               xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
+               xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+               xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+               xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+               xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+               xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"
+               xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+               mc:Ignorable="w14 wp14">
             <w:p w14:paraId="422E78F8" w14:textId="3E9FE7A8" w:rsidR="006E0130" w:rsidRPr="00585C2D"
                  w:rsidRDefault="00585C2D" w:rsidP="007C6954">
                 <w:pPr>
@@ -67,7 +63,8 @@
                                                     <a:extLst>
                                                         <a:ext>
                                                             <xsl:attribute name="uri">
-                                                                <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
+                                                                <xsl:value-of
+                                                                        select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                             </xsl:attribute>
                                                             <a14:useLocalDpi val="0"/>
                                                         </a:ext>
@@ -134,7 +131,8 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
+                                                            <xsl:value-of
+                                                                    select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
@@ -200,7 +198,8 @@
                                                 <a:extLst>
                                                     <a:ext>
                                                         <xsl:attribute name="uri">
-                                                            <xsl:value-of select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
+                                                            <xsl:value-of
+                                                                    select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                         </xsl:attribute>
                                                         <a14:useLocalDpi val="0"/>
                                                     </a:ext>
