@@ -48,8 +48,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                     mapOf(
                         "common.xsl" to loadBytes("/docx/common.xsl"),
                         "fragments.xsl" to loadBytes("/docx/$templateName/fragments.xsl"),
-                        "mappings.xsl" to loadBytes("/docx/$templateName/mappings.xsl"),
-                        "translations.xsl" to loadBytes("/docx/$templateName/translations.xsl")
+                        "mappings.xsl" to loadBytes("/docx/mappings.xsl"),
+                        "translations.xsl" to loadBytes("/docx/translations.xsl")
                     )
                 }
 

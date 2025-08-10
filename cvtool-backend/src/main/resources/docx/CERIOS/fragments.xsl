@@ -11,8 +11,8 @@
         xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"
         version="1.0">
 
-    <xsl:import href="translations.xsl"/>
-    <xsl:import href="mappings.xsl"/>
+    <xsl:import href="../translations.xsl"/>
+    <xsl:import href="../mappings.xsl"/>
 
     <!-- MARKDOWN -->
     <xsl:template match="* | @* | text()" mode="markdown">
@@ -156,18 +156,6 @@
                     </w:r>
                     <w:proofErr w:type="spellEnd"/>
                 </w:p>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-    <!-- CLIENT -->
-    <xsl:template match="cv:experience" mode="client">
-        <xsl:choose>
-            <xsl:when test="normalize-space(cv:client) != ''">
-                <xsl:value-of select="cv:client"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="cv:employer"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

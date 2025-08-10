@@ -7,8 +7,8 @@
         xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
         version="1.0">
 
-    <xsl:import href="translations.xsl"/>
-    <xsl:import href="mappings.xsl"/>
+    <xsl:import href="../translations.xsl"/>
+    <xsl:import href="../mappings.xsl"/>
 
     <!-- NEWLINE -->
     <xsl:template name="newline">
@@ -111,18 +111,6 @@
                         </w:t>
                     </w:r>
                 </w:p>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-    <!-- CLIENT -->
-    <xsl:template match="cv:experience" mode="client">
-        <xsl:choose>
-            <xsl:when test="normalize-space(cv:client) != ''">
-                <xsl:value-of select="cv:client"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="cv:employer"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -564,8 +552,9 @@
                             </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">
-                                    <xsl:with-param name="text" select="'Taken/werkzaamheden:'"/>
+                                    <xsl:with-param name="text" select="'Taken/werkzaamheden'"/>
                                 </xsl:call-template>
+                                <xsl:text>:</xsl:text>
                             </w:t>
                         </w:r>
                     </w:p>
@@ -584,8 +573,9 @@
                             </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">
-                                    <xsl:with-param name="text" select="'Resultaat:'"/>
+                                    <xsl:with-param name="text" select="'Resultaat'"/>
                                 </xsl:call-template>
+                                <xsl:text>:</xsl:text>
                             </w:t>
                         </w:r>
                     </w:p>
@@ -604,8 +594,9 @@
                             </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">
-                                    <xsl:with-param name="text" select="'Werkomgeving:'"/>
+                                    <xsl:with-param name="text" select="'Werkomgeving'"/>
                                 </xsl:call-template>
+                                <xsl:text>:</xsl:text>
                             </w:t>
                         </w:r>
                     </w:p>

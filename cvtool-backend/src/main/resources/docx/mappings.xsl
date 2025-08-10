@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+        exclude-result-prefixes="cv"
         version="1.0">
 
     <xsl:import href="translations.xsl"/>
@@ -33,6 +35,38 @@
     <!-- DATE - YEAR (YYYY) -->
     <xsl:template match="* | @* | text()" mode="date-year">
         <xsl:value-of select="substring(., 1, 4)"/>
+    </xsl:template>
+
+    <!-- PERIOD - BEGIN / END -->
+    <xsl:template name="period">
+        <xsl:param name="periodBegin"/>
+        <xsl:param name="periodEnd"/>
+        <xsl:if test="$periodBegin">
+            <xsl:apply-templates select="$periodBegin" mode="date-month-year"/>
+            <xsl:text> – </xsl:text>
+        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="$periodEnd">
+                <xsl:apply-templates select="$periodEnd" mode="date-month-year"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="translate">
+                    <xsl:with-param name="text" select="'heden'"/>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <!-- CLIENT -->
+    <xsl:template match="cv:experience" mode="client">
+        <xsl:choose>
+            <xsl:when test="normalize-space(cv:client) != ''">
+                <xsl:value-of select="cv:client"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="cv:employer"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <!-- SKILL CATEGORY -->
