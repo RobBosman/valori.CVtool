@@ -46,7 +46,7 @@
                     <xsl:when test="$text = 'Expertises'">Expertise</xsl:when>
                     <xsl:when test="$text = 'Databases'">Databases</xsl:when>
                     <xsl:when test="$text = 'Applicaties'">Applications</xsl:when>
-                    <xsl:when test="$text = 'Tools'">References</xsl:when>
+                    <xsl:when test="$text = 'Tools'">Tools</xsl:when>
                     <xsl:when test="$text = 'Programmeren'">Programming</xsl:when>
                     <xsl:when test="$text = 'Methodes'">Methodologies</xsl:when>
                     <xsl:when test="$text = 'OS &amp; Netwerken'">OS &amp; Networks</xsl:when>
