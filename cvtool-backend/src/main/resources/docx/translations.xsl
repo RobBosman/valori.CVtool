@@ -61,6 +61,7 @@
                     <xsl:when test="$text = 'Situatie'">Situation</xsl:when>
                     <xsl:when test="$text = 'Taken'">Tasks</xsl:when>
                     <xsl:when test="$text = 'Taken/werkzaamheden'">Tasks/activities</xsl:when>
+                    <xsl:when test="$text = 'Talen'">Languages</xsl:when>
                     <xsl:when test="$text = 'Talenkennis'">Languages</xsl:when>
                     <xsl:when test="$text = 'Technologie &amp; tools'">Technology &amp; tools</xsl:when>
                     <xsl:when test="$text = 'Titel'">Title</xsl:when>
