@@ -371,7 +371,7 @@
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
                                                             <w:t>
-                                                                <xsl:value-of select="cv:account/cv:residence"/>
+                                                                <xsl:value-of select="cv:characteristics/cv:residence"/>
                                                             </w:t>
                                                         </w:r>
                                                     </w:p>
@@ -824,14 +824,12 @@
                                                             </w:t>
                                                         </w:r>
                                                     </w:p>
-                                                    <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
-                                                         w:rsidRDefault="0004532F" w:rsidP="000E5868">
+                                                    <w:p w14:paraId="4B1C264A" w14:textId="11F5CF82" w:rsidR="000E5868"
+                                                         w:rsidRPr="003D5A44" w:rsidRDefault="00D52540"
+                                                         w:rsidP="00065B83">
                                                         <w:pPr>
                                                             <w:pStyle w:val="BasicParagraph"/>
                                                             <w:suppressAutoHyphens/>
-                                                            <w:spacing w:before="12pt"/>
-                                                        </w:pPr>
-                                                        <w:r>
                                                             <w:rPr>
                                                                 <w:rFonts w:ascii="PlusJakartaSans-Regular"
                                                                           w:hAnsi="PlusJakartaSans-Regular"
@@ -840,11 +838,9 @@
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
-                                                            <w:t>
-                                                                <xsl:apply-templates select="$profile" mode="markdown"/>
-                                                            </w:t>
-                                                        </w:r>
+                                                        </w:pPr>
                                                     </w:p>
+                                                    <xsl:apply-templates select="$profile" mode="markdown"/>
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
