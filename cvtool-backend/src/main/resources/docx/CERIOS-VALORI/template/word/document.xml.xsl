@@ -551,7 +551,7 @@
                                                                 <w:szCs w:val="18"/>
                                                             </w:rPr>
                                                             <w:t>
-                                                                <xsl:value-of select="$characteristics/cv:residence"/>
+                                                                <xsl:value-of select="cv:account/cv:residence"/>
                                                             </w:t>
                                                         </w:r>
                                                     </w:p>
@@ -2721,54 +2721,152 @@
 
                 -->
                 <xsl:if test="$publications or $references">
-                    <xsl:if test="$references">
-                        <w:p w14:paraId="78E9113D" w14:textId="4F1BB34C" w:rsidR="00CC7FCE" w:rsidRPr="00926161"
-                             w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
-                            <w:pPr>
-                                <w:pStyle w:val="Titel1"/>
-                            </w:pPr>
-                            <w:r>
-                                <w:br w:type="page"/>
-                            </w:r>
-                        </w:p>
-                        <w:p w14:paraId="1FE1FD17" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                             w:rsidP="00160C07">
-                            <w:pPr>
-                                <w:pStyle w:val="Titel1"/>
-                                <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
-                                    <w:type w:val="continuous"/>
-                                    <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                    <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                             w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
-                                    <w:cols w:space="17.45pt"/>
-                                    <w:docGrid w:linePitch="360"/>
-                                </w:sectPr>
-                            </w:pPr>
-                        </w:p>
-                        <w:p w14:paraId="0446C0FE" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                             w:rsidP="00160C07">
-                            <w:pPr>
-                                <w:pStyle w:val="Titel1"/>
-                                <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
-                                    <w:type w:val="continuous"/>
-                                    <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                    <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                             w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
-                                    <w:cols w:space="17.45pt"/>
-                                    <w:docGrid w:linePitch="360"/>
-                                </w:sectPr>
-                            </w:pPr>
-                        </w:p>
+                    <w:p w14:paraId="78E9113D" w14:textId="4F1BB34C" w:rsidR="00CC7FCE" w:rsidRPr="00926161"
+                         w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
+                        <w:pPr>
+                            <w:pStyle w:val="Titel1"/>
+                        </w:pPr>
+                        <w:r>
+                            <w:br w:type="page"/>
+                        </w:r>
+                    </w:p>
+                    <w:p w14:paraId="1FE1FD17" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
+                         w:rsidP="00160C07">
+                        <w:pPr>
+                            <w:pStyle w:val="Titel1"/>
+                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
+                                <w:type w:val="continuous"/>
+                                <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
+                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
+                                <w:cols w:space="17.45pt"/>
+                                <w:docGrid w:linePitch="360"/>
+                            </w:sectPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="0446C0FE" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
+                         w:rsidP="00160C07">
+                        <w:pPr>
+                            <w:pStyle w:val="Titel1"/>
+                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
+                                <w:type w:val="continuous"/>
+                                <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
+                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
+                                <w:cols w:space="17.45pt"/>
+                                <w:docGrid w:linePitch="360"/>
+                            </w:sectPr>
+                        </w:pPr>
+                    </w:p>
+                    <!--
+
+                    PUBLICATIONS
+
+                    -->
+                    <xsl:if test="$publications">
                         <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
                              w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
                             <w:pPr>
                                 <w:pStyle w:val="Titel1"/>
-                                <w:rPr>
-                                    <w:u w:val="none"/>
-                                </w:rPr>
                             </w:pPr>
                             <w:r w:rsidRPr="00AB1904">
                                 <w:rPr>
+                                    <w:noProof/>
+                                    <w:u w:val="none"/>
+                                </w:rPr>
+                                <w:t>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'Publicaties'"/>
+                                    </xsl:call-template>
+                                </w:t>
+                            </w:r>
+                        </w:p>
+                        <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
+                             w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
+                            <w:r>
+                                <w:drawing>
+                                    <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
+                                               relativeHeight="251704320" behindDoc="0" locked="0" layoutInCell="1"
+                                               allowOverlap="1" wp14:anchorId="34F09BD8" wp14:editId="2914D6F1">
+                                        <wp:simplePos x="0" y="0"/>
+                                        <wp:positionH relativeFrom="column">
+                                            <wp:posOffset>635</wp:posOffset>
+                                        </wp:positionH>
+                                        <wp:positionV relativeFrom="paragraph">
+                                            <wp:posOffset>14928</wp:posOffset>
+                                        </wp:positionV>
+                                        <wp:extent cx="920772" cy="0"/>
+                                        <wp:effectExtent l="0" t="12700" r="19050" b="12700"/>
+                                        <wp:wrapNone/>
+                                        <wp:docPr id="14562976" name="Straight Connector 15"/>
+                                        <wp:cNvGraphicFramePr/>
+                                        <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
+                                            <a:graphicData
+                                                    uri="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
+                                                <wp:wsp>
+                                                    <wp:cNvCnPr/>
+                                                    <wp:spPr>
+                                                        <a:xfrm>
+                                                            <a:off x="0" y="0"/>
+                                                            <a:ext cx="920772" cy="0"/>
+                                                        </a:xfrm>
+                                                        <a:prstGeom prst="line">
+                                                            <a:avLst/>
+                                                        </a:prstGeom>
+                                                        <a:ln>
+                                                            <a:solidFill>
+                                                                <a:srgbClr val="F6A10A"/>
+                                                            </a:solidFill>
+                                                        </a:ln>
+                                                    </wp:spPr>
+                                                    <wp:style>
+                                                        <a:lnRef idx="2">
+                                                            <a:schemeClr val="accent6"/>
+                                                        </a:lnRef>
+                                                        <a:fillRef idx="0">
+                                                            <a:schemeClr val="accent6"/>
+                                                        </a:fillRef>
+                                                        <a:effectRef idx="1">
+                                                            <a:schemeClr val="accent6"/>
+                                                        </a:effectRef>
+                                                        <a:fontRef idx="minor">
+                                                            <a:schemeClr val="tx1"/>
+                                                        </a:fontRef>
+                                                    </wp:style>
+                                                    <wp:bodyPr/>
+                                                </wp:wsp>
+                                            </a:graphicData>
+                                        </a:graphic>
+                                        <wp14:sizeRelH relativeFrom="margin">
+                                            <wp14:pctWidth>0%</wp14:pctWidth>
+                                        </wp14:sizeRelH>
+                                        <wp14:sizeRelV relativeFrom="margin">
+                                            <wp14:pctHeight>0%</wp14:pctHeight>
+                                        </wp14:sizeRelV>
+                                    </wp:anchor>
+                                </w:drawing>
+                            </w:r>
+                        </w:p>
+                        <xsl:apply-templates select="$publications"/>
+                        <xsl:if test="$references">
+                            <w:p w14:paraId="3D45720F" w14:textId="77777777" w:rsidR="00CC7FCE"
+                                 w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE"/>
+                        </xsl:if>
+                    </xsl:if>
+                    <!--
+
+                    REFERENCES
+
+                    -->
+                    <xsl:if test="$references">
+                        <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
+                             w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
+                            <w:pPr>
+                                <w:pStyle w:val="Titel1"/>
+                            </w:pPr>
+                            <w:r w:rsidRPr="00AB1904">
+                                <w:rPr>
+                                    <w:noProof/>
                                     <w:u w:val="none"/>
                                 </w:rPr>
                                 <w:t>
@@ -2778,23 +2876,9 @@
                                 </w:t>
                             </w:r>
                         </w:p>
-                        <w:p w14:paraId="3D45720F" w14:textId="10A0C37D" w:rsidR="00CC7FCE" w:rsidRDefault="00AB1904"
-                             w:rsidP="00CC7FCE">
-                            <w:pPr>
-                                <w:rPr>
-                                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                    <w:b/>
-                                    <w:bCs/>
-                                    <w:color w:val="212B46"/>
-                                    <w:sz w:val="28"/>
-                                    <w:szCs w:val="28"/>
-                                    <w:lang w:val="en-GB"/>
-                                </w:rPr>
-                            </w:pPr>
+                        <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
+                             w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
                             <w:r>
-                                <w:rPr>
-                                    <w:noProof/>
-                                </w:rPr>
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                                relativeHeight="251704320" behindDoc="0" locked="0" layoutInCell="1"

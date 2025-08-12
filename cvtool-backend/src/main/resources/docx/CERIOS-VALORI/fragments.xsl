@@ -267,6 +267,12 @@
 
     <!-- EDUCATION -->
     <xsl:template match="cv:education">
+        <xsl:variable name="bottomLineStyle">
+            <xsl:choose>
+                <xsl:when test="position() != last()">single</xsl:when>
+                <xsl:otherwise>none</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <w:tr w:rsidR="001405E4" w14:paraId="64B68484" w14:textId="5BEC4AB8" w:rsidTr="000A0E47">
             <w:trPr>
                 <w:trHeight w:val="14"/>
@@ -275,7 +281,7 @@
                 <w:tcPr>
                     <w:tcW w:w="202.25pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -301,7 +307,7 @@
                 <w:tcPr>
                     <w:tcW w:w="156.30pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -326,7 +332,7 @@
                 <w:tcPr>
                     <w:tcW w:w="83.80pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -366,7 +372,7 @@
                 <w:tcPr>
                     <w:tcW w:w="83.80pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -410,6 +416,12 @@
 
     <!-- TRAINING -->
     <xsl:template match="cv:training">
+        <xsl:variable name="bottomLineStyle">
+            <xsl:choose>
+                <xsl:when test="position() != last()">single</xsl:when>
+                <xsl:otherwise>none</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <w:tr w:rsidR="001405E4" w14:paraId="381BD1A4" w14:textId="2753382C" w:rsidTr="001405E4">
             <w:trPr>
                 <w:trHeight w:val="14"/>
@@ -418,7 +430,7 @@
                 <w:tcPr>
                     <w:tcW w:w="202.25pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -443,7 +455,7 @@
                 <w:tcPr>
                     <w:tcW w:w="156.30pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -467,7 +479,7 @@
                 <w:tcPr>
                     <w:tcW w:w="83.80pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -500,7 +512,7 @@
                 <w:tcPr>
                     <w:tcW w:w="83.80pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                 </w:tcPr>
                 <w:p w14:paraId="3E9EB30C" w14:textId="37F00EB5" w:rsidR="001405E4" w:rsidRPr="00CA43CD"
@@ -770,6 +782,12 @@
 
     <!-- EXPERIENCE OVERVIEW -->
     <xsl:template match="cv:experience" mode="overview">
+        <xsl:variable name="bottomLineStyle">
+            <xsl:choose>
+                <xsl:when test="position() != last()">single</xsl:when>
+                <xsl:otherwise>none</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <w:tr w:rsidR="001405E4" w14:paraId="4FC5C810" w14:textId="7D0C3EB0" w:rsidTr="001405E4">
             <w:trPr>
                 <w:trHeight w:val="14"/>
@@ -778,8 +796,8 @@
                 <w:tcPr>
                     <w:tcW w:w="67.70pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
                         <w:end w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -805,7 +823,7 @@
                     <w:tcW w:w="104.20pt" w:type="dxa"/>
                     <w:tcBorders>
                         <w:start w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -830,7 +848,7 @@
                 <w:tcPr>
                     <w:tcW w:w="176pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
@@ -856,7 +874,7 @@
                 <w:tcPr>
                     <w:tcW w:w="176pt" w:type="dxa"/>
                     <w:tcBorders>
-                        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="F6A10A"/>
+                        <w:bottom w:val="{$bottomLineStyle}" w:sz="4" w:space="0" w:color="F6A10A"/>
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
