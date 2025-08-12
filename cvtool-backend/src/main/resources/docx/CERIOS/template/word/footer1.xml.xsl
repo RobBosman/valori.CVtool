@@ -29,7 +29,7 @@
                         <w:tab w:val="start" w:pos="340.20pt"/>
                         <w:tab w:val="start" w:pos="418.20pt"/>
                     </w:tabs>
-                    <w:ind w:end="-6.90pt"/>
+                    <w:ind w:end="-7.10pt"/>
                     <w:jc w:val="center"/>
                     <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
@@ -40,11 +40,14 @@
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
                         <w:noProof/>
+                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
+                        <w:sz w:val="18"/>
+                        <w:szCs w:val="18"/>
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                    relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
-                                   wp14:anchorId="668DF1E3" wp14:editId="4194A046">
+                                   wp14:anchorId="668DF1E3" wp14:editId="293B53F6">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="column">
                                 <wp:posOffset>-498475</wp:posOffset>
@@ -121,7 +124,9 @@
                         </xsl:call-template>
                     </w:t>
                     <w:tab/>
-                    <w:t xml:space="preserve"><xsl:value-of select="cv:businessUnit/cv:contactName"/></w:t>
+                    <w:t>
+                        <xsl:value-of select="cv:businessUnit/cv:contactName"/>
+                    </w:t>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactPhone"/>
@@ -143,8 +148,7 @@
                     </w:r>
                 </w:hyperlink>
             </w:p>
-            <w:p w14:paraId="22292549" w14:textId="77777777" w:rsidR="004F0464" w:rsidRPr="004F0464"
-                 w:rsidRDefault="004F0464"
+            <w:p w14:paraId="22292549" w14:textId="77777777" w:rsidR="004F0464" w:rsidRPr="004F0464" w:rsidRDefault="004F0464"
                  w:rsidP="004F0464">
                 <w:pPr>
                     <w:pStyle w:val="Voettekst"/>

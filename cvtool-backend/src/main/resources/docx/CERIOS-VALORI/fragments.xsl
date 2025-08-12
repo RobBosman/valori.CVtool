@@ -937,37 +937,7 @@
                 </w:t>
             </w:r>
         </w:p>
-        <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
-             w:rsidRDefault="0004532F" w:rsidP="000E5868">
-            <w:pPr>
-                <w:pStyle w:val="BasicParagraph"/>
-                <w:spacing w:after="12pt"/>
-                <w:ind w:end="276.65pt"/>
-                <w:suppressAutoHyphens/>
-                <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                              w:hAnsi="PlusJakartaSans-Regular"
-                              w:cs="PlusJakartaSans-Regular"/>
-                    <w:sz w:val="18"/>
-                    <w:szCs w:val="18"/>
-                </w:rPr>
-            </w:pPr>
-            <w:proofErr w:type="spellStart"/>
-            <w:r>
-                <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                              w:hAnsi="PlusJakartaSans-Regular"
-                              w:cs="PlusJakartaSans-Regular"/>
-                    <w:color w:val="212B46"/>
-                    <w:sz w:val="18"/>
-                    <w:szCs w:val="18"/>
-                </w:rPr>
-                <w:t>
-                    <xsl:value-of select="cv:description"/>
-                </w:t>
-            </w:r>
-            <w:proofErr w:type="spellEnd"/>
-        </w:p>
+        <xsl:apply-templates select="cv:description" mode="markdown"/>
     </xsl:template>
 
     <!-- REFERENCE -->
@@ -1033,37 +1003,7 @@
                 </xsl:if>
             </w:r>
         </w:p>
-        <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
-             w:rsidRDefault="0004532F" w:rsidP="000E5868">
-            <w:pPr>
-                <w:pStyle w:val="BasicParagraph"/>
-                <w:spacing w:after="12pt"/>
-                <w:ind w:end="276.65pt"/>
-                <w:suppressAutoHyphens/>
-                <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                              w:hAnsi="PlusJakartaSans-Regular"
-                              w:cs="PlusJakartaSans-Regular"/>
-                    <w:sz w:val="18"/>
-                    <w:szCs w:val="18"/>
-                </w:rPr>
-            </w:pPr>
-            <w:proofErr w:type="spellStart"/>
-            <w:r>
-                <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                              w:hAnsi="PlusJakartaSans-Regular"
-                              w:cs="PlusJakartaSans-Regular"/>
-                    <w:color w:val="212B46"/>
-                    <w:sz w:val="18"/>
-                    <w:szCs w:val="18"/>
-                </w:rPr>
-                <w:t>
-                    <xsl:value-of select="cv:description"/>
-                </w:t>
-            </w:r>
-            <w:proofErr w:type="spellEnd"/>
-        </w:p>
+        <xsl:apply-templates select="cv:description" mode="markdown"/>
     </xsl:template>
 
 </xsl:stylesheet>

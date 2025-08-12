@@ -1842,7 +1842,7 @@
                             </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">
-                                    <xsl:with-param name="text" select="'Opleiding &amp; trainingen'"/>
+                                    <xsl:with-param name="text" select="'Opleidingen &amp; trainingen'"/>
                                 </xsl:call-template>
                             </w:t>
                         </w:r>
@@ -1971,82 +1971,85 @@
                                 <xsl:sort select="cv:yearTo" data-type="number" order="descending"/>
                                 <xsl:sort select="cv:result"/>
                             </xsl:apply-templates>
-                            <w:tr w:rsidR="001405E4" w14:paraId="5EBC8C3A" w14:textId="2BF52654" w:rsidTr="00594200">
-                                <w:trPr>
-                                    <w:trHeight w:val="454"/>
-                                </w:trPr>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="202.25pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                        <w:vAlign w:val="center"/>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="4690787F" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="156.30pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                        <w:vAlign w:val="center"/>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="2F6B6DB0" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="83.80pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                        <w:vAlign w:val="center"/>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="475BD2B4" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                                <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="83.80pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="76CC3164" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                                <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                            </w:tr>
+                            <xsl:if test="$trainings">
+                                <w:tr w:rsidR="001405E4" w14:paraId="5EBC8C3A" w14:textId="2BF52654"
+                                      w:rsidTr="00594200">
+                                    <w:trPr>
+                                        <w:trHeight w:val="454"/>
+                                    </w:trPr>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="202.25pt" w:type="dxa"/>
+                                            <w:tcBorders>
+                                                <w:bottom w:val="nil"/>
+                                            </w:tcBorders>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p w14:paraId="4690787F" w14:textId="77777777" w:rsidR="001405E4"
+                                             w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
+                                            <w:pPr>
+                                                <w:pStyle w:val="Pa0"/>
+                                                <w:rPr>
+                                                    <w:rStyle w:val="A3"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                        </w:p>
+                                    </w:tc>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="156.30pt" w:type="dxa"/>
+                                            <w:tcBorders>
+                                                <w:bottom w:val="nil"/>
+                                            </w:tcBorders>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p w14:paraId="2F6B6DB0" w14:textId="77777777" w:rsidR="001405E4"
+                                             w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
+                                            <w:pPr>
+                                                <w:pStyle w:val="Pa0"/>
+                                                <w:rPr>
+                                                    <w:rStyle w:val="A3"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                        </w:p>
+                                    </w:tc>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="83.80pt" w:type="dxa"/>
+                                            <w:tcBorders>
+                                                <w:bottom w:val="nil"/>
+                                            </w:tcBorders>
+                                            <w:vAlign w:val="center"/>
+                                        </w:tcPr>
+                                        <w:p w14:paraId="475BD2B4" w14:textId="77777777" w:rsidR="001405E4"
+                                             w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
+                                            <w:pPr>
+                                                <w:rPr>
+                                                    <w:rStyle w:val="A3"/>
+                                                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                        </w:p>
+                                    </w:tc>
+                                    <w:tc>
+                                        <w:tcPr>
+                                            <w:tcW w:w="83.80pt" w:type="dxa"/>
+                                            <w:tcBorders>
+                                                <w:bottom w:val="nil"/>
+                                            </w:tcBorders>
+                                        </w:tcPr>
+                                        <w:p w14:paraId="76CC3164" w14:textId="77777777" w:rsidR="001405E4"
+                                             w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
+                                            <w:pPr>
+                                                <w:rPr>
+                                                    <w:rStyle w:val="A3"/>
+                                                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                                                </w:rPr>
+                                            </w:pPr>
+                                        </w:p>
+                                    </w:tc>
+                                </w:tr>
+                            </xsl:if>
                         </xsl:if>
                         <!--
 
@@ -2145,84 +2148,15 @@
                                 <xsl:sort select="cv:year" data-type="number" order="descending"/>
                                 <xsl:sort select="cv:result"/>
                             </xsl:apply-templates>
-                            <w:tr w:rsidR="001405E4" w14:paraId="60F7DABA" w14:textId="6F3DC714" w:rsidTr="00594200">
-                                <w:trPr>
-                                    <w:trHeight w:val="454"/>
-                                </w:trPr>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="202.25pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                        <w:vAlign w:val="center"/>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="0E647319" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="156.30pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                        <w:vAlign w:val="center"/>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="3EA04818" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:pStyle w:val="Pa0"/>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="83.80pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                        <w:vAlign w:val="center"/>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="25FA9B89" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                                <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                                <w:tc>
-                                    <w:tcPr>
-                                        <w:tcW w:w="83.80pt" w:type="dxa"/>
-                                        <w:tcBorders>
-                                            <w:bottom w:val="nil"/>
-                                        </w:tcBorders>
-                                    </w:tcPr>
-                                    <w:p w14:paraId="300B38C9" w14:textId="77777777" w:rsidR="001405E4"
-                                         w:rsidRPr="00604B30" w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                                        <w:pPr>
-                                            <w:rPr>
-                                                <w:rStyle w:val="A3"/>
-                                                <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                                            </w:rPr>
-                                        </w:pPr>
-                                    </w:p>
-                                </w:tc>
-                            </w:tr>
                         </xsl:if>
                     </w:tbl>
+                </xsl:if>
+                <!--
+
+                EXPERIENCE
+
+                -->
+                <xsl:if test="$experiences">
                     <w:p w14:paraId="36BC7C31" w14:textId="195FC468" w:rsidR="005815D4" w:rsidRDefault="005815D4"
                          w:rsidP="002251BB"/>
                     <w:p w14:paraId="0FC87C85" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE">
@@ -2242,13 +2176,6 @@
                             <w:br w:type="page"/>
                         </w:r>
                     </w:p>
-                </xsl:if>
-                <!--
-
-                EXPERIENCE
-
-                -->
-                <xsl:if test="$experiences">
                     <w:p w14:paraId="6B615F0F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                          w:rsidP="00B2333C">
                         <w:pPr>
@@ -2676,14 +2603,10 @@
                             </w:r>
                         </w:p>
                         <xsl:apply-templates select="$publications"/>
-                    </xsl:if>
-                    <xsl:if test="$publications and $references">
-                        <w:p w14:paraId="3D45720F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                             w:rsidP="00CC7FCE">
-                            <w:pPr>
-                                <w:pStyle w:val="Titel1"/>
-                            </w:pPr>
-                        </w:p>
+                        <xsl:if test="$references">
+                            <w:p w14:paraId="3D45720F" w14:textId="77777777" w:rsidR="00CC7FCE"
+                                 w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE"/>
+                        </xsl:if>
                     </xsl:if>
                     <!--
 
@@ -2772,15 +2695,15 @@
                         </w:p>
                         <xsl:apply-templates select="$references"/>
                     </xsl:if>
+                    <w:sectPr w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE" w:rsidSect="00CC7FCE">
+                        <w:type w:val="continuous"/>
+                        <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                        <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt" w:header="35.45pt"
+                                 w:footer="2.85pt" w:gutter="0pt"/>
+                        <w:cols w:space="17.45pt"/>
+                        <w:docGrid w:linePitch="360"/>
+                    </w:sectPr>
                 </xsl:if>
-                <w:sectPr w:rsidR="00CC7FCE" w:rsidRPr="00CC7FCE" w:rsidSect="00CC7FCE">
-                    <w:type w:val="continuous"/>
-                    <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                    <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt" w:header="35.45pt"
-                             w:footer="2.85pt" w:gutter="0pt"/>
-                    <w:cols w:space="17.45pt"/>
-                    <w:docGrid w:linePitch="360"/>
-                </w:sectPr>
             </w:body>
         </w:document>
     </xsl:template>

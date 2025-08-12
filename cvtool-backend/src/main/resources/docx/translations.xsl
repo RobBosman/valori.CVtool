@@ -43,7 +43,7 @@
                     <xsl:when test="$text = 'Onderwijsinstelling'">Institution</xsl:when>
                     <xsl:when test="$text = 'Opdrachtgever'">Client</xsl:when>
                     <xsl:when test="$text = 'Opleiding'">Education</xsl:when>
-                    <xsl:when test="$text = 'Opleiding &amp; trainingen'">Education &amp; training</xsl:when>
+                    <xsl:when test="$text = 'Opleidingen &amp; trainingen'">Education &amp; training</xsl:when>
                     <xsl:when test="$text = 'Opleidingen'">Education</xsl:when>
                     <xsl:when test="$text = 'Opleidingsinstituut'">Institution</xsl:when>
                     <xsl:when test="$text = 'OS &amp; Netwerken'">OS &amp; Networks</xsl:when>
