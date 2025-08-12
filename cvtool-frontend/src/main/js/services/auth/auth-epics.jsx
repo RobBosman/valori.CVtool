@@ -1,5 +1,6 @@
 import { from, of, merge, EMPTY } from "rxjs";
 import * as rx from "rxjs/operators";
+import { store } from "../../redux/store";
 import { ofType } from "redux-observable";
 import * as utils from "../../utils/CommonUtils";
 import * as errorActions from "../error/error-actions";
@@ -89,7 +90,10 @@ export const authEpics = [
       const next$ = (remainingSeconds > AUTHENTICATION_REFRESH_SECONDS)
         ? of(idTokenClaimsExp) // Keep using the same token.
         : from(authServices.authenticateAtOpenIdProvider(true) // Get a new token.
-          .then(authResult => getTokenExpiration(authResult))
+          .then(authResult => {
+            store.dispatch(authActions.setAuthResult(JSON.stringify(authResult)));
+            return getTokenExpiration(authResult);
+          })
         );
       return next$.pipe(
         rx.delay(AUTHENTICATION_VERIFY_MILLIS), // Repeat this check every few minutes.

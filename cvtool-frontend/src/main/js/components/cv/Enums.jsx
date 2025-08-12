@@ -63,8 +63,43 @@ export const DocxTemplates = [
     }
   },
   {
-    key: "VALORI",
+    key: "AGILE_TESTERS",
     sortIndex: 2,
+    text: {
+      nl_NL: "AGILE_TESTERS"
+    }
+  },
+  {
+    key: "PERFORMANCE_ARCHITECTEN",
+    sortIndex: 3,
+    text: {
+      nl_NL: "PERFORMANCE_ARCHITECTEN"
+    }
+  },
+  {
+    key: "QUALITY_ACCELERATORS",
+    sortIndex: 4,
+    text: {
+      nl_NL: "QUALITY_ACCELERATORS"
+    }
+  }, 
+  {
+    key: "SALVES",
+    sortIndex: 5,
+    text: {
+      nl_NL: "SALVES"
+    }
+  },
+  {
+    key: "TEST_CREW_IT",
+    sortIndex: 6,
+    text: {
+      nl_NL: "TEST_CREW_IT"
+    }
+  },
+  {
+    key: "VALORI",
+    sortIndex: 7,
     text: {
       nl_NL: "VALORI"
     }
