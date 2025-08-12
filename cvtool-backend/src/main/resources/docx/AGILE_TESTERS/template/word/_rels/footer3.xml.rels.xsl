@@ -9,15 +9,13 @@
 
     <xsl:template match="/cv:root">
         <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-            <Relationship Id="rId2" Type="http://purl.oclc.org/ooxml/officeDocument/relationships/hyperlink"
-                          Target="mailto:barend@cerios.nl" TargetMode="External">
+            <Relationship Id="rId1" Type="http://purl.oclc.org/ooxml/officeDocument/relationships/hyperlink"
+                          TargetMode="External">
                 <xsl:attribute name="Target">
                     <xsl:text>mailto:</xsl:text>
                     <xsl:value-of select="cv:businessUnit/cv:contactEmail"/>
                 </xsl:attribute>
             </Relationship>
-            <Relationship Id="rId1" Type="http://purl.oclc.org/ooxml/officeDocument/relationships/image"
-                          Target="media/background-first-page.png"/>
         </Relationships>
     </xsl:template>
 
