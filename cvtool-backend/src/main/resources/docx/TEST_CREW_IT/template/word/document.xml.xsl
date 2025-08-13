@@ -41,16 +41,17 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251678720" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1" wp14:anchorId="41AA082E" wp14:editId="49EFE7C3">
+                                       allowOverlap="1"
+                                       wp14:anchorId="41AA082E" wp14:editId="500E0B56">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>675386</wp:posOffset>
+                                    <wp:posOffset>438785</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>-457200</wp:posOffset>
+                                    <wp:posOffset>-347980</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="922611" cy="692375"/>
-                                <wp:effectExtent l="0" t="0" r="5080" b="0"/>
+                                <wp:extent cx="1363980" cy="527050"/>
+                                <wp:effectExtent l="0" t="0" r="0" b="6350"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="1727648750" name="Graphic 10"/>
                                 <wp:cNvGraphicFramePr>
@@ -85,7 +86,7 @@
                                             <pic:spPr>
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="927881" cy="696330"/>
+                                                    <a:ext cx="1363980" cy="527050"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>
@@ -110,15 +111,16 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251656190" behindDoc="1" locked="0" layoutInCell="1"
-                                       allowOverlap="1" wp14:anchorId="72854C67" wp14:editId="666B755E">
+                                       allowOverlap="1"
+                                       wp14:anchorId="72854C67" wp14:editId="24F87852">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>-712701</wp:posOffset>
+                                    <wp:posOffset>-707465</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="page">
-                                    <wp:posOffset>-1561292</wp:posOffset>
+                                    <wp:posOffset>-1567543</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="7787640" cy="5116195"/>
+                                <wp:extent cx="7787791" cy="5116195"/>
                                 <wp:effectExtent l="0" t="0" r="0" b="1905"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="704115198" name="Picture 1"/>
@@ -135,7 +137,7 @@
                                             </pic:nvPicPr>
                                             <pic:blipFill rotWithShape="1">
                                                 <a:blip r:embed="rId10"/>
-                                                <a:srcRect l="-1.601%" t="-11.668%" r="1.601%" b="45.972%"/>
+                                                <a:srcRect l="10.55%" t="13.521%" r="1.062%" b="35.247%"/>
                                                 <a:stretch>
                                                     <a:fillRect/>
                                                 </a:stretch>
@@ -143,7 +145,7 @@
                                             <pic:spPr bwMode="auto">
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="7787640" cy="5116195"/>
+                                                    <a:ext cx="7787791" cy="5116195"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>
