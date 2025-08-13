@@ -36,7 +36,7 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
     : msal.acquireTokenSilent(loginConfig)
       .catch(error => {
         if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
-          console.log("Error acquiring silent token:", error);
+          console.warn("Error acquiring silent token:", error);
           // Fallback to interaction mode when silent call fails.
           return msal.acquireTokenPopup(loginConfig);
         } else {
