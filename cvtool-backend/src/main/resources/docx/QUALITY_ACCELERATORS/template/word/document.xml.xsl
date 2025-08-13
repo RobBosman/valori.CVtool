@@ -44,13 +44,13 @@
                                        allowOverlap="1" wp14:anchorId="41AA082E" wp14:editId="49EFE7C3">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>675386</wp:posOffset>
+                                    <wp:posOffset>191135</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>-457200</wp:posOffset>
+                                    <wp:posOffset>-332105</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="922611" cy="692375"/>
-                                <wp:effectExtent l="0" t="0" r="5080" b="0"/>
+                                <wp:extent cx="1859915" cy="488950"/>
+                                <wp:effectExtent l="0" t="0" r="0" b="6350"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="1727648750" name="Graphic 10"/>
                                 <wp:cNvGraphicFramePr>
@@ -85,7 +85,7 @@
                                             <pic:spPr>
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="927881" cy="696330"/>
+                                                    <a:ext cx="1859915" cy="488950"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>
@@ -113,10 +113,10 @@
                                        allowOverlap="1" wp14:anchorId="72854C67" wp14:editId="666B755E">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>-712701</wp:posOffset>
+                                    <wp:posOffset>-709930</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="page">
-                                    <wp:posOffset>-1561292</wp:posOffset>
+                                    <wp:posOffset>-1570990</wp:posOffset>
                                 </wp:positionV>
                                 <wp:extent cx="7787640" cy="5116195"/>
                                 <wp:effectExtent l="0" t="0" r="0" b="1905"/>
@@ -135,7 +135,7 @@
                                             </pic:nvPicPr>
                                             <pic:blipFill rotWithShape="1">
                                                 <a:blip r:embed="rId10"/>
-                                                <a:srcRect l="-1.601%" t="-11.668%" r="1.601%" b="45.972%"/>
+                                                <a:srcRect l="31.88%" t="22.972%" r="21.942%" b="46.69%"/>
                                                 <a:stretch>
                                                     <a:fillRect/>
                                                 </a:stretch>
