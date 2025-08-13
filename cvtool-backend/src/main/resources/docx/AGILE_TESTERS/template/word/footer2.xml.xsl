@@ -26,6 +26,9 @@
                         <w:tab w:val="clear" w:pos="225.65pt"/>
                         <w:tab w:val="clear" w:pos="451.30pt"/>
                         <w:tab w:val="start" w:pos="0pt"/>
+                        <w:tab w:val="start" w:pos="120.50pt"/>
+                        <w:tab w:val="start" w:pos="340.20pt"/>
+                        <w:tab w:val="start" w:pos="418.20pt"/>
                     </w:tabs>
                     <w:ind w:end="-7.10pt"/>
                     <w:jc w:val="center"/>
@@ -44,15 +47,14 @@
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                   relativeHeight="251659264"
-                                   behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="668DF1E3"
-                                   wp14:editId="203A40C9">
+                                   relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
+                                   wp14:anchorId="668DF1E3" wp14:editId="203A40C9">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="column">
-                                <wp:posOffset>-488899</wp:posOffset>
+                                <wp:posOffset>-494330</wp:posOffset>
                             </wp:positionH>
                             <wp:positionV relativeFrom="page">
-                                <wp:posOffset>10181968</wp:posOffset>
+                                <wp:posOffset>10178980</wp:posOffset>
                             </wp:positionV>
                             <wp:extent cx="7611259" cy="513221"/>
                             <wp:effectExtent l="0" t="0" r="0" b="0"/>
@@ -70,7 +72,7 @@
                                         </pic:nvPicPr>
                                         <pic:blipFill rotWithShape="1">
                                             <a:blip r:embed="rId1"/>
-                                            <a:srcRect t="17.862%" r="-0.03%" b="64.792%"/>
+                                            <a:srcRect l="0.722%" t="53.769%" r="0.025%" b="34.498%"/>
                                             <a:stretch>
                                                 <a:fillRect/>
                                             </a:stretch>
