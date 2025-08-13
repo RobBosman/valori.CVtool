@@ -25,6 +25,8 @@ import javax.xml.transform.stream.StreamSource
 
 const val CV_GENERATE_ADDRESS = "cv.generate"
 
+typealias DocxTemplateName = String
+
 internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     companion object {
@@ -41,9 +43,9 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             "word/media/passport.photo"
         )
 
-        private val cachedXslIncludesMap = mutableMapOf<String, Map<String, ByteArray>>()
-        private fun xslIncludesMap(docxTemplate: String) =
-            cachedXslIncludesMap
+        private val cachedXslIncludesMaps = mutableMapOf<DocxTemplateName, Map<String, ByteArray>>()
+        private fun getXslIncludesMap(docxTemplate: DocxTemplateName) =
+            cachedXslIncludesMaps
                 .computeIfAbsent(docxTemplate) { templateName ->
                     mapOf(
                         "common.xsl" to loadBytes("/docx/common.xsl"),
@@ -53,27 +55,28 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                     )
                 }
 
-        private fun transformerFactory(docxTemplate: String) =
+        private fun transformerFactory(docxTemplate: DocxTemplateName) =
             TransformerFactory
                 .newInstance()
                 .apply {
                     setURIResolver { href, _ ->
-                        val xslt = xslIncludesMap(docxTemplate).getOrElse(href.substringAfterLast("/")) {
-                            error("Cannot find XSLT $href.")
-                        }
+                        val xslt = getXslIncludesMap(docxTemplate)
+                            .getOrElse(href.substringAfterLast("/")) {
+                                error("Cannot find XSLT $href.")
+                            }
                         StreamSource(ByteArrayInputStream(xslt))
                     }
                 }
 
-        internal fun createXslTemplate(docxTemplate: String, location: String): Templates =
+        internal fun createXslTemplate(docxTemplate: DocxTemplateName, location: String): Templates =
             ByteArrayInputStream(loadBytes(location))
                 .use {
                     transformerFactory(docxTemplate).newTemplates(StreamSource(it))
                 }
 
-        private val cachedDocxPartNamesXslTemplatesMap = mutableMapOf<String, Map<String, Templates>>()
-        private fun getDocxPartNamesXslTemplatesMap(docxTemplate: String) =
-            cachedDocxPartNamesXslTemplatesMap
+        private val cachedDocxPartNamesXslTemplatesMaps = mutableMapOf<DocxTemplateName, Map<String, Templates>>()
+        private fun getDocxPartNamesXslTemplatesMap(docxTemplate: DocxTemplateName) =
+            cachedDocxPartNamesXslTemplatesMaps
                 .computeIfAbsent(docxTemplate) { templateName ->
                     listOf(
                         "[Content_Types].xml",
@@ -83,6 +86,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                         "word/document.xml",
                         "word/footer1.xml",
                         "word/footer2.xml",
+                        "word/footer3.xml",
                         "word/header1.xml",
                         "word/header2.xml",
                         "word/media/passport.photo"
@@ -92,9 +96,9 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                         .mapValues { (_, location) -> createXslTemplate(templateName, location) }
                 }
 
-        private val cachedDocxTemplate = mutableMapOf<String, ByteArray>()
-        private fun docxTemplate(docxTemplate: String) =
-            cachedDocxTemplate
+        private val cachedDocxTemplates = mutableMapOf<DocxTemplateName, ByteArray>()
+        private fun getDocxTemplate(docxTemplate: DocxTemplateName) =
+            cachedDocxTemplates
                 .computeIfAbsent(docxTemplate) { templateName ->
                     loadBytes("/docx/$templateName/template.docx")
                 }
@@ -177,7 +181,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         return writer.toByteArray()
     }
 
-    internal fun xmlToDocx(xmlBytes: ByteArray, docxTemplate: String, locale: String) =
+    internal fun xmlToDocx(xmlBytes: ByteArray, docxTemplate: DocxTemplateName, locale: String) =
         Flowable
             .fromIterable(getDocxPartNamesXslTemplatesMap(docxTemplate).entries)
             .parallel()
@@ -203,7 +207,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 val docxBytes = ByteArrayOutputStream()
                 ZipOutputStream(docxBytes)
                     .use { docxOutputStream ->
-                        ZipInputStream(ByteArrayInputStream(docxTemplate(docxTemplate)))
+                        ZipInputStream(ByteArrayInputStream(getDocxTemplate(docxTemplate)))
                             .use { zipIn ->
                                 var entry = zipIn.nextEntry
                                 while (entry != null) {
