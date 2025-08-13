@@ -40,19 +40,19 @@
                         </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                       relativeHeight="251678720" behindDoc="0" locked="0" layoutInCell="1"
-                                       allowOverlap="1" wp14:anchorId="41AA082E" wp14:editId="49EFE7C3">
+                                       relativeHeight="251656190" behindDoc="1" locked="0" layoutInCell="1"
+                                       allowOverlap="1" wp14:anchorId="72854C67" wp14:editId="19CC642E">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>675386</wp:posOffset>
+                                    <wp:posOffset>-588645</wp:posOffset>
                                 </wp:positionH>
-                                <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>-457200</wp:posOffset>
+                                <wp:positionV relativeFrom="page">
+                                    <wp:posOffset>-1557655</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="922611" cy="692375"/>
-                                <wp:effectExtent l="0" t="0" r="5080" b="0"/>
+                                <wp:extent cx="7787791" cy="5116195"/>
+                                <wp:effectExtent l="0" t="0" r="0" b="1905"/>
                                 <wp:wrapNone/>
-                                <wp:docPr id="1727648750" name="Graphic 10"/>
+                                <wp:docPr id="704115198" name="Picture 1"/>
                                 <wp:cNvGraphicFramePr>
                                     <a:graphicFrameLocks xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"
                                                          noChangeAspect="1"/>
@@ -61,35 +61,49 @@
                                     <a:graphicData uri="http://purl.oclc.org/ooxml/drawingml/picture">
                                         <pic:pic xmlns:pic="http://purl.oclc.org/ooxml/drawingml/picture">
                                             <pic:nvPicPr>
-                                                <pic:cNvPr id="1727648750" name="Graphic 10"/>
+                                                <pic:cNvPr id="704115198" name="Picture 1"/>
                                                 <pic:cNvPicPr/>
                                             </pic:nvPicPr>
-                                            <pic:blipFill>
-                                                <a:blip r:embed="rId8">
+                                            <pic:blipFill rotWithShape="1">
+                                                <a:blip r:embed="rId11" cstate="print">
                                                     <a:extLst>
                                                         <a:ext>
                                                             <xsl:attribute name="uri">
                                                                 <xsl:value-of
-                                                                        select="'{96DAC541-7B7A-43D3-8B79-37D633B846F1}'"/>
+                                                                        select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
                                                             </xsl:attribute>
-                                                            <asvg:svgBlip
-                                                                    xmlns:asvg="http://schemas.microsoft.com/office/drawing/2016/SVG/main"
-                                                                    r:embed="rId9"/>
+                                                            <a14:useLocalDpi
+                                                                    xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"
+                                                                    val="0"/>
                                                         </a:ext>
                                                     </a:extLst>
                                                 </a:blip>
+                                                <a:srcRect t="20.315%" r="-0.44%" b="11.867%"/>
                                                 <a:stretch>
                                                     <a:fillRect/>
                                                 </a:stretch>
                                             </pic:blipFill>
-                                            <pic:spPr>
+                                            <pic:spPr bwMode="auto">
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="927881" cy="696330"/>
+                                                    <a:ext cx="7787791" cy="5116195"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>
                                                 </a:prstGeom>
+                                                <a:ln>
+                                                    <a:noFill/>
+                                                </a:ln>
+                                                <a:extLst>
+                                                    <a:ext>
+                                                        <xsl:attribute name="uri">
+                                                            <xsl:value-of
+                                                                    select="'{53640926-AAD7-44D8-BBD7-CCE9431645EC}'"/>
+                                                        </xsl:attribute>
+                                                        <a14:shadowObscured
+                                                                xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"/>
+                                                    </a:ext>
+                                                </a:extLst>
                                             </pic:spPr>
                                         </pic:pic>
                                     </a:graphicData>

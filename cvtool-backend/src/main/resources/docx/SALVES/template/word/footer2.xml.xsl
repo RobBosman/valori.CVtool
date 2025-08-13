@@ -26,6 +26,9 @@
                         <w:tab w:val="clear" w:pos="225.65pt"/>
                         <w:tab w:val="clear" w:pos="451.30pt"/>
                         <w:tab w:val="start" w:pos="0pt"/>
+                        <w:tab w:val="start" w:pos="120.50pt"/>
+                        <w:tab w:val="start" w:pos="340.20pt"/>
+                        <w:tab w:val="start" w:pos="418.20pt"/>
                     </w:tabs>
                     <w:ind w:end="-7.10pt"/>
                     <w:jc w:val="center"/>
@@ -44,33 +47,45 @@
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                   relativeHeight="251659264"
-                                   behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="668DF1E3"
-                                   wp14:editId="203A40C9">
+                                   relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
+                                   wp14:anchorId="668DF1E3" wp14:editId="203A40C9">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="column">
-                                <wp:posOffset>-488899</wp:posOffset>
+                                <wp:posOffset>-498052</wp:posOffset>
                             </wp:positionH>
                             <wp:positionV relativeFrom="page">
-                                <wp:posOffset>10181968</wp:posOffset>
+                                <wp:posOffset>10176933</wp:posOffset>
                             </wp:positionV>
                             <wp:extent cx="7611259" cy="513221"/>
                             <wp:effectExtent l="0" t="0" r="0" b="0"/>
                             <wp:wrapNone/>
                             <wp:docPr id="160917318" name="Picture 1"/>
                             <wp:cNvGraphicFramePr>
-                                <a:graphicFrameLocks xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"/>
+                                <a:graphicFrameLocks xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"
+                                                     noChangeAspect="1"/>
                             </wp:cNvGraphicFramePr>
                             <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
                                 <a:graphicData uri="http://purl.oclc.org/ooxml/drawingml/picture">
                                     <pic:pic xmlns:pic="http://purl.oclc.org/ooxml/drawingml/picture">
                                         <pic:nvPicPr>
-                                            <pic:cNvPr id="160917318" name="Picture 1"/>
+                                            <pic:cNvPr id="1735136639" name="Picture 1"/>
                                             <pic:cNvPicPr/>
                                         </pic:nvPicPr>
-                                        <pic:blipFill rotWithShape="1">
-                                            <a:blip r:embed="rId1"/>
-                                            <a:srcRect t="17.862%" r="-0.03%" b="64.792%"/>
+                                        <pic:blipFill>
+                                            <a:blip r:embed="rId1">
+                                                <a:extLst>
+                                                    <a:ext>
+                                                        <xsl:attribute name="uri">
+                                                            <xsl:value-of
+                                                                    select="'{28A0092B-C50C-407E-A947-70E740481C1C}'"/>
+                                                        </xsl:attribute>
+                                                        <a14:useLocalDpi
+                                                                xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main"
+                                                                val="0"/>
+                                                    </a:ext>
+                                                </a:extLst>
+                                            </a:blip>
+                                            <a:srcRect t="46.634%" b="46.634%"/>
                                             <a:stretch>
                                                 <a:fillRect/>
                                             </a:stretch>

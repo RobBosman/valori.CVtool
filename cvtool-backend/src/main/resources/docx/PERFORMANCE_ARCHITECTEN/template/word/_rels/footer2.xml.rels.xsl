@@ -10,7 +10,7 @@
     <xsl:template match="/cv:root">
         <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
             <Relationship Id="rId2" Type="http://purl.oclc.org/ooxml/officeDocument/relationships/hyperlink"
-                          Target="mailto:barend@cerios.nl" TargetMode="External">
+                          TargetMode="External">
                 <xsl:attribute name="Target">
                     <xsl:text>mailto:</xsl:text>
                     <xsl:value-of select="cv:businessUnit/cv:contactEmail"/>
