@@ -44,13 +44,13 @@
                                        allowOverlap="1" wp14:anchorId="41AA082E" wp14:editId="49EFE7C3">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>675386</wp:posOffset>
+                                    <wp:posOffset>194541</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>-457200</wp:posOffset>
+                                    <wp:posOffset>-227965</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="922611" cy="692375"/>
-                                <wp:effectExtent l="0" t="0" r="5080" b="0"/>
+                                <wp:extent cx="2006600" cy="434390"/>
+                                <wp:effectExtent l="0" t="0" r="0" b="0"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="1727648750" name="Graphic 10"/>
                                 <wp:cNvGraphicFramePr>
@@ -85,7 +85,7 @@
                                             <pic:spPr>
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="927881" cy="696330"/>
+                                                    <a:ext cx="2006600" cy="434390"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>

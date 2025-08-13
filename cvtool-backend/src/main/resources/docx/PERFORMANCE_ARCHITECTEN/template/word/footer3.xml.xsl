@@ -24,11 +24,8 @@
                         <w:tab w:val="clear" w:pos="225.65pt"/>
                         <w:tab w:val="clear" w:pos="451.30pt"/>
                         <w:tab w:val="start" w:pos="0pt"/>
-                        <w:tab w:val="start" w:pos="120.50pt"/>
-                        <w:tab w:val="start" w:pos="340.20pt"/>
-                        <w:tab w:val="start" w:pos="418.20pt"/>
                     </w:tabs>
-                    <w:ind w:end="-7.10pt"/>
+                    <w:ind w:end="-6.90pt"/>
                     <w:jc w:val="center"/>
                     <w:rPr>
                         <w:sz w:val="18"/>
@@ -45,23 +42,10 @@
                             <xsl:with-param name="text" select="'CONTACTPERSOON'"/>
                         </xsl:call-template>
                     </w:t>
-                </w:r>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactName"/>
                     </w:t>
-                </w:r>
-                <w:proofErr w:type="spellEnd"/>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactPhone"/>

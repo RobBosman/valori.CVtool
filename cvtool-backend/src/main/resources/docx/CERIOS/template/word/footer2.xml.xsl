@@ -23,9 +23,6 @@
                         <w:tab w:val="clear" w:pos="225.65pt"/>
                         <w:tab w:val="clear" w:pos="451.30pt"/>
                         <w:tab w:val="start" w:pos="0pt"/>
-                        <w:tab w:val="start" w:pos="120.50pt"/>
-                        <w:tab w:val="start" w:pos="340.20pt"/>
-                        <w:tab w:val="start" w:pos="418.20pt"/>
                     </w:tabs>
                     <w:ind w:end="-7.10pt"/>
                     <w:jc w:val="center"/>
