@@ -43,16 +43,17 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             "word/media/passport.photo"
         )
 
+        private val commonXslIncludesMaps = mapOf(
+            "common.xsl" to loadBytes("/docx/common.xsl"),
+            "mappings.xsl" to loadBytes("/docx/mappings.xsl"),
+            "translations.xsl" to loadBytes("/docx/translations.xsl")
+        )
         private val cachedXslIncludesMaps = mutableMapOf<DocxTemplateName, Map<String, ByteArray>>()
         private fun getXslIncludesMap(docxTemplate: DocxTemplateName) =
             cachedXslIncludesMaps
                 .computeIfAbsent(docxTemplate) { templateName ->
-                    mapOf(
-                        "common.xsl" to loadBytes("/docx/common.xsl"),
-                        "fragments.xsl" to loadBytes("/docx/$templateName/fragments.xsl"),
-                        "mappings.xsl" to loadBytes("/docx/mappings.xsl"),
-                        "translations.xsl" to loadBytes("/docx/translations.xsl")
-                    )
+                    commonXslIncludesMaps +
+                            ("fragments.xsl" to loadBytes("/docx/$templateName/fragments.xsl"))
                 }
 
         private fun transformerFactory(docxTemplate: DocxTemplateName) =
