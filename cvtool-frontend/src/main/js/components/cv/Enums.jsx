@@ -56,45 +56,45 @@ export const DocxTemplates = [
     }
   },
   {
-    key: "CERIOS-VALORI",
-    sortIndex: 1,
-    text: {
-      nl_NL: "CERIOS-VALORI"
-    }
-  },
-  {
     key: "AGILE_TESTERS",
-    sortIndex: 2,
+    sortIndex: 1,
     text: {
       nl_NL: "AGILE_TESTERS"
     }
   },
   {
     key: "PERFORMANCE_ARCHITECTEN",
-    sortIndex: 3,
+    sortIndex: 2,
     text: {
       nl_NL: "PERFORMANCE_ARCHITECTEN"
     }
   },
   {
     key: "QUALITY_ACCELERATORS",
-    sortIndex: 4,
+    sortIndex: 3,
     text: {
       nl_NL: "QUALITY_ACCELERATORS"
     }
   }, 
   {
     key: "SALVES",
-    sortIndex: 5,
+    sortIndex: 4,
     text: {
       nl_NL: "SALVES"
     }
   },
   {
     key: "TEST_CREW_IT",
-    sortIndex: 6,
+    sortIndex: 5,
     text: {
       nl_NL: "TEST_CREW_IT"
+    }
+  },
+  {
+    key: "VALORI_CERIOS",
+    sortIndex: 6,
+    text: {
+      nl_NL: "VALORI_CERIOS"
     }
   },
   {
