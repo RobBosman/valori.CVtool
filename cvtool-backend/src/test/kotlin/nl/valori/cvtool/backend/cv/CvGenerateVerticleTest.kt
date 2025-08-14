@@ -9,7 +9,7 @@ import java.util.stream.IntStream
 internal class CvGenerateVerticleTest {
 
     @ParameterizedTest
-    @ValueSource(strings = ["CERIOS", "CERIOS-VALORI", "VALORI"])
+    @ValueSource(strings = ["AGILE_TESTERS", "CERIOS", "CERIOS-VALORI", "PERFORMANCE_ARCHITECTS", "QUALITY_ACCELERATORS", "SALVES", "TEST_CREW_IT", "VALORI"])
     fun jsonToXml(docxTemplate: String) {
         val xml = javaClass.getResource("/test-cv.xml")!!.readBytes()
         val xslt = CvGenerateVerticle.createXslTemplate(docxTemplate, "/test.xsl")
@@ -20,9 +20,10 @@ internal class CvGenerateVerticleTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = ["CERIOS", "CERIOS-VALORI", "VALORI"])
+    @ValueSource(strings = ["AGILE_TESTERS", "CERIOS", "CERIOS-VALORI", "PERFORMANCE_ARCHITECTS", "QUALITY_ACCELERATORS", "SALVES", "TEST_CREW_IT", "VALORI"])
     fun generateDocx(docxTemplate: String) {
-        val json = JsonObject(javaClass.getResource("/test-cv.json")!!.readText()) // 14bfa6bb-1487-3e45-bba0-28a21ed38046
+        val json =
+            JsonObject(javaClass.getResource("/test-cv.json")!!.readText()) // 14bfa6bb-1487-3e45-bba0-28a21ed38046
         val generator = CvGenerateVerticle()
 
         val numGenerations = 100
