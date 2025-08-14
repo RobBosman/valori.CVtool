@@ -45,23 +45,10 @@
                             <xsl:with-param name="text" select="'CONTACTPERSOON'"/>
                         </xsl:call-template>
                     </w:t>
-                </w:r>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactName"/>
                     </w:t>
-                </w:r>
-                <w:proofErr w:type="spellEnd"/>
-                <w:r w:rsidRPr="002251BB">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactPhone"/>

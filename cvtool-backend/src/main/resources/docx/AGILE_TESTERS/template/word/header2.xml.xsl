@@ -24,9 +24,6 @@
                     <w:jc w:val="both"/>
                 </w:pPr>
                 <w:r>
-                    <w:rPr>
-                        <w:noProof/>
-                    </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                    relativeHeight="251660288" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1"
@@ -96,9 +93,6 @@
                     <w:tab/>
                 </w:r>
                 <w:r w:rsidR="00D51FD7">
-                    <w:rPr>
-                        <w:noProof/>
-                    </w:rPr>
                     <w:drawing>
                         <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="32B95DFD"
                                    wp14:editId="4291DFB6">

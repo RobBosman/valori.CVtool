@@ -40,7 +40,6 @@
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
-                        <w:noProof/>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
@@ -123,31 +122,17 @@
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
+                        <w:noProof/>
                     </w:rPr>
                     <w:t>
                         <xsl:call-template name="translate">
                             <xsl:with-param name="text" select="'CONTACTPERSOON'"/>
                         </xsl:call-template>
                     </w:t>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactName"/>
                     </w:t>
-                </w:r>
-                <w:proofErr w:type="spellEnd"/>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactPhone"/>
@@ -161,6 +146,7 @@
                             <w:color w:val="FFFFFF" w:themeColor="background1"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:businessUnit/cv:contactEmail"/>

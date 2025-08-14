@@ -38,9 +38,6 @@
                 -->
                 <w:p w14:paraId="56438C05" w14:textId="738191C7" w:rsidR="00B11653" w:rsidRDefault="00F37740">
                     <w:r>
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251668480" behindDoc="0" locked="0" layoutInCell="1"
@@ -144,9 +141,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r>
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251664384" behindDoc="0" locked="0" layoutInCell="1"
@@ -237,9 +231,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="001958BA">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251666432" behindDoc="0" locked="0" layoutInCell="1"
@@ -400,9 +391,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="002251BB" w:rsidRPr="00B11653">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251656190" behindDoc="1" locked="0" layoutInCell="1"
@@ -457,9 +445,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="00D52540">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251678720" behindDoc="1" locked="0" layoutInCell="1"
@@ -526,9 +511,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="00B11653">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251660288" behindDoc="0" locked="0" layoutInCell="1"
@@ -648,9 +630,6 @@
                 -->
                 <w:p w14:paraId="0245734B" w14:textId="1168C12D" w:rsidR="00B11653" w:rsidRDefault="0023741E">
                     <w:r>
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251689984" behindDoc="0" locked="0" layoutInCell="1"
@@ -711,9 +690,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="001958BA" w:rsidRPr="00D52540">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251655165" behindDoc="1" locked="0" layoutInCell="1"
@@ -770,9 +746,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="001A7313">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251669504" behindDoc="0" locked="0" layoutInCell="1"
@@ -866,9 +839,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="001A7313">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251671552" behindDoc="0" locked="0" layoutInCell="1"
@@ -927,9 +897,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="000E5868">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251674624" behindDoc="0" locked="0" layoutInCell="1"
@@ -1012,9 +979,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="000E5868">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251668991" behindDoc="0" locked="0" layoutInCell="1"
@@ -1088,9 +1052,6 @@
                     </w:r>
                     <xsl:if test="$characteristics/cv:interests">
                         <w:r w:rsidR="00065B83">
-                            <w:rPr>
-                                <w:noProof/>
-                            </w:rPr>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                            relativeHeight="251702272" behindDoc="0" locked="0" layoutInCell="1"
@@ -1151,9 +1112,6 @@
                             </w:drawing>
                         </w:r>
                         <w:r w:rsidR="000E5868">
-                            <w:rPr>
-                                <w:noProof/>
-                            </w:rPr>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                            relativeHeight="251675648" behindDoc="0" locked="0" layoutInCell="1"
@@ -1276,9 +1234,6 @@
                         <w:pStyle w:val="Titel1"/>
                     </w:pPr>
                     <w:r>
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:lastRenderedPageBreak/>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -1340,9 +1295,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:t>
                             <xsl:call-template name="translate">
                                 <xsl:with-param name="text" select="'Kerncompetenties / skills'"/>
@@ -1350,9 +1302,6 @@
                         </w:t>
                     </w:r>
                     <w:r w:rsidR="00D51FD7" w:rsidRPr="001958BA">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251683840" behindDoc="0" locked="0" layoutInCell="1"
@@ -1430,9 +1379,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="00D51FD7" w:rsidRPr="001958BA">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251688960" behindDoc="0" locked="0" layoutInCell="1"
@@ -1582,9 +1528,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251687936" behindDoc="0" locked="0" layoutInCell="1"
@@ -1658,9 +1601,6 @@
                         </w:drawing>
                     </w:r>
                     <w:r w:rsidR="002251BB" w:rsidRPr="001958BA">
-                        <w:rPr>
-                            <w:noProof/>
-                        </w:rPr>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251685888" behindDoc="0" locked="0" layoutInCell="1"
@@ -1770,9 +1710,6 @@
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
                         <w:r>
-                            <w:rPr>
-                                <w:noProof/>
-                            </w:rPr>
                             <w:lastRenderedPageBreak/>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -1837,9 +1774,6 @@
                             </w:drawing>
                         </w:r>
                         <w:r w:rsidR="00604B30" w:rsidRPr="005815D4">
-                            <w:rPr>
-                                <w:noProof/>
-                            </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">
                                     <xsl:with-param name="text" select="'Opleidingen &amp; trainingen'"/>
@@ -2196,9 +2130,6 @@
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
                         <w:r>
-                            <w:rPr>
-                                <w:noProof/>
-                            </w:rPr>
                             <w:lastRenderedPageBreak/>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -2291,9 +2222,6 @@
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
                         <w:r>
-                            <w:rPr>
-                                <w:noProof/>
-                            </w:rPr>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                            relativeHeight="251698176" behindDoc="0" locked="0" layoutInCell="1"
@@ -2529,9 +2457,6 @@
                                 <w:pStyle w:val="Titel1"/>
                             </w:pPr>
                             <w:r>
-                                <w:rPr>
-                                    <w:noProof/>
-                                </w:rPr>
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                                relativeHeight="251700224" behindDoc="0" locked="0" layoutInCell="1"
@@ -2620,9 +2545,6 @@
                                 <w:pStyle w:val="Titel1"/>
                             </w:pPr>
                             <w:r>
-                                <w:rPr>
-                                    <w:noProof/>
-                                </w:rPr>
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                                relativeHeight="251700224" behindDoc="0" locked="0" layoutInCell="1"

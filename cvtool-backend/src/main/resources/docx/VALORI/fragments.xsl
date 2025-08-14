@@ -76,11 +76,13 @@
                             <w:numId w:val="18"/>
                         </w:numPr>
                     </w:pPr>
+                    <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:t>
                             <xsl:value-of select="substring($text, 3)"/>
                         </w:t>
                     </w:r>
+                    <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </xsl:when>
             <xsl:when test="starts-with($text, '# ')">
@@ -90,6 +92,7 @@
                     <w:pPr>
                         <w:ind w:left="534" w:hanging="364"/>
                     </w:pPr>
+                    <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:t>
                             <xsl:value-of select="concat($listItemNumber, '.')"/>
@@ -99,17 +102,20 @@
                             <xsl:value-of select="substring($text, 3)"/>
                         </w:t>
                     </w:r>
+                    <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </xsl:when>
             <xsl:otherwise>
                 <!-- plain text; no list item -->
                 <w:p w14:paraId="3FAFC2DF" w14:textId="4D7D9D0A" w:rsidR="00BB35DE" w:rsidRDefault="00D55949"
                      w:rsidP="001730DD">
+                    <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:t>
                             <xsl:value-of select="$text"/>
                         </w:t>
                     </w:r>
+                    <w:proofErr w:type="spellEnd"/>
                 </w:p>
             </xsl:otherwise>
         </xsl:choose>
@@ -508,15 +514,7 @@
                 <w:tcPr>
                     <w:tcW w:w="9213" w:type="dxa"/>
                 </w:tcPr>
-                <w:p w14:paraId="3BE4A452" w14:textId="20C5834B" w:rsidR="001860B4" w:rsidRDefault="001860B4"
-                     w:rsidP="000B7B5E">
-                    <w:proofErr w:type="spellStart"/>
-                    <w:r>
-                        <w:t>
-                            <xsl:apply-templates select="cv:description" mode="markdown"/>
-                        </w:t>
-                    </w:r>
-                </w:p>
+                <xsl:apply-templates select="cv:description" mode="markdown"/>
             </w:tc>
         </w:tr>
     </xsl:template>

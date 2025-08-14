@@ -66,7 +66,8 @@
                                 or substring($text, 1, 2) = '-&#x09;'
                                 or substring($text, 1, 2) = '&#x2022;&#x09;'">
                 <!-- bullet list item -->
-                <w:p w14:paraId="4DB0632C" w14:textId="542F4402" w:rsidR="00B2333C" w:rsidRPr="00DE51B1" w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
+                <w:p w14:paraId="4DB0632C" w14:textId="542F4402" w:rsidR="00B2333C" w:rsidRPr="00DE51B1"
+                     w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                     <w:pPr>
                         <w:numPr>
                             <w:ilvl w:val="0"/>
@@ -74,8 +75,7 @@
                         </w:numPr>
                         <w:spacing w:line="12pt" w:lineRule="auto"/>
                         <w:rPr>
-                            <w:rFonts w:ascii="Plus Jakarta Sans"
-                                      w:hAnsi="Plus Jakarta Sans"/>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -84,8 +84,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00DE51B1">
                         <w:rPr>
-                            <w:rFonts w:ascii="Plus Jakarta Sans"
-                                      w:hAnsi="Plus Jakarta Sans"/>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -99,7 +98,8 @@
             </xsl:when>
             <xsl:when test="starts-with($text, '# ')">
                 <!-- numbered list item -->
-                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F" w:rsidRDefault="0004532F" w:rsidP="000E5868">
+                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F" w:rsidRDefault="0004532F"
+                     w:rsidP="000E5868">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
@@ -108,8 +108,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                      w:hAnsi="PlusJakartaSans-Regular"
+                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                                       w:cs="PlusJakartaSans-Regular"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
@@ -128,13 +127,13 @@
             </xsl:when>
             <xsl:otherwise>
                 <!-- plain text; no list item -->
-                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F" w:rsidRDefault="0004532F" w:rsidP="000E5868">
+                <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F" w:rsidRDefault="0004532F"
+                     w:rsidP="000E5868">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                      w:hAnsi="PlusJakartaSans-Regular"
+                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                                       w:cs="PlusJakartaSans-Regular"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -143,8 +142,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                      w:hAnsi="PlusJakartaSans-Regular"
+                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                                       w:cs="PlusJakartaSans-Regular"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
@@ -217,14 +215,12 @@
     <!-- SKILL -->
     <xsl:template match="cv:skill">
         <xsl:param name="last"/>
-        <w:p w14:paraId="337E615E" w14:textId="7B810E7F" w:rsidR="00462426"
-             w:rsidRPr="00545E7E" w:rsidRDefault="00462426"
-             w:rsidP="00D51FD7">
+        <w:p w14:paraId="337E615E" w14:textId="7B810E7F" w:rsidR="00462426" w:rsidRPr="00545E7E"
+             w:rsidRDefault="00462426" w:rsidP="00D51FD7">
             <w:pPr>
                 <w:pStyle w:val="Niveau"/>
                 <w:rPr>
                     <w:color w:val="000000" w:themeColor="text1"/>
-                    <w:noProof/>
                 </w:rPr>
                 <w:tabs>
                     <w:tab w:val="clear" w:pos="134.70pt"/>
@@ -237,9 +233,7 @@
             </w:pPr>
             <w:r w:rsidRPr="00462426">
                 <w:rPr>
-                    <w:rFonts w:ascii="Plus Jakarta Sans"
-                              w:hAnsi="Plus Jakarta Sans"
-                              w:cs="Plus Jakarta Sans"/>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans" w:cs="Plus Jakarta Sans"/>
                     <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:t>
@@ -256,6 +250,7 @@
                 <w:rPr>
                     <w:rStyle w:val="Valori-niveau"/>
                     <w:color w:val="55DD94"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:tab/>
                 <w:t>
@@ -537,9 +532,6 @@
         <w:p w14:paraId="6B031F37" w14:textId="07FFD1E2" w:rsidR="00B2333C" w:rsidRDefault="00CC7FCE"
              w:rsidP="00B2333C">
             <w:r>
-                <w:rPr>
-                    <w:noProof/>
-                </w:rPr>
                 <w:drawing>
                     <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="3F6C22CD" wp14:editId="0D488227">
                         <wp:extent cx="6667500" cy="3567430"/>
@@ -576,6 +568,7 @@
                                                         <w:rFonts w:ascii="Plus Jakarta Sans"
                                                                   w:hAnsi="Plus Jakarta Sans"/>
                                                         <w:color w:val="212B46"/>
+                                                        <w:noProof/>
                                                     </w:rPr>
                                                 </w:pPr>
                                                 <w:r w:rsidRPr="00DE51B1">
@@ -650,6 +643,7 @@
                                                         <w:color w:val="212B46"/>
                                                         <w:sz w:val="18"/>
                                                         <w:szCs w:val="18"/>
+                                                        <w:noProof/>
                                                     </w:rPr>
                                                     <w:t>
                                                         <xsl:value-of select="cv:role"/>
@@ -668,6 +662,7 @@
                                                             <w:color w:val="212B46"/>
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
+                                                            <w:noProof/>
                                                         </w:rPr>
                                                         <w:t>
                                                             <xsl:call-template name="translate">
@@ -694,6 +689,7 @@
                                                             <w:color w:val="212B46"/>
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
+                                                            <w:noProof/>
                                                         </w:rPr>
                                                         <w:t>
                                                             <xsl:call-template name="translate">
@@ -721,6 +717,7 @@
                                                             <w:color w:val="212B46"/>
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
+                                                            <w:noProof/>
                                                         </w:rPr>
                                                         <w:t>
                                                             <xsl:call-template name="translate">
@@ -747,6 +744,7 @@
                                                             <w:color w:val="212B46"/>
                                                             <w:sz w:val="22"/>
                                                             <w:szCs w:val="22"/>
+                                                            <w:noProof/>
                                                         </w:rPr>
                                                         <w:t>
                                                             <xsl:call-template name="translate">
@@ -805,13 +803,14 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
+                    </w:pPr>
+                    <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r>
                         <w:t>
                             <xsl:apply-templates select="cv:periodBegin" mode="date-month-year"/>
                         </w:t>
@@ -831,13 +830,14 @@
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
+                    </w:pPr>
+                    <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r>
                         <w:t>
                             <xsl:apply-templates select="cv:periodEnd" mode="date-month-year"/>
                         </w:t>
@@ -857,13 +857,14 @@
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:keepLines/>
+                    </w:pPr>
+                    <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r>
                         <w:t>
                             <xsl:apply-templates select="." mode="client"/>
                         </w:t>
@@ -878,19 +879,18 @@
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
-                <w:p w14:paraId="59CDE4CA" w14:textId="662830AA" w:rsidR="001405E4"
-                     w:rsidRDefault="001405E4"
-                     w:rsidP="001405E4">
+                <w:p w14:paraId="59CDE4CA" w14:textId="662830AA" w:rsidR="001405E4" w:rsidRDefault="001405E4" w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:keepLines/>
+                    </w:pPr>
+                    <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r>
                         <w:t>
                             <xsl:value-of select="cv:role"/>
                         </w:t>
@@ -906,6 +906,7 @@
              w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
             <w:pPr>
                 <w:spacing w:before="12pt"/>
+                <w:noProof/>
             </w:pPr>
             <w:r w:rsidRPr="00CC7FCE">
                 <w:rPr>
@@ -963,8 +964,7 @@
                 <w:ind w:end="276.65pt"/>
                 <w:suppressAutoHyphens/>
                 <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                              w:hAnsi="PlusJakartaSans-Regular"
+                    <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                               w:cs="PlusJakartaSans-Regular"/>
                     <w:sz w:val="18"/>
                     <w:szCs w:val="18"/>
@@ -973,8 +973,7 @@
             <w:proofErr w:type="spellStart"/>
             <w:r>
                 <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                              w:hAnsi="PlusJakartaSans-Regular"
+                    <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                               w:cs="PlusJakartaSans-Regular"/>
                     <w:color w:val="212B46"/>
                     <w:sz w:val="18"/>
@@ -994,6 +993,7 @@
              w:rsidRDefault="00CC7FCE" w:rsidP="00CC7FCE">
             <w:pPr>
                 <w:spacing w:before="12pt"/>
+                <w:noProof/>
             </w:pPr>
             <xsl:if test="cv:year">
                 <w:r w:rsidRPr="00CC7FCE">

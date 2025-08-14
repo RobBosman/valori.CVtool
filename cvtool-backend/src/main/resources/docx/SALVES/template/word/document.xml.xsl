@@ -1109,13 +1109,11 @@
                                                             <w:pStyle w:val="Titel1"/>
                                                             <w:rPr>
                                                                 <w:u w:val="none"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="00AB1904">
                                                             <w:rPr>
                                                                 <w:u w:val="none"/>
-                                                                <w:lang w:val="nl-NL"/>
                                                             </w:rPr>
                                                             <w:t>
                                                                 <xsl:call-template name="translate">
@@ -1442,13 +1440,11 @@
                                                                 <w:pStyle w:val="Titel1"/>
                                                                 <w:rPr>
                                                                     <w:u w:val="none"/>
-                                                                    <w:lang w:val="nl-NL"/>
                                                                 </w:rPr>
                                                             </w:pPr>
                                                             <w:r w:rsidRPr="00AB1904">
                                                                 <w:rPr>
                                                                     <w:u w:val="none"/>
-                                                                    <w:lang w:val="nl-NL"/>
                                                                 </w:rPr>
                                                                 <w:t>
                                                                     <xsl:call-template name="translate">
@@ -2025,7 +2021,6 @@
                                 <w:sz w:val="26"/>
                                 <w:szCs w:val="26"/>
                                 <w:u w:val="thick" w:color="55DD94"/>
-                                <w:lang w:val="en-GB"/>
                             </w:rPr>
                             <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
                                 <w:type w:val="continuous"/>

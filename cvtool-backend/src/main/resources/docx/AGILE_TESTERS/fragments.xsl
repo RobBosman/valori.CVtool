@@ -75,8 +75,7 @@
                         </w:numPr>
                         <w:spacing w:line="12pt" w:lineRule="auto"/>
                         <w:rPr>
-                            <w:rFonts w:ascii="Plus Jakarta Sans"
-                                      w:hAnsi="Plus Jakarta Sans"/>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -85,8 +84,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00DE51B1">
                         <w:rPr>
-                            <w:rFonts w:ascii="Plus Jakarta Sans"
-                                      w:hAnsi="Plus Jakarta Sans"/>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -110,8 +108,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                      w:hAnsi="PlusJakartaSans-Regular"
+                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                                       w:cs="PlusJakartaSans-Regular"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
@@ -136,8 +133,7 @@
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                      w:hAnsi="PlusJakartaSans-Regular"
+                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                                       w:cs="PlusJakartaSans-Regular"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -146,8 +142,7 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                      w:hAnsi="PlusJakartaSans-Regular"
+                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
                                       w:cs="PlusJakartaSans-Regular"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
@@ -174,11 +169,11 @@
                 <w:pPr>
                     <w:pStyle w:val="BasicParagraph"/>
                     <w:spacing w:line="13.80pt" w:lineRule="auto"/>
-                    <w:noProof/>
                 </w:pPr>
                 <w:r w:rsidRPr="00D51FD7">
                     <w:rPr>
                         <w:rStyle w:val="A1"/>
+                        <w:noProof/>
                     </w:rPr>
                     <w:t>
                         <xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/>
@@ -226,7 +221,6 @@
                 <w:pStyle w:val="Niveau"/>
                 <w:rPr>
                     <w:color w:val="000000" w:themeColor="text1"/>
-                    <w:noProof/>
                 </w:rPr>
                 <w:tabs>
                     <w:tab w:val="clear" w:pos="134.70pt"/>
@@ -241,6 +235,7 @@
                 <w:rPr>
                     <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans" w:cs="Plus Jakarta Sans"/>
                     <w:color w:val="212B46"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:t>
                     <xsl:call-template name="wrap-lines">
@@ -256,6 +251,7 @@
                 <w:rPr>
                     <w:rStyle w:val="Valori-niveau"/>
                     <w:color w:val="83C2E1"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:tab/>
                 <w:t>
@@ -296,6 +292,7 @@
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:name"/>
@@ -321,6 +318,7 @@
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:institution"/>
@@ -348,6 +346,7 @@
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:if test="$yearFrom">
@@ -386,6 +385,7 @@
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:apply-templates select="cv:result" mode="education-result"/>
@@ -444,6 +444,7 @@
                         <w:rPr>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:name"/>
@@ -468,6 +469,7 @@
                         <w:rPr>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:institution"/>
@@ -485,13 +487,12 @@
                 </w:tcPr>
                 <w:p w14:paraId="16358336" w14:textId="77777777" w:rsidR="001405E4" w:rsidRPr="00CA43CD"
                      w:rsidRDefault="001405E4" w:rsidP="001405E4">
-                    <w:pPr>
-                    </w:pPr>
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:choose>
@@ -522,6 +523,7 @@
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:apply-templates select="cv:result" mode="education-result"/>
@@ -537,9 +539,6 @@
         <w:p w14:paraId="6B031F37" w14:textId="07FFD1E2" w:rsidR="00B2333C" w:rsidRDefault="00CC7FCE"
              w:rsidP="00B2333C">
             <w:r>
-                <w:rPr>
-                    <w:noProof/>
-                </w:rPr>
                 <w:drawing>
                     <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="3F6C22CD" wp14:editId="0D488227">
                         <wp:extent cx="6667500" cy="3567430"/>
@@ -585,6 +584,7 @@
                                                         <w:b/>
                                                         <w:bCs/>
                                                         <w:color w:val="212B46"/>
+                                                        <w:noProof/>
                                                     </w:rPr>
                                                     <w:t>
                                                         <xsl:apply-templates select="cv:periodBegin" mode="date-year"/>
@@ -605,6 +605,7 @@
                                                         <w:b/>
                                                         <w:bCs/>
                                                         <w:color w:val="212B46"/>
+                                                        <w:noProof/>
                                                     </w:rPr>
                                                     <w:t>
                                                         <xsl:choose>
@@ -650,6 +651,7 @@
                                                         <w:color w:val="212B46"/>
                                                         <w:sz w:val="18"/>
                                                         <w:szCs w:val="18"/>
+                                                        <w:noProof/>
                                                     </w:rPr>
                                                     <w:t>
                                                         <xsl:value-of select="cv:role"/>
@@ -809,6 +811,7 @@
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
                     </w:pPr>
                     <w:r>
@@ -835,6 +838,7 @@
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
                     </w:pPr>
                     <w:r>
@@ -884,13 +888,14 @@
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:keepLines/>
+                    </w:pPr>
+                    <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
+                            <w:noProof/>
                         </w:rPr>
-                    </w:pPr>
-                    <w:r>
                         <w:t>
                             <xsl:value-of select="cv:role"/>
                         </w:t>
@@ -913,6 +918,7 @@
                     <w:b/>
                     <w:bCs/>
                     <w:color w:val="212B46"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:t>
                     <xsl:value-of select="cv:year"/>
@@ -931,6 +937,7 @@
                     <w:b/>
                     <w:bCs/>
                     <w:color w:val="212B46"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:t>
                     <xsl:value-of select="cv:media"/>
@@ -949,6 +956,7 @@
                     <w:b/>
                     <w:bCs/>
                     <w:color w:val="212B46"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:t>
                     <xsl:value-of select="cv:title"/>
@@ -972,6 +980,7 @@
                         <w:b/>
                         <w:bCs/>
                         <w:color w:val="212B46"/>
+                        <w:noProof/>
                     </w:rPr>
                     <w:t>
                         <xsl:value-of select="cv:year"/>
@@ -991,6 +1000,7 @@
                     <w:b/>
                     <w:bCs/>
                     <w:color w:val="212B46"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:t>
                     <xsl:value-of select="cv:referentName"/>
@@ -1009,6 +1019,7 @@
                     <w:b/>
                     <w:bCs/>
                     <w:color w:val="212B46"/>
+                    <w:noProof/>
                 </w:rPr>
                 <w:t>
                     <xsl:value-of select="cv:referentFunction"/>
