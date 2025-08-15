@@ -17,7 +17,7 @@
                 </xsl:attribute>
             </Relationship>
             <Relationship Id="rId1" Type="http://purl.oclc.org/ooxml/officeDocument/relationships/image"
-                          Target="media/background-first-page.png"/>
+                          Target="media/background.png"/>
         </Relationships>
     </xsl:template>
 

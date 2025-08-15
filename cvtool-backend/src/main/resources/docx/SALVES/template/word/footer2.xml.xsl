@@ -85,7 +85,6 @@
                                                     </a:ext>
                                                 </a:extLst>
                                             </a:blip>
-                                            <a:srcRect t="46.634%" b="46.634%"/>
                                             <a:stretch>
                                                 <a:fillRect/>
                                             </a:stretch>

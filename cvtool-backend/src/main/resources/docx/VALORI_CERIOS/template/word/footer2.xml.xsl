@@ -27,7 +27,7 @@
                         <w:tab w:val="clear" w:pos="451.30pt"/>
                         <w:tab w:val="start" w:pos="0pt"/>
                     </w:tabs>
-                    <w:ind w:end="-7.10pt"/>
+                    <w:ind w:end="-5.10pt"/>
                     <w:jc w:val="center"/>
                     <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
@@ -48,14 +48,14 @@
                                    behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="668DF1E3"
                                    wp14:editId="203A40C9">
                             <wp:simplePos x="0" y="0"/>
-                            <wp:positionH relativeFrom="column">
-                                <wp:posOffset>-488899</wp:posOffset>
+                            <wp:positionH relativeFrom="page">
+                                <wp:posOffset>-32491</wp:posOffset>
                             </wp:positionH>
                             <wp:positionV relativeFrom="page">
-                                <wp:posOffset>10181968</wp:posOffset>
+                                <wp:posOffset>10183724</wp:posOffset>
                             </wp:positionV>
-                            <wp:extent cx="7611259" cy="513221"/>
-                            <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                            <wp:extent cx="7596018" cy="510540"/>
+                            <wp:effectExtent l="0" t="0" r="5080" b="3810"/>
                             <wp:wrapNone/>
                             <wp:docPr id="160917318" name="Picture 1"/>
                             <wp:cNvGraphicFramePr>
@@ -70,7 +70,7 @@
                                         </pic:nvPicPr>
                                         <pic:blipFill rotWithShape="1">
                                             <a:blip r:embed="rId1"/>
-                                            <a:srcRect t="17.862%" r="-0.03%" b="64.792%"/>
+                                            <a:srcRect l="-0.117%" t="20.419%" r="0.087%" b="44.809%"/>
                                             <a:stretch>
                                                 <a:fillRect/>
                                             </a:stretch>
@@ -78,7 +78,7 @@
                                         <pic:spPr bwMode="auto">
                                             <a:xfrm>
                                                 <a:off x="0" y="0"/>
-                                                <a:ext cx="7611259" cy="513221"/>
+                                                <a:ext cx="7605479" cy="511176"/>
                                             </a:xfrm>
                                             <a:prstGeom prst="rect">
                                                 <a:avLst/>

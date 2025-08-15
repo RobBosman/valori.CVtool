@@ -41,13 +41,13 @@
                                        wp14:anchorId="72854C67" wp14:editId="19CC642E">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>-588645</wp:posOffset>
+                                    <wp:posOffset>-504190</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="page">
-                                    <wp:posOffset>-1557655</wp:posOffset>
+                                    <wp:posOffset>0</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="7787791" cy="5116195"/>
-                                <wp:effectExtent l="0" t="0" r="0" b="1905"/>
+                                <wp:extent cx="7682400" cy="3556556"/>
+                                <wp:effectExtent l="0" t="0" r="0" b="6350"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="704115198" name="Picture 1"/>
                                 <wp:cNvGraphicFramePr>
@@ -75,7 +75,7 @@
                                                         </a:ext>
                                                     </a:extLst>
                                                 </a:blip>
-                                                <a:srcRect t="20.315%" r="-0.44%" b="11.867%"/>
+                                                <a:srcRect l="-0.003%" r="-0.003%"/>
                                                 <a:stretch>
                                                     <a:fillRect/>
                                                 </a:stretch>
@@ -83,7 +83,7 @@
                                             <pic:spPr bwMode="auto">
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="7787791" cy="5116195"/>
+                                                    <a:ext cx="7682926" cy="3556800"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>
