@@ -27,7 +27,7 @@
                         <w:tab w:val="clear" w:pos="451.30pt"/>
                         <w:tab w:val="start" w:pos="0pt"/>
                     </w:tabs>
-                    <w:ind w:end="-6.90pt"/>
+                    <w:ind w:end="-7.10pt"/>
                     <w:jc w:val="center"/>
                     <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
@@ -49,10 +49,10 @@
                                    wp14:editId="203A40C9">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="column">
-                                <wp:posOffset>-488899</wp:posOffset>
+                                <wp:posOffset>-493368</wp:posOffset>
                             </wp:positionH>
                             <wp:positionV relativeFrom="page">
-                                <wp:posOffset>10181968</wp:posOffset>
+                                <wp:posOffset>10175132</wp:posOffset>
                             </wp:positionV>
                             <wp:extent cx="7611259" cy="513221"/>
                             <wp:effectExtent l="0" t="0" r="0" b="0"/>
@@ -70,7 +70,7 @@
                                         </pic:nvPicPr>
                                         <pic:blipFill rotWithShape="1">
                                             <a:blip r:embed="rId1"/>
-                                            <a:srcRect t="17.862%" r="-0.03%" b="64.792%"/>
+                                            <a:srcRect l="10.169%" t="47.979%" r="0.023%" b="42.983%"/>
                                             <a:stretch>
                                                 <a:fillRect/>
                                             </a:stretch>
@@ -111,13 +111,6 @@
                 </w:r>
                 <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
                     <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve"> </w:t>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
@@ -127,13 +120,6 @@
                             <xsl:with-param name="text" select="'CONTACTPERSOON'"/>
                         </xsl:call-template>
                     </w:t>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:color w:val="FFFFFF" w:themeColor="background1"/>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
                     <w:tab/>
                     <w:t>
                         <xsl:value-of select="cv:businessUnit/cv:contactName"/>

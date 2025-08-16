@@ -47,15 +47,14 @@
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                   relativeHeight="251659264"
-                                   behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="668DF1E3"
-                                   wp14:editId="203A40C9">
+                                   relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
+                                   wp14:anchorId="668DF1E3" wp14:editId="203A40C9">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="column">
-                                <wp:posOffset>-488899</wp:posOffset>
+                                <wp:posOffset>-493214</wp:posOffset>
                             </wp:positionH>
                             <wp:positionV relativeFrom="page">
-                                <wp:posOffset>10181968</wp:posOffset>
+                                <wp:posOffset>10174514</wp:posOffset>
                             </wp:positionV>
                             <wp:extent cx="7611259" cy="513221"/>
                             <wp:effectExtent l="0" t="0" r="0" b="0"/>
@@ -73,7 +72,6 @@
                                         </pic:nvPicPr>
                                         <pic:blipFill rotWithShape="1">
                                             <a:blip r:embed="rId1"/>
-                                            <a:srcRect l="21.873%" t="52.538%" r="0.02%" b="28.51%"/>
                                             <a:stretch>
                                                 <a:fillRect/>
                                             </a:stretch>
@@ -111,13 +109,6 @@
                             </wp14:sizeRelV>
                         </wp:anchor>
                     </w:drawing>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve"> </w:t>
                 </w:r>
                 <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
                     <w:rPr>

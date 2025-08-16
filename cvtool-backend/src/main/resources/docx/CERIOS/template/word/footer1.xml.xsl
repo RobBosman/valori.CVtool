@@ -22,11 +22,14 @@
                 <w:pPr>
                     <w:pStyle w:val="Voettekst"/>
                     <w:tabs>
-                        <w:tab w:val="clear" w:pos="225.65pt"/>
-                        <w:tab w:val="clear" w:pos="451.30pt"/>
-                        <w:tab w:val="start" w:pos="0pt"/>
+                        <w:tab w:val="clear" w:pos="4513"/>
+                        <w:tab w:val="clear" w:pos="9026"/>
+                        <w:tab w:val="left" w:pos="0"/>
+                        <w:tab w:val="left" w:pos="2410"/>
+                        <w:tab w:val="left" w:pos="6804"/>
+                        <w:tab w:val="left" w:pos="8364"/>
                     </w:tabs>
-                    <w:ind w:end="-7.10pt"/>
+                    <w:ind w:right="-142"/>
                     <w:jc w:val="center"/>
                     <w:rPr>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>

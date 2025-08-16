@@ -787,6 +787,7 @@
                                                          w:rsidP="00065B83">
                                                         <w:pPr>
                                                             <w:pStyle w:val="Titel1"/>
+                                                            <w:spacing w:after="12pt"/>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="003D5A44">
                                                             <w:t>
@@ -796,22 +797,6 @@
                                                                 </xsl:call-template>
                                                             </w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="4B1C264A" w14:textId="11F5CF82" w:rsidR="000E5868"
-                                                         w:rsidRPr="003D5A44" w:rsidRDefault="00D52540"
-                                                         w:rsidP="00065B83">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="BasicParagraph"/>
-                                                            <w:suppressAutoHyphens/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
                                                     </w:p>
                                                     <xsl:apply-templates select="$profile" mode="markdown"/>
                                                 </wne:txbxContent>
@@ -2432,10 +2417,24 @@
                         </w:r>
                     </w:p>
                     <w:p w14:paraId="1FE1FD17" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00B2333C">
+                         w:rsidP="00160C07">
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
-                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
+                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
+                                <w:type w:val="continuous"/>
+                                <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
+                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
+                                <w:cols w:space="17.45pt"/>
+                                <w:docGrid w:linePitch="360"/>
+                            </w:sectPr>
+                        </w:pPr>
+                    </w:p>
+                    <w:p w14:paraId="0446C0FE" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
+                         w:rsidP="00160C07">
+                        <w:pPr>
+                            <w:pStyle w:val="Titel1"/>
+                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
                                 <w:type w:val="continuous"/>
                                 <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
                                 <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
@@ -2451,6 +2450,23 @@
 
                     -->
                     <xsl:if test="$publications">
+                        <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
+                             w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
+                            <w:pPr>
+                                <w:pStyle w:val="Titel1"/>
+                            </w:pPr>
+                            <w:r w:rsidRPr="00AB1904">
+                                <w:rPr>
+                                    <w:noProof/>
+                                    <w:u w:val="none"/>
+                                </w:rPr>
+                                <w:t>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'Publicaties'"/>
+                                    </xsl:call-template>
+                                </w:t>
+                            </w:r>
+                        </w:p>
                         <w:p w14:paraId="096EEC3B" w14:textId="294E664E" w:rsidR="00CA43CD" w:rsidRDefault="00065B83"
                              w:rsidP="00B2333C">
                             <w:pPr>
@@ -2459,17 +2475,17 @@
                             <w:r>
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                               relativeHeight="251700224" behindDoc="0" locked="0" layoutInCell="1"
+                                               relativeHeight="251704320" behindDoc="0" locked="0" layoutInCell="1"
                                                allowOverlap="1" wp14:anchorId="2352FD51" wp14:editId="2E252DA5">
                                         <wp:simplePos x="0" y="0"/>
                                         <wp:positionH relativeFrom="column">
-                                            <wp:posOffset>-636</wp:posOffset>
+                                            <wp:posOffset>635</wp:posOffset>
                                         </wp:positionH>
                                         <wp:positionV relativeFrom="paragraph">
-                                            <wp:posOffset>233045</wp:posOffset>
+                                            <wp:posOffset>14928</wp:posOffset>
                                         </wp:positionV>
-                                        <wp:extent cx="942975" cy="0"/>
-                                        <wp:effectExtent l="0" t="12700" r="22225" b="12700"/>
+                                        <wp:extent cx="920772" cy="0"/>
+                                        <wp:effectExtent l="0" t="12700" r="19050" b="12700"/>
                                         <wp:wrapNone/>
                                         <wp:docPr id="85812222" name="Straight Connector 15"/>
                                         <wp:cNvGraphicFramePr/>
@@ -2481,7 +2497,7 @@
                                                     <wp:spPr>
                                                         <a:xfrm>
                                                             <a:off x="0" y="0"/>
-                                                            <a:ext cx="942975" cy="0"/>
+                                                            <a:ext cx="920772" cy="0"/>
                                                         </a:xfrm>
                                                         <a:prstGeom prst="line">
                                                             <a:avLst/>
@@ -2518,13 +2534,6 @@
                                         </wp14:sizeRelV>
                                     </wp:anchor>
                                 </w:drawing>
-                            </w:r>
-                            <w:r w:rsidR="00CC7FCE">
-                                <w:t>
-                                    <xsl:call-template name="translate">
-                                        <xsl:with-param name="text" select="'Publicaties'"/>
-                                    </xsl:call-template>
-                                </w:t>
                             </w:r>
                         </w:p>
                         <xsl:apply-templates select="$publications"/>
@@ -2539,6 +2548,23 @@
 
                     -->
                     <xsl:if test="$references">
+                        <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
+                             w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
+                            <w:pPr>
+                                <w:pStyle w:val="Titel1"/>
+                            </w:pPr>
+                            <w:r w:rsidRPr="00AB1904">
+                                <w:rPr>
+                                    <w:noProof/>
+                                    <w:u w:val="none"/>
+                                </w:rPr>
+                                <w:t>
+                                    <xsl:call-template name="translate">
+                                        <xsl:with-param name="text" select="'Referenties'"/>
+                                    </xsl:call-template>
+                                </w:t>
+                            </w:r>
+                        </w:p>
                         <w:p w14:paraId="096EEC3B" w14:textId="294E664E" w:rsidR="00CA43CD" w:rsidRDefault="00065B83"
                              w:rsidP="00B2333C">
                             <w:pPr>
@@ -2547,19 +2573,19 @@
                             <w:r>
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                               relativeHeight="251700224" behindDoc="0" locked="0" layoutInCell="1"
-                                               allowOverlap="1" wp14:anchorId="2352FD51" wp14:editId="2E252DA5">
+                                               relativeHeight="251704320" behindDoc="0" locked="0" layoutInCell="1"
+                                               allowOverlap="1" wp14:anchorId="34F09BD8" wp14:editId="2914D6F1">
                                         <wp:simplePos x="0" y="0"/>
                                         <wp:positionH relativeFrom="column">
-                                            <wp:posOffset>-636</wp:posOffset>
+                                            <wp:posOffset>635</wp:posOffset>
                                         </wp:positionH>
                                         <wp:positionV relativeFrom="paragraph">
-                                            <wp:posOffset>233045</wp:posOffset>
+                                            <wp:posOffset>14928</wp:posOffset>
                                         </wp:positionV>
-                                        <wp:extent cx="942975" cy="0"/>
-                                        <wp:effectExtent l="0" t="12700" r="22225" b="12700"/>
+                                        <wp:extent cx="920772" cy="0"/>
+                                        <wp:effectExtent l="0" t="12700" r="19050" b="12700"/>
                                         <wp:wrapNone/>
-                                        <wp:docPr id="85812222" name="Straight Connector 15"/>
+                                        <wp:docPr id="14562976" name="Straight Connector 15"/>
                                         <wp:cNvGraphicFramePr/>
                                         <a:graphic xmlns:a="http://purl.oclc.org/ooxml/drawingml/main">
                                             <a:graphicData
@@ -2569,7 +2595,7 @@
                                                     <wp:spPr>
                                                         <a:xfrm>
                                                             <a:off x="0" y="0"/>
-                                                            <a:ext cx="942975" cy="0"/>
+                                                            <a:ext cx="920772" cy="0"/>
                                                         </a:xfrm>
                                                         <a:prstGeom prst="line">
                                                             <a:avLst/>
@@ -2606,13 +2632,6 @@
                                         </wp14:sizeRelV>
                                     </wp:anchor>
                                 </w:drawing>
-                            </w:r>
-                            <w:r w:rsidR="00CC7FCE">
-                                <w:t>
-                                    <xsl:call-template name="translate">
-                                        <xsl:with-param name="text" select="'Referenties'"/>
-                                    </xsl:call-template>
-                                </w:t>
                             </w:r>
                         </w:p>
                         <xsl:apply-templates select="$references"/>

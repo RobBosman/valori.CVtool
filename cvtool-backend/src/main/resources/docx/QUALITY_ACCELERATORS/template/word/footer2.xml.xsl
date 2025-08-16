@@ -71,7 +71,6 @@
                                         </pic:nvPicPr>
                                         <pic:blipFill rotWithShape="1">
                                             <a:blip r:embed="rId1"/>
-                                            <a:srcRect l="0.722%" t="53.769%" r="0.025%" b="34.498%"/>
                                             <a:stretch>
                                                 <a:fillRect/>
                                             </a:stretch>

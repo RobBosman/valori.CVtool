@@ -111,17 +111,16 @@
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251656190" behindDoc="1" locked="0" layoutInCell="1"
-                                       allowOverlap="1"
-                                       wp14:anchorId="72854C67" wp14:editId="24F87852">
+                                       allowOverlap="1" wp14:anchorId="72854C67" wp14:editId="24F87852">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>-707465</wp:posOffset>
+                                    <wp:posOffset>-504190</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="page">
-                                    <wp:posOffset>-1567543</wp:posOffset>
+                                    <wp:posOffset>0</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="7787791" cy="5116195"/>
-                                <wp:effectExtent l="0" t="0" r="0" b="1905"/>
+                                <wp:extent cx="7787640" cy="3549600"/>
+                                <wp:effectExtent l="0" t="0" r="3810" b="0"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="704115198" name="Picture 1"/>
                                 <wp:cNvGraphicFramePr>
@@ -137,7 +136,6 @@
                                             </pic:nvPicPr>
                                             <pic:blipFill rotWithShape="1">
                                                 <a:blip r:embed="rId10"/>
-                                                <a:srcRect l="10.55%" t="13.521%" r="1.062%" b="35.247%"/>
                                                 <a:stretch>
                                                     <a:fillRect/>
                                                 </a:stretch>
@@ -145,7 +143,7 @@
                                             <pic:spPr bwMode="auto">
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="7787791" cy="5116195"/>
+                                                    <a:ext cx="7787640" cy="3549600"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>
@@ -1014,9 +1012,7 @@
                                                          w:rsidP="00160C07">
                                                         <w:pPr>
                                                             <w:pStyle w:val="Titel1"/>
-                                                            <w:rPr>
-                                                                <w:u w:val="none"/>
-                                                            </w:rPr>
+                                                            <w:spacing w:after="12pt"/>
                                                         </w:pPr>
                                                         <w:r w:rsidRPr="00AB1904">
                                                             <w:rPr>
@@ -1029,21 +1025,6 @@
                                                                 </xsl:call-template>
                                                             </w:t>
                                                         </w:r>
-                                                    </w:p>
-                                                    <w:p w14:paraId="1E4DCC74" w14:textId="190F3819" w:rsidR="0004532F"
-                                                         w:rsidRDefault="0004532F" w:rsidP="000E5868">
-                                                        <w:pPr>
-                                                            <w:pStyle w:val="BasicParagraph"/>
-                                                            <w:suppressAutoHyphens/>
-                                                            <w:rPr>
-                                                                <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                                                          w:hAnsi="PlusJakartaSans-Regular"
-                                                                          w:cs="PlusJakartaSans-Regular"/>
-                                                                <w:color w:val="212B46"/>
-                                                                <w:sz w:val="18"/>
-                                                                <w:szCs w:val="18"/>
-                                                            </w:rPr>
-                                                        </w:pPr>
                                                     </w:p>
                                                     <xsl:apply-templates select="$profile" mode="markdown"/>
                                                 </wne:txbxContent>
@@ -2780,6 +2761,9 @@
                         </w:p>
                         <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
                              w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
+                            <w:pPr>
+                                <w:pStyle w:val="Titel1"/>
+                            </w:pPr>
                             <w:r>
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -2875,6 +2859,9 @@
                         </w:p>
                         <w:p w14:paraId="096EEC3B" w14:textId="10470BEA" w:rsidR="00CA43CD" w:rsidRPr="00AB1904"
                              w:rsidRDefault="00CC7FCE" w:rsidP="00160C07">
+                            <w:pPr>
+                                <w:pStyle w:val="Titel1"/>
+                            </w:pPr>
                             <w:r>
                                 <w:drawing>
                                     <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"

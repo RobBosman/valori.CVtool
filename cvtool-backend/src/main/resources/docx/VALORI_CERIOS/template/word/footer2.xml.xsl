@@ -26,6 +26,9 @@
                         <w:tab w:val="clear" w:pos="225.65pt"/>
                         <w:tab w:val="clear" w:pos="451.30pt"/>
                         <w:tab w:val="start" w:pos="0pt"/>
+                        <w:tab w:val="start" w:pos="120.50pt"/>
+                        <w:tab w:val="start" w:pos="340.20pt"/>
+                        <w:tab w:val="start" w:pos="418.20pt"/>
                     </w:tabs>
                     <w:ind w:end="-5.10pt"/>
                     <w:jc w:val="center"/>
@@ -44,9 +47,8 @@
                     </w:rPr>
                     <w:drawing>
                         <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
-                                   relativeHeight="251659264"
-                                   behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1" wp14:anchorId="668DF1E3"
-                                   wp14:editId="203A40C9">
+                                   relativeHeight="251659264" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"
+                                   wp14:anchorId="668DF1E3" wp14:editId="203A40C9">
                             <wp:simplePos x="0" y="0"/>
                             <wp:positionH relativeFrom="page">
                                 <wp:posOffset>-32491</wp:posOffset>
@@ -108,13 +110,6 @@
                             </wp14:sizeRelV>
                         </wp:anchor>
                     </w:drawing>
-                </w:r>
-                <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
-                    <w:rPr>
-                        <w:sz w:val="18"/>
-                        <w:szCs w:val="18"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve"> </w:t>
                 </w:r>
                 <w:r w:rsidR="005815D4" w:rsidRPr="005815D4">
                     <w:rPr>
