@@ -36,11 +36,11 @@
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
+                        <w:noProof/>
                     </w:rPr>
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
-                        <w:noProof/>
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>

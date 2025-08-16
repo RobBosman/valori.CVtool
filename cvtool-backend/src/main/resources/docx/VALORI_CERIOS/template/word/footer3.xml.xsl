@@ -33,6 +33,7 @@
                     <w:rPr>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
+                        <w:noProof/>
                     </w:rPr>
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
