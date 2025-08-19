@@ -5,6 +5,7 @@ import { DefaultButton, Link, PrimaryButton, Stack, Text } from "@fluentui/react
 import CvLogo from "./widgets/CvLogo";
 import LoginDialog from "./LoginDialog";
 import * as authActions from "../services/auth/auth-actions";
+import waterpomptang from "../static/waterpomptang.png";
 
 const LoginPage = (props) => {
 
@@ -20,41 +21,44 @@ const LoginPage = (props) => {
     window.open("https://myapplications.microsoft.com/", "blank", "noopener");
 
   return (
-    <Stack>
-      <CvLogo/>
-      <Stack tokens={stackTokens} style={styles}>
-        <Text variant="xxLarge">Welkom bij de <span style={{ color: "#999999" }}><b>CVtool</b></span></Text>
-        <Text>
-          <p>Om de CVtool te gebruiken moet je je aanmelden met je <b>Valori</b> account.
-            <br/>Tijdens het inlogproces controleert de CVtool je account, je moet daar eenmalig een machtiging voor geven.
-            <br/>
-            <br/>Je kunt die machtiging te allen tijde weer intrekken via <em>Apps beheren</em>.
-            <br/>Als je de machtiging voor de <em>Valori CVtool</em> intrekt blijven je cv-gegevens bewaard.
-            <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
-          </p>
-        </Text>
-        <Stack.Item align="center">
-          <Stack horizontal
-            tokens={{ childrenGap: "l1" }}>
-            <PrimaryButton
-              text="Inloggen"
-              iconProps={{ iconName: "Signin" }}
-              onClick={props.requestToLogin}
-            />
-            <DefaultButton
-              text="Apps beheren"
-              iconProps={{ iconName: "AllApps" }}
-              onClick={onOpenAppsPage}/>
-          </Stack>
-        </Stack.Item>
-        <Text>
-          <p>Problemen? <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!</p>
-        </Text>
+    <div>
+      <Stack>
+        <CvLogo/>
+        <Stack tokens={stackTokens} style={styles}>
+          <Text variant="xxLarge">Welkom bij de <span style={{ color: "#999999" }}><b>CVtool</b></span></Text>
+          <Text>
+            <p>Om de CVtool te gebruiken moet je je aanmelden met je <b>Valori</b> account.
+              <br/>Tijdens het inlogproces controleert de CVtool je account, je moet daar eenmalig een machtiging voor geven.
+              <br/>
+              <br/>Je kunt die machtiging te allen tijde weer intrekken via <em>Apps beheren</em>.
+              <br/>Als je de machtiging voor de <em>Valori CVtool</em> intrekt blijven je cv-gegevens bewaard.
+              <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
+            </p>
+          </Text>
+          <Stack.Item align="center">
+            <Stack horizontal
+              tokens={{ childrenGap: "l1" }}>
+              <PrimaryButton
+                text="Inloggen"
+                iconProps={{ iconName: "Signin" }}
+                onClick={props.requestToLogin}
+              />
+              <DefaultButton
+                text="Apps beheren"
+                iconProps={{ iconName: "AllApps" }}
+                onClick={onOpenAppsPage}/>
+            </Stack>
+          </Stack.Item>
+          <Text>
+            <p>Problemen? <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!</p>
+          </Text>
+        </Stack>
+        {props.isLoggingIn
+          ? <LoginDialog />
+          : undefined }
       </Stack>
-      {props.isLoggingIn
-        ? <LoginDialog />
-        : undefined }
-    </Stack>
+      <img src={waterpomptang} alt="waterpomptang" style={{ position: "fixed", top: "10%", left: "60%", width: "50%", opacity: 0.2}}/>
+    </div>
   );
 };
 
