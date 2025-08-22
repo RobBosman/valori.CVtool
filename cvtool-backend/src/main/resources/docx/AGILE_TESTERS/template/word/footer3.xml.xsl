@@ -33,13 +33,13 @@
                     <w:rPr>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
-                        <w:noProof/>
                     </w:rPr>
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
+                        <w:noProof/>
                     </w:rPr>
                     <w:t>
                         <xsl:call-template name="translate">
@@ -62,6 +62,7 @@
                             <w:rStyle w:val="Hyperlink"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:businessUnit/cv:contactEmail"/>
