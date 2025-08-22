@@ -31,8 +31,8 @@ const Brands = props => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
-      minWidth: 60,
-      maxWidth: 120
+      minWidth: 100,
+      maxWidth: 200
     },
     {
       key: "docxTemplate",

@@ -79,8 +79,8 @@ const BusinessUnits = props => {
       fieldName: "brand.name",
       name: "Label",
       isResizable: true,
-      minWidth: 60,
-      maxWidth: 120
+      minWidth: 120,
+      maxWidth: 150
     },
     {
       key: "contactName",
@@ -94,8 +94,8 @@ const BusinessUnits = props => {
       fieldName: "accountIds.length",
       name: "Members",
       isResizable: false,
-      minWidth: 80,
-      maxWidth: 80,
+      minWidth: 70,
+      maxWidth: 70,
       data: "number"
     }
   ];

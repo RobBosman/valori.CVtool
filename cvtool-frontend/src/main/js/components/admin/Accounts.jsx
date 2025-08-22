@@ -128,15 +128,15 @@ const Accounts = props => {
       fieldName: "brand.name",
       name: "Label",
       isResizable: true,
-      minWidth: 60,
-      maxWidth: 100
+      minWidth: 120,
+      maxWidth: 150
     },
     {
       key: "businessUnit.name",
       fieldName: "businessUnit.name",
       name: "Unit",
       isResizable: true,
-      minWidth: 130
+      minWidth: 120
     },
     {
       key: "authorization.level.",
@@ -144,8 +144,8 @@ const Accounts = props => {
       onRender: onRenderAuthorization,
       name: "Autorisatie",
       isResizable: false,
-      minWidth: 90,
-      maxWidth: 90
+      minWidth: 70,
+      maxWidth: 70
     }
   ];
 
