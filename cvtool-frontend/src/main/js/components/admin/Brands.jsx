@@ -109,7 +109,7 @@ const Brands = props => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
-                <Text variant="xxLarge">Brands</Text>
+                <Text variant="xxLarge">Labels</Text>
                 { props.authInfo.authorizationLevel == "ADMIN"
                   && <StackItem>
                     <Stack horizontal tokens={{ childrenGap: "l1" }}>
@@ -125,7 +125,7 @@ const Brands = props => {
                         onClick={onDeleteItem}
                       />
                       <ConfirmDialog
-                        title="Brand definitief verwijderen?"
+                        title="Label definitief verwijderen?"
                         primaryButtonText="Verwijderen"
                         selectedItemFields={selectedItemFields}
                         isVisible={confirmDialogVisible}

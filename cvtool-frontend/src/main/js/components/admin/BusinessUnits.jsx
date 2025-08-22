@@ -77,7 +77,7 @@ const BusinessUnits = props => {
     {
       key: "brand",
       fieldName: "brand.name",
-      name: "Brand",
+      name: "Label",
       isResizable: true,
       minWidth: 60,
       maxWidth: 120
@@ -229,7 +229,7 @@ const BusinessUnits = props => {
             && <td valign="top" style={tdStyle}>
               <Stack styles={editStyles}>
                 <CvDropdown
-                  label="Brand"
+                  label="Label"
                   field="brandId"
                   instanceContext={combinedContext(changeBrandOfBusinessUnit)}
                   options={enums.getOptions(BrandOptions, props.locale)}

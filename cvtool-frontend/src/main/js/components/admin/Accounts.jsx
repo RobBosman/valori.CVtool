@@ -126,7 +126,7 @@ const Accounts = props => {
     {
       key: "brand",
       fieldName: "brand.name",
-      name: "Brand",
+      name: "Label",
       isResizable: true,
       minWidth: 60,
       maxWidth: 100
