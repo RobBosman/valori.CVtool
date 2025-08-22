@@ -73,7 +73,7 @@ const ContentPage = (props) => {
           && {
             key: "#brands",
             url: "#brands",
-            name: "Brands",
+            name: "Labels",
             icon: "BullseyeTarget",
             content: <Brands />
           },
