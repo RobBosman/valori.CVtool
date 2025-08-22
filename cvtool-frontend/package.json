@@ -9,7 +9,7 @@
   "source": "src/main/js/index.html",
   "main": "target/classes/index.htm",
   "dependencies": {
-    "@azure/msal-browser": "^4.20.0",
+    "@azure/msal-browser": "^4.21.0",
     "@fluentui/react": "^8.123.4",
     "@reduxjs/toolkit": "^2.8.2",
     "@uifabric/react-hooks": "^7.16.4",
@@ -42,7 +42,7 @@
     "prop-types": "^15.8.1",
     "rimraf": "^6.0.1",
     "url-loader": "^4.1.1",
-    "webpack": "^5.101.2",
+    "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
   },

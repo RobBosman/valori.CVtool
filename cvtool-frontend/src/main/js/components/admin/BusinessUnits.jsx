@@ -77,10 +77,10 @@ const BusinessUnits = props => {
     {
       key: "brand",
       fieldName: "brand.name",
-      name: "Brand",
+      name: "Label",
       isResizable: true,
-      minWidth: 60,
-      maxWidth: 120
+      minWidth: 120,
+      maxWidth: 150
     },
     {
       key: "contactName",
@@ -94,8 +94,8 @@ const BusinessUnits = props => {
       fieldName: "accountIds.length",
       name: "Members",
       isResizable: false,
-      minWidth: 80,
-      maxWidth: 80,
+      minWidth: 70,
+      maxWidth: 70,
       data: "number"
     }
   ];
@@ -229,7 +229,7 @@ const BusinessUnits = props => {
             && <td valign="top" style={tdStyle}>
               <Stack styles={editStyles}>
                 <CvDropdown
-                  label="Brand"
+                  label="Label"
                   field="brandId"
                   instanceContext={combinedContext(changeBrandOfBusinessUnit)}
                   options={enums.getOptions(BrandOptions, props.locale)}
