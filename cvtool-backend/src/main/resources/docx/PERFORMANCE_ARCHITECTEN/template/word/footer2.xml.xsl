@@ -33,7 +33,6 @@
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
-                        <w:noProof/>
                     </w:rPr>
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
@@ -114,6 +113,7 @@
                         <w:color w:val="FFFFFF" w:themeColor="background1"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
+                        <w:noProof/>
                     </w:rPr>
                     <w:t>
                         <xsl:call-template name="translate">
@@ -137,6 +137,7 @@
                             <w:color w:val="FFFFFF" w:themeColor="background1"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
+                            <w:noProof/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:businessUnit/cv:contactEmail"/>
