@@ -1,34 +1,44 @@
 import * as MSAL from "@azure/msal-browser";
+import { fetchAllInstances } from "../safe/safe-actions";
 
-const OAUTH2_CONFIG = {
-  auth: {
-    authority: "https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
+const TENANTS = {
+  CERIOS: {
+    tenantId: "b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
     clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
-    domainHint: "valori.nl",
+    domainHint: "cerios.nl"
+  },
+  VALORI: {
+    tenantId: "b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
+    clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
+    domainHint: "valori.nl"
+  }
+};
+
+const getOAuthConfig = tenant => ({
+  auth: {
+    authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
+    clientId: tenant.clientId,
+    domainHint: tenant.domainHint,
     redirectUri: window.location.origin,
     navigateToLoginRequestUrl: false
   },
   cache: {
     cacheLocation: "localStorage",
-    storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge.
+    storeAuthStateInCookie: fetchAllInstances
   }
-};
-
-const getLoginConfig = (readUserProfile) => ({
-  scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"],
-  forceRefresh: false
 });
 
-const msal = new MSAL.PublicClientApplication(OAUTH2_CONFIG);
-await msal.initialize();
+const msalCerios = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.CERIOS));
+const msalValori = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.VALORI));
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
+  const msal = msalValori;
   const allCachedAccounts = msal.getAllAccounts();
-  const cachedAccount = allCachedAccounts?.[0];
+  const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANTS.VALORI.tenantId);
   const loginConfig = {
-    ...getLoginConfig(readUserProfile),
     account: cachedAccount,
-    forceRefresh: forceRefresh // Set this to "true" to skip a cached token and obtain a new one.
+    forceRefresh: forceRefresh,
+    scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"]
   };
 
   return (!cachedAccount || (forceRefresh && readUserProfile))

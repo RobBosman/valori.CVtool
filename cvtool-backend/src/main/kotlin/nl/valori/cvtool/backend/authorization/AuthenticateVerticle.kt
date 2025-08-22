@@ -19,7 +19,7 @@ import java.util.function.BiConsumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTHENTICATE_HEALTH_ADDRESS = "authenticate.health"
-const val AUTH_DOMAIN = "Valori.nl"
+private val SUPPORTED_DOMAINS = listOf("bosmanpfauth.nl", "cerios.nl", "valori.nl")
 
 internal class AuthenticateVerticle : AbstractVerticle() {
 
@@ -123,13 +123,13 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
         oauth2
             .rxAuthenticate(TokenCredentials(jwt))
-            .map {
-                val accessToken = it.attributes().getJsonObject("accessToken")
+            .map { user ->
+                val accessToken = user.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
                 if (email.isBlank())
                     error("Cannot obtain email from JWT.")
-                else if (!email.uppercase().endsWith("@${AUTH_DOMAIN.uppercase()}"))
-                    error("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
+                else if (!email.isDomainSupported())
+                    error("Email '$email' is not supported. Please use a '${SUPPORTED_DOMAINS.joinToString(" or ") { "@$it" }}' account.")
                 var name = accessToken.getString("name", "")
                 if (name.isBlank())
                     name = email.substringBefore("@")
@@ -137,6 +137,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     .put("email", email)
                     .put("name", name)
             }
+
+    private fun String.isDomainSupported() =
+        SUPPORTED_DOMAINS.any {
+            substringAfter("@").equals(it, true)
+        }
 
     private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
         oauth2
