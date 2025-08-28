@@ -1290,12 +1290,12 @@
                                            allowOverlap="1" wp14:anchorId="4527B553" wp14:editId="56F8B96B">
                                     <wp:simplePos x="0" y="0"/>
                                     <wp:positionH relativeFrom="column">
-                                        <wp:posOffset>-546100</wp:posOffset>
+                                        <wp:posOffset>-542925</wp:posOffset>
                                     </wp:positionH>
                                     <wp:positionV relativeFrom="paragraph">
-                                        <wp:posOffset>5646420</wp:posOffset>
+                                        <wp:posOffset>5650229</wp:posOffset>
                                     </wp:positionV>
-                                    <wp:extent cx="3352800" cy="660400"/>
+                                    <wp:extent cx="3352800" cy="2028825"/>
                                     <wp:effectExtent l="0" t="0" r="0" b="0"/>
                                     <wp:wrapNone/>
                                     <wp:docPr id="754747958" name="Text Box 9"/>
@@ -1308,7 +1308,7 @@
                                                 <wp:spPr>
                                                     <a:xfrm>
                                                         <a:off x="0" y="0"/>
-                                                        <a:ext cx="3352800" cy="660400"/>
+                                                        <a:ext cx="3352800" cy="2028825"/>
                                                     </a:xfrm>
                                                     <a:prstGeom prst="rect">
                                                         <a:avLst/>
@@ -1343,9 +1343,8 @@
                                                             </w:r>
                                                         </w:p>
                                                         <w:p w14:paraId="62C664D3" w14:textId="2DD59BE1"
-                                                             w:rsidR="00D52540"
-                                                             w:rsidRPr="000E5868" w:rsidRDefault="00D52540"
-                                                             w:rsidP="000E5868">
+                                                             w:rsidR="00D52540" w:rsidRPr="000E5868"
+                                                             w:rsidRDefault="00D52540" w:rsidP="000E5868">
                                                             <w:pPr>
                                                                 <w:spacing w:before="12pt"/>
                                                                 <w:rPr>
@@ -1372,11 +1371,9 @@
                                                 </wp:txbx>
                                                 <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
                                                            horzOverflow="overflow" vert="horz" wrap="square"
-                                                           lIns="91440"
-                                                           tIns="45720" rIns="91440" bIns="45720" numCol="1" spcCol="0"
-                                                           rtlCol="0" fromWordArt="0" anchor="t" anchorCtr="0"
-                                                           forceAA="0"
-                                                           compatLnSpc="1">
+                                                           lIns="91440" tIns="45720" rIns="91440" bIns="45720"
+                                                           numCol="1" spcCol="0" rtlCol="0" fromWordArt="0" anchor="t"
+                                                           anchorCtr="0" forceAA="0" compatLnSpc="1">
                                                     <a:prstTxWarp prst="textNoShape">
                                                         <a:avLst/>
                                                     </a:prstTxWarp>
