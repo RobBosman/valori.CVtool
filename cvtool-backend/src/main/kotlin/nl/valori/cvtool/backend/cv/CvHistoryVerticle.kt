@@ -65,9 +65,9 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
     }
 
     private fun fetchAccounts(accountIds: List<String>): Single<JsonObject> {
-        val searchCriteria = JsonObject("""{
+        val searchCriteria = JsonObject($$"""{
              "account": [
-                 { "_id": { "${DOLLAR}in": [ ${accountIds.joinToString(",", "\"", "\"")} ] } }
+                 { "_id": { "$in": [ $${accountIds.joinToString(",", "\"", "\"")} ] } }
              ]
         }""")
         return vertx.eventBus()

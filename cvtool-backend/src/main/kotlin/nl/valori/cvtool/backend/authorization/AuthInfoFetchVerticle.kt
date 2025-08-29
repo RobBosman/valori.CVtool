@@ -59,21 +59,21 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
 
     private fun addAccountInfo(authInfo: AuthInfo) =
         fetchOrCreateAccount(authInfo.email, authInfo.name)
-            .map { account ->
-                authInfo
-                    .withAccountId(account.getString("_id", ""))
-            }
+            .map { account -> authInfo.withAccountId(account.getString("_id", "")) }
 
     private fun fetchOrCreateAccount(email: String, name: String) =
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
-                JsonObject("""{ "account": [{ "email": "${email.uppercase()}" }] }"""),
+                JsonObject(
+                    $$"""{
+                        "account": [{ "email": { "$regex": "$${email.substringBefore("@")}", "$options": "i" } }]
+                    }"""
+                ),
                 deliveryOptions
             )
-            .flatMap {
-                val accounts = it.body().getJsonObject("account", JsonObject()).map.values
-
+            .map { it.body().getJsonObject("account", JsonObject()).map.values }
+            .flatMap { accounts ->
                 when (accounts.size) {
                     0 -> createAccount(email, name)
                     1 -> Single.just(accounts.iterator().next() as JsonObject)
@@ -101,7 +101,8 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                 "name": "$name",
                 "dateOfBirth": "",
                 "residence": ""
-            }""")
+            }"""
+        )
 
     private fun composeAuthorizationInstance(id: String, accountId: String, level: String) =
         JsonObject(
@@ -109,7 +110,8 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                 "_id": "$id",
                 "accountId": "$accountId",
                 "level": "$level"
-            }""")
+            }"""
+        )
 
     private fun addAuthorizationLevel(authInfo: AuthInfo) =
         vertx.eventBus()
@@ -124,9 +126,11 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             )
             .map {
                 authInfo
-                    .withAuthorizationLevel(it.body().getInstances("authorization")
-                        .map { authorizationLevel -> authorizationLevel.getString("level", "") }
-                        .first()
+                    .withAuthorizationLevel(
+                        it.body()
+                            .getInstances("authorization")
+                            .map { authorizationLevel -> authorizationLevel.getString("level", "") }
+                            .first()
                     )
             }
 }

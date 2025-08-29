@@ -31,6 +31,10 @@ const getOAuthConfig = tenant => ({
 const msalCerios = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.CERIOS));
 const msalValori = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.VALORI));
 
+export const clearLocalAccountCache = () =>
+  msalCerios.clearCache()
+    .then(() => msalValori.clearCache());
+
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const msal = msalValori;
   const allCachedAccounts = msal.getAllAccounts();

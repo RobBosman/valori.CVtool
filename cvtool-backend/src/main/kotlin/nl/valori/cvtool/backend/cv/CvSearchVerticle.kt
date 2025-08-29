@@ -8,7 +8,6 @@ import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 
 const val CV_SEARCH_ADDRESS = "cv.search"
-const val DOLLAR = "$"
 
 internal class CvSearchVerticle : BasicVerticle(CV_SEARCH_ADDRESS) {
 
@@ -61,13 +60,13 @@ internal class CvSearchVerticle : BasicVerticle(CV_SEARCH_ADDRESS) {
             .filter { it.length >= 2 }
             .joinToString(" ")
         val searchCriteria = JsonObject(
-            """
+            $$"""
             {
-                "education": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
-                "experience": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
-                "publication": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
-                "skill": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ],
-                "training": [ {"${DOLLAR}text": {"${DOLLAR}search": "$keywords"} } ]
+                "education": [ {"$text": {"$search": "$$keywords"} } ],
+                "experience": [ {"$text": {"$search": "$$keywords"} } ],
+                "publication": [ {"$text": {"$search": "$$keywords"} } ],
+                "skill": [ {"$text": {"$search": "$$keywords"} } ],
+                "training": [ {"$text": {"$search": "$$keywords"} } ]
             }
             """
         )
