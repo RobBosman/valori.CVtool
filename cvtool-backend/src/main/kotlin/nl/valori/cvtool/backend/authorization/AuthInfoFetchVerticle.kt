@@ -68,7 +68,13 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
-                JsonObject("""{ "account": [{ "email": "${email.uppercase()}" }] }"""),
+                JsonObject(
+                    """
+                    {
+                        "account": [{ "email": "${email.uppercase()}" }]
+                    }
+                    """
+                ),
                 deliveryOptions
             )
             .flatMap {
@@ -95,38 +101,47 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
 
     private fun composeAccountInstance(id: String, email: String, name: String) =
         JsonObject(
-            """{
+            """
+            {
                 "_id": "$id",
                 "email": "${email.uppercase()}",
                 "name": "$name",
                 "dateOfBirth": "",
                 "residence": ""
-            }""")
+            }
+            """
+        )
 
     private fun composeAuthorizationInstance(id: String, accountId: String, level: String) =
         JsonObject(
-            """{
+            """
+            {
                 "_id": "$id",
                 "accountId": "$accountId",
                 "level": "$level"
-            }""")
+            }
+            """
+        )
 
     private fun addAuthorizationLevel(authInfo: AuthInfo) =
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject(
-                    """{
+                    """
+                    {
                         "authorization": [{ "accountId": "${authInfo.accountId}" }]
-                    }"""
+                    }
+                    """
                 ),
                 deliveryOptions
             )
             .map {
                 authInfo
-                    .withAuthorizationLevel(it.body().getInstances("authorization")
-                        .map { authorizationLevel -> authorizationLevel.getString("level", "") }
-                        .first()
+                    .withAuthorizationLevel(
+                        it.body().getInstances("authorization")
+                            .map { authorizationLevel -> authorizationLevel.getString("level", "") }
+                            .first()
                     )
             }
 }
