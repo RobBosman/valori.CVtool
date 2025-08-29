@@ -69,17 +69,11 @@
                 <w:p w14:paraId="4DB0632C" w14:textId="542F4402" w:rsidR="00B2333C" w:rsidRPr="00DE51B1"
                      w:rsidRDefault="00B2333C" w:rsidP="00B2333C">
                     <w:pPr>
+                        <w:pStyle w:val="BasicParagraph"/>
                         <w:numPr>
                             <w:ilvl w:val="0"/>
                             <w:numId w:val="7"/>
                         </w:numPr>
-                        <w:spacing w:line="12pt" w:lineRule="auto"/>
-                        <w:rPr>
-                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
-                            <w:color w:val="212B46"/>
-                            <w:sz w:val="18"/>
-                            <w:szCs w:val="18"/>
-                        </w:rPr>
                     </w:pPr>
                     <w:proofErr w:type="spellStart"/>
                     <w:r w:rsidRPr="00DE51B1">
@@ -132,12 +126,6 @@
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:suppressAutoHyphens/>
-                        <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
-                                      w:cs="PlusJakartaSans-Regular"/>
-                            <w:sz w:val="18"/>
-                            <w:szCs w:val="18"/>
-                        </w:rPr>
                     </w:pPr>
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
@@ -169,11 +157,11 @@
                 <w:pPr>
                     <w:pStyle w:val="BasicParagraph"/>
                     <w:spacing w:line="13.80pt" w:lineRule="auto"/>
-                    <w:noProof/>
                 </w:pPr>
                 <w:r w:rsidRPr="00D51FD7">
                     <w:rPr>
                         <w:rStyle w:val="A1"/>
+                        <w:noProof/>
                     </w:rPr>
                     <w:t>
                         <xsl:apply-templates select="$skills[1]/cv:category" mode="skill-category"/>
