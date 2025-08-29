@@ -66,9 +66,11 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject(
-                    $$"""{
+                    $$"""
+                    {
                         "account": [{ "email": { "$regex": "$${email.substringBefore("@")}", "$options": "i" } }]
-                    }"""
+                    }
+                    """
                 ),
                 deliveryOptions
             )
@@ -95,22 +97,26 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
 
     private fun composeAccountInstance(id: String, email: String, name: String) =
         JsonObject(
-            """{
+            """
+            {
                 "_id": "$id",
                 "email": "${email.uppercase()}",
                 "name": "$name",
                 "dateOfBirth": "",
                 "residence": ""
-            }"""
+            }
+            """
         )
 
     private fun composeAuthorizationInstance(id: String, accountId: String, level: String) =
         JsonObject(
-            """{
+            """
+            {
                 "_id": "$id",
                 "accountId": "$accountId",
                 "level": "$level"
-            }"""
+            }
+            """
         )
 
     private fun addAuthorizationLevel(authInfo: AuthInfo) =
@@ -118,9 +124,11 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject(
-                    """{
+                    """
+                    {
                         "authorization": [{ "accountId": "${authInfo.accountId}" }]
-                    }"""
+                    }
+                    """
                 ),
                 deliveryOptions
             )

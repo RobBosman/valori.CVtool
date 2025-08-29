@@ -125,7 +125,10 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
         //   [ { _id: "XXX" }, { _id: "YYY" } ]
         // into the query criteria:
         //   { $or: [ { _id: "XXX" }, { _id: "YYY" } ] }
-        val criteria = if (criteriaArray.isEmpty) "{}" else $$"{ \"$or\": $${criteriaArray.encode()} }"
+        val criteria = if (criteriaArray.isEmpty)
+            "{}"
+        else
+            $$"""{ "$or": $${criteriaArray.encode()} }"""
         return Flowable
             .defer {
                 log.debug("Vertx fetching '$entityName' documents using criteria [$criteria]...")
