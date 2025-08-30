@@ -39,7 +39,7 @@ internal class ControlVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     startPromise.complete()
-                    log.info("All cv data can be converted via http://${configConfig.authority}/convertCvData")
+                    log.info("Trigger data conversion via http://${configConfig.authority}/convertData")
                     log.info("All cvs can be downloaded via http://${configConfig.authority}/all-docx.zip")
                 },
                 {
@@ -68,6 +68,29 @@ internal class ControlVerticle : AbstractVerticle() {
                         },
                         {
                             log.error("Error generating all cvs", it)
+                            context.response()
+                                .setStatusCode(HTTP_INTERNAL_ERROR)
+                                .end()
+                        }
+                    )
+            }
+
+        router
+            .route("/convertData")
+            .handler { context ->
+                vertx.eventBus()
+                    .rxRequest<JsonObject>(CONVERT_DATA_ADDRESS, null, deliveryOptions)
+                    .subscribe(
+                        {
+                            context.response()
+                                .setStatusCode(HTTP_OK)
+                                .putHeader(TRANSFER_ENCODING, "application/json")
+                                .putHeader(TRANSFER_ENCODING, "chunked")
+                                .putHeader(CONTENT_DISPOSITION, "attachment; filename=\"conversion-result.json\"")
+                                .send(it.body().encodePrettily())
+                        },
+                        {
+                            log.error("Error converting data", it)
                             context.response()
                                 .setStatusCode(HTTP_INTERNAL_ERROR)
                                 .end()
