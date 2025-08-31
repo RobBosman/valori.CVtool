@@ -16,7 +16,7 @@ services:
   ######################################################################################################################
   mongodb:
     container_name: mongodb
-    image: mongo:4.4
+    image: mongo:latest
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}

@@ -119,8 +119,8 @@ Data retention is 120 days.
 == Docker commands
 
  # Logs
- docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')"
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" > ~rbosman/cvtool.log 2>&1
+ rm ~rbosman/cvtool.log
  # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
  # System entropy
@@ -132,9 +132,9 @@ Data retention is 120 days.
  \\wsl$\docker-desktop-data\data\docker\volumes
  \\wsl.localhost\docker-desktop\tmp\docker-desktop-root\var\lib\docker\volumes
 
- cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2025-08-27 ~rbosman
- cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2025-08-27 ~rbosman
- rm -rf ~rbosman/2025-08-27
+ cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2025-08-30 ~rbosman
+ cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2025-08-30 ~rbosman
+ rm -rf ~rbosman/2025-08-30
 
 == MongoDB
 
