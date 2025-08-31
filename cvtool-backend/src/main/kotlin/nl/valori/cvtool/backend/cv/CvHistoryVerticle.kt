@@ -65,11 +65,15 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
     }
 
     private fun fetchAccounts(accountIds: List<String>): Single<JsonObject> {
-        val searchCriteria = JsonObject("""{
-             "account": [
-                 { "_id": { "${DOLLAR}in": [ ${accountIds.joinToString(",", "\"", "\"")} ] } }
-             ]
-        }""")
+        val searchCriteria = JsonObject(
+            $$"""
+            {
+                "account": [
+                    { "_id": { "$in": [ $${accountIds.joinToString(",", "\"", "\"")} ] } }
+                ]
+            }
+            """
+        )
         return vertx.eventBus()
             .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
             .map { it.body() }

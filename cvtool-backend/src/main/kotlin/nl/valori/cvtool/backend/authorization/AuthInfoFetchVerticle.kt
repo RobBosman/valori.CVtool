@@ -7,10 +7,11 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.addEntity
 import nl.valori.cvtool.backend.ModelUtils.getInstances
+import nl.valori.cvtool.backend.authorization.AuthenticateVerticle.Companion.isDomainAuthorized
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
-import java.util.UUID
+import java.util.UUID.randomUUID
 
 const val AUTH_INFO_FETCH_ADDRESS = "authInfo.fetch"
 
@@ -60,31 +61,36 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
     private fun addAccountInfo(authInfo: AuthInfo) =
         fetchOrCreateAccount(authInfo.email, authInfo.name)
             .map { account ->
-                authInfo
-                    .withAccountId(account.getString("_id", ""))
+                authInfo.withAccountId(account.getString("_id", ""))
             }
 
-    private fun fetchOrCreateAccount(email: String, name: String) =
-        vertx.eventBus()
+    private fun fetchOrCreateAccount(email: String, name: String): Single<JsonObject?> {
+        check(email.isDomainAuthorized()) {
+            "Unauthorized email domain: '${email.substringAfter("@")}'."
+        }
+        val username = email.substringBefore("@")
+            .replace(".", "")
+            .uppercase()
+        return vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
-                JsonObject("""{ "account": [{ "email": "${email.uppercase()}" }] }"""),
+                JsonObject("""{ "account": [{ "username": "$username" }] }"""),
                 deliveryOptions
             )
             .flatMap {
                 val accounts = it.body().getJsonObject("account", JsonObject()).map.values
-
                 when (accounts.size) {
-                    0 -> createAccount(email, name)
+                    0 -> createAccount(username, email, name)
                     1 -> Single.just(accounts.iterator().next() as JsonObject)
                     else -> error("Found ${accounts.size} accounts for $email.")
                 }
             }
+    }
 
-    private fun createAccount(email: String, name: String): Single<JsonObject> {
-        val accountId = UUID.randomUUID().toString()
-        val accountInstance = composeAccountInstance(accountId, email, name)
-        val authorization = composeAuthorizationInstance(UUID.randomUUID().toString(), accountId, CONSULTANT.name)
+    private fun createAccount(username: String, email: String, name: String): Single<JsonObject> {
+        val accountId = randomUUID().toString()
+        val accountInstance = composeAccountInstance(accountId, username, email, name)
+        val authorization = composeAuthorizationInstance(randomUUID().toString(), accountId, CONSULTANT.name)
         val saveRequest = JsonObject()
             .addEntity("account", accountInstance)
             .addEntity("authorization", authorization)
@@ -93,40 +99,44 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .map { accountInstance }
     }
 
-    private fun composeAccountInstance(id: String, email: String, name: String) =
+    private fun composeAccountInstance(id: String, username: String, email: String, name: String) =
         JsonObject(
-            """{
+            """
+            {
                 "_id": "$id",
-                "email": "${email.uppercase()}",
+                "username": "$username",
+                "email": "$email",
                 "name": "$name",
                 "dateOfBirth": "",
                 "residence": ""
-            }""")
+            }
+            """
+        )
 
     private fun composeAuthorizationInstance(id: String, accountId: String, level: String) =
         JsonObject(
-            """{
+            """
+            {
                 "_id": "$id",
                 "accountId": "$accountId",
                 "level": "$level"
-            }""")
+            }
+            """
+        )
 
     private fun addAuthorizationLevel(authInfo: AuthInfo) =
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
-                JsonObject(
-                    """{
-                        "authorization": [{ "accountId": "${authInfo.accountId}" }]
-                    }"""
-                ),
+                JsonObject("""{ "authorization": [{ "accountId": "${authInfo.accountId}" }] }"""),
                 deliveryOptions
             )
             .map {
                 authInfo
-                    .withAuthorizationLevel(it.body().getInstances("authorization")
-                        .map { authorizationLevel -> authorizationLevel.getString("level", "") }
-                        .first()
+                    .withAuthorizationLevel(
+                        it.body().getInstances("authorization")
+                            .map { authorizationLevel -> authorizationLevel.getString("level", "") }
+                            .first()
                     )
             }
 }

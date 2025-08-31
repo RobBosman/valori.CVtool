@@ -9,7 +9,6 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
-import nl.valori.cvtool.backend.cv.DOLLAR
 import org.bson.BsonDocument
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit.MILLISECONDS
@@ -126,7 +125,10 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
         //   [ { _id: "XXX" }, { _id: "YYY" } ]
         // into the query criteria:
         //   { $or: [ { _id: "XXX" }, { _id: "YYY" } ] }
-        val criteria = if (criteriaArray.isEmpty) "{}" else "{ \"${DOLLAR}or\": ${criteriaArray.encode()} }"
+        val criteria = if (criteriaArray.isEmpty)
+            "{}"
+        else
+            $$"""{ "$or": $${criteriaArray.encode()} }"""
         return Flowable
             .defer {
                 log.debug("Vertx fetching '$entityName' documents using criteria [$criteria]...")

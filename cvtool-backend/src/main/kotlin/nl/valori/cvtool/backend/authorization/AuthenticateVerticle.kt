@@ -19,7 +19,7 @@ import java.util.function.BiConsumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTHENTICATE_HEALTH_ADDRESS = "authenticate.health"
-const val AUTH_DOMAIN = "Valori.nl"
+private val AUTHORIZED_DOMAINS = listOf("Valori.nl")
 
 internal class AuthenticateVerticle : AbstractVerticle() {
 
@@ -28,16 +28,21 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         private const val MAX_IGNORED_HEALTH_ERRORS = 5
         private val numIgnoredHealthErrors = AtomicInteger(0)
 
+        fun String.isDomainAuthorized() =
+            AUTHORIZED_DOMAINS.any { authorizedDomain ->
+                substringAfter("@").equals(authorizedDomain, true)
+            }
+
         fun parseConnectionString(connectionString: String): Map<String, String> {
             val site = connectionString.substringBefore("?")
             val connectionUri = URI(connectionString)
             val tenant = connectionUri.path.split("/")[1]
-            val clientIdAndSecret = connectionUri.query.split(":")
+            val (clientId, secret) = connectionUri.query.split(":")
             return mapOf(
                 "site" to site,
                 "tenant" to tenant,
-                "clientId" to clientIdAndSecret[0],
-                "secret" to clientIdAndSecret[1]
+                "clientId" to clientId,
+                "secret" to secret
             )
         }
     }
@@ -123,13 +128,13 @@ internal class AuthenticateVerticle : AbstractVerticle() {
     private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
         oauth2
             .rxAuthenticate(TokenCredentials(jwt))
-            .map {
-                val accessToken = it.attributes().getJsonObject("accessToken")
+            .map { user ->
+                val accessToken = user.attributes().getJsonObject("accessToken")
                 val email = accessToken.getString("preferred_username", "")
                 if (email.isBlank())
                     error("Cannot obtain email from JWT.")
-                else if (!email.uppercase().endsWith("@${AUTH_DOMAIN.uppercase()}"))
-                    error("Email '$email' is not supported. Please use a '@$AUTH_DOMAIN' account.")
+                else if (!email.isDomainAuthorized())
+                    error("Email '$email' is not supported. Please use a '${AUTHORIZED_DOMAINS.joinToString(" or ") { "@$it" }}' account.")
                 var name = accessToken.getString("name", "")
                 if (name.isBlank())
                     name = email.substringBefore("@")
