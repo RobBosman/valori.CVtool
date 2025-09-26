@@ -134,7 +134,8 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .map {
                 authInfo
                     .withAuthorizationLevel(
-                        it.body().getInstances("authorization")
+                        it.body()
+                            .getInstances("authorization")
                             .map { authorizationLevel -> authorizationLevel.getString("level", "") }
                             .first()
                     )

@@ -19,7 +19,7 @@ import java.util.function.BiConsumer
 
 const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTHENTICATE_HEALTH_ADDRESS = "authenticate.health"
-private val AUTHORIZED_DOMAINS = listOf("Valori.nl")
+private val AUTHORIZED_DOMAINS = listOf("Cerios.nl", "Valori.nl")
 
 internal class AuthenticateVerticle : AbstractVerticle() {
 

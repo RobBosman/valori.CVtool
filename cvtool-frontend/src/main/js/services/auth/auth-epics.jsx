@@ -19,6 +19,13 @@ const getTokenExpiration = authenticationResult =>
 
 export const authEpics = [
 
+  // Clear all locally cached login accounts.
+  (action$) => action$.pipe(
+    ofType(authActions.clearLocalAccountCache.type),
+    rx.switchMap(() => authServices.clearLocalAccountCache()),
+    rx.ignoreElements()
+  ),
+
   // Handle requests to login or logout.
   (action$, state$) => action$.pipe(
     ofType(authActions.requestLogin.type, authActions.requestLogout.type),
