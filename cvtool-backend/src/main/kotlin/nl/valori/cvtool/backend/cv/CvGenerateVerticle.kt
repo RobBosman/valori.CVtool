@@ -32,7 +32,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
     companion object {
         internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/valori/cv/v20250808.xsd"
         internal val ALL_LOCALES = setOf("nl_NL", "uk_UK")
-        private const val DEFAULT_DOCX_TEMPLATE = "VALORI"
+        private const val DEFAULT_DOCX_TEMPLATE = "CERIOS"
 
         private fun loadBytes(location: String) =
             CvGenerateVerticle::class.java.getResource(location)

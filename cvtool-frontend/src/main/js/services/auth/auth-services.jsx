@@ -32,13 +32,12 @@ const msalCerios = await MSAL.createNestablePublicClientApplication(getOAuthConf
 const msalValori = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.VALORI));
 
 export const clearLocalAccountCache = () =>
-  msalCerios.clearCache()
-    .then(() => msalValori.clearCache());
+  msalCerios.clearCache();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const msal = msalCerios;
   const allCachedAccounts = msal.getAllAccounts();
-  const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANTS.VALORI.tenantId);
+  const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANTS.CERIOS.tenantId);
   const loginConfig = {
     account: cachedAccount,
     forceRefresh: forceRefresh,

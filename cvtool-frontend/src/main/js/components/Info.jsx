@@ -21,16 +21,16 @@ const Info = (props) => {
     <Stack styles={viewStyles}>
       <Text variant="xxLarge">Info</Text>
       <Text>
-        <br/>Dit is de Valori <strong>CVtool</strong> waarmee je je curriculum vitae kunt invoeren.
+        <br/>Dit is de Cerios <strong>CVtool</strong> waarmee je je curriculum vitae kunt invoeren.
         <br/>Let even op het volgende:
         <ul>
           <li><u>Profielfoto</u>: Voeg eventueel je (pas)foto toe in de <strong>Profiel</strong> tab.
-            <br/>Als je je Valori profielfoto wilt gebruiken moet je daarvoor (eenmalig) toestemming verlenen.
+            <br/>Als je je Cerios profielfoto wilt gebruiken moet je daarvoor (eenmalig) toestemming verlenen.
             <br/>De foto moet een resolutie van ten minste {commonUtils.MIN_PHOTO_SIZE_PX}x{commonUtils.MIN_PHOTO_SIZE_PX} pixels hebben.
             <br/>Met de knop <em>Foto in cv opnemen</em> kun je per profiel bepalen of de foto in het cv wordt opgenomen.</li>
           <br/>
           <li><u>Markdown lijst</u>: In veel tekstvelden kun je een opsomming maken door regels te laten beginnen met
-            <br/>&apos;<strong>* </strong>&apos; of &apos;<strong>- </strong>&apos; (asterisk/streepje + spatie) voor een lijst met Valori bullets of met
+            <br/>&apos;<strong>* </strong>&apos; of &apos;<strong>- </strong>&apos; (asterisk/streepje + spatie) voor een lijst met bullets of met
             <br/>&apos;<strong># </strong>&apos; (hekje + spatie) voor een genummerde lijst.</li>
           <br/>
           <li><u>Sorteren</u>: Gegevens in tabellen kun je sorteren, maar dat heeft geen invloed op de volgorde in het cv-document.
@@ -56,7 +56,7 @@ const Info = (props) => {
           </li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
-        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank">RobBosman@valori.nl</Link>.
+        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:Rob.Bosman@cerios.nl?subject=CVtool" target="blank">Rob.Bosman@cerios.nl</Link>.
         <br/>
         <br/>Enjoy!
         <br/>Rob

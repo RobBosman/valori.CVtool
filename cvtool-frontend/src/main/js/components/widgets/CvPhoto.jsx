@@ -55,7 +55,7 @@ const CvPhoto = (props) => {
             onClick={onFileUpload}
           />
           <DefaultButton
-            text="Valori profielfoto"
+            text="Cerios profielfoto"
             iconProps={{ iconName: "ProfileSearch" }}
             disabled={props.authInfo.accountId != instanceId}
             onClick={onFetchProfilePhoto}

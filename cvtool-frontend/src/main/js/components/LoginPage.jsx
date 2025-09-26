@@ -29,11 +29,11 @@ const LoginPage = (props) => {
       <Stack tokens={stackTokens} style={styles}>
         <Text variant="xxLarge">Welkom bij de <span style={{ color: "#999999" }}><b>CVtool</b></span></Text>
         <Text>
-          <p>Om de CVtool te gebruiken moet je je aanmelden met je <b>Valori</b> account.
+          <p>Om de CVtool te gebruiken moet je je aanmelden met je <b>Cerios</b> account.
             <br/>Tijdens het inlogproces controleert de CVtool je account, je moet daar eenmalig een machtiging voor geven.
             <br/>
             <br/>Je kunt die machtiging te allen tijde weer intrekken via <em>Apps beheren</em>.
-            <br/>Als je de machtiging voor de <em>Valori CVtool</em> intrekt blijven je cv-gegevens bewaard.
+            <br/>Als je de machtiging voor de <em>Cerios CVtool</em> intrekt blijven je cv-gegevens bewaard.
             <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
             <br/>
             <br/>Log in met een <Link onClick={clearLocalAccountCache}>ander account</Link>.
@@ -54,7 +54,7 @@ const LoginPage = (props) => {
           </Stack>
         </Stack.Item>
         <Text>
-          <p>Problemen? <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!</p>
+          <p>Problemen? <Link href="mailto:Rob.Bosman@cerios.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!</p>
         </Text>
       </Stack>
       {props.isLoggingIn

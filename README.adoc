@@ -1,4 +1,4 @@
-= Valori CVtool
+= Cerios CVtool
 :toc:
 
 React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.valori.nl/[cvtool.valori.nl].
@@ -10,8 +10,8 @@ React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maint
 The current client secret will #expire at 2027-01-31#.
 
 1. Go to the https://portal.azure.com/#home[Microsoft Azure Portal]
-2. Search for 'Valori CVtool'
-3. Under _Azure Active Directory_ select *Valori CVtool application*
+2. Search for 'CVtool'
+3. Under _Azure Active Directory_ select *CVtool application*
 4. Select _Certificates and secrets_
 5. Add a new secret called 'client secret'. +
 You will now have two of them, remember which is the new one!

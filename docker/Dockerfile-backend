@@ -30,7 +30,7 @@ WORKDIR /
 # Compose the final CVtool-backend container.
 ########################################################################################################################
 FROM eclipse-temurin:23-jre-alpine
-LABEL maintainer=RobBosman@valori.nl
+LABEL maintainer=Rob.Bosman@cerios.nl
 SHELL ["/bin/sh", "-c"]
 RUN apk upgrade --no-cache
 RUN apk update --no-cache

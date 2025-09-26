@@ -44,7 +44,7 @@ const LoginDialog = (props) => {
           <tr>
             <th>{props.isLoggingInOpenId ? <Spinner size={SpinnerSize.small} /> : <Icon iconName="Accept" />}</th>
             <td>&nbsp;</td>
-            <td><Label>Inloggen met je Valori account</Label></td>
+            <td><Label>Inloggen met je Cerios account</Label></td>
           </tr>
           <tr>
             <th>{props.isLoggingInBackend ? <Spinner size={SpinnerSize.small} /> : undefined}</th>

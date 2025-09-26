@@ -27,7 +27,7 @@ WORKDIR /
 # Compose the final CVtool-frontend container.
 ########################################################################################################################
 FROM nginx:alpine
-LABEL maintainer=RobBosman@valori.nl
+LABEL maintainer=Rob.Bosman@cerios.nl
 SHELL ["/bin/sh", "-c"]
 RUN apk upgrade --no-cache
 RUN apk update --no-cache

@@ -20,13 +20,13 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
     /**
      * Expected message body:
      *   {
-     *     "email": "P.Puk@valori.nl",
+     *     "email": "P.Puk@cerios.nl",
      *     "name": "Pietje Puk"
      *   }
      *
      * Response:
      *   {
-     *     "email": "P.Puk@valori.nl",
+     *     "email": "P.Puk@cerios.nl",
      *     "name": "Pietje Puk",
      *     "authorizationLevel": "SALES",
      *     "accountId": "1111-2222-5555-7777"

@@ -7,7 +7,7 @@
         </photo>
         <dateOfBirth>1965-09-06</dateOfBirth>
         <residence>Leusden</residence>
-        <email>ROBBOSMAN@VALORI.NL</email>
+        <email>ROB.BOSMAN@CERIOS.NL</email>
     </account>
     <characteristics id="43ec517d-68b6-3dd3-815b-3edc9a11367b">
         <accountId>14bfa6bb-1487-3e45-bba0-28a21ed38046</accountId>
@@ -1154,7 +1154,7 @@ Verder voegde hij enkele nieuwe functies toe, zoals full-text search tbv. sales,
         <results>
             <nl_NL><![CDATA[De opgeleverde applicatie werkt event-driven en volledig asynchroon, van muisklik tot database-update. Dat maakt het systeem heel 'responsive' en omdat de server stateless is, is het ook robuust en goed schaalbaar.
 Waar mogelijk zijn routinetaken geautomatiseerd (auto-save, auto-login) en de vlotte response maakt het systeem erg gebruiksvriendelijk. Met de interactieve full-text zoekfunctie is het voor sales bijzonder eenvoudig om matchende cvs te vinden bij een vacature.
-De CVtool is momenteel de centrale plek voor alle cv's binnen Valori.]]></nl_NL>
+De CVtool is momenteel de centrale plek voor alle cv's binnen Valori/Cerios.]]></nl_NL>
         </results>
         <periodEnd>2021-01-01</periodEnd>
     </experience>
