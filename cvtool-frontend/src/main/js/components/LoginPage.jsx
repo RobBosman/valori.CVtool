@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { DefaultButton, Link, PrimaryButton, Stack, Text } from "@fluentui/react";
+import { store } from "../redux/store";
 import CvLogo from "./widgets/CvLogo";
 import LoginDialog from "./LoginDialog";
 import * as authActions from "../services/auth/auth-actions";
@@ -34,6 +35,7 @@ const LoginPage = (props) => {
             <br/>
             <br/>Je kunt die machtiging te allen tijde weer intrekken via <em>Apps beheren</em>.
             <br/>Als je de machtiging voor de <em>Valori CVtool</em> intrekt blijven je cv-gegevens bewaard.
+            <br/>Na opnieuw inloggen (en toestemming verlenen) kun je daar weer bij.
             <br/>
             <br/>Log in met een <Link onClick={clearLocalAccountCache}>ander account</Link>.
           </p>

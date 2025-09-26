@@ -1,10 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="CVtool application" type="JetRunConfigurationType">
     <envs>
-      <env name="AUTH_CONNECTION_STRING" value="https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663/v2.0?348af39a-f707-4090-bb0a-9e4dca6e4138:WWh8Q~9G.7giZcBlEPtxI5Gzjeia1kThHkTt9bsF" />
+      <env name="AUTH_CONNECTION_STRING" value="https://login.microsoftonline.com/3d75b784-24a4-48cd-8149-36d9fc6f64d2/v2.0?2eb48338-41d2-4578-98ab-1466b7baad5f:mZn8Q~8WLrqGRDQugZGFOScwiIIiyjMRxADcdbu-" />
+      <env name="_CERIOS_AUTH_CONNECTION_STRING" value="https://login.microsoftonline.com/3d75b784-24a4-48cd-8149-36d9fc6f64d2/v2.0?2eb48338-41d2-4578-98ab-1466b7baad5f:mZn8Q~8WLrqGRDQugZGFOScwiIIiyjMRxADcdbu-" />
       <env name="CONTROL_CONNECTION_STRING" value="http://localhost:88/" />
       <env name="HTTP_CONNECTION_STRING" value="http://localhost:80/" />
       <env name="MONGO_CONNECTION_STRING" value="mongodb://localhost:27017/cvtool?authSource=admin&amp;readPreference=primary&amp;ssl=false&amp;directConnection=true" />
+      <env name="_VALORI_AUTH_CONNECTION_STRING" value="https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663/v2.0?348af39a-f707-4090-bb0a-9e4dca6e4138:WWh8Q~9G.7giZcBlEPtxI5Gzjeia1kThHkTt9bsF" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="nl.valori.cvtool.backend.MainKt" />
     <module name="cvtool-backend" />

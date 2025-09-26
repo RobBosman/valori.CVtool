@@ -3,8 +3,8 @@ import { fetchAllInstances } from "../safe/safe-actions";
 
 const TENANTS = {
   CERIOS: {
-    tenantId: "b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
-    clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
+    tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
+    clientId: "2eb48338-41d2-4578-98ab-1466b7baad5f",
     domainHint: "cerios.nl"
   },
   VALORI: {
@@ -36,7 +36,7 @@ export const clearLocalAccountCache = () =>
     .then(() => msalValori.clearCache());
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
-  const msal = msalValori;
+  const msal = msalCerios;
   const allCachedAccounts = msal.getAllAccounts();
   const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANTS.VALORI.tenantId);
   const loginConfig = {
