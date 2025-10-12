@@ -13,10 +13,9 @@ export const CvFormattedText = (props) => {
 
   const value = React.useMemo(() => {
     let val = instance;
-    props.field.split(".")
-      .forEach(field => {
-        val = val?.[field];
-      });
+    for (const field of props.field.split(".")) {
+      val = val?.[field];
+    }
     return val || "";
   }, [instance, props.field]);
 
@@ -43,8 +42,12 @@ export const CvFormattedText = (props) => {
     </Text>;
 
   const renderNumberedListItem = (before, _, after, renderFunc, defaultStyle, renderContext) => {
-    renderContext.numberingStartParagraph = isNaN(renderContext.numberingStartParagraph) ? renderContext.paragraph : parseInt(renderContext.numberingStartParagraph);
-    renderContext.itemNumber = isNaN(renderContext.itemNumber) ? 1 : (parseInt(renderContext.itemNumber) + 1);
+    renderContext.numberingStartParagraph = Number.isNaN(renderContext.numberingStartParagraph)
+      ? renderContext.paragraph
+      : Number.parseInt(renderContext.numberingStartParagraph);
+    renderContext.itemNumber = Number.isNaN(renderContext.itemNumber)
+      ? 1
+      : (Number.parseInt(renderContext.itemNumber) + 1);
     if (renderContext.numberingStartParagraph + renderContext.itemNumber - 1 !== renderContext.paragraph) {
       renderContext.numberingStartParagraph = renderContext.paragraph;
       renderContext.itemNumber = 1;

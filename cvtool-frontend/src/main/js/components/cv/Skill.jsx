@@ -167,7 +167,7 @@ const Skill = (props) => {
 
   const flexGapHorizontal = 10;
   const flexGapVertical = 5;
-  const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1.0, color: valoriBlue };
+  const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1, color: valoriBlue };
 
   const adjustPreviewHeight = (minimumHeight, previewHeight, flexBoxHeights) => {
     // The flex container is too wide, so we must increase its height.
@@ -180,15 +180,17 @@ const Skill = (props) => {
         (_, index) => inputArray.slice(index, index + windowSize));
 
     for (let windowSize = 1; windowSize < flexBoxHeights.length; windowSize++) {
-      partitionToWindows(flexBoxHeights, windowSize) // array of arrays with n heights each
+      const heights = partitionToWindows(flexBoxHeights, windowSize) // array of arrays with n heights each
         .map(window => window.reduce((acc, h) => acc + h, 0) + (windowSize - 1) * flexGapVertical) // array of aggregated heights
-        .filter(height => height > minimumNewHeight)
-        .forEach(height => potentialHeights.add(height));
+        .filter(height => height > minimumNewHeight);
+      for (const height of heights) {
+        potentialHeights.add(height);
+      }
     }
 
     if (potentialHeights.size > 0) {
       const newHeight = [...potentialHeights]
-        .reduce((acc, h) => h < acc ? h : acc, Infinity); // get min value
+        .reduce((acc, h) => Math.min(h, acc), Infinity); // get min value
       setPreviewHeight(newHeight);
     }
   };
@@ -196,17 +198,17 @@ const Skill = (props) => {
   const getFlexBoxDimensions = (flexBoxes, flexContainer, flexBoxHeights) => ({
     flexBoxWidth: flexBoxes
       .map(flexBox => flexBox.width)
-      .reduce((acc, h) => h > acc ? h : acc, 0), // get max value
+      .reduce((acc, h) => Math.max(h, acc), 0), // get max value
     largestFlexBoxHeight: flexBoxHeights
-      .reduce((acc, h) => h > acc ? h : acc, 0), // get max value
+      .reduce((acc, h) => Math.max(h, acc), 0), // get max value
     totalFlexBoxHeight: flexBoxHeights
       .reduce((acc, h) => acc + h, 0), // aggregate
     largestFlexBoxLeft: flexBoxes
       .map(flexBox => flexBox.left - flexContainer.left)
-      .reduce((acc, l) => l > acc ? l : acc, 0), // get max value
+      .reduce((acc, l) => Math.max(l, acc), 0), // get max value
     flexContainerHeight: flexBoxes
       .map(flexBox => flexBox.bottom - flexContainer.top)
-      .reduce((acc, h) => h > acc ? h : acc, 0) // get max value
+      .reduce((acc, h) => Math.max(h, acc), 0) // get max value
   });
 
   const adjustFlexLayout = React.useCallback(() => {

@@ -52,9 +52,14 @@ const Profile = (props) => {
 
   const selectCharacteristicsInCv = (instance) => {
     if (instance.includeInCv) {
-      characteristics
-        .map(characs => ({ ...characs, includeInCv: characs._id === instance._id }))
-        .forEach(characs => props.replaceCharacteristics(characs._id, characs));
+      const characs = characteristics
+        .map(charac => ({
+          ...charac,
+          includeInCv: charac._id === instance._id
+        }));
+      for (const charac of characs) {
+        props.replaceCharacteristics(charac._id, charac);
+      }
     } else {
       props.replaceCharacteristics(instance._id, instance);
     }

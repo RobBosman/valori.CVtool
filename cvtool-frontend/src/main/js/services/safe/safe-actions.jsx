@@ -30,12 +30,11 @@ reducerRegistry.register(
     builder => builder
       .addCase(resetEntities, (state, action) => {
         if (action.payload) {
-          Object.entries(action.payload)
-            .forEach(([entityName, instances]) => {
-              Object.entries(instances)
-                .forEach(([instanceId, instance]) =>
-                  updateInstance(entityName, instanceId, instance, null, state));
-            });
+          for (const [entityName, instances] of Object.entries(action.payload)) {
+            for (const [instanceId, instance] of Object.entries(instances)) {
+              updateInstance(entityName, instanceId, instance, null, state);
+            }
+          }
         } else {
           state.content = {};
           state.dirty = {};
@@ -44,8 +43,9 @@ reducerRegistry.register(
         }
       })
       .addCase(changeInstances, (state, action) => {
-        action.payload.instances
-          .forEach(instance => updateInstance(action.payload.entity, instance._id, instance, new Date(), state));
+        for (const instance of action.payload.instances) {
+          updateInstance(action.payload.entity, instance._id, instance, new Date(), state);
+        }
       })
       .addCase(changeInstance, (state, action) => {
         updateInstance(action.payload.entity, action.payload.instanceId, action.payload.instance, new Date(), state);
@@ -81,15 +81,13 @@ const updateSafeObject = (entityName, instanceId, value, safeObject) => {
 const updateDirtyState = (lastSavedTimeString, safe) => {
   safe.lastSavedTimeString = lastSavedTimeString;
   const lastSavedTimestamp = utils.parseTimeString(lastSavedTimeString);
-  Object.entries(safe.dirty)
-    .forEach(([entityName, dirtyInstances]) => {
-      if (safe.dirty[entityName]) {
-        Object.entries(dirtyInstances)
-          .forEach(([instanceId, timeString]) => {
-            if (utils.parseTimeString(timeString) <= lastSavedTimestamp) {
-              updateSafeObject(entityName, instanceId, null, safe.dirty);
-            }
-          });
+  for (const [entityName, dirtyInstances] of Object.entries(safe.dirty)) {
+    if (safe.dirty[entityName]) {
+      for (const [instanceId, timeString] of Object.entries(dirtyInstances)) {
+        if (utils.parseTimeString(timeString) <= lastSavedTimestamp) {
+          updateSafeObject(entityName, instanceId, null, safe.dirty);
+        }
       }
-    });
+    }
+  }
 };

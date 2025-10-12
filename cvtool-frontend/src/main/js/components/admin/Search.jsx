@@ -59,7 +59,7 @@ const Search = props => {
 
   const enrichExperience = React.useCallback(experience => ({
     ...experience,
-    toYear: parseInt((experience.periodEnd || today).substring(0, 4)),
+    toYear: Number.parseInt((experience.periodEnd || today).substring(0, 4)),
     ...preview.composeExperiencePreview(experience, props.locale)
   }),
   [props.locale]);
@@ -106,19 +106,19 @@ const Search = props => {
   const searchResultEntity = React.useMemo(() => {
     const accountIds = new Set();
     if (props.searchResultEntities) {
-      ["education", "experience", "publication", "skill", "training"]
-        .forEach(entityName => {
-          Object.values(props.searchResultEntities[entityName] || {})
-            .map(instance => instance.accountId)
-            .forEach(accountId => accountIds.add(accountId));
-        });
+      for (const entityName of ["education", "experience", "publication", "skill", "training"]) {
+        const searchResultAccountIds = Object.values(props.searchResultEntities[entityName] || {})
+          .map(instance => instance.accountId);
+        for (const searchResultAccountId of searchResultAccountIds) {
+          accountIds.add(searchResultAccountId);
+        }
+      }
     }
 
     const entity = {};
-    accountIds
-      .forEach(accountId => {
-        entity[accountId] = composeSearchResult(accountId);
-      });
+    for (const accountId of accountIds) {
+      entity[accountId] = composeSearchResult(accountId);
+    }
     return entity;
   },
   [props.accountEntity, props.searchResultEntities, props.locale]);

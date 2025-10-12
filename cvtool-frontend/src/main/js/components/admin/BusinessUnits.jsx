@@ -15,16 +15,16 @@ import * as enums from "../cv/Enums";
 const BusinessUnits = props => {
 
   const combineEntities = (brandEntity, businessUnitEntity) => {
-    const combined = {};
-    Object.values(businessUnitEntity || {})
+    const businessUnits= Object.values(businessUnitEntity || {})
       .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
-      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
-      .forEach(businessUnit => {
-        combined[businessUnit._id] = {
-          ...businessUnit,
-          brand: brandEntity?.[businessUnit.brandId]
-        };
-      });
+      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name));
+    const combined = {};
+    for (const businessUnit of businessUnits) {
+      combined[businessUnit._id] = {
+        ...businessUnit,
+        brand: brandEntity?.[businessUnit.brandId]
+      };
+    };
     return combined;
   };
 

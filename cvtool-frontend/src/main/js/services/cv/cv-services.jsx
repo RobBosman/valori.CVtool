@@ -18,9 +18,9 @@ export const fetchDemoCvAtRemote = (accountId, locale, sendEventFunc) =>
 
 const escapeJsonString = (text) =>
   text
-    .replace(/\\/g, "\\\\") // escape backslashes
-    .replace(/"/g, "\\\"") // escape double quotes
-    .replace(/\s+/g, " ") // use single spaces
+    .replaceAll("\\", String.raw`\\`) // escape backslashes
+    .replaceAll(String.raw`"`, String.raw`\"`) // escape double quotes
+    .replaceAll(/\s+/g, " ") // use single spaces
     .trim();
 
 export const searchCvData = (searchText, sendEventFunc) =>
@@ -33,11 +33,11 @@ const downloadFile = (fileName, blob) => {
   const a = document.createElement("a");
   a.style = "display: none";
   document.body.appendChild(a);
-  const url = window.URL.createObjectURL(blob);
+  const url = globalThis.URL.createObjectURL(blob);
   a.href = url;
   a.download = fileName;
   a.click();
-  window.URL.revokeObjectURL(url);
+  globalThis.URL.revokeObjectURL(url);
 };
 
 export const downloadDocxFile = (fileName, b64Data) => {
@@ -59,17 +59,16 @@ export const composeCvForExport = (accountId, safeContent) => {
     }
   };
 
-  Object.entries(safeContent)
-    .forEach(([entityName, instanceMap]) => {
-      Object.values(instanceMap)
-        .filter(instance => instance.accountId === accountId)
-        .forEach(instance => {
-          if (!exportedCvData[entityName]) {
-            exportedCvData[entityName] = {};
-          }
-          exportedCvData[entityName][instance._id] = instance;
-        });
-    });
+  for (const [entityName, instanceMap] of Object.entries(safeContent)) {
+    const instances = Object.values(instanceMap)
+      .filter(instance => instance.accountId === accountId);
+    for (const instance of instances) {
+      if (!exportedCvData[entityName]) {
+        exportedCvData[entityName] = {};
+      }
+      exportedCvData[entityName][instance._id] = instance;
+    }
+  }
 
   const now = new Date();
 

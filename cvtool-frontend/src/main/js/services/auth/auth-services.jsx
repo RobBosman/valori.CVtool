@@ -19,7 +19,7 @@ const getOAuthConfig = tenant => ({
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
     domainHint: tenant.domainHint,
-    redirectUri: window.location.origin,
+    redirectUri: globalThis.location.origin,
     navigateToLoginRequestUrl: false
   },
   cache: {
@@ -54,7 +54,7 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
           return msal.acquireTokenPopup(loginConfig);
         } else {
           console.error("Error acquiring token:", error);
-          return Promise.reject(new Error(`Error acquiring token: ${error.message}`));
+          throw new Error(`Error acquiring token: ${error.message}`);
         }
       });
 };

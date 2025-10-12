@@ -40,7 +40,7 @@ export const eventBusEpics = [
   (action$) => action$.pipe(
     ofType(authActions.setAuthResult.type),
     rx.map(action => action.payload),
-    rx.filter(payload => payload),
+    rx.filter(Boolean),
     rx.map(authResultJson => JSON.parse(authResultJson)),
     rx.map(authResult =>
       authResult?.idToken

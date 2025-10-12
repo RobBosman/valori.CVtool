@@ -109,11 +109,11 @@ const themePalettes = {
 };
 
 // Expose all created themes.
-if (createTheme instanceof Function) {
-  Object.keys(themePalettes).forEach(themeName => {
+if (typeof createTheme === "function") {
+  for (const themeName of Object.keys(themePalettes)) {
     const theme = createTheme(themePalettes[themeName]);
     console.log(`\n${themeName}:\n${JSON.stringify(theme)}\n`);
-  });
+  };
 } else {
-  throw Error("Cannot create themes in 'production' mode. Please don't import 'ThemeExposer'.");
+  throw new TypeError("Cannot create themes in 'production' mode. Please don't import 'ThemeExposer'.");
 }

@@ -9,13 +9,13 @@ export class EpicRegistry {
     this.epic$ = new BehaviorSubject(initialEpic);
   }
 
-  register = (...epics) =>
-    epics
-      .filter(epic => !this.allEpics.includes(epic)) // Add epics only once.
-      .forEach(epic => {
-        this.allEpics.push(epic);
-        this.epic$.next(epic);
-      });
+  register = (...epics) => {
+    const newEpics = epics.filter(epic => !this.allEpics.includes(epic)); // Add epics only once.
+    for (const epic of newEpics) {
+      this.allEpics.push(epic);
+      this.epic$.next(epic);
+    }
+  };
 
   rootEpic = (...args) =>
     this.epic$.pipe(
@@ -23,7 +23,7 @@ export class EpicRegistry {
         catchError((error, source$) => {
           console.error("REDUX_MIDDLEWARE ERROR", error);
           return merge(
-            of(setLastError(`${error}`.replace(/^Error: /, ""), ErrorSources.reduxMiddleware, error.stack)),
+            of(setLastError(`${error}`.replace(/^Error: /, ""), ErrorSources.REDUX_MIDDLEWARE, error.stack)),
             source$
           );
         })

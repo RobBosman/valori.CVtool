@@ -1,6 +1,6 @@
 export const isLetter = (text, index) => {
   if (index >= 0 && index < text.length) {
-    const code = text.charCodeAt(index);
+    const code = text.codePointAt(index);
     return ((code > 64 && code < 91) || (code > 96 && code < 123)); // A-Z, a-z
   }
   return false;
@@ -28,8 +28,7 @@ const searchNextNeedle = (haystack, isStartOfLine, formattingSpecs) => {
         formattingSpec.newLineBefore, formattingSpec.wordBreakBefore, formattingSpec.wordBreakAfter),
       formattingSpec
     }))
-    .filter(({ index }) => index >= 0)
-    .shift()
+    .find(({ index }) => index >= 0)
     || { index: -1 };
 };
 

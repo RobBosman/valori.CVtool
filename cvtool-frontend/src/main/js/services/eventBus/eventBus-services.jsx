@@ -23,59 +23,57 @@ export const ConnectionStates = {
 
 export class EventBusClient {
 
-  constructor() {
-    this._eventBus = null;
-    this._handlers = new Set();
-    this._connectionStateSubject = new BehaviorSubject(ConnectionStates.DISCONNECTED);
-    this._errorMessagesSubject = new BehaviorSubject("");
-    this._defaultHeaders = {};
-  }
+  #eventBus = null;
+  #handlers = new Set();
+  #connectionStateSubject = new BehaviorSubject(ConnectionStates.DISCONNECTED);
+  #errorMessagesSubject = new BehaviorSubject("");
+  #defaultHeaders = {};
 
   getConnectionState = () =>
-    this._connectionStateSubject.value;
+    this.#connectionStateSubject.value;
 
   monitorConnectionState = () =>
-    this._connectionStateSubject.asObservable().pipe(
+    this.#connectionStateSubject.asObservable().pipe(
       rx.distinctUntilChanged()
     );
 
   monitorErrorMessages = () =>
-    this._errorMessagesSubject.asObservable();
+    this.#errorMessagesSubject.asObservable();
 
   connectEventBus = () => {
-    if (this._eventBus?.sockJSConn) {
-      this._eventBus.close();
+    if (this.#eventBus?.sockJSConn) {
+      this.#eventBus.close();
     }
 
-    this._eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
-    this._eventBus.enableReconnect(true);
-    this._connectionStateSubject.next(ConnectionStates.CONNECTING);
+    this.#eventBus = new EventBus(CONNECT_URL, CONNECT_OPTIONS);
+    this.#eventBus.enableReconnect(true);
+    this.#connectionStateSubject.next(ConnectionStates.CONNECTING);
 
-    this._eventBus.onopen = () => {
+    this.#eventBus.onopen = () => {
       // Make sure all event handlers are (re-)registered each time the EventBus connects.
       this.registerEventHandlers();
       // Give the new connection a few milliseconds to register handlers.
       setTimeout(
-        () => this._connectionStateSubject.next(ConnectionStates.CONNECTED),
+        () => this.#connectionStateSubject.next(ConnectionStates.CONNECTED),
         100);
     };
 
-    this._eventBus.onclose = () => {
-      if (this._eventBus.reconnectTimerID) {
-        this._connectionStateSubject.next(ConnectionStates.CONNECTING);
+    this.#eventBus.onclose = () => {
+      if (this.#eventBus.reconnectTimerID) {
+        this.#connectionStateSubject.next(ConnectionStates.CONNECTING);
       } else {
-        this._connectionStateSubject.next(ConnectionStates.DISCONNECTED);
-        this._eventBus = null;
+        this.#connectionStateSubject.next(ConnectionStates.DISCONNECTED);
+        this.#eventBus = null;
       }
     };
 
-    this._eventBus.onerror = (error) => {
+    this.#eventBus.onerror = (error) => {
       if (error.body === "rejected") {
         if (this.getConnectionState() === ConnectionStates.CONNECTED) {
-          this._errorMessagesSubject.next("De sessie is verlopen. Log opnieuw in om verder te gaan.");
+          this.#errorMessagesSubject.next("De sessie is verlopen. Log opnieuw in om verder te gaan.");
           store.dispatch(authActions.requestLogout());
         } else {
-          this._errorMessagesSubject.next("Oeps! Er ging iets mis in de communicatie met de backend server.");
+          this.#errorMessagesSubject.next("Oeps! Er ging iets mis in de communicatie met de backend server.");
         }
       } else {
         console.error("An error occurred on the vert.x EventBus.", error);
@@ -84,35 +82,37 @@ export class EventBusClient {
   };
   
   disconnectEventBus = () => {
-    this._connectionStateSubject.next(ConnectionStates.DISCONNECTING);
-    if (this._eventBus?.sockJSConn) {
-      this._eventBus.close();
-    } else if (this._eventBus) {
-      this._eventBus.enableReconnect(false);
-      this._connectionStateSubject.next(ConnectionStates.DISCONNECTED);
+    this.#connectionStateSubject.next(ConnectionStates.DISCONNECTING);
+    if (this.#eventBus?.sockJSConn) {
+      this.#eventBus.close();
+    } else if (this.#eventBus) {
+      this.#eventBus.enableReconnect(false);
+      this.#connectionStateSubject.next(ConnectionStates.DISCONNECTED);
     }
   };
 
   upsertDefaultHeaders = (headers) => {
-    this._defaultHeaders = {
-      ...this._defaultHeaders,
+    this.#defaultHeaders = {
+      ...this.#defaultHeaders,
       ...headers
     };
   };
 
-  deleteDefaultHeaders = (headers) =>
-    Object.keys(headers).forEach(key =>
-      key in this._defaultHeaders && delete this._defaultHeaders[key]);
+  deleteDefaultHeaders = (headers) => {
+    for (const key in headers) {
+      key in this.#defaultHeaders && delete this.#defaultHeaders[key];
+    }
+  };
 
   mergeHeaders = (headers) => ({
-    ...this._defaultHeaders,
+    ...this.#defaultHeaders,
     ...headers
   });
 
   sendEvent = (address, requestData, headers = {}) =>
     new Promise((_resolve, _reject) => {
-      if (this._eventBus?.state === EventBus.OPEN) {
-        this._eventBus.send(address, requestData, this.mergeHeaders(headers),
+      if (this.#eventBus?.state === EventBus.OPEN) {
+        this.#eventBus.send(address, requestData, this.mergeHeaders(headers),
           (error, message) => error
             ? _reject(new Error(`Onbekende fout in de backend server: ${JSON.stringify(error)} ${message}`))
             : _resolve(message)
@@ -123,28 +123,29 @@ export class EventBusClient {
     });
 
   addEventHandler = (handler) => {
-    if (!this._handlers.has(handler)) {
-      this._handlers.add(handler);
-      if (this._eventBus?.state === EventBus.OPEN) {
-        this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
+    if (!this.#handlers.has(handler)) {
+      this.#handlers.add(handler);
+      if (this.#eventBus?.state === EventBus.OPEN) {
+        this.#eventBus.registerHandler(handler.address, handler.headers, handler.callback);
       }
     }
   };
 
   removeEventHandler = (handler) => {
-    if (this._handlers.has(handler)) {
-      this._handlers.delete(handler);
-      if (this._eventBus?.state === EventBus.OPEN) {
-        this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+    if (this.#handlers.has(handler)) {
+      this.#handlers.delete(handler);
+      if (this.#eventBus?.state === EventBus.OPEN) {
+        this.#eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
       }
     }
   };
 
-  registerEventHandlers = () =>
-    this._handlers.forEach(handler => {
-      this._eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
-      this._eventBus.registerHandler(handler.address, handler.headers, handler.callback);
-    });
+  registerEventHandlers = () => {
+    for (const handler of this.#handlers) {
+      this.#eventBus.unregisterHandler(handler.address, handler.headers, handler.callback);
+      this.#eventBus.registerHandler(handler.address, handler.headers, handler.callback);
+    }
+  };
 }
 
 export const eventBusClient = new EventBusClient();

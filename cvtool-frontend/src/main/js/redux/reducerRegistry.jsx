@@ -2,26 +2,24 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 export class ReducerRegistry {
 
-  constructor() {
-    this._notifyChange = null;
-    this._reducers = {};
-  }
+  #notifyChange = null;
+  #reducers = {};
 
   getRootReducer = () =>
-    combineReducers(this._reducers);
+    combineReducers(this.#reducers);
 
   register = (name, reducer) => {
-    this._reducers = {
-      ...this._reducers,
+    this.#reducers = {
+      ...this.#reducers,
       [name]: reducer
     };
-    if (this._notifyChange) {
-      this._notifyChange(this.getRootReducer());
+    if (this.#notifyChange) {
+      this.#notifyChange(this.getRootReducer());
     }
   };
 
   setChangeListener = (listener) => {
-    this._notifyChange = listener;
+    this.#notifyChange = listener;
   };
 }
 

@@ -93,7 +93,7 @@ export const authEpics = [
       }
 
       // Check if the JWT is still valid the next few minutes.
-      const remainingSeconds = idTokenClaimsExp - (new Date().getTime() / 1000);
+      const remainingSeconds = idTokenClaimsExp - (Date.now() / 1000);
       const next$ = (remainingSeconds > AUTHENTICATION_REFRESH_SECONDS)
         ? of(idTokenClaimsExp) // Keep using the same token.
         : from(authServices.authenticateAtOpenIdProvider(true) // Get a new token.

@@ -20,23 +20,23 @@ export class ErrorBoundary extends React.Component {
   getForegroundColor() {
     const backgroundColor = document.documentElement.style.background;
     const match = /rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/.exec(backgroundColor);
-    const avg = (parseInt(match[1]) + parseInt(match[2]) + parseInt(match[3])) / 3;
+    const avg = (Number.parseInt(match[1]) + Number.parseInt(match[2]) + Number.parseInt(match[3])) / 3;
     return avg < 128
       ? "#ffffff"
       : "#000000";
   }
 
   render() {
-    if (this.state.theError !== undefined) {
+    if (this.state.theError === undefined) {
+      return this.props.children;
+    } else {
       return (
         <div style={{ color: this.getForegroundColor() }}>
           <h1 style={{ backgroundColor: "#ffaa00" }}>OOPS!</h1>
           <p>Something went terribly wrong: <strong>{this.state.theError.message}</strong></p>
-          <p><pre>{this.state.theError.stack.replace(/\n/g, <br />)}</pre></p>
+          <p><pre>{this.state.theError.stack.replaceAll("\n", <br />)}</pre></p>
         </div>
       );
-    } else {
-      return this.props.children;
     }
   }
 }
