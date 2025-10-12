@@ -5,7 +5,7 @@ const OAUTH2_CONFIG = {
     authority: "https://login.microsoftonline.com/b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
     clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
     domainHint: "valori.nl",
-    redirectUri: window.location.origin,
+    redirectUri: globalThis.location.origin,
     navigateToLoginRequestUrl: false
   },
   cache: {
@@ -41,7 +41,7 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
           return msal.acquireTokenPopup(loginConfig);
         } else {
           console.error("Error acquiring token:", error);
-          return Promise.reject(new Error(`Error acquiring token: ${error.message}`));
+          throw new Error(`Error acquiring token: ${error.message}`);
         }
       });
 };

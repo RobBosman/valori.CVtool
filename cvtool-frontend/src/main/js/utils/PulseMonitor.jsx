@@ -29,7 +29,7 @@ const PulseMonitor = (props) => {
   const serverHeartbeatHandler = () => {
     setPulse(
       <circle cx="100" cy="100" r="25" fill={getTheme().semanticColors.bodySubtext}
-        style={{ opacity: 0.0, animationName: "fadeOutOpacity", animationDuration: "1s" }}
+        style={{ opacity: 0, animationName: "fadeOutOpacity", animationDuration: "1s" }}
       />);
 
     const timeoutID = setTimeout(() =>
@@ -47,7 +47,7 @@ const PulseMonitor = (props) => {
         stroke={getTheme().semanticColors.primaryButtonBackground}
         strokeWidth="10" strokeDasharray="400,500"
         transform={"rotate(" + angle + ",100,100)"} />
-      {(props.shouldBeConnected !== props.isConnected || !props.shouldBeConnected !== props.isDisconnected)
+      {(props.shouldBeConnected !== props.isConnected || props.shouldBeConnected === props.isDisconnected)
         ? <circle cx="100" cy="100" r="50"
           fill="none" strokeWidth="25"
           stroke={getTheme().semanticColors.warningIcon} />

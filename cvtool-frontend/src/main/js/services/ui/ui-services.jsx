@@ -26,9 +26,9 @@ export const initializeUI = () => {
   registerOnThemeChangeCallback((theme) => document.documentElement.style.background = theme.semanticColors.bodyBackground);
 
   const userPrefs = { ...defaultUserPrefs };
-  Object.keys(defaultUserPrefs).forEach(key => {
-    userPrefs[key] = window.localStorage.getItem(key) || userPrefs[key];
-  });
+  for (const key in defaultUserPrefs) {
+    userPrefs[key] = globalThis.localStorage.getItem(key) || userPrefs[key];
+  }
   return userPrefs;
 };
 

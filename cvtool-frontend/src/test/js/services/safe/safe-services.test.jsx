@@ -27,13 +27,13 @@ describe("safe-services.test", () => {
     const id0 = commonUtils.createUuid();
     expect(id0.length)
       .toBe(36);
-    expect(id0.replace(/-/g, "").length)
+    expect(id0.replaceAll(/-/g, "").length)
       .toBe(32);
 
     const id1 = commonUtils.createUuid();
     expect(id1.length)
       .toBe(36);
-    expect(id1.replace(/-/g, "").length)
+    expect(id1.replaceAll(/-/g, "").length)
       .toBe(32);
     expect(id0)
       .not.toBe(id1);

@@ -17,24 +17,24 @@ import { createHelpIcon } from "../widgets/CvHelpIcon";
 const Accounts = props => {
 
   const combineEntities = (accountEntity, authorizationEntity, brandEntity, businessUnitEntity) => {
-    const combined = {};
-    Object.values(accountEntity || {})
+    const accounts = Object.values(accountEntity || {})
       .filter(account => account._id) // Don't show deleted accounts.
-      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name))
-      .forEach(account => {
-        const authorization = Object.values(authorizationEntity || {})
-          .find(authorizationInstance => authorizationInstance.accountId === account._id);
+      .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name));
+    const combined = {};
+    for (const account of accounts) {
+      const authorization = Object.values(authorizationEntity || {})
+        .find(authorizationInstance => authorizationInstance.accountId === account._id);
 
-        const businessUnit = Object.values(businessUnitEntity || {})
-          .find(businessUnit => businessUnit.accountIds?.includes(account._id));
+      const businessUnit = Object.values(businessUnitEntity || {})
+        .find(businessUnit => businessUnit.accountIds?.includes(account._id));
 
-        combined[account._id] = {
-          ...account,
-          authorization: authorization,
-          brand: brandEntity?.[businessUnit?.brandId],
-          businessUnit: businessUnit
-        };
-      });
+      combined[account._id] = {
+        ...account,
+        authorization: authorization,
+        brand: brandEntity?.[businessUnit?.brandId],
+        businessUnit: businessUnit
+      };
+    };
 
     // Export all accounts including their businessUnit to csv.
     // console.log("Export to CSV", "name,email,unit\n" + Object.values(combined)

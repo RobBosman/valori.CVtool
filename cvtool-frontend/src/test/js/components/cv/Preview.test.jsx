@@ -3,19 +3,19 @@ import * as preview from "../../../../main/js/components/cv/Preview";
 describe("Preview.test", () => {
 
   it("should wrap text 1000", () => {
-    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1000.0))
+    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1000))
       .toBe("A B C d e f G H I j k l M N O p q r S T U v w x Y Z");
   });
 
   it("should wrap text 30", () => {
-    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 30.0))
+    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 30))
       .toBe("A B C d e f G H I j"
         + "\nk l M N O p q r S T"
         + "\nU v w x Y Z");
   });
 
   it("should wrap text 20", () => {
-    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 20.0))
+    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 20))
       .toBe("A B C d e f"
         + "\nG H I j k l M"
         + "\nN O p q r S"
@@ -24,7 +24,7 @@ describe("Preview.test", () => {
   });
 
   it("should wrap text 10", () => {
-    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 10.0))
+    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 10))
       .toBe("A B C"
         + "\nd e f"
         + "\nG H I"
@@ -37,7 +37,7 @@ describe("Preview.test", () => {
   });
 
   it("should wrap text 1", () => {
-    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1.0))
+    expect(preview.wrapText("A B C d e f G H I j k l M N O p q r S T U v w x Y Z", 1))
       .toBe("A"
         + "\nB"
         + "\nC"

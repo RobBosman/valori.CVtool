@@ -166,9 +166,7 @@ const ContentPage = (props) => {
     renderContent = <Info />;
   } else {
     const item = navGroups
-      // .flatMap(navGroup => navGroup.links) // flatmap() is not supported by Edge
-      .map(navGroup => navGroup.links)
-      .reduce((acc, val) => acc.concat(val), [])
+      .flatMap(navGroup => navGroup.links)
       .find(item => item.url === locationHash);
     renderContent = item?.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }

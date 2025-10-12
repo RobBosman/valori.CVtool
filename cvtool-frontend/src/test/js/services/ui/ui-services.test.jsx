@@ -64,8 +64,8 @@ const colorToRgb = (color) => {
   if (color.startsWith("rgb(")) {
     return color;
   }
-  const r = parseInt(color.substring(1, 3), 16);
-  const g = parseInt(color.substring(3, 5), 16);
-  const b = parseInt(color.substring(5, 7), 16);
+  const r = Number.parseInt(color.substring(1, 3), 16);
+  const g = Number.parseInt(color.substring(3, 5), 16);
+  const b = Number.parseInt(color.substring(5, 7), 16);
   return `rgb(${r}, ${g}, ${b})`;
 };

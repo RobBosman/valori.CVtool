@@ -20,7 +20,7 @@ export const safeEpics = [
   // Auto-save 2 seconds after the last edit.
   (_, state$) => state$.pipe(
     rx.map(state => state.safe?.lastEditedTimeString),
-    rx.filter(timeString => timeString),
+    rx.filter(Boolean),
     rx.distinctUntilChanged(),
     rx.debounceTime(2000),
     rx.map(() => safeActions.save(false))
@@ -39,13 +39,14 @@ export const safeEpics = [
   (action$, state$) => action$.pipe(
     ofType(safeActions.save.type),
     rx.map(action => action.payload),
-    rx.filter(saveEnforced => saveEnforced || state$.value.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
-    rx.filter(saveEnforced => saveEnforced || !state$.value.safe.lastSavedTimeString
-      || commonUtils.parseTimeString(state$.value.safe.lastEditedTimeString) > commonUtils.parseTimeString(state$.value.safe.lastSavedTimeString)),
-    rx.switchMap(() => {
+    rx.withLatestFrom(state$),
+    rx.filter(([saveEnforced, state]) => saveEnforced || state.eventBus.connectionState === eventBusServices.ConnectionStates.CONNECTED),
+    rx.filter(([saveEnforced, state]) => saveEnforced || !state.safe.lastSavedTimeString
+      || commonUtils.parseTimeString(state$.value.safe.lastEditedTimeString) > commonUtils.parseTimeString(state.safe.lastSavedTimeString)),
+    rx.switchMap(([_, state]) => {
       const saveTimeString = new Date().toISOString();
       return safeServices
-        .saveToRemote(extractChangedData(state$.value.safe), eventBusServices.eventBusClient.sendEvent)
+        .saveToRemote(extractChangedData(state.safe), eventBusServices.eventBusClient.sendEvent)
         .then(() => safeActions.setLastSavedTimeString(saveTimeString));
     })
   ),
@@ -95,7 +96,7 @@ export const safeEpics = [
     ofType(safeActions.selectPhotoToUpload.type),
     rx.map(action => action.payload),
     rx.switchMap(({accountInstanceId, fileSelectOptions}) =>
-      window.showOpenFilePicker(fileSelectOptions)
+      globalThis.showOpenFilePicker(fileSelectOptions)
         .then(([fileHandle]) => fileHandle.getFile())
         .then(file => [accountInstanceId, file])
     ),
@@ -155,19 +156,17 @@ export const safeEpics = [
 
 const extractChangedData = (safe) => {
   const content = {};
-  Object.entries(safe.dirty)
-    .forEach(([dirtyEntityName, dirtyInstanceIds]) => {
-      if (!content[dirtyEntityName]) {
-        content[dirtyEntityName] = {};
+  for (const [dirtyEntityName, dirtyInstanceIds] of Object.entries(safe.dirty)) {
+    if (!content[dirtyEntityName]) {
+      content[dirtyEntityName] = {};
+    }
+    for (const instanceId in dirtyInstanceIds) {
+      if (safe.content[dirtyEntityName]?.[instanceId]) {
+        content[dirtyEntityName][instanceId] = safe.content[dirtyEntityName][instanceId];
+      } else {
+        content[dirtyEntityName][instanceId] = {};
       }
-      Object.keys(dirtyInstanceIds)
-        .forEach(instanceId => {
-          if (safe.content[dirtyEntityName]?.[instanceId]) {
-            content[dirtyEntityName][instanceId] = safe.content[dirtyEntityName][instanceId];
-          } else {
-            content[dirtyEntityName][instanceId] = {};
-          }
-        });
-    });
+    }
+  }
   return content;
 };

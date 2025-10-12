@@ -203,12 +203,12 @@ const Experience = (props) => {
 
   const updateSortIndexes = (items) => {
     const reIndexedItems = [];
-    items.forEach((item, index) => {
+    for (const [index, item] of items.entries()) {
       const sortIndex = index + 1;
       if (item.sortIndex !== sortIndex) {
         reIndexedItems.push({ ...item, sortIndex: sortIndex });
       }
-    });
+    }
     if (reIndexedItems.length > 0) {
       props.replaceExperiences(reIndexedItems);
     }

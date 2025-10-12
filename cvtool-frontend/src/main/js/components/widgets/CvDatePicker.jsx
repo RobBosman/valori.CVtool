@@ -76,7 +76,7 @@ export const CvDatePicker = (props) => {
 
   const onChange = (newDate) =>
     (idOpenForChange === instanceId)
-      && replaceInstance?.(instanceId, { ...instance, [props.field]: formatDateForStorage(newDate) });
+      && replaceInstance?.(instanceId, { ...instance, [props.field]: newDate && formatDateForStorage(newDate) });
 
   return readOnly
     ? <TextField

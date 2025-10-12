@@ -12,10 +12,9 @@ export const CvTextField = (props) => {
 
   const value = React.useMemo(() => {
     let val = instance;
-    props.field.split(".")
-      .forEach(field => {
-        val = val?.[field];
-      });
+    for (const field of props.field.split(".")) {
+      val = val?.[field];
+    }
     return val || props.defaultValue || "";
   }, [instance, props.field, props.defaultValue]);
 
@@ -34,7 +33,7 @@ export const CvTextField = (props) => {
 
   const getScrollParent = (node) => {
     const isScrollable = (node) => {
-      const overflowY = window.getComputedStyle(node).overflowY;
+      const overflowY = globalThis.getComputedStyle(node).overflowY;
       return overflowY === "scroll" || overflowY === "auto";
     };
     while (node instanceof HTMLElement && (!isScrollable(node) || node.scrollHeight <= node.clientHeight)) {

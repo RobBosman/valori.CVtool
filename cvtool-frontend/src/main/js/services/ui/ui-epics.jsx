@@ -8,7 +8,7 @@ import * as uiServices from "./ui-services";
 
 export const uiEpics = [
   // Keep track of location (address bar) changes.
-  () => fromEvent(window, "hashchange").pipe(
+  () => fromEvent(globalThis, "hashchange").pipe(
     rx.map(event => uiActions.setLocationHash(event.target.location.hash || ""))
   ),
 
@@ -25,7 +25,7 @@ export const uiEpics = [
   (action$) => action$.pipe(
     ofType(authActions.setAuthInfo.type),
     rx.map(action => action.payload?.accountId),
-    rx.filter(accountId => accountId),
+    rx.filter(Boolean),
     rx.map(accountId => uiActions.setSelectedId("account", accountId))
   ),
 
@@ -45,7 +45,7 @@ export const uiEpics = [
     rx.map(action => action.payload),
     rx.filter(entities => entities?.characteristics), // Only proceed when receiving characteristics instances.
     rx.mergeMap(entities => {
-      const [hash, instanceId] = window.location.hash?.split("=") || ["", null];
+      const [hash, instanceId] = globalThis.location.hash?.split("=") || ["", null];
       const entityName = Object.keys(entities).find(entityName => hash.includes(entityName));
       return entityName && instanceId
         ? of(uiActions.setSelectedId(entityName, instanceId))
@@ -67,7 +67,7 @@ export const uiEpics = [
         hash = `${hash}=${selectedId}=${selectedAccountId}`;
       else if (selectedId && selectedId !== ownAccountId)
         hash = `${hash}=${selectedId}`;
-      window.location.hash = hash;
+      globalThis.location.hash = hash;
     }),
     rx.ignoreElements()
   ),
@@ -86,7 +86,7 @@ export const uiEpics = [
     rx.map(action => action.payload),
     rx.map(themeName => {
       uiServices.loadThemeByName(themeName);
-      window.localStorage.setItem("theme", themeName);
+      globalThis.localStorage.setItem("theme", themeName);
     }),
     rx.ignoreElements()
   ),

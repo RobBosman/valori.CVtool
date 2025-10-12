@@ -21,7 +21,7 @@ export const parseTimeString = timeString =>
   timeString ? new Date(timeString) : null;
 
 export const isValidYear = (value) => {
-  if (isNaN(value)) {
+  if (Number.isNaN(value)) {
     return "Voer een jaartal in";
   } else if (value.length > 4) {
     return "Maximaal vier cijfers";
@@ -35,7 +35,7 @@ export const isValidText = (maxSize) =>
 
 export const isFilledLocaleField = (...localeFields) =>
   localeFields?.find(localeField =>
-    Object.values(localeField || {}).find(localeValue => localeValue));
+    Object.values(localeField || {}).find(Boolean));
 
 export const getPlaceholder = (instances, selectedId, fieldName, locale) =>
   getValueOrFallback(instances?.find(instance => instance._id === selectedId), fieldName, locale);
@@ -46,7 +46,7 @@ export const getValueOrFallback = (instance, fieldName, locale) => {
     if (field[locale]) {
       return field[locale];
     }
-    const fallback = Object.values(field).find(fieldValue => fieldValue);
+    const fallback = Object.values(field).find(Boolean);
     if (fallback) {
       return fallback;
     }
@@ -69,7 +69,7 @@ const getRandomByte = () => {
 
 // Use this function to create a unique object id (UUID).
 export const createUuid = () =>
-  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replaceAll(/[xy]/g, (c) => {
     const r = getRandomByte();
     const v = c == "x" ? r : (r & 3 | 8);
     return v.toString(16);
@@ -92,7 +92,7 @@ export const cropImageB64 = orgImageB64 =>
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d"); 
 
-      const scale = Math.min(1.0, MAX_PHOTO_SIZE_PX / Math.min(img.naturalWidth, img.naturalHeight));
+      const scale = Math.min(1, MAX_PHOTO_SIZE_PX / Math.min(img.naturalWidth, img.naturalHeight));
       if (img.naturalWidth < img.naturalHeight) {
         // portrait
         canvas.width = img.naturalWidth * scale;

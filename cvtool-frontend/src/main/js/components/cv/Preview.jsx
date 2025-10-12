@@ -63,8 +63,8 @@ export const composeExperiencePreview = (experience, locale) => ({
 // The widths in this table are in mm. They are based on the Arial 10pt font used in MS-Word.
 const ARIAL_WIDTH_MAP = {
   "ijl": 0.75,
-  "Ift, /": 1.00,
-  "r.-()": 1.20,
+  "Ift, /": 1,
+  "r.-()": 1.2,
   "JLcksvxyz": 1.75,
   "abdeghnopqu0123456789=": 1.95,
   "FTZ&": 2.25,
@@ -72,19 +72,19 @@ const ARIAL_WIDTH_MAP = {
   "CDHNRUw": 2.55,
   "GMOQ": 2.75,
   "m": 2.95,
-  "W": 3.30
+  "W": 3.3
 };
 
 const getCharWidth = (ch) => {
   const entry = Object.entries(ARIAL_WIDTH_MAP)
     .find(([key]) => key.includes(ch));
-  return entry?.[1] || 1.0;
+  return entry?.[1] || 1;
 };
 
 const getTextWidth = (text) =>
   [...text]
     .map(c => getCharWidth(c))
-    .reduce((acc, c) => acc + c, 0.0);
+    .reduce((acc, c) => acc + c, 0);
 
 /**
  * Search for the letter-index at 42.5 mm using table WIDTH_MAP.
@@ -93,28 +93,27 @@ const getTextWidth = (text) =>
  *
  * NB - The implementation of this function has a Kotlin counterpart, see XsUtils.kt.
  */
-export const wrapText = (text, wrapWidth = 42.0) => {
+export const wrapText = (text, wrapWidth = 42) => {
 
   const spaceWidth = getCharWidth(" ");
 
-  let buildUpWidth = 0.0;
+  let buildUpWidth = 0;
   let wrappedText = "";
-  text
-    .split(/\s+/g)
-    .forEach(fragmentText => {
-      const fragmentWidth = getTextWidth(fragmentText);
 
-      if (wrappedText.length === 0) {
-        wrappedText = fragmentText;
-        buildUpWidth = fragmentWidth;
-      } else if (buildUpWidth + spaceWidth + fragmentWidth <= wrapWidth) {
-        wrappedText += ` ${fragmentText}`;
-        buildUpWidth += spaceWidth + fragmentWidth;
-      } else {
-        wrappedText = `${wrappedText}\n${fragmentText}`.trim();
-        buildUpWidth = fragmentWidth;
-      }
-    });
+  for (const fragment of text.split(/\s+/g)) {
+    const fragmentWidth = getTextWidth(fragment);
+
+    if (wrappedText.length === 0) {
+      wrappedText = fragment;
+      buildUpWidth = fragmentWidth;
+    } else if (buildUpWidth + spaceWidth + fragmentWidth <= wrapWidth) {
+      wrappedText += ` ${fragment}`;
+      buildUpWidth += spaceWidth + fragmentWidth;
+    } else {
+      wrappedText = `${wrappedText}\n${fragment}`.trim();
+      buildUpWidth = fragmentWidth;
+    }
+  };
 
   return wrappedText;
 };
@@ -164,7 +163,7 @@ const Preview = (props) => {
               borderWidth: 1,
               borderStyle: "solid none none none",
               overflow: "auto",
-              ...(props.rootStyles || {})
+              ...props.rootStyles
             }
           }}
           tokens={{ childrenGap: "5px"}}>

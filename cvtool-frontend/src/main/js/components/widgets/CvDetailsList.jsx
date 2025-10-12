@@ -21,9 +21,10 @@ export const CvDetailsList = (props) => {
 
   // Re-select current item when navigating back to this page.
   React.useLayoutEffect(() => {
-    props.items
-      .map(getItemId)
-      .forEach(key => selection.setKeySelected(key, key === instanceId), false);
+    const keys = props.items.map(getItemId);
+    for (const key of keys) {
+      selection.setKeySelected(key, key === instanceId);
+    }
   }, [props.items, instanceId]);
 
   const scrollStyle = {
