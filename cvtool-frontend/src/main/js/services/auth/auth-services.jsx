@@ -1,5 +1,4 @@
 import * as MSAL from "@azure/msal-browser";
-import { fetchAllInstances } from "../safe/safe-actions";
 
 const TENANTS = {
   CERIOS: {
