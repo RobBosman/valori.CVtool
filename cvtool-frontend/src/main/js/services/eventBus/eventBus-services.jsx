@@ -70,7 +70,7 @@ export class EventBusClient {
     this.#eventBus.onerror = (error) => {
       if (error.body === "rejected") {
         if (this.getConnectionState() === ConnectionStates.CONNECTED) {
-          this.#errorMessagesSubject.next("De sessie is verlopen. Log opnieuw in om verder te gaan.");
+          this.#errorMessagesSubject.next("Je bent uitgelogd. Log opnieuw in om verder te gaan.");
           store.dispatch(authActions.requestLogout());
         } else {
           this.#errorMessagesSubject.next("Oeps! Er ging iets mis in de communicatie met de backend server.");

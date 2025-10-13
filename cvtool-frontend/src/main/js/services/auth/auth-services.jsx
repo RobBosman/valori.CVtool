@@ -24,7 +24,7 @@ const getOAuthConfig = tenant => ({
   },
   cache: {
     cacheLocation: "localStorage",
-    storeAuthStateInCookie: fetchAllInstances
+    storeAuthStateInCookie: false
   }
 });
 
@@ -32,7 +32,10 @@ const msalCerios = await MSAL.createNestablePublicClientApplication(getOAuthConf
 const msalValori = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.VALORI));
 
 export const clearLocalAccountCache = () =>
-  msalCerios.clearCache();
+  Promise.all([
+    msalCerios.clearCache(),
+    msalValori.clearCache()
+  ]);
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const msal = msalCerios;

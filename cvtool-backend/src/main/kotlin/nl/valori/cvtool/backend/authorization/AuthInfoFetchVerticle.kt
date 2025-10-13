@@ -81,7 +81,9 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                 val accounts = it.body().getJsonObject("account", JsonObject()).map.values
                 when (accounts.size) {
                     0 -> createAccount(username, email, name)
-                    1 -> Single.just(accounts.iterator().next() as JsonObject)
+                    1 -> Single
+                        .just(accounts.iterator().next() as JsonObject)
+                        .flatMap { account -> adjustEmailDomain(account, email) }
                     else -> error("Found ${accounts.size} accounts for $email.")
                 }
             }
@@ -140,4 +142,17 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                             .first()
                     )
             }
+
+    private fun adjustEmailDomain(accountInstance: JsonObject, email: String): Single<JsonObject> {
+        val accountDomain = accountInstance.getString("email").substringAfter("@")
+        val loginDomain = email.substringAfter("@")
+        if (accountDomain.equals(loginDomain, ignoreCase = true)) {
+            return Single.just(accountInstance)
+        }
+        val saveRequest = JsonObject()
+            .addEntity("account", accountInstance.put("email", email))
+        return vertx.eventBus()
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
+            .map { accountInstance }
+    }
 }

@@ -134,7 +134,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 if (email.isBlank())
                     error("Cannot obtain email from JWT.")
                 else if (!email.isDomainAuthorized())
-                    error("Email '$email' is not supported. Please use a '${AUTHORIZED_DOMAINS.joinToString(" or ") { "@$it" }}' account.")
+                    error("Email '$email' is not supported. Please use a ${AUTHORIZED_DOMAINS.joinToString(" or ") { "@$it" }} account.")
                 var name = accessToken.getString("name", "")
                 if (name.isBlank())
                     name = email.substringBefore("@")
