@@ -9,6 +9,7 @@
         </encoder>
     </appender>
 
+    <logger name="ch.qos.logback" level="WARN"/>
     <logger name="nl.valori.cvtool" level="INFO"/>
 
     <!-- set default log level and appender -->
