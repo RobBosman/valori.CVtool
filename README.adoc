@@ -132,9 +132,9 @@ Data retention is 120 days.
  \\wsl$\docker-desktop-data\data\docker\volumes
  \\wsl.localhost\docker-desktop\tmp\docker-desktop-root\var\lib\docker\volumes
 
- cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2025-11-08 ~rbosman
- cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2025-11-08 ~rbosman
- rm -rf ~rbosman/2025-11-08
+ cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2025-11-14 ~rbosman
+ cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2025-11-14 ~rbosman
+ rm -rf ~rbosman/2025-11-14
 
 == MongoDB
 
