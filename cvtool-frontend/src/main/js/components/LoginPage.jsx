@@ -17,10 +17,8 @@ const LoginPage = (props) => {
     textAlign: "center"
   };
 
-  const clearLocalAccountCache = () => {
-    store.dispatch(authActions.clearLocalAccountCache());
-    props.requestToLogin();
-  };
+  const switchLoginAccount = () =>
+    store.dispatch(authActions.clearLocalAccountCache(true));
 
   const onOpenAppsPage = () =>
     window.open("https://myapplications.microsoft.com/", "blank", "noopener");
@@ -56,7 +54,7 @@ const LoginPage = (props) => {
         </Stack.Item>
         <Text>
           <p>
-            Klik <Link onClick={clearLocalAccountCache}><span style={{textDecoration: "underline"}}>hier</span></Link> om met een ander account in te loggen.
+            Klik <Link onClick={() => switchLoginAccount()}><span style={{textDecoration: "underline"}}>hier</span></Link> om met een ander account in te loggen.
             <br/>Problemen? <Link href="mailto:Rob.Bosman@cerios.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!
           </p>
         </Text>

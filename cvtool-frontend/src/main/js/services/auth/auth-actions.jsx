@@ -2,7 +2,7 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { reducerRegistry } from "../../redux/reducerRegistry";
 
 // Epic actions:
-export const clearLocalAccountCache = createAction("CLEAR_LOCAL_ACCOUNT_CACHE", () => ({}));
+export const clearLocalAccountCache = createAction("CLEAR_LOCAL_ACCOUNT_CACHE");
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
 export const authenticate = createAction("AUTHENTICATE", () => ({}));

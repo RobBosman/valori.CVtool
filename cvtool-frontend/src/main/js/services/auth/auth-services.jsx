@@ -1,16 +1,9 @@
 import * as MSAL from "@azure/msal-browser";
 
-const TENANTS = {
-  CERIOS: {
-    tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
-    clientId: "2eb48338-41d2-4578-98ab-1466b7baad5f",
-    domainHint: "cerios.nl"
-  },
-  VALORI: {
-    tenantId: "b44ed446-bdd4-46ab-a5b3-95ccdb7d4663",
-    clientId: "348af39a-f707-4090-bb0a-9e4dca6e4138",
-    domainHint: "valori.nl"
-  }
+const TENANT = {
+  tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
+  clientId: "2eb48338-41d2-4578-98ab-1466b7baad5f",
+  domainHint: "cerios.nl"
 };
 
 const getOAuthConfig = tenant => ({
@@ -27,19 +20,14 @@ const getOAuthConfig = tenant => ({
   }
 });
 
-const msalCerios = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.CERIOS));
-const msalValori = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANTS.VALORI));
+const msal = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANT));
 
 export const clearLocalAccountCache = () =>
-  Promise.all([
-    msalCerios.clearCache(),
-    msalValori.clearCache()
-  ]);
+  msal.clearCache();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
-  const msal = msalCerios;
   const allCachedAccounts = msal.getAllAccounts();
-  const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANTS.CERIOS.tenantId);
+  const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANT.tenantId);
   const loginConfig = {
     account: cachedAccount,
     forceRefresh: forceRefresh,

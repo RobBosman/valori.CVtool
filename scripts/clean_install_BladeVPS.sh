@@ -17,20 +17,20 @@ apt-get -y install fail2ban
 
 # Configure firewall.
 # Whitelist IP-numbers for SSH:
-#   85.146.18.88/32 (Rob thuis)
+#   85.146.29.96/32 (Rob thuis)
 #   157.97.115.136/29 (Valori kantoor)
 #   145.131.215.232/29 (Skyliner kantoor, daar zit Luke vaak)
 #   2a02:22a0:bbb6:1602::/64 (Skyliner kantoor IPv6)
 apt-get -y install ufw
 ufw default deny incoming
 ufw default allow outgoing
-ufw allow from 85.146.18.88/32 to any port 22
+ufw allow from 85.146.29.96/32 to any port 22
 ufw allow from 157.97.115.136/29 to any port 22
 ufw allow from 145.131.215.232/29 to any port 22
 ufw allow from 2a02:22a0:bbb6:1602::/64 to any port 22
 ufw allow 443/tcp
 ufw allow 80/tcp
-ufw allow from 85.146.18.88 to any port 27017
+ufw allow from 85.146.29.96 to any port 27017
 ufw enable
 
 # Install haveged to provide entropy for secure random number generation.
