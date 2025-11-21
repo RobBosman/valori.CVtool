@@ -26,6 +26,7 @@ private val AUTHORIZED_DOMAINS = listOf(
     "deAgileTesters.be",
     "PerformanceArchitecten.com",
     "QualityAccelerators.nl",
+    "Salves.nl",
     "SupportBook.nl",
     "TestCrew-it.nl",
     "Valori.nl"
