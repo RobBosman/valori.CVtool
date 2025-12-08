@@ -9,9 +9,9 @@
   "source": "src/main/js/index.html",
   "main": "target/classes/index.htm",
   "dependencies": {
-    "@azure/msal-browser": "^4.26.2",
-    "@fluentui/react": "^8.125.1",
-    "@reduxjs/toolkit": "^2.10.1",
+    "@azure/msal-browser": "^4.27.0",
+    "@fluentui/react": "^8.125.2",
+    "@reduxjs/toolkit": "^2.11.1",
     "@uifabric/react-hooks": "^7.16.4",
     "@vertx/eventbus-bridge-client.js": "^1.0.0-3-SNAPSHOT",
     "buffer": "^6.0.3",
