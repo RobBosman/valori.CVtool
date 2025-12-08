@@ -56,7 +56,7 @@ const Info = (props) => {
           </li>
         </ul>
         Ik heb geprobeerd alles zo gebruiksvriendelijk mogelijk te maken, maar tips en (positieve ;-) kritiek zijn altijd welkom.
-        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:Rob.Bosman@cerios.nl?subject=CVtool" target="blank">Rob.Bosman@cerios.nl</Link>.
+        <br/>Problemen? Een bug ontdekt? Stuur even een mailtje naar <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank">RobBosman@valori.nl</Link>.
         <br/>
         <br/>Enjoy!
         <br/>Rob
