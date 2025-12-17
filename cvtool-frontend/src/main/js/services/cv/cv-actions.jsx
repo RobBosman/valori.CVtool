@@ -7,7 +7,8 @@ export const fetchCvHistory = createAction("FETCH_CV_HISTORY");
 export const searchCvData = createAction("SEARCH_CV_DATA");
 export const fetchDemoCv = createAction("FETCH_DEMO_CV",
   (accountId, locale) => ({ payload: { accountId, locale } }));
-  // Reducer actions:
+// Reducer actions:
+export const overrideDocxTeplate = createAction("OVERRIDE_DOCX_TEMPLATE");
 export const generateCv = createAction("GENERATE_CV",
   (accountId, locale) => ({ payload: { accountId, locale } }));
 export const setSearchResult = createAction("SET_SEARCH_RESULT");
@@ -20,6 +21,10 @@ reducerRegistry.register(
       searchText: ""
     },
     builder => builder
+      .addCase(overrideDocxTeplate, (state, action) => ({
+        ...state,
+        docxTeplateOverride: action.payload
+      }))
       .addCase(generateCv, (state) => ({
         ...state,
         generateCvTimeString: new Date().toISOString()

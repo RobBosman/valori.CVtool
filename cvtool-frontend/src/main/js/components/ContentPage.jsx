@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { PrimaryButton, Nav, Separator, Stack, TooltipHost, IconButton } from "@fluentui/react";
+import { PrimaryButton, Nav, Separator, Stack, TooltipHost, IconButton, CompoundButton, Text } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -14,26 +14,30 @@ import Skill from "./cv/Skill";
 import CvTopBar from "./widgets/CvTopBar";
 import CvLogo from "./widgets/CvLogo";
 import Training from "./cv/Training";
+import HistoryView from "./cv/HistoryView";
 import Accounts from "./admin/Accounts";
-import * as cvActions from "../services/cv/cv-actions";
-import * as uiActions from "../services/ui/ui-actions";
 import Brands from "./admin/Brands";
 import BusinessUnits from "./admin/BusinessUnits";
 import Search from "./admin/Search";
 import LocaleFlag from "./widgets/LocaleFlag";
-import HistoryView from "./cv/HistoryView";
-import { hasInstances } from "../utils/CommonUtils";
+import * as enums from "./cv/Enums";
+import * as cvActions from "../services/cv/cv-actions";
+import * as uiActions from "../services/ui/ui-actions";
+import * as utils from "../utils/CommonUtils";
 
 const ContentPage = (props) => {
 
   const locationHash = props.locationHash.split("=").shift();
 
-  const hasCharacteristics = hasInstances(props.characteristicsEntity, props.selectedAccountId);
+  const hasCharacteristics = utils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
   const onFetchCvHistory = () => {
     props.fetchCvHistory(props.selectedAccountId);
     props.setHistoryViewVisible(true);
   };
+
+  const onItemClick = (_, selectedDocxTemplate) =>
+    props.overrideDocxTeplate(selectedDocxTemplate);
 
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
@@ -49,6 +53,11 @@ const ContentPage = (props) => {
         onClick={onFetchCvHistory}
       />
     </Stack>;
+
+  const docxTemplateMenuProps = {
+    items: enums.getOptions(enums.DocxTemplates, props.locale),
+    onItemClick: onItemClick
+  };
 
   const navGroups = React.useMemo(() =>
     [
@@ -161,23 +170,6 @@ const ContentPage = (props) => {
     ],
   [props.authInfo.authorizationLevel, props.characteristicsEntity, props.selectedAccountId]);
 
-
-  const templateMenuProps = {
-    items: [
-      {
-        key: "emailMessage",
-        text: "Email message",
-        iconProps: { iconName: "Mail" },
-      },
-      {
-        key: "calendarEvent",
-        text: "Calendar event",
-        iconProps: { iconName: "Calendar" },
-      },
-    ],
-  };
-
-
   let renderContent = null;
   if (locationHash === "" || locationHash === "#") {
     renderContent = <Info />;
@@ -195,7 +187,7 @@ const ContentPage = (props) => {
       <Stack>
         <CvLogo/>
         <Nav
-          styles={{ root: { width: 180, marginTop: 61 }, groupContent: { marginBottom: 0 } }}
+          styles={{ root: { width: 205, marginTop: 61 }, groupContent: { marginBottom: 0 } }}
           groups={navGroups}
           initialSelectedKey={locationHash || "#"}
           selectedKey={props.navKey}
@@ -204,17 +196,23 @@ const ContentPage = (props) => {
         <TooltipHost
           content={selectedAccountName
             ? `Download CV van ${selectedAccountName} als MS-Word document`
-            : "Download CV als MS-Word document"}>
+            : "Download CV als MS-Word document"}
+          styles={{ root: { marginTop: 10 } }}>
           <PrimaryButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
+            primary
             split
-            menuProps={templateMenuProps}
+            menuProps={docxTemplateMenuProps}
             disabled={!props.selectedAccountId}
-            onClick={onGenerateCv}
-            styles={{ root: { width: 180, marginTop: 10 } }}>
+            onClick={onGenerateCv}>
             <LocaleFlag/>
           </PrimaryButton>
+          <Text
+            variant="small"
+            style={{ display: "flex", flexDirection: "row-reverse"}}>
+            <em>{props.docxTeplateOverride?.text || "VALORI"}</em>
+          </Text>
         </TooltipHost>
       </Stack>
       <Separator vertical />
@@ -237,8 +235,10 @@ ContentPage.propTypes = {
   locationHash: PropTypes.string,
   accountEntity: PropTypes.object,
   characteristicsEntity: PropTypes.object,
+  docxTeplateOverride: PropTypes.object,
   selectedAccountId: PropTypes.string,
   fetchCvHistory: PropTypes.func.isRequired,
+  overrideDocxTeplate: PropTypes.func.isRequired,
   generateCv: PropTypes.func.isRequired,
   setHistoryViewVisible: PropTypes.func.isRequired
 };
@@ -249,11 +249,13 @@ const select = (store) => ({
   locationHash: store.ui.locationHash,
   accountEntity: store.safe.content.account,
   characteristicsEntity: store.safe.content.characteristics,
-  selectedAccountId: store.ui.selectedId.account
+  selectedAccountId: store.ui.selectedId.account,
+  docxTeplateOverride: store.cv.docxTeplateOverride
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
+  overrideDocxTeplate: (docxTeplateOverride) => dispatch(cvActions.overrideDocxTeplate(docxTeplateOverride)),
   generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
   setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
 });

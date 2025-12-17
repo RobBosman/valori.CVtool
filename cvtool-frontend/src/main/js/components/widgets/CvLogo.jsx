@@ -5,17 +5,17 @@ import cvtoolTextSvg from "../../static/CVtool-text.svg";
 
 const logoStyles = {
   root: {
-    paddingLeft: 20,
-    paddingTop: 20
+    paddingLeft: 5,
+    paddingTop: 39
   }
 };
 
 const CvLogo = () => (
   <Stack horizontal
-    tokens={{ childrenGap: "10" }}
+    tokens={{ childrenGap: "0" }}
     styles={logoStyles}>
-    <img src={ceriosLogoSvg} alt="Cerios" width="120em" height="80em"/>
-    <img src={cvtoolTextSvg} alt="CVtool" width="80em" height="80em"/>
+    <img src={ceriosLogoSvg} alt="Cerios" width="120em" height="60em"/>
+    <img src={cvtoolTextSvg} alt="CVtool" width="80em" height="60em"/>
   </Stack>
 );
 
