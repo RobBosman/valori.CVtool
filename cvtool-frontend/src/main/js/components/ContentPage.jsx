@@ -161,6 +161,23 @@ const ContentPage = (props) => {
     ],
   [props.authInfo.authorizationLevel, props.characteristicsEntity, props.selectedAccountId]);
 
+
+  const templateMenuProps = {
+    items: [
+      {
+        key: "emailMessage",
+        text: "Email message",
+        iconProps: { iconName: "Mail" },
+      },
+      {
+        key: "calendarEvent",
+        text: "Calendar event",
+        iconProps: { iconName: "Calendar" },
+      },
+    ],
+  };
+
+
   let renderContent = null;
   if (locationHash === "" || locationHash === "#") {
     renderContent = <Info />;
@@ -191,6 +208,8 @@ const ContentPage = (props) => {
           <PrimaryButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
+            split
+            menuProps={templateMenuProps}
             disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
             styles={{ root: { width: 180, marginTop: 10 } }}>

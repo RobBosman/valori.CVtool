@@ -23,19 +23,19 @@
         <kotlin.code.style>official</kotlin.code.style>
         <jvm.release>23</jvm.release>
 
-        <dependency-check-maven.version>12.1.8</dependency-check-maven.version>
-        <kotlin.version>2.3.0-RC2</kotlin.version>
-        <logback-classic.version>1.5.21</logback-classic.version>
-        <mongodb-driver-reactivestreams.version>5.6.1</mongodb-driver-reactivestreams.version>
-        <nodejs.version>v24.11.0</nodejs.version>
-        <vertx.version>5.0.5</vertx.version>
+        <dependency-check-maven.version>12.1.9</dependency-check-maven.version>
+        <kotlin.version>2.3.0</kotlin.version>
+        <logback-classic.version>1.5.22</logback-classic.version>
+        <mongodb-driver-reactivestreams.version>5.6.2</mongodb-driver-reactivestreams.version>
+        <nodejs.version>v24.12.0</nodejs.version>
+        <vertx.version>5.0.6</vertx.version>
 
-        <frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <frontend-maven-plugin.version>1.15.4</frontend-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
-        <versions-maven-plugin.version>2.19.1</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.20.1</versions-maven-plugin.version>
     </properties>
 
     <profiles>
