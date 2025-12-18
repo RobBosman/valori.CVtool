@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { PrimaryButton, Nav, Separator, Stack, TooltipHost, IconButton, CompoundButton, Text } from "@fluentui/react";
+import { PrimaryButton, Nav, Separator, Stack, TooltipHost, IconButton, Text } from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
