@@ -98,8 +98,15 @@ export const DocxTemplates = [
     }
   },
   {
-    key: "VALORI",
+    key: "VALORI_CLASSIC",
     sortIndex: 7,
+    text: {
+      nl_NL: "VALORI_CLASSIC"
+    }
+  },
+  {
+    key: "VALORI",
+    sortIndex: 8,
     text: {
       nl_NL: "VALORI"
     }

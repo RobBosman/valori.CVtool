@@ -12,8 +12,7 @@ import nl.valori.cvtool.backend.ModelUtils.getInstances
 import nl.valori.cvtool.backend.ModelUtils.jsonToXml
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.util.Base64
-import java.util.Optional
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -119,17 +118,17 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         }
     }
 
-    override fun getMessageFingerprint(message: Message<JsonObject>): Optional<String> =
-        Optional
-            .ofNullable(message.headers()["authInfo"])
-            .map { JsonObject(it).getString("accountId") }
-            .map { accountId -> "$accountId: ${message.body().encode()}" }
+    override fun getMessageFingerprint(message: Message<JsonObject>): String? =
+        message.headers()["authInfo"]
+            ?.let { authInfo: String -> JsonObject(authInfo).getString("accountId") }
+            ?.let { accountId -> "$accountId: ${message.body().encode()}" }
 
     /**
      * Expected message body:
      *   {
      *     "locale": "nl_NL",
      *     "accountId": "id-of-account-to-generate-cv-for"
+     *     "docxTemplate": "CERIOS"
      *   }
      *
      * Response:
@@ -141,20 +140,23 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
     override fun handleRequest(message: Message<JsonObject>) {
         val locale = message.body().getString("locale", "nl_NL")
         val accountId = message.body().getString("accountId")
+        val docxTemplateOverride = message.body().getString("docxTemplate")
         Single
             .just(message.body())
             .flatMap(::fetchCvData)
             .flatMap { cvJson ->
-                val docxTemplate = cvJson.getInstances("brand")
-                    .firstOrNull()
-                    ?.getString("docxTemplate")
-                    ?: DEFAULT_DOCX_TEMPLATE
+                val defaultDocxTemplate =
+                    cvJson.getInstances("brand")
+                        .firstOrNull()
+                        ?.getString("docxTemplate")
+                        ?: DEFAULT_DOCX_TEMPLATE
+                val docxTemplate = docxTemplateOverride ?: defaultDocxTemplate
                 val docxJson = convertToLocalizedJson(cvJson, locale)
                 val docxXml = convertToDocxXml(docxJson)
                 xmlToDocx(docxXml, docxTemplate, locale)
                     .map { docxBytes ->
                         JsonObject()
-                            .put("fileName", composeFileName(cvJson, locale))
+                            .put("fileName", composeFileName(cvJson, locale, defaultDocxTemplate, docxTemplateOverride))
                             .put("docxB64", String(Base64.getEncoder().encode(docxBytes)))
                     }
             }
@@ -226,7 +228,12 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             }
 
     // $BRAND_CV_$LOCALE_$ACCOUNTNAME.docx, e.g. Cerios_CV_NL_RobBosman.docx
-    private fun composeFileName(cvEntities: JsonObject, locale: String): String {
+    private fun composeFileName(
+        cvEntities: JsonObject,
+        locale: String,
+        defaultDocxTemplate: String,
+        docxTemplateOverride: String?
+    ): String {
         val brand = when (val brandInstances = cvEntities.getValue("brand")) {
             is JsonObject -> brandInstances.map.values
                 .filterIsInstance<JsonObject>()
@@ -245,7 +252,11 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
             else -> ""
         }
-        return listOf("CV", locale.substring(3), brand.ifBlank { "UIT-DIENST" }, name)
+        val appliedDocxTemplate = when {
+            docxTemplateOverride != null && docxTemplateOverride != defaultDocxTemplate -> "[$docxTemplateOverride]"
+            else -> ""
+        }
+        return listOf("CV", locale.substring(3), brand.ifBlank { "UIT-DIENST" }, name, appliedDocxTemplate)
             .filter { it.isNotBlank() }
             .joinToString("_") + ".docx"
     }

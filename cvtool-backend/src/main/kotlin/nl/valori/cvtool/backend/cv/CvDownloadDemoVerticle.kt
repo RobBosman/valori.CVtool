@@ -5,17 +5,15 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.DebouncingVerticle
-import java.util.Base64
-import java.util.Optional
+import java.util.*
 
 const val CV_DOWNLOAD_DEMO_ADDRESS = "cv.download.demo"
 
 internal class CvDownloadDemoVerticle : DebouncingVerticle(CV_DOWNLOAD_DEMO_ADDRESS) {
 
-    override fun getMessageFingerprint(message: Message<JsonObject>): Optional<String> =
-        Optional
-            .ofNullable(message.headers()["authInfo"])
-            .map { JsonObject(it).getString("accountId") }
+    override fun getMessageFingerprint(message: Message<JsonObject>): String? =
+        message.headers()["authInfo"]
+            ?.let { authInfo: String -> JsonObject(authInfo).getString("accountId") }
 
     /**
      * Expected message body:

@@ -31,13 +31,27 @@ const ContentPage = (props) => {
 
   const hasCharacteristics = utils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
 
+  const selectedAccountName = props.accountEntity?.[props.selectedAccountId]?.name;
+
+  const defaultDocxTemplate = React.useMemo(() => {
+    const brandId = Object.values(props.businessUnitEntity || {})
+      .find(businessUnit => businessUnit.accountIds.includes(props.selectedAccountId))
+      ?.brandId;
+    const docxTemplate = Object.values(props.brandEntity || {})
+      .find(brand => brand._id == brandId)
+      ?.docxTemplate
+      || "VALORI_CERIOS";
+    return enums.getText(enums.DocxTemplates, docxTemplate, props.locale);
+  },
+  [props.brandEntity, props.businessUnitEntity, props.selectedAccountId]);
+
   const onFetchCvHistory = () => {
     props.fetchCvHistory(props.selectedAccountId);
     props.setHistoryViewVisible(true);
   };
 
   const onItemClick = (_, selectedDocxTemplate) =>
-    props.overrideDocxTeplate(selectedDocxTemplate);
+    props.overrideDocxTemplate(selectedDocxTemplate);
 
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
@@ -180,8 +194,6 @@ const ContentPage = (props) => {
     renderContent = item?.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
 
-  const selectedAccountName = props.accountEntity?.[props.selectedAccountId]?.name;
-
   return (
     <Stack horizontal>
       <Stack>
@@ -211,7 +223,7 @@ const ContentPage = (props) => {
           <Text
             variant="small"
             style={{ display: "flex", flexDirection: "row-reverse"}}>
-            <em>{props.docxTeplateOverride?.text || "VALORI"}</em>
+            <em>{props.docxTemplateOverride?.text || defaultDocxTemplate}</em>
           </Text>
         </TooltipHost>
       </Stack>
@@ -234,11 +246,13 @@ ContentPage.propTypes = {
   authInfo: PropTypes.object,
   locationHash: PropTypes.string,
   accountEntity: PropTypes.object,
+  brandEntity: PropTypes.object,
+  businessUnitEntity: PropTypes.object,
   characteristicsEntity: PropTypes.object,
-  docxTeplateOverride: PropTypes.object,
+  docxTemplateOverride: PropTypes.object,
   selectedAccountId: PropTypes.string,
   fetchCvHistory: PropTypes.func.isRequired,
-  overrideDocxTeplate: PropTypes.func.isRequired,
+  overrideDocxTemplate: PropTypes.func.isRequired,
   generateCv: PropTypes.func.isRequired,
   setHistoryViewVisible: PropTypes.func.isRequired
 };
@@ -248,14 +262,16 @@ const select = (store) => ({
   authInfo: store.auth.authInfo,
   locationHash: store.ui.locationHash,
   accountEntity: store.safe.content.account,
+  brandEntity: store.safe.content.brand,
+  businessUnitEntity: store.safe.content.businessUnit,
   characteristicsEntity: store.safe.content.characteristics,
   selectedAccountId: store.ui.selectedId.account,
-  docxTeplateOverride: store.cv.docxTeplateOverride
+  docxTemplateOverride: store.cv.docxTemplateOverride
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
-  overrideDocxTeplate: (docxTeplateOverride) => dispatch(cvActions.overrideDocxTeplate(docxTeplateOverride)),
+  overrideDocxTemplate: (docxTemplateOverride) => dispatch(cvActions.overrideDocxTemplate(docxTemplateOverride)),
   generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
   setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
 });

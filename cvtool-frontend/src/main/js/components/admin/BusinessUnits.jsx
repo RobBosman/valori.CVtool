@@ -15,7 +15,7 @@ import * as enums from "../cv/Enums";
 const BusinessUnits = props => {
 
   const combineEntities = (brandEntity, businessUnitEntity) => {
-    const businessUnits= Object.values(businessUnitEntity || {})
+    const businessUnits = Object.values(businessUnitEntity || {})
       .filter(businessUnit => businessUnit._id) // Don't show deleted businessUnits.
       .sort((l, r) => commonUtils.comparePrimitives(l.name, r.name));
     const combined = {};

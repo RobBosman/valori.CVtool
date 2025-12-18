@@ -8,8 +8,8 @@ export const fetchCvHistoryFromRemote = (accountId, sendEventFunc) =>
   sendEventFunc("cv.history", { accountId })
     .then(message => message.body);
 
-export const generateCvAtRemote = (accountId, locale, sendEventFunc) =>
-  sendEventFunc("cv.generate", { accountId, locale })
+export const generateCvAtRemote = (accountId, locale, docxTemplate, sendEventFunc) =>
+  sendEventFunc("cv.generate", { accountId, locale , docxTemplate})
     .then(message => message.body);
 
 export const fetchDemoCvAtRemote = (accountId, locale, sendEventFunc) =>

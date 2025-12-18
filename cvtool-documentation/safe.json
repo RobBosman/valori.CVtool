@@ -4,7 +4,7 @@
     "uuid-brand-1": {
       "_id": "uuid-brand-1",
       "name": "Valori",
-      "template": "valori"
+      "docxTemplate": "valori"
     }
   },
   "businessUnit": {

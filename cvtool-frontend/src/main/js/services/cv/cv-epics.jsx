@@ -22,7 +22,9 @@ export const cvEpics = [
           rx.filter(state => !state.safe?.lastEditedTimeString
              || utils.parseTimeString(state.safe.lastSavedTimeString) >= utils.parseTimeString(state.safe.lastEditedTimeString)),
           rx.take(1),
-          rx.mergeMap(() => cvServices.generateCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
+          rx.withLatestFrom(state$),
+          rx.map(([_, state]) => state.cv.docxTemplateOverride?.key),
+          rx.mergeMap(docxTemplate => cvServices.generateCvAtRemote(payload.accountId, payload.locale, docxTemplate, eventBusClient.sendEvent)),
           rx.filter(Boolean),
           rx.tap(generatedCv => cvServices.downloadDocxFile(generatedCv.fileName, generatedCv.docxB64)),
           rx.ignoreElements()
