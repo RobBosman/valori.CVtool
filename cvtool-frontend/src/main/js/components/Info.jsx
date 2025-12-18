@@ -42,6 +42,10 @@ const Info = (props) => {
             <br/>Bij een aantal daarvan wordt de NL-waarde alvast voor-ingevuld, bijvoorbeeld bij vaardigheden.
             <br/>Je kunt daar je eigen vertaling invullen, maar als je dat niet doet wordt de voor-ingevulde waarde in je cv opgenomen.</li>
           <br/>
+          <li><u>CV templates</u>: Er zijn verschillende document templates beschikbaar, elk met een (iets) andere layout.
+            <br/>De 'standaard' template wordt bepaald door het <strong>Label</strong> van de <strong>Unit</strong> waarvan je deel uitmaakt.
+            <br/>Je kunt eventueel een ander template selecteren met het dorpdown-menu van de <strong>Download CV</strong> knop.</li>
+          <br/>
           <li><u>AutoSave</u>: Elke wijziging wordt na twee seconden vanzelf opgeslagen.</li>
           <br/>
           <li><u>Voorbeeld</u>: Klik hier om een uitgewerkt voorbeeld cv te downloaden:&nbsp;

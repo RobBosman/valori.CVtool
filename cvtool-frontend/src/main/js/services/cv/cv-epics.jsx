@@ -4,6 +4,7 @@ import * as rx from "rxjs/operators";
 import { eventBusClient } from "../eventBus/eventBus-services";
 import * as utils from "../../utils/CommonUtils";
 import * as safeActions from "../safe/safe-actions";
+import * as uiActions from "../ui/ui-actions";
 import * as cvActions from "./cv-actions";
 import * as cvServices from "./cv-services";
 
@@ -31,6 +32,12 @@ export const cvEpics = [
         )
       )
     )
+  ),
+
+  // Reset cv.docxTemplateOverride when switching to another account.
+  (action$) => action$.pipe(
+    ofType(uiActions.resetSelectedIds.type),
+    rx.map(() => cvActions.overrideDocxTemplate(undefined))
   ),
 
   // Search cv data at the backend server.

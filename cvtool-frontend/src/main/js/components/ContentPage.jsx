@@ -40,7 +40,7 @@ const ContentPage = (props) => {
     const docxTemplate = Object.values(props.brandEntity || {})
       .find(brand => brand._id == brandId)
       ?.docxTemplate
-      || "VALORI_CERIOS";
+      || "CERIOS";
     return enums.getText(enums.DocxTemplates, docxTemplate, props.locale);
   },
   [props.brandEntity, props.businessUnitEntity, props.selectedAccountId]);
