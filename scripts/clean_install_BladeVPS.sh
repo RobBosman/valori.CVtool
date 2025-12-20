@@ -1,5 +1,5 @@
 ########################################################################################################################
-# INSTALL TransIP BladeVPS ubuntu 20.04 - cvtool.valori.nl
+# INSTALL TransIP BladeVPS ubuntu 20.04 - cvtool.cerios.nl
 #
 # Prerequisites: make sure that the following files are in your homedir (~rbosman):
 #   ~bosmanr/docker-compose.yml

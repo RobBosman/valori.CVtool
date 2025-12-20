@@ -1,7 +1,7 @@
 = Cerios CVtool
 :toc:
 
-React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.valori.nl/[cvtool.valori.nl].
+React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.cerios.nl/[cvtool.valori.nl].
 
 == How to
 
@@ -119,8 +119,9 @@ Data retention is 120 days.
 == Docker commands
 
  # Logs
- docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" > ~rbosman/cvtool.log 2>&1
- rm ~rbosman/cvtool.log
+ docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" > ~rbosman/cvtool_be.log 2>&1
+ docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')" > ~rbosman/cvtool_fe.log 2>&1
+ rm ~rbosman/cvtool*.log
  # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
  # System entropy

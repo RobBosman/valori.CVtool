@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-VOLUME_SSL_CERTS=/var/lib/docker/volumes/root_letsencrypt_certs/_data
-
 docker run --rm \
   --name certbot \
   --mount source=root_letsencrypt_certs,target=/etc/letsencrypt \
@@ -9,12 +7,10 @@ docker run --rm \
   --mount source=root_letsencrypt_logs,target=/var/log/letsencrypt \
   --mount source=root_letsencrypt_var,target=/var/lib/letsencrypt \
   certbot/certbot \
-  renew \
+  certonly \
+  --expand \
   --webroot \
   --webroot-path=/data/letsencrypt \
-  --quiet
-
-# Restart the CVtool frontend server only if the SSL certificate was renewed.
-if [ "$(find ${VOLUME_SSL_CERTS} -name '*.pem' -mmin -5)" != "" ]; then
-  docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')"
-fi
+  --agree-tos \
+  -d cvtool.cerios.nl \
+  -d cvtool.valori.nl

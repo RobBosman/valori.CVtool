@@ -99,4 +99,4 @@ services:
       - type: volume
         source: letsencrypt_webroot
         target: /data/letsencrypt
-    command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos --quiet -d ${HTTP_HOST}
+    command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos --quiet -d ${HTTP_HOST} -d cvtool.valori.nl
