@@ -227,7 +227,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 docxBytes.toByteArray()
             }
 
-    // $BRAND_CV_$LOCALE_$ACCOUNTNAME.docx, e.g. Cerios_CV_NL_RobBosman.docx
+    // CV_$LOCALE_$BRAND_$ACCOUNTNAME_TEMPLATE-OVERRIDE.docx, e.g. CV_NL_Cerios_RobBosman_VALORI-CLASSIC.docx
     private fun composeFileName(
         cvEntities: JsonObject,
         locale: String,
@@ -256,7 +256,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             docxTemplateOverride != null && docxTemplateOverride != defaultDocxTemplate -> "[$docxTemplateOverride]"
             else -> ""
         }
-        return listOf("CV", locale.substring(3), brand.ifBlank { "UIT-DIENST" }, name, appliedDocxTemplate)
+        return listOf("CV", locale.substring(3), brand.ifBlank { "CERIOS" }, name, appliedDocxTemplate)
             .filter { it.isNotBlank() }
             .joinToString("_") + ".docx"
     }
