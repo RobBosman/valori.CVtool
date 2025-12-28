@@ -115,6 +115,8 @@ Data retention is 120 days.
  docker pull bransom/cvtool-frontend
  docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
  docker system prune -f
+ docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
+ docker system prune -f
 
 == Docker commands
 
@@ -133,9 +135,9 @@ Data retention is 120 days.
  \\wsl$\docker-desktop-data\data\docker\volumes
  \\wsl.localhost\docker-desktop\tmp\docker-desktop-root\var\lib\docker\volumes
 
- cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2025-12-16 ~rbosman
- cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2025-12-16 ~rbosman
- rm -rf ~rbosman/2025-12-16
+ cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2025-12-27 ~rbosman
+ cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2025-12-27 ~rbosman
+ rm -rf ~rbosman/2025-12-27
 
 == MongoDB
 
