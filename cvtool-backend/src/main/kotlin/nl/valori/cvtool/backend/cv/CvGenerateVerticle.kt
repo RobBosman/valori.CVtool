@@ -227,7 +227,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 docxBytes.toByteArray()
             }
 
-    // CV_$LOCALE_$BRAND_$ACCOUNTNAME_TEMPLATE-OVERRIDE.docx, e.g. CV_NL_Cerios_RobBosman_VALORI-CLASSIC.docx
+    // CV_$LOCALE_$BRAND_$ACCOUNTNAME_[TEMPLATE-OVERRIDE].docx, e.g. CV_NL_Cerios_RobBosman_[VALORI-CLASSIC].docx
     private fun composeFileName(
         cvEntities: JsonObject,
         locale: String,
@@ -243,7 +243,17 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
             else -> ""
         }
-        val name = when (val accountInstances = cvEntities.getValue("account")) {
+        val unit = when (val unitInstances = cvEntities.getValue("businessUnit")) {
+            is JsonObject -> unitInstances.map.values
+                .filterIsInstance<JsonObject>()
+                .firstOrNull()
+                ?.getString("name")
+                ?.replace(" ", "")
+                ?: ""
+
+            else -> ""
+        }
+        val accountName = when (val accountInstances = cvEntities.getValue("account")) {
             is JsonObject -> accountInstances.map.values
                 .filterIsInstance<JsonObject>()
                 .first()
@@ -256,7 +266,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             docxTemplateOverride != null && docxTemplateOverride != defaultDocxTemplate -> "[$docxTemplateOverride]"
             else -> ""
         }
-        return listOf("CV", locale.substring(3), brand.ifBlank { "CERIOS" }, name, appliedDocxTemplate)
+        return listOf("CV", locale.substring(3), brand.ifBlank { unit }, accountName, appliedDocxTemplate)
             .filter { it.isNotBlank() }
             .joinToString("_") + ".docx"
     }
