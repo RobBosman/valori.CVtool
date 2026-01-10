@@ -4,7 +4,7 @@ import babelParser from "@babel/eslint-parser";
 export default [
   {
     files: ["**/*.js", "**/*.jsx"],
-    ignores: ["./node/", "./node_modules/", "./target/"],
+    ignores: ["./node/**", "./node_modules/**", "./target/**"],
     languageOptions: {
       globals: {
         Atomics: "readonly",

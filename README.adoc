@@ -1,7 +1,7 @@
 = Cerios CVtool
 :toc:
 
-React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.cerios.nl/[cvtool.valori.nl].
+React + Redux + Kotlin + vert.x + MongoDB + Docker application to edit and maintain curriculum vitae, see https://cvtool.cerios.nl/[cvtool.cerios.nl].
 
 == How to
 
@@ -120,10 +120,13 @@ Data retention is 120 days.
 
 == Docker commands
 
- # Logs
+ # Logs and backups
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" > ~rbosman/cvtool_be.log 2>&1
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')" > ~rbosman/cvtool_fe.log 2>&1
- rm ~rbosman/cvtool*.log
+ cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2026-01-09 ~rbosman
+ cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2026-01-09 ~rbosman
+ rm -rf ~rbosman/cvtool*.log ~rbosman/2026-01-09
+
  # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
  # System entropy
@@ -134,10 +137,6 @@ Data retention is 120 days.
  # Volumes Windows
  \\wsl$\docker-desktop-data\data\docker\volumes
  \\wsl.localhost\docker-desktop\tmp\docker-desktop-root\var\lib\docker\volumes
-
- cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2025-12-27 ~rbosman
- cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2025-12-27 ~rbosman
- rm -rf ~rbosman/2025-12-27
 
 == MongoDB
 

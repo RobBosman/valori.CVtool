@@ -55,7 +55,7 @@ const LoginPage = (props) => {
         <Text>
           <p>
             Klik <Link onClick={() => switchLoginAccount()}><span style={{textDecoration: "underline"}}>hier</span></Link> om met een ander account in te loggen.
-            <br/>Problemen? <Link href="mailto:RobBosman@valori.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!
+            <br/>Problemen? <Link href="mailto:Rob.Bosman@cerios.nl?subject=CVtool" target="blank"><span style={{textDecoration: "underline"}}>Mail</span></Link> even!
           </p>
         </Text>
       </Stack>

@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+import { Buffer } from "buffer"; // NOSONAR
 
 export const fetchCvFromRemote = (accountId, sendEventFunc) =>
   sendEventFunc("cv.fetch", { accountId })
