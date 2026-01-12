@@ -21,6 +21,8 @@ const val AUTHENTICATE_ADDRESS = "authenticate"
 const val AUTHENTICATE_HEALTH_ADDRESS = "authenticate.health"
 private val AUTHORIZED_DOMAINS = listOf(
     "Cerios.nl",
+    "Cerios.be",
+    "Cerios.com",
     "WeAreCerios.onmicrosoft.com",
     "deAgileTesters.nl",
     "deAgileTesters.be",

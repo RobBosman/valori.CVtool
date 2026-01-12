@@ -62,6 +62,25 @@ const Accounts = props => {
   },
   [props.businessUnitEntity, props.replaceBusinessUnit]);
 
+  const replaceAccountInstance = React.useCallback((accountId, combinedInstance) => {
+    const newUsername = combinedInstance.email.split("@")[0].replace(".", "").toUpperCase();
+    // Double-check if 'newUsername' is unique.
+    const hasExistingMatches = Object.values(props.accountEntity || {})
+      .filter(accountInstance => accountInstance._id !== accountId)
+      .some(accountInstance => accountInstance.username === newUsername);
+    if (hasExistingMatches) {
+      throw new Error(`De usernaam van e-mail adres '${combinedInstance.email}' wordt al gebruikt door een ander CVtool account.`);
+    }
+    const account = Object.values(props.accountEntity || {})
+      .find(accountInstance => accountInstance._id === accountId);
+    props.replaceAccount(account._id, {
+      ...account,
+      email: combinedInstance.email,
+      username: newUsername
+    });
+  },
+  [props.accountEntity, props.replaceAccount]);
+
   const replaceAuthorizationInstance = React.useCallback((accountId, combinedInstance) => {
     const authorization = Object.values(props.authorizationEntity || {})
       .find(authorizationInstance => authorizationInstance.accountId === accountId);
@@ -124,19 +143,19 @@ const Accounts = props => {
       maxWidth: 220
     },
     {
+      key: "businessUnit.name",
+      fieldName: "businessUnit.name",
+      name: "Unit",
+      isResizable: true,
+      minWidth: 120
+    },
+    {
       key: "brand",
       fieldName: "brand.name",
       name: "Label",
       isResizable: true,
       minWidth: 120,
       maxWidth: 150
-    },
-    {
-      key: "businessUnit.name",
-      fieldName: "businessUnit.name",
-      name: "Unit",
-      isResizable: true,
-      minWidth: 120
     },
     {
       key: "authorization.level.",
@@ -281,16 +300,9 @@ const Accounts = props => {
                 <CvTextField
                   label="E-mail"
                   field="email"
-                  instanceContext={combinedContext()}
-                  readOnly={true}
-                />
-                <CvDropdown
-                  label="Unit"
-                  field="businessUnit._id"
-                  instanceContext={combinedContext(switchBusinessUnitOfAccount)}
-                  readOnly={!["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)}
-                  options={enums.getOptions(BusinessUnitOptions, props.locale)}
-                  styles={{ dropdown: { width: 230 } }}
+                  instanceContext={combinedContext(replaceAccountInstance)}
+                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel) && isEmailEditable}
+                  disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                 />
                 <CvDropdown
                   label="Autorisatie"
@@ -299,6 +311,14 @@ const Accounts = props => {
                   readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
                   disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                   options={enums.getOptions(enums.Authorizations, props.locale)}
+                  styles={{ dropdown: { width: 230 } }}
+                />
+                <CvDropdown
+                  label="Unit"
+                  field="businessUnit._id"
+                  instanceContext={combinedContext(switchBusinessUnitOfAccount)}
+                  readOnly={!["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)}
+                  options={enums.getOptions(BusinessUnitOptions, props.locale)}
                   styles={{ dropdown: { width: 230 } }}
                 />
                 <Separator/>
@@ -347,6 +367,7 @@ Accounts.propTypes = {
   brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   deleteAccount: PropTypes.func.isRequired,
+  replaceAccount: PropTypes.func.isRequired,
   replaceAuthorization: PropTypes.func.isRequired,
   replaceBusinessUnit: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
@@ -367,6 +388,7 @@ const select = store => ({
 const mapDispatchToProps = dispatch => ({
   setSelectedAccountId: id => dispatch(uiActions.setSelectedId("account", id)),
   deleteAccount: id => dispatch(safeActions.deleteAccount(id)),
+  replaceAccount: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
   replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
   replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance)),
   fetchCvByAccountId: accountId => dispatch(cvActions.fetchCvByAccountId(accountId))

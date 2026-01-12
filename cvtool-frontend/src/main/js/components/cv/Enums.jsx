@@ -56,50 +56,8 @@ export const DocxTemplates = [
     }
   },
   {
-    key: "AGILE_TESTERS",
-    sortIndex: 1,
-    text: {
-      nl_NL: "AGILE_TESTERS"
-    }
-  },
-  {
-    key: "PERFORMANCE_ARCHITECTEN",
-    sortIndex: 2,
-    text: {
-      nl_NL: "PERFORMANCE_ARCHITECTEN"
-    }
-  },
-  {
-    key: "QUALITY_ACCELERATORS",
-    sortIndex: 3,
-    text: {
-      nl_NL: "QUALITY_ACCELERATORS"
-    }
-  }, 
-  {
-    key: "SALVES",
-    sortIndex: 4,
-    text: {
-      nl_NL: "SALVES"
-    }
-  },
-  {
-    key: "TEST_CREW_IT",
-    sortIndex: 5,
-    text: {
-      nl_NL: "TEST_CREW_IT"
-    }
-  },
-  {
-    key: "VALORI_CERIOS",
-    sortIndex: 6,
-    text: {
-      nl_NL: "VALORI_CERIOS"
-    }
-  },
-  {
     key: "VALORI_CLASSIC",
-    sortIndex: 7,
+    sortIndex: 1,
     text: {
       nl_NL: "VALORI_CLASSIC"
     }
