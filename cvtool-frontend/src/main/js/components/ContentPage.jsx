@@ -199,7 +199,7 @@ const ContentPage = (props) => {
       <Stack>
         <CvLogo/>
         <Nav
-          styles={{ root: { width: 205, marginTop: 61 }, groupContent: { marginBottom: 0 } }}
+          styles={{ root: { width: 205, marginTop: 61, marginBottom: 8 }, groupContent: { marginBottom: 0 } }}
           groups={navGroups}
           initialSelectedKey={locationHash || "#"}
           selectedKey={props.navKey}
@@ -208,8 +208,7 @@ const ContentPage = (props) => {
         <TooltipHost
           content={selectedAccountName
             ? `Download CV van ${selectedAccountName} als MS-Word document`
-            : "Download CV als MS-Word document"}
-          styles={{ root: { marginTop: 10 } }}>
+            : "Download CV als MS-Word document"}>
           <PrimaryButton
             text="Download CV"
             iconProps={{ iconName: "DownloadDocument" }}
@@ -217,7 +216,8 @@ const ContentPage = (props) => {
             split
             menuProps={docxTemplateMenuProps}
             disabled={!props.selectedAccountId}
-            onClick={onGenerateCv}>
+            onClick={onGenerateCv}
+            styles={{ root: { width: 174, padding: "0 6px", justifyContent: "left" } }}>
             <LocaleFlag/>
           </PrimaryButton>
           <Text

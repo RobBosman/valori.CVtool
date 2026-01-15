@@ -629,6 +629,16 @@
 
                 -->
                 <w:p w14:paraId="0245734B" w14:textId="1168C12D" w:rsidR="00B11653" w:rsidRDefault="0023741E">
+                    <w:pPr>
+                        <w:sectPr w:rsidR="004916EF" w:rsidSect="004916EF">
+                            <w:type w:val="continuous"/>
+                            <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                            <w:pgMar w:top="72pt" w:right="31.10pt" w:bottom="72pt" w:left="72pt" w:header="35.40pt"
+                                     w:footer="35.40pt" w:gutter="0pt"/>
+                            <w:cols w:num="2" w:space="35.40pt"/>
+                            <w:docGrid w:linePitch="360"/>
+                        </w:sectPr>
+                    </w:pPr>
                     <w:r>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -1192,21 +1202,11 @@
                             </w:drawing>
                         </w:r>
                     </xsl:if>
+                </w:p>
+                <w:p w14:paraId="0245734B" w14:textId="1168C12D" w:rsidR="00B11653" w:rsidRDefault="0023741E">
                     <w:r w:rsidR="00B11653">
                         <w:br w:type="page"/>
                     </w:r>
-                </w:p>
-                <w:p w14:paraId="47B6466D" w14:textId="77777777" w:rsidR="00462426" w:rsidRDefault="00462426">
-                    <w:pPr>
-                        <w:sectPr w:rsidR="00462426" w:rsidSect="00307129">
-                            <w:type w:val="continuous"/>
-                            <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                            <w:pgMar w:top="72pt" w:right="31.10pt" w:bottom="72pt" w:left="72pt" w:header="35.40pt"
-                                     w:footer="35.40pt" w:gutter="0pt"/>
-                            <w:cols w:num="2" w:space="35.40pt"/>
-                            <w:docGrid w:linePitch="360"/>
-                        </w:sectPr>
-                    </w:pPr>
                 </w:p>
                 <!--
 
@@ -1219,7 +1219,6 @@
                         <w:pStyle w:val="Titel1"/>
                     </w:pPr>
                     <w:r>
-                        <w:lastRenderedPageBreak/>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                        relativeHeight="251692032" behindDoc="0" locked="0" layoutInCell="1"
@@ -1654,6 +1653,16 @@
                             </wp:anchor>
                         </w:drawing>
                     </w:r>
+                </w:p>
+                <w:p w14:paraId="0245734B" w14:textId="1168C12D" w:rsidR="00B11653" w:rsidRDefault="0023741E">
+                    <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
+                        <w:type w:val="continuous"/>
+                        <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
+                        <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
+                                 w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
+                        <w:cols w:space="17.45pt"/>
+                        <w:docGrid w:linePitch="360"/>
+                    </w:sectPr>
                     <w:r w:rsidR="00462426" w:rsidRPr="001958BA">
                         <w:br w:type="page"/>
                     </w:r>
@@ -1664,38 +1673,12 @@
 
                 -->
                 <xsl:if test="$educations or $trainings">
-                    <w:p w14:paraId="3B70A471" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00604B30">
-                        <w:pPr>
-                            <w:pStyle w:val="BasicParagraph"/>
-                            <w:ind w:end="2.35pt"/>
-                            <w:rPr>
-                                <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"
-                                          w:cs="Plus Jakarta Sans"/>
-                                <w:b/>
-                                <w:bCs/>
-                                <w:color w:val="212B46"/>
-                                <w:sz w:val="26"/>
-                                <w:szCs w:val="26"/>
-                                <w:u w:val="thick" w:color="55DD94"/>
-                            </w:rPr>
-                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
-                                <w:type w:val="continuous"/>
-                                <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
-                                <w:cols w:space="17.45pt"/>
-                                <w:docGrid w:linePitch="360"/>
-                            </w:sectPr>
-                        </w:pPr>
-                    </w:p>
                     <w:p w14:paraId="3BD8ED21" w14:textId="2411C07F" w:rsidR="00604B30" w:rsidRPr="00CA43CD"
                          w:rsidRDefault="00065B83" w:rsidP="00065B83">
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
                         <w:r>
-                            <w:lastRenderedPageBreak/>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                            relativeHeight="251694080" behindDoc="0" locked="0" layoutInCell="1"
@@ -1766,11 +1749,15 @@
                             </w:t>
                         </w:r>
                     </w:p>
+                    <w:p w14:paraId="3BD8ED21" w14:textId="2411C07F" w:rsidR="00604B30" w:rsidRPr="00CA43CD"
+                         w:rsidRDefault="00065B83" w:rsidP="00065B83"/>
+                    <w:p w14:paraId="3BD8ED21" w14:textId="2411C07F" w:rsidR="00604B30" w:rsidRPr="00CA43CD"
+                         w:rsidRDefault="00065B83" w:rsidP="00065B83"/>
                     <w:tbl>
                         <w:tblPr>
                             <w:tblStyle w:val="Tabelraster"/>
                             <w:tblpPr w:leftFromText="180" w:rightFromText="180" w:vertAnchor="page"
-                                      w:horzAnchor="margin" w:tblpY="2646"/>
+                                      w:horzAnchor="margin" w:tblpY="2400"/>
                             <w:tblW w:w="526.15pt" w:type="dxa"/>
                             <w:tblBorders>
                                 <w:top w:val="none" w:sz="0" w:space="0" w:color="auto"/>
@@ -2076,8 +2063,6 @@
 
                 -->
                 <xsl:if test="$experiences">
-                    <w:p w14:paraId="36BC7C31" w14:textId="195FC468" w:rsidR="005815D4" w:rsidRDefault="005815D4"
-                         w:rsidP="002251BB"/>
                     <w:p w14:paraId="0FC87C85" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE">
                         <w:pPr>
                             <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
@@ -2090,45 +2075,38 @@
                             </w:sectPr>
                         </w:pPr>
                     </w:p>
-                    <w:p w14:paraId="708E2135" w14:textId="77777777" w:rsidR="005815D4" w:rsidRDefault="005815D4">
+                    <w:p w14:paraId="6B615F0F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
+                         w:rsidP="00B2333C">
+                        <w:pPr>
+                            <w:pStyle w:val="Titel1"/>
+                        </w:pPr>
                         <w:r>
-                            <w:br w:type="page"/>
+                            <w:t>
+                                <xsl:call-template name="translate">
+                                    <xsl:with-param name="text" select="'Werkervaring'"/>
+                                </xsl:call-template>
+                            </w:t>
                         </w:r>
                     </w:p>
                     <w:p w14:paraId="6B615F0F" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
                          w:rsidP="00B2333C">
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
-                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00CC7FCE">
-                                <w:type w:val="continuous"/>
-                                <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
-                                <w:cols w:space="17.45pt"/>
-                                <w:docGrid w:linePitch="360"/>
-                            </w:sectPr>
-                        </w:pPr>
-                    </w:p>
-                    <w:p w14:paraId="6FAD22C1" w14:textId="301F00A0" w:rsidR="00CC7FCE" w:rsidRDefault="00065B83"
-                         w:rsidP="00B2333C">
-                        <w:pPr>
-                            <w:pStyle w:val="Titel1"/>
                         </w:pPr>
                         <w:r>
-                            <w:lastRenderedPageBreak/>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
                                            relativeHeight="251696128" behindDoc="0" locked="0" layoutInCell="1"
                                            allowOverlap="1" wp14:anchorId="0E3D2438" wp14:editId="7C3F9A4D">
                                     <wp:simplePos x="0" y="0"/>
-                                    <wp:positionH relativeFrom="column">
+                                    <wp:positionH relativeFrom="margin">
                                         <wp:posOffset>-635</wp:posOffset>
                                     </wp:positionH>
                                     <wp:positionV relativeFrom="paragraph">
-                                        <wp:posOffset>231775</wp:posOffset>
+                                        <wp:posOffset>22860</wp:posOffset>
                                     </wp:positionV>
                                     <wp:extent cx="1082675" cy="0"/>
-                                    <wp:effectExtent l="0" t="12700" r="22225" b="12700"/>
+                                    <wp:effectExtent l="0" t="0" r="0" b="0"/>
                                     <wp:wrapNone/>
                                     <wp:docPr id="829027523" name="Straight Connector 15"/>
                                     <wp:cNvGraphicFramePr/>
@@ -2172,15 +2150,11 @@
                                     <wp14:sizeRelH relativeFrom="margin">
                                         <wp14:pctWidth>0%</wp14:pctWidth>
                                     </wp14:sizeRelH>
+                                    <wp14:sizeRelV relativeFrom="margin">
+                                        <wp14:pctHeight>0%</wp14:pctHeight>
+                                    </wp14:sizeRelV>
                                 </wp:anchor>
                             </w:drawing>
-                        </w:r>
-                        <w:r w:rsidR="00B2333C">
-                            <w:t>
-                                <xsl:call-template name="translate">
-                                    <xsl:with-param name="text" select="'Werkervaring'"/>
-                                </xsl:call-template>
-                            </w:t>
                         </w:r>
                     </w:p>
                     <w:p w14:paraId="21A5DF4E" w14:textId="77777777" w:rsidR="00CA43CD" w:rsidRDefault="00CA43CD"
@@ -2199,8 +2173,6 @@
 
                 -->
                 <xsl:if test="$experienceOverviewItems">
-                    <w:p w14:paraId="24FEE188" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00B2333C"/>
                     <w:p w14:paraId="76CE181D" w14:textId="5E6D225C" w:rsidR="00CC7FCE" w:rsidRPr="00926161"
                          w:rsidRDefault="00065B83" w:rsidP="00926161">
                         <w:pPr>
@@ -2274,6 +2246,8 @@
                             </w:t>
                         </w:r>
                     </w:p>
+                    <w:p w14:paraId="24FEE188" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
+                         w:rsidP="00B2333C"/>
                     <w:tbl>
                         <w:tblPr>
                             <w:tblStyle w:val="Tabelraster"/>
@@ -2412,26 +2386,9 @@
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
-                        <w:r>
-                            <w:br w:type="page"/>
-                        </w:r>
-                    </w:p>
-                    <w:p w14:paraId="1FE1FD17" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00160C07">
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
-                            <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
-                                <w:type w:val="continuous"/>
-                                <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
-                                <w:pgMar w:top="72pt" w:right="26.95pt" w:bottom="72pt" w:left="36.55pt"
-                                         w:header="35.45pt" w:footer="2.85pt" w:gutter="0pt"/>
-                                <w:cols w:space="17.45pt"/>
-                                <w:docGrid w:linePitch="360"/>
-                            </w:sectPr>
                         </w:pPr>
-                    </w:p>
-                    <w:p w14:paraId="0446C0FE" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00160C07">
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
                             <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
