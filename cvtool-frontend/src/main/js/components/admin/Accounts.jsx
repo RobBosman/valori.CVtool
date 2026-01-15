@@ -301,7 +301,7 @@ const Accounts = props => {
                   label="E-mail"
                   field="email"
                   instanceContext={combinedContext(replaceAccountInstance)}
-                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel) && isEmailEditable}
+                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
                   disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                 />
                 <CvDropdown
