@@ -27,7 +27,7 @@ export const initializeUI = () => {
 
   const userPrefs = { ...defaultUserPrefs };
   for (const key in defaultUserPrefs) {
-    userPrefs[key] = globalThis.localStorage.getItem(key) || userPrefs[key];
+    userPrefs[key] = window.localStorage.getItem(key) || userPrefs[key];
   }
   return userPrefs;
 };

@@ -13,7 +13,7 @@ reducerRegistry.register(
   "ui", 
   createReducer(
     {
-      locationHash: globalThis.location.hash || "",
+      locationHash: window.location.hash || "",
       userPrefs: {},
       selectedId: {},
       isHistoryViewVisible: false

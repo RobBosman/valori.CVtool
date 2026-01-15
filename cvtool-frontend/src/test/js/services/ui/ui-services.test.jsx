@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+window.IS_REACT_ACT_ENVIRONMENT = true;
 
 import React, { act } from "react";
 import { createRoot } from "react-dom/client";

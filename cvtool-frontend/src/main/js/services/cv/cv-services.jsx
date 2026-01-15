@@ -33,11 +33,11 @@ const downloadFile = (fileName, blob) => {
   const a = document.createElement("a");
   a.style = "display: none";
   document.body.appendChild(a);
-  const url = globalThis.URL.createObjectURL(blob);
+  const url = window.URL.createObjectURL(blob);
   a.href = url;
   a.download = fileName;
   a.click();
-  globalThis.URL.revokeObjectURL(url);
+  window.URL.revokeObjectURL(url);
 };
 
 export const downloadDocxFile = (fileName, b64Data) => {

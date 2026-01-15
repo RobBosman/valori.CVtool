@@ -96,7 +96,7 @@ export const safeEpics = [
     ofType(safeActions.selectPhotoToUpload.type),
     rx.map(action => action.payload),
     rx.switchMap(({accountInstanceId, fileSelectOptions}) =>
-      globalThis.showOpenFilePicker(fileSelectOptions)
+      window.showOpenFilePicker(fileSelectOptions)
         .then(([fileHandle]) => fileHandle.getFile())
         .then(file => [accountInstanceId, file])
     ),

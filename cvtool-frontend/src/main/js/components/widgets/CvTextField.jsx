@@ -33,7 +33,7 @@ export const CvTextField = (props) => {
 
   const getScrollParent = (node) => {
     const isScrollable = (node) => {
-      const overflowY = globalThis.getComputedStyle(node).overflowY;
+      const overflowY = window.getComputedStyle(node).overflowY;
       return overflowY === "scroll" || overflowY === "auto";
     };
     while (node instanceof HTMLElement && (!isScrollable(node) || node.scrollHeight <= node.clientHeight)) {
