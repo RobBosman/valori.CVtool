@@ -147,12 +147,12 @@
                                        allowOverlap="1" wp14:anchorId="1541F9EA" wp14:editId="27C48E51">
                                 <wp:simplePos x="0" y="0"/>
                                 <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>3284193</wp:posOffset>
+                                    <wp:posOffset>3280631</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>-6985</wp:posOffset>
+                                    <wp:posOffset>-7951</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="3568700" cy="655955"/>
+                                <wp:extent cx="3601941" cy="1049572"/>
                                 <wp:effectExtent l="0" t="0" r="0" b="0"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="1382255691" name="Text Box 5"/>
@@ -165,7 +165,7 @@
                                             <wp:spPr>
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="3568700" cy="655955"/>
+                                                    <a:ext cx="3601941" cy="1049572"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>

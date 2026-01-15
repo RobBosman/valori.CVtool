@@ -51,7 +51,6 @@ const CvPhoto = (props) => {
             primary={true}
             text="Foto uploaden"
             iconProps={{ iconName: "Upload" }}
-            disabled={props.authInfo.accountId != instanceId}
             onClick={onFileUpload}
           />
           <DefaultButton

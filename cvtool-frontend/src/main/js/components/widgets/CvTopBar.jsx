@@ -103,8 +103,8 @@ const CvTopBar = props => {
               subMenuProps: {
                 items: [
                   createThemeItem("default", "Standaard"),
-                  createThemeItem("valoriBlue", "Cerios - licht"),
-                  createThemeItem("valoriOrange", "Cerios - donker")
+                  createThemeItem("valoriBlue", "Blauw"),
+                  createThemeItem("valoriOrange", "Donker")
                 ]
               }
             },
