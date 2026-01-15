@@ -5,6 +5,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.toJsonObject
+import nl.valori.cvtool.backend.authorization.AuthenticateVerticle.Companion.getUsername
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.valori.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 
@@ -59,10 +60,7 @@ class DataConverterVerticle : BasicVerticle(CONVERT_DATA_ADDRESS) {
                 .map.values
                 .mapNotNull(::toJsonObject)
                 .forEach { accountInstance ->
-                    val username = accountInstance.getString("email")
-                        .substringBefore("@")
-                        .replace(".", "")
-                        .uppercase()
+                    val username = accountInstance.getString("email").getUsername()
                     accountInstance.put("username", username)
                 }
         }

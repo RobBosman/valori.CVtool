@@ -41,6 +41,11 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         private const val MAX_IGNORED_HEALTH_ERRORS = 5
         private val numIgnoredHealthErrors = AtomicInteger(0)
 
+        fun String.getUsername() =
+            substringBefore("@")
+                .replace(".", "")
+                .uppercase()
+
         fun String.isDomainAuthorized() =
             AUTHORIZED_DOMAINS.any { authorizedDomain ->
                 substringAfter("@").equals(authorizedDomain, true)

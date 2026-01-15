@@ -7,6 +7,7 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.valori.cvtool.backend.BasicVerticle
 import nl.valori.cvtool.backend.ModelUtils.addEntity
 import nl.valori.cvtool.backend.ModelUtils.getInstances
+import nl.valori.cvtool.backend.authorization.AuthenticateVerticle.Companion.getUsername
 import nl.valori.cvtool.backend.authorization.AuthenticateVerticle.Companion.isDomainAuthorized
 import nl.valori.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.valori.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
@@ -68,9 +69,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
         check(email.isDomainAuthorized()) {
             "Unauthorized email domain: '${email.substringAfter("@")}'."
         }
-        val username = email.substringBefore("@")
-            .replace(".", "")
-            .uppercase()
+        val username = email.getUsername()
         return vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
@@ -84,6 +83,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                     1 -> Single
                         .just(accounts.iterator().next() as JsonObject)
                         .flatMap { account -> adjustEmailDomain(account, email) }
+
                     else -> error("Found ${accounts.size} accounts for $email.")
                 }
             }

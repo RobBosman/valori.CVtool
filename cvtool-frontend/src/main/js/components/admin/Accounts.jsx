@@ -63,7 +63,7 @@ const Accounts = props => {
   [props.businessUnitEntity, props.replaceBusinessUnit]);
 
   const replaceAccountInstance = React.useCallback((accountId, combinedInstance) => {
-    const newUsername = combinedInstance.email.split("@")[0].replace(".", "").toUpperCase();
+    const newUsername = commonUtils.getUsername(combinedInstance.email);
     // Double-check if 'newUsername' is unique.
     const hasExistingMatches = Object.values(props.accountEntity || {})
       .filter(accountInstance => accountInstance._id !== accountId)

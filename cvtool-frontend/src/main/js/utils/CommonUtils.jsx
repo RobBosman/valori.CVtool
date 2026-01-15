@@ -54,6 +54,9 @@ export const getValueOrFallback = (instance, fieldName, locale) => {
   return "";
 };
 
+export const getUsername = (email) =>
+  email.split("@")[0].replaceAll(".", "").toUpperCase();
+
 export const isEditAccountAllowed = (accountId, authInfo) =>
   accountId === authInfo.accountId || ["ADMIN", "UNIT_LEAD"].includes(authInfo.authorizationLevel);
 
