@@ -1218,6 +1218,7 @@
                     <w:pPr>
                         <w:pStyle w:val="Titel1"/>
                     </w:pPr>
+                    <w:keepNext/>
                     <w:r>
                         <w:drawing>
                             <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -1678,6 +1679,7 @@
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
+                        <w:keepNext/>
                         <w:r>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -1747,12 +1749,11 @@
                                     <xsl:with-param name="text" select="'Opleidingen &amp; trainingen'"/>
                                 </xsl:call-template>
                             </w:t>
+                            <w:br/>
+                            <w:br/>
+                            <w:br/>
                         </w:r>
                     </w:p>
-                    <w:p w14:paraId="3BD8ED21" w14:textId="2411C07F" w:rsidR="00604B30" w:rsidRPr="00CA43CD"
-                         w:rsidRDefault="00065B83" w:rsidP="00065B83"/>
-                    <w:p w14:paraId="3BD8ED21" w14:textId="2411C07F" w:rsidR="00604B30" w:rsidRPr="00CA43CD"
-                         w:rsidRDefault="00065B83" w:rsidP="00065B83"/>
                     <w:tbl>
                         <w:tblPr>
                             <w:tblStyle w:val="Tabelraster"/>
@@ -2080,6 +2081,7 @@
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
+                        <w:keepNext/>
                         <w:r>
                             <w:t>
                                 <xsl:call-template name="translate">
@@ -2178,6 +2180,7 @@
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
                         </w:pPr>
+                        <w:keepNext/>
                         <w:r>
                             <w:drawing>
                                 <wp:anchor distT="0" distB="0" distL="114300" distR="114300" simplePos="0"
@@ -2244,10 +2247,9 @@
                                     <xsl:with-param name="text" select="'Overige werkervaring'"/>
                                 </xsl:call-template>
                             </w:t>
+                            <w:br/>
                         </w:r>
                     </w:p>
-                    <w:p w14:paraId="24FEE188" w14:textId="77777777" w:rsidR="00CC7FCE" w:rsidRDefault="00CC7FCE"
-                         w:rsidP="00B2333C"/>
                     <w:tbl>
                         <w:tblPr>
                             <w:tblStyle w:val="Tabelraster"/>
@@ -2385,12 +2387,6 @@
                          w:rsidRDefault="00CC7FCE" w:rsidP="00926161">
                         <w:pPr>
                             <w:pStyle w:val="Titel1"/>
-                        </w:pPr>
-                        <w:pPr>
-                            <w:pStyle w:val="Titel1"/>
-                        </w:pPr>
-                        <w:pPr>
-                            <w:pStyle w:val="Titel1"/>
                             <w:sectPr w:rsidR="00CC7FCE" w:rsidSect="00F87D02">
                                 <w:type w:val="continuous"/>
                                 <w:pgSz w:w="595.30pt" w:h="841.90pt"/>
@@ -2417,6 +2413,7 @@
                                     <w:noProof/>
                                     <w:u w:val="none"/>
                                 </w:rPr>
+                                <w:keepNext/>
                                 <w:t>
                                     <xsl:call-template name="translate">
                                         <xsl:with-param name="text" select="'Publicaties'"/>
@@ -2515,6 +2512,7 @@
                                     <w:noProof/>
                                     <w:u w:val="none"/>
                                 </w:rPr>
+                                <w:keepNext/>
                                 <w:t>
                                     <xsl:call-template name="translate">
                                         <xsl:with-param name="text" select="'Referenties'"/>
