@@ -9,7 +9,7 @@
   "source": "src/main/js/index.html",
   "main": "target/classes/index.htm",
   "dependencies": {
-    "@azure/msal-browser": "^5.0.2",
+    "@azure/msal-browser": "^4.28.1",
     "@fluentui/react": "^8.125.2",
     "@reduxjs/toolkit": "^2.11.1",
     "@uifabric/react-hooks": "^7.16.4",

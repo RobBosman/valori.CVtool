@@ -27,7 +27,18 @@ export const initializeUI = () => {
 
   const userPrefs = { ...defaultUserPrefs };
   for (const key in defaultUserPrefs) {
-    userPrefs[key] = window.localStorage.getItem(key) || userPrefs[key];
+    let storedItem = window.localStorage.getItem(key);
+    // Convert 'valori-themes' for backward-compatibility.
+    if (key === "theme") {
+      if (storedItem === "valoriBlue") {
+        storedItem = "ceriosBlue";
+        window.localStorage.setItem(key, storedItem);
+      } else if (storedItem === "valoriOrange") {
+        storedItem = "ceriosOrange";
+        window.localStorage.setItem(key, storedItem);
+      }
+    }
+    userPrefs[key] = storedItem || userPrefs[key];
   }
   return userPrefs;
 };
