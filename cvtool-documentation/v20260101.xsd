@@ -2,8 +2,8 @@
 <xs:schema
         elementFormDefault="qualified"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns="https://ns.bransom.nl/cerios/cv/v20250808.xsd"
-        targetNamespace="https://ns.bransom.nl/cerios/cv/v20250808.xsd">
+        xmlns="https://ns.bransom.nl/cerios/cv/v20260101.xsd"
+        targetNamespace="https://ns.bransom.nl/cerios/cv/v20260101.xsd">
 
     <xs:element name="root">
         <xs:complexType>

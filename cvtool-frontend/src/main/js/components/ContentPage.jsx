@@ -210,7 +210,7 @@ const ContentPage = (props) => {
             ? `Download CV van ${selectedAccountName} als MS-Word document`
             : "Download CV als MS-Word document"}>
           <PrimaryButton
-            text="Download CV&nbsp;"
+            text="Download CV&nbsp;&nbsp;"
             iconProps={{ iconName: "DownloadDocument" }}
             primary
             split
