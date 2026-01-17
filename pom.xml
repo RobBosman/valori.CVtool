@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>nl.valori</groupId>
+    <groupId>nl.bransom</groupId>
     <artifactId>cvtool</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -25,10 +25,10 @@
 
         <dependency-check-maven.version>12.1.9</dependency-check-maven.version>
         <kotlin.version>2.3.0</kotlin.version>
-        <logback-classic.version>1.5.24</logback-classic.version>
+        <logback-classic.version>1.5.25</logback-classic.version>
         <mongodb-driver-reactivestreams.version>5.6.2</mongodb-driver-reactivestreams.version>
-        <nodejs.version>v24.12.0</nodejs.version>
-        <vertx.version>5.0.6</vertx.version>
+        <nodejs.version>v24.13.0</nodejs.version>
+        <vertx.version>5.0.7</vertx.version>
 
         <frontend-maven-plugin.version>2.0.0</frontend-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>

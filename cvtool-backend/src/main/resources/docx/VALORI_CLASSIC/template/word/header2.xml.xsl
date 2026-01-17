@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+        xmlns:cv="https://ns.bransom.nl/cerios/cv/v20250808.xsd"
         exclude-result-prefixes="cv"
         version="1.0">
 
@@ -190,7 +190,7 @@
                                 <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
                                     <pic:pic>
                                         <pic:nvPicPr>
-                                            <pic:cNvPr id="1" name="Valori - digitaal gebruik.jpg"/>
+                                            <pic:cNvPr id="1" name="Cerios - digitaal gebruik.jpg"/>
                                             <pic:cNvPicPr/>
                                         </pic:nvPicPr>
                                         <pic:blipFill>
@@ -249,7 +249,7 @@
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
-                        <w:rStyle w:val="Valori-geel"/>
+                        <w:rStyle w:val="Cerios-geel"/>
                     </w:rPr>
                     <w:t xml:space="preserve">&#xA0;// </w:t>
                 </w:r>
@@ -260,7 +260,7 @@
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
-                        <w:rStyle w:val="Valori-geel"/>
+                        <w:rStyle w:val="Cerios-geel"/>
                     </w:rPr>
                     <w:t xml:space="preserve">&#xA0;// </w:t>
                 </w:r>
@@ -271,7 +271,7 @@
                 </w:r>
                 <w:r w:rsidRPr="00585C2D">
                     <w:rPr>
-                        <w:rStyle w:val="Valori-geel"/>
+                        <w:rStyle w:val="Cerios-geel"/>
                     </w:rPr>
                     <w:t xml:space="preserve">&#xA0;//</w:t>
                 </w:r>

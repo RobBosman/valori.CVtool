@@ -1,13 +1,13 @@
 import React from "react";
 import { registerOnThemeChangeCallback, removeOnThemeChangeCallback, getTheme, initializeIcons, loadTheme } from "@fluentui/react";
 import fluentUITheme from "../../static/themes/fluentUI.json";
-import valoriBlueTheme from "../../static/themes/valoriBlue.json";
-import valoriOrangeTheme from "../../static/themes/valoriOrange.json";
+import ceriosBlueTheme from "../../static/themes/ceriosBlue.json";
+import ceriosOrangeTheme from "../../static/themes/ceriosOrange.json";
 
 export const AllThemes = {
   default: fluentUITheme,
-  valoriOrange: valoriOrangeTheme,
-  valoriBlue: valoriBlueTheme
+  ceriosOrange: ceriosOrangeTheme,
+  ceriosBlue: ceriosBlueTheme
 };
 
 export const loadThemeByName = (themeName) => {
@@ -18,7 +18,7 @@ export const loadThemeByName = (themeName) => {
 
 const defaultUserPrefs = {
   locale: "nl_NL",
-  theme: "valoriBlue"
+  theme: "ceriosBlue"
 };
 
 export const initializeUI = () => {
@@ -47,7 +47,7 @@ export const useTheme = () => {
     viewPaneBackground: theme.palette.neutralLighter,
     editPaneBackground: theme.palette.neutralLighterAlt,
     markHighlightBackground: theme.semanticColors.markHighlightBackground || theme.palette.greenLight,
-    valoriBlue: "#211959",
-    valoriYellow: "#F29100"
+    ceriosBlue: "#211959",
+    ceriosYellow: "#F29100"
   };
 };

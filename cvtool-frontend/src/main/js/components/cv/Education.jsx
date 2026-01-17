@@ -94,7 +94,7 @@ const Education = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground, valoriYellow, valoriBlue} = useTheme();
+  const {viewPaneBackground, editPaneBackground, ceriosYellow, ceriosBlue} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -160,12 +160,12 @@ const Education = (props) => {
   const renderPreviewEducation = (education) => {
     return (
       <tr key={education._id}
-        style={{ color: valoriBlue }}>
+        style={{ color: ceriosBlue }}>
         <td>{commonUtils.getValueOrFallback(education, "name", props.locale)}</td>
         <td>{education.institution}</td>
         <td>
           {composePeriod(education)}
-          <span style={{ color: valoriYellow }}>{" // "}</span>
+          <span style={{ color: ceriosYellow }}>{" // "}</span>
           {enums.getText(enums.EducationResultTypes, education.result, props.locale)}
         </td>
       </tr>
@@ -192,7 +192,7 @@ const Education = (props) => {
         <tbody>
           <tr
             style={{
-              color: valoriYellow,
+              color: ceriosYellow,
               fontWeight: "bold"
             }}>
             <th style={{

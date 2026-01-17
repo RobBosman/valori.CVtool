@@ -6,7 +6,7 @@
       <env name="HTTP_CONNECTION_STRING" value="http://localhost:80/" />
       <env name="MONGO_CONNECTION_STRING" value="mongodb://localhost:27017/cvtool?authSource=admin&amp;readPreference=primary&amp;ssl=false&amp;directConnection=true" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="nl.valori.cvtool.backend.MainKt" />
+    <option name="MAIN_CLASS_NAME" value="nl.bransom.cvtool.backend.MainKt" />
     <module name="cvtool-backend" />
     <shortenClasspath name="NONE" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />

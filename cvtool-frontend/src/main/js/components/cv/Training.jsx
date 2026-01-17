@@ -96,7 +96,7 @@ const Training = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground, valoriYellow, valoriBlue} = useTheme();
+  const {viewPaneBackground, editPaneBackground, ceriosYellow, ceriosBlue} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -163,13 +163,13 @@ const Training = (props) => {
     return (
       <tr key={training._id}
         style={{
-          color: valoriBlue
+          color: ceriosBlue
         }}>
         <td>{commonUtils.getValueOrFallback(training, "name", props.locale)}</td>
         <td>{training.institution}</td>
         <td>
           {composePeriod(training)}
-          <span style={{ color: valoriYellow }}>{" // "}</span>
+          <span style={{ color: ceriosYellow }}>{" // "}</span>
           {enums.getText(enums.EducationResultTypes, training.result, props.locale)}
         </td>
       </tr>
@@ -196,7 +196,7 @@ const Training = (props) => {
         <tbody>
           <tr
             style={{
-              color: valoriYellow,
+              color: ceriosYellow,
               fontWeight: "bold"
             }}>
             <th style={{

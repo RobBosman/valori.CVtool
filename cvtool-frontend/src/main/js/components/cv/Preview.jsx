@@ -124,7 +124,7 @@ export const wrapText = (text, wrapWidth = 42) => {
  */
 const Preview = (props) => {
   
-  const {viewPaneBackground, valoriYellow} = uiServices.useTheme();
+  const {viewPaneBackground, ceriosYellow} = uiServices.useTheme();
 
   return (
     <Modal
@@ -159,7 +159,7 @@ const Preview = (props) => {
           styles={{
             root: {
               backgroundColor: "white",
-              borderColor: valoriYellow,
+              borderColor: ceriosYellow,
               borderWidth: 1,
               borderStyle: "solid none none none",
               overflow: "auto",

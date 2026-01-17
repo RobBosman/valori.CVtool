@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+                xmlns:cv="https://ns.bransom.nl/cerios/cv/v20250808.xsd"
                 exclude-result-prefixes="cv"
                 version="1.0">
 
@@ -1418,7 +1418,7 @@
                                                         </w:pPr>
                                                         <w:r>
                                                             <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
+                                                                <w:rStyle w:val="Cerios-niveau"/>
                                                                 <w:color w:val="55DD94"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
@@ -1427,7 +1427,7 @@
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
+                                                                <w:rStyle w:val="Cerios-niveau"/>
                                                                 <w:rFonts w:asciiTheme="minorHAnsi"
                                                                           w:hAnsiTheme="minorHAnsi"/>
                                                                 <w:color w:val="212B46"/>
@@ -1443,7 +1443,7 @@
                                                         </w:r>
                                                         <w:r>
                                                             <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
+                                                                <w:rStyle w:val="Cerios-niveau"/>
                                                                 <w:color w:val="55DD94"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
@@ -1452,7 +1452,7 @@
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
+                                                                <w:rStyle w:val="Cerios-niveau"/>
                                                                 <w:rFonts w:asciiTheme="minorHAnsi"
                                                                           w:hAnsiTheme="minorHAnsi"/>
                                                                 <w:color w:val="212B46"/>
@@ -1468,7 +1468,7 @@
                                                         </w:r>
                                                         <w:r w:rsidRPr="00545E7E">
                                                             <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
+                                                                <w:rStyle w:val="Cerios-niveau"/>
                                                                 <w:color w:val="55DD94"/>
                                                                 <w:sz w:val="18"/>
                                                                 <w:szCs w:val="18"/>
@@ -1477,7 +1477,7 @@
                                                         </w:r>
                                                         <w:r w:rsidRPr="00D51FD7">
                                                             <w:rPr>
-                                                                <w:rStyle w:val="Valori-niveau"/>
+                                                                <w:rStyle w:val="Cerios-niveau"/>
                                                                 <w:rFonts w:asciiTheme="minorHAnsi"
                                                                           w:hAnsiTheme="minorHAnsi"/>
                                                                 <w:color w:val="212B46"/>

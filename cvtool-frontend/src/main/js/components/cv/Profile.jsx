@@ -48,7 +48,7 @@ const Profile = (props) => {
     readOnly: !isEditable
   };
 
-  const {editPaneBackground, viewPaneBackground, valoriBlue, valoriYellow} = useTheme();
+  const {editPaneBackground, viewPaneBackground, ceriosBlue, ceriosYellow} = useTheme();
 
   const selectCharacteristicsInCv = (instance) => {
     if (instance.includeInCv) {
@@ -99,25 +99,25 @@ const Profile = (props) => {
 
   const previewTitleStyle = {
     ...preview.cvTextStyle,
-    color: valoriBlue,
+    color: ceriosBlue,
     padding: "0 2px 0 2px"
   };
   const previewDashesStyle = {
     ...preview.cvTextStyle,
-    color: valoriYellow,
+    color: ceriosYellow,
     padding: "0 2px 0 2px"
   };
   const previewHeadingStyle = {
     ...preview.cvTextStyle,
-    color: valoriBlue,
-    borderColor: valoriYellow,
+    color: ceriosBlue,
+    borderColor: ceriosYellow,
     borderBottomWidth: 1,
     borderBottomStyle: "solid",
     padding: "12px 8px 0 8px"
   };
   const previewTextStyle = {
     backgroundColor: "white",
-    color: valoriBlue,
+    color: ceriosBlue,
     paddingTop: 0
   };
 

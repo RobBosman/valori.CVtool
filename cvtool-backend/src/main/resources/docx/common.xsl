@@ -11,7 +11,7 @@
         <xsl:param name="newline"/>
         <xsl:call-template name="convert-newlines">
             <xsl:with-param name="text"
-                            select="java:nl.valori.cvtool.backend.cv.XslUtils.wrapText($text, $maxWidthMillis)"/>
+                            select="java:nl.bransom.cvtool.backend.cv.XslUtils.wrapText($text, $maxWidthMillis)"/>
             <xsl:with-param name="newline" select="$newline"/>
         </xsl:call-template>
     </xsl:template>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+        xmlns:cv="https://ns.bransom.nl/cerios/cv/v20250808.xsd"
         exclude-result-prefixes="cv"
         version="1.0">
 
@@ -140,11 +140,11 @@
                 <w:p w14:paraId="6C7C904F" w14:textId="5AB055EC" w:rsidR="00F63003" w:rsidRDefault="00C14BDE"
                      w:rsidP="00FD53E1">
                     <w:pPr>
-                        <w:pStyle w:val="Valori-blauw"/>
+                        <w:pStyle w:val="Cerios-blauw"/>
                     </w:pPr>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="Cerios-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve"> </w:t>
                     </w:r>
@@ -157,7 +157,7 @@
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="Cerios-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve">      </w:t>
                     </w:r>
@@ -170,7 +170,7 @@
                     </w:r>
                     <w:r w:rsidRPr="00C14BDE">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-niveau"/>
+                            <w:rStyle w:val="Cerios-niveau"/>
                         </w:rPr>
                         <w:t xml:space="preserve">     </w:t>
                     </w:r>

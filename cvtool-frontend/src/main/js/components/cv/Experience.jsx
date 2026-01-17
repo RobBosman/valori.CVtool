@@ -44,7 +44,7 @@ const Experience = (props) => {
     || [],
   [props.experienceEntity, props.selectedAccountId]);
 
-  const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
+  const { viewPaneBackground, editPaneBackground, ceriosBlue, ceriosYellow } = useTheme();
 
   const renderRole = (item) =>
     item.role?.[props.locale] || commonUtils.getValueOrFallback(item, "role", props.locale);
@@ -249,7 +249,7 @@ const Experience = (props) => {
         styles={{
           root: {
             backgroundColor: "white",
-            borderColor: valoriYellow,
+            borderColor: ceriosYellow,
             borderBottomWidth: 1,
             borderBottomStyle: "solid"
           }
@@ -260,13 +260,13 @@ const Experience = (props) => {
               width: 131 // = 1972/1440 inch
             }
           }}>
-          <Text style={{ ...preview.cvTextStyle, color: valoriBlue }}>
+          <Text style={{ ...preview.cvTextStyle, color: ceriosBlue }}>
             {preview.composeExperiencePeriod(experience, props.locale)}
           </Text>
-          <Text style={{ ...preview.cvTextStyle, color: valoriYellow }}>
+          <Text style={{ ...preview.cvTextStyle, color: ceriosYellow }}>
             {commonUtils.getValueOrFallback(experience, "role", props.locale)}
           </Text>
-          <Text style={{ ...preview.cvTextStyle, color: valoriYellow }}>
+          <Text style={{ ...preview.cvTextStyle, color: ceriosYellow }}>
             {experience.client || experience.employer || ""}
           </Text>
         </Stack>
@@ -276,12 +276,12 @@ const Experience = (props) => {
           markDown={true}
           textComponentStyle={{
             backgroundColor: "white",
-            color: valoriBlue,
+            color: ceriosBlue,
             paddingTop: 0
           }}
           styles={{
             root: {
-              borderColor: valoriYellow,
+              borderColor: ceriosYellow,
               borderWidth: 1,
               borderLeftStyle: "dashed",
               width: 483 // = 7241/1440 inch

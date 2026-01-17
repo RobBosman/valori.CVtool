@@ -15,7 +15,7 @@ TARGET_DIR=../docker/letsencrypt_certs/live
     -storetype ${STORETYPE} \
     -storepass ${STOREPASS} \
     -genkeypair \
-    -dname "CN=${HOSTNAME},OU=QA Consulting,O=Valori,L=Utrecht,ST=Utrecht,C=NL" \
+    -dname "CN=${HOSTNAME},OU=QA Consulting,O=Cerios,L=Utrecht,ST=Utrecht,C=NL" \
     -ext "san=dns:${HOSTNAME},ip:127.0.0.1,ip:::1" \
     -keyalg RSA \
     -keysize ${KEYSIZE} \

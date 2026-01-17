@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+        xmlns:cv="https://ns.bransom.nl/cerios/cv/v20250808.xsd"
         exclude-result-prefixes="cv"
         xmlns:w="http://purl.oclc.org/ooxml/wordprocessingml/main"
         xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
@@ -236,7 +236,7 @@
             </w:r>
             <w:r w:rsidR="00545E7E" w:rsidRPr="00545E7E">
                 <w:rPr>
-                    <w:rStyle w:val="Valori-niveau"/>
+                    <w:rStyle w:val="Cerios-niveau"/>
                     <w:color w:val="55DD94"/>
                     <w:noProof/>
                 </w:rPr>

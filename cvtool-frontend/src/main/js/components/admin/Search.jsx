@@ -37,7 +37,7 @@ const FoundText = properties =>
 // }
 const Search = props => {
 
-  const { semanticColors, markHighlightBackground, editPaneBackground, viewPaneBackground, valoriYellow } = uiServices.useTheme();
+  const { semanticColors, markHighlightBackground, editPaneBackground, viewPaneBackground, ceriosYellow } = uiServices.useTheme();
   const today = new Date().toISOString();
 
   const renderHighlighted = (before, match, after, renderFunc, defaultStyle) =>
@@ -251,7 +251,7 @@ const Search = props => {
         <Stack
           styles={{
             root: {
-              borderColor: valoriYellow,
+              borderColor: ceriosYellow,
               borderWidth: 1,
               borderStyle: "solid dashed none none"
             }
@@ -271,7 +271,7 @@ const Search = props => {
             markDown={false}
             formattingSpecs={highlightFormattingSpecs}
             textComponentStyle={{
-              color: valoriYellow,
+              color: ceriosYellow,
               paddingTop: 0,
               paddingBottom: 0
             }}
@@ -282,7 +282,7 @@ const Search = props => {
             markDown={false}
             formattingSpecs={highlightFormattingSpecs}
             textComponentStyle={{
-              color: valoriYellow,
+              color: ceriosYellow,
               paddingTop: 0
             }}
           />
@@ -294,7 +294,7 @@ const Search = props => {
           formattingSpecs={highlightFormattingSpecs}
           styles={{
             root: {
-              borderColor: valoriYellow,
+              borderColor: ceriosYellow,
               borderWidth: 1,
               borderStyle: "solid none solid dashed"
             }

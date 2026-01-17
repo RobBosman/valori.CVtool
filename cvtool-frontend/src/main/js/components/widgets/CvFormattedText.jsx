@@ -19,7 +19,7 @@ export const CvFormattedText = (props) => {
     return val || "";
   }, [instance, props.field]);
 
-  const { semanticColors, valoriYellow } = uiServices.useTheme();
+  const { semanticColors, ceriosYellow } = uiServices.useTheme();
 
   const renderBlankLine = (before, _, after, renderFunc, defaultStyle) =>
     <Text>
@@ -37,7 +37,7 @@ export const CvFormattedText = (props) => {
   const renderBulletListItem = (before, _, after, renderFunc, defaultStyle) =>
     <Text style={defaultStyle}>
       {renderFunc(before)}
-      <Text style={{ ...defaultStyle, marginLeft: 12, color: valoriYellow }}>●</Text>
+      <Text style={{ ...defaultStyle, marginLeft: 12, color: ceriosYellow }}>●</Text>
       <Text block style={{ ...defaultStyle, marginLeft: 32, marginTop: -18 }}>{renderFunc(after)}</Text>
     </Text>;
 
@@ -62,7 +62,7 @@ export const CvFormattedText = (props) => {
   const renderCvHeading = (before, match, after, renderFunc, defaultStyle) =>
     <Text style={defaultStyle}>
       {renderFunc(before)}
-      <Text block style={{ ...defaultStyle, color: valoriYellow, marginTop: 12 }}>{match}</Text>
+      <Text block style={{ ...defaultStyle, color: ceriosYellow, marginTop: 12 }}>{match}</Text>
       {renderFunc(after, { newParagraph: true })}
     </Text>;
   

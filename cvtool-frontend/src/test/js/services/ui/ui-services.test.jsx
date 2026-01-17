@@ -7,8 +7,8 @@ import React, { act } from "react";
 import { createRoot } from "react-dom/client";
 import { loadTheme } from "@fluentui/react";
 import fluentUITheme from "../../../../main/js/static/themes/fluentUI.json";
-import valoriBlueTheme from "../../../../main/js/static/themes/valoriBlue.json";
-import valoriOrangeTheme from "../../../../main/js/static/themes/valoriOrange.json";
+import ceriosBlueTheme from "../../../../main/js/static/themes/ceriosBlue.json";
+import ceriosOrangeTheme from "../../../../main/js/static/themes/ceriosOrange.json";
 import * as uiServices from "../../../../main/js/services/ui/ui-services";
 
 describe("ui-services.test", () => {
@@ -47,16 +47,16 @@ describe("ui-services.test", () => {
       .toBe(colorToRgb(fluentUITheme.palette.neutralLighter));
 
     act(() => {
-      loadTheme(valoriOrangeTheme);
+      loadTheme(ceriosOrangeTheme);
     });
     expect(testTarget.style.background)
-      .toBe(colorToRgb(valoriOrangeTheme.palette.neutralLighter));
+      .toBe(colorToRgb(ceriosOrangeTheme.palette.neutralLighter));
 
     act(() => {
-      loadTheme(valoriBlueTheme);
+      loadTheme(ceriosBlueTheme);
     });
     expect(testTarget.style.background)
-      .toBe(colorToRgb(valoriBlueTheme.palette.neutralLighter));
+      .toBe(colorToRgb(ceriosBlueTheme.palette.neutralLighter));
   });
 });
 

@@ -81,7 +81,7 @@ const Reference = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow} = useTheme();
+  const {viewPaneBackground, editPaneBackground, ceriosBlue, ceriosYellow} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -150,7 +150,7 @@ const Reference = (props) => {
         style={{
           ...preview.cvTextStyle,
           backgroundColor: "white",
-          color: valoriYellow,
+          color: ceriosYellow,
           fontWeight: "bold"
         }}>
         {`${reference.referentName} \u2500 ${commonUtils.getValueOrFallback(reference, "referentFunction", props.locale)}`}
@@ -161,7 +161,7 @@ const Reference = (props) => {
         markDown={true}
         textComponentStyle={{
           backgroundColor: "white",
-          color: valoriBlue,
+          color: ceriosBlue,
           padding: 0
         }}
       />

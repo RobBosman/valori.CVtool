@@ -99,7 +99,7 @@ const Skill = (props) => {
     }
   ];
 
-  const { viewPaneBackground, editPaneBackground, valoriBlue, valoriYellow } = useTheme();
+  const { viewPaneBackground, editPaneBackground, ceriosBlue, ceriosYellow } = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -167,7 +167,7 @@ const Skill = (props) => {
 
   const flexGapHorizontal = 10;
   const flexGapVertical = 5;
-  const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1, color: valoriBlue };
+  const previewTextStyles = { ...preview.cvTextStyle, lineHeight: 1, color: ceriosBlue };
 
   const adjustPreviewHeight = (minimumHeight, previewHeight, flexBoxHeights) => {
     // The flex container is too wide, so we must increase its height.
@@ -303,7 +303,7 @@ const Skill = (props) => {
       }}>
       <tbody>
         <tr>
-          <th colSpan={2} style={{ color: valoriYellow, fontWeight: "bold" }}>
+          <th colSpan={2} style={{ color: ceriosYellow, fontWeight: "bold" }}>
             {enums.getTextFromValue(category, props.locale)}
           </th>
         </tr>

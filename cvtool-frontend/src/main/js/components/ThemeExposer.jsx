@@ -50,7 +50,7 @@ const themePalettes = {
   // primary color: #211A58
   // text color: #000000
   // backgroundColor: #fafafa
-  valoriBlue: {
+  ceriosBlue: {
     palette: {
       "themePrimary": "#211A58",
       "themeLighterAlt": "#010104",
@@ -80,7 +80,7 @@ const themePalettes = {
   // primary color: #F29100
   // text color: #e2e2e2
   // backgroundColor: #2B2B2B
-  valoriOrange: {
+  ceriosOrange: {
     palette: {
       "themePrimary": "#F29100",
       "themeLighterAlt": "#0a0600",

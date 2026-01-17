@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/valori/cv/v20250808.xsd"
+        xmlns:cv="https://ns.bransom.nl/cerios/cv/v20250808.xsd"
         exclude-result-prefixes="cv"
         xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
         xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
@@ -173,13 +173,13 @@
         <w:p w14:paraId="0F728A97" w14:textId="77777777" w:rsidR="000A5FCA" w:rsidRDefault="000A5FCA"
              w:rsidP="000A5FCA">
             <w:pPr>
-                <w:pStyle w:val="Valori-blauw"/>
+                <w:pStyle w:val="Cerios-blauw"/>
                 <w:tabs>
                     <w:tab w:val="clear" w:pos="2835"/>
                     <w:tab w:val="right" w:pos="3071"/>
                 </w:tabs>
                 <w:rPr>
-                    <w:rStyle w:val="Valori-niveau"/>
+                    <w:rStyle w:val="Cerios-niveau"/>
                 </w:rPr>
                 <w:keepLines/>
                 <xsl:if test="position() != $last">
@@ -188,7 +188,7 @@
             </w:pPr>
             <w:r w:rsidRPr="00752D43">
                 <w:rPr>
-                    <w:rStyle w:val="Valori-skillChar"/>
+                    <w:rStyle w:val="Cerios-skillChar"/>
                 </w:rPr>
                 <w:t>
                     <xsl:call-template name="wrap-lines">
@@ -203,7 +203,7 @@
             </w:r>
             <w:r w:rsidRPr="00C14BDE">
                 <w:rPr>
-                    <w:rStyle w:val="Valori-niveau"/>
+                    <w:rStyle w:val="Cerios-niveau"/>
                 </w:rPr>
                 <w:t>
                     <xsl:apply-templates select="cv:skillLevel" mode="skill-level"/>
@@ -317,7 +317,7 @@
                     </w:r>
                     <w:r w:rsidRPr="001860B4">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="Cerios-geel"/>
                         </w:rPr>
                         <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
@@ -400,7 +400,7 @@
                     </w:r>
                     <w:r w:rsidRPr="001860B4">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="Cerios-geel"/>
                         </w:rPr>
                         <w:t xml:space="preserve">&#xA0;// </w:t>
                     </w:r>
@@ -529,7 +529,7 @@
                 <w:p w14:paraId="1F9BB23A" w14:textId="5CBB339A" w:rsidR="00A52C14" w:rsidRDefault="00A52C14"
                      w:rsidP="00666ED6">
                     <w:pPr>
-                        <w:pStyle w:val="Valori-blauw"/>
+                        <w:pStyle w:val="Cerios-blauw"/>
                     </w:pPr>
                     <w:r>
                         <w:t>
@@ -544,12 +544,12 @@
                      w:rsidRDefault="00A52C14" w:rsidP="00666ED6">
                     <w:pPr>
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="Cerios-geel"/>
                         </w:rPr>
                     </w:pPr>
                     <w:r w:rsidRPr="00A52C14">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="Cerios-geel"/>
                         </w:rPr>
                         <w:t>
                             <xsl:value-of select="cv:role"/>
@@ -560,7 +560,7 @@
                      w:rsidP="00666ED6">
                     <w:r w:rsidRPr="00A52C14">
                         <w:rPr>
-                            <w:rStyle w:val="Valori-geel"/>
+                            <w:rStyle w:val="Cerios-geel"/>
                         </w:rPr>
                         <w:t>
                             <xsl:apply-templates select="." mode="client"/>
@@ -586,7 +586,7 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="Cerios-geel"/>
                             </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">
@@ -607,7 +607,7 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="Cerios-geel"/>
                             </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">
@@ -628,7 +628,7 @@
                         </w:pPr>
                         <w:r>
                             <w:rPr>
-                                <w:rStyle w:val="Valori-geel"/>
+                                <w:rStyle w:val="Cerios-geel"/>
                             </w:rPr>
                             <w:t>
                                 <xsl:call-template name="translate">

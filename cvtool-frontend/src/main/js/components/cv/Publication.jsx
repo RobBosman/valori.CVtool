@@ -80,7 +80,7 @@ const Publication = (props) => {
     }
   ];
 
-  const {viewPaneBackground, editPaneBackground, valoriYellow, valoriBlue} = useTheme();
+  const {viewPaneBackground, editPaneBackground, ceriosYellow, ceriosBlue} = useTheme();
   const viewStyles = {
     root: {
       background: viewPaneBackground,
@@ -145,7 +145,7 @@ const Publication = (props) => {
 
   const renderPreviewPublcation = (publication) => {
     return (
-      <tr style={{ color: valoriBlue }}>
+      <tr style={{ color: ceriosBlue }}>
         <td>{commonUtils.getValueOrFallback(publication, "title", props.locale)}</td>
         <td>{publication.media}</td>
         <td>{publication.year}</td>
@@ -165,7 +165,7 @@ const Publication = (props) => {
         <tbody>
           <tr
             style={{
-              color: valoriYellow,
+              color: ceriosYellow,
               fontWeight: "bold"
             }}>
             <th style={{

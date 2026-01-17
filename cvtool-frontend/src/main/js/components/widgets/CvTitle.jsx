@@ -8,7 +8,7 @@ import { formatDate } from "../cv/Preview";
 
 const CvTitle = props => {
   
-  const {valoriYellow} = useTheme();
+  const {ceriosYellow} = useTheme();
 
   const memo = React.useMemo(() => {
     const account = props.accountEntity?.[props.selectedAccountId];
@@ -41,11 +41,11 @@ const CvTitle = props => {
           : null
         }
         {memo.role
-          ? <Text variant="large" style={{ color: valoriYellow }}>{"//"}</Text>
+          ? <Text variant="large" style={{ color: ceriosYellow }}>{"//"}</Text>
           : null
         }
         <Text variant="large">{memo.dateOfBirth}</Text>
-        <Text variant="large" style={{ color: valoriYellow }}>{"//"}</Text>
+        <Text variant="large" style={{ color: ceriosYellow }}>{"//"}</Text>
         <Text variant="large">{memo.residence}</Text>
       </Stack>
     </Stack>
