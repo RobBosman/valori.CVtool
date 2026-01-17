@@ -16,7 +16,7 @@ internal class ModelUtilsTest {
 
         val writer = StringWriter()
         val xmlWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(writer)
-        jsonToXml(json, xmlWriter, "https://ns.bransom.nl/cerios/cv/v20250808.xsd")
+        jsonToXml(json, xmlWriter, "https://ns.bransom.nl/cerios/cv/v20260101.xsd")
         assertEquals(expectedXml, writer.toString())
     }
 }

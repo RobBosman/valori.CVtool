@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:cv="https://ns.bransom.nl/cerios/cv/v20250808.xsd"
+        xmlns:cv="https://ns.bransom.nl/cerios/cv/v20260101.xsd"
         exclude-result-prefixes="cv"
         version="1.0">
 

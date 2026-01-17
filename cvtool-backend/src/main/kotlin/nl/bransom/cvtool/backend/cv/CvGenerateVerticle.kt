@@ -29,7 +29,7 @@ typealias DocxTemplateName = String
 internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     companion object {
-        internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/cerios/cv/v20250808.xsd"
+        internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/cerios/cv/v20260101.xsd"
         internal val ALL_LOCALES = setOf("nl_NL", "uk_UK")
         private const val DEFAULT_DOCX_TEMPLATE = "CERIOS"
 
