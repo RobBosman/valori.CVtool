@@ -10,6 +10,8 @@
     <xsl:output method="xml" standalone="yes" encoding="UTF-8" indent="no"/>
 
     <xsl:template match="/cv:root">
+        <xsl:variable name="contactPersonName" select="cv:businessUnit/cv:contactName"/>
+
         <w:ftr xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:r="http://purl.oclc.org/ooxml/officeDocument/relationships"
                xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
@@ -118,13 +120,15 @@
                         <w:noProof/>
                     </w:rPr>
                     <w:t>
-                        <xsl:call-template name="translate">
-                            <xsl:with-param name="text" select="'CONTACTPERSOON'"/>
-                        </xsl:call-template>
+                        <xsl:if test="$contactPersonName">
+                            <xsl:call-template name="translate">
+                                <xsl:with-param name="text" select="'CONTACTPERSOON'"/>
+                            </xsl:call-template>
+                        </xsl:if>
                     </w:t>
                     <w:tab/>
                     <w:t>
-                        <xsl:value-of select="cv:businessUnit/cv:contactName"/>
+                        <xsl:value-of select="$contactPersonName"/>
                     </w:t>
                     <w:tab/>
                     <w:t>

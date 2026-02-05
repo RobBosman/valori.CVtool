@@ -195,6 +195,7 @@ const Accounts = props => {
     const selectedAccount = combined.instances.find(businessUnit => businessUnit._id === props.selectedAccountId);
     return selectedAccount && {
       Naam: selectedAccount.name,
+      "E-mail": selectedAccount.email,
       Unit: selectedAccount.businessUnit?.name
     };
   }, [combined.instances, props.selectedAccountId]);
