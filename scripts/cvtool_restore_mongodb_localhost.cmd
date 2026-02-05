@@ -5,7 +5,7 @@ SET ENV_FILE=\secret\.env
 
 SET RESTORE_DATE=2026-02-04
 SET BACKUP_DIR=\backup\%RESTORE_DATE%
-SET MONGORESTORE=C:\Program Files\MongoDB\Tools\bin\mongorestore
+SET MONGORESTORE=C:\Program Files\MongoDB\Tools\100\bin\mongorestore
 
 SETLOCAL
 FOR /F "TOKENS=*" %%i in ('type %ENV_FILE%') do SET %%i

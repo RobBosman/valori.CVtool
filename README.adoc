@@ -135,7 +135,6 @@ Data retention is 120 days.
  # Volumes Linux
  /var/lib/docker/volumes/
  # Volumes Windows
- \\wsl$\docker-desktop-data\data\docker\volumes
  \\wsl.localhost\docker-desktop\tmp\docker-desktop-root\var\lib\docker\volumes
 
 == MongoDB
