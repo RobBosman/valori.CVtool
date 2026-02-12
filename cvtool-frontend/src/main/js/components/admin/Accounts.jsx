@@ -175,7 +175,8 @@ const Accounts = props => {
     if (filterText) {
       const lowerCaseFilterText = filterText.toLowerCase();
       newItems = combined.instances.filter(instance =>
-        `${instance.name}\n${instance.brand?.name || ""}\n${instance.businessUnit?.name || ""}`.toLowerCase().includes(lowerCaseFilterText));
+        `${instance.name}\n${instance.brand?.name || ""}\n${instance.businessUnit?.name || ""}\n${instance.email || ""}`
+        .toLowerCase().includes(lowerCaseFilterText));
     }
     return newItems;
   },

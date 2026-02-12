@@ -68,6 +68,7 @@ const Profile = (props) => {
   const renderInCvCheckbox = React.useCallback((item) =>
     <Checkbox
       checked={item.includeInCv}
+      disabled={!isEditable}
       onChange={() => {
         if (!item.includeInCv) {
           selectCharacteristicsInCv({ ...item, includeInCv: true });

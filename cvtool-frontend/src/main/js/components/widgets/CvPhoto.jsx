@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 import { DefaultButton, Image, ImageFit, Label, Stack } from "@fluentui/react";
+import * as commonUtils from "../../utils/CommonUtils";
 import * as authActions from "../../services/auth/auth-actions";
 import * as safeActions from "../../services/safe/safe-actions";
 
@@ -9,6 +10,8 @@ const CvPhoto = (props) => {
 
   const {entity, instanceId, replaceInstance} = props.instanceContext;
   const instance = entity?.[instanceId];
+
+  const isEditable = commonUtils.isEditAccountAllowed(instanceId, props.authInfo);
 
   const photoB64 = instance?.[props.field];
 
@@ -51,19 +54,20 @@ const CvPhoto = (props) => {
             primary={true}
             text="Foto uploaden"
             iconProps={{ iconName: "Upload" }}
+            disabled={!isEditable}
             onClick={onFileUpload}
           />
           <DefaultButton
             text="Cerios profielfoto"
             iconProps={{ iconName: "ProfileSearch" }}
-            disabled={props.authInfo.accountId != instanceId}
+            disabled={!isEditable || props.authInfo.accountId != instanceId}
             onClick={onFetchProfilePhoto}
           />
         </Stack>
         <DefaultButton
           text="Foto verwijderen"
           iconProps={{ iconName: "Delete" }}
-          disabled={!photoB64}
+          disabled={!isEditable || !photoB64}
           onClick={onDeletePhoto}
         />
       </Stack>
