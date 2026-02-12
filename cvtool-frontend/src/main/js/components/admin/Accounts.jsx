@@ -34,7 +34,7 @@ const Accounts = props => {
         brand: brandEntity?.[businessUnit?.brandId],
         businessUnit: businessUnit
       };
-    };
+    }
 
     // Export all accounts including their businessUnit to csv.
     // console.log("Export to CSV", "name,email,unit\n" + Object.values(combined)
@@ -176,7 +176,7 @@ const Accounts = props => {
       const lowerCaseFilterText = filterText.toLowerCase();
       newItems = combined.instances.filter(instance =>
         `${instance.name}\n${instance.brand?.name || ""}\n${instance.businessUnit?.name || ""}\n${instance.email || ""}`
-        .toLowerCase().includes(lowerCaseFilterText));
+          .toLowerCase().includes(lowerCaseFilterText));
     }
     return newItems;
   },
