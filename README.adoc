@@ -58,24 +58,24 @@ See xref:cvtool-documentation/tips-and-tricks.adoc[here].
 
 See `scripts/clean_install_BladeVPS.sh`.
 
-Create file `/secret/.env`, make it inaccessible for 'outsiders' and fill-in secrets, see `scripts\.env.example`.
+Create file `/secret/.env`, make it inaccessible for 'outsiders' and fill-in secrets, see `scripts/.env.example`.
 
 === Configure SSL for local development
 
 1. Get yourself an SSL certificate in pem-format:
  * `createDhParams.sh` (takes a long time)
- * `scripts\createLocalhostSslCert.sh`
-2. Generate or download the file with Diffie-Hellman parameters and store it in the root of volume _letsencrypt_certs_, see `docker\default.conf.template.
+ * `scripts/createLocalhostSslCert.sh`
+2. Generate or download the file with Diffie-Hellman parameters and store it in the root of volume _letsencrypt_certs_, see `docker/default.conf.template.
 3. Make sure the Docker volumes for letsencrypt are present +
- Run `docker\docker-compose.yaml` if needed.
-4. Copy `docker/letsencrypt certs/*` to volume _letsencrypt_certs_. +
- Make sure the SSL certificate files are in the right location in volume _letsencrypt_certs_. See also the nginx configuration in `docker\default.conf.template`.
+ Run `docker/docker-compose.yaml` if needed.
+4. Copy `docker/letsencrypt_certs/*` to volume _letsencrypt_certs_. +
+ Make sure the SSL certificate files are in the right location in volume _letsencrypt_certs_. See also the nginx configuration in `docker/default.conf.template`.
 5. Copy `docker/letsencrypt_webroot/*` to volume _letsencrypt_webroot_.
 6. Restart the letsencrypt container.
 
 == Backup/restore
 
-See `scripts\cvtool_*.sh`.
+See `scripts/cvtool_*.sh`.
 Data retention is 120 days.
 
  #!/usr/bin/env sh
@@ -123,9 +123,9 @@ Data retention is 120 days.
  # Logs and backups
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" > ~rbosman/cvtool_be.log 2>&1
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')" > ~rbosman/cvtool_fe.log 2>&1
- cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2026-02-04 ~rbosman
- cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2026-02-04 ~rbosman
- rm -rf ~rbosman/cvtool*.log ~rbosman/2026-02-04
+ cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2026-02-11 ~rbosman
+ cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2026-02-11 ~rbosman
+ rm -rf ~rbosman/cvtool*.log ~rbosman/2026-02-11
 
  # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh

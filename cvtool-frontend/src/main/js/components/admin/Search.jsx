@@ -80,7 +80,7 @@ const Search = props => {
       || 0;
     const experiences = Object.values(props.searchResultEntities?.experience || {})
       .filter(experience => experience.accountId === accountId)
-      .map(enrichExperience);
+      .map(experience => enrichExperience(experience));
     const toYear = experiences
       .map(experience => experience.toYear)
       .sort((l, r) => r - l)
