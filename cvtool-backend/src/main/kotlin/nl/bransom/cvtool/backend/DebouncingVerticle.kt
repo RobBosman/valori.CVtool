@@ -6,7 +6,7 @@ import io.vertx.reactivex.core.eventbus.Message
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-abstract class DebouncingVerticle(address: String) : nl.bransom.cvtool.backend.BasicVerticle(address) {
+abstract class DebouncingVerticle(address: String) : BasicVerticle(address) {
 
     companion object {
         // This debounceMap is used to prevent the same event is processed multiple times in a (very) short time.

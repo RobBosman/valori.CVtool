@@ -32,13 +32,13 @@ internal class AuthInfo(val email: String, val name: String) {
     }
 
     fun withAuthorizationLevel(level: String): AuthInfo {
-        authorizationLevel = _root_ide_package_.nl.bransom.cvtool.backend.authorization.AuthorizationLevel.values().asList().stream()
-            .filter { it.name == level}
+        authorizationLevel = AuthorizationLevel.entries.stream()
+            .filter { it.name == level }
             .findAny()
-            .orElse(CONSULTANT)
+            .orElse(CONSULTANT)!!
         return this
     }
 
-    fun isAuthorized(requiredLevel: nl.bransom.cvtool.backend.authorization.AuthorizationLevel) =
+    fun isAuthorized(requiredLevel: AuthorizationLevel) =
         authorizationLevel.includesOrSuperseeds(requiredLevel)
 }

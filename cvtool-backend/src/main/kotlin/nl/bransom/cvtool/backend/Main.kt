@@ -9,34 +9,50 @@ import io.vertx.core.Vertx
 import io.vertx.core.VertxOptions
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
+import nl.bransom.cvtool.backend.authorization.AuthInfoFetchVerticle
+import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle
+import nl.bransom.cvtool.backend.cv.CvBackupVerticle
+import nl.bransom.cvtool.backend.cv.CvDownloadDemoVerticle
+import nl.bransom.cvtool.backend.cv.CvFetchVerticle
+import nl.bransom.cvtool.backend.cv.CvGenerateVerticle
+import nl.bransom.cvtool.backend.cv.CvHistoryVerticle
+import nl.bransom.cvtool.backend.cv.CvSearchVerticle
+import nl.bransom.cvtool.backend.persistence.AccountDeleteVerticle
+import nl.bransom.cvtool.backend.persistence.BrandDeleteVerticle
+import nl.bransom.cvtool.backend.persistence.MongodbFetchVerticle
+import nl.bransom.cvtool.backend.persistence.MongodbSaveVerticle
+import nl.bransom.cvtool.backend.system.ControlVerticle
+import nl.bransom.cvtool.backend.system.DataConverterVerticle
+import nl.bransom.cvtool.backend.system.DataRetentionVerticle
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import kotlin.reflect.KClass
 
 fun main() {
     System.setProperty("slf4j.internal.verbosity", "WARN")
-    _root_ide_package_.nl.bransom.cvtool.backend.Main.run()
+    Main.run()
 }
 
 object Main {
 
     private val log = LoggerFactory.getLogger(javaClass)
     private val verticlesToDeploy = listOf(
-        _root_ide_package_.nl.bransom.cvtool.backend.cv.CvGenerateVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.system.ControlVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.HttpServerVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.authorization.AuthenticateVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.persistence.MongodbFetchVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.persistence.MongodbSaveVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.authorization.AuthInfoFetchVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.persistence.AccountDeleteVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.persistence.BrandDeleteVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.cv.CvFetchVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.cv.CvSearchVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.cv.CvBackupVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.cv.CvHistoryVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.cv.CvDownloadDemoVerticle::class,
-        _root_ide_package_.nl.bransom.cvtool.backend.system.DataConverterVerticle::class
+        CvGenerateVerticle::class,
+        ControlVerticle::class,
+        HttpServerVerticle::class,
+        AuthenticateVerticle::class,
+        MongodbFetchVerticle::class,
+        MongodbSaveVerticle::class,
+        AuthInfoFetchVerticle::class,
+        AccountDeleteVerticle::class,
+        BrandDeleteVerticle::class,
+        CvFetchVerticle::class,
+        CvSearchVerticle::class,
+        CvBackupVerticle::class,
+        CvHistoryVerticle::class,
+        CvDownloadDemoVerticle::class,
+        DataRetentionVerticle::class,
+        DataConverterVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy
         .associateWith { "not started" }

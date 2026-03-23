@@ -16,7 +16,20 @@ import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
 import nl.bransom.cvtool.backend.MessageUtils.getMessageHeader
 import nl.bransom.cvtool.backend.MessageUtils.setMessageHeader
 import nl.bransom.cvtool.backend.ModelUtils.getInstanceIds
+import nl.bransom.cvtool.backend.authorization.AUTHENTICATE_ADDRESS
+import nl.bransom.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
+import nl.bransom.cvtool.backend.authorization.Authorizer
+import nl.bransom.cvtool.backend.cv.CV_DOWNLOAD_DEMO_ADDRESS
+import nl.bransom.cvtool.backend.cv.CV_FETCH_ADDRESS
+import nl.bransom.cvtool.backend.cv.CV_GENERATE_ADDRESS
+import nl.bransom.cvtool.backend.cv.CV_HISTORY_ADDRESS
+import nl.bransom.cvtool.backend.cv.CV_SEARCH_ADDRESS
+import nl.bransom.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
+import nl.bransom.cvtool.backend.persistence.AuditLogger
+import nl.bransom.cvtool.backend.persistence.BRAND_DELETE_ADDRESS
+import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
+import nl.bransom.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 import org.slf4j.LoggerFactory
 
 internal object EventBusMessageHandler {
@@ -31,16 +44,16 @@ internal object EventBusMessageHandler {
     private fun createBridgeOptions() =
         SockJSBridgeOptions()
             .setPingTimeout(60_000) // 60 seconds
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.cv.CV_FETCH_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.cv.CV_GENERATE_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.cv.CV_HISTORY_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.cv.CV_SEARCH_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.cv.CV_DOWNLOAD_DEMO_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.persistence.BRAND_DELETE_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(_root_ide_package_.nl.bransom.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(AUTH_INFO_FETCH_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_HISTORY_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_SEARCH_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_DOWNLOAD_DEMO_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(ACCOUNT_DELETE_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(BRAND_DELETE_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(MONGODB_FETCH_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(MONGODB_SAVE_ADDRESS))
 
     private fun bridgeEventHandler(vertx: Vertx, bridgeEvent: BridgeEvent) {
         when (bridgeEvent.type()) {
@@ -86,11 +99,11 @@ internal object EventBusMessageHandler {
             .substringAfter("Bearer ")
         return vertx
             .eventBus()
-            .rxRequest<JsonObject>(_root_ide_package_.nl.bransom.cvtool.backend.authorization.AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
+            .rxRequest<JsonObject>(AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
             .flatMap { authenticationResponse ->
                 vertx
                     .eventBus()
-                    .rxRequest<JsonObject>(_root_ide_package_.nl.bransom.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS, authenticationResponse.body(), deliveryOptions)
+                    .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, authenticationResponse.body(), deliveryOptions)
                     .map { authInfoResponse -> authInfoResponse.body() }
             }
             .map { bridgeEvent.setMessageHeader("authInfo", it.encode()) }
@@ -135,7 +148,7 @@ internal object EventBusMessageHandler {
      *   }
      */
     private fun fetchOldData(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> {
-        val bodyJson = _root_ide_package_.nl.bransom.cvtool.backend.ModelUtils.toJsonObject(bridgeEvent.rawMessage.getValue("body"))
+        val bodyJson = ModelUtils.toJsonObject(bridgeEvent.rawMessage.getValue("body"))
             ?: return Single.just(bridgeEvent.setMessageHeader("oldData", "{}"))
 
         val searchCriteria = JsonObject()
@@ -153,7 +166,7 @@ internal object EventBusMessageHandler {
         else
             vertx
                 .eventBus()
-                .rxRequest<JsonObject>(_root_ide_package_.nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
+                .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
                 .map { bridgeEvent.setMessageHeader("oldData", it.body().encode()) }
     }
 
@@ -161,7 +174,7 @@ internal object EventBusMessageHandler {
         Single
             .just(bridgeEvent)
             .doOnSuccess {
-                _root_ide_package_.nl.bransom.cvtool.backend.authorization.Authorizer.authorize(
+                Authorizer.authorize(
                     it.rawMessage.getString("address"),
                     it.rawMessage.getValue("body"),
                     JsonObject(it.getMessageHeader("authInfo")).toAuthInfo(),
@@ -173,7 +186,7 @@ internal object EventBusMessageHandler {
             }
 
     private fun auditLog(vertx: Vertx, bridgeEvent: BridgeEvent): Single<BridgeEvent> =
-        _root_ide_package_.nl.bransom.cvtool.backend.persistence.AuditLogger
+        AuditLogger
             .auditLog(
                 vertx,
                 bridgeEvent.rawMessage.getString("address"),

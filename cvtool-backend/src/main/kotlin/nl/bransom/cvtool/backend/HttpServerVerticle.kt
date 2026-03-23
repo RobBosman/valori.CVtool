@@ -6,6 +6,7 @@ import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
 import io.vertx.reactivex.ext.web.RoutingContext
 import io.vertx.reactivex.ext.web.handler.BodyHandler
+import nl.bransom.cvtool.backend.system.HealthChecker
 import org.slf4j.LoggerFactory
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
 import java.net.URI
@@ -64,11 +65,11 @@ internal class HttpServerVerticle : AbstractVerticle() {
 
         router
             .route("/health/*")
-            .handler(_root_ide_package_.nl.bransom.cvtool.backend.system.HealthChecker.getHandler(vertx, config()))
+            .handler(HealthChecker.getHandler(vertx, config()))
 
         router
             .route("/eventbus/*")
-            .subRouter(_root_ide_package_.nl.bransom.cvtool.backend.EventBusMessageHandler.create(vertx))
+            .subRouter(EventBusMessageHandler.create(vertx))
         return router
     }
 

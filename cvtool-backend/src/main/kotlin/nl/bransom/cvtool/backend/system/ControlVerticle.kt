@@ -63,11 +63,33 @@ internal class ControlVerticle : AbstractVerticle() {
                                 .setStatusCode(HTTP_OK)
                                 .putHeader(TRANSFER_ENCODING, "application/zip")
                                 .putHeader(TRANSFER_ENCODING, "chunked")
-                                .putHeader(CONTENT_DISPOSITION, "attachment; filename=\"all-docx.zip\"")
+                                .putHeader(CONTENT_DISPOSITION, """"attachment; filename="all-docx.zip"""")
                                 .send(zipBytes)
                         },
                         {
                             log.error("Error generating all cvs", it)
+                            context.response()
+                                .setStatusCode(HTTP_INTERNAL_ERROR)
+                                .end()
+                        }
+                    )
+            }
+
+        router
+            .route("/applyDataRetention")
+            .handler { context ->
+                val msg = JsonObject().apply { context.request().params().forEach(::put) }
+                vertx.eventBus()
+                    .rxRequest<JsonObject>(DATA_RETENTION_ADDRESS, msg, DeliveryOptions().setSendTimeout(10_000))
+                    .subscribe(
+                        {
+                            context.response()
+                                .setStatusCode(HTTP_OK)
+                                .putHeader(TRANSFER_ENCODING, "application/json")
+                                .send(it.body().encodePrettily())
+                        },
+                        {
+                            log.error("Error applying data retention", it)
                             context.response()
                                 .setStatusCode(HTTP_INTERNAL_ERROR)
                                 .end()
@@ -86,7 +108,7 @@ internal class ControlVerticle : AbstractVerticle() {
                                 .setStatusCode(HTTP_OK)
                                 .putHeader(TRANSFER_ENCODING, "application/json")
                                 .putHeader(TRANSFER_ENCODING, "chunked")
-                                .putHeader(CONTENT_DISPOSITION, "attachment; filename=\"conversion-result.json\"")
+                                .putHeader(CONTENT_DISPOSITION, """attachment; filename="conversion-result.json""")
                                 .send(it.body().encodePrettily())
                         },
                         {

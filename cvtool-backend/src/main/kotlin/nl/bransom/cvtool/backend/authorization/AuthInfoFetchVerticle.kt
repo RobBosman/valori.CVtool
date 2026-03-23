@@ -4,6 +4,7 @@ import io.reactivex.Single
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
+import nl.bransom.cvtool.backend.BasicVerticle
 import nl.bransom.cvtool.backend.ModelUtils.addEntity
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
 import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle.Companion.getUsername
@@ -15,7 +16,7 @@ import java.util.UUID.randomUUID
 
 const val AUTH_INFO_FETCH_ADDRESS = "authInfo.fetch"
 
-internal class AuthInfoFetchVerticle : nl.bransom.cvtool.backend.BasicVerticle(_root_ide_package_.nl.bransom.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS) {
+internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
 
     /**
      * Expected message body:
@@ -38,7 +39,7 @@ internal class AuthInfoFetchVerticle : nl.bransom.cvtool.backend.BasicVerticle(_
             .map(::createAuthInfo)
             .flatMap(::addAccountInfo)
             .flatMap(::addAuthorizationLevel)
-            .map(_root_ide_package_.nl.bransom.cvtool.backend.authorization.AuthInfo::toJson)
+            .map(AuthInfo::toJson)
             .subscribe(
                 {
                     log.debug("Successfully fetched accountInfo")
@@ -53,12 +54,12 @@ internal class AuthInfoFetchVerticle : nl.bransom.cvtool.backend.BasicVerticle(_
     }
 
     private fun createAuthInfo(json: JsonObject) =
-        _root_ide_package_.nl.bransom.cvtool.backend.authorization.AuthInfo(
+        AuthInfo(
             json.map["email"]?.toString() ?: error("Error creating AuthInfo: email not found."),
             json.map["name"]?.toString() ?: error("Error creating AuthInfo: name not found.")
         )
 
-    private fun addAccountInfo(authInfo: nl.bransom.cvtool.backend.authorization.AuthInfo) =
+    private fun addAccountInfo(authInfo: AuthInfo) =
         fetchOrCreateAccount(authInfo.email, authInfo.name)
             .map { account ->
                 authInfo.withAccountId(account.getString("_id", ""))
