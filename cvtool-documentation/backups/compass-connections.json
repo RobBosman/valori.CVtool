@@ -23,7 +23,7 @@
     {
       "id": "8e142f0c-7ec4-4e22-8bd7-1a753b7ac397",
       "connectionOptions": {
-        "connectionString": "mongodb://root@cvtool.valori.nl:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
+        "connectionString": "mongodb://root@cvtool.cerios.nl:27017/?authSource=admin&readPreference=primary&ssl=false&directConnection=true"
       },
       "favorite": {
         "name": "PRODUCTION",

@@ -12,5 +12,4 @@ docker run --rm \
   --webroot \
   --webroot-path=/data/letsencrypt \
   --agree-tos \
-  -d cvtool.cerios.nl \
-  -d cvtool.valori.nl
+  -d cvtool.cerios.nl
