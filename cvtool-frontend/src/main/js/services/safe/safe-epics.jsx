@@ -95,10 +95,20 @@ export const safeEpics = [
   (action$) => action$.pipe(
     ofType(safeActions.selectPhotoToUpload.type),
     rx.map(action => action.payload),
-    rx.switchMap(({accountInstanceId, fileSelectOptions}) =>
-      window.showOpenFilePicker(fileSelectOptions)
-        .then(([fileHandle]) => fileHandle.getFile())
-        .then(file => [accountInstanceId, file])
+    rx.switchMap((accountInstanceId) =>
+      new Promise((resolve) => {
+        const inputElement = document.createElement("input");
+        inputElement.type = "file";
+        inputElement.accept = "image/*";
+
+        inputElement.onchange = event => {
+          const file = event.target.files[0];
+          resolve([accountInstanceId, file]);
+        };
+
+        inputElement.click();
+        inputElement.remove();
+      })
     ),
     rx.mergeMap(([accountInstanceId, file]) =>
       new Promise(resolve => {
@@ -138,13 +148,13 @@ export const safeEpics = [
     })
   ),
 
-  // Set 'includePhotoInCv' to true if a profile photo is uploaded/fetched.
+  // Set "includePhotoInCv" to true if a profile photo is uploaded/fetched.
   (action$, state$) => action$.pipe(
     ofType(safeActions.setProfilePhoto.type),
     rx.map(action => action.payload.accountInstanceId),
     rx.switchMap(accountInstanceId => {
       const characteristicsInstance = Object.values(state$.value.safe.content.characteristics)
-        .find(instance => instance.accountId == accountInstanceId);
+        .find(instance => instance.accountId === accountInstanceId);
       const instanceToBeSaved = {
         ...characteristicsInstance,
         includePhotoInCv: true

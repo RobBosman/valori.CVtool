@@ -28,13 +28,7 @@ const CvPhoto = (props) => {
     props.fetchProfilePhoto(instanceId);
 
   const onFileUpload = () =>
-    props.selectPhotoToUpload(
-      instanceId,
-      {
-        types: [ { description: "Images", accept: { "image/*": [".png", ".gif", ".jpeg", ".jpg"] } } ],
-        multiple: false,
-        excludeAcceptAllOption: true
-      });
+    props.selectPhotoToUpload(instanceId);
 
   const onDeletePhoto = () => {
     const instanceToBeSaved = {
@@ -60,7 +54,7 @@ const CvPhoto = (props) => {
           <DefaultButton
             text="Cerios profielfoto"
             iconProps={{ iconName: "ProfileSearch" }}
-            disabled={!isEditable || props.authInfo.accountId != instanceId}
+            disabled={!isEditable || props.authInfo.accountId !== instanceId}
             onClick={onFetchProfilePhoto}
           />
         </Stack>
@@ -92,7 +86,7 @@ const select = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchProfilePhoto: id => dispatch(authActions.fetchProfilePhoto(id)),
-  selectPhotoToUpload: (instanceId, fileHandleKey) => dispatch(safeActions.selectPhotoToUpload(instanceId, fileHandleKey))
+  selectPhotoToUpload: instanceId => dispatch(safeActions.selectPhotoToUpload(instanceId))
 });
 
 export default connect(select, mapDispatchToProps)(CvPhoto);

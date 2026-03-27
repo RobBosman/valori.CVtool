@@ -8,7 +8,7 @@ export const save = createAction("SAVE");
 export const deleteAccount = createAction("DELETE_ACCOUNT");
 export const deleteBrand = createAction("DELETE_BRAND");
 export const selectPhotoToUpload = createAction("SELECT_PHOTO_TO_UPLOAD",
-  (accountInstanceId, fileSelectOptions) => ({ payload: { accountInstanceId, fileSelectOptions } }));
+  (accountInstanceId) => ({ payload: accountInstanceId }));
 export const setProfilePhoto = createAction("SET_PROFILE_PHOTO",
   (accountInstanceId, profilePhotoB64) => ({ payload: { accountInstanceId, profilePhotoB64 } }));
 // Reducer actions:
