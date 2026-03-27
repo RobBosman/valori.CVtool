@@ -23,14 +23,26 @@ describe("error-epics.test", () => {
     _epicRegistry.register(...errorEpics);
   });
 
-  it("should handle windows 'error' event", () =>
-    new Promise((_resolve) => {
+  it("should handle windows 'error' event", () => {
+    const orgConsoleError = console.error;
+    let loggedError = null;
+    console.error = (msg) => { loggedError = msg; };
+
+    return new Promise((_resolve) => {
       expect(_store.getState().error.lastError)
         .toBe(undefined);
-      setTimeout(() => { throw new Error("Amai zeg!"); }, 0);
+      setTimeout(() => {
+        throw new Error("Amai zeg!");
+      }, 0);
       setTimeout(() => _resolve(), 5);
     })
-      .then(() => expect(_store.getState().error.lastError.message)
-        .toContain("Amai zeg!"))
-  );
+      .then(() => {
+        expect(_store.getState().error.lastError.message)
+          .toContain("Amai zeg!");
+        expect(loggedError.message)
+          .toContain("Amai zeg!");
+
+        console.error = orgConsoleError;
+      });
+  });
 });
