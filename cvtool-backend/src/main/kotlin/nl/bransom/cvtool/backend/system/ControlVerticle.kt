@@ -10,6 +10,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.ext.web.Router
 import nl.bransom.cvtool.backend.cv.ALL_CVS_GENERATE_ADDRESS
+import nl.bransom.cvtool.backend.persistence.DATA_RETENTION_ADDRESS
 import org.slf4j.LoggerFactory
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
 import java.net.HttpURLConnection.HTTP_OK

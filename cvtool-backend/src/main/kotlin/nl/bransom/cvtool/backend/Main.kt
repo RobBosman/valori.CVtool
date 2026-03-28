@@ -23,7 +23,7 @@ import nl.bransom.cvtool.backend.persistence.MongodbFetchVerticle
 import nl.bransom.cvtool.backend.persistence.MongodbSaveVerticle
 import nl.bransom.cvtool.backend.system.ControlVerticle
 import nl.bransom.cvtool.backend.system.DataConverterVerticle
-import nl.bransom.cvtool.backend.system.DataRetentionVerticle
+import nl.bransom.cvtool.backend.persistence.DataRetentionVerticle
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import kotlin.reflect.KClass

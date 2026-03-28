@@ -1,13 +1,10 @@
-package nl.bransom.cvtool.backend.system
+package nl.bransom.cvtool.backend.persistence
 
 import io.reactivex.Single
-import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.BasicVerticle
-import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
-import nl.bransom.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 
 const val DATA_RETENTION_ADDRESS = "data.retention"
 
@@ -45,7 +42,7 @@ class DataRetentionVerticle : BasicVerticle(DATA_RETENTION_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject($$"""{ "audit_log": [ { "timestamp": { "$lt": "$$retentionDate" } } ] }"""),
-                DeliveryOptions().setSendTimeout(5_000)
+                deliveryOptions
             )
 
     private fun Single<Message<JsonObject>>.deleteAuditLogs() =
@@ -56,7 +53,7 @@ class DataRetentionVerticle : BasicVerticle(DATA_RETENTION_ADDRESS) {
                     .rxRequest<JsonObject>(
                         MONGODB_SAVE_ADDRESS,
                         JsonObject().put("audit_log", idsJson),
-                        DeliveryOptions().setSendTimeout(5_000)
+                        deliveryOptions
                     )
                     .map { idsJson.map.size }
             }
