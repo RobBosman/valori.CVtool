@@ -9,5 +9,5 @@ SET MONGORESTORE=C:\Program Files\MongoDB\Tools\100\bin\mongorestore
 
 SETLOCAL
 FOR /F "TOKENS=*" %%i in ('type %ENV_FILE%') do SET %%i
-"%MONGORESTORE%" --uri="mongodb://localhost:27017/cvtool" --drop --preserveUUID --gzip "\backup\%RESTORE_DATE%\cvtool"
+"%MONGORESTORE%" --uri="mongodb://localhost:27117/cvtool" --drop --preserveUUID --gzip "\backup\%RESTORE_DATE%\cvtool"
 ENDLOCAL

@@ -4,7 +4,7 @@
       <env name="AUTH_CONNECTION_STRING" value="https://login.microsoftonline.com/3d75b784-24a4-48cd-8149-36d9fc6f64d2/v2.0?2eb48338-41d2-4578-98ab-1466b7baad5f:mZn8Q~8WLrqGRDQugZGFOScwiIIiyjMRxADcdbu-" />
       <env name="CONTROL_CONNECTION_STRING" value="http://localhost:88/" />
       <env name="HTTP_CONNECTION_STRING" value="http://localhost:80/" />
-      <env name="MONGO_CONNECTION_STRING" value="mongodb://localhost:27017/cvtool?authSource=admin&amp;readPreference=primary&amp;ssl=false&amp;directConnection=true" />
+      <env name="MONGO_CONNECTION_STRING" value="mongodb://localhost:27117/cvtool?authSource=admin&amp;readPreference=primary&amp;ssl=false&amp;directConnection=true" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="nl.bransom.cvtool.backend.MainKt" />
     <module name="cvtool-backend" />

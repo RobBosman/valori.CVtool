@@ -50,6 +50,12 @@ You will now have two of them, remember which is the new one!
     **/node
     **/target
 
+==== _Setup MongoDB_
+
+* Change the port number in `C:\Program Files\MongoDB\Server\*\bin\mongod.cfg`:
+
+  port: 27117
+
 ==== Tips and tricks
 
 See xref:cvtool-documentation/tips-and-tricks.adoc[here].
@@ -194,6 +200,7 @@ Data retention is 120 days.
         { $set: { cvAccountId: elem.editorAccountId } }
       )
    );
+ db.audit_log.deleteMany({ timestamp: { $lt: "2025-01-01" } });
 
 Full text search:
 
