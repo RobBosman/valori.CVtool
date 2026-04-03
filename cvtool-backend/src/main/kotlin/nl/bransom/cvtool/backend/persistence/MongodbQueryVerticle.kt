@@ -9,7 +9,6 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import org.bson.BsonDocument
-import org.bson.Document
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -50,62 +49,53 @@ internal class MongodbQueryVerticle : AbstractVerticle() {
     /**
      * Expected message body:
      *   {
-     *       aggregate: "audit_log",
-     *       pipeline: [
+     *       "aggregate": "audit_log",
+     *       "pipeline": [
      *           {
-     *               $group: {
-     *                   "_id": "$cvAccountId",
+     *               "$group": {
+     *                   "_id": { "$ifNull": [ "$cvAccountId", "$editorAccountId" ] },
      *                   "latestTimestamp": { "$last": "$timestamp" }
      *               }
      *           }
      *       ],
-     *       cursor: { }
+     *       "cursor": { }
      *   }
      *
      * Response:
      *   [
-     *     {
-     *       _id: 'ede8738e-4297-4072-8d3a-0d860ef887a2',
-     *       latestTimestamp: '2026-01-12T14:55:19.867504873'
-     *     },
-     *     ...
+     *       {
+     *           "_id": "ede8738e-4297-4072-8d3a-0d860ef887a2",
+     *           "latestTimestamp": "2026-01-12T14:55:19.867504873"
+     *       },
+     *       ...
      *   ]
      */
     private fun handleRequest(message: Message<JsonObject>, mongoDatabase: MongoDatabase) =
         Flowable
             .just(message.body())
             .flatMap { jsonQuery ->
-                Flowable
-                    .defer {
-                        log.info("Vertx running query:\n{}", jsonQuery.encode())
-                        mongoDatabase.runCommand(BsonDocument.parse(jsonQuery.encode()))
-                    }
-                    .map { queryResult -> queryResult["cursor"] as Document }
-                    .map { cursor -> cursor["firstBatch"] as Collection<*> }
-                    .reduceWith(
-                        { JsonArray() },
-                        { resultJson, batch ->
-                            log.info("Batch: $batch")
-                            batch.forEach {
-                                resultJson.add(it as Document)
-                            }
-                            resultJson
-                        }
-                    )
-                    .map { JsonObject().put("result", it) }
-                    .toFlowable()
+                log.info("Vertx running query: {}", jsonQuery.encode())
+
+                val entityName = jsonQuery.getString("aggregate")
+                val pipeline = jsonQuery.getJsonArray("pipeline")
+                    .map { BsonDocument.parse(it.toString()) }
+
+                mongoDatabase
+                    .getCollection(entityName)
+                    .aggregate(pipeline)
             }
-//            .reduceWith(
-//                { JsonObject() },
-//                { resultJson, entityJson -> resultJson.mergeIn(entityJson) }
-//            )
+            .reduceWith(
+                { JsonArray() },
+                { resultsJson, item -> resultsJson.add(item) }
+            )
+            .toFlowable()
             .subscribe(
-                { fetchResult ->
-                    log.debug("Successfully queried ${fetchResult.map.size} result")
-                    message.reply(fetchResult)
+                { fetchedItems ->
+                    log.info("Successfully queried ${fetchedItems.list.size} result items.")
+                    message.reply(JsonObject().put("result", fetchedItems))
                 },
                 {
-                    val errorMsg = "Error querying data: ${it.message}"
+                    val errorMsg = "Error querying data: ${it.message}."
                     log.warn(errorMsg)
                     message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
                 }

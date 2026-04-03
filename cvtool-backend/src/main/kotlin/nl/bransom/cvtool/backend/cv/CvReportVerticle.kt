@@ -47,7 +47,7 @@ internal class CvReportVerticle : BasicVerticle(CV_REPORT_ADDRESS) {
                         "pipeline": [
                             {
                                 "$group": {
-                                    "_id": "$cvAccountId",
+                                    "_id": { "$ifNull": [ "$cvAccountId", "$editorAccountId" ] },
                                     "latestTimestamp": { "$last": "$timestamp" }
                                 }
                             }
