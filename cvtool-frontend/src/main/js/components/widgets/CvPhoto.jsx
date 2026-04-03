@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { DefaultButton, Image, ImageFit, Label, Stack } from "@fluentui/react";
+import {connect} from "react-redux";
+import {DefaultButton, Image, ImageFit, Label, Stack} from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as authActions from "../../services/auth/auth-actions";
 import * as safeActions from "../../services/safe/safe-actions";

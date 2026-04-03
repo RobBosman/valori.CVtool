@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { HoverCard, HoverCardType, Stack, Text } from "@fluentui/react";
+import {connect} from "react-redux";
+import {HoverCard, HoverCardType, Stack, Text} from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
-import { useTheme } from "../../services/ui/ui-services";
-import { formatDate } from "../cv/Preview";
+import {useTheme} from "../../services/ui/ui-services";
+import {formatDate} from "../cv/Preview";
 
 const CvTitle = props => {
   

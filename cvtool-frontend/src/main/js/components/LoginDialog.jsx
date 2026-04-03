@@ -1,7 +1,17 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { Dialog, DialogFooter, DefaultButton, DialogType, Icon, Label, Spinner, SpinnerSize, ContextualMenu } from "@fluentui/react";
+import {connect} from "react-redux";
+import {
+  ContextualMenu,
+  DefaultButton,
+  Dialog,
+  DialogFooter,
+  DialogType,
+  Icon,
+  Label,
+  Spinner,
+  SpinnerSize
+} from "@fluentui/react";
 import * as authActions from "../services/auth/auth-actions";
 import * as uiServives from "../services/ui/ui-services";
 

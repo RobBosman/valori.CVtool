@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, Modal, ContextualMenu, IconButton } from "@fluentui/react";
+import {ContextualMenu, IconButton, Modal, Stack, Text} from "@fluentui/react";
 import * as uiServices from "../../services/ui/ui-services";
 
 export const cvHeadings = {

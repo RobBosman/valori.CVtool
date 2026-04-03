@@ -1,7 +1,7 @@
-import { from, of, merge, EMPTY } from "rxjs";
+import {EMPTY, from, merge, of} from "rxjs";
 import * as rx from "rxjs/operators";
-import { store } from "../../redux/store";
-import { ofType } from "redux-observable";
+import {store} from "../../redux/store";
+import {ofType} from "redux-observable";
 import * as utils from "../../utils/CommonUtils";
 import * as errorActions from "../error/error-actions";
 import * as eventBusActions from "../eventBus/eventBus-actions";

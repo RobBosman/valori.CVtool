@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Dropdown, TextField } from "@fluentui/react";
+import {Dropdown, TextField} from "@fluentui/react";
 
 export const CvDropdown = (props) => {
   

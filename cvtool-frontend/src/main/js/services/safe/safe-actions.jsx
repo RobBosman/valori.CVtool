@@ -1,5 +1,5 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { reducerRegistry } from "../../redux/reducerRegistry";
+import {createAction, createReducer} from "@reduxjs/toolkit";
+import {reducerRegistry} from "../../redux/reducerRegistry";
 import * as utils from "../../utils/CommonUtils";
 
 // Epic actions:

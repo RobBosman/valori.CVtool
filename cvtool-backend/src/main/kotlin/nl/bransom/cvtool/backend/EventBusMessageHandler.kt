@@ -20,10 +20,11 @@ import nl.bransom.cvtool.backend.authorization.AUTHENTICATE_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
 import nl.bransom.cvtool.backend.authorization.Authorizer
-import nl.bransom.cvtool.backend.cv.CV_DOWNLOAD_DEMO_ADDRESS
+import nl.bransom.cvtool.backend.cv.CV_DEMO_ADDRESS
 import nl.bransom.cvtool.backend.cv.CV_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.cv.CV_GENERATE_ADDRESS
 import nl.bransom.cvtool.backend.cv.CV_HISTORY_ADDRESS
+import nl.bransom.cvtool.backend.cv.CV_REPORT_ADDRESS
 import nl.bransom.cvtool.backend.cv.CV_SEARCH_ADDRESS
 import nl.bransom.cvtool.backend.persistence.ACCOUNT_DELETE_ADDRESS
 import nl.bransom.cvtool.backend.persistence.AuditLogger
@@ -44,13 +45,14 @@ internal object EventBusMessageHandler {
     private fun createBridgeOptions() =
         SockJSBridgeOptions()
             .setPingTimeout(60_000) // 60 seconds
+            .addInboundPermitted(PermittedOptions().setAddress(ACCOUNT_DELETE_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(AUTH_INFO_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_FETCH_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_DEMO_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_GENERATE_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_HISTORY_ADDRESS))
+            .addInboundPermitted(PermittedOptions().setAddress(CV_REPORT_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(CV_SEARCH_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(CV_DOWNLOAD_DEMO_ADDRESS))
-            .addInboundPermitted(PermittedOptions().setAddress(ACCOUNT_DELETE_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(BRAND_DELETE_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(MONGODB_FETCH_ADDRESS))
             .addInboundPermitted(PermittedOptions().setAddress(MONGODB_SAVE_ADDRESS))

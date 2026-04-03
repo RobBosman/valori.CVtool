@@ -1,5 +1,11 @@
 import React from "react";
-import { registerOnThemeChangeCallback, removeOnThemeChangeCallback, getTheme, initializeIcons, loadTheme } from "@fluentui/react";
+import {
+  getTheme,
+  initializeIcons,
+  loadTheme,
+  registerOnThemeChangeCallback,
+  removeOnThemeChangeCallback
+} from "@fluentui/react";
 import fluentUITheme from "../../static/themes/fluentUI.json";
 import ceriosBlueTheme from "../../static/themes/ceriosBlue.json";
 import ceriosOrangeTheme from "../../static/themes/ceriosOrange.json";

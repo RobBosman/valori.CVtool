@@ -1,4 +1,4 @@
-import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
+import {reducerRegistry} from "../../../../main/js/redux/reducerRegistry";
 import * as errorActions from "../../../../main/js/services/error/error-actions";
 
 describe("error-actions.test", () => {

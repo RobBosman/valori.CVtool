@@ -1,5 +1,5 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { reducerRegistry } from "../../redux/reducerRegistry";
+import {createAction, createReducer} from "@reduxjs/toolkit";
+import {reducerRegistry} from "../../redux/reducerRegistry";
 
 // Epic actions:
 export const clearLocalAccountCache = createAction("CLEAR_LOCAL_ACCOUNT_CACHE");

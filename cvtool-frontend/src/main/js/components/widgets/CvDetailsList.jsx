@@ -1,6 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { DetailsList, DetailsListLayoutMode, ScrollablePane, Selection, SelectionMode, Sticky, StickyPositionType, TooltipHost } from "@fluentui/react";
+import {
+  DetailsList,
+  DetailsListLayoutMode,
+  ScrollablePane,
+  Selection,
+  SelectionMode,
+  Sticky,
+  StickyPositionType,
+  TooltipHost
+} from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
 
 export const CvDetailsList = (props) => {

@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { DefaultButton, Link, PrimaryButton, Stack, Text } from "@fluentui/react";
-import { store } from "../redux/store";
+import {connect} from "react-redux";
+import {DefaultButton, Link, PrimaryButton, Stack, Text} from "@fluentui/react";
+import {store} from "../redux/store";
 import CvLogo from "./widgets/CvLogo";
 import LoginDialog from "./LoginDialog";
 import * as authActions from "../services/auth/auth-actions";

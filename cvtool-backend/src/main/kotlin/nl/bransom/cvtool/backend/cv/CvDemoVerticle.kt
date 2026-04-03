@@ -7,9 +7,9 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.DebouncingVerticle
 import java.util.Base64
 
-const val CV_DOWNLOAD_DEMO_ADDRESS = "cv.download.demo"
+const val CV_DEMO_ADDRESS = "cv.demo"
 
-internal class CvDownloadDemoVerticle : DebouncingVerticle(CV_DOWNLOAD_DEMO_ADDRESS) {
+internal class CvDemoVerticle : DebouncingVerticle(CV_DEMO_ADDRESS) {
 
     override fun getMessageFingerprint(message: Message<JsonObject>): String? =
         message.headers()["authInfo"]
@@ -56,7 +56,7 @@ internal class CvDownloadDemoVerticle : DebouncingVerticle(CV_DOWNLOAD_DEMO_ADDR
         return Single
             .just(locale)
             .map { "/demo/${composeFileName(it)}" }
-            .map { CvDownloadDemoVerticle::class.java.getResource(it)!!.readBytes() }
+            .map { CvDemoVerticle::class.java.getResource(it)!!.readBytes() }
     }
 
     private fun composeFileName(locale: String) =

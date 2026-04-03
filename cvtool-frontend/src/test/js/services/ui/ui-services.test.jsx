@@ -3,9 +3,9 @@
  */
 window.IS_REACT_ACT_ENVIRONMENT = true;
 
-import React, { act } from "react";
-import { createRoot } from "react-dom/client";
-import { loadTheme } from "@fluentui/react";
+import React, {act} from "react";
+import {createRoot} from "react-dom/client";
+import {loadTheme} from "@fluentui/react";
 import fluentUITheme from "../../../../main/js/static/themes/fluentUI.json";
 import ceriosBlueTheme from "../../../../main/js/static/themes/ceriosBlue.json";
 import ceriosOrangeTheme from "../../../../main/js/static/themes/ceriosOrange.json";

@@ -1,16 +1,16 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, StackItem, PrimaryButton } from "@fluentui/react";
-import { connect } from "react-redux";
-import { setSelectedId } from "../../services/ui/ui-actions";
-import { changeInstance } from "../../services/safe/safe-actions";
-import { useTheme } from "../../services/ui/ui-services";
-import { CvDetailsList } from "../widgets/CvDetailsList";
-import { CvTextField } from "../widgets/CvTextField";
-import { CvCheckbox } from "../widgets/CvCheckbox";
+import {DefaultButton, PrimaryButton, Stack, StackItem, Text} from "@fluentui/react";
+import {connect} from "react-redux";
+import {setSelectedId} from "../../services/ui/ui-actions";
+import {changeInstance} from "../../services/safe/safe-actions";
+import {useTheme} from "../../services/ui/ui-services";
+import {CvDetailsList} from "../widgets/CvDetailsList";
+import {CvTextField} from "../widgets/CvTextField";
+import {CvCheckbox} from "../widgets/CvCheckbox";
 import ConfirmDialog from "../ConfirmDialog";
 import * as commonUtils from "../../utils/CommonUtils";
-import { createHelpIcon } from "../widgets/CvHelpIcon";
+import {createHelpIcon} from "../widgets/CvHelpIcon";
 import Preview, * as preview from "./Preview";
 
 const entityName = "publication";

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { DatePicker, DayOfWeek, TextField } from "@fluentui/react";
+import {DatePicker, DayOfWeek, TextField} from "@fluentui/react";
 
 const datePickerStrings = {
   months: ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"],

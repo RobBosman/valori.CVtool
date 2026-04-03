@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { Dialog, DialogFooter, DefaultButton, DialogType, ContextualMenu } from "@fluentui/react";
+import {connect} from "react-redux";
+import {ContextualMenu, DefaultButton, Dialog, DialogFooter, DialogType} from "@fluentui/react";
 import * as uiServices from "../services/ui/ui-services";
 
 const ErrorDialog = (props) => {

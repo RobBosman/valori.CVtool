@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Callout, DirectionalHint, IconButton, Stack, Text } from "@fluentui/react";
+import {Callout, DirectionalHint, IconButton, Stack, Text} from "@fluentui/react";
 
 export const createHelpIcon = (helpIconProps) =>
   <Stack horizontal>

@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, PrimaryButton, StackItem } from "@fluentui/react";
-import { connect } from "react-redux";
-import { setSelectedId } from "../../services/ui/ui-actions";
-import { changeInstance } from "../../services/safe/safe-actions";
-import { useTheme } from "../../services/ui/ui-services";
-import { CvDetailsList } from "../widgets/CvDetailsList";
-import { CvTextField } from "../widgets/CvTextField";
-import { CvCheckbox } from "../widgets/CvCheckbox";
+import {DefaultButton, PrimaryButton, Stack, StackItem, Text} from "@fluentui/react";
+import {connect} from "react-redux";
+import {setSelectedId} from "../../services/ui/ui-actions";
+import {changeInstance} from "../../services/safe/safe-actions";
+import {useTheme} from "../../services/ui/ui-services";
+import {CvDetailsList} from "../widgets/CvDetailsList";
+import {CvTextField} from "../widgets/CvTextField";
+import {CvCheckbox} from "../widgets/CvCheckbox";
 import * as commonUtils from "../../utils/CommonUtils";
 import ConfirmDialog from "../ConfirmDialog";
-import { createHelpIcon } from "../widgets/CvHelpIcon";
-import { CvFormattedText } from "../widgets/CvFormattedText";
+import {createHelpIcon} from "../widgets/CvHelpIcon";
+import {CvFormattedText} from "../widgets/CvFormattedText";
 import Preview, * as preview from "./Preview";
 
 const entityName = "reference";

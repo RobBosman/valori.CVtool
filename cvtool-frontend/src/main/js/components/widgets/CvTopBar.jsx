@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { CommandBar, CommandBarButton, getTheme, loadTheme, ContextualMenuItemType, TooltipHost } from "@fluentui/react";
+import {connect} from "react-redux";
+import {CommandBar, CommandBarButton, ContextualMenuItemType, getTheme, loadTheme, TooltipHost} from "@fluentui/react";
 import * as utils from "../../utils/CommonUtils";
 import * as authActions from "../../services/auth/auth-actions";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as uiServices from "../../services/ui/ui-services";
-import { ConnectionStates } from "../../services/eventBus/eventBus-services";
+import {ConnectionStates} from "../../services/eventBus/eventBus-services";
 import LocaleFlag from "../widgets/LocaleFlag";
 
 const LocaleButton = properties => (

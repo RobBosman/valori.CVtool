@@ -1,4 +1,4 @@
-import { Stack } from "@fluentui/react";
+import {Stack} from "@fluentui/react";
 import React from "react";
 import ceriosLogoSvg from "../../static/Cerios-logo-full.svg";
 import cvtoolTextSvg from "../../static/CVtool-text.svg";

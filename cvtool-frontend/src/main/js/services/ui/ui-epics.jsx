@@ -1,6 +1,6 @@
 import * as rx from "rxjs/operators";
-import { EMPTY, fromEvent, of } from "rxjs";
-import { ofType } from "redux-observable";
+import {EMPTY, fromEvent, of} from "rxjs";
+import {ofType} from "redux-observable";
 import * as authActions from "../auth/auth-actions";
 import * as safeActions from "../safe/safe-actions";
 import * as uiActions from "./ui-actions";

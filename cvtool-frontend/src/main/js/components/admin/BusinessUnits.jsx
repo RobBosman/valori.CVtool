@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, DefaultButton, SelectionMode, StackItem } from "@fluentui/react";
-import { connect } from "react-redux";
+import {DefaultButton, SelectionMode, Stack, StackItem, Text} from "@fluentui/react";
+import {connect} from "react-redux";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
-import { setSelectedId } from "../../services/ui/ui-actions";
-import { useTheme } from "../../services/ui/ui-services";
-import { CvDetailsList } from "../widgets/CvDetailsList";
-import { CvDropdown } from "../widgets/CvDropdown";
-import { CvTextField } from "../widgets/CvTextField";
+import {setSelectedId} from "../../services/ui/ui-actions";
+import {useTheme} from "../../services/ui/ui-services";
+import {CvDetailsList} from "../widgets/CvDetailsList";
+import {CvDropdown} from "../widgets/CvDropdown";
+import {CvTextField} from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
 import * as enums from "../cv/Enums";
 

@@ -2,12 +2,12 @@ package nl.bransom.cvtool.backend.authorization.intention
 
 import nl.bransom.cvtool.backend.authorization.AuthInfo
 import nl.bransom.cvtool.backend.authorization.Intention
-import nl.bransom.cvtool.backend.cv.CV_DOWNLOAD_DEMO_ADDRESS
+import nl.bransom.cvtool.backend.cv.CV_DEMO_ADDRESS
 
-internal object IntentionDownloadDemoCv : Intention {
+internal object IntentionCvDemo : Intention {
 
     override fun name() = "download demo cv"
 
     override fun match(address: String, body: Any?, authInfo: AuthInfo) =
-        address == CV_DOWNLOAD_DEMO_ADDRESS
+        address == CV_DEMO_ADDRESS
 }

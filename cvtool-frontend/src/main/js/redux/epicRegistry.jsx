@@ -1,6 +1,6 @@
-import { BehaviorSubject, of, EMPTY, merge } from "rxjs";
-import { mergeMap, catchError } from "rxjs/operators";
-import { ErrorSources, setLastError } from "../services/error/error-actions";
+import {BehaviorSubject, EMPTY, merge, of} from "rxjs";
+import {catchError, mergeMap} from "rxjs/operators";
+import {ErrorSources, setLastError} from "../services/error/error-actions";
 
 export class EpicRegistry {
   

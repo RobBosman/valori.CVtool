@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Dialog, DialogFooter, DefaultButton, DialogType, ContextualMenu, PrimaryButton } from "@fluentui/react";
+import {ContextualMenu, DefaultButton, Dialog, DialogFooter, DialogType, PrimaryButton} from "@fluentui/react";
 import * as uiServives from "../services/ui/ui-services";
 
 const ConfirmDialog = (props) => {

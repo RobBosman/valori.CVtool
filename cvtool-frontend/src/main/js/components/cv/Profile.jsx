@@ -1,21 +1,21 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { Checkbox, DefaultButton, Image, PrimaryButton, Stack, StackItem, Text } from "@fluentui/react";
-import { changeInstance } from "../../services/safe/safe-actions";
-import { useTheme } from "../../services/ui/ui-services";
-import { CvDatePicker } from "../widgets/CvDatePicker";
-import { CvTextField } from "../widgets/CvTextField";
-import { createHelpIcon } from "../widgets/CvHelpIcon";
-import { CvFormattedText } from "../widgets/CvFormattedText";
+import {connect} from "react-redux";
+import {Checkbox, DefaultButton, Image, PrimaryButton, Stack, StackItem, Text} from "@fluentui/react";
+import {changeInstance} from "../../services/safe/safe-actions";
+import {useTheme} from "../../services/ui/ui-services";
+import {CvDatePicker} from "../widgets/CvDatePicker";
+import {CvTextField} from "../widgets/CvTextField";
+import {createHelpIcon} from "../widgets/CvHelpIcon";
+import {CvFormattedText} from "../widgets/CvFormattedText";
 import CvPhoto from "../widgets/CvPhoto";
 import Preview, * as preview from "../cv/Preview";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as uiActions from "../../services/ui/ui-actions";
 import * as errorActions from "../../services/error/error-actions";
-import { CvDetailsList } from "../widgets/CvDetailsList";
+import {CvDetailsList} from "../widgets/CvDetailsList";
 import ConfirmDialog from "../ConfirmDialog";
-import { CvCheckbox } from "../widgets/CvCheckbox";
+import {CvCheckbox} from "../widgets/CvCheckbox";
 
 const Profile = (props) => {
 

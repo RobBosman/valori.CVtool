@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, Modal, ContextualMenu, IconButton, SelectionMode, TooltipHost } from "@fluentui/react";
-import { connect } from "react-redux";
-import { useTheme } from "../../services/ui/ui-services";
+import {ContextualMenu, IconButton, Modal, SelectionMode, Stack, Text, TooltipHost} from "@fluentui/react";
+import {connect} from "react-redux";
+import {useTheme} from "../../services/ui/ui-services";
 import * as uiActions from "../../services/ui/ui-actions";
-import { CvDetailsList } from "../widgets/CvDetailsList";
+import {CvDetailsList} from "../widgets/CvDetailsList";
 
 const entityName = "audit_log";
 const timezoneOffsetMillis = new Date().getTimezoneOffset() * 60000;

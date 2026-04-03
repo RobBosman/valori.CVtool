@@ -1,9 +1,10 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { reducerRegistry } from "../../redux/reducerRegistry";
+import {createAction, createReducer} from "@reduxjs/toolkit";
+import {reducerRegistry} from "../../redux/reducerRegistry";
 
 // Epic actions:
 export const fetchCvByAccountId = createAction("FETCH_CV_BY_ACCOUNT_ID");
 export const fetchCvHistory = createAction("FETCH_CV_HISTORY");
+export const fetchCvReport = createAction("FETCH_CV_REPORT");
 export const searchCvData = createAction("SEARCH_CV_DATA");
 export const fetchDemoCv = createAction("FETCH_DEMO_CV",
   (accountId, locale) => ({ payload: { accountId, locale } }));

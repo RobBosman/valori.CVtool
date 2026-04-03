@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { Text, Stack, Link, DefaultButton, TooltipHost } from "@fluentui/react";
+import {connect} from "react-redux";
+import {DefaultButton, Link, Stack, Text, TooltipHost} from "@fluentui/react";
 import * as commonUtils from "../utils/CommonUtils";
-import { useTheme } from "../services/ui/ui-services";
+import {useTheme} from "../services/ui/ui-services";
 import * as cvActions from "../services/cv/cv-actions";
 
 const Info = (props) => {

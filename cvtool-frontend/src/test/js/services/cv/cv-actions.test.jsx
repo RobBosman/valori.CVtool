@@ -1,4 +1,4 @@
-import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
+import {reducerRegistry} from "../../../../main/js/redux/reducerRegistry";
 import * as utils from "../../../../main/js/utils/CommonUtils";
 import * as cvActions from "../../../../main/js/services/cv/cv-actions";
 

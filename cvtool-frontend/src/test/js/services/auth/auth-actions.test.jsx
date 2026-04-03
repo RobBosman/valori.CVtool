@@ -1,4 +1,4 @@
-import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
+import {reducerRegistry} from "../../../../main/js/redux/reducerRegistry";
 import * as authActions from "../../../../main/js/services/auth/auth-actions";
 
 describe("auth-actions.test", () => {

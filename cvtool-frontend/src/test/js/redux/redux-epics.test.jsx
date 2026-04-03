@@ -1,7 +1,7 @@
-import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
-import { createEpicMiddleware, ofType, combineEpics } from "redux-observable";
-import { map, tap, ignoreElements } from "rxjs/operators";
-import { EpicRegistry } from "../../../main/js/redux//epicRegistry";
+import {configureStore, createAction, createReducer} from "@reduxjs/toolkit";
+import {combineEpics, createEpicMiddleware, ofType} from "redux-observable";
+import {ignoreElements, map, tap} from "rxjs/operators";
+import {EpicRegistry} from "../../../main/js/redux//epicRegistry";
 
 describe("redux-epics.test", () => {
 

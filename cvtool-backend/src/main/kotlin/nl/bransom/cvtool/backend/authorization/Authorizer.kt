@@ -6,9 +6,10 @@ import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.ADMIN
 import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.SALES
 import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.UNIT_LEAD
+import nl.bransom.cvtool.backend.authorization.intention.IntentionCvDemo
+import nl.bransom.cvtool.backend.authorization.intention.IntentionCvReport
 import nl.bransom.cvtool.backend.authorization.intention.IntentionDeleteAccount
 import nl.bransom.cvtool.backend.authorization.intention.IntentionDeleteBrand
-import nl.bransom.cvtool.backend.authorization.intention.IntentionDownloadDemoCv
 import nl.bransom.cvtool.backend.authorization.intention.IntentionReadAllAccounts
 import nl.bransom.cvtool.backend.authorization.intention.IntentionReadAllAuthorizations
 import nl.bransom.cvtool.backend.authorization.intention.IntentionReadAllBrands
@@ -29,13 +30,13 @@ internal object Authorizer {
     private val log = LoggerFactory.getLogger(Authorizer::class.java)
 
     private val REQUIRED_AUTHORIZATION_LEVELS = mapOf(
-        IntentionReadOwnAuthInfo to CONSULTANT,
-        IntentionReadOwnCv to CONSULTANT,
-        IntentionReadOtherCv to SALES,
         IntentionReadAllAccounts to SALES,
         IntentionReadAllBrands to SALES,
         IntentionReadAllBusinessUnits to SALES,
         IntentionReadAllAuthorizations to SALES,
+        IntentionReadOwnAuthInfo to CONSULTANT,
+        IntentionReadOwnCv to CONSULTANT,
+        IntentionReadOtherCv to SALES,
         IntentionUpdateOwnCv to CONSULTANT,
         IntentionUpdateOtherCv to UNIT_LEAD,
         IntentionUpdateBrand to ADMIN,
@@ -43,7 +44,8 @@ internal object Authorizer {
         IntentionUpdateAuthorization to ADMIN,
         IntentionDeleteAccount to ADMIN,
         IntentionDeleteBrand to ADMIN,
-        IntentionDownloadDemoCv to CONSULTANT
+        IntentionCvReport to UNIT_LEAD,
+        IntentionCvDemo to CONSULTANT
     )
 
     /**

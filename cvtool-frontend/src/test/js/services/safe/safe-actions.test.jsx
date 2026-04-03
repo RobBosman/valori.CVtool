@@ -1,4 +1,4 @@
-import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
+import {reducerRegistry} from "../../../../main/js/redux/reducerRegistry";
 import * as utils from "../../../../main/js/utils/CommonUtils";
 import * as safeActions from "../../../../main/js/services/safe/safe-actions";
 

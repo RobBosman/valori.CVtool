@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
+import {reducerRegistry} from "../../../../main/js/redux/reducerRegistry";
 import * as uiActions from "../../../../main/js/services/ui/ui-actions";
 
 describe("ui-actions.test", () => {

@@ -1,4 +1,4 @@
-import { Buffer } from "buffer"; // NOSONAR
+import {Buffer} from "buffer"; // NOSONAR
 
 export const fetchCvFromRemote = (accountId, sendEventFunc) =>
   sendEventFunc("cv.fetch", { accountId })
@@ -12,8 +12,12 @@ export const generateCvAtRemote = (accountId, locale, docxTemplate, sendEventFun
   sendEventFunc("cv.generate", { accountId, locale , docxTemplate})
     .then(message => message.body);
 
+export const fetchCvReportAtRemote = (sendEventFunc) =>
+  sendEventFunc("cv.report")
+    .then(message => message.body);
+
 export const fetchDemoCvAtRemote = (accountId, locale, sendEventFunc) =>
-  sendEventFunc("cv.download.demo", { accountId, locale })
+  sendEventFunc("cv.demo", { accountId, locale })
     .then(message => message.body);
 
 const escapeJsonString = (text) =>

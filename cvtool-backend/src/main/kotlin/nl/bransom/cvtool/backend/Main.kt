@@ -12,18 +12,20 @@ import io.vertx.reactivex.core.AbstractVerticle
 import nl.bransom.cvtool.backend.authorization.AuthInfoFetchVerticle
 import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle
 import nl.bransom.cvtool.backend.cv.CvBackupVerticle
-import nl.bransom.cvtool.backend.cv.CvDownloadDemoVerticle
+import nl.bransom.cvtool.backend.cv.CvDemoVerticle
 import nl.bransom.cvtool.backend.cv.CvFetchVerticle
 import nl.bransom.cvtool.backend.cv.CvGenerateVerticle
 import nl.bransom.cvtool.backend.cv.CvHistoryVerticle
+import nl.bransom.cvtool.backend.cv.CvReportVerticle
 import nl.bransom.cvtool.backend.cv.CvSearchVerticle
 import nl.bransom.cvtool.backend.persistence.AccountDeleteVerticle
 import nl.bransom.cvtool.backend.persistence.BrandDeleteVerticle
+import nl.bransom.cvtool.backend.persistence.DataRetentionVerticle
 import nl.bransom.cvtool.backend.persistence.MongodbFetchVerticle
+import nl.bransom.cvtool.backend.persistence.MongodbQueryVerticle
 import nl.bransom.cvtool.backend.persistence.MongodbSaveVerticle
 import nl.bransom.cvtool.backend.system.ControlVerticle
 import nl.bransom.cvtool.backend.system.DataConverterVerticle
-import nl.bransom.cvtool.backend.persistence.DataRetentionVerticle
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import kotlin.reflect.KClass
@@ -42,6 +44,7 @@ object Main {
         HttpServerVerticle::class,
         AuthenticateVerticle::class,
         MongodbFetchVerticle::class,
+        MongodbQueryVerticle::class,
         MongodbSaveVerticle::class,
         AuthInfoFetchVerticle::class,
         AccountDeleteVerticle::class,
@@ -50,7 +53,8 @@ object Main {
         CvSearchVerticle::class,
         CvBackupVerticle::class,
         CvHistoryVerticle::class,
-        CvDownloadDemoVerticle::class,
+        CvDemoVerticle::class,
+        CvReportVerticle::class,
         DataRetentionVerticle::class,
         DataConverterVerticle::class
     )

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { ComboBox, TextField } from "@fluentui/react";
+import {ComboBox, TextField} from "@fluentui/react";
 
 export const CvComboBox = (props) => {
   

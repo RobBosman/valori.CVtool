@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Checkbox } from "@fluentui/react";
+import {Checkbox} from "@fluentui/react";
 
 export const CvCheckbox = (props) => {
   

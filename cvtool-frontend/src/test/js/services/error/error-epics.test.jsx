@@ -1,11 +1,11 @@
 /**
  * @jest-environment jsdom
  */
-import { createEpicMiddleware } from "redux-observable";
-import { configureStore } from "@reduxjs/toolkit";
-import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
-import { EpicRegistry } from "../../../../main/js/redux/epicRegistry";
-import { errorEpics } from "../../../../main/js/services/error/error-epics";
+import {createEpicMiddleware} from "redux-observable";
+import {configureStore} from "@reduxjs/toolkit";
+import {reducerRegistry} from "../../../../main/js/redux/reducerRegistry";
+import {EpicRegistry} from "../../../../main/js/redux/epicRegistry";
+import {errorEpics} from "../../../../main/js/services/error/error-epics";
 
 describe("error-epics.test", () => {
 

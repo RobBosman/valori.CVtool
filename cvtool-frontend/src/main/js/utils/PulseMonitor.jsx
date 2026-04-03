@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
-import { getTheme } from "@fluentui/react";
-import { LoginStates } from "../services/auth/auth-actions";
-import { eventBusClient, ConnectionStates } from "../services/eventBus/eventBus-services";
+import {connect} from "react-redux";
+import {getTheme} from "@fluentui/react";
+import {LoginStates} from "../services/auth/auth-actions";
+import {ConnectionStates, eventBusClient} from "../services/eventBus/eventBus-services";
 import "./KeyFrames.css";
 
 const PulseMonitor = (props) => {

@@ -1,5 +1,5 @@
-import { of, merge } from "rxjs";
-import { ofType } from "redux-observable";
+import {merge, of} from "rxjs";
+import {ofType} from "redux-observable";
 import * as rx from "rxjs/operators";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as errorActions from "../error/error-actions";

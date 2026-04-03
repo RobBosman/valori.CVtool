@@ -10,6 +10,7 @@ import nl.bransom.cvtool.backend.DebouncingVerticle
 import nl.bransom.cvtool.backend.ModelUtils.convertToLocalizedJson
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
 import nl.bransom.cvtool.backend.ModelUtils.jsonToXml
+import nl.bransom.cvtool.backend.ModelUtils.toJsonObject
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.Base64
@@ -32,6 +33,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/cerios/cv/v20260101.xsd"
         internal val ALL_LOCALES = setOf("nl_NL", "uk_UK")
         private const val DEFAULT_DOCX_TEMPLATE = "CERIOS"
+        private val SHARE_POINT_UNSUPPORTED_REGEX = Regex("""[<>:/\\'"|?*]+""")
 
         private fun loadBytes(location: String) =
             CvGenerateVerticle::class.java.getResource(location)
@@ -115,6 +117,55 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                             return result.toByteArray()
                         }
                 }
+        }
+
+        // CV_$LOCALE_$BRAND_$ACCOUNT_NAME_[TEMPLATE-OVERRIDE].docx, e.g. CV_NL_Cerios_RobBosman_[VALORI-CLASSIC].docx
+        internal fun composeFileName(
+            cvEntities: JsonObject,
+            locale: String,
+            defaultDocxTemplate: String,
+            docxTemplateOverride: String?
+        ): String {
+            val brand = when (val brandInstances = cvEntities.getValue("brand")) {
+                is JsonObject -> brandInstances.map.values
+                    .map(::toJsonObject)
+                    .filterIsInstance<JsonObject>()
+                    .firstOrNull()
+                    ?.getString("name")
+                    ?: ""
+
+                else -> ""
+            }
+            val unit = when (val unitInstances = cvEntities.getValue("businessUnit")) {
+                is JsonObject -> unitInstances.map.values
+                    .map(::toJsonObject)
+                    .filterIsInstance<JsonObject>()
+                    .firstOrNull()
+                    ?.getString("name")
+                    ?: ""
+
+                else -> ""
+            }
+            val accountName = when (val accountInstances = cvEntities.getValue("account")) {
+                is JsonObject -> accountInstances.map.values
+                    .map(::toJsonObject)
+                    .filterIsInstance<JsonObject>()
+                    .firstOrNull()
+                    ?.getString("name")
+                    ?: ""
+
+                else -> ""
+            }
+            val appliedDocxTemplate = when {
+                docxTemplateOverride != null && docxTemplateOverride != defaultDocxTemplate -> "[$docxTemplateOverride]"
+                else -> ""
+            }
+            return listOf("CV", locale.substring(3), brand.ifBlank { unit }, accountName, appliedDocxTemplate)
+                .map { it.replace(" ", "") }
+                .filter { it.isNotBlank() }
+                .joinToString("_") {
+                    it.replace(SHARE_POINT_UNSUPPORTED_REGEX, "-")
+                } + ".docx"
         }
     }
 
@@ -226,48 +277,4 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                     }
                 docxBytes.toByteArray()
             }
-
-    // CV_$LOCALE_$BRAND_$ACCOUNTNAME_[TEMPLATE-OVERRIDE].docx, e.g. CV_NL_Cerios_RobBosman_[VALORI-CLASSIC].docx
-    private fun composeFileName(
-        cvEntities: JsonObject,
-        locale: String,
-        defaultDocxTemplate: String,
-        docxTemplateOverride: String?
-    ): String {
-        val brand = when (val brandInstances = cvEntities.getValue("brand")) {
-            is JsonObject -> brandInstances.map.values
-                .filterIsInstance<JsonObject>()
-                .first()
-                .getString("name")
-                .replace(" ", "")
-
-            else -> ""
-        }
-        val unit = when (val unitInstances = cvEntities.getValue("businessUnit")) {
-            is JsonObject -> unitInstances.map.values
-                .filterIsInstance<JsonObject>()
-                .firstOrNull()
-                ?.getString("name")
-                ?.replace(" ", "")
-                ?: ""
-
-            else -> ""
-        }
-        val accountName = when (val accountInstances = cvEntities.getValue("account")) {
-            is JsonObject -> accountInstances.map.values
-                .filterIsInstance<JsonObject>()
-                .first()
-                .getString("name")
-                .replace(" ", "")
-
-            else -> ""
-        }
-        val appliedDocxTemplate = when {
-            docxTemplateOverride != null && docxTemplateOverride != defaultDocxTemplate -> "[$docxTemplateOverride]"
-            else -> ""
-        }
-        return listOf("CV", locale.substring(3), brand.ifBlank { unit }, accountName, appliedDocxTemplate)
-            .filter { it.isNotBlank() }
-            .joinToString("_") + ".docx"
-    }
 }

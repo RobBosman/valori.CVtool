@@ -1,18 +1,18 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField, DefaultButton, TooltipHost, Separator, StackItem } from "@fluentui/react";
-import { connect } from "react-redux";
+import {DefaultButton, Separator, Stack, StackItem, Text, TextField, TooltipHost} from "@fluentui/react";
+import {connect} from "react-redux";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";
-import { useTheme } from "../../services/ui/ui-services";
-import { CvDetailsList } from "../widgets/CvDetailsList";
-import { CvDropdown } from "../widgets/CvDropdown";
-import { CvTextField } from "../widgets/CvTextField";
+import {useTheme} from "../../services/ui/ui-services";
+import {CvDetailsList} from "../widgets/CvDetailsList";
+import {CvDropdown} from "../widgets/CvDropdown";
+import {CvTextField} from "../widgets/CvTextField";
 import * as enums from "../cv/Enums";
 import ConfirmDialog from "../ConfirmDialog";
-import { createHelpIcon } from "../widgets/CvHelpIcon";
+import {createHelpIcon} from "../widgets/CvHelpIcon";
 
 const Accounts = props => {
 
@@ -190,6 +190,9 @@ const Accounts = props => {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
+  
+  const onFetchCvReport = () =>
+    props.fetchCvReport();
 
   const [confirmDialogVisible, setConfirmDialogVisible] = React.useState(false);
   const selectedItemFields = React.useCallback(() => {
@@ -324,16 +327,24 @@ const Accounts = props => {
                   styles={{ dropdown: { width: 230 } }}
                 />
                 <Separator/>
+                <TooltipHost content="Haal de gegevens op om het CV te bewerken">
+                  <DefaultButton
+                    text="CV bewerken"
+                    iconProps={{ iconName: "CloudDownload" }}
+                    disabled={!props.selectedAccountId}
+                    onClick={onFetchCv}
+                    styles={{ root: { width: 230 } }}
+                  />
+                </TooltipHost>
                 <Stack horizontal grow
                   tokens={{ childrenGap: "s1" }}>
                   <Stack verticalAlign="space-between"
                     styles={{ root: { width: 230 } }}>
-                    <TooltipHost content="Haal de gegevens op om het CV te bewerken">
+                    <TooltipHost content="Download status rapport van alle cv's">
                       <DefaultButton
-                        text="CV bewerken"
+                        text="CV rapport"
                         iconProps={{ iconName: "CloudDownload" }}
-                        disabled={!props.selectedAccountId}
-                        onClick={onFetchCv}
+                        onClick={onFetchCvReport}
                         styles={{ root: { width: 230 } }}
                       />
                     </TooltipHost>
@@ -374,7 +385,8 @@ Accounts.propTypes = {
   replaceBusinessUnit: PropTypes.func.isRequired,
   selectedAccountId: PropTypes.string,
   setSelectedAccountId: PropTypes.func.isRequired,
-  fetchCvByAccountId: PropTypes.func.isRequired
+  fetchCvByAccountId: PropTypes.func.isRequired,
+  fetchCvReport: PropTypes.func.isRequired
 };
 
 const select = store => ({
@@ -393,7 +405,8 @@ const mapDispatchToProps = dispatch => ({
   replaceAccount: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
   replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
   replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance)),
-  fetchCvByAccountId: accountId => dispatch(cvActions.fetchCvByAccountId(accountId))
+  fetchCvByAccountId: accountId => dispatch(cvActions.fetchCvByAccountId(accountId)),
+  fetchCvReport: () => dispatch(cvActions.fetchCvReport())
 });
 
 export default connect(select, mapDispatchToProps)(Accounts);

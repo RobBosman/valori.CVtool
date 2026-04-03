@@ -1,10 +1,10 @@
-import { ofType } from "redux-observable";
-import { EMPTY } from "rxjs";
+import {ofType} from "redux-observable";
+import {EMPTY} from "rxjs";
 import * as rx from "rxjs/operators";
 import * as authActions from "../auth/auth-actions";
 import * as errorActions from "../error/error-actions";
 import * as eventBusActions from "./eventBus-actions";
-import { eventBusClient, ConnectionStates } from "./eventBus-services";
+import {ConnectionStates, eventBusClient} from "./eventBus-services";
 
 export const eventBusEpics = [
   // Copy the EventBus connection state to Redux.

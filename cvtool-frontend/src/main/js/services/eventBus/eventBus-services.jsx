@@ -1,8 +1,8 @@
 import EventBus from "@vertx/eventbus-bridge-client.js";
-import { BehaviorSubject } from "rxjs";
+import {BehaviorSubject} from "rxjs";
 import * as rx from "rxjs/operators";
 import * as authActions from "../auth/auth-actions.jsx";
-import { store } from "../../redux/store";
+import {store} from "../../redux/store";
 
 const CONNECT_URL = "/eventbus";
 const CONNECT_OPTIONS = {

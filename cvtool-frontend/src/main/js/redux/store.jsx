@@ -1,7 +1,7 @@
-import { createEpicMiddleware } from "redux-observable";
-import { configureStore } from "@reduxjs/toolkit";
-import { reducerRegistry } from "./reducerRegistry";
-import { epicRegistry } from "./epicRegistry";
+import {createEpicMiddleware} from "redux-observable";
+import {configureStore} from "@reduxjs/toolkit";
+import {reducerRegistry} from "./reducerRegistry";
+import {epicRegistry} from "./epicRegistry";
 
 const epicMiddleware = createEpicMiddleware();
 

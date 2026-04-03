@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.net.ServerSocket
 import java.util.concurrent.TimeUnit.SECONDS
+import kotlin.test.assertNotNull
 
 @ExtendWith(VertxExtension::class)
 internal class HttpServerVerticleTest {
@@ -61,7 +62,8 @@ internal class HttpServerVerticleTest {
             .send()
             .onComplete(testContext.succeeding { response ->
                 testContext.verify {
-                    assertTrue(response.body().contains(testUrl))
+                    assertNotNull(response.body())
+                    assertTrue(response.body()!!.contains(testUrl))
                     testContext.completeNow()
                 }
             })

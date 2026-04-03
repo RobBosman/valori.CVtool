@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import nlFlagPng from "../../static/icon-flag-NL.png";
 import ukFlagPng from "../../static/icon-flag-UK.png";
 

@@ -1,5 +1,5 @@
-import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
-import { ReducerRegistry } from "../../../main/js/redux/reducerRegistry";
+import {configureStore, createAction, createReducer} from "@reduxjs/toolkit";
+import {ReducerRegistry} from "../../../main/js/redux/reducerRegistry";
 
 describe("redux-reducers.test", () => {
 

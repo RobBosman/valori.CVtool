@@ -1,5 +1,5 @@
-import { reducerRegistry } from "../../../../main/js/redux/reducerRegistry";
-import { ConnectionStates } from "../../../../main/js/services/eventBus/eventBus-services";
+import {reducerRegistry} from "../../../../main/js/redux/reducerRegistry";
+import {ConnectionStates} from "../../../../main/js/services/eventBus/eventBus-services";
 import * as eventBusActions from "../../../../main/js/services/eventBus/eventBus-actions";
 
 describe("eventBus-actions.test", () => {

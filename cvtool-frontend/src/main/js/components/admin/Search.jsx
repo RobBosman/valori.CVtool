@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Text, Stack, TextField, Label, Pivot, PivotItem } from "@fluentui/react";
-import { connect } from "react-redux";
-import { CvDetailsList } from "../widgets/CvDetailsList";
-import { CvFormattedText } from "../widgets/CvFormattedText";
+import {Label, Pivot, PivotItem, Stack, Text, TextField} from "@fluentui/react";
+import {connect} from "react-redux";
+import {CvDetailsList} from "../widgets/CvDetailsList";
+import {CvFormattedText} from "../widgets/CvFormattedText";
 import * as enums from "../cv/Enums";
 import * as cvActions from "../../services/cv/cv-actions";
 import * as uiActions from "../../services/ui/ui-actions";

@@ -1,7 +1,7 @@
-import { ofType } from "redux-observable";
-import { from, merge, of } from "rxjs";
+import {ofType} from "redux-observable";
+import {from, merge, of} from "rxjs";
 import * as rx from "rxjs/operators";
-import { eventBusClient } from "../eventBus/eventBus-services";
+import {eventBusClient} from "../eventBus/eventBus-services";
 import * as utils from "../../utils/CommonUtils";
 import * as safeActions from "../safe/safe-actions";
 import * as uiActions from "../ui/ui-actions";
@@ -69,6 +69,14 @@ export const cvEpics = [
     rx.map(action => action.payload),
     rx.mergeMap(accountId => cvServices.fetchCvHistoryFromRemote(accountId, eventBusClient.sendEvent)),
     rx.map(fetchedCvHistory => safeActions.resetEntities(fetchedCvHistory))
+  ),
+
+  // Fetch a cv-report from the backend server.
+  (action$) => action$.pipe(
+    ofType(cvActions.fetchCvReport.type),
+    rx.mergeMap(() => cvServices.fetchCvReportAtRemote(eventBusClient.sendEvent)),
+    rx.tap(cvReport => console.log(">>>>>", cvReport)),
+    rx.ignoreElements()
   ),
 
   // Fetch a demo-cv from the backend server.

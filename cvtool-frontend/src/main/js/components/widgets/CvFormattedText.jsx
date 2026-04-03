@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Label, Stack, Text } from "@fluentui/react";
+import {Label, Stack, Text} from "@fluentui/react";
 import * as uiServices from "../../services/ui/ui-services";
 import * as textFormatter from "../../utils/TextFormatter";
 import * as preview from "../cv/Preview";

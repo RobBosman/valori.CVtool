@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Rating, Stack, Label } from "@fluentui/react";
-import { useId } from "@uifabric/react-hooks";
+import {Label, Rating, Stack} from "@fluentui/react";
+import {useId} from "@uifabric/react-hooks";
 
 export const CvRating = (props) => {
 

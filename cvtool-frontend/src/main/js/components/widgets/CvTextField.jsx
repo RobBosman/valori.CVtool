@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { TextField } from "@fluentui/react";
+import {TextField} from "@fluentui/react";
 
 export const CvTextField = (props) => {
 
