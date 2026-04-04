@@ -4,11 +4,11 @@ import com.mongodb.reactivestreams.client.MongoDatabase
 import io.reactivex.Flowable
 import io.vertx.core.Promise
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
-import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
 import org.bson.BsonDocument
+import org.bson.Document
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -84,18 +84,19 @@ internal class MongodbQueryVerticle : AbstractVerticle() {
                     .getCollection(entityName)
                     .aggregate(pipeline)
             }
+            .cache()
             .reduceWith(
-                { JsonArray() },
-                { resultsJson, item -> resultsJson.add(item) }
+                { ArrayList<Document>() },
+                { collectedItems, item -> collectedItems.apply { add(item) } }
             )
-            .toFlowable()
+            .map { collectedItems -> collectedItems.associateBy { it.getString("_id") } }
             .subscribe(
-                { fetchedItems ->
-                    log.info("Successfully queried ${fetchedItems.list.size} result items.")
-                    message.reply(JsonObject().put("result", fetchedItems))
+                { fetchedResult ->
+                    log.info("Successfully queried ${fetchedResult.size} result items")
+                    message.reply(JsonObject(fetchedResult))
                 },
                 {
-                    val errorMsg = "Error querying data: ${it.message}."
+                    val errorMsg = "Error querying data: ${it.message}"
                     log.warn(errorMsg)
                     message.fail(RECIPIENT_FAILURE.toInt(), errorMsg)
                 }

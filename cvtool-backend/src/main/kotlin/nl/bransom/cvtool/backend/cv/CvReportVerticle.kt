@@ -5,6 +5,8 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.BasicVerticle
+import nl.bransom.cvtool.backend.ModelUtils.toJsonObject
+import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.persistence.MONGODB_QUERY_ADDRESS
 
 const val CV_REPORT_ADDRESS = "cv.report"
@@ -22,11 +24,12 @@ internal class CvReportVerticle : BasicVerticle(CV_REPORT_ADDRESS) {
      */
     override fun handleRequest(message: Message<JsonObject>) {
         Single
-            .just(1)
-            .flatMap { fetchAccountsAndLatestAuditLogs() }
+            .just(message)
+            .flatMap { fetchAllAccounts() }
+            .flatMap { allAccounts -> mergeLatestAuditLogs(allAccounts) }
             .subscribe(
                 {
-                    log.debug("Successfully fetched cv report")
+                    log.info("Successfully fetched cv report")
                     message.reply(it)
                 },
                 {
@@ -37,7 +40,16 @@ internal class CvReportVerticle : BasicVerticle(CV_REPORT_ADDRESS) {
             )
     }
 
-    private fun fetchAccountsAndLatestAuditLogs(): Single<JsonObject> =
+    private fun fetchAllAccounts(): Single<JsonObject> =
+        vertx.eventBus()
+            .rxRequest<JsonObject>(
+                MONGODB_FETCH_ADDRESS,
+                JsonObject("""{ "account": [{}] }"""),
+                deliveryOptions
+            )
+            .map { it.body().getJsonObject("account") }
+
+    private fun mergeLatestAuditLogs(allAccounts: JsonObject): Single<JsonObject> =
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_QUERY_ADDRESS,
@@ -57,5 +69,20 @@ internal class CvReportVerticle : BasicVerticle(CV_REPORT_ADDRESS) {
                 ),
                 deliveryOptions
             )
-            .map { it.body() }
+            .map { merge(allAccounts, it.body()) }
+
+    private fun merge(allAccounts: JsonObject, auditTimestamps: JsonObject): JsonObject {
+        return allAccounts
+            .map { (id, account) ->
+                JsonObject(
+                    """{
+                        "$id": {
+                            "name": "${toJsonObject(account)?.getString("name")}",
+                            "timestamp": "${toJsonObject(auditTimestamps.map[id])?.getString("latestTimestamp")}"
+                        }
+                    }"""
+                )
+            }
+            .reduce { a, b -> a.mergeIn(b) }
+    }
 }

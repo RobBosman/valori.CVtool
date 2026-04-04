@@ -295,74 +295,72 @@ const Accounts = props => {
 
           <td valign="top" style={tdStyle}>
             {["ADMIN", "UNIT_LEAD", "SALES"].includes(props.authInfo.authorizationLevel)
-              && <Stack styles={editStyles}>
-                <CvTextField
-                  label="Naam"
-                  field="name"
-                  instanceContext={combinedContext()}
-                  readOnly={true}
-                />
-                <CvTextField
-                  label="E-mail"
-                  field="email"
-                  instanceContext={combinedContext(replaceAccountInstance)}
-                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
-                  disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
-                />
-                <CvDropdown
-                  label="Autorisatie"
-                  field="authorization.level"
-                  instanceContext={combinedContext(replaceAuthorizationInstance)}
-                  readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
-                  disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
-                  options={enums.getOptions(enums.Authorizations, props.locale)}
-                  styles={{ dropdown: { width: 230 } }}
-                />
-                <CvDropdown
-                  label="Unit"
-                  field="businessUnit._id"
-                  instanceContext={combinedContext(switchBusinessUnitOfAccount)}
-                  readOnly={!["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)}
-                  options={enums.getOptions(BusinessUnitOptions, props.locale)}
-                  styles={{ dropdown: { width: 230 } }}
-                />
-                <Separator/>
-                <TooltipHost content="Haal de gegevens op om het CV te bewerken">
-                  <DefaultButton
-                    text="CV bewerken"
-                    iconProps={{ iconName: "CloudDownload" }}
-                    disabled={!props.selectedAccountId}
-                    onClick={onFetchCv}
-                    styles={{ root: { width: 230 } }}
+              && <Stack styles={editStyles} verticalAlign="space-between">
+                <Stack tokens={{ childrenGap: "s1" }}>
+                  <CvTextField
+                    label="Naam"
+                    field="name"
+                    instanceContext={combinedContext()}
+                    readOnly={true}
                   />
-                </TooltipHost>
-                <Stack horizontal grow
-                  tokens={{ childrenGap: "s1" }}>
-                  <Stack verticalAlign="space-between"
-                    styles={{ root: { width: 230 } }}>
-                    <TooltipHost content="Download status rapport van alle cv's">
+                  <CvTextField
+                    label="E-mail"
+                    field="email"
+                    instanceContext={combinedContext(replaceAccountInstance)}
+                    readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
+                    disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
+                  />
+                  <CvDropdown
+                    label="Autorisatie"
+                    field="authorization.level"
+                    instanceContext={combinedContext(replaceAuthorizationInstance)}
+                    readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
+                    disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
+                    options={enums.getOptions(enums.Authorizations, props.locale)}
+                    styles={{ dropdown: { width: 230 } }}
+                  />
+                  <CvDropdown
+                    label="Unit"
+                    field="businessUnit._id"
+                    instanceContext={combinedContext(switchBusinessUnitOfAccount)}
+                    readOnly={!["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)}
+                    options={enums.getOptions(BusinessUnitOptions, props.locale)}
+                    styles={{ dropdown: { width: 230 } }}
+                  />
+                  <Separator/>
+                  <TooltipHost content="Haal de gegevens op om het CV te bewerken">
+                    <DefaultButton
+                      text="CV bewerken"
+                      iconProps={{ iconName: "CloudDownload" }}
+                      disabled={!props.selectedAccountId}
+                      onClick={onFetchCv}
+                      styles={{ root: { width: 230 } }}
+                    />
+                  </TooltipHost>
+                  {["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
+                    && <TooltipHost content="Download status rapport van alle cv's">
                       <DefaultButton
-                        text="CV rapport"
+                        text="Download status rapport"
                         iconProps={{ iconName: "CloudDownload" }}
                         onClick={onFetchCvReport}
                         styles={{ root: { width: 230 } }}
                       />
                     </TooltipHost>
-                    {["ADMIN"].includes(props.authInfo.authorizationLevel)
-                      && <TooltipHost content={`Definitief verwijderen van alle gegevens${selectedAccountName
-                        ? ` van ${selectedAccountName}`
-                        : " van een account"}`}>
-                        <DefaultButton
-                          text="Account verwijderen"
-                          iconProps={{ iconName: "Delete" }}
-                          disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
-                          onClick={onDeleteAccount}
-                          styles={{ root: { width: 230, color: semanticColors.severeWarningIcon } }}
-                        />
-                      </TooltipHost>
-                    }
-                  </Stack>
+                  }
                 </Stack>
+                {["ADMIN"].includes(props.authInfo.authorizationLevel)
+                  && <TooltipHost content={`Definitief verwijderen van alle gegevens${selectedAccountName
+                    ? ` van ${selectedAccountName}`
+                    : " van een account"}`}>
+                    <DefaultButton
+                      text="Account verwijderen"
+                      iconProps={{ iconName: "Delete" }}
+                      disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
+                      onClick={onDeleteAccount}
+                      styles={{ root: { width: 230, color: semanticColors.severeWarningIcon } }}
+                    />
+                  </TooltipHost>
+                }
               </Stack>
             }
           </td>
