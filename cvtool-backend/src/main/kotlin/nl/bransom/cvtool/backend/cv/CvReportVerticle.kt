@@ -24,7 +24,11 @@ internal class CvReportVerticle : BasicVerticle(CV_REPORT_ADDRESS) {
      *
      * Response:
      *   {
-     *     ...
+     *       "$accountId": {
+     *           "businessUnit": "name",
+     *           "accountName": "name",
+     *           "latestTimestamp": "timestamp"
+     *       }
      *   }
      */
     override fun handleRequest(message: Message<JsonObject>) {
@@ -98,13 +102,14 @@ internal class CvReportVerticle : BasicVerticle(CV_REPORT_ADDRESS) {
                 accounts
                     .map { account ->
                         val accountId = account.getString("_id")
-                        val latestTimestamp = toJsonObject(auditTimestamps.map[accountId])?.getString("latestTimestamp")
+                        val latestTimestamp = toJsonObject(auditTimestamps.map[accountId])
+                            ?.getString("latestTimestamp")
                         JsonObject(
                             """{
                                 "$accountId": {
                                     "businessUnit": "${businessUnit.getString("name")}",
-                                    "name": "${toJsonObject(account)?.getString("name")}",
-                                    "timestamp": "$latestTimestamp"
+                                    "accountName": "${account.getString("name")}",
+                                    "latestTimestamp": "$latestTimestamp"
                                 }
                             }"""
                         )
