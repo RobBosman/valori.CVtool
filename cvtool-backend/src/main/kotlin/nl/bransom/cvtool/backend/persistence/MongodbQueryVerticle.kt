@@ -92,7 +92,7 @@ internal class MongodbQueryVerticle : AbstractVerticle() {
             .map { collectedItems -> collectedItems.associateBy { it.getString("_id") } }
             .subscribe(
                 { fetchedResult ->
-                    log.info("Successfully queried ${fetchedResult.size} result items")
+                    log.debug("Successfully queried ${fetchedResult.size} result items")
                     message.reply(JsonObject(fetchedResult))
                 },
                 {

@@ -44,6 +44,11 @@ const downloadFile = (fileName, blob) => {
   window.URL.revokeObjectURL(url);
 };
 
+export const downloadCsvFile = (fileName, csvData) => {
+  const blob = new Blob([csvData], {type: "text/plain"});
+  downloadFile(fileName, blob);
+};
+
 export const downloadDocxFile = (fileName, b64Data) => {
   const blob = new Blob([Buffer.from(b64Data, "base64")], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
   downloadFile(fileName, blob);

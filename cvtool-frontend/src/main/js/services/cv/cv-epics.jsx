@@ -60,6 +60,7 @@ export const cvEpics = [
     ofType(cvActions.fetchCvByAccountId.type),
     rx.map(action => action.payload),
     rx.mergeMap(accountId => cvServices.fetchCvFromRemote(accountId, eventBusClient.sendEvent)),
+    rx.filter(Boolean), // filter debounced events
     rx.map(fetchedCv => safeActions.resetEntities(fetchedCv))
   ),
 
@@ -68,6 +69,7 @@ export const cvEpics = [
     ofType(cvActions.fetchCvHistory.type),
     rx.map(action => action.payload),
     rx.mergeMap(accountId => cvServices.fetchCvHistoryFromRemote(accountId, eventBusClient.sendEvent)),
+    rx.filter(Boolean), // filter debounced events
     rx.map(fetchedCvHistory => safeActions.resetEntities(fetchedCvHistory))
   ),
 
@@ -75,7 +77,8 @@ export const cvEpics = [
   (action$) => action$.pipe(
     ofType(cvActions.fetchCvReport.type),
     rx.mergeMap(() => cvServices.fetchCvReportAtRemote(eventBusClient.sendEvent)),
-    rx.tap(cvReport => console.log(">>>>>", cvReport)),
+    rx.filter(Boolean), // filter debounced events
+    rx.tap(cvReport => cvServices.downloadCsvFile(cvReport.fileName, cvReport.csvReport)),
     rx.ignoreElements()
   ),
 
@@ -84,7 +87,7 @@ export const cvEpics = [
     ofType(cvActions.fetchDemoCv.type),
     rx.map(action => action.payload),
     rx.mergeMap(payload => cvServices.fetchDemoCvAtRemote(payload.accountId, payload.locale, eventBusClient.sendEvent)),
-    rx.filter(Boolean),
+    rx.filter(Boolean), // filter debounced events
     rx.tap(demoCv => cvServices.downloadDocxFile(demoCv.fileName, demoCv.docxB64)),
     rx.ignoreElements()
   )

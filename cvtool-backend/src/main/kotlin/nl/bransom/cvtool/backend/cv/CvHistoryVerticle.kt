@@ -4,13 +4,16 @@ import io.reactivex.Single
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
-import nl.bransom.cvtool.backend.BasicVerticle
+import nl.bransom.cvtool.backend.DebouncingVerticle
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
 import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 
 const val CV_HISTORY_ADDRESS = "cv.history"
 
-internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
+internal class CvHistoryVerticle : DebouncingVerticle(CV_HISTORY_ADDRESS) {
+
+    override fun getMessageFingerprint(message: Message<JsonObject>): String? =
+        message.body().getString("accountId", "")
 
     /**
      * Expected message body:
