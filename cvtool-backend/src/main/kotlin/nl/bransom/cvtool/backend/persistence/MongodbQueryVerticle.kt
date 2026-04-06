@@ -74,7 +74,7 @@ internal class MongodbQueryVerticle : AbstractVerticle() {
         Flowable
             .just(message.body())
             .flatMap { jsonQuery ->
-                log.info("Vertx running query: {}", jsonQuery.encode())
+                log.debug("Vertx running query: {}", jsonQuery.encode())
 
                 val entityName = jsonQuery.getString("aggregate")
                 val pipeline = jsonQuery.getJsonArray("pipeline")
