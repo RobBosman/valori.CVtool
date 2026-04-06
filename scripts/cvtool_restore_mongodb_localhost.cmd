@@ -3,7 +3,7 @@
 ECHO "Make sure MongoDB is up and running."
 SET ENV_FILE=\secret\.env
 
-SET RESTORE_DATE=2026-03-27
+SET RESTORE_DATE=2026-04-06
 SET BACKUP_DIR=\backup\%RESTORE_DATE%
 SET MONGORESTORE=C:\Program Files\MongoDB\Tools\100\bin\mongorestore
 

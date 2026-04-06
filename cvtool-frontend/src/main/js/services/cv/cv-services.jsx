@@ -45,7 +45,7 @@ const downloadFile = (fileName, blob) => {
 };
 
 export const downloadCsvFile = (fileName, csvData) => {
-  const blob = new Blob([csvData], {type: "text/plain"});
+  const blob = new Blob([csvData], {type: "text/csv"});
   downloadFile(fileName, blob);
 };
 
