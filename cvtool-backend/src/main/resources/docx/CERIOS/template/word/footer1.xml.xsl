@@ -27,9 +27,9 @@
                         <w:tab w:val="clear" w:pos="4513"/>
                         <w:tab w:val="clear" w:pos="9026"/>
                         <w:tab w:val="left" w:pos="0"/>
-                        <w:tab w:val="left" w:pos="2410"/>
-                        <w:tab w:val="left" w:pos="6804"/>
-                        <w:tab w:val="left" w:pos="8364"/>
+                        <w:tab w:val="left" w:pos="2295"/>
+                        <w:tab w:val="left" w:pos="5670"/>
+                        <w:tab w:val="left" w:pos="7397"/>
                     </w:tabs>
                     <w:ind w:right="-142"/>
                     <w:jc w:val="center"/>
