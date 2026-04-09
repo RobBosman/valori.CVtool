@@ -30,36 +30,45 @@ export const authEpics = [
     )
   ),
 
-  // Handle requests to login or logout.
+  // Handle requests to login.
+  (action$) => action$.pipe(
+    ofType(authActions.requestLogin.type),
+    rx.switchMap(() => of(
+      authActions.setLoginState(authActions.LoginStates.LOGGING_IN_OPENID),
+      authActions.authenticate(),
+      eventBusActions.requestEventBusConnection(true),
+    )
+    )
+  ),
+
+  // Handle requests to prepare to logout.
   (action$, state$) => action$.pipe(
-    ofType(authActions.requestLogin.type, authActions.requestLogout.type),
-    rx.map(action => action.type === authActions.requestLogin.type),
-    rx.distinctUntilChanged(),
-    rx.switchMap(mustLogin =>
-      mustLogin
-        ? of(
-          authActions.setLoginState(authActions.LoginStates.LOGGING_IN_OPENID),
-          authActions.authenticate(),
-          eventBusActions.requestEventBusConnection(true),
-        )
-        : merge(
-          // When requested to logout then first save any changes...
-          of(safeActions.save(false)),
-          state$.pipe(
-            // ...and wait for the data to be saved.
-            rx.filter(state => !state.safe?.lastEditedTimeString
-               || utils.parseTimeString(state.safe.lastSavedTimeString) >= utils.parseTimeString(state.safe.lastEditedTimeString)),
-            rx.take(1),
-            rx.mergeMap(() => of(
-              authActions.setLoginState(authActions.LoginStates.LOGGING_OUT),
-              // Then delete the auth data and disconnect the EventBus.
-              authActions.setAuthResult(undefined),
-              authActions.setAuthInfo(undefined),
-              authActions.refreshAuthenticationBefore(undefined),
-              eventBusActions.requestEventBusConnection(false)
-            ))
-          )
-        )
+    ofType(authActions.requestLogout.type),
+    rx.switchMap(() => merge(
+      // When requested to logout then first save any changes...
+      of(safeActions.save(false)),
+      state$.pipe(
+        // ...and wait for the data to be saved.
+        rx.filter(state => !state.safe?.lastEditedTimeString
+            || utils.parseTimeString(state.safe.lastSavedTimeString) >= utils.parseTimeString(state.safe.lastEditedTimeString)),
+        rx.take(1),
+        rx.map(() => authActions.doLogout())
+      )
+    )
+    )
+  ),
+
+  // Handle requests to actually logout.
+  (action$) => action$.pipe(
+    ofType(authActions.doLogout.type),
+    rx.switchMap(() => of(
+      authActions.setLoginState(authActions.LoginStates.LOGGING_OUT),
+      // Then delete the auth data and disconnect the EventBus.
+      authActions.setAuthResult(undefined),
+      authActions.setAuthInfo(undefined),
+      authActions.refreshAuthenticationBefore(undefined),
+      eventBusActions.requestEventBusConnection(false)
+    )
     )
   ),
 

@@ -79,6 +79,7 @@ internal class ControlVerticle : AbstractVerticle() {
         router
             .route("/applyDataRetention")
             .handler { context ->
+                // Expected query param: 'retentionDate=YYYY-MM-DD'.
                 val msg = JsonObject().apply { context.request().params().forEach(::put) }
                 vertx.eventBus()
                     .rxRequest<JsonObject>(DATA_RETENTION_ADDRESS, msg, DeliveryOptions().setSendTimeout(10_000))

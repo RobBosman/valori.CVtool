@@ -12,7 +12,7 @@ import java.util.UUID
 
 internal object AuditLogger {
 
-    private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
+    private val DELIVERY_OPTIONS = DeliveryOptions().setSendTimeout(2_000)
 
     /**
      * Log an audit record if the user is about to change something in the database.
@@ -30,7 +30,7 @@ internal object AuditLogger {
                 .rxRequest<JsonObject>(
                     MONGODB_SAVE_ADDRESS,
                     composeAuditLog(messageBody, oldData, authInfo.accountId),
-                    deliveryOptions
+                    DELIVERY_OPTIONS
                 )
                 .map { }
         else

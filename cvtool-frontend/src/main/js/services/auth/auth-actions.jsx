@@ -4,7 +4,9 @@ import {reducerRegistry} from "../../redux/reducerRegistry";
 // Epic actions:
 export const clearLocalAccountCache = createAction("CLEAR_LOCAL_ACCOUNT_CACHE");
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
-export const requestLogout = createAction("REQUEST_LOGOUT", () => ({}));
+export const requestLogout = createAction("REQUEST_LOGOUT",
+  (saveAnyChanges) => ({ payload: saveAnyChanges }));
+export const doLogout = createAction("DO_LOGOUT", () => ({}));
 export const authenticate = createAction("AUTHENTICATE", () => ({}));
 export const refreshAuthenticationBefore = createAction("REFRESH_AUTHENTICATION_BEFORE");
 export const fetchAuthInfo = createAction("FETCH_AUTH_INFO",

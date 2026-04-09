@@ -86,7 +86,7 @@ const select = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestToLogout: () => dispatch(authActions.requestLogout())
+  requestToLogout: () => dispatch(authActions.requestLogout(true))
 });
 
 export default connect(select, mapDispatchToProps)(LoginDialog);

@@ -49,27 +49,38 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
         vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
-                JsonObject("""{ "audit_log": [{ "cvAccountId": "$accountId" }] }"""),
+                JsonObject(
+                    $$"""{
+                        "audit_log": [
+                            { "$or": [
+                                { "cvAccountId": "$$accountId" },
+                                { "instanceId": "$$accountId" }
+                            ] }
+                        ]
+                    }"""
+                ),
                 deliveryOptions
             )
             .map { it.body() }
 
-    private fun addAccountNames(accountId: String, entities: JsonObject): Single<JsonObject> {
-        val accountIds = entities.getInstances("audit_log")
+    private fun addAccountNames(accountId: String, entities: JsonObject): Single<JsonObject> =
+        entities.getInstances("audit_log")
             .map { auditLog -> auditLog.getString("editorAccountId") }
             .filter { it != accountId }
-        return if (accountIds.isEmpty())
-            Single.just(entities)
-        else fetchAccounts(accountIds)
-            .map { accounts -> entities.put("account", accounts) }
-    }
+            .let { accountIds ->
+                when {
+                    accountIds.isEmpty() -> Single.just(entities)
+                    else -> fetchAccounts(accountIds)
+                        .map { accounts -> entities.mergeIn(accounts) }
+                }
+            }
 
-    private fun fetchAccounts(accountIds: List<String>): Single<JsonObject> {
+    private fun fetchAccounts(accountIds: Collection<String>): Single<JsonObject> {
         val searchCriteria = JsonObject(
             $$"""
             {
                 "account": [
-                    { "_id": { "$in": [ $${accountIds.joinToString(",", "\"", "\"")} ] } }
+                    { "_id": { "$in": [ $${accountIds.toSet().joinToString(",") { "\"$it\"" }} ] } }
                 ]
             }
             """

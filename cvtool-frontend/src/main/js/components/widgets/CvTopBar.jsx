@@ -181,7 +181,7 @@ const select = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
   setLocale: (locale) => dispatch(uiActions.setLocale(locale)),
   setTheme: (theme) => dispatch(uiActions.setTheme(theme)),
-  requestToLogout: () => dispatch(authActions.requestLogout()),
+  requestToLogout: () => dispatch(authActions.requestLogout(true)),
   save: () => dispatch(safeActions.save(true))
 });
 

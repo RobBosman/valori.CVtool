@@ -40,7 +40,7 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
      *   {
      *       "filename": "report.csv",
      *       "csvReport": "\"label\";"\"unit\";\"account naam\";\"laatst gewijzigd\"
-     *              \"label.name\";\"unit.name\";\"account.name\";\"date-of-timestamp\"
+     *              \"label.name\";\"unit.name\";\"account.name\";\"last-changed-date\"
      *              ...
      *              ...",
      *   }
@@ -54,7 +54,7 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
             .map { (allEntities, auditLogs) -> merge(allEntities, auditLogs) }
             .subscribe(
                 {
-                    log.info("Successfully fetched cv report")
+                    log.debug("Successfully fetched cv report")
                     message.reply(it)
                 },
                 {
@@ -96,12 +96,12 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
                         "pipeline": [
                             {
                                 "$group": {
-                                    "_id": { "$ifNull": [ "$cvAccountId", "$editorAccountId" ] },
+                                    "_id": { "$ifNull": [ "$cvAccountId", "$instanceId" ] },
                                     "latestTimestamp": { "$last": "$timestamp" }
                                 }
                             }
                         ],
-                        "cursor": { }
+                        "cursor": { "batchSize": $${allEntities.getInstances("accounts").size} }
                     }"""
                 ),
                 deliveryOptions
@@ -127,12 +127,14 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
                             .sortedBy { it.getString("name") }
                             .map { account ->
                                 val accountId = account.getString("_id")
+                                val accountName = account.getString("name")
                                 val lastChanged = toJsonObject(auditTimestamps.map[accountId])
                                     ?.getString("latestTimestamp")
                                     ?.substringBefore("T")
                                     ?: GT_ONE_YEAR
-                                listOf(brandName, businessUnitName, account.getString("name"), lastChanged)
-                                    .joinToString(CSV_FIELD_SEPARATOR) { "\"${it.replace("\"", "\"\"")}\"" }
+                                listOf(brandName, businessUnitName, accountName, lastChanged)
+                                    .map { it.replace("\"", "\"\"") }
+                                    .joinToString(CSV_FIELD_SEPARATOR) { "\"$it\"" }
                             }
                     }
             }
@@ -140,6 +142,6 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
             .let {
                 JsonObject()
                     .put("fileName", "cv_status_rapport_${LocalDate.now()}.csv")
-                    .put("csvReport", "$UTF8_BOM$CSV_HEADER$CSV_ROW_SEPARATOR$CSV_ROW_SEPARATOR$it")
+                    .put("csvReport", "$UTF8_BOM$CSV_HEADER$CSV_ROW_SEPARATOR$it")
             }
 }

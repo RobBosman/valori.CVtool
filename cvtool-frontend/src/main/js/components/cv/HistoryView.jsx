@@ -59,7 +59,7 @@ const HistoryView = (props) => {
   // Find all {auditLogs} of the selected {account}.
   const enrichedAuditLogs = React.useMemo(() =>
     props.selectedAccountId && Object.values(props.auditLogEntity || {})
-      .filter(instance => instance.cvAccountId === props.selectedAccountId)
+      .filter(instance => instance.cvAccountId === props.selectedAccountId || instance.instanceId === props.selectedAccountId)
       .map(instance => ({
         ...instance,
         timestampMillis: -Date.parse(instance.timestamp), // The minus sign enforces initial decsending sort order.
