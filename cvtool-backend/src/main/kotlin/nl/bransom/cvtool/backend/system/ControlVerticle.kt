@@ -8,6 +8,7 @@ import io.vertx.core.http.HttpHeaders.TRANSFER_ENCODING
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
+import io.vertx.reactivex.core.http.HttpHeaders.CONTENT_TYPE
 import io.vertx.reactivex.ext.web.Router
 import nl.bransom.cvtool.backend.cv.ALL_CVS_GENERATE_ADDRESS
 import nl.bransom.cvtool.backend.persistence.DATA_RETENTION_ADDRESS
@@ -64,7 +65,7 @@ internal class ControlVerticle : AbstractVerticle() {
                                 .setStatusCode(HTTP_OK)
                                 .putHeader(TRANSFER_ENCODING, "application/zip")
                                 .putHeader(TRANSFER_ENCODING, "chunked")
-                                .putHeader(CONTENT_DISPOSITION, """"attachment; filename="all-docx.zip"""")
+                                .putHeader(CONTENT_DISPOSITION, """attachment; filename="all-docx.zip"""")
                                 .send(zipBytes)
                         },
                         {
@@ -87,7 +88,7 @@ internal class ControlVerticle : AbstractVerticle() {
                         {
                             context.response()
                                 .setStatusCode(HTTP_OK)
-                                .putHeader(TRANSFER_ENCODING, "application/json")
+                                .putHeader(CONTENT_TYPE, "application/json")
                                 .send(it.body().encodePrettily())
                         },
                         {
@@ -110,7 +111,7 @@ internal class ControlVerticle : AbstractVerticle() {
                                 .setStatusCode(HTTP_OK)
                                 .putHeader(TRANSFER_ENCODING, "application/json")
                                 .putHeader(TRANSFER_ENCODING, "chunked")
-                                .putHeader(CONTENT_DISPOSITION, """attachment; filename="conversion-result.json""")
+                                .putHeader(CONTENT_DISPOSITION, """attachment; filename="conversion-result.json"""")
                                 .send(it.body().encodePrettily())
                         },
                         {
