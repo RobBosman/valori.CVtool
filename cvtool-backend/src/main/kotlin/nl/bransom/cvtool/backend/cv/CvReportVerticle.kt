@@ -22,7 +22,9 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
     companion object {
         private const val CSV_FIELD_SEPARATOR = ";"
         private const val CSV_ROW_SEPARATOR = "\n"
-        private val CSV_HEADER = listOf("unit", "account naam", "laatst gewijzigd").joinToString(CSV_FIELD_SEPARATOR)
+        private val CSV_HEADER = listOf("label", "unit", "account naam", "laatst gewijzigd")
+            .joinToString(CSV_FIELD_SEPARATOR)
+        private const val GT_ONE_YEAR = "> 1 jaar geleden"
         private const val UTF8_BOM = "\uFEFF"
     }
 
@@ -37,8 +39,8 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
      * Response:
      *   {
      *       "filename": "report.csv",
-     *       "csvReport": "\"unit\";\"account naam\";\"laatst gewijzigd\"
-     *              \"unit.name\";\"account.name\";\"date-of-timestamp\"
+     *       "csvReport": "\"label\";"\"unit\";\"account naam\";\"laatst gewijzigd\"
+     *              \"label.name\";\"unit.name\";\"account.name\";\"date-of-timestamp\"
      *              ...
      *              ...",
      *   }
@@ -75,6 +77,7 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
                 JsonObject(
                     """{
                         "account": [{}],
+                        "brand": [{}],
                         "businessUnit": [$businessUnitCriteria]
                     }"""
                 ),
@@ -106,24 +109,31 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
             .map { allEntities to it.body() }
 
     private fun merge(allEntities: JsonObject, auditTimestamps: JsonObject): JsonObject =
-        allEntities
-            .getInstances("businessUnit")
+        allEntities.getInstances("brand")
             .sortedBy { it.getString("name") }
-            .flatMap { businessUnit ->
-                val businessUnitName = businessUnit.getString("name")
-                val accountIds = businessUnit.getJsonArray("accountIds")
+            .flatMap { brand ->
+                val brandId = brand.getString("_id")
+                val brandName = brand.getString("name")
                 allEntities
-                    .getInstances("account")
-                    .filter { it.getString("_id") in accountIds }
+                    .getInstances("businessUnit")
+                    .filter { it.getString("brandId") == brandId }
                     .sortedBy { it.getString("name") }
-                    .map { account ->
-                        val accountId = account.getString("_id")
-                        val lastChanged = toJsonObject(auditTimestamps.map[accountId])
-                            ?.getString("latestTimestamp")
-                            ?.substringBefore("T")
-                            ?: "> 1 jaar geleden"
-                        listOf(businessUnitName, account.getString("name"), lastChanged)
-                            .joinToString(CSV_FIELD_SEPARATOR) { "\"${it.replace("\"", "\"\"")}\"" }
+                    .flatMap { businessUnit ->
+                        val businessUnitName = businessUnit.getString("name")
+                        val accountIds = businessUnit.getJsonArray("accountIds")
+                        allEntities
+                            .getInstances("account")
+                            .filter { it.getString("_id") in accountIds }
+                            .sortedBy { it.getString("name") }
+                            .map { account ->
+                                val accountId = account.getString("_id")
+                                val lastChanged = toJsonObject(auditTimestamps.map[accountId])
+                                    ?.getString("latestTimestamp")
+                                    ?.substringBefore("T")
+                                    ?: GT_ONE_YEAR
+                                listOf(brandName, businessUnitName, account.getString("name"), lastChanged)
+                                    .joinToString(CSV_FIELD_SEPARATOR) { "\"${it.replace("\"", "\"\"")}\"" }
+                            }
                     }
             }
             .joinToString(CSV_ROW_SEPARATOR)
