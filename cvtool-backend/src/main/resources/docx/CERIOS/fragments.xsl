@@ -568,7 +568,8 @@
                                                         <w:color w:val="212B46"/>
                                                     </w:rPr>
                                                     <w:t>
-                                                        <xsl:apply-templates select="cv:periodBegin" mode="date-year"/>
+                                                        <xsl:apply-templates select="cv:periodBegin"
+                                                                             mode="date-month-year"/>
                                                     </w:t>
                                                 </w:r>
                                                 <w:r w:rsidRPr="00DE51B1">
@@ -591,7 +592,7 @@
                                                         <xsl:choose>
                                                             <xsl:when test="cv:periodEnd">
                                                                 <xsl:apply-templates select="cv:periodEnd"
-                                                                                     mode="date-year"/>
+                                                                                     mode="date-month-year"/>
                                                             </xsl:when>
                                                             <xsl:otherwise>
                                                                 <xsl:call-template name="translate">
@@ -867,7 +868,8 @@
                     </w:tcBorders>
                     <w:vAlign w:val="center"/>
                 </w:tcPr>
-                <w:p w14:paraId="59CDE4CA" w14:textId="662830AA" w:rsidR="001405E4" w:rsidRDefault="001405E4" w:rsidP="001405E4">
+                <w:p w14:paraId="59CDE4CA" w14:textId="662830AA" w:rsidR="001405E4" w:rsidRDefault="001405E4"
+                     w:rsidP="001405E4">
                     <w:pPr>
                         <w:pStyle w:val="BasicParagraph"/>
                         <w:keepLines/>
