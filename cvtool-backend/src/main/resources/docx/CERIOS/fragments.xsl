@@ -897,6 +897,7 @@
             <w:pPr>
                 <w:spacing w:before="12pt"/>
                 <w:noProof/>
+                <w:keepNext/>
             </w:pPr>
             <w:r w:rsidRPr="00CC7FCE">
                 <w:rPr>
