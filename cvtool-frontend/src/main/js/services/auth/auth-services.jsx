@@ -25,7 +25,7 @@ export const clearLocalAccountCache = () =>
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const allCachedAccounts = msalPCA.getAllAccounts();
-  const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANT.tenantId);
+  const cachedAccount = allCachedAccounts?.find(account => account.tenantId === TENANT.tenantId);
   const loginConfig = {
     account: cachedAccount,
     forceRefresh: forceRefresh,
