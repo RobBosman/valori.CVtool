@@ -1,4 +1,4 @@
-import * as MSAL from "@azure/msal-browser";
+import { createStandardPublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
 
 const TENANT = {
   tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
@@ -11,22 +11,20 @@ const getOAuthConfig = tenant => ({
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
     domainHint: tenant.domainHint,
-    redirectUri: window.location.origin,
-    navigateToLoginRequestUrl: false
+    redirectUri: window.location.origin + "/redirect"
   },
   cache: {
-    cacheLocation: "localStorage",
-    storeAuthStateInCookie: false
+    cacheLocation: "localStorage"
   }
 });
 
-const msal = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANT));
+const msalPCA = await createStandardPublicClientApplication(getOAuthConfig(TENANT));
 
 export const clearLocalAccountCache = () =>
-  msal.clearCache();
+  msalPCA.clearCache();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
-  const allCachedAccounts = msal.getAllAccounts();
+  const allCachedAccounts = msalPCA.getAllAccounts();
   const cachedAccount = allCachedAccounts?.find(account => account.tenantId == TENANT.tenantId);
   const loginConfig = {
     account: cachedAccount,
@@ -35,13 +33,13 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
   };
 
   return (!cachedAccount || (forceRefresh && readUserProfile))
-    ? msal.acquireTokenPopup(loginConfig)
-    : msal.acquireTokenSilent(loginConfig)
+    ? msalPCA.acquireTokenPopup(loginConfig)
+    : msalPCA.acquireTokenSilent(loginConfig)
       .catch(error => {
-        if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
+        if (cachedAccount && error instanceof InteractionRequiredAuthError) {
           console.warn("Error acquiring silent token:", error);
           // Fallback to interaction mode when silent call fails.
-          return msal.acquireTokenPopup(loginConfig);
+          return msalPCA.acquireTokenPopup(loginConfig);
         } else {
           console.error("Error acquiring token:", error);
           throw new Error(`Error acquiring token: ${error.message}`);

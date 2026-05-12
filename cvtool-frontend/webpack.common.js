@@ -10,7 +10,10 @@ const require = createRequire(import.meta.url);
 export const composeCommonConfig = devOrProdMode => ({
   mode: devOrProdMode,
 
-  entry: path.resolve(__dirname, "src/main/js", "app.jsx"),
+  entry: {
+    main: path.resolve(__dirname, "src/main/js", "app.jsx"),
+    redirect: path.resolve(__dirname, "src/main/js", "redirect.jsx") // ← Redirect bridge entry
+  },
   output: {
     filename: "js/[name].[contenthash:8].bundle.js",
     path: path.resolve(__dirname, "target/classes")
@@ -19,9 +22,17 @@ export const composeCommonConfig = devOrProdMode => ({
   plugins: [
     new HtmlWebpackPlugin({
       title: "CVtool",
-      template: path.resolve(__dirname, "src/main/js/index.html"),
+      filename: "index.html",
+      template: path.resolve(__dirname, "src/main/js", "index.html"),
       inject: true,
-      favicon: path.resolve(__dirname, "src/main/js/static", "favicon.ico")
+      favicon: path.resolve(__dirname, "src/main/js/static", "favicon.ico"),
+      chunks: ["main"]
+    }),
+    new HtmlWebpackPlugin({
+      filename: "redirect",
+      template: "./src/main/js/redirect.html",
+      inject: true,
+      chunks: ["redirect"], // ← Only include the redirect chunk.
     })
   ],
   module: {

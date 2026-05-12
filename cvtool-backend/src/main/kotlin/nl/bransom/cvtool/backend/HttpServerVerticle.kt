@@ -39,9 +39,9 @@ internal class HttpServerVerticle : AbstractVerticle() {
                     .setMaxWebSocketMessageSize(MAX_WEB_SOCKET_BYTES)
             )
             .requestHandler(createRouter())
-            .exceptionHandler { log.debug("Unexpected error in HttpServer: ${it.message}.", it) }
+            .exceptionHandler { log.warn("Unexpected error in HttpServer: ${it.message}.", it) }
             .rxListen()
-            .doOnError { log.warn("Cannot start verticle: ${it.message}") }
+            .doOnError { log.warn("Cannot start verticle: ${it.message}", it) }
             .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 {
