@@ -11,8 +11,7 @@ const getOAuthConfig = tenant => ({
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
     domainHint: tenant.domainHint,
-    redirectUri: window.location.origin + "/redirect",
-    navigateToLoginRequestUrl: true
+    redirectUri: window.location.origin + "/redirect"
   },
   cache: {
     cacheLocation: "localStorage"
