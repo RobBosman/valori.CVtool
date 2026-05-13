@@ -112,6 +112,10 @@ Data retention is 120 days.
  docker build --no-cache=true -t bransom/cvtool-frontend - < Dockerfile-frontend
  docker compose -f docker-compose.yaml --env-file=/secret/.env up -d
  docker system prune -f
+
+ docker tag bransom/cvtool-backend bransom/cvtool-backend:MSAL-v5
+ docker tag bransom/cvtool-frontend bransom/cvtool-frontend:MSAL-v5
+
  docker push bransom/cvtool-backend
  docker push bransom/cvtool-frontend
 
