@@ -1,4 +1,4 @@
-import { createStandardPublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
+import * as MSAL from "@azure/msal-browser";
 
 const TENANT = {
   tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
@@ -11,32 +11,31 @@ const getOAuthConfig = tenant => ({
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
     domainHint: tenant.domainHint,
-    redirectUri: window.location.origin + "/redirect"
+    redirectUri: window.location.origin + "/redirect",
+    navigateToLoginRequestUrl: true
   },
   cache: {
     cacheLocation: "localStorage"
   }
 });
 
-const msalPCA = await createStandardPublicClientApplication(getOAuthConfig(TENANT));
+const msalPCA = await MSAL.createStandardPublicClientApplication(getOAuthConfig(TENANT));
 
 export const clearLocalAccountCache = () =>
   msalPCA.clearCache();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
-  const allCachedAccounts = msalPCA.getAllAccounts();
-  const cachedAccount = allCachedAccounts?.find(account => account.tenantId === TENANT.tenantId);
+  const cachedAccount = msalPCA.getAllAccounts()?.find(account => account.tenantId === TENANT.tenantId);
   const loginConfig = {
     account: cachedAccount,
-    forceRefresh: forceRefresh,
     scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"]
   };
 
   return (!cachedAccount || (forceRefresh && readUserProfile))
     ? msalPCA.acquireTokenPopup(loginConfig)
-    : msalPCA.acquireTokenSilent(loginConfig)
+    : msalPCA.acquireTokenSilent({ ...loginConfig, forceRefresh: forceRefresh })
       .catch(error => {
-        if (cachedAccount && error instanceof InteractionRequiredAuthError) {
+        if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
           console.warn("Error acquiring silent token:", error);
           // Fallback to interaction mode when silent call fails.
           return msalPCA.acquireTokenPopup(loginConfig);

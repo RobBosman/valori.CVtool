@@ -1,10 +1,9 @@
-import path, {dirname} from "path";
-import {fileURLToPath} from "url";
+import path, {dirname} from "node:path";
+import {fileURLToPath} from "node:url";
 import {createRequire} from "module";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const require = createRequire(import.meta.url);
 
 export const composeCommonConfig = devOrProdMode => ({
@@ -24,15 +23,13 @@ export const composeCommonConfig = devOrProdMode => ({
       title: "CVtool",
       filename: "index.html",
       template: path.resolve(__dirname, "src/main/js", "index.html"),
-      inject: true,
       favicon: path.resolve(__dirname, "src/main/js/static", "favicon.ico"),
       chunks: ["main"]
     }),
     new HtmlWebpackPlugin({
       filename: "redirect",
-      template: "./src/main/js/redirect.html",
-      inject: true,
-      chunks: ["redirect"], // ← Only include the redirect chunk.
+      template: path.resolve(__dirname, "src/main/js", "redirect.html"),
+      chunks: ["redirect"] // ← Only include the redirect chunk.
     })
   ],
   module: {
