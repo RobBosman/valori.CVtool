@@ -2,14 +2,14 @@ upstream cvtool_backend {
     server cvtool-backend:${HTTP_PORT};
 }
 
-# --- MSAL redirect bridge ---
-# Register https://<your-host>/redirect as the app redirect URL in MSAL
-map $arg_target $upstream_url {
-  default "";
-  "cvtool" "http://cvtool-backend:${HTTP_PORT}";
-}
+## --- MSAL redirect bridge ---
+## Register https://<your-host>/redirect as the app redirect URL in MSAL
+#map $arg_target $upstream_url {
+#  default "";
+#  "cvtool" "http://cvtool-backend:${HTTP_PORT}";
+#}
 
-# HTTP -> HTTPS redirect (ongewijzigd)
+# HTTP -> HTTPS redirect
 server {
   listen                    ${HTTP_PORT};
   listen                    [::]:${HTTP_PORT};
@@ -28,8 +28,6 @@ server {
   listen                    ${HTTPS_PORT} ssl;
   listen                    [::]:${HTTPS_PORT} ssl;
   server_name               ${HTTP_HOST};
-
-  rewrite                   ^/cvtool/$ / permanent;
 
   add_header                Strict-Transport-Security max-age=63072000;
 
@@ -85,29 +83,24 @@ server {
     proxy_redirect          off;
   }
 
-  # Accept path style too: /redirect/cvtool
-  location ~ ^/redirect/([A-Za-z0-9_-]+)$ {
-      rewrite ^/redirect/([A-Za-z0-9_-]+)$ /redirect?target=$1 break;
-  }
-
   # Canonical redirect endpoint used by MSAL
   location = /redirect {
-      # Validate target via map (prevents open redirect)
-      if ($upstream_url = "") {
-          return 400 "Invalid target";
-      }
+#    # Validate target via map (prevents open redirect)
+#    if ($upstream_url = "") {
+#      return 400 "Invalid target";
+#    }
 
-      # Forward all query params (code, state, etc.) to backend's callback
-      proxy_set_header        Host $host;
-      proxy_set_header        X-Real-IP $remote_addr;
-      proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header        X-Forwarded-Proto $scheme;
+    # Forward all query params (code, state, etc.) to backend's callback
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
 
-      proxy_pass              $upstream_url/auth/callback$is_args$args;
-      proxy_redirect          off;
+    proxy_pass              $upstream_url/auth/callback$is_args$args;
+    proxy_redirect          off;
 
-      proxy_connect_timeout   5s;
-      proxy_send_timeout      30s;
-      proxy_read_timeout      30s;
+    proxy_connect_timeout   5s;
+    proxy_send_timeout      30s;
+    proxy_read_timeout      30s;
   }
 }
