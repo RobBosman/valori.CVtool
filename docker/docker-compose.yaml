@@ -35,7 +35,7 @@ services:
   ######################################################################################################################
   cvtool-backend:
     container_name: cvtool-backend
-    image: bransom/cvtool-backend:MSAL-v5
+    image: bransom/cvtool-backend
     restart: always
     environment:
       - CONTROL_CONNECTION_STRING=http://127.0.0.1:${CONTROL_PORT}/
@@ -56,7 +56,7 @@ services:
   ######################################################################################################################
   cvtool-frontend:
     container_name: cvtool-frontend
-    image: bransom/cvtool-frontend:MSAL-v5
+    image: bransom/cvtool-frontend
     restart: always
     environment:
       - HTTP_HOST=${HTTP_HOST}
