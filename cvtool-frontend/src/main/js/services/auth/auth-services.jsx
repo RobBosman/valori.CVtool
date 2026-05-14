@@ -2,17 +2,14 @@ import * as MSAL from "@azure/msal-browser";
 
 const TENANT = {
   tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
-  clientId: "2eb48338-41d2-4578-98ab-1466b7baad5f",
-  domainHint: "cerios.nl"
+  clientId: "2eb48338-41d2-4578-98ab-1466b7baad5f"
 };
 
 const getOAuthConfig = tenant => ({
   auth: {
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
-    domainHint: tenant.domainHint,
-    redirectUri: window.location.origin + "/redirect",
-    navigateToLoginRequestUrl: true
+    redirectUri: window.location.origin + "/redirect"
   },
   cache: {
     cacheLocation: "localStorage"
@@ -20,6 +17,14 @@ const getOAuthConfig = tenant => ({
 });
 
 const msalPCA = await MSAL.createStandardPublicClientApplication(getOAuthConfig(TENANT));
+
+msalPCA.handleRedirectPromise()
+  .then(response => {
+    console.log("handleRedirectPromise response:", response);
+    if (response) {
+      // resp.account, tokens available
+    }
+  });
 
 export const clearLocalAccountCache = () =>
   msalPCA.clearCache();
