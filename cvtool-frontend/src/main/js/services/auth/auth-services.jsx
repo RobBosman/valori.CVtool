@@ -18,21 +18,12 @@ const getOAuthConfig = tenant => ({
 
 const msalPCA = await MSAL.createStandardPublicClientApplication(getOAuthConfig(TENANT));
 
-msalPCA.handleRedirectPromise()
-  .then(response => {
-    console.log("handleRedirectPromise response:", response);
-    if (response) {
-      // resp.account, tokens available
-    }
-  });
-
 export const clearLocalAccountCache = () =>
   msalPCA.clearCache();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const cachedAccount = msalPCA.getAllAccounts()?.find(account => account.tenantId === TENANT.tenantId);
   const loginConfig = {
-    account: cachedAccount,
     scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"]
   };
 
