@@ -28,7 +28,7 @@ export const composeCommonConfig = devOrProdMode => ({
     }),
     new HtmlWebpackPlugin({
       filename: "redirect",
-      template: path.resolve(__dirname, "src/main/js", "redirect"),
+      template: path.resolve(__dirname, "src/main/js", "redirect.html"),
       chunks: ["redirect"] // ← Only include the redirect chunk.
     })
   ],
