@@ -2,12 +2,12 @@ upstream cvtool_backend {
     server cvtool-backend:${HTTP_PORT};
 }
 
-## --- MSAL redirect bridge ---
-## Register https://<your-host>/redirect as the app redirect URL in MSAL
-#map $arg_target $upstream_url {
-#  default "";
-#  "cvtool" "http://cvtool-backend:${HTTP_PORT}";
-#}
+# --- MSAL redirect bridge ---
+# Register https://<your-host>/redirect as the app redirect URL in MSAL
+map $arg_target $upstream_url {
+  default "";
+  "cvtool" "http://cvtool-backend:${HTTP_PORT}";
+}
 
 # HTTP -> HTTPS redirect
 server {
@@ -41,7 +41,7 @@ server {
   ssl_session_tickets       off;
   ssl_protocols             TLSv1.2 TLSv1.3;
   ssl_prefer_server_ciphers off;
-  ssl_ciphers               "ECDHE-ECDSA-AES128-GCM-SHA256:..."; # keep your full list
+  ssl_ciphers               "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";
   ssl_stapling              on;
   ssl_stapling_verify       on;
 
@@ -85,10 +85,10 @@ server {
 
   # Canonical redirect endpoint used by MSAL
   location = /redirect {
-#    # Validate target via map (prevents open redirect)
-#    if ($upstream_url = "") {
-#      return 400 "Invalid target";
-#    }
+    # Validate target via map (prevents open redirect)
+    if ($upstream_url = "") {
+      return 400 "Invalid target";
+    }
 
     # Forward all query params (code, state, etc.) to backend's callback
     proxy_set_header        Host $host;
