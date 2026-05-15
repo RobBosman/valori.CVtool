@@ -83,24 +83,37 @@ server {
     proxy_redirect          off;
   }
 
-  # Canonical redirect endpoint used by MSAL
-  location = /redirect {
+#  # Canonical redirect endpoint used by MSAL
+#  location = /redirect {
 #    # Validate target via map (prevents open redirect)
 #    if ($upstream_url = "") {
 #      return 400 "Invalid target";
 #    }
+#
+#    # Forward all query params (code, state, etc.) to backend's callback
+#    proxy_set_header        Host $host;
+#    proxy_set_header        X-Real-IP $remote_addr;
+#    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+#    proxy_set_header        X-Forwarded-Proto $scheme;
+#
+#    proxy_pass              http://cvtool_backend/auth/callback$is_args$args;
+#    proxy_redirect          off;
+#
+#    proxy_connect_timeout   5s;
+#    proxy_send_timeout      30s;
+#    proxy_read_timeout      30s;
+#  }
+#
+#  # Optional: if you used path variant
+#  location ~ ^/redirect/([A-Za-z0-9_-]+) {
+#    set $target_key $1;
+#    # Map lookup requires $arg_target; workaround: rewrite to query
+#    rewrite ^/redirect/([A-Za-z0-9_-]+)$ /redirect?target=$1? break;
+#  }
 
-    # Forward all query params (code, state, etc.) to backend's callback
-    proxy_set_header        Host $host;
-    proxy_set_header        X-Real-IP $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header        X-Forwarded-Proto $scheme;
-
-    proxy_pass              http://cvtool_backend/auth/callback$is_args$args;
-    proxy_redirect          off;
-
-    proxy_connect_timeout   5s;
-    proxy_send_timeout      30s;
-    proxy_read_timeout      30s;
+  # Optional: if you used hash variant
+  location ~ ^/redirect#(.+) {
+    # Rewrite to query
+    rewrite ^/redirect#(.+)$ /redirect?$1 break;
   }
 }

@@ -2,7 +2,8 @@ import * as MSAL from "@azure/msal-browser";
 
 const TENANT = {
   tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
-  clientId: "2eb48338-41d2-4578-98ab-1466b7baad5f"
+  clientId: "2eb48338-41d2-4578-98ab-1466b7baad5f",
+  domainHint: "cerios.nl"
 };
 
 const getOAuthConfig = tenant => ({
@@ -24,10 +25,9 @@ export const clearLocalAccountCache = () =>
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const cachedAccount = msalPCA.getAllAccounts()?.find(account => account.tenantId === TENANT.tenantId);
   const loginConfig = {
-    scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"],
-    extraQueryParameters: {
-      response_mode: "query"
-    }
+    account: cachedAccount,
+    domainHint: TENANT.domainHint,
+    scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"]
   };
 
   return (!cachedAccount || (forceRefresh && readUserProfile))
