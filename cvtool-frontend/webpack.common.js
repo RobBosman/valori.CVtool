@@ -1,6 +1,6 @@
 import path, {dirname} from "node:path";
 import {fileURLToPath} from "node:url";
-import {createRequire} from "module";
+import {createRequire} from "node:module";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -32,6 +32,7 @@ export const composeCommonConfig = devOrProdMode => ({
       chunks: ["redirect"] // ← Only include the redirect chunk.
     })
   ],
+
   module: {
     rules: [
       {

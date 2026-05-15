@@ -2,12 +2,12 @@ upstream cvtool_backend {
     server cvtool-backend:${HTTP_PORT};
 }
 
-## --- MSAL redirect bridge ---
-## Register https://<your-host>/redirect as the app redirect URL in MSAL
-#map $arg_target $upstream_url {
-#  default "";
-#  "cvtool" "http://cvtool-backend:${HTTP_PORT}";
-#}
+# --- MSAL redirect bridge ---
+# Register https://<your-host>/redirect as the app redirect URL in MSAL
+map $arg_target $upstream_url {
+  default "";
+  "cvtool" "http://cvtool-backend:${HTTP_PORT}";
+}
 
 # HTTP -> HTTPS redirect
 server {
@@ -66,7 +66,7 @@ server {
     proxy_set_header        Host $host;
     proxy_set_header        Upgrade $http_upgrade;
     proxy_set_header        Connection "upgrade";
-    proxy_pass              http://cvtool_backend;
+    proxy_pass              $upstream_url;
     proxy_http_version      1.1;
     proxy_redirect          off;
   }
@@ -77,43 +77,43 @@ server {
     proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header        X-NginX-Proxy true;
     proxy_set_header        Host $http_host;
-    proxy_pass              http://cvtool_backend;
+    proxy_pass              $upstream_url;
     proxy_ssl_session_reuse off;
     proxy_cache_bypass      $http_upgrade;
     proxy_redirect          off;
   }
 
-#  # Canonical redirect endpoint used by MSAL
-#  location = /redirect {
-#    # Validate target via map (prevents open redirect)
-#    if ($upstream_url = "") {
-#      return 400 "Invalid target";
-#    }
-#
-#    # Forward all query params (code, state, etc.) to backend's callback
-#    proxy_set_header        Host $host;
-#    proxy_set_header        X-Real-IP $remote_addr;
-#    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-#    proxy_set_header        X-Forwarded-Proto $scheme;
-#
-#    proxy_pass              http://cvtool_backend/auth/callback$is_args$args;
-#    proxy_redirect          off;
-#
-#    proxy_connect_timeout   5s;
-#    proxy_send_timeout      30s;
-#    proxy_read_timeout      30s;
-#  }
-#
-#  # Optional: if you used path variant
+  # Canonical redirect endpoint used by MSAL
+  location = /redirect {
+    # Obtain target from query param or fallback.
+    set $target $arg_target;
+
+    # Validate target via map (prevents open redirect).
+    if ($upstream_url = "") {
+      return 400 "Invalid target";
+    }
+
+    # Forward all query params (code, state, etc.) to backend's callback.
+    proxy_set_header        Host $http_host;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass              $upstream_url/auth/callback$is_args$args;
+    proxy_redirect          off;
+
+    proxy_connect_timeout   5s;
+    proxy_send_timeout      30s;
+    proxy_read_timeout      30s;
+  }
+
+#  # Optional: if you used path variant.
 #  location ~ ^/redirect/([A-Za-z0-9_-]+) {
 #    set $target_key $1;
 #    # Map lookup requires $arg_target; workaround: rewrite to query
 #    rewrite ^/redirect/([A-Za-z0-9_-]+)$ /redirect?target=$1? break;
 #  }
 
-  # Optional: if you used hash variant
-  location ~ ^/redirect#(.+) {
-    # Rewrite to query
-    rewrite ^/redirect#(.+)$ /redirect?$1 break;
-  }
+#  # Optional: if you used hash variant.
+#  location ~ ^/redirect#(.+)$ {
+#    # Rewrite to query
+#    rewrite ^/redirect#(.+)$ /redirect?$1 break;
+#  }
 }
