@@ -6,6 +6,8 @@ export const clearLocalAccountCache = createAction("CLEAR_LOCAL_ACCOUNT_CACHE");
 export const requestLogin = createAction("REQUEST_LOGIN", () => ({}));
 export const requestLogout = createAction("REQUEST_LOGOUT",
   (saveAnyChanges) => ({ payload: saveAnyChanges }));
+export const doLogin = createAction("DO_LOGIN",
+  (authResultJson) => ({ payload: authResultJson }));
 export const doLogout = createAction("DO_LOGOUT", () => ({}));
 export const authenticate = createAction("AUTHENTICATE", () => ({}));
 export const refreshAuthenticationBefore = createAction("REFRESH_AUTHENTICATION_BEFORE");

@@ -17,6 +17,15 @@ const AUTHENTICATION_REFRESH_SECONDS = 15 * 60; // 15 minutes
 const getTokenExpiration = authenticationResult =>
   authenticationResult.idTokenClaims?.exp || 0;
 
+// Set the callback handler for the redirect response to store the authResult in the Redux state and fetch the authInfo.
+authServices.setAuthResultCallback(authResult => {
+  console.log("authResultJsonCallback from AuthEpics:", authResult);
+  // store.dispatch(authActions.doLogin(JSON.stringify(authResult)));
+  if (authResult) {
+    store.dispatch(authActions.requestLogin());
+  }
+});
+
 export const authEpics = [
 
   // Clear all locally cached login accounts.
@@ -39,6 +48,23 @@ export const authEpics = [
       eventBusActions.requestEventBusConnection(true),
     )
     )
+  ),
+
+  // Use authResult to login.
+  (action$) => action$.pipe(
+    ofType(authActions.doLogin.type),
+    rx.map(action => action.payload),
+    rx.filter(Boolean),
+    rx.switchMap(authResultJson => {
+      const authResult = JSON.parse(authResultJson);
+      return of(
+        authActions.setAuthResult(authResultJson),
+        authActions.refreshAuthenticationBefore(getTokenExpiration(authResult)),
+        // When requested to login then fetch the authInfo data.
+        authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
+        authActions.fetchAuthInfo(authResult.account.username, authResult.account.name)
+      );
+    })
   ),
 
   // Handle requests to prepare to logout.
@@ -75,14 +101,8 @@ export const authEpics = [
   // Authenticate at the OpenID provider.
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
-    rx.switchMap(() => authServices.authenticateAtOpenIdProvider(false)),
-    rx.mergeMap(authResult => of(
-      authActions.setAuthResult(JSON.stringify(authResult)),
-      authActions.refreshAuthenticationBefore(getTokenExpiration(authResult)),
-      // When requested to login then fetch the authInfo data.
-      authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
-      authActions.fetchAuthInfo(authResult.account.username, authResult.account.name)
-    )),
+    rx.switchMap(() => authServices.authenticateAtOpenIdProvider(false, false)),
+    rx.map(authResult => authActions.doLogin(JSON.stringify(authResult))),
     rx.catchError((error, source$) => merge(
       of(
         errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE, error.stack),
@@ -109,7 +129,7 @@ export const authEpics = [
       const remainingSeconds = idTokenClaimsExp - (Date.now() / 1000);
       const next$ = (remainingSeconds > AUTHENTICATION_REFRESH_SECONDS)
         ? of(idTokenClaimsExp) // Keep using the same token.
-        : from(authServices.authenticateAtOpenIdProvider(true) // Get a new token.
+        : from(authServices.authenticateAtOpenIdProvider(true, false) // Get a new token.
           .then(authResult => {
             store.dispatch(authActions.setAuthResult(JSON.stringify(authResult)));
             return getTokenExpiration(authResult);

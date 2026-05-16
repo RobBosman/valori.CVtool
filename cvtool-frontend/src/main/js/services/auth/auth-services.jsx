@@ -22,6 +22,19 @@ const msalPCA = await MSAL.createStandardPublicClientApplication(getOAuthConfig(
 export const clearLocalAccountCache = () =>
   msalPCA.clearCache();
 
+// Will be replaced by a specific implementation from auth-epics.jsx.
+let authResultCallback = authResult => {
+  console.log("Redirect response token received:", authResult);
+};
+
+export const setAuthResultCallback = callback => {
+  authResultCallback = callback;
+};
+
+msalPCA.handleRedirectPromise()
+  .then(authResult => authResultCallback(authResult))
+  .catch(error => console.error("Error handling redirect response:", error));
+
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const cachedAccount = msalPCA.getAllAccounts()?.find(account => account.tenantId === TENANT.tenantId);
   const loginConfig = {
@@ -31,13 +44,13 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
   };
 
   return (!cachedAccount || (forceRefresh && readUserProfile))
-    ? msalPCA.acquireTokenPopup(loginConfig)
+    ? msalPCA.acquireTokenRedirect(loginConfig)
     : msalPCA.acquireTokenSilent({ ...loginConfig, forceRefresh: forceRefresh })
       .catch(error => {
         if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
           console.warn("Error acquiring silent token:", error);
           // Fallback to interaction mode when silent call fails.
-          return msalPCA.acquireTokenPopup(loginConfig);
+          return msalPCA.acquireTokenRedirect(loginConfig);
         } else {
           console.error("Error acquiring token:", error);
           throw new Error(`Error acquiring token: ${error.message}`);
