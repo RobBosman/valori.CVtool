@@ -40,9 +40,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             )
             .requestHandler(createRouter())
             .exceptionHandler {
-                if (it.message?.contains("Connection reset") == true) {
-                    log.debug("Unexpected error in HttpServer: ${it.message}.", it)
-                } else {
+                if (it.message != "Connection reset") {
                     log.warn("Unexpected error in HttpServer: ${it.message}.", it)
                 }
             }
@@ -51,11 +49,11 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 {
-                    log.info("Listening on http://${httpConfig.authority}/health and /eventbus")
+                    log.info("Listening on https://${httpConfig.authority}/health and /eventbus")
                     startPromise.complete()
                 },
                 {
-                    log.error("Error starting server on http://${httpConfig.authority}/", it)
+                    log.error("Error starting server on https://${httpConfig.authority}/", it)
                     startPromise.fail(it)
                 }
             )

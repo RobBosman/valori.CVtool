@@ -94,7 +94,8 @@ export const composeCommonConfig = devOrProdMode => ({
     static: "./target/classes",
     headers: {
       "Access-Control-Allow-Origin": "*",  // NOSONAR - configure CORS for local development
-      "Access-Control-Allow-Headers": "*"
+      "Access-Control-Allow-Headers": "*",
+      "Cross-Origin-Opener-Policy": "same-origin-allow-popups"
     },
     open: true,
     port: 8000,

@@ -145,7 +145,7 @@ const HistoryView = (props) => {
             onClick={() => props.setHistoryViewVisible(false)}
           />
         </Stack>
-        <Text style={{ position: "absolute", top: "120px", left: "132px" }}><em>Nog geen wijzigingsgegevens beschikbaar.</em></Text>
+        <Text style={{ position: "absolute", top: "120px", left: "132px" }}><em>Er zijn geen recente wijzigingsgegevens beschikbaar.</em></Text>
         <CvDetailsList
           columns={columns}
           items={enrichedAuditLogs}
