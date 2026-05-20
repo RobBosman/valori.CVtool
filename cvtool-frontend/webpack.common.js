@@ -19,7 +19,6 @@ export const composeCommonConfig = devOrProdMode => ({
   plugins: [
     new HtmlWebpackPlugin({
       title: "CVtool",
-      filename: "index.html",
       template: path.resolve(__dirname, "src/main/js", "index.html"),
       inject: true,
       favicon: path.resolve(__dirname, "src/main/js/static", "favicon.ico")
