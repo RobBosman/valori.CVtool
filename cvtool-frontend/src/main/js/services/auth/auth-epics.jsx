@@ -31,12 +31,8 @@ export const authEpics = [
   // Clear all locally cached login accounts.
   (action$) => action$.pipe(
     ofType(authActions.clearLocalAccountCache.type),
-    rx.map(action => action.payload),
-    rx.switchMap(shouldLogin => authServices.clearLocalAccountCache().then(() => shouldLogin)),
-    rx.mergeMap(shouldLogin => shouldLogin
-      ? of(authActions.requestLogin())
-      : EMPTY
-    )
+    rx.switchMap(() => authServices.clearAccountCache()),
+    rx.map(() => authActions.requestLogin())
   ),
 
   // Handle requests to login.

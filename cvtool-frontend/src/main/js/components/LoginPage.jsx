@@ -18,7 +18,7 @@ const LoginPage = (props) => {
   };
 
   const switchLoginAccount = () =>
-    store.dispatch(authActions.clearLocalAccountCache(true));
+    store.dispatch(authActions.clearLocalAccountCache());
 
   const onOpenAppsPage = () =>
     window.open("https://myapplications.microsoft.com/", "blank", "noopener");

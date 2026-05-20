@@ -10,16 +10,18 @@ const getOAuthConfig = tenant => ({
   auth: {
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
+    domainHint: tenant.domainHint,
     redirectUri: window.location.origin + "/redirect"
   },
   cache: {
-    cacheLocation: "localStorage"
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false
   }
 });
 
 const msalPCA = await MSAL.createStandardPublicClientApplication(getOAuthConfig(TENANT));
 
-export const clearLocalAccountCache = () =>
+export const clearAccountCache = () =>
   msalPCA.clearCache();
 
 // Will be replaced by a specific implementation from auth-epics.jsx.
@@ -40,12 +42,13 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
   const loginConfig = {
     account: cachedAccount,
     domainHint: TENANT.domainHint,
+    forceRefresh: forceRefresh,
     scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"]
   };
 
   return (!cachedAccount || (forceRefresh && readUserProfile))
     ? msalPCA.acquireTokenRedirect(loginConfig)
-    : msalPCA.acquireTokenSilent({ ...loginConfig, forceRefresh: forceRefresh })
+    : msalPCA.acquireTokenSilent(loginConfig)
       .catch(error => {
         if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
           console.warn("Error acquiring silent token:", error);
