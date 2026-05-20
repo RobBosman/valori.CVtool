@@ -1,4 +1,4 @@
-import { createStandardPublicClientApplication, InteractionRequiredAuthError } from "@azure/msal-browser";
+import * as MSAL from "@azure/msal-browser";
 
 const TENANT = {
   tenantId: "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
@@ -11,16 +11,17 @@ const getOAuthConfig = tenant => ({
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
     domainHint: tenant.domainHint,
-    redirectUri: window.location.origin + "/redirect"
+    redirectUri: window.location.origin
   },
   cache: {
-    cacheLocation: "localStorage"
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false
   }
 });
 
-const msalPCA = await createStandardPublicClientApplication(getOAuthConfig(TENANT));
+const msalPCA = await MSAL.createStandardPublicClientApplication(getOAuthConfig(TENANT));
 
-export const clearLocalAccountCache = () =>
+export const clearAccountCache = () =>
   msalPCA.clearCache();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
@@ -36,7 +37,7 @@ export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfi
     ? msalPCA.acquireTokenPopup(loginConfig)
     : msalPCA.acquireTokenSilent(loginConfig)
       .catch(error => {
-        if (cachedAccount && error instanceof InteractionRequiredAuthError) {
+        if (cachedAccount && error instanceof MSAL.InteractionRequiredAuthError) {
           console.warn("Error acquiring silent token:", error);
           // Fallback to interaction mode when silent call fails.
           return msalPCA.acquireTokenPopup(loginConfig);
