@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <jvm.release>23</jvm.release>
+        <jvm.release>26</jvm.release>
 
         <dependency-check-maven.version>12.2.2</dependency-check-maven.version>
         <kotlin.version>2.4.0-RC</kotlin.version>
