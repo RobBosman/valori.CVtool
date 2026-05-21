@@ -1,0 +1,100 @@
+volumes:
+  cvtool_backup:
+  letsencrypt_certs:
+  letsencrypt_logs:
+  letsencrypt_var:
+  letsencrypt_webroot:
+  mongodb:
+  mongodb_backup:
+  mongodb_config:
+  nginx_conf:
+
+services:
+
+  ######################################################################################################################
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    ports:
+      - ${MONGO_PORT}:27017
+    volumes:
+      - type: volume
+        source: mongodb
+        target: /data/db
+      - type: volume
+        source: mongodb_backup
+        target: /backup
+      - type: volume
+        source: mongodb_config
+        target: /data/configdb
+
+  ######################################################################################################################
+  cvtool-backend:
+    container_name: cvtool-backend-dev
+    image: bransom/cvtool-backend-dev
+    restart: always
+    environment:
+      - CONTROL_CONNECTION_STRING=http://127.0.0.1:${CONTROL_PORT}/
+      - HTTP_CONNECTION_STRING=http://${HTTP_HOST}:${HTTP_PORT}/
+      - AUTH_CONNECTION_STRING=https://login.microsoftonline.com/${OAUTH_TENANT_ID}/v2.0?${OAUTH_CLIENT_ID}:${OAUTH_CLIENT_SECRET}
+      - MONGO_CONNECTION_STRING=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin
+    volumes:
+      - type: volume
+        source: cvtool_backup
+        target: /backup
+    healthcheck:
+      test: echo 'wget -q -O - http://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  ######################################################################################################################
+  cvtool-frontend:
+    container_name: cvtool-frontend-dev
+    image: bransom/cvtool-frontend-dev
+    restart: always
+    environment:
+      - HTTP_HOST=${HTTP_HOST}
+      - HTTP_PORT=${HTTP_PORT}
+      - HTTPS_PORT=${HTTPS_PORT}
+    ports:
+      - ${HTTP_PORT}:${HTTP_PORT}
+      - ${HTTPS_PORT}:${HTTPS_PORT}
+    volumes:
+      - type: volume
+        source: letsencrypt_certs
+        target: /letsencrypt_certs
+        read_only: true
+      - type: volume
+        source: letsencrypt_webroot
+        target: /www/letsencrypt
+        read_only: true
+      - type: volume
+        source: nginx_conf
+        target: /etc/nginx
+
+  ######################################################################################################################
+  letsencrypt:
+    container_name: letsencrypt
+    image: certbot/certbot
+    depends_on:
+      - cvtool-frontend
+    volumes:
+      - type: volume
+        source: letsencrypt_certs
+        target: /etc/letsencrypt
+      - type: volume
+        source: letsencrypt_logs
+        target: /var/log/letsencrypt
+      - type: volume
+        source: letsencrypt_var
+        target: /var/lib/letsencrypt
+      - type: volume
+        source: letsencrypt_webroot
+        target: /data/letsencrypt
+    command: certonly --webroot --webroot-path=/data/letsencrypt --register-unsafely-without-email --agree-tos --quiet -d ${HTTP_HOST} -d cvtool.cerios.nl

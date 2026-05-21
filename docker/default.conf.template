@@ -85,6 +85,9 @@ server {
 
   # Canonical redirect endpoint used by MSAL
   location = /redirect {
+    # Ensure the correct content type is set.
+#    add_header              Content-Type text/html;
+
     # Obtain target from query param or fallback.
     set $target $arg_target;
 
