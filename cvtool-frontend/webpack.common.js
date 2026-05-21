@@ -21,7 +21,6 @@ export const composeCommonConfig = devOrProdMode => ({
   plugins: [
     new HtmlWebpackPlugin({
       title: "CVtool",
-      filename: "index.html",
       template: path.resolve(__dirname, "src/main/js", "index.html"),
       favicon: path.resolve(__dirname, "src/main/js/static", "favicon.ico"),
       chunks: ["main"]
@@ -94,8 +93,7 @@ export const composeCommonConfig = devOrProdMode => ({
     static: "./target/classes",
     headers: {
       "Access-Control-Allow-Origin": "*",  // NOSONAR - configure CORS for local development
-      "Access-Control-Allow-Headers": "*",
-      "Cross-Origin-Opener-Policy": "same-origin-allow-popups"
+      "Access-Control-Allow-Headers": "*"
     },
     open: true,
     port: 8000,

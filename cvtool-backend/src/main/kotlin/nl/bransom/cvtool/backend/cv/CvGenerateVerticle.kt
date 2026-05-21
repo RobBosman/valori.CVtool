@@ -61,6 +61,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             TransformerFactory
                 .newInstance()
                 .apply {
+                    setFeature("jdk.xml.enableExtensionFunctions", true)
                     setURIResolver { href, _ ->
                         val xslt = getXslIncludesMap(docxTemplate)
                             .getOrElse(href.substringAfterLast("/")) {

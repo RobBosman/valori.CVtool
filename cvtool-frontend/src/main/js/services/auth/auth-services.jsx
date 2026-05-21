@@ -11,7 +11,8 @@ const getOAuthConfig = tenant => ({
     authority: `https://login.microsoftonline.com/${tenant.tenantId}`,
     clientId: tenant.clientId,
     domainHint: tenant.domainHint,
-    redirectUri: window.location.origin + "/redirect"
+    redirectUri: window.location.origin + "/redirect",
+    navigateToLoginRequestUrl: false
   },
   cache: {
     cacheLocation: "localStorage",
@@ -19,7 +20,7 @@ const getOAuthConfig = tenant => ({
   }
 });
 
-const msalPCA = await MSAL.createStandardPublicClientApplication(getOAuthConfig(TENANT));
+const msalPCA = await MSAL.createNestablePublicClientApplication(getOAuthConfig(TENANT));
 
 export const clearAccountCache = () =>
   msalPCA.clearCache();

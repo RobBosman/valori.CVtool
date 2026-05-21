@@ -1,7 +1,7 @@
 ########################################################################################################################
 # Compose a container for building the CVtool-frontend.
 ########################################################################################################################
-FROM eclipse-temurin:23-jdk-alpine AS builder
+FROM eclipse-temurin:26-jdk-alpine AS builder
 RUN apk upgrade --no-cache
 RUN apk update --no-cache
 
