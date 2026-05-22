@@ -89,7 +89,13 @@ export const authEpics = [
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
     rx.switchMap(() => authServices.authenticateAtOpenIdProvider(false, false)),
-    rx.map(authResult => authActions.doLogin(JSON.stringify(authResult))),
+    rx.mergeMap(authResult => of(
+      authActions.setAuthResult(JSON.stringify(authResult)),
+      authActions.refreshAuthenticationBefore(getTokenExpiration(authResult)),
+      // When requested to login then fetch the authInfo data.
+      authActions.setLoginState(authActions.LoginStates.LOGGING_IN_BACKEND),
+      authActions.fetchAuthInfo(authResult.account.username, authResult.account.name)
+    )),
     rx.catchError((error, source$) => merge(
       of(
         errorActions.setLastError(`Authenticatie is mislukt: ${error.message}`, errorActions.ErrorSources.REDUX_MIDDLEWARE, error.stack),
