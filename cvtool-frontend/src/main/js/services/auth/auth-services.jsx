@@ -26,10 +26,10 @@ export const clearAccountCache = () =>
   msalPCA.clearCache();
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
-  const allCachedAccounts = msalPCA.getAllAccounts();
-  const cachedAccount = allCachedAccounts?.find(account => account.tenantId === TENANT.tenantId);
+  const cachedAccount = msalPCA.getAllAccounts()?.find(account => account.tenantId === TENANT.tenantId);
   const loginConfig = {
     account: cachedAccount,
+    domainHint: TENANT.domainHint,
     forceRefresh: forceRefresh,
     scopes: readUserProfile ? ["openid", "User.Read"] : ["openid"]
   };

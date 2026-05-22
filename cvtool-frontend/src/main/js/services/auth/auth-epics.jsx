@@ -71,7 +71,7 @@ export const authEpics = [
   // Authenticate at the OpenID provider.
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
-    rx.switchMap(() => authServices.authenticateAtOpenIdProvider(false)),
+    rx.switchMap(() => authServices.authenticateAtOpenIdProvider(false, false)),
     rx.mergeMap(authResult => of(
       authActions.setAuthResult(JSON.stringify(authResult)),
       authActions.refreshAuthenticationBefore(getTokenExpiration(authResult)),
@@ -105,7 +105,7 @@ export const authEpics = [
       const remainingSeconds = idTokenClaimsExp - (Date.now() / 1000);
       const next$ = (remainingSeconds > AUTHENTICATION_REFRESH_SECONDS)
         ? of(idTokenClaimsExp) // Keep using the same token.
-        : from(authServices.authenticateAtOpenIdProvider(true) // Get a new token.
+        : from(authServices.authenticateAtOpenIdProvider(true, false) // Get a new token.
           .then(authResult => {
             store.dispatch(authActions.setAuthResult(JSON.stringify(authResult)));
             return getTokenExpiration(authResult);

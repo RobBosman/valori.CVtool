@@ -83,8 +83,13 @@ internal object EventBusMessageHandler {
             }
 
             SOCKET_ERROR -> {
-                log.warn("Socket error: ${bridgeEvent.rawMessage}")
-                bridgeEvent.complete(false)
+                if (bridgeEvent.rawMessage.getString("message") == "Connection was closed") {
+                    log.debug("Socket error: {}", bridgeEvent.rawMessage)
+                    bridgeEvent.complete(true)
+                } else {
+                    log.warn("Socket error: ${bridgeEvent.rawMessage}")
+                    bridgeEvent.complete(false)
+                }
                 bridgeEvent.socket().close()
             }
 

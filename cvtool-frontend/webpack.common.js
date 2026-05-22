@@ -4,7 +4,6 @@ import {createRequire} from "node:module";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const require = createRequire(import.meta.url);
 
 export const composeCommonConfig = devOrProdMode => ({
@@ -20,10 +19,10 @@ export const composeCommonConfig = devOrProdMode => ({
     new HtmlWebpackPlugin({
       title: "CVtool",
       template: path.resolve(__dirname, "src/main/js", "index.html"),
-      inject: true,
       favicon: path.resolve(__dirname, "src/main/js/static", "favicon.ico")
     })
   ],
+
   module: {
     rules: [
       {

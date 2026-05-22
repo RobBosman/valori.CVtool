@@ -1,0 +1,21 @@
+########################################################################################################################
+# Compose the final CVtool-frontend container.
+########################################################################################################################
+FROM nginx:alpine
+LABEL maintainer=Rob.Bosman@cerios.nl
+SHELL ["/bin/sh", "-c"]
+RUN apk upgrade --no-cache
+RUN apk update --no-cache
+
+# Copy nginx configuration.
+COPY docker/default.conf.template /etc/nginx/templates/
+
+RUN mkdir -p /www/cvtool-frontend
+WORKDIR /www/cvtool-frontend
+
+# Copy and unzip the jar with frontend code.
+COPY cvtool-frontend/target/*.jar .
+RUN unzip *.jar
+RUN rm *.jar
+
+WORKDIR /
