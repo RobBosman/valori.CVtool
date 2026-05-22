@@ -15,7 +15,7 @@ RUN mkdir /build
 WORKDIR /build
 
 # Copy the source code.
-RUN git clone https://github.com/RobBosman/valori.CVtool.git --branch MSAL-v5-popup .
+RUN git clone https://github.com/RobBosman/valori.CVtool.git --branch master .
 
 # Build the frontend.
 RUN mvn clean verify -Dskip-dependency-check=true --projects cvtool-frontend --also-make
@@ -29,8 +29,8 @@ WORKDIR /
 FROM nginx:alpine
 LABEL maintainer=Rob.Bosman@cerios.nl
 SHELL ["/bin/sh", "-c"]
-RUN apk upgrade --no-cache
-RUN apk update --no-cache
+RUN apk upgrade --no-cache \
+    && apk update --no-cache
 
 # Copy nginx configuration.
 COPY --from=builder /build/docker/default.conf.template /etc/nginx/templates/
@@ -40,7 +40,7 @@ WORKDIR /www/cvtool-frontend
 
 # Copy and unzip the jar with frontend code.
 COPY --from=builder /build/cvtool-frontend/target/*.jar .
-RUN unzip *.jar
-RUN rm *.jar
+RUN unzip *.jar \
+    && rm *.jar
 
 WORKDIR /
