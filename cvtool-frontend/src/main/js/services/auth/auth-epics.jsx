@@ -17,15 +17,6 @@ const AUTHENTICATION_REFRESH_SECONDS = 15 * 60; // 15 minutes
 const getTokenExpiration = authenticationResult =>
   authenticationResult.idTokenClaims?.exp || 0;
 
-// Set the callback handler for the redirect response to store the authResult in the Redux state and fetch the authInfo.
-authServices.setAuthResultCallback(authResult => {
-  console.log("authResultJsonCallback from AuthEpics:", authResult);
-  // store.dispatch(authActions.doLogin(JSON.stringify(authResult)));
-  if (authResult) {
-    store.dispatch(authActions.requestLogin());
-  }
-});
-
 export const authEpics = [
 
   // Clear all locally cached login accounts.
