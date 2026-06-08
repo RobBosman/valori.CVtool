@@ -26,7 +26,7 @@ internal class MongodbFetchVerticle : AbstractVerticle() {
             .retryWhen { it.delay(5_000, MILLISECONDS) }
             .subscribe(
                 { mongoDatabase ->
-                    startPromise.complete()
+                    startPromise.tryComplete()
 
                     vertx.eventBus()
                         .consumer<JsonObject>(MONGODB_FETCH_ADDRESS)

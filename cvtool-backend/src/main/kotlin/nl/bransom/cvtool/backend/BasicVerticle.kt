@@ -21,7 +21,7 @@ abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
         vertx.eventBus()
             .consumer<JsonObject>(address)
             .toFlowable()
-            .doOnSubscribe { startPromise.complete() }
+            .doOnSubscribe { startPromise.tryComplete() }
             .subscribe(
                 { message ->
                     if (validateRequest(message)) {

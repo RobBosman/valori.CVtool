@@ -84,7 +84,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                     handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, it)
                     handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
 
-                    startPromise.complete()
+                    startPromise.tryComplete()
                     log.info("Successfully configured OpenID")
                 },
                 {

@@ -40,7 +40,7 @@ internal class ControlVerticle : AbstractVerticle() {
             .rxListen()
             .subscribe(
                 {
-                    startPromise.complete()
+                    startPromise.tryComplete()
                     log.info("Trigger data conversion via http://${configConfig.authority}/convertData")
                     log.info("All cvs can be downloaded via http://${configConfig.authority}/all-docx.zip")
                 },

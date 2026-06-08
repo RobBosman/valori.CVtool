@@ -50,7 +50,7 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     log.info("Listening on https://${httpConfig.authority}/health and /eventbus")
-                    startPromise.complete()
+                    startPromise.tryComplete()
                 },
                 {
                     log.error("Error starting server on https://${httpConfig.authority}/", it)
