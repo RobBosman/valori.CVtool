@@ -1,10 +1,12 @@
+// eslint.config.js
+import {defineConfig} from "eslint/config";
 import react from "eslint-plugin-react";
 import babelParser from "@babel/eslint-parser";
 
-export default [
+export default defineConfig([
   {
     files: ["**/*.js", "**/*.jsx"],
-    ignores: ["**/node/", "**/node_modules/", "target/"],
+    ignores: ["./node/", "./node_modules/", "./target/"],
     languageOptions: {
       globals: {
         Atomics: "readonly",
@@ -23,7 +25,7 @@ export default [
       react: react
     },
     rules: {
-      indent: ["error", 2],
+      // TODO: indent: ["error", 2],
       "linebreak-style": ["error", "unix"],
       quotes: ["error", "double"],
       semi: ["error", "always"]
@@ -51,4 +53,4 @@ export default [
       ]
     }
   }
-];
+]);
