@@ -26,9 +26,7 @@ export const clearAccountCache = () =>
   msalPCA.clearCache();
 
 // Will be replaced by a specific implementation from auth-epics.jsx.
-let authResultCallback = authResult => {
-  console.log("Redirect response token received:", authResult);
-};
+let authResultCallback = authResult => {};
 
 export const setAuthResultCallback = callback => {
   authResultCallback = callback;

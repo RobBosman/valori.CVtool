@@ -72,6 +72,10 @@ internal class HttpServerVerticle : AbstractVerticle() {
             .handler(HealthChecker.getHandler(vertx, config()))
 
         router
+            .route("/api/*")
+            .handler(ApiRequestHandler.getHandler(vertx))
+
+        router
             .route("/eventbus/*")
             .subRouter(EventBusMessageHandler.create(vertx))
         return router

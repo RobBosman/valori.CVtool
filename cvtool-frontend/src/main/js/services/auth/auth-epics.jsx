@@ -89,6 +89,7 @@ export const authEpics = [
   (action$) => action$.pipe(
     ofType(authActions.authenticate.type),
     rx.switchMap(() => authServices.authenticateAtOpenIdProvider(false, false)),
+    rx.tap(authResult => console.debug("JWT:", authResult?.idToken)), // TODO: cleanup if no longer needed
     rx.mergeMap(authResult => of(
       authActions.setAuthResult(JSON.stringify(authResult)),
       authActions.refreshAuthenticationBefore(getTokenExpiration(authResult)),
