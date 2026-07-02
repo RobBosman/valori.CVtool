@@ -1,12 +1,12 @@
 // eslint.config.js
-import {defineConfig} from "eslint/config";
+import {defineConfig, globalIgnores} from "eslint/config";
 import react from "eslint-plugin-react";
 import babelParser from "@babel/eslint-parser";
 
 export default defineConfig([
+  globalIgnores(["node/", "node_modules/", "target/"]),
   {
     files: ["**/*.js", "**/*.jsx"],
-    ignores: ["./node/", "./node_modules/", "./target/"],
     languageOptions: {
       globals: {
         Atomics: "readonly",

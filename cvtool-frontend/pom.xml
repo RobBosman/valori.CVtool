@@ -162,5 +162,11 @@
                 <skip-dependency-check>true</skip-dependency-check>
             </properties>
         </profile>
+        <profile>
+            <id>skip-dependency-check</id>
+            <properties>
+                <skip-dependency-check>true</skip-dependency-check>
+            </properties>
+        </profile>
     </profiles>
 </project>
