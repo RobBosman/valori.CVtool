@@ -16,7 +16,7 @@ import io.vertx.reactivex.ext.web.handler.sockjs.SockJSHandler
 import nl.bransom.cvtool.backend.MessageUtils.getMessageHeader
 import nl.bransom.cvtool.backend.MessageUtils.setMessageHeader
 import nl.bransom.cvtool.backend.ModelUtils.getInstanceIds
-import nl.bransom.cvtool.backend.authorization.AUTHENTICATE_ADDRESS
+import nl.bransom.cvtool.backend.authorization.AUTHENTICATE_USER_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
 import nl.bransom.cvtool.backend.authorization.Authorizer
@@ -106,7 +106,7 @@ internal object EventBusMessageHandler {
             .substringAfter("Bearer ")
         return vertx
             .eventBus()
-            .rxRequest<JsonObject>(AUTHENTICATE_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
+            .rxRequest<JsonObject>(AUTHENTICATE_USER_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
             .flatMap { authenticationResponse ->
                 vertx
                     .eventBus()

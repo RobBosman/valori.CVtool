@@ -7,6 +7,7 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.BasicVerticle
 import nl.bransom.cvtool.backend.ModelUtils.addEntity
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
+import nl.bransom.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
 import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle.Companion.getUsername
 import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle.Companion.isDomainAuthorized
 import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
@@ -36,7 +37,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
     override fun handleRequest(message: Message<JsonObject>) {
         Single
             .just(message.body())
-            .map(::createAuthInfo)
+            .map { it.toAuthInfo() }
             .flatMap(::addAccountInfo)
             .flatMap(::addAuthorizationLevel)
             .map(AuthInfo::toJson)
@@ -52,12 +53,6 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
                 }
             )
     }
-
-    private fun createAuthInfo(json: JsonObject) =
-        AuthInfo(
-            json.map["email"]?.toString() ?: error("Error creating AuthInfo: email not found."),
-            json.map["name"]?.toString() ?: error("Error creating AuthInfo: name not found.")
-        )
 
     private fun addAccountInfo(authInfo: AuthInfo) =
         fetchOrCreateAccount(authInfo.email, authInfo.name)

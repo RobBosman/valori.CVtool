@@ -10,6 +10,7 @@ import io.vertx.ext.auth.authentication.UsernamePasswordCredentials
 import io.vertx.ext.auth.oauth2.OAuth2Options
 import io.vertx.reactivex.core.AbstractVerticle
 import io.vertx.reactivex.core.eventbus.Message
+import io.vertx.reactivex.ext.auth.User
 import io.vertx.reactivex.ext.auth.oauth2.OAuth2Auth
 import io.vertx.reactivex.ext.auth.oauth2.providers.OpenIDConnectAuth
 import org.slf4j.LoggerFactory
@@ -17,8 +18,9 @@ import java.net.URI
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.BiConsumer
 
-const val AUTHENTICATE_ADDRESS = "authenticate"
+const val AUTHENTICATE_API_ADDRESS = "authenticate.api"
 const val AUTHENTICATE_HEALTH_ADDRESS = "authenticate.health"
+const val AUTHENTICATE_USER_ADDRESS = "authenticate.user"
 private val AUTHORIZED_DOMAINS = listOf(
     "Cerios.nl",
     "Cerios.be",
@@ -81,7 +83,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     // Provide the connection to the vertx handlers.
-                    handleVertxEvents(AUTHENTICATE_ADDRESS, ::handleAuthenticationRequest, it)
+                    handleVertxEvents(AUTHENTICATE_USER_ADDRESS, ::handleUserAuthenticationRequest, it)
+                    handleVertxEvents(AUTHENTICATE_API_ADDRESS, ::handleApiAuthenticationRequest, it)
                     handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
 
                     startPromise.tryComplete()
@@ -111,55 +114,24 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 }
             )
 
-    /**
-     * Expected message body:
-     *   {
-     *     "jwt": "###.######.####"
-     *   }
-     *
-     * Response:
-     *   {
-     *     "email": "P.Puk@cerios.nl",
-     *     "name": "Pietje Puk",
-     *   }
-     *
-     */
-    private fun handleAuthenticationRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
+    // Returns the JWT payload upon successful authentication.
+    private fun handleApiAuthenticationRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
         Single
-            .just(
-                message.body().getString("jwt")
-                    ?: error("Cannot obtain 'jwt' from message body.")
-            )
-            .flatMap { authenticateJwt(it, oauth2) }
+            .just(message)
+            .map { it.body().getString("jwt") ?: error("Cannot obtain 'jwt' from message body.") }
+            .flatMap { oauth2.rxAuthenticate(TokenCredentials(it)) }
+            .map { user -> user.attributes().getJsonObject("accessToken") }
             .subscribe(
                 {
-                    log.debug("Authenticated successfully.")
+                    log.debug("Successfully authenticated API JWT.")
                     message.reply(it)
                 },
                 {
-                    val errorMsg = "Error authenticating: ${it.message}"
+                    val errorMsg = "Error authenticating API JWT: ${it.message}"
                     log.warn(errorMsg)
                     message.fail(RECIPIENT_FAILURE.toInt(), it.message)
                 }
             )
-
-    private fun authenticateJwt(jwt: String, oauth2: OAuth2Auth) =
-        oauth2
-            .rxAuthenticate(TokenCredentials(jwt))
-            .map { user ->
-                val accessToken = user.attributes().getJsonObject("accessToken")
-                val email = accessToken.getString("preferred_username", "")
-                if (email.isBlank())
-                    error("Cannot obtain email from JWT.")
-                else if (!email.isDomainAuthorized())
-                    error("Email '$email' is not supported. Please use a ${AUTHORIZED_DOMAINS.joinToString(" or ") { "@$it" }} account.")
-                var name = accessToken.getString("name", "")
-                if (name.isBlank())
-                    name = email.substringBefore("@")
-                JsonObject()
-                    .put("email", email)
-                    .put("name", name)
-            }
 
     private fun handleHealthRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
         oauth2
@@ -188,4 +160,50 @@ internal class AuthenticateVerticle : AbstractVerticle() {
 
     private fun shouldIgnoreHealthError(): Boolean =
         numIgnoredHealthErrors.getAndIncrement() < MAX_IGNORED_HEALTH_ERRORS
+
+    /**
+     * Expected message body:
+     *   {
+     *     "jwt": "###.######.####"
+     *   }
+     *
+     * Response:
+     *   {
+     *     "email": "P.Puk@cerios.nl",
+     *     "name": "Pietje Puk",
+     *   }
+     *
+     */
+    private fun handleUserAuthenticationRequest(message: Message<JsonObject>, oauth2: OAuth2Auth) =
+        Single
+            .just(message)
+            .map { it.body().getString("jwt") ?: error("Cannot obtain 'jwt' from message body.") }
+            .flatMap { oauth2.rxAuthenticate(TokenCredentials(it)) }
+            .map { it.toAuthInfo() }
+            .subscribe(
+                {
+                    log.debug("Successfully authenticated user JWT.")
+                    message.reply(it)
+                },
+                {
+                    val errorMsg = "Error authenticating user JWT: ${it.message}"
+                    log.warn(errorMsg)
+                    message.fail(RECIPIENT_FAILURE.toInt(), it.message)
+                }
+            )
+
+    private fun User.toAuthInfo(): JsonObject {
+        val accessToken = attributes().getJsonObject("accessToken")
+        val email = accessToken.getString("preferred_username", "")
+        if (email.isBlank())
+            error("Cannot obtain email from JWT.")
+        else if (!email.isDomainAuthorized())
+            error("Email '$email' is not supported. Please use a ${AUTHORIZED_DOMAINS.joinToString(" or ") { "@$it" }} account.")
+        var name = accessToken.getString("name", "")
+        if (name.isBlank())
+            name = email.substringBefore("@")
+        return JsonObject()
+            .put("email", email)
+            .put("name", name)
+    }
 }

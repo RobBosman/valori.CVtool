@@ -1,0 +1,24 @@
+{
+  "KEY": {
+    "typ": "JWT",
+    "alg": "RS256",
+    "kid": "aFkmKVFc-4WV6sXCBvNZkXI505Y"
+  },
+  "PAYLOAD": {
+    "aud": "2eb48338-41d2-4578-98ab-1466b7baad5f",
+    "iss": "https://login.microsoftonline.com/3d75b784-24a4-48cd-8149-36d9fc6f64d2/v2.0",
+    "iat": 1783018370,
+    "nbf": 1783018370,
+    "exp": 1783022270,
+    "name": "Rob Bosman",
+    "nonce": "019f2431-81ef-741a-bbcc-b2a021bf379b",
+    "oid": "364d9132-390e-4156-a495-fa8865b80154",
+    "preferred_username": "rob.bosman@cerios.nl",
+    "rh": "1.AU4AhLd1PaQkzUiBSTbZ_G9k0jiDtC7SQXhFmKsUZre6rV8AACFOAA.",
+    "sid": "006b25ca-8194-80bb-339f-84c1f7412519",
+    "sub": "rq7_29J7yV393_PmBjiRJyfkiGZ1X6J8uuNv6jATCuE",
+    "tid": "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
+    "uti": "Vlrvw9Z-80aQQsp2xH0iAA",
+    "ver": "2.0"
+  }
+}

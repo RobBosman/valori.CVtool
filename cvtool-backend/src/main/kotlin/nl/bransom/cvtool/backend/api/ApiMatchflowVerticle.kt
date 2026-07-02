@@ -14,12 +14,6 @@ const val API_MATCHFLOW_ADDRESS = "api.matchflow"
 internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
 
     /**
-     * Expected message body:
-     *
-     *    {
-     *      "accountId": "id-of-account-of-api-request"
-     *    }
-     *
      * Response:
      *
      *    {
@@ -75,7 +69,37 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
     }
 
     private fun toApiResponse(fetchedEntities: JsonObject): JsonObject {
-        val certificationByAccountId = listOf("education", "training")
+        val certificationByAccountId = obtainCertifications(fetchedEntities)
+        val skillsByAccountId = obtainSkills(fetchedEntities)
+        val result =
+            fetchedEntities.getInstances("account")
+                .mapNotNull {
+                    val accountId = it.getString("_id")
+                    val certification = certificationByAccountId[accountId] ?: emptySet()
+                    val skills = skillsByAccountId[accountId] ?: emptySet()
+                    if (certification.isNotEmpty() || skills.isNotEmpty()) {
+                        JsonObject(
+                            """{
+                                "name": "${it.getString("name")}",
+                                "email": "${it.getString("email")}"
+                            }"""
+                        ).apply {
+                            if (certification.isNotEmpty()) {
+                                put("certification", certification)
+                            }
+                            if (skills.isNotEmpty()) {
+                                put("skills", skills)
+                            }
+                        }
+                    } else {
+                        null
+                    }
+                }
+        return JsonObject().put("data", JsonArray(result))
+    }
+
+    private fun obtainCertifications(fetchedEntities: JsonObject) =
+        listOf("education", "training")
             .flatMap { entityName -> fetchedEntities.getInstances(entityName) }
             .groupBy { it.getString("accountId") }
             .mapValues { (_, certifications) ->
@@ -98,7 +122,8 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
             }
             .filter { (_, trainings) -> trainings.isNotEmpty() }
 
-        val skillsByAccountId = fetchedEntities.getInstances("skill")
+    private fun obtainSkills(fetchedEntities: JsonObject): Map<String?, List<JsonObject>> =
+        fetchedEntities.getInstances("skill")
             .groupBy { it.getString("accountId") }
             .mapValues { (_, skills) ->
                 skills
@@ -114,32 +139,6 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
                     }
             }
             .filter { (_, skills) -> skills.isNotEmpty() }
-
-        val result = fetchedEntities.getInstances("account")
-            .mapNotNull {
-                val accountId = it.getString("_id")
-                val certification = certificationByAccountId[accountId] ?: emptySet()
-                val skills = skillsByAccountId[accountId] ?: emptySet()
-                if (certification.isNotEmpty() || skills.isNotEmpty()) {
-                    JsonObject(
-                        """{
-                            "name": "${it.getString("name")}",
-                            "email": "${it.getString("email")}"
-                        }"""
-                    ).apply {
-                        if (certification.isNotEmpty()) {
-                            put("certification", certification)
-                        }
-                        if (skills.isNotEmpty()) {
-                            put("skills", skills)
-                        }
-                    }
-                } else {
-                    null
-                }
-            }
-        return JsonObject().put("data", JsonArray(result))
-    }
 
     private fun String.escapeJson() =
         trim()

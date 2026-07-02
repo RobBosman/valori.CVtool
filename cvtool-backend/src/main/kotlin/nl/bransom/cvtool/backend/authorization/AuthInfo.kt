@@ -3,7 +3,10 @@ package nl.bransom.cvtool.backend.authorization
 import io.vertx.core.json.JsonObject
 import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 
-internal class AuthInfo(val email: String, val name: String) {
+internal class AuthInfo(
+    val email: String,
+    val name: String
+) {
 
     var accountId: String = ""
         private set
