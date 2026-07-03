@@ -72,10 +72,12 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Environment variable:
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
         val configParams = parseConnectionString(config().getString("AUTH_CONNECTION_STRING"))
-        val oauth2Options = OAuth2Options()
-            .setSite(configParams["site"])
-            .setClientId(configParams["clientId"])
-            .setClientSecret(configParams["secret"])
+        val oauth2Options = OAuth2Options().apply {
+            site = configParams["site"]
+            clientId = configParams["clientId"]
+            clientSecret = configParams["secret"]
+            jwtOptions.audience = listOf(clientId, "api://$clientId")
+        }
 
         // Obtain config settings from the OpenID Provider.
         OpenIDConnectAuth
@@ -83,9 +85,9 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .subscribe(
                 {
                     // Provide the connection to the vertx handlers.
-                    handleVertxEvents(AUTHENTICATE_USER_ADDRESS, ::handleUserAuthenticationRequest, it)
                     handleVertxEvents(AUTHENTICATE_API_ADDRESS, ::handleApiAuthenticationRequest, it)
                     handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
+                    handleVertxEvents(AUTHENTICATE_USER_ADDRESS, ::handleUserAuthenticationRequest, it)
 
                     startPromise.tryComplete()
                     log.info("Successfully configured OpenID")
@@ -179,7 +181,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             .just(message)
             .map { it.body().getString("jwt") ?: error("Cannot obtain 'jwt' from message body.") }
             .flatMap { oauth2.rxAuthenticate(TokenCredentials(it)) }
-            .map { it.toAuthInfo() }
+            .map { user -> user.toAuthInfo() }
             .subscribe(
                 {
                     log.debug("Successfully authenticated user JWT.")

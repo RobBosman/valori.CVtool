@@ -30,8 +30,8 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
      *   {
      *     "email": "P.Puk@cerios.nl",
      *     "name": "Pietje Puk",
-     *     "authorizationLevel": "SALES",
-     *     "accountId": "1111-2222-5555-7777"
+     *     "accountId": "1111-2222-5555-7777",
+     *     "authorizationLevel": "SALES"
      *   }
      */
     override fun handleRequest(message: Message<JsonObject>) {

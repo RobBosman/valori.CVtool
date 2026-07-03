@@ -21,21 +21,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <jvm.release>26</jvm.release>
+
+        <maven.compiler.release>26</maven.compiler.release>
 
         <dependency-check-maven.version>12.2.2</dependency-check-maven.version>
-        <kotlin.version>2.4.0</kotlin.version>
-        <logback-classic.version>1.5.37</logback-classic.version>
-        <mongodb-driver-reactivestreams.version>5.8.0</mongodb-driver-reactivestreams.version>
-        <nodejs.version>v26.4.0</nodejs.version>
-        <vertx.version>5.1.3</vertx.version>
-
         <frontend-maven-plugin.version>2.0.1</frontend-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+        <kotlin.version>2.4.0</kotlin.version>
+        <logback-classic.version>1.5.37</logback-classic.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
         <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
+        <mongodb-driver-reactivestreams.version>5.8.0</mongodb-driver-reactivestreams.version>
+        <nodejs.version>v26.4.0</nodejs.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
+        <vertx.version>5.1.3</vertx.version>
     </properties>
 
     <profiles>
