@@ -76,7 +76,8 @@ internal class AuthenticateVerticle : AbstractVerticle() {
             site = configParams["site"]
             clientId = configParams["clientId"]
             clientSecret = configParams["secret"]
-            jwtOptions.audience = listOf(clientId, "api://$clientId")
+            jwtOptions.addAudience("api://$clientId")
+            jwtOptions.addAudience(clientId)
         }
 
         // Obtain config settings from the OpenID Provider.
