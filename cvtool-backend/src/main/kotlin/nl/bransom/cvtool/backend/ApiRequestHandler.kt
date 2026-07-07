@@ -83,6 +83,7 @@ internal object ApiRequestHandler {
             .just(request)
             .map {
                 it.getHeader(AUTHORIZATION)?.substringAfter("Bearer ")
+                    ?.also { log.info("API-JWT: $it") }
                     ?: error("Missing AUTHORIZATION header.")
             }
             .flatMap { jwt ->
