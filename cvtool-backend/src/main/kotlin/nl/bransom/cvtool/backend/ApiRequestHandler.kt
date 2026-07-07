@@ -20,16 +20,12 @@ import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.ADMIN
 import org.slf4j.LoggerFactory.getLogger
 import java.net.HttpURLConnection.HTTP_NOT_FOUND
 import java.net.HttpURLConnection.HTTP_OK
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.Base64.PaddingOption.ABSENT_OPTIONAL
-import kotlin.text.Charsets.UTF_8
 
 internal object ApiRequestHandler {
 
     private val log = getLogger(ApiRequestHandler::class.java)
     private const val ROLES_CLAIM = "roles"
     private const val ROLE_API_ACCESS = "Api.Access"
-    private const val ROLE_BULK_READ_SKILLS = "ROLE_BULK_READ_SKILLS"
 
     private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
 
@@ -70,8 +66,7 @@ internal object ApiRequestHandler {
      *
      *    {
      *      "roles": [
-     *        "Api.Access",
-     *        "ROLE_BULK_READ_SKILLS"
+     *        "Api.Access"
      *      ]
      *    }
      */
@@ -83,16 +78,9 @@ internal object ApiRequestHandler {
             .just(request)
             .map {
                 it.getHeader(AUTHORIZATION)?.substringAfter("Bearer ")
-                    ?.also { log.info("API-JWT: $it") }
                     ?: error("Missing AUTHORIZATION header.")
             }
             .flatMap { jwt ->
-                // Log the JWT payload.
-                val jwtPayload = jwt.split(".")[1]
-                    .let(Base64.withPadding(ABSENT_OPTIONAL)::decode)
-                    .let { it.toString(UTF_8) }
-                log.info("API-JWT: $jwtPayload")
-
                 vertx
                     .eventBus()
                     // Verify the JWT and obtain its payload.
@@ -101,7 +89,7 @@ internal object ApiRequestHandler {
             .map { it.body() }
 
     /**
-     * Verify if the JWT has a 'roles' claim with "Api.Access" and "ROLE_BULK_READ_SKILLS".
+     * Verify if the JWT has a 'roles' claim with "Api.Access".
      */
     private fun authorize(
         vertx: Vertx,
@@ -114,9 +102,6 @@ internal object ApiRequestHandler {
             .map { roles ->
                 require(ROLE_API_ACCESS in roles) {
                     "JWT does not contain role '$ROLE_API_ACCESS'."
-                }
-                require(ROLE_BULK_READ_SKILLS in roles) {
-                    "JWT does not contain role '$ROLE_BULK_READ_SKILLS'."
                 }
             }
 
@@ -140,7 +125,7 @@ internal object ApiRequestHandler {
             .map { authInfo ->
                 if (authInfo.isAuthorized(ADMIN)) {
                     log.warn("Bypassing API authorization for ADMIN user ${authInfo.email}.")
-                    JsonArray("""[ "$ROLE_API_ACCESS", "$ROLE_BULK_READ_SKILLS" ]""")
+                    JsonArray("""[ "$ROLE_API_ACCESS" ]""")
                 } else {
                     error("JWT does not contain '$ROLES_CLAIM' claim.")
                 }

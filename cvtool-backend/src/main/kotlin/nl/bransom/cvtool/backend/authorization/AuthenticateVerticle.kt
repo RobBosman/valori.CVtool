@@ -72,21 +72,20 @@ internal class AuthenticateVerticle : AbstractVerticle() {
         // Environment variable:
         //   AUTH_CONNECTION_STRING=<OPENID_PROVIDER_URL>/<TENANT_ID>/v2.0?<CLIENT_ID>:<CLIENT_SECRET>
         val configParams = parseConnectionString(config().getString("AUTH_CONNECTION_STRING"))
-        val oauth2Options = OAuth2Options().apply {
-            site = configParams["site"]
-            clientId = configParams["clientId"]
-            clientSecret = configParams["secret"]
-            jwtOptions.addAudience("api://$clientId")
-            jwtOptions.addAudience(clientId)
-        }
 
         // Obtain config settings from the OpenID Provider.
         OpenIDConnectAuth
-            .rxDiscover(vertx, oauth2Options)
+            .rxDiscover(
+                vertx,
+                OAuth2Options().apply {
+                    site = configParams["site"]
+                    clientId = configParams["clientId"]
+                    clientSecret = configParams["secret"]
+                    jwtOptions.audience = listOf(clientId)
+                })
             .subscribe(
                 {
                     // Provide the connection to the vertx handlers.
-                    handleVertxEvents(AUTHENTICATE_API_ADDRESS, ::handleApiAuthenticationRequest, it)
                     handleVertxEvents(AUTHENTICATE_HEALTH_ADDRESS, ::handleHealthRequest, it)
                     handleVertxEvents(AUTHENTICATE_USER_ADDRESS, ::handleUserAuthenticationRequest, it)
 
@@ -95,6 +94,30 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 },
                 {
                     log.error("Error configuring OpenID: ${it.message}", it)
+                    startPromise.fail(it)
+                }
+            )
+
+        // Obtain API config settings from the OpenID Provider.
+        OpenIDConnectAuth
+            .rxDiscover(
+                vertx,
+                OAuth2Options().apply {
+                    site = "https://sts.windows.net/3d75b784-24a4-48cd-8149-36d9fc6f64d2/"
+                    clientId = configParams["clientId"]
+                    clientSecret = configParams["secret"]
+                    jwtOptions.audience = listOf("api://$clientId")
+                })
+            .subscribe(
+                {
+                    // Provide the connection to the vertx handlers.
+                    handleVertxEvents(AUTHENTICATE_API_ADDRESS, ::handleApiAuthenticationRequest, it)
+
+                    startPromise.tryComplete()
+                    log.info("Successfully configured OpenID for API")
+                },
+                {
+                    log.error("Error configuring OpenID for API: ${it.message}", it)
                     startPromise.fail(it)
                 }
             )
@@ -131,7 +154,7 @@ internal class AuthenticateVerticle : AbstractVerticle() {
                 },
                 {
                     val errorMsg = "Error authenticating API JWT: ${it.message}"
-                    log.warn(errorMsg)
+                    log.warn(errorMsg, it)
                     message.fail(RECIPIENT_FAILURE.toInt(), it.message)
                 }
             )

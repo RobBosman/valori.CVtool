@@ -2,25 +2,28 @@
   "KEY": {
     "typ": "JWT",
     "alg": "RS256",
+    "x5t": "aFkmKVFc-4WV6sXCBvNZkXI505Y",
     "kid": "aFkmKVFc-4WV6sXCBvNZkXI505Y"
   },
   "PAYLOAD": {
-    "aud": "2eb48338-41d2-4578-98ab-1466b7baad5f",
-    "iss": "https://login.microsoftonline.com/3d75b784-24a4-48cd-8149-36d9fc6f64d2/v2.0",
-    "iat": 1783018370,
-    "nbf": 1783018370,
-    "exp": 1783022270,
+    "aud": "api://2eb48338-41d2-4578-98ab-1466b7baad5f",
+    "iss": "https://sts.windows.net/3d75b784-24a4-48cd-8149-36d9fc6f64d2/",
+    "iat": 1783450528,
+    "nbf": 1783450528,
+    "exp": 1783454428,
+    "aio": "ASQA2/8cAAAALGSX6q0KgPWjO7aV22SSa+v6mQqXx6pJHLWzm03P3Jc=",
+    "appid": "86d09377-3501-4c38-a3d3-e09186eeb0de",
+    "appidacr": "1",
+    "idp": "https://sts.windows.net/3d75b784-24a4-48cd-8149-36d9fc6f64d2/",
+    "oid": "48a5e93c-b6d0-447b-ace9-8880d10ba343",
+    "rh": "1.AU4AhLd1PaQkzUiBSTbZ_G9k0jiDtC7SQXhFmKsUZre6rV8AAABOAA.",
     "roles": [
-      "Api.Access",
-      "ROLE_BULK_READ_SKILLS"
+      "Api.Access"
     ],
-    "nonce": "019f2431-81ef-741a-bbcc-b2a021bf379b",
-    "oid": "364d9132-390e-4156-a495-fa8865b80154",
-    "rh": "1.AU4AhLd1PaQkzUiBSTbZ_G9k0jiDtC7SQXhFmKsUZre6rV8AACFOAA.",
-    "sid": "006b25ca-8194-80bb-339f-84c1f7412519",
-    "sub": "rq7_29J7yV393_PmBjiRJyfkiGZ1X6J8uuNv6jATCuE",
+    "sub": "48a5e93c-b6d0-447b-ace9-8880d10ba343",
     "tid": "3d75b784-24a4-48cd-8149-36d9fc6f64d2",
-    "uti": "Vlrvw9Z-80aQQsp2xH0iAA",
-    "ver": "2.0"
+    "uti": "kA8JS-KomU-B4OiMxNpHAA",
+    "ver": "1.0",
+    "xms_ftd": "iwT61o2F6JAtpdlLoqTulLVvdsHHCtYkRjwCwojWwQYBZXVyb3Blbm9ydGgtZHNtcw"
   }
 }
