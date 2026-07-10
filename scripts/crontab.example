@@ -10,3 +10,4 @@
 55 23  *  *  *  /root/cvtool_backup_mongodb.sh    > /root/cvtool_backup_mongodb.log     2>&1
 58 23  *  *  *  /root/cvtool_backup_cvs.sh        > /root/cvtool_backup_cvs.log         2>&1
 27  3  *  *  *  /root/cvtool_renew_certificate.sh > /root/cvtool_renew_certificate.log  2>&1
+00  7  *  *  *  /root/update_firewall_rule.sh     > /root/update_firewall_rule.log      2>&1
