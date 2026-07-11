@@ -9,7 +9,7 @@
   "source": "src/main/js/index.html",
   "main": "target/classes/index.htm",
   "dependencies": {
-    "@azure/msal-browser": "^5.16.0",
+    "@azure/msal-browser": "^5.17.0",
     "@fluentui/react": "^8.125.7",
     "@reduxjs/toolkit": "^2.11.1",
     "@uifabric/react-hooks": "^7.16.4",
@@ -32,7 +32,7 @@
     "babel-loader": "^10.1.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clean-webpack-plugin": "^4.0.0",
-    "eslint": "^10.6.0",
+    "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.4",
     "file-loader": "^6.2.0",
