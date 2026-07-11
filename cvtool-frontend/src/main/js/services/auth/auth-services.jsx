@@ -26,15 +26,14 @@ export const clearAccountCache = () =>
   msalPCA.clearCache();
 
 // Will be replaced by a specific implementation from auth-epics.jsx.
-let authResultCallback = authResult => {};
+let authResultCallback = () => {};
 
-export const setAuthResultCallback = callback => {
-  authResultCallback = callback;
-};
-
-msalPCA.handleRedirectPromise()
-  .then(authResult => authResultCallback(authResult))
-  .catch(error => console.error("Error handling redirect response:", error));
+try {
+  const authResult = await msalPCA.handleRedirectPromise();
+  authResultCallback(authResult);
+} catch (error) {
+  console.error("Error handling redirect response:", error);
+}
 
 export const authenticateAtOpenIdProvider = (forceRefresh = false, readUserProfile = false) => {
   const cachedAccount = msalPCA.getAllAccounts()?.find(account => account.tenantId === TENANT.tenantId);

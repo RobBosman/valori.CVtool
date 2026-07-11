@@ -204,6 +204,27 @@ const Accounts = props => {
     };
   }, [combined.instances, props.selectedAccountId]);
 
+  const isFilledAccount = account =>
+    account.email !== "@cerios.nl";
+
+  const onAddAccount = () => {
+    let newAccount = combined.instances.find(account => !isFilledAccount(account));
+    if (!newAccount) {
+      newAccount = {
+        _id: commonUtils.createUuid(),
+        email: "@cerios.nl"
+      };
+      props.replaceAccount(newAccount._id, newAccount);
+      const newAuthorization = {
+        _id: commonUtils.createUuid(),
+        accountId: newAccount._id,
+        level: enums.Authorizations[0].key
+      };
+      props.replaceAuthorization(newAuthorization._id, newAuthorization);
+    }
+    props.setSelectedAccountId(newAccount._id);
+  };
+
   const onDeleteAccount = () => {
     if (props.selectedAccountId && props.selectedAccountId !== props.authInfo.accountId) {
       setConfirmDialogVisible(true);
@@ -264,6 +285,13 @@ const Accounts = props => {
                 </Text>
                 <StackItem>
                   <Stack horizontal tokens={{ childrenGap: "s1" }}>
+                    {["ADMIN"].includes(props.authInfo.authorizationLevel)
+                      && <DefaultButton
+                        text="Toevoegen"
+                        iconProps={{ iconName: "Add" }}
+                        onClick={onAddAccount}
+                      />
+                    }
                     <TextField
                       label="Filter"
                       iconProps={{ iconName: "Filter" }}
@@ -339,6 +367,7 @@ const Accounts = props => {
                   </TooltipHost>
                   {["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)
                     && <TooltipHost content="Download status rapport van alle cv's">
+                      <Separator/>
                       <DefaultButton
                         text="Download status rapport"
                         iconProps={{ iconName: "CloudDownload" }}
