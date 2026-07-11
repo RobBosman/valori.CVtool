@@ -71,7 +71,7 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject("""{ "characteristics": [{ "includeInCv": true }] }"""),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
             .toFlowable()
@@ -82,7 +82,7 @@ internal class CvBackupVerticle : BasicVerticle(ALL_CVS_GENERATE_ADDRESS) {
             .rxRequest<JsonObject>(
                 CV_GENERATE_ADDRESS,
                 JsonObject().put("accountId", accountId).put("locale", locale),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
             .onErrorReturn { createErrorCv(accountId, locale, it) }

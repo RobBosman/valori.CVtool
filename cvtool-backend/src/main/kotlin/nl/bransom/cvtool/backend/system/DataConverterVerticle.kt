@@ -48,7 +48,7 @@ class DataConverterVerticle : BasicVerticle(CONVERT_DATA_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject($$"""{ "account": [{ "username": { "$exists": false } }] }"""),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
             .toFlowable()
@@ -67,6 +67,6 @@ class DataConverterVerticle : BasicVerticle(CONVERT_DATA_ADDRESS) {
 
     private fun saveAccountInstances(convertedAccountsJson: JsonObject) =
         vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, convertedAccountsJson, deliveryOptions.setSendTimeout(30_000))
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, convertedAccountsJson, DELIVERY_OPTIONS.setSendTimeout(30_000))
             .map { convertedAccountsJson }
 }

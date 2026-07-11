@@ -81,7 +81,7 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
                         "businessUnit": [$businessUnitCriteria]
                     }"""
                 ),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
     }
@@ -104,7 +104,7 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
                         "cursor": { "batchSize": $${allEntities.getInstances("accounts").size} }
                     }"""
                 ),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { allEntities to it.body() }
 

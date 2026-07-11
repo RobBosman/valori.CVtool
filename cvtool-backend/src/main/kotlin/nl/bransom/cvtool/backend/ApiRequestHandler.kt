@@ -27,7 +27,7 @@ internal object ApiRequestHandler {
     private const val ROLES_CLAIM = "roles"
     private const val ROLE_API_ACCESS = "Api.Access"
 
-    private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
+    private val DELIVERY_OPTIONS = DeliveryOptions().setSendTimeout(2_000)
 
     fun getHandler(vertx: Vertx): Handler<RoutingContext> =
         Handler<RoutingContext> { routingContext ->
@@ -47,7 +47,7 @@ internal object ApiRequestHandler {
                 .flatMap {
                     vertx
                         .eventBus()
-                        .rxRequest<JsonObject>(targetEventAddress, JsonObject(), deliveryOptions)
+                        .rxRequest<JsonObject>(targetEventAddress, JsonObject(), DELIVERY_OPTIONS)
                         .map { it.body() }
                 }
                 .subscribe(
@@ -84,7 +84,7 @@ internal object ApiRequestHandler {
                 vertx
                     .eventBus()
                     // Verify the JWT and obtain its payload.
-                    .rxRequest<JsonObject>(AUTHENTICATE_API_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
+                    .rxRequest<JsonObject>(AUTHENTICATE_API_ADDRESS, JsonObject().put("jwt", jwt), DELIVERY_OPTIONS)
             }
             .map { it.body() }
 
@@ -119,7 +119,7 @@ internal object ApiRequestHandler {
             .flatMap { authInfoJson ->
                 vertx
                     .eventBus()
-                    .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, authInfoJson, deliveryOptions)
+                    .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, authInfoJson, DELIVERY_OPTIONS)
             }
             .map { it.body().toAuthInfo() }
             .map { authInfo ->

@@ -20,7 +20,7 @@ import java.net.URI
 internal class ControlVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(javaClass)
-    private val deliveryOptions = DeliveryOptions().setSendTimeout(300_000) // 5 minutes
+    private val DELIVERY_OPTIONS = DeliveryOptions().setSendTimeout(300_000) // 5 minutes
 
     override fun start(startPromise: Promise<Void>) { // NOSONAR - Promise<Void> is defined in AbstractVerticle
         // Environment variables:
@@ -57,7 +57,7 @@ internal class ControlVerticle : AbstractVerticle() {
             .route("/all-docx.zip")
             .handler { context ->
                 vertx.eventBus()
-                    .rxRequest<JsonObject>(ALL_CVS_GENERATE_ADDRESS, null, deliveryOptions)
+                    .rxRequest<JsonObject>(ALL_CVS_GENERATE_ADDRESS, null, DELIVERY_OPTIONS)
                     .map { Buffer.buffer(it.body().getBinary("zipBytes")) }
                     .subscribe(
                         { zipBytes ->
@@ -104,7 +104,7 @@ internal class ControlVerticle : AbstractVerticle() {
             .route("/convertData")
             .handler { context ->
                 vertx.eventBus()
-                    .rxRequest<JsonObject>(CONVERT_DATA_ADDRESS, null, deliveryOptions)
+                    .rxRequest<JsonObject>(CONVERT_DATA_ADDRESS, null, DELIVERY_OPTIONS)
                     .subscribe(
                         {
                             context.response()

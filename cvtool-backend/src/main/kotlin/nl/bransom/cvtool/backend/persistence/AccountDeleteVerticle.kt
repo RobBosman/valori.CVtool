@@ -66,7 +66,7 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
                         "businessUnit": [{}]
                     }"""
                 ),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
 
@@ -74,7 +74,7 @@ internal class AccountDeleteVerticle : BasicVerticle(ACCOUNT_DELETE_ADDRESS) {
         val combinedCriteria = composeDeleteCriteria(accountId, metaData)
         log.debug("Deleting account $accountId:\n${combinedCriteria.encodePrettily()}")
         return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, combinedCriteria, deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, combinedCriteria, DELIVERY_OPTIONS)
             .map { it.body() }
     }
 

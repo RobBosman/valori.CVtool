@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory
 internal object EventBusMessageHandler {
 
     private val log = LoggerFactory.getLogger(EventBusMessageHandler::class.java)
-    private val deliveryOptions = DeliveryOptions().setSendTimeout(2_000)
+    private val DELIVERY_OPTIONS = DeliveryOptions().setSendTimeout(2_000)
 
     internal fun create(vertx: Vertx) =
         SockJSHandler.create(vertx)
@@ -106,11 +106,11 @@ internal object EventBusMessageHandler {
             .substringAfter("Bearer ")
         return vertx
             .eventBus()
-            .rxRequest<JsonObject>(AUTHENTICATE_USER_ADDRESS, JsonObject().put("jwt", jwt), deliveryOptions)
+            .rxRequest<JsonObject>(AUTHENTICATE_USER_ADDRESS, JsonObject().put("jwt", jwt), DELIVERY_OPTIONS)
             .flatMap { authenticationResponse ->
                 vertx
                     .eventBus()
-                    .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, authenticationResponse.body(), deliveryOptions)
+                    .rxRequest<JsonObject>(AUTH_INFO_FETCH_ADDRESS, authenticationResponse.body(), DELIVERY_OPTIONS)
                     .map { authInfoResponse -> authInfoResponse.body() }
             }
             .map { bridgeEvent.setMessageHeader("authInfo", it.encode()) }
@@ -173,7 +173,7 @@ internal object EventBusMessageHandler {
         else
             vertx
                 .eventBus()
-                .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
+                .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, DELIVERY_OPTIONS)
                 .map { bridgeEvent.setMessageHeader("oldData", it.body().encode()) }
     }
 

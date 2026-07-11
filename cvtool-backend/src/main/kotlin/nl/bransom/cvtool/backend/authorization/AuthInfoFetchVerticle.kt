@@ -69,7 +69,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject("""{ "account": [{ "username": "$username" }] }"""),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .flatMap {
                 val accounts = it.body().getJsonObject("account", JsonObject()).map.values
@@ -92,7 +92,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .addEntity("account", accountInstance)
             .addEntity("authorization", authorization)
         return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, DELIVERY_OPTIONS)
             .map { accountInstance }
     }
 
@@ -126,7 +126,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject("""{ "authorization": [{ "accountId": "${authInfo.accountId}" }] }"""),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map {
                 authInfo
@@ -147,7 +147,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
         val saveRequest = JsonObject()
             .addEntity("account", accountInstance.put("email", email))
         return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, saveRequest, DELIVERY_OPTIONS)
             .map { accountInstance }
     }
 }

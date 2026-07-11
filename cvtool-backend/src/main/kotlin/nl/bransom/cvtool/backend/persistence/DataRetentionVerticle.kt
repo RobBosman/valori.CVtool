@@ -42,7 +42,7 @@ class DataRetentionVerticle : BasicVerticle(DATA_RETENTION_ADDRESS) {
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,
                 JsonObject($$"""{ "audit_log": [ { "timestamp": { "$lt": "$$retentionDate" } } ] }"""),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
 
     private fun Single<Message<JsonObject>>.deleteAuditLogs() =
@@ -53,7 +53,7 @@ class DataRetentionVerticle : BasicVerticle(DATA_RETENTION_ADDRESS) {
                     .rxRequest<JsonObject>(
                         MONGODB_SAVE_ADDRESS,
                         JsonObject().put("audit_log", idsJson),
-                        deliveryOptions
+                        DELIVERY_OPTIONS
                     )
                     .map { idsJson.map.size }
             }

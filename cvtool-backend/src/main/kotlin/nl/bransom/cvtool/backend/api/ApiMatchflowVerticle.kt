@@ -1,5 +1,6 @@
 package nl.bransom.cvtool.backend.api
 
+import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
@@ -12,6 +13,10 @@ const val API_MATCHFLOW_URL = "/api/matchflow"
 const val API_MATCHFLOW_ADDRESS = "api.matchflow"
 
 internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
+
+    companion object {
+        private val DELIVERY_OPTIONS = DeliveryOptions().setSendTimeout(4_000)
+    }
 
     /**
      * Response:
@@ -51,7 +56,7 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
                         "skill": []
                     }"""
                 ),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
             .map(::toApiResponse)

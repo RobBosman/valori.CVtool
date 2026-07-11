@@ -59,7 +59,7 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
                         ]
                     }"""
                 ),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
 
@@ -86,7 +86,7 @@ internal class CvHistoryVerticle : BasicVerticle(CV_HISTORY_ADDRESS) {
             """
         )
         return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, searchCriteria, DELIVERY_OPTIONS)
             .map { it.body() }
     }
 }

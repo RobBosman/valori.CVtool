@@ -58,7 +58,7 @@ internal class BrandDeleteVerticle : BasicVerticle(BRAND_DELETE_ADDRESS) {
                         "businessUnit": [{ "brandId": "$brandId" }]
                     }"""
                 ),
-                deliveryOptions
+                DELIVERY_OPTIONS
             )
             .map { it.body() }
 
@@ -66,7 +66,7 @@ internal class BrandDeleteVerticle : BasicVerticle(BRAND_DELETE_ADDRESS) {
         val combinedCriteria = composeCriteria(brandId, metaData)
         log.debug("Deleting brand $brandId:\n${combinedCriteria.encodePrettily()}")
         return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, combinedCriteria, deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, combinedCriteria, DELIVERY_OPTIONS)
             .map { it.body() }
     }
 

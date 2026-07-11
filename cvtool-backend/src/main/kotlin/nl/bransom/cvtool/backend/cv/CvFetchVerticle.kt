@@ -59,7 +59,7 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
 
     private fun fetchOrCreateCvData(accountId: String) =
         vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, composeCvDataCriteria(accountId), deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, composeCvDataCriteria(accountId), DELIVERY_OPTIONS)
             .map { it.body() }
             .doOnSuccess { if (!it.hasInstances("account")) error("AccountId '$accountId' is unknown") }
             .flatMap {
@@ -100,7 +100,7 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
 
     private fun fetchBrand(jsonCriteria: JsonObject) =
         vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, jsonCriteria, deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_FETCH_ADDRESS, jsonCriteria, DELIVERY_OPTIONS)
             .map { it.body() }
 
     private fun createAndAddCharacteristics(accountId: String, cvData: JsonObject): Single<JsonObject> {
@@ -108,7 +108,7 @@ internal class CvFetchVerticle : BasicVerticle(CV_FETCH_ADDRESS) {
         val characteristicsInstances = JsonObject().put(id, composeCharacteristicsInstance(id, accountId))
         val characteristicsEntity = JsonObject().put("characteristics", characteristicsInstances)
         return vertx.eventBus()
-            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, characteristicsEntity, deliveryOptions)
+            .rxRequest<JsonObject>(MONGODB_SAVE_ADDRESS, characteristicsEntity, DELIVERY_OPTIONS)
             .map { cvData.put("characteristics", characteristicsInstances) }
     }
 

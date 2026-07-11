@@ -227,7 +227,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
     private fun fetchCvData(requestData: JsonObject): Single<JsonObject> =
         vertx.eventBus()
-            .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, deliveryOptions)
+            .rxRequest<JsonObject>(CV_FETCH_ADDRESS, requestData, DELIVERY_OPTIONS)
             .map { it.body() }
 
     internal fun convertToDocxXml(json: JsonObject): ByteArray {
