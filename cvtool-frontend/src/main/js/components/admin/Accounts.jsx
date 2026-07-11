@@ -14,6 +14,9 @@ import * as enums from "../cv/Enums";
 import ConfirmDialog from "../ConfirmDialog";
 import {createHelpIcon} from "../widgets/CvHelpIcon";
 
+const DEFAULT_ACCOUNT_NAME = "-- NIEUW ACCOUNT --";
+const DEFAULT_ACCOUNT_EMAIL = "nieuw.account@cerios.nl";
+
 const Accounts = props => {
 
   const combineEntities = (accountEntity, authorizationEntity, brandEntity, businessUnitEntity) => {
@@ -75,6 +78,7 @@ const Accounts = props => {
       .find(accountInstance => accountInstance._id === accountId);
     props.replaceAccount(account._id, {
       ...account,
+      name: combinedInstance.name,
       email: combinedInstance.email,
       username: newUsername
     });
@@ -205,14 +209,15 @@ const Accounts = props => {
   }, [combined.instances, props.selectedAccountId]);
 
   const isFilledAccount = account =>
-    account.email !== "@cerios.nl";
+    account.name !== DEFAULT_ACCOUNT_NAME && account.email !== DEFAULT_ACCOUNT_EMAIL;
 
   const onAddAccount = () => {
     let newAccount = combined.instances.find(account => !isFilledAccount(account));
     if (!newAccount) {
       newAccount = {
         _id: commonUtils.createUuid(),
-        email: "@cerios.nl"
+        name: DEFAULT_ACCOUNT_NAME,
+        email: DEFAULT_ACCOUNT_EMAIL
       };
       props.replaceAccount(newAccount._id, newAccount);
       const newAuthorization = {
@@ -261,6 +266,7 @@ const Accounts = props => {
   };
 
   const selectedAccountName = props.accountEntity?.[props.selectedAccountId]?.name;
+  const cvAction = ["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel) ? "bewerken" : "bekijken";
 
   return (
     <table style={{ borderCollapse: "collapse" }}>
@@ -328,8 +334,8 @@ const Accounts = props => {
                   <CvTextField
                     label="Naam"
                     field="name"
-                    instanceContext={combinedContext()}
-                    readOnly={true}
+                    instanceContext={combinedContext(replaceAccountInstance)}
+                    readOnly={!["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)}
                   />
                   <CvTextField
                     label="E-mail"
@@ -356,9 +362,9 @@ const Accounts = props => {
                     styles={{ dropdown: { width: 230 } }}
                   />
                   <Separator/>
-                  <TooltipHost content="Haal de gegevens op om het CV te bewerken">
+                  <TooltipHost content={`Haal de gegevens op om het CV te ${cvAction}`}>
                     <DefaultButton
-                      text="CV bewerken"
+                      text={`CV ${cvAction}`}
                       iconProps={{ iconName: "CloudDownload" }}
                       disabled={!props.selectedAccountId}
                       onClick={onFetchCv}
