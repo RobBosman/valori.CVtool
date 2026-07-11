@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {CommandBar, CommandBarButton, ContextualMenuItemType, getTheme, loadTheme, TooltipHost} from "@fluentui/react";
 import * as utils from "../../utils/CommonUtils";
 import * as authActions from "../../services/auth/auth-actions";
@@ -21,7 +21,35 @@ const TooltipButton = properties => (
   </TooltipHost>
 );
 
-const CvTopBar = props => {
+const CvTopBar = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      locale: state.ui.userPrefs.locale,
+      account: state.auth.authInfo,
+      isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
+      hasSafeData: Object.keys(state.safe.content).length > 0,
+      lastEditedTimeString: state.safe.lastEditedTimeString,
+      lastSavedTimeString: state.safe.lastSavedTimeString
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      setLocale: (locale) => dispatch(uiActions.setLocale(locale)),
+      setTheme: (theme) => dispatch(uiActions.setTheme(theme)),
+      requestToLogout: () => dispatch(authActions.requestLogout(true)),
+      save: () => dispatch(safeActions.save(true))
+    }),
+    [dispatch]);
+  const props = React.useMemo(() => ({
+      ...prps,
+      ...selectors,
+      ...dispatches,
+      lastEditedTimestamp: utils.parseTimeString(selectors.lastEditedTimeString),
+      lastSavedTimestamp: utils.parseTimeString(selectors.lastSavedTimeString)
+    }),
+    [prps, selectors, dispatches]);
   
   const currentTheme = getTheme();
   const { semanticColors } = uiServices.useTheme();
@@ -157,32 +185,16 @@ const CvTopBar = props => {
 };
 
 CvTopBar.propTypes = {
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   account: PropTypes.object,
-  isConnected: PropTypes.bool.isRequired,
-  hasSafeData: PropTypes.bool.isRequired,
+  isConnected: PropTypes.bool,
+  hasSafeData: PropTypes.bool,
   lastEditedTimestamp: PropTypes.object,
   lastSavedTimestamp: PropTypes.object,
-  setLocale: PropTypes.func.isRequired,
-  setTheme: PropTypes.func.isRequired,
-  requestToLogout: PropTypes.func.isRequired,
-  save: PropTypes.func.isRequired
+  setLocale: PropTypes.func,
+  setTheme: PropTypes.func,
+  requestToLogout: PropTypes.func,
+  save: PropTypes.func
 };
 
-const select = (store) => ({
-  locale: store.ui.userPrefs.locale,
-  account: store.auth.authInfo,
-  isConnected: store.eventBus.connectionState === ConnectionStates.CONNECTED,
-  hasSafeData: Object.keys(store.safe.content).length > 0,
-  lastEditedTimestamp: utils.parseTimeString(store.safe.lastEditedTimeString),
-  lastSavedTimestamp: utils.parseTimeString(store.safe.lastSavedTimeString)
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setLocale: (locale) => dispatch(uiActions.setLocale(locale)),
-  setTheme: (theme) => dispatch(uiActions.setTheme(theme)),
-  requestToLogout: () => dispatch(authActions.requestLogout(true)),
-  save: () => dispatch(safeActions.save(true))
-});
-
-export default connect(select, mapDispatchToProps)(CvTopBar);
+export default CvTopBar;

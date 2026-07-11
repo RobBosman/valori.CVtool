@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {IconButton, Nav, PrimaryButton, Separator, Stack, Text, TooltipHost} from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
@@ -25,7 +25,31 @@ import * as cvActions from "../services/cv/cv-actions";
 import * as uiActions from "../services/ui/ui-actions";
 import * as utils from "../utils/CommonUtils";
 
-const ContentPage = (props) => {
+const ContentPage = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      locale: state.ui.userPrefs.locale,
+      authInfo: state.auth.authInfo,
+      locationHash: state.ui.locationHash,
+      accountEntity: state.safe.content.account,
+      brandEntity: state.safe.content.brand,
+      businessUnitEntity: state.safe.content.businessUnit,
+      characteristicsEntity: state.safe.content.characteristics,
+      selectedAccountId: state.ui.selectedId.account,
+      docxTemplateOverride: state.cv.docxTemplateOverride
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
+      overrideDocxTemplate: (docxTemplateOverride) => dispatch(cvActions.overrideDocxTemplate(docxTemplateOverride)),
+      generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
+      setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const locationHash = props.locationHash.split("=").shift();
 
@@ -38,7 +62,7 @@ const ContentPage = (props) => {
       .find(businessUnit => businessUnit.accountIds.includes(props.selectedAccountId))
       ?.brandId;
     const docxTemplate = Object.values(props.brandEntity || {})
-      .find(brand => brand._id == brandId)
+      .find(brand => brand._id === brandId)
       ?.docxTemplate
       || "CERIOS";
     return enums.getText(enums.DocxTemplates, docxTemplate, props.locale);
@@ -184,7 +208,7 @@ const ContentPage = (props) => {
     ],
   [props.authInfo.authorizationLevel, props.characteristicsEntity, props.selectedAccountId]);
 
-  let renderContent = null;
+  let renderContent;
   if (locationHash === "" || locationHash === "#") {
     renderContent = <Info />;
   } else {
@@ -241,7 +265,7 @@ const ContentPage = (props) => {
 };
 
 ContentPage.propTypes = {
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   navKey: PropTypes.string,
   authInfo: PropTypes.object,
   locationHash: PropTypes.string,
@@ -251,29 +275,10 @@ ContentPage.propTypes = {
   characteristicsEntity: PropTypes.object,
   docxTemplateOverride: PropTypes.object,
   selectedAccountId: PropTypes.string,
-  fetchCvHistory: PropTypes.func.isRequired,
-  overrideDocxTemplate: PropTypes.func.isRequired,
-  generateCv: PropTypes.func.isRequired,
-  setHistoryViewVisible: PropTypes.func.isRequired
+  fetchCvHistory: PropTypes.func,
+  overrideDocxTemplate: PropTypes.func,
+  generateCv: PropTypes.func,
+  setHistoryViewVisible: PropTypes.func
 };
 
-const select = (store) => ({
-  locale: store.ui.userPrefs.locale,
-  authInfo: store.auth.authInfo,
-  locationHash: store.ui.locationHash,
-  accountEntity: store.safe.content.account,
-  brandEntity: store.safe.content.brand,
-  businessUnitEntity: store.safe.content.businessUnit,
-  characteristicsEntity: store.safe.content.characteristics,
-  selectedAccountId: store.ui.selectedId.account,
-  docxTemplateOverride: store.cv.docxTemplateOverride
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
-  overrideDocxTemplate: (docxTemplateOverride) => dispatch(cvActions.overrideDocxTemplate(docxTemplateOverride)),
-  generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
-  setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
-});
-
-export default connect(select, mapDispatchToProps)(ContentPage);
+export default ContentPage;

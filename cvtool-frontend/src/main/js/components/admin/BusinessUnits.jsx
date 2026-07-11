@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {DefaultButton, SelectionMode, Stack, StackItem, Text} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
 import {setSelectedId} from "../../services/ui/ui-actions";
@@ -12,7 +12,25 @@ import {CvTextField} from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
 import * as enums from "../cv/Enums";
 
-const BusinessUnits = props => {
+const BusinessUnits = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      authInfo: state.auth.authInfo,
+      locale: state.ui.userPrefs.locale,
+      brandEntity: state.safe.content.brand,
+      businessUnitEntity: state.safe.content.businessUnit,
+      selectedBusinessUnitId: state.ui.selectedId.businessUnit
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      setSelectedBusinessUnitId: id => dispatch(setSelectedId("businessUnit", id)),
+      replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const combineEntities = (brandEntity, businessUnitEntity) => {
     const businessUnits = Object.values(businessUnitEntity || {})
@@ -24,7 +42,7 @@ const BusinessUnits = props => {
         ...businessUnit,
         brand: brandEntity?.[businessUnit.brandId]
       };
-    };
+    }
     return combined;
   };
 
@@ -165,7 +183,7 @@ const BusinessUnits = props => {
     instanceId: props.selectedBusinessUnitId,
     setSelectedInstanceId: props.setSelectedBusinessUnitId,
     replaceInstance: replaceInstance,
-    readOnly: props.authInfo.authorizationLevel != "ADMIN"
+    readOnly: props.authInfo.authorizationLevel !== "ADMIN"
   }),
   [combinedEntities, props.selectedBusinessUnitId, props.setSelectedBusinessUnitId]);
 
@@ -271,25 +289,12 @@ const BusinessUnits = props => {
 
 BusinessUnits.propTypes = {
   authInfo: PropTypes.object,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
   selectedBusinessUnitId: PropTypes.string,
-  setSelectedBusinessUnitId: PropTypes.func.isRequired,
-  replaceBusinessUnit: PropTypes.func.isRequired
+  setSelectedBusinessUnitId: PropTypes.func,
+  replaceBusinessUnit: PropTypes.func
 };
 
-const select = store => ({
-  authInfo: store.auth.authInfo,
-  locale: store.ui.userPrefs.locale,
-  brandEntity: store.safe.content.brand,
-  businessUnitEntity: store.safe.content.businessUnit,
-  selectedBusinessUnitId: store.ui.selectedId.businessUnit
-});
-
-const mapDispatchToProps = dispatch => ({
-  setSelectedBusinessUnitId: id => dispatch(setSelectedId("businessUnit", id)),
-  replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance))
-});
-
-export default connect(select, mapDispatchToProps)(BusinessUnits);
+export default BusinessUnits;

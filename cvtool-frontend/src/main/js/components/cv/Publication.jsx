@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {DefaultButton, PrimaryButton, Stack, StackItem, Text} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {setSelectedId} from "../../services/ui/ui-actions";
 import {changeInstance} from "../../services/safe/safe-actions";
 import {useTheme} from "../../services/ui/ui-services";
@@ -15,7 +15,26 @@ import Preview, * as preview from "./Preview";
 
 const entityName = "publication";
 
-const Publication = (props) => {
+const Publication = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      authInfo: state.auth.authInfo,
+      locale: state.ui.userPrefs.locale,
+      selectedAccountId: state.ui.selectedId.account,
+      characteristicsEntity: state.safe.content.characteristics,
+      publicationEntity: state.safe.content[entityName],
+      selectedPublicationId: state.ui.selectedId[entityName]
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      replacePublication: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
+      setSelectedPublicationId: (id) => dispatch(setSelectedId(entityName, id))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
   const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
@@ -308,27 +327,13 @@ const Publication = (props) => {
 
 Publication.propTypes = {
   authInfo: PropTypes.object,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   selectedAccountId: PropTypes.string,
   characteristicsEntity: PropTypes.object,
   publicationEntity: PropTypes.object,
-  replacePublication: PropTypes.func.isRequired,
+  replacePublication: PropTypes.func,
   selectedPublicationId: PropTypes.string,
-  setSelectedPublicationId: PropTypes.func.isRequired
+  setSelectedPublicationId: PropTypes.func
 };
 
-const select = (store) => ({
-  authInfo: store.auth.authInfo,
-  locale: store.ui.userPrefs.locale,
-  selectedAccountId: store.ui.selectedId.account,
-  characteristicsEntity: store.safe.content.characteristics,
-  publicationEntity: store.safe.content[entityName],
-  selectedPublicationId: store.ui.selectedId[entityName]
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  replacePublication: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
-  setSelectedPublicationId: (id) => dispatch(setSelectedId(entityName, id))
-});
-
-export default connect(select, mapDispatchToProps)(Publication);
+export default Publication;

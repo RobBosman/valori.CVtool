@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {DefaultButton, PrimaryButton, Stack, StackItem, Text} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {setSelectedId} from "../../services/ui/ui-actions";
 import {changeInstance} from "../../services/safe/safe-actions";
 import {useTheme} from "../../services/ui/ui-services";
@@ -18,7 +18,26 @@ import Preview, * as preview from "./Preview";
 
 const entityName = "skill";
 
-const Skill = (props) => {
+const Skill = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      authInfo: state.auth.authInfo,
+      locale: state.ui.userPrefs.locale,
+      selectedAccountId: state.ui.selectedId.account,
+      characteristicsEntity: state.safe.content.characteristics,
+      skillEntity: state.safe.content[entityName],
+      selectedSkillId: state.ui.selectedId[entityName]
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      replaceSkill: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
+      setSelectedSkillId: (id) => dispatch(setSelectedId(entityName, id))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
   const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
@@ -485,27 +504,13 @@ const Skill = (props) => {
 
 Skill.propTypes = {
   authInfo: PropTypes.object,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   selectedAccountId: PropTypes.string,
   characteristicsEntity: PropTypes.object,
   skillEntity: PropTypes.object,
-  replaceSkill: PropTypes.func.isRequired,
+  replaceSkill: PropTypes.func,
   selectedSkillId: PropTypes.string,
-  setSelectedSkillId: PropTypes.func.isRequired
+  setSelectedSkillId: PropTypes.func
 };
 
-const select = (store) => ({
-  authInfo: store.auth.authInfo,
-  locale: store.ui.userPrefs.locale,
-  selectedAccountId: store.ui.selectedId.account,
-  characteristicsEntity: store.safe.content.characteristics,
-  skillEntity: store.safe.content[entityName],
-  selectedSkillId: store.ui.selectedId[entityName]
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  replaceSkill: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
-  setSelectedSkillId: (id) => dispatch(setSelectedId(entityName, id))
-});
-
-export default connect(select, mapDispatchToProps)(Skill);
+export default Skill;

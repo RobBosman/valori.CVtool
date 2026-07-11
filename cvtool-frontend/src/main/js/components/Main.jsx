@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useSelector} from "react-redux";
 import {ThemeProvider} from "@fluentui/react";
 import {LoginStates} from "../services/auth/auth-actions";
 import LoginPage from "./LoginPage";
@@ -17,7 +17,15 @@ const versionStyle = {
   zIndex: 1
 };
 
-const Main = (props) => {
+const Main = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      isLoggedIn: state.auth.loginState === LoginStates.LOGGED_IN
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const props = {...prps, ...selectors};
 
   return (
     <ThemeProvider>
@@ -29,11 +37,7 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool
 };
 
-const select = (state) => ({
-  isLoggedIn: state.auth.loginState === LoginStates.LOGGED_IN
-});
-
-export default connect(select)(Main);
+export default Main;

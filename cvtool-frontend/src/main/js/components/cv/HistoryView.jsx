@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {ContextualMenu, IconButton, Modal, SelectionMode, Stack, Text, TooltipHost} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {useTheme} from "../../services/ui/ui-services";
 import * as uiActions from "../../services/ui/ui-actions";
 import {CvDetailsList} from "../widgets/CvDetailsList";
@@ -24,7 +24,24 @@ export const entityNames = {
   "training": "Training"
 };
 
-const HistoryView = (props) => {
+const HistoryView = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      locale: state.ui.userPrefs.locale,
+      accountEntity: state.safe.content.account,
+      auditLogEntity: state.safe.content[entityName],
+      selectedAccountId: state.ui.selectedId.account,
+      isHistoryViewVisible: state.ui.isHistoryViewVisible
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const formatTimestampMillis = (timestampMillisUTC, locale) => {
     const date = new Date(timestampMillisUTC - timezoneOffsetMillis);
@@ -159,24 +176,12 @@ const HistoryView = (props) => {
 };
 
 HistoryView.propTypes = {
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   accountEntity: PropTypes.object,
   auditLogEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
-  isHistoryViewVisible: PropTypes.bool.isRequired,
-  setHistoryViewVisible: PropTypes.func.isRequired
+  isHistoryViewVisible: PropTypes.bool,
+  setHistoryViewVisible: PropTypes.func
 };
 
-const select = (store) => ({
-  locale: store.ui.userPrefs.locale,
-  accountEntity: store.safe.content.account,
-  auditLogEntity: store.safe.content[entityName],
-  selectedAccountId: store.ui.selectedId.account,
-  isHistoryViewVisible: store.ui.isHistoryViewVisible
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
-});
-
-export default connect(select, mapDispatchToProps)(HistoryView);
+export default HistoryView;

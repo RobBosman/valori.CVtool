@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {DefaultButton, SelectionMode, Stack, StackItem, Text} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
 import {setSelectedId} from "../../services/ui/ui-actions";
@@ -12,7 +12,25 @@ import {CvTextField} from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
 import * as enums from "../cv/Enums";
 
-const Brands = props => {
+const Brands = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      authInfo: state.auth.authInfo,
+      locale: state.ui.userPrefs.locale,
+      brandEntity: state.safe.content.brand,
+      selectedBrandId: state.ui.selectedId.brand
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      setSelectedBrandId: id => dispatch(setSelectedId("brand", id)),
+      deleteBrand: id => dispatch(safeActions.deleteBrand(id)),
+      replaceBrand: (id, instance) => dispatch(safeActions.changeInstance("brand", id, instance))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const brandContext = {
     entity: props.brandEntity,
@@ -110,7 +128,7 @@ const Brands = props => {
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
                 <Text variant="xxLarge">Labels</Text>
-                { props.authInfo.authorizationLevel == "ADMIN"
+                { props.authInfo.authorizationLevel === "ADMIN"
                   && <StackItem>
                     <Stack horizontal tokens={{ childrenGap: "l1" }}>
                       <DefaultButton
@@ -141,7 +159,7 @@ const Brands = props => {
                 items={brands}
                 instanceContext={brandContext}
                 setKey="brands"
-                selectionMode={props.authInfo.authorizationLevel == "ADMIN"
+                selectionMode={props.authInfo.authorizationLevel === "ADMIN"
                   ? SelectionMode.single
                   : SelectionMode.none
                 }
@@ -149,7 +167,7 @@ const Brands = props => {
             </Stack>
           </th>
 
-          { props.authInfo.authorizationLevel == "ADMIN"
+          { props.authInfo.authorizationLevel === "ADMIN"
             && <td valign="top" style={tdStyle}>
               <Stack styles={editStyles}>
                 <CvTextField
@@ -177,25 +195,12 @@ const Brands = props => {
 
 Brands.propTypes = {
   authInfo: PropTypes.object,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   brandEntity: PropTypes.object,
   selectedBrandId: PropTypes.string,
-  setSelectedBrandId: PropTypes.func.isRequired,
-  deleteBrand: PropTypes.func.isRequired,
-  replaceBrand: PropTypes.func.isRequired
+  setSelectedBrandId: PropTypes.func,
+  deleteBrand: PropTypes.func,
+  replaceBrand: PropTypes.func
 };
 
-const select = store => ({
-  authInfo: store.auth.authInfo,
-  locale: store.ui.userPrefs.locale,
-  brandEntity: store.safe.content.brand,
-  selectedBrandId: store.ui.selectedId.brand
-});
-
-const mapDispatchToProps = dispatch => ({
-  setSelectedBrandId: id => dispatch(setSelectedId("brand", id)),
-  deleteBrand: id => dispatch(safeActions.deleteBrand(id)),
-  replaceBrand: (id, instance) => dispatch(safeActions.changeInstance("brand", id, instance))
-});
-
-export default connect(select, mapDispatchToProps)(Brands);
+export default Brands;

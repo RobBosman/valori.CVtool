@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {Checkbox, DefaultButton, Image, PrimaryButton, Stack, StackItem, Text} from "@fluentui/react";
 import {changeInstance} from "../../services/safe/safe-actions";
 import {useTheme} from "../../services/ui/ui-services";
@@ -17,7 +17,28 @@ import {CvDetailsList} from "../widgets/CvDetailsList";
 import ConfirmDialog from "../ConfirmDialog";
 import {CvCheckbox} from "../widgets/CvCheckbox";
 
-const Profile = (props) => {
+const Profile = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      authInfo: state.auth.authInfo,
+      locale: state.ui.userPrefs.locale,
+      selectedAccountId: state.ui.selectedId.account,
+      accountEntity: state.safe.content.account,
+      selectedCharacteristicsId: state.ui.selectedId.characteristics,
+      characteristicsEntity: state.safe.content.characteristics
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance)),
+      replaceCharacteristics: (id, instance) => dispatch(changeInstance("characteristics", id, instance)),
+      setSelectedCharacteristicsId: (id) => dispatch(uiActions.setSelectedId("characteristics", id)),
+      showError: (errorMessage) => dispatch(errorActions.setLastError(errorMessage, errorActions.ErrorSources.USER_ACTION, null))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
 
@@ -438,31 +459,15 @@ const Profile = (props) => {
 
 Profile.propTypes = {
   authInfo: PropTypes.object,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   characteristicsEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
   accountEntity: PropTypes.object,
-  replaceAccount: PropTypes.func.isRequired,
-  replaceCharacteristics: PropTypes.func.isRequired,
+  replaceAccount: PropTypes.func,
+  replaceCharacteristics: PropTypes.func,
   selectedCharacteristicsId: PropTypes.string,
-  setSelectedCharacteristicsId: PropTypes.func.isRequired,
-  showError: PropTypes.func.isRequired
+  setSelectedCharacteristicsId: PropTypes.func,
+  showError: PropTypes.func
 };
 
-const select = (store) => ({
-  authInfo: store.auth.authInfo,
-  locale: store.ui.userPrefs.locale,
-  selectedAccountId: store.ui.selectedId.account,
-  accountEntity: store.safe.content.account,
-  selectedCharacteristicsId: store.ui.selectedId.characteristics,
-  characteristicsEntity: store.safe.content.characteristics
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  replaceAccount: (id, instance) => dispatch(changeInstance("account", id, instance)),
-  replaceCharacteristics: (id, instance) => dispatch(changeInstance("characteristics", id, instance)),
-  setSelectedCharacteristicsId: (id) => dispatch(uiActions.setSelectedId("characteristics", id)),
-  showError: (errorMessage) => dispatch(errorActions.setLastError(errorMessage, errorActions.ErrorSources.USER_ACTION, null))
-});
-
-export default connect(select, mapDispatchToProps)(Profile);
+export default Profile;

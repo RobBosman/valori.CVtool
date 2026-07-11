@@ -1,12 +1,26 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {DefaultButton, Link, Stack, Text, TooltipHost} from "@fluentui/react";
 import * as commonUtils from "../utils/CommonUtils";
 import {useTheme} from "../services/ui/ui-services";
 import * as cvActions from "../services/cv/cv-actions";
 
-const Info = (props) => {
+const Info = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      locale: state.ui.userPrefs.locale,
+      authInfo: state.auth.authInfo
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      onFetchDemoCv: (accountId, locale) => dispatch(cvActions.fetchDemoCv(accountId, locale))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const {viewPaneBackground} = useTheme();
   const viewStyles = {
@@ -66,18 +80,9 @@ const Info = (props) => {
 };
 
 Info.propTypes = {
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   authInfo: PropTypes.object,
-  onFetchDemoCv: PropTypes.func.isRequired
+  onFetchDemoCv: PropTypes.func
 };
 
-const select = (store) => ({
-  locale: store.ui.userPrefs.locale,
-  authInfo: store.auth.authInfo,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onFetchDemoCv: (accountId, locale) => dispatch(cvActions.fetchDemoCv(accountId, locale))
-});
-
-export default connect(select, mapDispatchToProps)(Info);
+export default Info;

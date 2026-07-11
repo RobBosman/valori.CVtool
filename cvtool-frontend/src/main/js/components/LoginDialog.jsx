@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {
   ContextualMenu,
   DefaultButton,
@@ -15,7 +15,21 @@ import {
 import * as authActions from "../services/auth/auth-actions";
 import * as uiServives from "../services/ui/ui-services";
 
-const LoginDialog = (props) => {
+const LoginDialog = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      isLoggingInOpenId: state.auth.loginState === authActions.LoginStates.LOGGING_IN_OPENID,
+      isLoggingInBackend: state.auth.loginState === authActions.LoginStates.LOGGING_IN_BACKEND
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      requestToLogout: () => dispatch(authActions.requestLogout(true))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const {semanticColors} = uiServives.useTheme();
 
@@ -75,18 +89,9 @@ const LoginDialog = (props) => {
 };
 
 LoginDialog.propTypes = {
-  isLoggingInOpenId: PropTypes.bool.isRequired,
-  isLoggingInBackend: PropTypes.bool.isRequired,
-  requestToLogout: PropTypes.func.isRequired
+  isLoggingInOpenId: PropTypes.bool,
+  isLoggingInBackend: PropTypes.bool,
+  requestToLogout: PropTypes.func
 };
 
-const select = (state) => ({
-  isLoggingInOpenId: state.auth.loginState === authActions.LoginStates.LOGGING_IN_OPENID,
-  isLoggingInBackend: state.auth.loginState === authActions.LoginStates.LOGGING_IN_BACKEND
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  requestToLogout: () => dispatch(authActions.requestLogout(true))
-});
-
-export default connect(select, mapDispatchToProps)(LoginDialog);
+export default LoginDialog;

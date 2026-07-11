@@ -1,10 +1,18 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useSelector} from "react-redux";
 import {ContextualMenu, DefaultButton, Dialog, DialogFooter, DialogType} from "@fluentui/react";
 import * as uiServices from "../services/ui/ui-services";
 
-const ErrorDialog = (props) => {
+const ErrorDialog = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      lastError: state.error.lastError
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const props = {...prps, ...selectors};
 
   const {semanticColors} = uiServices.useTheme();
 
@@ -60,8 +68,4 @@ ErrorDialog.propTypes = {
   lastError: PropTypes.object
 };
 
-const select = (state) => ({
-  lastError: state.error.lastError
-});
-
-export default connect(select)(ErrorDialog);
+export default ErrorDialog;

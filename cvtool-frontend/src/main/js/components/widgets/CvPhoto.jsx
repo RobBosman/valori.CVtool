@@ -1,12 +1,28 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {DefaultButton, Image, ImageFit, Label, Stack} from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as authActions from "../../services/auth/auth-actions";
 import * as safeActions from "../../services/safe/safe-actions";
 
-const CvPhoto = (props) => {
+const CvPhoto = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      authInfo: state.auth.authInfo,
+      selectedAccountId: state.ui.selectedId.account,
+      accountEntity: state.safe.content.account
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      fetchProfilePhoto: id => dispatch(authActions.fetchProfilePhoto(id)),
+      selectPhotoToUpload: instanceId => dispatch(safeActions.selectPhotoToUpload(instanceId))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const {entity, instanceId, replaceInstance} = props.instanceContext;
   const instance = entity?.[instanceId];
@@ -71,22 +87,11 @@ const CvPhoto = (props) => {
 
 CvPhoto.propTypes = {
   authInfo: PropTypes.object,
-  instanceContext: PropTypes.object.isRequired,
-  field: PropTypes.string.isRequired,
+  instanceContext: PropTypes.object,
+  field: PropTypes.string,
   label: PropTypes.any,
-  fetchProfilePhoto: PropTypes.func.isRequired,
-  selectPhotoToUpload: PropTypes.func.isRequired
+  fetchProfilePhoto: PropTypes.func,
+  selectPhotoToUpload: PropTypes.func
 };
 
-const select = (store) => ({
-  authInfo: store.auth.authInfo,
-  selectedAccountId: store.ui.selectedId.account,
-  accountEntity: store.safe.content.account
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchProfilePhoto: id => dispatch(authActions.fetchProfilePhoto(id)),
-  selectPhotoToUpload: instanceId => dispatch(safeActions.selectPhotoToUpload(instanceId))
-});
-
-export default connect(select, mapDispatchToProps)(CvPhoto);
+export default CvPhoto;

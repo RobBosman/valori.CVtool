@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {Label, Pivot, PivotItem, Stack, Text, TextField} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {CvDetailsList} from "../widgets/CvDetailsList";
 import {CvFormattedText} from "../widgets/CvFormattedText";
 import * as enums from "../cv/Enums";
@@ -35,7 +35,29 @@ const FoundText = properties =>
 //   experiences: [],
 //   experienceYear: 2020
 // }
-const Search = props => {
+const Search = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      locale: state.ui.userPrefs.locale,
+      authInfo: state.auth.authInfo,
+      searchText: state.cv.searchText,
+      searchResultEntities: state.cv.searchResult,
+      accountEntity: state.safe.content.account,
+      selectedAccountId: state.ui.selectedId.account,
+      selectedExperienceId: state.ui.selectedId.experience
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      searchCvData: (searchText) => dispatch(cvActions.searchCvData(searchText)),
+      setSelectedAccountId: (id) => dispatch(uiActions.setSelectedId("account", id)),
+      fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId)),
+      setSelectedExperienceId: (id) => dispatch(uiActions.setSelectedId("experience", id))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const { semanticColors, markHighlightBackground, editPaneBackground, viewPaneBackground, ceriosYellow } = uiServices.useTheme();
   const today = new Date().toISOString();
@@ -436,34 +458,17 @@ const Search = props => {
 };
 
 Search.propTypes = {
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   authInfo: PropTypes.object,
-  searchCvData: PropTypes.func.isRequired,
+  searchCvData: PropTypes.func,
   searchText: PropTypes.string,
   searchResultEntities: PropTypes.object,
   accountEntity: PropTypes.object,
-  setSelectedAccountId: PropTypes.func.isRequired,
+  setSelectedAccountId: PropTypes.func,
   selectedAccountId: PropTypes.string,
-  fetchCvByAccountId: PropTypes.func.isRequired,
+  fetchCvByAccountId: PropTypes.func,
   selectedExperienceId: PropTypes.string,
-  setSelectedExperienceId: PropTypes.func.isRequired
+  setSelectedExperienceId: PropTypes.func
 };
 
-const select = (store) => ({
-  locale: store.ui.userPrefs.locale,
-  authInfo: store.auth.authInfo,
-  searchText: store.cv.searchText,
-  searchResultEntities: store.cv.searchResult,
-  accountEntity: store.safe.content.account,
-  selectedAccountId: store.ui.selectedId.account,
-  selectedExperienceId: store.ui.selectedId.experience
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  searchCvData: (searchText) => dispatch(cvActions.searchCvData(searchText)),
-  setSelectedAccountId: (id) => dispatch(uiActions.setSelectedId("account", id)),
-  fetchCvByAccountId: (accountId) => dispatch(cvActions.fetchCvByAccountId(accountId)),
-  setSelectedExperienceId: (id) => dispatch(uiActions.setSelectedId("experience", id))
-});
-
-export default connect(select, mapDispatchToProps)(Search);
+export default Search;

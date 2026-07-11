@@ -1,12 +1,23 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useSelector} from "react-redux";
 import {HoverCard, HoverCardType, Stack, Text} from "@fluentui/react";
 import * as commonUtils from "../../utils/CommonUtils";
 import {useTheme} from "../../services/ui/ui-services";
 import {formatDate} from "../cv/Preview";
 
-const CvTitle = props => {
+const CvTitle = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      locale: state.ui.userPrefs.locale,
+      characteristicsEntity: state.safe.content.characteristics,
+      selectedAccountId: state.ui.selectedId.account,
+      accountEntity: state.safe.content.account
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const props = {...prps, ...selectors};
   
   const {ceriosYellow} = useTheme();
 
@@ -53,17 +64,10 @@ const CvTitle = props => {
 };
 
 CvTitle.propTypes = {
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   characteristicsEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
   accountEntity: PropTypes.object
 };
 
-const select = (store) => ({
-  locale: store.ui.userPrefs.locale,
-  characteristicsEntity: store.safe.content.characteristics,
-  selectedAccountId: store.ui.selectedId.account,
-  accountEntity: store.safe.content.account
-});
-
-export default connect(select)(CvTitle);
+export default CvTitle;

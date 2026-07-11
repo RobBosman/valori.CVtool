@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {ColumnActionsMode, DefaultButton, PrimaryButton, Separator, Stack, StackItem, Text} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {setSelectedId} from "../../services/ui/ui-actions";
 import {changeInstance, changeInstances} from "../../services/safe/safe-actions";
 import {useTheme} from "../../services/ui/ui-services";
@@ -17,7 +17,27 @@ import Preview, * as preview from "./Preview";
 
 const entityName = "experience";
 
-const Experience = (props) => {
+const Experience = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      authInfo: state.auth.authInfo,
+      locale: state.ui.userPrefs.locale,
+      selectedAccountId: state.ui.selectedId.account,
+      characteristicsEntity: state.safe.content.characteristics,
+      experienceEntity: state.safe.content[entityName],
+      selectedExperienceId: state.ui.selectedId[entityName]
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      replaceExperience: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
+      replaceExperiences: (instances) => dispatch(changeInstances(entityName, instances)),
+      setSelectedExperienceId: (id) => dispatch(setSelectedId(entityName, id))
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const isEditable = commonUtils.isEditAccountAllowed(props.selectedAccountId, props.authInfo);
   const hasCharacteristics = commonUtils.hasInstances(props.characteristicsEntity, props.selectedAccountId);
@@ -487,29 +507,14 @@ const Experience = (props) => {
 
 Experience.propTypes = {
   authInfo: PropTypes.object,
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   selectedAccountId: PropTypes.string,
   characteristicsEntity: PropTypes.object,
   experienceEntity: PropTypes.object,
-  replaceExperience: PropTypes.func.isRequired,
-  replaceExperiences: PropTypes.func.isRequired,
+  replaceExperience: PropTypes.func,
+  replaceExperiences: PropTypes.func,
   selectedExperienceId: PropTypes.string,
-  setSelectedExperienceId: PropTypes.func.isRequired
+  setSelectedExperienceId: PropTypes.func
 };
 
-const select = (store) => ({
-  authInfo: store.auth.authInfo,
-  locale: store.ui.userPrefs.locale,
-  selectedAccountId: store.ui.selectedId.account,
-  characteristicsEntity: store.safe.content.characteristics,
-  experienceEntity: store.safe.content[entityName],
-  selectedExperienceId: store.ui.selectedId[entityName]
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  replaceExperience: (id, instance) => dispatch(changeInstance(entityName, id, instance)),
-  replaceExperiences: (instances) => dispatch(changeInstances(entityName, instances)),
-  setSelectedExperienceId: (id) => dispatch(setSelectedId(entityName, id))
-});
-
-export default connect(select, mapDispatchToProps)(Experience);
+export default Experience;

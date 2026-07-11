@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {DefaultButton, Separator, Stack, StackItem, Text, TextField, TooltipHost} from "@fluentui/react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import * as commonUtils from "../../utils/CommonUtils";
 import * as safeActions from "../../services/safe/safe-actions";
 import * as cvActions from "../../services/cv/cv-actions";
@@ -17,7 +17,32 @@ import {createHelpIcon} from "../widgets/CvHelpIcon";
 const DEFAULT_ACCOUNT_NAME = "-- NIEUW ACCOUNT --";
 const DEFAULT_ACCOUNT_EMAIL = "nieuw.account@cerios.nl";
 
-const Accounts = props => {
+const Accounts = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      locale: state.ui.userPrefs.locale,
+      authInfo: state.auth.authInfo,
+      accountEntity: state.safe.content.account,
+      authorizationEntity: state.safe.content.authorization,
+      brandEntity: state.safe.content.brand,
+      businessUnitEntity: state.safe.content.businessUnit,
+      selectedAccountId: state.ui.selectedId.account
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      setSelectedAccountId: id => dispatch(uiActions.setSelectedId("account", id)),
+      deleteAccount: id => dispatch(safeActions.deleteAccount(id)),
+      replaceAccount: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
+      replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
+      replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance)),
+      fetchCvByAccountId: accountId => dispatch(cvActions.fetchCvByAccountId(accountId)),
+      fetchCvReport: () => dispatch(cvActions.fetchCvReport())
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const combineEntities = (accountEntity, authorizationEntity, brandEntity, businessUnitEntity) => {
     const accounts = Object.values(accountEntity || {})
@@ -406,40 +431,20 @@ const Accounts = props => {
 };
 
 Accounts.propTypes = {
-  locale: PropTypes.string.isRequired,
+  locale: PropTypes.string,
   authInfo: PropTypes.object,
   accountEntity: PropTypes.object,
   authorizationEntity: PropTypes.object,
   brandEntity: PropTypes.object,
   businessUnitEntity: PropTypes.object,
-  deleteAccount: PropTypes.func.isRequired,
-  replaceAccount: PropTypes.func.isRequired,
-  replaceAuthorization: PropTypes.func.isRequired,
-  replaceBusinessUnit: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func,
+  replaceAccount: PropTypes.func,
+  replaceAuthorization: PropTypes.func,
+  replaceBusinessUnit: PropTypes.func,
   selectedAccountId: PropTypes.string,
-  setSelectedAccountId: PropTypes.func.isRequired,
-  fetchCvByAccountId: PropTypes.func.isRequired,
-  fetchCvReport: PropTypes.func.isRequired
+  setSelectedAccountId: PropTypes.func,
+  fetchCvByAccountId: PropTypes.func,
+  fetchCvReport: PropTypes.func
 };
 
-const select = store => ({
-  locale: store.ui.userPrefs.locale,
-  authInfo: store.auth.authInfo,
-  accountEntity: store.safe.content.account,
-  authorizationEntity: store.safe.content.authorization,
-  brandEntity: store.safe.content.brand,
-  businessUnitEntity: store.safe.content.businessUnit,
-  selectedAccountId: store.ui.selectedId.account
-});
-
-const mapDispatchToProps = dispatch => ({
-  setSelectedAccountId: id => dispatch(uiActions.setSelectedId("account", id)),
-  deleteAccount: id => dispatch(safeActions.deleteAccount(id)),
-  replaceAccount: (id, instance) => dispatch(safeActions.changeInstance("account", id, instance)),
-  replaceAuthorization: (id, instance) => dispatch(safeActions.changeInstance("authorization", id, instance)),
-  replaceBusinessUnit: (id, instance) => dispatch(safeActions.changeInstance("businessUnit", id, instance)),
-  fetchCvByAccountId: accountId => dispatch(cvActions.fetchCvByAccountId(accountId)),
-  fetchCvReport: () => dispatch(cvActions.fetchCvReport())
-});
-
-export default connect(select, mapDispatchToProps)(Accounts);
+export default Accounts;

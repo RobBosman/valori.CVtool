@@ -1,12 +1,22 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useSelector} from "react-redux";
 import {getTheme} from "@fluentui/react";
 import {LoginStates} from "../services/auth/auth-actions";
 import {ConnectionStates, eventBusClient} from "../services/eventBus/eventBus-services";
 import "./KeyFrames.css";
 
-const PulseMonitor = (props) => {
+const PulseMonitor = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      shouldBeConnected: state.auth.loginState === LoginStates.LOGGED_IN,
+      isConnected: state.eventBus.connectionState === ConnectionStates.CONNECTED,
+      isDisconnected: (state.eventBus.connectionState === ConnectionStates.DISCONNECTED)
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const props = {...prps, ...selectors};
 
   const [angle, setAngle] = React.useState(0);
   const [pulse, setPulse] = React.useState(undefined);
@@ -58,15 +68,9 @@ const PulseMonitor = (props) => {
 };
 
 PulseMonitor.propTypes = {
-  shouldBeConnected: PropTypes.bool.isRequired,
-  isConnected: PropTypes.bool.isRequired,
-  isDisconnected: PropTypes.bool.isRequired
+  shouldBeConnected: PropTypes.bool,
+  isConnected: PropTypes.bool,
+  isDisconnected: PropTypes.bool
 };
 
-const select = (store) => ({
-  shouldBeConnected: store.auth.loginState === LoginStates.LOGGED_IN,
-  isConnected: store.eventBus.connectionState === ConnectionStates.CONNECTED,
-  isDisconnected: (store.eventBus.connectionState === ConnectionStates.DISCONNECTED)
-});
-
-export default connect(select)(PulseMonitor);
+export default PulseMonitor;

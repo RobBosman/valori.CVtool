@@ -1,13 +1,27 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {connect} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {DefaultButton, Link, PrimaryButton, Stack, Text} from "@fluentui/react";
 import {store} from "../redux/store";
 import CvLogo from "./widgets/CvLogo";
 import LoginDialog from "./LoginDialog";
 import * as authActions from "../services/auth/auth-actions";
 
-const LoginPage = (props) => {
+const LoginPage = prps => {
+
+  const selectors = useSelector(
+    state => ({
+      isLoggingIn: state.auth.loginState === authActions.LoginStates.LOGGING_IN_OPENID
+          || state.auth.loginState === authActions.LoginStates.LOGGING_IN_BACKEND
+    }),
+    {equalityFn: shallowEqual}
+  );
+  const dispatch = useDispatch();
+  const dispatches = React.useMemo(() => ({
+      requestToLogin: () => dispatch(authActions.requestLogin())
+    }),
+    [dispatch]);
+  const props = {...prps, ...selectors, ...dispatches};
 
   const stackTokens = {
     childrenGap: "l1",
@@ -67,17 +81,8 @@ const LoginPage = (props) => {
 };
 
 LoginPage.propTypes = {
-  isLoggingIn: PropTypes.bool.isRequired,
-  requestToLogin: PropTypes.func.isRequired,
+  isLoggingIn: PropTypes.bool,
+  requestToLogin: PropTypes.func
 };
 
-const select = (state) => ({
-  isLoggingIn: state.auth.loginState === authActions.LoginStates.LOGGING_IN_OPENID
-      || state.auth.loginState === authActions.LoginStates.LOGGING_IN_BACKEND
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  requestToLogin: () => dispatch(authActions.requestLogin())
-});
-
-export default connect(select, mapDispatchToProps)(LoginPage);
+export default LoginPage;
