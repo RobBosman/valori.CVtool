@@ -13,6 +13,7 @@ sudo -i
 apt-get -y update
 apt-get -y upgrade
 
+# Install intrusion prevention software framework.
 apt-get -y install fail2ban
 
 # Configure firewall.
@@ -44,13 +45,14 @@ systemctl enable --now docker
 usermod -aG docker rbosman
 
 # Install docker-compose.
-curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" \
+curl -L "https://github.com/docker/compose/releases/download/v5.1.2/docker-compose-$(uname -s)-$(uname -m)" \
   -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 # Copy script files to /root/.
 cp ~bosmanr/docker-compose.yml .
 cp ~bosmanr/scripts/cvtool_*.sh .
+cp ~bosmanr/scripts/update_*.sh .
 
 # Prepare secret config file.
 mkdir -p /secret
@@ -71,9 +73,10 @@ crontab -e
 # Install MongoDB and CVtool and run letsencrypt to obtain SSL certs. (Restart CVtool server to load a new certificate.)
 docker pull bransom/cvtool-backend
 docker pull bransom/cvtool-frontend
-docker compose -f docker-compose.yaml --env-file=/secret/.env up -d
+docker-compose -f docker-compose.yaml --env-file=/secret/.env up -d
 docker container prune -f
 docker image prune -f
+docker system prune -f
 
 # Restore MongoDB.
 # ./cvtool_restore_data.sh
@@ -81,6 +84,8 @@ docker image prune -f
 
 # Initialize MongoDB.
 ./cvtool_initialize_mongodb.sh
+./cvtool_initialize_mongodb_A.sh
+./cvtool_initialize_mongodb_B.sh
 
 # Restart CVtool server to load a new certificate.
 docker container restart "$(docker ps -aqf 'ancestor=bransom/cvtool')"
