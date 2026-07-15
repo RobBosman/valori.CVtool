@@ -23,7 +23,7 @@ export const fetchDemoCvAtRemote = (accountId, locale, sendEventFunc) =>
 const escapeJsonString = (text) =>
   text
     .replaceAll("\\", String.raw`\\`) // escape backslashes
-    .replaceAll(String.raw`"`, String.raw`\"`) // escape double quotes
+    .replaceAll("\"", String.raw`\"`) // escape double quotes
     .replaceAll(/\s+/g, " ") // use single spaces
     .trim();
 
@@ -37,11 +37,11 @@ const downloadFile = (fileName, blob) => {
   const a = document.createElement("a");
   a.style = "display: none";
   document.body.appendChild(a);
-  const url = window.URL.createObjectURL(blob);
+  const url = globalThis.URL.createObjectURL(blob);
   a.href = url;
   a.download = fileName;
   a.click();
-  window.URL.revokeObjectURL(url);
+  globalThis.URL.revokeObjectURL(url);
 };
 
 export const downloadCsvFile = (fileName, csvData) => {
