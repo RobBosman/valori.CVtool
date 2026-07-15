@@ -12,7 +12,18 @@ import {uiEpics} from "./services/ui/ui-epics";
 import {ErrorBoundary} from "./utils/ErrorBoundary";
 import Main from "./components/Main";
 
-export const appVersion = "versie 2026-07-12";
+const dtap = {
+  "localhost": {label: "DEV", borderStyle: "6px solid #009900"},
+  "cvtool.test.cerios.nl": {label: "TEST", borderStyle: "6px solid #ff9900"},
+  "cvtool.cerios.nl": {label: "", borderStyle: "none"}
+}[globalThis.location.hostname]
+?? {label: "UNKNOWN", borderStyle: "6px solid #ff0000"};
+
+const htmlRoot = document.getElementsByTagName("html")[0];
+htmlRoot.style.border = dtap.borderStyle;
+htmlRoot.style.height = dtap.borderStyle ? "calc(100% - 12px)" : "100%";
+
+export const appVersion = `${dtap.label} versie 2026-07-15`;
 
 epicRegistry.register(
   ...errorEpics,
