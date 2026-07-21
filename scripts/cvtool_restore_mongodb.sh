@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . /secret/.env
 
-RESTORE_DATE="2026-07-10"
+RESTORE_DATE="2026-07-21"
 
 docker exec "$(docker ps -aqf 'name=mongodb')" \
   mongorestore --uri="mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/cvtool?authSource=admin" \

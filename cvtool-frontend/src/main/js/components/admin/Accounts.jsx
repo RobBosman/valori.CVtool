@@ -376,15 +376,16 @@ const Accounts = prps => {
                     readOnly={!["ADMIN"].includes(props.authInfo.authorizationLevel)}
                     disabled={!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId}
                     options={enums.getOptions(enums.Authorizations, props.locale)}
-                    styles={{ dropdown: { width: 230 } }}
+                    styles={{ dropdown: { width: 415 } }}
                   />
                   <CvDropdown
                     label="Unit"
                     field="businessUnit._id"
                     instanceContext={combinedContext(switchBusinessUnitOfAccount)}
                     readOnly={!["ADMIN", "UNIT_LEAD"].includes(props.authInfo.authorizationLevel)}
+                    disabled={!["ADMIN"].includes(props.authInfo.authorizationLevel) && (!props.selectedAccountId || props.selectedAccountId === props.authInfo.accountId)}
                     options={enums.getOptions(BusinessUnitOptions, props.locale)}
-                    styles={{ dropdown: { width: 230 } }}
+                    styles={{ dropdown: { width: 415 } }}
                   />
                   <Separator/>
                   <TooltipHost content={`Haal de gegevens op om het CV te ${cvAction}`}>
