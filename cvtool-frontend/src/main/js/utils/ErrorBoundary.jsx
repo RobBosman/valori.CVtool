@@ -18,9 +18,11 @@ export class ErrorBoundary extends React.Component {
   }
   
   getForegroundColor() {
-    const backgroundColor = document.documentElement.style.background;
+    const backgroundColor = document.documentElement.style.background || "#ffffff";
     const match = /rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/.exec(backgroundColor);
-    const avg = (Number.parseInt(match[1]) + Number.parseInt(match[2]) + Number.parseInt(match[3])) / 3;
+    const avg = match
+      ? (Number.parseInt(match[1]) + Number.parseInt(match[2]) + Number.parseInt(match[3])) / 3
+      : 255;
     return avg < 128
       ? "#ffffff"
       : "#000000";

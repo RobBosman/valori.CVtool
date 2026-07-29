@@ -13,7 +13,7 @@ export default merge(composeCommonConfig("production"), {
       minSize: 0,
       maxInitialRequests: 30,
       maxAsyncRequests: 30,
-      maxSize: 24000,
+      maxSize: 240000,
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
