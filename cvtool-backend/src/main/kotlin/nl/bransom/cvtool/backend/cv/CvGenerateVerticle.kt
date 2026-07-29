@@ -127,26 +127,6 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
             defaultDocxTemplate: String,
             docxTemplateOverride: String?
         ): String {
-            val brand = when (val brandInstances = cvEntities.getValue("brand")) {
-                is JsonObject -> brandInstances.map.values
-                    .map(::toJsonObject)
-                    .filterIsInstance<JsonObject>()
-                    .firstOrNull()
-                    ?.getString("name")
-                    ?: ""
-
-                else -> ""
-            }
-            val unit = when (val unitInstances = cvEntities.getValue("businessUnit")) {
-                is JsonObject -> unitInstances.map.values
-                    .map(::toJsonObject)
-                    .filterIsInstance<JsonObject>()
-                    .firstOrNull()
-                    ?.getString("name")
-                    ?: ""
-
-                else -> ""
-            }
             val accountName = when (val accountInstances = cvEntities.getValue("account")) {
                 is JsonObject -> accountInstances.map.values
                     .map(::toJsonObject)
@@ -161,7 +141,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
                 docxTemplateOverride != null && docxTemplateOverride != defaultDocxTemplate -> "[$docxTemplateOverride]"
                 else -> ""
             }
-            return listOf("CV", locale.substring(3), brand.ifBlank { unit }, accountName, appliedDocxTemplate)
+            return listOf("CV", locale.substring(3), "Cerios", accountName, appliedDocxTemplate)
                 .map { it.replace(" ", "") }
                 .filter { it.isNotBlank() }
                 .joinToString("_") {
