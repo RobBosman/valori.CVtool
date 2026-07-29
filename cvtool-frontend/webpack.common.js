@@ -41,6 +41,16 @@ export const composeCommonConfig = devOrProdMode => ({
           loader: require.resolve("babel-loader"),
           options: {
             envName: devOrProdMode,
+            presets: [
+              [
+                require.resolve("@babel/preset-env"),
+                { targets: { esmodules: true } }
+              ],
+              [
+                require.resolve("@babel/preset-react"),
+                { runtime: "automatic" }
+              ]
+            ],
             env: {
               production: {
                 only: [
@@ -81,6 +91,11 @@ export const composeCommonConfig = devOrProdMode => ({
         }
       }
     ]
+  },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
   },
   resolve: {
     extensions: [
