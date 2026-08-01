@@ -391,7 +391,7 @@ const Skill = prps => {
             <Stack styles={viewStyles}>
               <Stack horizontal horizontalAlign="space-between"
                 tokens={{ childrenGap: "l1" }}>
-                <Text variant="xxLarge">Vaardigheden</Text>
+                <Text variant="xxLarge">Kerncompetenties / skills</Text>
                 {isEditable
                   && <StackItem>
                     <Stack horizontal tokens={{ childrenGap: "l1" }}>

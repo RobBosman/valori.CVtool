@@ -425,7 +425,7 @@ const Experience = prps => {
                 }}>
                   <CvTextField
                     label={createHelpIcon({
-                      label: "Opdracht",
+                      label: "Situatie",
                       content:
                         <Text>
                           Net als bij je profielschets beschrijf je hier waar nodig zaken in de derde persoon.
