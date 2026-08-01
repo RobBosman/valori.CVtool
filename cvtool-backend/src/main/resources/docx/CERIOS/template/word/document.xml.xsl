@@ -1204,6 +1204,7 @@
                                                                 <w:rPr>
                                                                     <w:rFonts w:ascii="Plus Jakarta Sans"
                                                                               w:hAnsi="Plus Jakarta Sans"/>
+                                                                    <w:color w:val="212B46"/>
                                                                     <w:sz w:val="18"/>
                                                                     <w:szCs w:val="18"/>
                                                                 </w:rPr>
@@ -1959,6 +1960,7 @@
                                                 <w:rPr>
                                                     <w:rStyle w:val="A3"/>
                                                     <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                                                    <w:color w:val="212B46"/>
                                                 </w:rPr>
                                             </w:pPr>
                                         </w:p>
@@ -1976,6 +1978,7 @@
                                                 <w:rPr>
                                                     <w:rStyle w:val="A3"/>
                                                     <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                                                    <w:color w:val="212B46"/>
                                                 </w:rPr>
                                             </w:pPr>
                                         </w:p>

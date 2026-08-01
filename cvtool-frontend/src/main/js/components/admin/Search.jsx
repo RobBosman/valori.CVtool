@@ -193,9 +193,9 @@ const Search = prps => {
     {
       key: "skills",
       fieldName: "skillLevel",
-      name: "Vaardigheden",
-      minWidth: 110,
-      maxWidth: 110,
+      name: "Kerncompetenties / skills",
+      minWidth: 160,
+      maxWidth: 160,
       onRender: renderSkillResult
     },
     {
@@ -403,7 +403,7 @@ const Search = prps => {
                 </table>
                 <Label
                   disabled={!selectedSearchResult.skills?.length}>
-                  Vaardigheden
+                  Kerncompetenties / skills
                 </Label>
                 <table style={searchResultStyle(selectedSearchResult?.skills?.length > 0)}>
                   <tbody>

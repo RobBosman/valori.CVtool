@@ -102,8 +102,8 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
-                                      w:cs="PlusJakartaSans-Regular"/>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"
+                                      w:cs="Plus Jakarta Sans"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -130,8 +130,8 @@
                     <w:proofErr w:type="spellStart"/>
                     <w:r>
                         <w:rPr>
-                            <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
-                                      w:cs="PlusJakartaSans-Regular"/>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"
+                                      w:cs="Plus Jakarta Sans"/>
                             <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
@@ -277,6 +277,7 @@
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
@@ -302,6 +303,7 @@
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
@@ -329,6 +331,7 @@
                         <xsl:variable name="yearTo" select="cv:yearTo"/>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
@@ -367,6 +370,7 @@
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                         </w:rPr>
@@ -425,6 +429,8 @@
                     </w:pPr>
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
@@ -449,6 +455,8 @@
                     </w:pPr>
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
+                            <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
@@ -473,6 +481,7 @@
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
@@ -503,6 +512,7 @@
                     <w:r w:rsidRPr="00CA43CD">
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="18"/>
                         </w:rPr>
@@ -796,6 +806,7 @@
                     <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                             <w:noProof/>
@@ -823,6 +834,7 @@
                     <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                             <w:noProof/>
@@ -850,6 +862,7 @@
                     <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                             <w:noProof/>
@@ -877,6 +890,7 @@
                     <w:r>
                         <w:rPr>
                             <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"/>
+                            <w:color w:val="212B46"/>
                             <w:sz w:val="18"/>
                             <w:szCs w:val="16"/>
                             <w:noProof/>
@@ -955,8 +969,9 @@
                 <w:ind w:end="276.65pt"/>
                 <w:suppressAutoHyphens/>
                 <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
-                              w:cs="PlusJakartaSans-Regular"/>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"
+                              w:cs="Plus Jakarta Sans"/>
+                    <w:color w:val="212B46"/>
                     <w:sz w:val="18"/>
                     <w:szCs w:val="18"/>
                 </w:rPr>
@@ -964,8 +979,8 @@
             <w:proofErr w:type="spellStart"/>
             <w:r>
                 <w:rPr>
-                    <w:rFonts w:ascii="PlusJakartaSans-Regular" w:hAnsi="PlusJakartaSans-Regular"
-                              w:cs="PlusJakartaSans-Regular"/>
+                    <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans"
+                              w:cs="Plus Jakarta Sans"/>
                     <w:color w:val="212B46"/>
                     <w:sz w:val="18"/>
                     <w:szCs w:val="18"/>
@@ -991,6 +1006,7 @@
                     <w:bCs/>
                     <w:sz w:val="22"/>
                     <w:szCs w:val="22"/>
+                    <w:color w:val="212B46"/>
                 </w:rPr>
                 <w:noProof/>
             </w:pPr>
@@ -1066,9 +1082,7 @@
                 <w:proofErr w:type="spellStart"/>
                 <w:r>
                     <w:rPr>
-                        <w:rFonts w:ascii="PlusJakartaSans-Regular"
-                                  w:hAnsi="PlusJakartaSans-Regular"
-                                  w:cs="PlusJakartaSans-Regular"/>
+                        <w:rFonts w:ascii="Plus Jakarta Sans" w:hAnsi="Plus Jakarta Sans" w:cs="Plus Jakarta Sans"/>
                         <w:color w:val="212B46"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>

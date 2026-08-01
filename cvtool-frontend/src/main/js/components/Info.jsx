@@ -53,7 +53,7 @@ const Info = prps => {
           <br/>
           <li><u>Engelstalig cv</u>: Als je een andere taal selecteert worden bepaalde gegevens, zoals je naam ongewijzigd overgenomen.
             <br/>De meeste gegevens moet je echter per taal opnieuw invoeren, de betreffende tekstvelden zijn dan leeg.
-            <br/>Bij een aantal daarvan wordt de NL-waarde alvast voor-ingevuld, bijvoorbeeld bij vaardigheden.
+            <br/>Bij een aantal daarvan wordt de NL-waarde alvast voor-ingevuld, bijvoorbeeld bij <em>Kerncompetenties / skills</em>.
             <br/>Je kunt daar je eigen vertaling invullen, maar als je dat niet doet wordt de voor-ingevulde waarde in je cv opgenomen.</li>
           <br/>
           <li><u>AutoSave</u>: Elke wijziging wordt na twee seconden vanzelf opgeslagen.</li>

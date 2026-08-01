@@ -174,7 +174,7 @@ const ContentPage = prps => {
           {
             key: "#skills",
             url: "#skills",
-            name: "Vaardigheden",
+            name: "Kerncompetenties / skills",
             icon: "Backlog",
             disabled: !hasCharacteristics,
             content: <Skill />
@@ -218,12 +218,18 @@ const ContentPage = prps => {
     renderContent = item?.content || <ErrorPage message={`Unknown location '${props.locationHash}'`} />;
   }
 
+  const navStyles = {
+    root: { width: 205, marginTop: 61, marginBottom: 8 },
+    linkText: { overflow: "unset" },
+    groupContent: { marginBottom: 0 }
+  };
+
   return (
     <Stack horizontal>
       <Stack>
         <CvLogo/>
         <Nav
-          styles={{ root: { width: 205, marginTop: 61, marginBottom: 8 }, groupContent: { marginBottom: 0 } }}
+          styles={navStyles}
           groups={navGroups}
           initialSelectedKey={locationHash || "#"}
           selectedKey={props.navKey}
