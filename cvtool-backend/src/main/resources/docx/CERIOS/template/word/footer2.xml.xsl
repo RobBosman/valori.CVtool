@@ -38,6 +38,7 @@
                 </w:pPr>
                 <w:r w:rsidRPr="002251BB">
                     <w:rPr>
+                        <w:color w:val="212B46"/>
                         <w:sz w:val="18"/>
                         <w:szCs w:val="18"/>
                         <w:noProof/>
