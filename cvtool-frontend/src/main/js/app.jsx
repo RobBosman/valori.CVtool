@@ -23,7 +23,7 @@ const htmlRoot = document.getElementsByTagName("html")[0];
 htmlRoot.style.border = dtap.borderStyle;
 htmlRoot.style.height = dtap.borderStyle ? "calc(100% - 12px)" : "100%";
 
-export const appVersion = `${dtap.label} versie 2026-08-01`;
+export const appVersion = `${dtap.label} versie 2026-08-08`;
 
 epicRegistry.register(
   ...errorEpics,
