@@ -792,7 +792,7 @@
                                     <wp:posOffset>-545123</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>2364106</wp:posOffset>
+                                    <wp:posOffset>2400000</wp:posOffset>
                                 </wp:positionV>
                                 <wp:extent cx="3240000" cy="2848708"/>
                                 <wp:effectExtent l="0" t="0" r="0" b="0"/>
@@ -873,9 +873,9 @@
                                     <wp:posOffset>2840355</wp:posOffset>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>2750185</wp:posOffset>
+                                    <wp:posOffset>2753000</wp:posOffset>
                                 </wp:positionV>
-                                <wp:extent cx="3240000" cy="2402732"/>
+                                <wp:extent cx="3240000" cy="2500000"/>
                                 <wp:effectExtent l="0" t="0" r="0" b="0"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="2053133036" name="Text Box 6"/>
@@ -888,7 +888,7 @@
                                             <wp:spPr>
                                                 <a:xfrm>
                                                     <a:off x="0" y="0"/>
-                                                    <a:ext cx="3240000" cy="2402732"/>
+                                                    <a:ext cx="3240000" cy="2500000"/>
                                                 </a:xfrm>
                                                 <a:prstGeom prst="rect">
                                                     <a:avLst/>
