@@ -54,13 +54,6 @@ export const DocxTemplates = [
     text: {
       nl_NL: "CERIOS"
     }
-  },
-  {
-    key: "VALORI_CLASSIC",
-    sortIndex: 1,
-    text: {
-      nl_NL: "VALORI_CLASSIC"
-    }
   }
 ];
 

@@ -16,7 +16,7 @@ internal class CvGenerateVerticleTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = ["CERIOS", "VALORI_CLASSIC"])
+    @ValueSource(strings = ["CERIOS"])
     fun jsonToXml(docxTemplate: String) {
         val xml = javaClass.getResource("/test-cv.xml")!!.readBytes()
         val xslt = CvGenerateVerticle.createXslTemplate(docxTemplate, "/test.xsl")
@@ -27,7 +27,7 @@ internal class CvGenerateVerticleTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = ["CERIOS", "VALORI_CLASSIC"])
+    @ValueSource(strings = ["CERIOS"])
     fun generateDocx(docxTemplate: String) {
         val generator = CvGenerateVerticle()
 
@@ -46,12 +46,8 @@ internal class CvGenerateVerticleTest {
             composeFileName(TEST_JSON, "nl_NL", "CERIOS", null)
         )
         assertEquals(
-            "CV_NL_Cerios_PietjePuk_[VALORI-CLASSIC].docx",
-            composeFileName(TEST_JSON, "nl_NL", "CERIOS", "VALORI-CLASSIC")
-        )
-        assertEquals(
             "CV_NL_Cerios_PietjePuk_[CERIOS].docx",
-            composeFileName(TEST_JSON, "nl_NL", "VALORI-CLASSIC", "CERIOS")
+            composeFileName(TEST_JSON, "nl_NL", "OTHER-TEMPLATE", "CERIOS")
         )
 
         val specialJson = JsonObject(TEST_JSON.encodePrettily().replace("Pietje Puk", "Pietje|'van\\\\de/?*Puk"))

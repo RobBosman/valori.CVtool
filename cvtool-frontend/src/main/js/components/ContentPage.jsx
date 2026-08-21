@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {IconButton, Nav, PrimaryButton, Separator, Stack, Text, TooltipHost} from "@fluentui/react";
+import {IconButton, Nav, PrimaryButton, Separator, Stack, TooltipHost} from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -243,18 +243,13 @@ const ContentPage = prps => {
             text="Download CV&nbsp;&nbsp;"
             iconProps={{ iconName: "DownloadDocument" }}
             primary
-            split
-            menuProps={docxTemplateMenuProps}
+            // split
+            // menuProps={docxTemplateMenuProps}
             disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
-            styles={{ root: { width: 174, padding: "0 6px", justifyContent: "left" } }}>
+            styles={{ root: { width: "100%", padding: "0 6px", justifyContent: "left" } }}>
             <LocaleFlag/>
           </PrimaryButton>
-          <Text
-            variant="small"
-            style={{ display: "flex", flexDirection: "row-reverse"}}>
-            <em>{props.docxTemplateOverride?.text || defaultDocxTemplate}</em>
-          </Text>
         </TooltipHost>
       </Stack>
       <Separator vertical />
