@@ -19,8 +19,8 @@ describe("cv-services.test", () => {
     return cvServices.fetchCvFromRemote({}, sendEventError)
       .then(action => actions.push(action))
       .catch(error => {
-        expect(actions.length)
-          .toBe(0);
+        expect(actions)
+          .toHaveLength(0);
         expect(error.message)
           .toBe("cv.fetch_rejected");
       });
@@ -40,8 +40,8 @@ describe("cv-services.test", () => {
     return cvServices.fetchCvHistoryFromRemote({}, sendEventError)
       .then(action => actions.push(action))
       .catch(error => {
-        expect(actions.length)
-          .toBe(0);
+        expect(actions)
+          .toHaveLength(0);
         expect(error.message)
           .toBe("cv.history_rejected");
       });

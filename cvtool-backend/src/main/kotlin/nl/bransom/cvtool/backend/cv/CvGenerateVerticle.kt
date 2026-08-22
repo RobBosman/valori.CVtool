@@ -123,9 +123,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         // CV_$LOCALE_$BRAND_$ACCOUNT_NAME_[TEMPLATE-OVERRIDE].docx, e.g. CV_NL_Cerios_RobBosman_[VALORI-CLASSIC].docx
         internal fun composeFileName(
             cvEntities: JsonObject,
-            locale: String,
-            defaultDocxTemplate: String,
-            docxTemplateOverride: String?
+            locale: String
         ): String {
             val accountName = when (val accountInstances = cvEntities.getValue("account")) {
                 is JsonObject -> accountInstances.map.values
@@ -137,11 +135,7 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
                 else -> ""
             }
-            val appliedDocxTemplate = when {
-                docxTemplateOverride != null && docxTemplateOverride != defaultDocxTemplate -> "[$docxTemplateOverride]"
-                else -> ""
-            }
-            return listOf("CV", locale.substring(3), "Cerios", accountName, appliedDocxTemplate)
+            return listOf("CV", locale.substring(3), "Cerios", accountName)
                 .map { it.replace(" ", "") }
                 .filter { it.isNotBlank() }
                 .joinToString("_") {
@@ -160,7 +154,6 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
      *   {
      *     "locale": "nl_NL",
      *     "accountId": "id-of-account-to-generate-cv-for"
-     *     "docxTemplate": "CERIOS"
      *   }
      *
      * Response:
@@ -172,23 +165,21 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
     override fun handleRequest(message: Message<JsonObject>) {
         val locale = message.body().getString("locale", "nl_NL")
         val accountId = message.body().getString("accountId")
-        val docxTemplateOverride = message.body().getString("docxTemplate")
         Single
             .just(message.body())
             .flatMap(::fetchCvData)
             .flatMap { cvJson ->
-                val defaultDocxTemplate =
+                val docxTemplate =
                     cvJson.getInstances("brand")
                         .firstOrNull()
                         ?.getString("docxTemplate")
                         ?: DEFAULT_DOCX_TEMPLATE
-                val docxTemplate = docxTemplateOverride ?: defaultDocxTemplate
                 val docxJson = convertToLocalizedJson(cvJson, locale)
                 val docxXml = convertToDocxXml(docxJson)
                 xmlToDocx(docxXml, docxTemplate, locale)
                     .map { docxBytes ->
                         JsonObject()
-                            .put("fileName", composeFileName(cvJson, locale, defaultDocxTemplate, docxTemplateOverride))
+                            .put("fileName", composeFileName(cvJson, locale))
                             .put("docxB64", String(Base64.getEncoder().encode(docxBytes)))
                     }
             }

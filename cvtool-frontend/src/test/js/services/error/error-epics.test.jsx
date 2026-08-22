@@ -30,7 +30,7 @@ describe("error-epics.test", () => {
 
     return new Promise((_resolve) => {
       expect(_store.getState().error.lastError)
-        .toBe(undefined);
+        .toBeUndefined();
       setTimeout(() => {
         throw new Error("Amai zeg!");
       }, 0);

@@ -27,7 +27,7 @@ describe("ui-actions.test", () => {
     expect(state.ui.selectedId[entityName1])
       .toBe(313);
     expect(state.ui.selectedId[entityName2])
-      .toBe(undefined);
+      .toBeUndefined();
       
     state = reducer(state, uiActions.setSelectedId(entityName2, 767));
     expect(state.ui.selectedId[entityName1])

@@ -20,7 +20,6 @@ import Brands from "./admin/Brands";
 import BusinessUnits from "./admin/BusinessUnits";
 import Search from "./admin/Search";
 import LocaleFlag from "./widgets/LocaleFlag";
-import * as enums from "./cv/Enums";
 import * as cvActions from "../services/cv/cv-actions";
 import * as uiActions from "../services/ui/ui-actions";
 import * as utils from "../utils/CommonUtils";
@@ -33,18 +32,14 @@ const ContentPage = prps => {
       authInfo: state.auth.authInfo,
       locationHash: state.ui.locationHash,
       accountEntity: state.safe.content.account,
-      brandEntity: state.safe.content.brand,
-      businessUnitEntity: state.safe.content.businessUnit,
       characteristicsEntity: state.safe.content.characteristics,
-      selectedAccountId: state.ui.selectedId.account,
-      docxTemplateOverride: state.cv.docxTemplateOverride
+      selectedAccountId: state.ui.selectedId.account
     }),
     {equalityFn: shallowEqual}
   );
   const dispatch = useDispatch();
   const dispatches = React.useMemo(() => ({
       fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
-      overrideDocxTemplate: (docxTemplateOverride) => dispatch(cvActions.overrideDocxTemplate(docxTemplateOverride)),
       generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
       setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
     }),
@@ -57,25 +52,10 @@ const ContentPage = prps => {
 
   const selectedAccountName = props.accountEntity?.[props.selectedAccountId]?.name;
 
-  const defaultDocxTemplate = React.useMemo(() => {
-    const brandId = Object.values(props.businessUnitEntity || {})
-      .find(businessUnit => businessUnit.accountIds.includes(props.selectedAccountId))
-      ?.brandId;
-    const docxTemplate = Object.values(props.brandEntity || {})
-      .find(brand => brand._id === brandId)
-      ?.docxTemplate
-      || "CERIOS";
-    return enums.getText(enums.DocxTemplates, docxTemplate, props.locale);
-  },
-  [props.brandEntity, props.businessUnitEntity, props.selectedAccountId]);
-
   const onFetchCvHistory = () => {
     props.fetchCvHistory(props.selectedAccountId);
     props.setHistoryViewVisible(true);
   };
-
-  const onItemClick = (_, selectedDocxTemplate) =>
-    props.overrideDocxTemplate(selectedDocxTemplate);
 
   const onGenerateCv = () =>
     props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
@@ -91,11 +71,6 @@ const ContentPage = prps => {
         onClick={onFetchCvHistory}
       />
     </Stack>;
-
-  const docxTemplateMenuProps = {
-    items: enums.getOptions(enums.DocxTemplates, props.locale),
-    onItemClick: onItemClick
-  };
 
   const navGroups = React.useMemo(() =>
     [
@@ -243,8 +218,6 @@ const ContentPage = prps => {
             text="Download CV&nbsp;&nbsp;"
             iconProps={{ iconName: "DownloadDocument" }}
             primary
-            // split
-            // menuProps={docxTemplateMenuProps}
             disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
             styles={{ root: { width: "100%", padding: "0 6px", justifyContent: "left" } }}>
@@ -271,13 +244,9 @@ ContentPage.propTypes = {
   authInfo: PropTypes.object,
   locationHash: PropTypes.string,
   accountEntity: PropTypes.object,
-  brandEntity: PropTypes.object,
-  businessUnitEntity: PropTypes.object,
   characteristicsEntity: PropTypes.object,
-  docxTemplateOverride: PropTypes.object,
   selectedAccountId: PropTypes.string,
   fetchCvHistory: PropTypes.func,
-  overrideDocxTemplate: PropTypes.func,
   generateCv: PropTypes.func,
   setHistoryViewVisible: PropTypes.func
 };

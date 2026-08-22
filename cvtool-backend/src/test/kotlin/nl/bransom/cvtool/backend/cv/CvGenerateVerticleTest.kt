@@ -43,17 +43,17 @@ internal class CvGenerateVerticleTest {
     fun testFilename() {
         assertEquals(
             "CV_NL_Cerios_PietjePuk.docx",
-            composeFileName(TEST_JSON, "nl_NL", "CERIOS", null)
+            composeFileName(TEST_JSON, "nl_NL")
         )
         assertEquals(
-            "CV_NL_Cerios_PietjePuk_[CERIOS].docx",
-            composeFileName(TEST_JSON, "nl_NL", "OTHER-TEMPLATE", "CERIOS")
+            "CV_UK_Cerios_PietjePuk.docx",
+            composeFileName(TEST_JSON, "uk_UK")
         )
 
         val specialJson = JsonObject(TEST_JSON.encodePrettily().replace("Pietje Puk", "Pietje|'van\\\\de/?*Puk"))
         assertEquals(
             "CV_NL_Cerios_Pietje-van-de-Puk.docx",
-            composeFileName(specialJson, "nl_NL", "CERIOS", null)
+            composeFileName(specialJson, "nl_NL")
         )
     }
 }

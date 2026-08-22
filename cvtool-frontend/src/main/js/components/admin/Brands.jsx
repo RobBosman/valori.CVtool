@@ -49,15 +49,15 @@ const Brands = prps => {
       fieldName: "name",
       name: "Naam",
       isResizable: true,
-      minWidth: 100,
-      maxWidth: 200
+      minWidth: 100
     },
     {
       key: "docxTemplate",
       fieldName: "docxTemplate",
       name: "Docx template",
       isResizable: true,
-      minWidth: 120
+      minWidth: 120,
+      maxWidth: 200
     }
   ];
 

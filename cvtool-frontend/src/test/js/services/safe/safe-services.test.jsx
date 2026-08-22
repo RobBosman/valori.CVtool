@@ -25,16 +25,16 @@ describe("safe-services.test", () => {
 
   it("should create unique ids", () => {
     const id0 = commonUtils.createUuid();
-    expect(id0.length)
-      .toBe(36);
-    expect(id0.replaceAll(/-/g, "").length)
-      .toBe(32);
+    expect(id0)
+      .toHaveLength(36);
+    expect(id0.replaceAll(/-/g, ""))
+      .toHaveLength(32);
 
     const id1 = commonUtils.createUuid();
-    expect(id1.length)
-      .toBe(36);
-    expect(id1.replaceAll(/-/g, "").length)
-      .toBe(32);
+    expect(id1)
+      .toHaveLength(36);
+    expect(id1.replaceAll(/-/g, ""))
+      .toHaveLength(32);
     expect(id0)
       .not.toBe(id1);
   });
