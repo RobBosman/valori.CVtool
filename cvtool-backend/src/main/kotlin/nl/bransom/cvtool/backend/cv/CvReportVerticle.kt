@@ -9,7 +9,6 @@ import nl.bransom.cvtool.backend.ModelUtils.getInstances
 import nl.bransom.cvtool.backend.ModelUtils.toJsonObject
 import nl.bransom.cvtool.backend.authorization.AuthInfo
 import nl.bransom.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
-import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.ADMIN
 import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.UNIT_LEAD
 import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.persistence.MONGODB_QUERY_ADDRESS
@@ -65,26 +64,26 @@ internal class CvReportVerticle : DebouncingVerticle(CV_REPORT_ADDRESS) {
             )
     }
 
-    private fun fetchRequiredEntities(authInfo: AuthInfo): Single<JsonObject> {
-        val businessUnitCriteria = when {
-            authInfo.isAuthorized(ADMIN) -> "{}"
-            authInfo.isAuthorized(UNIT_LEAD) -> """{ "accountIds": "${authInfo.accountId}" }"""
-            else -> return Single.just(JsonObject())
+    private fun fetchRequiredEntities(authInfo: AuthInfo): Single<JsonObject> =
+        when {
+            authInfo.isAuthorized(UNIT_LEAD) -> {
+                vertx.eventBus()
+                    .rxRequest<JsonObject>(
+                        MONGODB_FETCH_ADDRESS,
+                        JsonObject(
+                            """{
+                                "account": [{}],
+                                "brand": [{}],
+                                "businessUnit": [{}]
+                            }"""
+                        ),
+                        DELIVERY_OPTIONS
+                    )
+                    .map { it.body() }
+            }
+
+            else -> Single.just(JsonObject())
         }
-        return vertx.eventBus()
-            .rxRequest<JsonObject>(
-                MONGODB_FETCH_ADDRESS,
-                JsonObject(
-                    """{
-                        "account": [{}],
-                        "brand": [{}],
-                        "businessUnit": [$businessUnitCriteria]
-                    }"""
-                ),
-                DELIVERY_OPTIONS
-            )
-            .map { it.body() }
-    }
 
     private fun withLatestAuditLogs(allEntities: JsonObject): Single<Pair<JsonObject, JsonObject>> =
         vertx.eventBus()
