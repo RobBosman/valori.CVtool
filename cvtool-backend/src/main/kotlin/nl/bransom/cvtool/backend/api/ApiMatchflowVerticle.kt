@@ -26,6 +26,11 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
      *        {
      *          "name": "John Doe",
      *          "email": "john.doe@cerios.nl",
+     *          "characteristics": {
+     *            "role": "Software Engineer",
+     *            "profile": "Blablabla",
+     *            "interests": "None of the above"
+     *          },
      *          "certification": [
      *            {
      *              "year": 2004,
@@ -39,7 +44,20 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
      *              "description": "Geautomatiseerd testen",
      *              "level": 2
      *            }
-     *          ]
+     *          ],
+     *          "experience": [
+     *            {
+     *              "periodBegin": "2020-10-01",
+     *              "periodEnd": "2023-02-31",
+     *              "employer": "STRING",
+     *              "client": "STRING",
+     *              "role": "STRING",
+     *              "assignment": "STRING",
+     *              "activities": "STRING",
+     *              "results": "STRING",
+     *              "keywords": "STRING"
+     *            }
+     *          ],
      *        }
      *      ]
      *    }
@@ -51,9 +69,11 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
                 JsonObject(
                     """{
                         "account": [],
-                        "education": [{ "result": "DIPLOMA" }],
-                        "training": [{ "result": "DIPLOMA" }],
-                        "skill": []
+                        "characteristics": [{ "includeInCv": true }],
+                        "education": [{ "includeInCv": true, "result": "DIPLOMA" }],
+                        "training": [{ "includeInCv": true, "result": "DIPLOMA" }],
+                        "skill": [{ "includeInCv": true }],
+                        "experience": [{ "includeInCv": true }]
                     }"""
                 ),
                 DELIVERY_OPTIONS
@@ -74,34 +94,74 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
     }
 
     private fun toApiResponse(fetchedEntities: JsonObject): JsonObject {
+        val characteristicsByAccountId = obtainCharacteristics(fetchedEntities)
         val certificationByAccountId = obtainCertifications(fetchedEntities)
         val skillsByAccountId = obtainSkills(fetchedEntities)
-        val result =
-            fetchedEntities.getInstances("account")
-                .mapNotNull {
-                    val accountId = it.getString("_id")
-                    val certification = certificationByAccountId[accountId] ?: emptySet()
-                    val skills = skillsByAccountId[accountId] ?: emptySet()
-                    if (certification.isNotEmpty() || skills.isNotEmpty()) {
-                        JsonObject(
-                            """{
-                                "name": "${it.getString("name")}",
-                                "email": "${it.getString("email")}"
-                            }"""
-                        ).apply {
-                            if (certification.isNotEmpty()) {
-                                put("certification", certification)
-                            }
-                            if (skills.isNotEmpty()) {
-                                put("skills", skills)
-                            }
-                        }
-                    } else {
-                        null
-                    }
-                }
+        val experienceByAccountId = obtainExperience(fetchedEntities)
+        val result = fetchedEntities
+            .getInstances("account")
+            .mapNotNull {
+                composeResponseJson(
+                    it,
+                    characteristicsByAccountId,
+                    certificationByAccountId,
+                    skillsByAccountId,
+                    experienceByAccountId
+                )
+            }
         return JsonObject().put("data", JsonArray(result))
     }
+
+    private fun composeResponseJson(
+        account: JsonObject,
+        characteristicsByAccountId: Map<String, List<JsonObject>>,
+        certificationByAccountId: Map<String, List<JsonObject>>,
+        skillsByAccountId: Map<String?, List<JsonObject>>,
+        experienceByAccountId: Map<String?, List<JsonObject>>
+    ): JsonObject? {
+        val accountId = account.getString("_id")
+        val characteristics = characteristicsByAccountId[accountId] ?: emptySet()
+        val certification = certificationByAccountId[accountId] ?: emptySet()
+        val skills = skillsByAccountId[accountId] ?: emptySet()
+        val experience = experienceByAccountId[accountId] ?: emptySet()
+        return if (certification.isNotEmpty() || skills.isNotEmpty() || experience.isNotEmpty()) {
+            JsonObject(
+                """{
+                    "name": "${account.getString("name")}",
+                    "email": "${account.getString("email")}"
+                }"""
+            ).apply {
+                if (characteristics.isNotEmpty()) {
+                    put("characteristics", characteristics)
+                }
+                if (certification.isNotEmpty()) {
+                    put("certification", certification)
+                }
+                if (skills.isNotEmpty()) {
+                    put("skills", skills)
+                }
+                if (experience.isNotEmpty()) {
+                    put("experience", experience)
+                }
+            }
+        } else {
+            null
+        }
+    }
+
+    private fun obtainCharacteristics(fetchedEntities: JsonObject) =
+        fetchedEntities
+            .getInstances("characteristics")
+            .groupBy { it.getString("accountId") }
+            .mapValues { (_, characteristics) ->
+                characteristics
+                    .mapNotNull { characteristic ->
+                        listOf("role", "profile", "interests")
+                            .associateWith { characteristic.getJsonObject(it)?.getString("nl_NL") }
+                            .toJsonOrNull()
+                    }
+            }
+            .filter { (_, characteristics) -> characteristics.isNotEmpty() }
 
     private fun obtainCertifications(fetchedEntities: JsonObject) =
         listOf("education", "training")
@@ -128,7 +188,8 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
             .filter { (_, trainings) -> trainings.isNotEmpty() }
 
     private fun obtainSkills(fetchedEntities: JsonObject): Map<String?, List<JsonObject>> =
-        fetchedEntities.getInstances("skill")
+        fetchedEntities
+            .getInstances("skill")
             .groupBy { it.getString("accountId") }
             .mapValues { (_, skills) ->
                 skills
@@ -144,6 +205,32 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
                     }
             }
             .filter { (_, skills) -> skills.isNotEmpty() }
+
+    private fun obtainExperience(fetchedEntities: JsonObject): Map<String?, List<JsonObject>> =
+        fetchedEntities
+            .getInstances("experience")
+            .groupBy { it.getString("accountId") }
+            .mapValues { (_, experiences) ->
+                experiences
+                    .mapNotNull { experience ->
+                        val details = listOf("role", "assignment", "activities", "results", "keywords")
+                            .associateWith { experience.getJsonObject(it)?.getString("nl_NL") }
+                        if (details.isNotEmpty()) {
+                            val overview = listOf("periodBegin", "periodEnd", "employer", "client")
+                                .associateWith { experience.getString(it) }
+                            (overview + details)
+                                .toJsonOrNull()
+                        } else {
+                            null
+                        }
+                    }
+            }
+            .filter { (_, experiences) -> experiences.isNotEmpty() }
+
+    private fun Map<String, String?>.toJsonOrNull() =
+        filterValues { it != null }
+            .mapValues { (_, value) -> value!!.escapeJson() }
+            .let { if (it.isNotEmpty()) JsonObject(it) else null }
 
     private fun String.escapeJson() =
         trim()

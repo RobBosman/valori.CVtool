@@ -47,7 +47,7 @@ services:
         source: cvtool_backup
         target: /backup
     healthcheck:
-      test: echo 'wget -q -O - http://${HTTP_HOST}:${HTTP_PORT}/health' | grep '"outcome":"UP"'
+      test: wget -q -O - http://${HTTP_HOST}:${HTTP_PORT}/health | grep '"outcome":"UP"'
       interval: 5s
       timeout: 5s
       retries: 3
