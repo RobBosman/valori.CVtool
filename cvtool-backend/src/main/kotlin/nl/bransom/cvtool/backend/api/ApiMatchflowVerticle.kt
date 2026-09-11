@@ -114,13 +114,13 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
 
     private fun composeResponseJson(
         account: JsonObject,
-        characteristicsByAccountId: Map<String, List<JsonObject>>,
+        characteristicsByAccountId: Map<String, JsonObject?>,
         certificationByAccountId: Map<String, List<JsonObject>>,
         skillsByAccountId: Map<String?, List<JsonObject>>,
         experienceByAccountId: Map<String?, List<JsonObject>>
     ): JsonObject? {
         val accountId = account.getString("_id")
-        val characteristics = characteristicsByAccountId[accountId] ?: emptySet()
+        val characteristics = characteristicsByAccountId[accountId]
         val certification = certificationByAccountId[accountId] ?: emptySet()
         val skills = skillsByAccountId[accountId] ?: emptySet()
         val experience = experienceByAccountId[accountId] ?: emptySet()
@@ -131,7 +131,7 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
                     "email": "${account.getString("email")}"
                 }"""
             ).apply {
-                if (characteristics.isNotEmpty()) {
+                if (characteristics != null) {
                     put("characteristics", characteristics)
                 }
                 if (certification.isNotEmpty()) {
@@ -155,13 +155,13 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
             .groupBy { it.getString("accountId") }
             .mapValues { (_, characteristics) ->
                 characteristics
-                    .mapNotNull { characteristic ->
+                    .firstNotNullOfOrNull { characteristic ->
                         listOf("role", "profile", "interests")
                             .associateWith { characteristic.getJsonObject(it)?.getString("nl_NL") }
                             .toJsonOrNull()
                     }
             }
-            .filter { (_, characteristics) -> characteristics.isNotEmpty() }
+            .filter { (_, characteristics) -> characteristics != null }
 
     private fun obtainCertifications(fetchedEntities: JsonObject) =
         listOf("education", "training")
@@ -170,7 +170,7 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
             .mapValues { (_, certifications) ->
                 certifications
                     .mapNotNull { certification ->
-                        val year = certification.getString("year") ?: certification.getString("yearTo")
+                        val year = (certification.getString("year") ?: certification.getString("yearTo"))?.toIntOrNull()
                         val institution = certification.getString("institution")?.escapeJson()
                         val name = certification.getJsonObject("name")?.getString("nl_NL")?.escapeJson()
                         if (institution != null && name != null) {
