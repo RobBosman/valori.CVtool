@@ -2,6 +2,7 @@ package nl.bransom.cvtool.backend.api
 
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
@@ -10,6 +11,7 @@ import nl.bransom.cvtool.backend.BasicVerticle
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
 import nl.bransom.cvtool.backend.ModelUtils.getUsernameFromEmail
 import nl.bransom.cvtool.backend.cv.CV_GENERATE_ADDRESS
+import nl.bransom.cvtool.backend.cv.CvGenerateVerticle.Companion.SUPPORTED_LOCALES
 import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import java.util.Base64
 
@@ -24,6 +26,10 @@ internal class ApiCvDocxVerticle : BasicVerticle(API_CV_DOCX_ADDRESS) {
      *      "emails": [
      *        "John.Doe@cerios.nl",
      *        "Jane.Smith@cerios.nl"
+     *      ],
+     *      // "locales" is optional, defaults to [ "nl_NL" ]
+     *      "locales": [
+     *        "nl_NL"
      *      ]
      *    }
      *
@@ -46,9 +52,15 @@ internal class ApiCvDocxVerticle : BasicVerticle(API_CV_DOCX_ADDRESS) {
      */
     override fun handleRequest(message: Message<JsonObject>) {
         Single.just(message)
-            .map { it.body().getJsonArray("emails") }
-            .flatMap { emails ->
-                val usernames = emails.map { (it as String).getUsernameFromEmail() }
+            .map { msg ->
+                val usernames = msg.body().getJsonArray("emails").map { it as String }
+                    .map { it.getUsernameFromEmail() }
+                val locales = msg.body().getJsonArray("locales")?.map { it as String }
+                    ?.filter { it in SUPPORTED_LOCALES }
+                    ?: setOf("nl_NL") // Default to nl_NL if locales is not provided.
+                usernames to locales
+            }
+            .flatMap { (usernames, locales) ->
                 vertx.eventBus()
                     .rxRequest<JsonObject>(
                         MONGODB_FETCH_ADDRESS,
@@ -57,9 +69,9 @@ internal class ApiCvDocxVerticle : BasicVerticle(API_CV_DOCX_ADDRESS) {
                         ),
                         DELIVERY_OPTIONS
                     )
+                    .map { it.body() }
+                    .flatMap { toApiResponse(it, locales) }
             }
-            .map { it.body() }
-            .flatMap(::toApiResponse)
             .subscribe(
                 {
                     log.debug("Successfully fetched 'cv docx' API response")
@@ -72,20 +84,29 @@ internal class ApiCvDocxVerticle : BasicVerticle(API_CV_DOCX_ADDRESS) {
             )
     }
 
-    private fun toApiResponse(fetchedEntities: JsonObject) =
-        Flowable
-            .fromIterable(fetchedEntities.getInstances("account"))
-            .flatMap { account ->
-                generateCv(account, "nl_NL")
-                    .map { cvJson ->
-                        JsonObject()
-                            .put("email", account.getString("email"))
-                            .put("fileName", cvJson.getString("fileName"))
-                            .put("docxB64", cvJson.getString("docxB64"))
+    private fun toApiResponse(fetchedEntities: JsonObject, locales: Collection<String>): Single<JsonObject> =
+        fetchedEntities.getInstances("account")
+            .flatMap { account -> locales.map { locale -> account to locale } }
+            .let { Flowable.fromIterable(it) }
+            .flatMap { (account, locale) ->
+                // Generate CV for each account in parallel on the IO scheduler.
+                Single.just(account)
+                    .observeOn(Schedulers.io())
+                    .flatMap { account ->
+                        generateCv(account, locale)
+                            .map { cvJson ->
+                                JsonObject()
+                                    .put("email", account.getString("email"))
+                                    .put("fileName", cvJson.getString("fileName"))
+                                    .put("docxB64", cvJson.getString("docxB64"))
+                            }
                     }
                     .toFlowable()
             }
-            .collectInto(JsonArray()) { jsonArray, cvJson -> jsonArray.add(cvJson) }
+            .reduceWith(
+                { JsonArray() },
+                { jsonArray, cvJson -> jsonArray.add(cvJson) }
+            )
             .map { JsonObject().put("data", it) }
 
     private fun generateCv(account: JsonObject, locale: String) =
