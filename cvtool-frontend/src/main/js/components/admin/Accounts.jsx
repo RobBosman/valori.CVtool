@@ -91,7 +91,7 @@ const Accounts = prps => {
   [props.businessUnitEntity, props.replaceBusinessUnit]);
 
   const replaceAccountInstance = React.useCallback((accountId, combinedInstance) => {
-    const newUsername = commonUtils.getUsername(combinedInstance.email);
+    const newUsername = commonUtils.getUsernameFromEmail(combinedInstance.email);
     // Double-check if 'newUsername' is unique.
     const hasExistingMatches = Object.values(props.accountEntity || {})
       .filter(accountInstance => accountInstance._id !== accountId)
@@ -219,7 +219,7 @@ const Accounts = prps => {
       props.fetchCvByAccountId(props.selectedAccountId);
     }
   };
-  
+
   const onFetchCvReport = () =>
     props.fetchCvReport();
 

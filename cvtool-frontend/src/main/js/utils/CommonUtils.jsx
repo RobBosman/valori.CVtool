@@ -54,7 +54,7 @@ export const getValueOrFallback = (instance, fieldName, locale) => {
   return "";
 };
 
-export const getUsername = (email) =>
+export const getUsernameFromEmail = (email) =>
   email.split("@")[0].replaceAll(".", "").toUpperCase();
 
 export const isEditAccountAllowed = (accountId, authInfo) =>
@@ -74,7 +74,7 @@ const getRandomByte = () => {
 export const createUuid = () =>
   "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replaceAll(/[xy]/g, (c) => {
     const r = getRandomByte();
-    const v = c == "x" ? r : (r & 3 | 8);
+    const v = c === "x" ? r : (r & 3 | 8);
     return v.toString(16);
   });
 

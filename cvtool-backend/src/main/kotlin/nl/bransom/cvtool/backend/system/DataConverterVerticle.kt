@@ -4,8 +4,8 @@ import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.BasicVerticle
+import nl.bransom.cvtool.backend.ModelUtils.getUsernameFromEmail
 import nl.bransom.cvtool.backend.ModelUtils.toJsonObject
-import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle.Companion.getUsername
 import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.persistence.MONGODB_SAVE_ADDRESS
 
@@ -60,7 +60,7 @@ class DataConverterVerticle : BasicVerticle(CONVERT_DATA_ADDRESS) {
                 .map.values
                 .mapNotNull(::toJsonObject)
                 .forEach { accountInstance ->
-                    val username = accountInstance.getString("email").getUsername()
+                    val username = accountInstance.getString("email").getUsernameFromEmail()
                     accountInstance.put("username", username)
                 }
         }

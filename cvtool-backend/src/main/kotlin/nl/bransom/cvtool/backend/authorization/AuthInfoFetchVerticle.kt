@@ -7,8 +7,8 @@ import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.BasicVerticle
 import nl.bransom.cvtool.backend.ModelUtils.addEntity
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
+import nl.bransom.cvtool.backend.ModelUtils.getUsernameFromEmail
 import nl.bransom.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
-import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle.Companion.getUsername
 import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle.Companion.isDomainAuthorized
 import nl.bransom.cvtool.backend.authorization.AuthorizationLevel.CONSULTANT
 import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
@@ -64,7 +64,7 @@ internal class AuthInfoFetchVerticle : BasicVerticle(AUTH_INFO_FETCH_ADDRESS) {
         check(email.isDomainAuthorized()) {
             "Unauthorized email domain: '${email.substringAfter("@")}'."
         }
-        val username = email.getUsername()
+        val username = email.getUsernameFromEmail()
         return vertx.eventBus()
             .rxRequest<JsonObject>(
                 MONGODB_FETCH_ADDRESS,

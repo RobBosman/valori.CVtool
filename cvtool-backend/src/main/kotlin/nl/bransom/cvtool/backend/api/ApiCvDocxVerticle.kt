@@ -8,6 +8,7 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.BasicVerticle
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
+import nl.bransom.cvtool.backend.ModelUtils.getUsernameFromEmail
 import nl.bransom.cvtool.backend.cv.CV_GENERATE_ADDRESS
 import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 import java.util.Base64
@@ -21,8 +22,8 @@ internal class ApiCvDocxVerticle : BasicVerticle(API_CV_DOCX_ADDRESS) {
      *
      *    {
      *      "emails": [
-     *        "john.doe@cerios.nl",
-     *        "jane.smith@cerios.nl"
+     *        "John.Doe@cerios.nl",
+     *        "Jane.Smith@cerios.nl"
      *      ]
      *    }
      *
@@ -47,10 +48,13 @@ internal class ApiCvDocxVerticle : BasicVerticle(API_CV_DOCX_ADDRESS) {
         Single.just(message)
             .map { it.body().getJsonArray("emails") }
             .flatMap { emails ->
+                val usernames = emails.map { (it as String).getUsernameFromEmail() }
                 vertx.eventBus()
                     .rxRequest<JsonObject>(
                         MONGODB_FETCH_ADDRESS,
-                        JsonObject($$"""{ "account": [{ "email": { "$in": $${emails.encode()} } }] }"""),
+                        JsonObject(
+                            $$"""{ "account": [{ "username": { "$in": $${JsonArray(usernames).encode()} } }] }"""
+                        ),
                         DELIVERY_OPTIONS
                     )
             }
