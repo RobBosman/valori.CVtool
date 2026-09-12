@@ -12,6 +12,7 @@ abstract class BasicVerticle(private val address: String) : AbstractVerticle() {
     companion object {
         internal val log = getLogger(javaClass)
         internal val DELIVERY_OPTIONS = DeliveryOptions().setSendTimeout(2_000)
+        internal val DELIVERY_OPTIONS_4 = DeliveryOptions().setSendTimeout(4_000)
     }
 
     abstract fun handleRequest(message: Message<JsonObject>)

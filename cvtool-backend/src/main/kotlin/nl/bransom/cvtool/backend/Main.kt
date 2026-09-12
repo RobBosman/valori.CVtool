@@ -9,7 +9,8 @@ import io.vertx.core.Vertx
 import io.vertx.core.VertxOptions
 import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.AbstractVerticle
-import nl.bransom.cvtool.backend.api.ApiMatchflowVerticle
+import nl.bransom.cvtool.backend.api.ApiCvBulkDataVerticle
+import nl.bransom.cvtool.backend.api.ApiCvDocxVerticle
 import nl.bransom.cvtool.backend.authorization.AuthInfoFetchVerticle
 import nl.bransom.cvtool.backend.authorization.AuthenticateVerticle
 import nl.bransom.cvtool.backend.cv.CvBackupVerticle
@@ -57,7 +58,8 @@ object Main {
         CvDemoVerticle::class,
         CvReportVerticle::class,
         DataRetentionVerticle::class,
-        ApiMatchflowVerticle::class,
+        ApiCvBulkDataVerticle::class,
+        ApiCvDocxVerticle::class,
         DataConverterVerticle::class
     )
     val verticleDeploymentStates = verticlesToDeploy

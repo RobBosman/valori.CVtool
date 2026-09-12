@@ -1,6 +1,5 @@
 package nl.bransom.cvtool.backend.api
 
-import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.core.eventbus.ReplyFailure.RECIPIENT_FAILURE
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
@@ -9,14 +8,9 @@ import nl.bransom.cvtool.backend.BasicVerticle
 import nl.bransom.cvtool.backend.ModelUtils.getInstances
 import nl.bransom.cvtool.backend.persistence.MONGODB_FETCH_ADDRESS
 
-const val API_MATCHFLOW_URL = "/api/matchflow"
-const val API_MATCHFLOW_ADDRESS = "api.matchflow"
+const val API_CV_BULK_DATA_ADDRESS = "api.cvBulkData"
 
-internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
-
-    companion object {
-        private val DELIVERY_OPTIONS = DeliveryOptions().setSendTimeout(4_000)
-    }
+internal class ApiCvBulkDataVerticle : BasicVerticle(API_CV_BULK_DATA_ADDRESS) {
 
     /**
      * Response:
@@ -76,18 +70,17 @@ internal class ApiMatchflowVerticle : BasicVerticle(API_MATCHFLOW_ADDRESS) {
                         "experience": [{ "includeInCv": true }]
                     }"""
                 ),
-                DELIVERY_OPTIONS
+                DELIVERY_OPTIONS_4
             )
             .map { it.body() }
             .map(::toApiResponse)
             .subscribe(
                 {
-                    log.debug("Successfully fetched API response")
+                    log.debug("Successfully fetched 'cv bulk data' API response")
                     message.reply(it)
                 },
                 {
-                    val errorMsg = "Error fetching API response: ${it.message}"
-                    log.warn(errorMsg)
+                    log.warn("Error fetching 'cv bulk data' API response: ${it.message}")
                     message.fail(RECIPIENT_FAILURE.toInt(), it.message)
                 }
             )

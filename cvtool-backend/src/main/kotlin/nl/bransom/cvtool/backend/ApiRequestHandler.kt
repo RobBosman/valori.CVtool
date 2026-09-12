@@ -11,8 +11,9 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.Vertx
 import io.vertx.reactivex.core.http.HttpServerRequest
 import io.vertx.reactivex.ext.web.RoutingContext
-import nl.bransom.cvtool.backend.api.API_MATCHFLOW_ADDRESS
-import nl.bransom.cvtool.backend.api.API_MATCHFLOW_URL
+import nl.bransom.cvtool.backend.BasicVerticle.Companion.DELIVERY_OPTIONS_4
+import nl.bransom.cvtool.backend.api.API_CV_BULK_DATA_ADDRESS
+import nl.bransom.cvtool.backend.api.API_CV_DOCX_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AUTHENTICATE_API_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AUTH_INFO_FETCH_ADDRESS
 import nl.bransom.cvtool.backend.authorization.AuthInfo.Companion.toAuthInfo
@@ -33,7 +34,8 @@ internal object ApiRequestHandler {
         Handler<RoutingContext> { routingContext ->
 
             val targetEventAddress = when (routingContext.normalizedPath()) {
-                API_MATCHFLOW_URL -> API_MATCHFLOW_ADDRESS
+                "/api/matchflow" -> API_CV_BULK_DATA_ADDRESS
+                "/api/matchflow/docx" -> API_CV_DOCX_ADDRESS
                 else -> {
                     routingContext.response()
                         .setStatusCode(HTTP_NOT_FOUND)
@@ -45,9 +47,10 @@ internal object ApiRequestHandler {
             authenticate(vertx, routingContext.request())
                 .flatMap { authorize(vertx, it) }
                 .flatMap {
+                    val requestBody = routingContext.body()?.asJsonObject() ?: JsonObject()
                     vertx
                         .eventBus()
-                        .rxRequest<JsonObject>(targetEventAddress, JsonObject(), DELIVERY_OPTIONS)
+                        .rxRequest<JsonObject>(targetEventAddress, requestBody, DELIVERY_OPTIONS_4)
                         .map { it.body() }
                 }
                 .subscribe(
