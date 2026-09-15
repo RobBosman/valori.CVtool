@@ -10,6 +10,8 @@ import io.reactivex.subjects.Subject
 import io.vertx.core.json.JsonObject
 import org.bson.Document
 import org.slf4j.LoggerFactory
+import java.util.concurrent.Executors.defaultThreadFactory
+import java.util.concurrent.Executors.newFixedThreadPool
 
 object MongoConnection {
 
@@ -17,12 +19,13 @@ object MongoConnection {
 
     private val configSubject: Subject<JsonObject> = ReplaySubject.create(1)
     private val mongodbSubject: Subject<MongoDatabase> = ReplaySubject.create(1)
+    private val dbThreadPool = newFixedThreadPool(10, defaultThreadFactory())
 
     init {
         // Connect to MongoDB only once, using the first config available.
         configSubject
             .take(1)
-            .observeOn(Schedulers.io())
+            .observeOn(Schedulers.from(dbThreadPool))
             .map { getMongoDatabase(it) }
             .subscribe(
                 {

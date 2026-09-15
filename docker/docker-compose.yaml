@@ -48,7 +48,7 @@ services:
         target: /backup
     healthcheck:
       test: wget -q -O - http://${HTTP_HOST}:${HTTP_PORT}/health | grep '"outcome":"UP"'
-      interval: 5s
+      interval: 300s
       timeout: 5s
       retries: 3
       start_period: 10s

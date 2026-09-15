@@ -91,7 +91,7 @@ internal class ApiCvDocxVerticle : BasicVerticle(API_CV_DOCX_ADDRESS) {
             .flatMap { (account, locale) ->
                 // Generate CV for each account in parallel on the IO scheduler.
                 Single.just(account)
-                    .observeOn(Schedulers.io())
+                    .observeOn(Schedulers.computation())
                     .flatMap { account ->
                         generateCv(account, locale)
                             .map { cvJson ->
