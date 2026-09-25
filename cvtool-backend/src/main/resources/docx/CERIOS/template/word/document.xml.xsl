@@ -1377,10 +1377,6 @@
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">DATABASES</xsl:with-param>
                                                     </xsl:call-template>
-                                                    <!-- LANGUAGES -->
-                                                    <xsl:call-template name="skill-section">
-                                                        <xsl:with-param name="category">LANGUAGES</xsl:with-param>
-                                                    </xsl:call-template>
                                                 </wne:txbxContent>
                                             </wp:txbx>
                                             <wp:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="overflow"
@@ -1440,6 +1436,10 @@
                                             </wp:spPr>
                                             <wp:txbx>
                                                 <wne:txbxContent>
+                                                    <!-- LANGUAGES -->
+                                                    <xsl:call-template name="skill-section">
+                                                        <xsl:with-param name="category">LANGUAGES</xsl:with-param>
+                                                    </xsl:call-template>
                                                     <!-- PROGRAMMING -->
                                                     <xsl:call-template name="skill-section">
                                                         <xsl:with-param name="category">PROGRAMMING</xsl:with-param>
@@ -1543,6 +1543,9 @@
                             </wp:anchor>
                         </w:drawing>
                     </w:r>
+                </w:p>
+                <w:p w14:paraId="04942FD4" w14:textId="28725C40" w:rsidR="002251BB" w:rsidRPr="001958BA"
+                     w:rsidRDefault="00065B83" w:rsidP="001958BA">
                     <w:r>
                         <w:rPr>
                             <w:noProof/>
@@ -1552,14 +1555,14 @@
                                        relativeHeight="251661312" behindDoc="0" locked="0" layoutInCell="1"
                                        allowOverlap="1" wp14:anchorId="7FC684E5" wp14:editId="2217D624">
                                 <wp:simplePos x="0" y="0"/>
-                                <wp:positionH relativeFrom="column">
-                                    <wp:posOffset>1812290</wp:posOffset>
+                                <wp:positionH relativeFrom="margin">
+                                    <wp:align>center</wp:align>
                                 </wp:positionH>
                                 <wp:positionV relativeFrom="paragraph">
-                                    <wp:posOffset>8166413</wp:posOffset>
+                                    <wp:posOffset>7964805</wp:posOffset>
                                 </wp:positionV>
                                 <wp:extent cx="6791325" cy="457200"/>
-                                <wp:effectExtent l="0" t="0" r="2540" b="0"/>
+                                <wp:effectExtent l="0" t="0" r="0" b="0"/>
                                 <wp:wrapNone/>
                                 <wp:docPr id="754824561" name="Text Box 16"/>
                                 <wp:cNvGraphicFramePr/>
