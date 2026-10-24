@@ -35,6 +35,8 @@ internal class HttpServerVerticle : AbstractVerticle() {
                     .setPort(httpPort)
                     .setSsl(false)
                     .setCompressionSupported(true)
+                    .setMaxFormAttributeSize(MAX_WEB_SOCKET_BYTES)
+                    .setMaxFormBufferedBytes(MAX_WEB_SOCKET_BYTES)
                     .setMaxWebSocketFrameSize(MAX_WEB_SOCKET_BYTES)
                     .setMaxWebSocketMessageSize(MAX_WEB_SOCKET_BYTES)
             )
