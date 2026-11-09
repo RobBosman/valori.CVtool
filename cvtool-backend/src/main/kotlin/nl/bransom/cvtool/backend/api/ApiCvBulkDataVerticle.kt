@@ -63,11 +63,11 @@ internal class ApiCvBulkDataVerticle : BasicVerticle(API_CV_BULK_DATA_ADDRESS) {
                 JsonObject(
                     """{
                         "account": [],
-                        "characteristics": [{ "includeInCv": true }],
-                        "education": [{ "includeInCv": true, "result": "DIPLOMA" }],
-                        "training": [{ "includeInCv": true, "result": "DIPLOMA" }],
-                        "skill": [{ "includeInCv": true }],
-                        "experience": [{ "includeInCv": true }]
+                        "characteristics": [],
+                        "education": [],
+                        "training": [],
+                        "skill": [],
+                        "experience": []
                     }"""
                 ),
                 DELIVERY_OPTIONS_4
