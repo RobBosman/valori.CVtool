@@ -134,6 +134,8 @@ Data retention is 120 days.
  cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2026-11-08 ~rbosman
  rm -rf ~rbosman/cvtool*.log ~rbosman/2026-11-08
 
+ "C:\Program Files\MongoDB\Tools\100\bin\mongodump" /gzip /out:"/backup/2026-11-08" "mongodb://localhost:27117/cvtool"
+
  # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
  # System entropy
