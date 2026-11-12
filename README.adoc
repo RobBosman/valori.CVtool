@@ -130,11 +130,11 @@ Data retention is 120 days.
  # Logs and backups
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" > ~rbosman/cvtool_be.log 2>&1
  docker logs "$(docker ps -aqf 'ancestor=bransom/cvtool-frontend')" > ~rbosman/cvtool_fe.log 2>&1
- cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2026-11-08 ~rbosman
- cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2026-11-08 ~rbosman
- rm -rf ~rbosman/cvtool*.log ~rbosman/2026-11-08
+ cp -R /var/lib/docker/volumes/root_cvtool_backup/_data/2026-11-12 ~rbosman
+ cp -R /var/lib/docker/volumes/root_mongodb_backup/_data/2026-11-12 ~rbosman
+ rm -rf ~rbosman/cvtool*.log ~rbosman/2026-11-12
 
- "C:\Program Files\MongoDB\Tools\100\bin\mongodump" /gzip /out:"/backup/2026-11-08" "mongodb://localhost:27117/cvtool"
+ "C:\Program Files\MongoDB\Tools\100\bin\mongodump" /gzip /out:"/backup/2026-11-12" "mongodb://localhost:27117/cvtool"
 
  # Container shell
  docker exec -it "$(docker ps -aqf 'ancestor=bransom/cvtool-backend')" sh
