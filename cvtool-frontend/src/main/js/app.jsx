@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import {Provider} from "react-redux";
 import {store} from "./redux/store";
@@ -23,7 +22,7 @@ const htmlRoot = document.getElementsByTagName("html")[0];
 htmlRoot.style.border = dtap.borderStyle;
 htmlRoot.style.height = dtap.borderStyle ? "calc(100% - 12px)" : "100%";
 
-export const appVersion = `${dtap.label} versie 2026-11-09`;
+export const appVersion = `${dtap.label} versie 2026-11-20`;
 
 epicRegistry.register(
   ...errorEpics,
