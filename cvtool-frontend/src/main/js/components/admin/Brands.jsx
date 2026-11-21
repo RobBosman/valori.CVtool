@@ -7,10 +7,8 @@ import * as safeActions from "../../services/safe/safe-actions";
 import {setSelectedId} from "../../services/ui/ui-actions";
 import {useTheme} from "../../services/ui/ui-services";
 import {CvDetailsList} from "../widgets/CvDetailsList";
-import {CvDropdown} from "../widgets/CvDropdown";
 import {CvTextField} from "../widgets/CvTextField";
 import ConfirmDialog from "../ConfirmDialog";
-import * as enums from "../cv/Enums";
 
 const Brands = prps => {
 
@@ -50,14 +48,6 @@ const Brands = prps => {
       name: "Naam",
       isResizable: true,
       minWidth: 100
-    },
-    {
-      key: "docxTemplate",
-      fieldName: "docxTemplate",
-      name: "Docx template",
-      isResizable: true,
-      minWidth: 120,
-      maxWidth: 200
     }
   ];
 
@@ -85,13 +75,12 @@ const Brands = prps => {
   const selectedItemFields = React.useCallback(() => {
     const selectedBrand = brands.find(brands => brands._id === props.selectedBrandId);
     return selectedBrand && {
-      Naam: selectedBrand.name,
-      "Docx template": selectedBrand.docxTemplate
+      Naam: selectedBrand.name
     };
   }, [brands, props.selectedBrandId]);
 
   const isFilledBrand = brand =>
-    brand.name || brand.docxTemplate;
+    brand.name;
 
   const onAddItem = () => {
     let newBrand = brands.find(brand => !isFilledBrand(brand));
@@ -174,14 +163,6 @@ const Brands = prps => {
                   label="Naam"
                   field="name"
                   instanceContext={brandContext}
-                  disabled={!props.selectedBrandId}
-                />
-                <CvDropdown
-                  label="Docx template"
-                  field="docxTemplate"
-                  instanceContext={brandContext}
-                  options={enums.getOptions(enums.DocxTemplates, props.locale)}
-                  styles={{ dropdown: { width: 230 } }}
                   disabled={!props.selectedBrandId}
                 />
               </Stack>

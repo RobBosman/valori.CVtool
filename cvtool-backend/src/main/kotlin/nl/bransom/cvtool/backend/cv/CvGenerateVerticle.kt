@@ -8,7 +8,6 @@ import io.vertx.core.json.JsonObject
 import io.vertx.reactivex.core.eventbus.Message
 import nl.bransom.cvtool.backend.DebouncingVerticle
 import nl.bransom.cvtool.backend.ModelUtils.convertToLocalizedJson
-import nl.bransom.cvtool.backend.ModelUtils.getInstances
 import nl.bransom.cvtool.backend.ModelUtils.jsonToXml
 import nl.bransom.cvtool.backend.ModelUtils.toJsonObject
 import java.io.ByteArrayInputStream
@@ -32,7 +31,6 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
     companion object {
         internal const val CV_XML_NAMESPACE = "https://ns.bransom.nl/cerios/cv/v20260101.xsd"
         internal val SUPPORTED_LOCALES = setOf("nl_NL", "uk_UK")
-        private const val DEFAULT_DOCX_TEMPLATE = "CERIOS"
         private val SHARE_POINT_UNSUPPORTED_REGEX = Regex("""[<>:/\\'"|?*]+""")
 
         private fun loadBytes(location: String) =
@@ -123,7 +121,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
         // CV_$LOCALE_$BRAND_$ACCOUNT_NAME_[TEMPLATE-OVERRIDE].docx, e.g. CV_NL_Cerios_RobBosman_[VALORI-CLASSIC].docx
         internal fun composeFileName(
             cvEntities: JsonObject,
-            locale: String
+            locale: String,
+            docxTemplate: String
         ): String {
             val accountName = when (val accountInstances = cvEntities.getValue("account")) {
                 is JsonObject -> accountInstances.map.values
@@ -135,7 +134,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
 
                 else -> ""
             }
-            return listOf("CV", locale.substring(3), "Cerios", accountName)
+            val docxTemplateOverride = if (docxTemplate == "STANDARD") "" else "[$docxTemplate]"
+            return listOf("CV", locale.substring(3), "Cerios", accountName, docxTemplateOverride)
                 .map { it.replace(" ", "") }
                 .filter { it.isNotBlank() }
                 .joinToString("_") {
@@ -153,7 +153,8 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
      * Expected message body:
      *   {
      *     "locale": "nl_NL",
-     *     "accountId": "id-of-account-to-generate-cv-for"
+     *     "accountId": "id-of-account-to-generate-cv-for",
+     *     "docxTemplate": "STANDARD"
      *   }
      *
      * Response:
@@ -165,21 +166,17 @@ internal class CvGenerateVerticle : DebouncingVerticle(CV_GENERATE_ADDRESS) {
     override fun handleRequest(message: Message<JsonObject>) {
         val locale = message.body().getString("locale", "nl_NL")
         val accountId = message.body().getString("accountId")
+        val docxTemplate = message.body().getString("docxTemplate", "STANDARD")
         Single
             .just(message.body())
             .flatMap(::fetchCvData)
             .flatMap { cvJson ->
-                val docxTemplate =
-                    cvJson.getInstances("brand")
-                        .firstOrNull()
-                        ?.getString("docxTemplate")
-                        ?: DEFAULT_DOCX_TEMPLATE
                 val docxJson = convertToLocalizedJson(cvJson, locale)
                 val docxXml = convertToDocxXml(docxJson)
                 xmlToDocx(docxXml, docxTemplate, locale)
                     .map { docxBytes ->
                         JsonObject()
-                            .put("fileName", composeFileName(cvJson, locale))
+                            .put("fileName", composeFileName(cvJson, locale, docxTemplate))
                             .put("docxB64", String(Base64.getEncoder().encode(docxBytes)))
                     }
             }

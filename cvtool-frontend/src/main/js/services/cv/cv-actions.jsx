@@ -9,9 +9,9 @@ export const searchCvData = createAction("SEARCH_CV_DATA");
 export const fetchDemoCv = createAction("FETCH_DEMO_CV",
   (accountId, locale) => ({ payload: { accountId, locale } }));
 // Reducer actions:
-export const overrideDocxTemplate = createAction("OVERRIDE_DOCX_TEMPLATE");
+export const selectDocxTemplate = createAction("SELECT_DOCX_TEMPLATE");
 export const generateCv = createAction("GENERATE_CV",
-  (accountId, locale) => ({ payload: { accountId, locale } }));
+  (accountId, locale, docxTemplate) => ({ payload: { accountId, locale, docxTemplate } }));
 export const setSearchResult = createAction("SET_SEARCH_RESULT");
 export const resetSearchData = createAction("RESET_SEARCH_DATA", () => ({}));
 
@@ -19,12 +19,13 @@ reducerRegistry.register(
   "cv",
   createReducer(
     {
-      searchText: ""
+      searchText: "",
+      selectedDocxTemplate: "STANDARD"
     },
     builder => builder
-      .addCase(overrideDocxTemplate, (state, action) => ({
+      .addCase(selectDocxTemplate, (state, action) => ({
         ...state,
-        docxTemplateOverride: action.payload
+        selectedDocxTemplate: action.payload
       }))
       .addCase(generateCv, (state) => ({
         ...state,

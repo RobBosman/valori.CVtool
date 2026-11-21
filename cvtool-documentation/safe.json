@@ -3,8 +3,7 @@
   "brand": {
     "uuid-brand-1": {
       "_id": "uuid-brand-1",
-      "name": "Cerios",
-      "docxTemplate": "CERIOS"
+      "name": "Cerios"
     }
   },
   "businessUnit": {

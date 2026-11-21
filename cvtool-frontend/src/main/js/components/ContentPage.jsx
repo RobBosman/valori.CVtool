@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {IconButton, Nav, PrimaryButton, Separator, Stack, TooltipHost} from "@fluentui/react";
+import {IconButton, Nav, PrimaryButton, Separator, Stack, Text, TooltipHost} from "@fluentui/react";
 import ErrorPage from "./ErrorPage";
 import CvTitle from "./widgets/CvTitle";
 import Info from "./Info";
@@ -20,6 +20,7 @@ import Brands from "./admin/Brands";
 import BusinessUnits from "./admin/BusinessUnits";
 import Search from "./admin/Search";
 import LocaleFlag from "./widgets/LocaleFlag";
+import * as enums from "./cv/Enums";
 import * as cvActions from "../services/cv/cv-actions";
 import * as uiActions from "../services/ui/ui-actions";
 import * as utils from "../utils/CommonUtils";
@@ -33,14 +34,16 @@ const ContentPage = prps => {
       locationHash: state.ui.locationHash,
       accountEntity: state.safe.content.account,
       characteristicsEntity: state.safe.content.characteristics,
-      selectedAccountId: state.ui.selectedId.account
+      selectedAccountId: state.ui.selectedId.account,
+      selectedDocxTemplate: state.cv.selectedDocxTemplate
     }),
     {equalityFn: shallowEqual}
   );
   const dispatch = useDispatch();
   const dispatches = React.useMemo(() => ({
       fetchCvHistory: (accountId) => dispatch(cvActions.fetchCvHistory(accountId)),
-      generateCv: (accountId, locale) => dispatch(cvActions.generateCv(accountId, locale)),
+      selectDocxTemplate: (docxTemplate) => dispatch(cvActions.selectDocxTemplate(docxTemplate)),
+      generateCv: (accountId, locale, docxTemplate) => dispatch(cvActions.generateCv(accountId, locale, docxTemplate)),
       setHistoryViewVisible: (isVisible) => dispatch(uiActions.setHistoryViewVisible(isVisible))
     }),
     [dispatch]);
@@ -58,7 +61,7 @@ const ContentPage = prps => {
   };
 
   const onGenerateCv = () =>
-    props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale);
+    props.generateCv(props.selectedAccountId || props.authInfo.accountId, props.locale, props.selectedDocxTemplate);
 
   const onRenderGroupHeader = (group) =>
     <Stack horizontal horizontalAlign="space-between" verticalAlign="center">
@@ -71,6 +74,14 @@ const ContentPage = prps => {
         onClick={onFetchCvHistory}
       />
     </Stack>;
+
+  const onItemClick = (_, docxTemplateItem) =>
+    props.selectDocxTemplate(docxTemplateItem.key);
+
+  const docxTemplateMenuProps = {
+    items: enums.getOptions(enums.DocxTemplates, props.locale),
+    onItemClick: onItemClick
+  };
 
   const navGroups = React.useMemo(() =>
     [
@@ -218,11 +229,17 @@ const ContentPage = prps => {
             text="Download CV&nbsp;&nbsp;"
             iconProps={{ iconName: "DownloadDocument" }}
             primary
+            split
+            menuProps={docxTemplateMenuProps}
             disabled={!props.selectedAccountId}
             onClick={onGenerateCv}
             styles={{ root: { width: "100%", padding: "0 6px", justifyContent: "left" } }}>
             <LocaleFlag/>
           </PrimaryButton>
+          <Text
+            style={{ display: "flex", flexDirection: "row-reverse", marginRight: "12px" }}>
+            <em>{enums.getText(enums.DocxTemplates, props.selectedDocxTemplate, props.locale)}</em>
+          </Text>
         </TooltipHost>
       </Stack>
       <Separator vertical />
@@ -247,6 +264,8 @@ ContentPage.propTypes = {
   characteristicsEntity: PropTypes.object,
   selectedAccountId: PropTypes.string,
   fetchCvHistory: PropTypes.func,
+  selectedDocxTemplate: PropTypes.string,
+  selectDocxTemplate: PropTypes.func,
   generateCv: PropTypes.func,
   setHistoryViewVisible: PropTypes.func
 };
